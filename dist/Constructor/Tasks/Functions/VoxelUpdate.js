@@ -36,14 +36,10 @@ export async function EreaseAndUpdate(data) {
         return false;
     const [dimension, x, y, z] = data[0];
     const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[1], data[2]);
-    tasks
-        .setPriority(0)
-        .start()
-        .setBuldMode("sync").addToRebuildQueue(x, y, z);
+    tasks.setPriority(0).start().setBuldMode("sync").addToRebuildQueue(x, y, z);
     tasks.setBuldMode("async");
     if (ES.doFlow()) {
-        const substance = dataTool.getSubstance();
-        if (substance == "#dve_liquid" || substance == "#dve_magma") {
+        if (dataTool.getSubstnaceData().isLiquid()) {
             await Propagation.flow.remove(tasks);
             tasks.stop();
             return true;
@@ -79,13 +75,11 @@ export async function PaintAndUpdate(data) {
     const [dimension, x, y, z] = data[0];
     const raw = data[1];
     const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[2], data[3]);
-    tasks
-        .start()
-        .setPriority(0)
-        .setBuldMode("sync").addToRebuildQueue(x, y, z);
+    tasks.start().setPriority(0).setBuldMode("sync").addToRebuildQueue(x, y, z);
     tasks.setBuldMode("async");
     brushTool.setLocation(data[0]).setRaw(raw);
     nDataTool.loadInRaw(raw);
+    const substanceData = nDataTool.getSubstnaceData();
     const isOpaque = nDataTool.isOpaque();
     let doRGB = ES.doRGBPropagation();
     let doSun = ES.doSunPropagation();
@@ -118,8 +112,7 @@ export async function PaintAndUpdate(data) {
         }
     }
     if (ES.doFlow()) {
-        const substance = brushTool._dt.getSubstance();
-        if (substance == "#dve_liquid" || substance == "#dve_magma") {
+        if (substanceData.isLiquid()) {
             Propagation.flow.update(tasks);
         }
     }
@@ -132,11 +125,7 @@ export async function VoxelUpdate(data) {
         return false;
     const [dimension, x, y, z] = data[0];
     const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[2], data[3]);
-    tasks
-        .setPriority(0)
-        .start()
-        .setBuldMode("sync")
-        .addToRebuildQueue(x, y, z);
+    tasks.setPriority(0).start().setBuldMode("sync").addToRebuildQueue(x, y, z);
     tasks.setBuldMode("async");
     dataTool.loadInRaw(data[1]);
     dataTool.commit();
@@ -153,8 +142,7 @@ export async function VoxelUpdate(data) {
         }
     }
     if (ES.doFlow()) {
-        const substance = brushTool._dt.getSubstance();
-        if (substance == "#dve_liquid" || substance == "#dve_magma") {
+        if (dataTool.getSubstnaceData().isLiquid()) {
             Propagation.flow.update(tasks);
         }
     }

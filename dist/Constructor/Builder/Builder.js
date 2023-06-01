@@ -2,8 +2,7 @@ import { ConstructorHooks } from "../Hooks/ConstructorHooks.js";
 import { VoxelConstructors } from "./Constructors/Voxel/VoxelConstructors.js";
 import { ChunkProcessor } from "./Processors/ChunkProcessor.js";
 import { OverrideManager } from "./Rules/Overrides/OverridesManager.js";
-import { SubstanceRules } from "./Rules/SubstanceRules.js";
-import { RenderedSubstances } from "./Substances/RenderedSubstances.js";
+import { RenderedSubstances } from "./Rules/RenderedSubstances.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { TextureProcessor } from "./Processors/TextureProcessor.js";
 export const Builder = {
@@ -14,7 +13,6 @@ export const Builder = {
     overrides: OverrideManager,
     renderedSubstances: RenderedSubstances,
     $INIT() {
-        SubstanceRules.$INIT();
         ConstructorHooks.texturesRegistered.addToRun((manager) => {
             this.constructors.constructors._map.forEach((_) => {
                 _.onTexturesRegistered(manager);

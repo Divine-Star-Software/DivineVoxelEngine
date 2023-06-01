@@ -1,7 +1,6 @@
 import type {
- VoxelMapSyncData,
  VoxelDataSync,
- VoxelPaletteSyncData,
+ PaletteSyncData,
  WorldDataSync,
  RegisterStringMapSync,
 } from "Meta/Data/DataSync.types.js";
@@ -10,114 +9,125 @@ import type { DimensionData } from "Meta/Data/DimensionData.types.js";
 //objects
 import { ThreadComm } from "threadcomm";
 import { WorldRegister } from "./World/WorldRegister.js";
-import { DataSyncTypes } from "../Common/Threads/Contracts/DataSync.js";
+import { DataSyncIds } from "../Common/Threads/Contracts/DataSyncIds.js";
 import { VoxelPaletteReader } from "./Voxel/VoxelPalette.js";
 import { DimensionsRegister } from "./World/Dimensions/DimensionsRegister.js";
 import { ChunkTags } from "./World/Chunk/ChunkTags.js";
 import { RegionHeaderTags, RegionTags } from "./World/Region/RegionTags.js";
 import { ColumnTags } from "./World/Column/ColumnTags.js";
 import { VoxelTags } from "./Voxel/VoxelTags.js";
-import { Register } from "./Register/Register.js";
+import { MappedDataRegister } from "./Register/MappedDataRegister.js";
 import { RegionHeaderRegister } from "./World/Region/RegionHeaderRegister.js";
 import { RemoteTagManagerInitData } from "divine-binary-tags";
+import { SubstancePaletteReader } from "./Substance/SubstancePalette.js";
+import { SubstanceTags } from "./Substance/SubstanceTags.js";
 
 export const DataSyncNode = {
- _states: <Record<string, boolean>>{
-  voxelData: false,
- },
- isReady() {
-  let done = true;
-  for (const state of Object.keys(this._states)) {
-   if (!this._states[state]) {
-    done = false;
+ maps: {
+  strings: ThreadComm.onDataSync<RegisterStringMapSync, void>(
+   DataSyncIds.registerStringMap,
+   (data) => {
+    MappedDataRegister.stringMaps.sync(data);
    }
-  }
-
-  return true;
+  ),
+  objects: ThreadComm.onDataSync<RegisterStringMapSync, void>(
+   DataSyncIds.registerObjectMap,
+   (data) => {
+    MappedDataRegister.objectMaps.sync(data);
+   }
+  ),
  },
- voxelPalette: ThreadComm.onDataSync<VoxelPaletteSyncData, any>(
-  DataSyncTypes.voxelPalette,
-  (data) => {
-   VoxelPaletteReader.setVoxelPalette(data[0], data[1]);
-  }
- ),
- voxelData: ThreadComm.onDataSync<VoxelDataSync, any>(
-  DataSyncTypes.voxelTags,
-  (data) => {
-   VoxelTags.$INIT(data[0]);
-   VoxelTags.sync(new Uint16Array(data[1]));
-   DataSyncNode._states.voxelData = true;
-  }
- ),
- dimension: ThreadComm.onDataSync<DimensionData, void>(DataSyncTypes.dimesnion),
- chunk: ThreadComm.onDataSync<WorldDataSync, LocationData>(DataSyncTypes.chunk),
- column: ThreadComm.onDataSync<WorldDataSync, LocationData>(
-  DataSyncTypes.column
- ),
- region: ThreadComm.onDataSync<WorldDataSync, LocationData>(
-  DataSyncTypes.region
- ),
- regionHeader: ThreadComm.onDataSync<WorldDataSync, LocationData>(
-  DataSyncTypes.regionHeader
- ),
- chunkTags: ThreadComm.onDataSync<RemoteTagManagerInitData, void>(
-  DataSyncTypes.chunkTags
- ),
- columnTags: ThreadComm.onDataSync<RemoteTagManagerInitData, void>(
-  DataSyncTypes.columnTags
- ),
- regionTags: ThreadComm.onDataSync<RemoteTagManagerInitData[], void>(
-  DataSyncTypes.regionTags
- ),
- stringMap: ThreadComm.onDataSync<RegisterStringMapSync, void>(
-  DataSyncTypes.registerStringMap,
-  (data) => {
-   Register.stringMaps.syncStringMap(data);
-  }
- ),
+
+ palettes: {
+  voxel: ThreadComm.onDataSync<PaletteSyncData, any>(
+   DataSyncIds.voxelPalette,
+   ([palette, map]) => {
+    VoxelPaletteReader.setVoxelPalette(palette, map);
+   }
+  ),
+  substance: ThreadComm.onDataSync<PaletteSyncData, any>(
+   DataSyncIds.substancePalette,
+   ([palette, map]) => {
+    SubstancePaletteReader.setPalette(palette, map);
+   }
+  ),
+ },
+ worldData: {
+  dimension: ThreadComm.onDataSync<DimensionData, void>(
+   DataSyncIds.dimesnion,
+   (data) => {
+    DimensionsRegister.registerDimension(data.id, data.options);
+   }
+  ),
+  chunk: ThreadComm.onDataSync<WorldDataSync, LocationData>(
+   DataSyncIds.chunk,
+   (data) => {
+    WorldRegister.chunk.add(data[0], data[1]);
+   },
+   (data) => {
+    WorldRegister.chunk.remove(data);
+   }
+  ),
+  column: ThreadComm.onDataSync<WorldDataSync, LocationData>(
+   DataSyncIds.column,
+   (data) => {
+    WorldRegister.column.add(data[0], data[1]);
+   },
+   (data) => {
+    WorldRegister.column.remove(data);
+   }
+  ),
+  region: ThreadComm.onDataSync<WorldDataSync, LocationData>(
+   DataSyncIds.region,
+   (data) => {
+    WorldRegister.region.add(data[0], data[1]);
+   },
+   (data) => {
+    WorldRegister.region.remove(data);
+   }
+  ),
+  regionHeader: ThreadComm.onDataSync<WorldDataSync, LocationData>(
+   DataSyncIds.regionHeader,
+   (data) => {
+    RegionHeaderRegister.add(data[0], data[1]);
+   },
+   (data) => {
+    RegionHeaderRegister.remove(data);
+   }
+  ),
+ },
+ tags: {
+  voxel: ThreadComm.onDataSync<VoxelDataSync, any>(
+   DataSyncIds.voxelTags,
+   (data) => {
+    VoxelTags.$INIT(data[0]);
+    VoxelTags.sync(new Uint16Array(data[1]));
+   }
+  ),
+  substance: ThreadComm.onDataSync<RemoteTagManagerInitData, any>(
+   DataSyncIds.substanceTags,
+   (data) => {
+    SubstanceTags.$INIT(data);
+   }
+  ),
+  chunk: ThreadComm.onDataSync<RemoteTagManagerInitData, void>(
+   DataSyncIds.chunkTags,
+   (data) => {
+    ChunkTags.$INIT(data);
+   }
+  ),
+  column: ThreadComm.onDataSync<RemoteTagManagerInitData, void>(
+   DataSyncIds.columnTags,
+   (data) => {
+    ColumnTags.$INIT(data);
+   }
+  ),
+  region: ThreadComm.onDataSync<RemoteTagManagerInitData[], void>(
+   DataSyncIds.regionTags,
+   (data) => {
+    RegionTags.$INIT(data[0]);
+    RegionHeaderTags.$INIT(data[1]);
+   }
+  ),
+ },
 };
-
-DataSyncNode.dimension.addOnSync((data) => {
- DimensionsRegister.registerDimension(data.id, data.options);
-});
-
-DataSyncNode.chunk.addOnSync((data) => {
- WorldRegister.chunk.add(data[0], data[1]);
-});
-
-DataSyncNode.chunk.addOnUnSync((data) => {
- WorldRegister.chunk.remove(data);
-});
-
-DataSyncNode.column.addOnSync((data) => {
- WorldRegister.column.add(data[0], data[1]);
-});
-
-DataSyncNode.column.addOnUnSync((data) => {
- WorldRegister.column.remove(data);
-});
-
-DataSyncNode.region.addOnSync((data) => {
- WorldRegister.region.add(data[0], data[1]);
-});
-
-DataSyncNode.region.addOnUnSync((data) => {
- WorldRegister.region.remove(data);
-});
-
-DataSyncNode.regionHeader.addOnSync((data) => {
- RegionHeaderRegister.add(data[0], data[1]);
-});
-
-DataSyncNode.chunkTags.addOnSync((data) => {
- ChunkTags.$INIT(data);
-});
-
-DataSyncNode.columnTags.addOnSync((data) => {
- ColumnTags.$INIT(data);
-});
-
-DataSyncNode.regionTags.addOnSync((data) => {
- RegionTags.$INIT(data[0]);
- RegionHeaderTags.$INIT(data[1]);
-});

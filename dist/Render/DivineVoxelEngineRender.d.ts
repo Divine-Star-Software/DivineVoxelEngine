@@ -375,6 +375,12 @@ export declare const DVER: {
             registerTexture(textureData: import("../index.js").TextureData | import("../index.js").TextureData[]): void;
             createRawDataMap(): Promise<Map<string, Uint8ClampedArray>>;
         };
+        substances: {
+            substances: import("../Global/Util/UtilMap.js").UtilMap<string, import("./Nodes/Substances/NodeSubstance.js").NodeSubstance>;
+            add(meshes: import("./Nodes/types/RenderNode.types.js").NodeSubstanceData[]): void;
+            buldAll(): void;
+            get(id: string): import("./Nodes/Substances/NodeSubstance.js").NodeSubstance | undefined;
+        };
         _scene: Scene;
         init(): void;
     };

@@ -4,7 +4,7 @@ import type { SetChunkMeshTask } from "Meta/Tasks/RenderTasks.types.js";
 
 //objects
 import { SubstanceRules } from "../Rules/SubstanceRules.js";
-import { RenderedSubstances } from "../Substances/RenderedSubstances.js";
+import { RenderedSubstances } from "../Rules/RenderedSubstances.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 
 //data
@@ -31,7 +31,7 @@ export const ChunkProcessor = {
   }
   const constructor = mDataTool.getConstructor();
   const mesher = RenderedSubstances.meshers.get(
-   SubstanceRules.getSubstanceParent(mDataTool.getSubstance())
+   SubstanceRules.getSubstanceParent(mDataTool.getSubstnaceData().getRendered())
   );
 
   if (!mesher || !constructor) return;
@@ -81,7 +81,6 @@ export const ChunkProcessor = {
    }
 
    const [attributes, buffers] = mesher.getAllAttributes();
-
 
    trasnfers.push(...buffers);
    chunks[1].push([substance, [location, attributes]]);

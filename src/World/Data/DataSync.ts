@@ -4,6 +4,8 @@ import type { DimensionData } from "Meta/Data/DimensionData.types.js";
 import type { CommBase, CommManager } from "threadcomm";
 
 import type {
+ PaletteSyncData,
+ RegisterObjectMapSync,
  RegisterStringMapSync,
  WorldDataSync,
 } from "Meta/Data/DataSync.types.js";
@@ -11,7 +13,7 @@ import type { RemoteTagManagerInitData } from "divine-binary-tags";
 //objects
 import { VoxelDataGenerator } from "./Generators/VoxelDataGenerator.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
-import { DataSyncTypes } from "../../Common/Threads/Contracts/DataSync.js";
+import { DataSyncIds } from "../../Common/Threads/Contracts/DataSyncIds.js";
 import { ChunkDataTags, InitalizeChunkTags } from "./Tags/ChunkTags.js";
 import { ColumnDataTags, InitalizeColumnTags } from "./Tags/ColumnTags.js";
 import {
@@ -25,6 +27,9 @@ import { DimensionsRegister } from "../../Data/World/Dimensions/DimensionsRegist
 import { VoxelPalette, VoxelPaletteMap } from "Meta/Data/WorldData.types.js";
 import { Util } from "../../Global/Util.helper.js";
 import { VoxelTagBuilder } from "./TagBuilders/VoxelTagBuilder.js";
+import { SubstanceDataGenerator } from "./Generators/SubstanceDataGenerator.js";
+import { SubstanceTags } from "../../Data/Substance/SubstanceTags.js";
+import { SubstanceTagBuilder } from "./TagBuilders/SubstanceTagBuilder.js";
 
 type CommSyncOptions = {
  worldData: boolean;
@@ -82,23 +87,25 @@ class DataSyncNode<SyncInput, SyncOutput, UnSyncInput, UnSyncOutput> {
 }
 //type WorldDataSync = [LocationData,SharedArrayBuffer]
 export const DataSync = {
- voxelDataCreator: VoxelDataGenerator,
  comms: <Record<string, CommBase | CommManager>>{},
  commOptions: <Record<string, CommSyncOptions>>{},
  _ready: false,
  $INIT() {
-
-
-  this.voxelDataCreator.$generateVoxelData();
-  VoxelTagBuilder.$SYNC();
+  VoxelDataGenerator.$generate();
+  VoxelTagBuilder.sync();
+  SubstanceDataGenerator.$generate();
+  SubstanceTagBuilder.sync();
   InitalizeChunkTags();
   InitalizeColumnTags();
   InitalizeRegionTags();
-  this.voxelPalette.sync();
-  this.voxelTags.sync();
-  this.chunkTags.sync();
-  this.columnTags.sync();
-  this.regionTags.sync();
+  this.palettes.voxel.sync();
+  this.palettes.substance.sync();
+  this.tags.voxel.sync();
+  this.tags.substance.sync();
+
+  this.tags.chunk.sync();
+  this.tags.column.sync();
+  this.tags.region.sync();
   this._ready = true;
  },
  isReady() {
@@ -121,7 +128,6 @@ export const DataSync = {
  loopThroughComms(
   func: (comm: CommBase | CommManager, options: CommSyncOptions) => void
  ) {
-
   for (const commKey of Object.keys(DataSync.comms)) {
    const comm = DataSync.comms[commKey];
 
@@ -131,151 +137,187 @@ export const DataSync = {
    func(comm, options);
   }
  },
- dimesnion: new DataSyncNode<
-  string | number,
-  DimensionData,
-  string | number,
-  boolean
- >({
-  dataSyncType: DataSyncTypes.dimesnion,
-  commCheck: (options) => options.worldData,
-  getSyncData: (input) => {
-   const dimensionData = DimensionsRegister.getDimension(input);
-   if (!dimensionData) return false;
-   return dimensionData;
-  },
-  getUnSyncData: () => true,
- }),
 
- chunk: new DataSyncNode<
-  LocationData,
-  WorldDataSync,
-  LocationData,
-  LocationData
- >({
-  dataSyncType: DataSyncTypes.chunk,
-  commCheck: (options) => options.worldData,
-  getSyncData: (input) => {
-   const chunk = WorldRegister.chunk.get(input);
-   if (!chunk) return false;
-   return [input, chunk.buffer];
-  },
-  getUnSyncData: (input) => input,
- }),
+ worldData: {
+  dimesnion: new DataSyncNode<
+   string | number,
+   DimensionData,
+   string | number,
+   boolean
+  >({
+   dataSyncType: DataSyncIds.dimesnion,
+   commCheck: (options) => options.worldData,
+   getSyncData: (input) => {
+    const dimensionData = DimensionsRegister.getDimension(input);
+    if (!dimensionData) return false;
+    return dimensionData;
+   },
+   getUnSyncData: () => true,
+  }),
 
- column: new DataSyncNode<
-  LocationData,
-  WorldDataSync,
-  LocationData,
-  LocationData
- >({
-  dataSyncType: DataSyncTypes.column,
-  commCheck: (options) => options.worldData,
-  getSyncData: (input) => {
-   const column = WorldRegister.column.get(input);
-   if (!column) return false;
-   return [input, column.buffer];
-  },
-  getUnSyncData: (input) => input,
- }),
+  chunk: new DataSyncNode<
+   LocationData,
+   WorldDataSync,
+   LocationData,
+   LocationData
+  >({
+   dataSyncType: DataSyncIds.chunk,
+   commCheck: (options) => options.worldData,
+   getSyncData: (input) => {
+    const chunk = WorldRegister.chunk.get(input);
+    if (!chunk) return false;
+    return [input, chunk.buffer];
+   },
+   getUnSyncData: (input) => input,
+  }),
 
- region: new DataSyncNode<
-  LocationData,
-  WorldDataSync,
-  LocationData,
-  LocationData
- >({
-  dataSyncType: DataSyncTypes.region,
-  commCheck: (options) => options.worldData,
-  getSyncData: (input) => {
-   const region = WorldRegister.region.get(input);
-   if (!region) return false;
-   return [input, region.buffer];
-  },
-  getUnSyncData: (input) => input,
- }),
+  column: new DataSyncNode<
+   LocationData,
+   WorldDataSync,
+   LocationData,
+   LocationData
+  >({
+   dataSyncType: DataSyncIds.column,
+   commCheck: (options) => options.worldData,
+   getSyncData: (input) => {
+    const column = WorldRegister.column.get(input);
+    if (!column) return false;
+    return [input, column.buffer];
+   },
+   getUnSyncData: (input) => input,
+  }),
 
- regionHeader: new DataSyncNode<
-  LocationData,
-  WorldDataSync,
-  LocationData,
-  boolean
- >({
-  dataSyncType: DataSyncTypes.regionHeader,
-  commCheck: (options) => options.worldData,
-  getSyncData: (input) => {
-   const regionHeader = RegionHeaderRegister.get(input);
-   if (!regionHeader) return false;
-   return [input, regionHeader.buffer];
-  },
-  getUnSyncData: () => true,
- }),
+  region: new DataSyncNode<
+   LocationData,
+   WorldDataSync,
+   LocationData,
+   LocationData
+  >({
+   dataSyncType: DataSyncIds.region,
+   commCheck: (options) => options.worldData,
+   getSyncData: (input) => {
+    const region = WorldRegister.region.get(input);
+    if (!region) return false;
+    return [input, region.buffer];
+   },
+   getUnSyncData: (input) => input,
+  }),
 
- voxelTags: new DataSyncNode<
-  void,
-  [RemoteTagManagerInitData, SharedArrayBuffer],
-  void,
-  false
- >({
-  dataSyncType: DataSyncTypes.voxelTags,
-  commCheck: (options) => options.voxelTags,
-  getSyncData: () => [
-   VoxelTags.initData,
-   <SharedArrayBuffer>VoxelTags.voxelIndex.buffer,
-  ],
-  getUnSyncData: () => false,
- }),
+  regionHeader: new DataSyncNode<
+   LocationData,
+   WorldDataSync,
+   LocationData,
+   boolean
+  >({
+   dataSyncType: DataSyncIds.regionHeader,
+   commCheck: (options) => options.worldData,
+   getSyncData: (input) => {
+    const regionHeader = RegionHeaderRegister.get(input);
+    if (!regionHeader) return false;
+    return [input, regionHeader.buffer];
+   },
+   getUnSyncData: () => true,
+  }),
+ },
 
- chunkTags: new DataSyncNode<void, RemoteTagManagerInitData, void, false>({
-  dataSyncType: DataSyncTypes.chunkTags,
-  commCheck: (options) => options.worldDataTags,
-  getSyncData: () => ChunkDataTags.initData,
-  getUnSyncData: () => false,
- }),
+ tags: {
+  voxel: new DataSyncNode<
+   void,
+   [RemoteTagManagerInitData, SharedArrayBuffer],
+   void,
+   false
+  >({
+   dataSyncType: DataSyncIds.voxelTags,
+   commCheck: (options) => options.voxelTags,
+   getSyncData: () => [
+    VoxelTags.initData,
+    <SharedArrayBuffer>VoxelTags.voxelIndex.buffer,
+   ],
+   getUnSyncData: () => false,
+  }),
+  substance: new DataSyncNode<void, RemoteTagManagerInitData, void, false>({
+   dataSyncType: DataSyncIds.substanceTags,
+   commCheck: (options) => options.voxelTags,
+   getSyncData: () => SubstanceTags.initData,
 
- columnTags: new DataSyncNode<void, RemoteTagManagerInitData, void, false>({
-  dataSyncType: DataSyncTypes.columnTags,
-  commCheck: (options) => options.worldDataTags,
-  getSyncData: () => ColumnDataTags.initData,
-  getUnSyncData: () => false,
- }),
+   getUnSyncData: () => false,
+  }),
 
- regionTags: new DataSyncNode<
-  void,
-  [RemoteTagManagerInitData, RemoteTagManagerInitData],
-  void,
-  false
- >({
-  dataSyncType: DataSyncTypes.regionTags,
-  commCheck: (options) => options.worldDataTags,
-  getSyncData: () => [RegionDataTags.initData, RegionHeaderTagManager.initData],
-  getUnSyncData: () => false,
- }),
+  chunk: new DataSyncNode<void, RemoteTagManagerInitData, void, false>({
+   dataSyncType: DataSyncIds.chunkTags,
+   commCheck: (options) => options.worldDataTags,
+   getSyncData: () => ChunkDataTags.initData,
+   getUnSyncData: () => false,
+  }),
 
- voxelPalette: new DataSyncNode<
-  void,
-  [VoxelPalette, VoxelPaletteMap],
-  void,
-  false
- >({
-  dataSyncType: DataSyncTypes.voxelPalette,
-  commCheck: (options) => options.worldDataTags,
-  getSyncData: () => [
-   VoxelDataGenerator.palette._palette,
-   VoxelDataGenerator.palette._map,
-  ],
-  getUnSyncData: () => false,
- }),
+  column: new DataSyncNode<void, RemoteTagManagerInitData, void, false>({
+   dataSyncType: DataSyncIds.columnTags,
+   commCheck: (options) => options.worldDataTags,
+   getSyncData: () => ColumnDataTags.initData,
+   getUnSyncData: () => false,
+  }),
 
- stringMap: new DataSyncNode<
-  RegisterStringMapSync,
-  RegisterStringMapSync,
-  void,
-  false
- >({
-  dataSyncType: DataSyncTypes.registerStringMap,
-  commCheck: () => true,
-  getSyncData: (data) => data,
-  getUnSyncData: () => false,
- }),
+  region: new DataSyncNode<
+   void,
+   [RemoteTagManagerInitData, RemoteTagManagerInitData],
+   void,
+   false
+  >({
+   dataSyncType: DataSyncIds.regionTags,
+   commCheck: (options) => options.worldDataTags,
+   getSyncData: () => [
+    RegionDataTags.initData,
+    RegionHeaderTagManager.initData,
+   ],
+   getUnSyncData: () => false,
+  }),
+ },
+
+ palettes: {
+  voxel: new DataSyncNode<void, PaletteSyncData, void, false>({
+   dataSyncType: DataSyncIds.voxelPalette,
+   commCheck: (options) => options.worldDataTags,
+   getSyncData: () => [
+    VoxelDataGenerator.palette._palette,
+    VoxelDataGenerator.palette._map,
+   ],
+   getUnSyncData: () => false,
+  }),
+  substance: new DataSyncNode<void, PaletteSyncData, void, false>({
+   dataSyncType: DataSyncIds.substancePalette,
+   commCheck: (options) => options.worldDataTags,
+   getSyncData: () => [
+    SubstanceDataGenerator.palette._palette,
+    SubstanceDataGenerator.palette._map,
+   ],
+   getUnSyncData: () => false,
+  }),
+ },
+
+ maps : {
+    strings: new DataSyncNode<
+    RegisterStringMapSync,
+    RegisterStringMapSync,
+    void,
+    false
+   >({
+    dataSyncType: DataSyncIds.registerStringMap,
+    commCheck: () => true,
+    getSyncData: (data) => data,
+    getUnSyncData: () => false,
+   }),
+   objects: new DataSyncNode<
+   RegisterObjectMapSync,
+   RegisterObjectMapSync,
+   void,
+   false
+  >({
+   dataSyncType: DataSyncIds.registerObjectMap,
+   commCheck: () => true,
+   getSyncData: (data) => data,
+   getUnSyncData: () => false,
+  }),
+ },
+
+
 };

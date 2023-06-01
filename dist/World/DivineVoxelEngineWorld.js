@@ -10,8 +10,7 @@ import { Util } from "../Global/Util.helper.js";
 //data
 import { DataSync } from "./Data/DataSync.js";
 import { DataManager } from "../Data/DataManager.js";
-import { VoxelManager } from "./Data/Managers/VoxelManager.js";
-import { ItemManager } from "../Data/Items/ItemManager.js";
+import { SubstanceManager, VoxelManager, } from "./Data/Managers/DataManagers.js";
 import { WorldDataGenerator } from "./Data/Generators/WorldDataGenerator.js";
 //tags
 import { VoxelTagBuilder } from "./Data/TagBuilders/VoxelTagBuilder.js";
@@ -52,10 +51,12 @@ export const DVEW = {
     parentComm: ParentComm,
     ccm: CCM,
     richWorldComm: RichWorldComm,
-    voxelManager: VoxelManager,
-    itemManager: ItemManager,
     cQueues: ConstructorQueues,
     cTasks: ConstructorTasks,
+    dataRegister: {
+        voxels: VoxelManager,
+        substances: SubstanceManager,
+    },
     tags: {
         voxels: VoxelTagBuilder,
         chunks: ChunkDataTags,

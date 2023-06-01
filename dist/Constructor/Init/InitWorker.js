@@ -1,7 +1,8 @@
-import { ConstructorThreadState } from "../Threads/ConstructorThreadState.js";
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
+import { ConstructorThreadState } from "../Threads/ConstructorThreadState.js";
 import { ThreadComm } from "threadcomm";
 import { DataHooks } from "../../Data/DataHooks.js";
+import { SubstanceRules } from "../Builder/Rules/SubstanceRules.js";
 export async function InitWorker(DVEC) {
     let parent = "render";
     if (DVEC.environment == "node") {
@@ -21,5 +22,7 @@ export async function InitWorker(DVEC) {
         onReady() { },
         checkInterval: 1,
     });
-    ThreadComm.registerTasks("ready", () => { });
+    ThreadComm.registerTasks("ready", () => {
+        SubstanceRules.$BuildRules();
+    });
 }

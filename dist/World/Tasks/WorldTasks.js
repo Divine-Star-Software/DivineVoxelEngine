@@ -21,7 +21,7 @@ export const WorldTasks = {
     addChunk: ThreadComm.registerTasks("add-chunk", (location) => {
         const chunk = WorldRegister.chunk.get(location);
         if (chunk) {
-            DataSync.chunk.sync(location);
+            DataSync.worldData.chunk.sync(location);
             return;
         }
         if (dataLoaderTool.isEnabled()) {
@@ -56,12 +56,12 @@ export const WorldTasks = {
         unLoadColumn: ThreadComm.registerTasks("unload-column", (data, onDone) => {
             if (WorldLock.isLocked(data))
                 return onDone ? onDone(false) : 0;
-            DataSync.column.unSync(data);
+            DataSync.worldData.column.unSync(data);
             WorldRegister.column.remove(data);
             const region = WorldRegister.region.get(data);
             if (region && region.columns.size == 0) {
                 WorldRegister.region.remove(data);
-                DataSync.region.unSync(data);
+                DataSync.worldData.region.unSync(data);
             }
             return onDone ? onDone(true) : 0;
         }, "deferred"),
@@ -72,26 +72,26 @@ export const WorldTasks = {
             const sl = regionTool.getLocationData();
             sl[0] = location[0];
             WorldRegister.region.add(sl, sab);
-            DataSync.region.sync(sl);
+            DataSync.worldData.region.sync(sl);
         }),
         loadReginoHeader: ThreadComm.registerTasks("load-region-header", (data) => {
             RegionHeaderRegister.add(data[0], data[1]);
             const location = data[0];
-            DataSync.regionHeader.sync(location);
+            DataSync.worldData.regionHeader.sync(location);
         }),
         loadColumn: ThreadComm.registerTasks("load-column", ([location, sab]) => {
             columnTool.setBuffer(sab);
             const sl = columnTool.getLocationData();
             sl[0] = location[0];
             WorldRegister.column.add(sl, sab);
-            DataSync.column.sync(sl);
+            DataSync.worldData.column.sync(sl);
         }),
         loadChunk: ThreadComm.registerTasks("load-chunk", ([location, sab]) => {
             chunkTool.setBuffer(sab);
             const sl = chunkTool.getLocationData();
             sl[0] = location[0];
             WorldRegister.chunk.add(sl, sab);
-            DataSync.chunk.sync(sl);
+            DataSync.worldData.chunk.sync(sl);
         }),
     },
 };

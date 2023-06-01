@@ -71,8 +71,8 @@ export const FlowManager = {
  getVoxel(x: number, y: number, z: number) {
   if (!this._sDataTool.loadInAt(x, y, z)) return "";
   if (!this._sDataTool.isRenderable()) return "";
-  const substance = this._sDataTool.getSubstance();
-  if (substance != "#dve_liquid" && substance != "#dve_magma") return "";
+  const substance = this._sDataTool.getSubstnaceData();
+  if (!substance.isLiquid()) return "";
   return this._sDataTool.getStringId();
  },
 

@@ -14,11 +14,13 @@ import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
 import { LightData } from "../../Data/Light/LightByte.js";
 import { VoxelTagIDs } from "../../Data/Constants/Tags/VoxelTagIds.js";
-import { Register } from "../../Data/Register/Register.js";
+import { MappedDataRegister } from "../../Data/Register/MappedDataRegister.js";
+import { SubstanceDataTool } from "./SubstanceDataTool.js";
 
 export class DataTool extends DataToolBase {
  static _dtutil = new DataTool();
  _chunkTool = new ChunkDataTool();
+ _substanceTool = new SubstanceDataTool();
  static _heightMapTool = new HeightMapTool();
  static _columntool = new ColumnDataTool();
  _locationKey = "";
@@ -51,6 +53,11 @@ export class DataTool extends DataToolBase {
  }
  _getBaseId(id: number) {
   return VoxelPaletteReader.id.baseNumeric(id);
+ }
+
+ getSubstnaceData() {
+  this._substanceTool.setSubstance(this.getSubstance());
+  return this._substanceTool;
  }
 
  loadInRaw(rawData: RawVoxelData) {
@@ -156,8 +163,6 @@ export class DataTool extends DataToolBase {
   return this;
  }
 
-
-
  isOpaque() {
   const substance = this.getSubstance();
   if (substance == "#dve_solid") return true;
@@ -193,7 +198,7 @@ export class DataTool extends DataToolBase {
   const vID = this.getId(true);
   if (vID < 2) return "";
   VoxelTags.setVoxel(vID);
-  return Register.stringMaps.getStringMapValue(
+  return MappedDataRegister.stringMaps.get(
    "voxel",
    VoxelTagIDs.shapeID,
    VoxelTags.getTag(VoxelTagIDs.shapeID)
@@ -216,7 +221,7 @@ export class DataTool extends DataToolBase {
   if (vID < 2) return "#dve_transparent";
   VoxelTags.setVoxel(vID);
   const s = <VoxelSubstanceType>(
-   Register.stringMaps.getStringMapValue(
+   MappedDataRegister.stringMaps.get(
     "voxel",
     VoxelTagIDs.substance,
     VoxelTags.getTag(VoxelTagIDs.substance)
@@ -228,7 +233,7 @@ export class DataTool extends DataToolBase {
   const vID = this.getId(true);
   if (vID < 2) return "none";
   VoxelTags.setVoxel(vID);
-  return Register.stringMaps.getStringMapValue(
+  return MappedDataRegister.stringMaps.get(
    "voxel",
    VoxelTagIDs.material,
    VoxelTags.getTag(VoxelTagIDs.material)
@@ -244,7 +249,7 @@ export class DataTool extends DataToolBase {
   const vID = this.getId(true);
   if (vID < 2) return "none";
   VoxelTags.setVoxel(vID);
-  return Register.stringMaps.getStringMapValue(
+  return MappedDataRegister.stringMaps.get(
    "voxel",
    VoxelTagIDs.colliderID,
    VoxelTags.getTag(VoxelTagIDs.colliderID)

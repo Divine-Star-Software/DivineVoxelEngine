@@ -1,9 +1,10 @@
 import type { DivineVoxelEngineConstructor } from "Constructor/DivineVoxelEngineConstructor";
-import { ConstructorThreadState } from "../Threads/ConstructorThreadState.js";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
+import { ConstructorThreadState } from "../Threads/ConstructorThreadState.js";
 import { ThreadComm } from "threadcomm";
 import { DataHooks } from "../../Data/DataHooks.js";
+import { SubstanceRules } from "../Builder/Rules/SubstanceRules.js";
 
 export async function InitWorker(DVEC: DivineVoxelEngineConstructor) {
  let parent = "render";
@@ -18,7 +19,6 @@ export async function InitWorker(DVEC: DivineVoxelEngineConstructor) {
   ConstructorThreadState._settingsSynced = true;
   DataHooks.settingsSynced.run(settings);
  });
- 
 
  await DVEC.UTIL.createPromiseCheck({
   check: () => {
@@ -27,6 +27,7 @@ export async function InitWorker(DVEC: DivineVoxelEngineConstructor) {
   onReady() {},
   checkInterval: 1,
  });
-
- ThreadComm.registerTasks("ready", () => {});
+ ThreadComm.registerTasks("ready", () => {
+  SubstanceRules.$BuildRules();
+ });
 }

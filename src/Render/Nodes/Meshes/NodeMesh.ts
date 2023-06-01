@@ -48,7 +48,7 @@ export class DVENodeMesh {
   if (!mat) {
    throw new Error(`Material: ${this.data.materialId} does not exist`);
   }
- 
+
   if (FOManager.activeNode) {
    mesh.parent = FOManager.activeNode;
   }
@@ -58,7 +58,7 @@ export class DVENodeMesh {
   }
   mesh.isPickable = this.pickable;
 
-  (mesh as any).type = "node";
+  (mesh as any).type = !Boolean(this.data.type) ? "node" : this.data.type;
 
   if (!mesh.geometry) {
    const geo = new DVEBabylon.system.Geometry(
@@ -71,10 +71,14 @@ export class DVENodeMesh {
    geo._boundingInfo = this.defaultBb;
    geo!.useBoundingInfoFromGeometry = true;
   }
+  mesh._updateBoundingInfo = ()=>{
+    console.log("sup")
+    return mesh;
+  }
   mesh.checkCollisions = this.checkCollisions;
   mesh.doNotSerialize = this.seralize;
   mesh.alwaysSelectAsActiveMesh = true;
-  mesh.doNotSyncBoundingInfo = true;
+
 
   this.updateVetexData(data, mesh);
   mesh.setEnabled(true);

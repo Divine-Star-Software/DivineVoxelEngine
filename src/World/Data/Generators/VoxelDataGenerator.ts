@@ -9,11 +9,10 @@ import { VoxelTags } from "../../../Data/Voxel/VoxelTags.js";
 import { VoxelTagIDs } from "../../../Data/Constants/Tags/VoxelTagIds.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 
-
 export const VoxelDataGenerator = {
- $generateVoxelData() {
+ $generate() {
   //build palette
-  for (const [key, voxel] of DVEW.voxelManager.voxelData) {
+  for (const [key, voxel] of DVEW.dataRegister.voxels.data) {
    this.palette.registerVoxel(voxel);
   }
   VoxelPaletteReader.setVoxelPalette(this.palette._palette, this.palette._map);
@@ -33,21 +32,21 @@ export const VoxelDataGenerator = {
   }
 
   //create data buffer
-  const initData = VoxelTagBuilder.$INIT(DVEW.voxelManager.voxelData.size);
+  const initData = VoxelTagBuilder.build(DVEW.dataRegister.voxels.data.size);
   const buffer = new SharedArrayBuffer(initData.bufferSize);
   initData.buffer = buffer;
   VoxelTags.$INIT(initData);
   VoxelTags.setBuffer(buffer);
 
   //build data
-  for (const [key, voxel] of DVEW.voxelManager.voxelData) {
+  for (const [key, voxel] of DVEW.dataRegister.voxels.data) {
    const baseID = VoxelPaletteReader.id.numberFromString(key);
    if (!baseID) continue;
    VoxelTags.setTagIndex(voxelIndex[baseID]);
    VoxelTagBuilder.setDefaults(VoxelTags);
    for (const tag of voxel.tags) {
     const [id, value] = tag;
-    if(!VoxelTagBuilder.hasNode(id))continue;
+    if (!VoxelTagBuilder.hasNode(id)) continue;
     if (id == VoxelTagIDs.lightValue) {
      const v = <number[]>value;
      let sl = 0;
@@ -61,8 +60,8 @@ export const VoxelDataGenerator = {
    }
   }
 
-  DVEW.data.voxelTags.sync(voxelIndex);
-  DVEW.data.voxelTags.$INIT(initData);
+  DVEW.data.tags.voxels.sync(voxelIndex);
+  DVEW.data.tags.voxels.$INIT(initData);
  },
 
  palette: {

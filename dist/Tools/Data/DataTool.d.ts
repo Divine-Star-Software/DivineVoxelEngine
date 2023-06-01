@@ -3,9 +3,11 @@ import { ChunkDataTool } from "./WorldData/ChunkDataTool.js";
 import { HeightMapTool } from "./WorldData/HeightMapTool.js";
 import { DataToolBase } from "../Classes/DataToolBase.js";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
+import { SubstanceDataTool } from "./SubstanceDataTool.js";
 export declare class DataTool extends DataToolBase {
     static _dtutil: DataTool;
     _chunkTool: ChunkDataTool;
+    _substanceTool: SubstanceDataTool;
     static _heightMapTool: HeightMapTool;
     static _columntool: ColumnDataTool;
     _locationKey: string;
@@ -47,6 +49,7 @@ export declare class DataTool extends DataToolBase {
     setDimension(dimensionId: string | number): this;
     setSecondary(enable: boolean): this;
     _getBaseId(id: number): number;
+    getSubstnaceData(): SubstanceDataTool;
     loadInRaw(rawData: RawVoxelData): void;
     __process(): void;
     loadIn(): boolean;

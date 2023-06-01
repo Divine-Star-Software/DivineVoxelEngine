@@ -1,7 +1,7 @@
 import type { VoxelData } from "Meta/Data/Voxels/Voxel.types.js";
 import type { VoxelPalette } from "Meta/Data/WorldData.types.js";
 export declare const VoxelDataGenerator: {
-    $generateVoxelData(): void;
+    $generate(): void;
     palette: {
         _count: number;
         _palette: VoxelPalette;

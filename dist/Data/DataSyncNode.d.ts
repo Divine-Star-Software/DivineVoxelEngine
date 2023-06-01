@@ -1,19 +1,28 @@
-import type { VoxelDataSync, VoxelPaletteSyncData, WorldDataSync, RegisterStringMapSync } from "Meta/Data/DataSync.types.js";
+import type { VoxelDataSync, PaletteSyncData, WorldDataSync, RegisterStringMapSync } from "Meta/Data/DataSync.types.js";
 import type { LocationData } from "voxelspaces";
 import type { DimensionData } from "Meta/Data/DimensionData.types.js";
 import { RemoteTagManagerInitData } from "divine-binary-tags";
 export declare const DataSyncNode: {
-    _states: Record<string, boolean>;
-    isReady(): boolean;
-    voxelPalette: import("threadcomm").DataSync<VoxelPaletteSyncData, any>;
-    voxelData: import("threadcomm").DataSync<VoxelDataSync, any>;
-    dimension: import("threadcomm").DataSync<DimensionData, void>;
-    chunk: import("threadcomm").DataSync<WorldDataSync, LocationData>;
-    column: import("threadcomm").DataSync<WorldDataSync, LocationData>;
-    region: import("threadcomm").DataSync<WorldDataSync, LocationData>;
-    regionHeader: import("threadcomm").DataSync<WorldDataSync, LocationData>;
-    chunkTags: import("threadcomm").DataSync<RemoteTagManagerInitData, void>;
-    columnTags: import("threadcomm").DataSync<RemoteTagManagerInitData, void>;
-    regionTags: import("threadcomm").DataSync<RemoteTagManagerInitData[], void>;
-    stringMap: import("threadcomm").DataSync<RegisterStringMapSync, void>;
+    maps: {
+        strings: import("threadcomm").DataSync<RegisterStringMapSync, void>;
+        objects: import("threadcomm").DataSync<RegisterStringMapSync, void>;
+    };
+    palettes: {
+        voxel: import("threadcomm").DataSync<PaletteSyncData, any>;
+        substance: import("threadcomm").DataSync<PaletteSyncData, any>;
+    };
+    worldData: {
+        dimension: import("threadcomm").DataSync<DimensionData, void>;
+        chunk: import("threadcomm").DataSync<WorldDataSync, LocationData>;
+        column: import("threadcomm").DataSync<WorldDataSync, LocationData>;
+        region: import("threadcomm").DataSync<WorldDataSync, LocationData>;
+        regionHeader: import("threadcomm").DataSync<WorldDataSync, LocationData>;
+    };
+    tags: {
+        voxel: import("threadcomm").DataSync<VoxelDataSync, any>;
+        substance: import("threadcomm").DataSync<RemoteTagManagerInitData, any>;
+        chunk: import("threadcomm").DataSync<RemoteTagManagerInitData, void>;
+        column: import("threadcomm").DataSync<RemoteTagManagerInitData, void>;
+        region: import("threadcomm").DataSync<RemoteTagManagerInitData[], void>;
+    };
 };

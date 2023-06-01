@@ -1,4 +1,7 @@
 //types
+import { MappedDataRegister } from "../../../Data/Register/MappedDataRegister.js";
+import { SubstanceDataTool } from "../../../Tools/Data/SubstanceDataTool.js";
+import { RenderedSubstances } from "./RenderedSubstances.js";
 
 export const SubstanceRules = {
  rules: <Map<string, Map<string, boolean>>>new Map(),
@@ -19,18 +22,22 @@ export const SubstanceRules = {
   this.parents.set(id, id);
  },
 
- $INIT() {
-  SubstanceRules.registerSubstance("#dve_solid", ["#dve_solid"]);
-  SubstanceRules.registerSubstance("#dve_flora");
-  SubstanceRules.registerSubstance(
-   "#dve_transparent",
-   ["#dve_transparent"],
-   "#dve_solid"
-  );
-  SubstanceRules.registerSubstance("#dve_liquid", [
-   "#dve_solid",
-   "#dve_liquid",
-  ]);
+ $BuildRules() {
+  const substanceTool = new SubstanceDataTool();
+  const allSubstances = MappedDataRegister.stringMaps.segments
+   .get("voxel")!
+   .get("#dve_substance")!;
+  for (const substnace of allSubstances) {
+   substanceTool.setSubstance(substnace);
+   const parent = substanceTool.getParent();
+   const rendered = substanceTool.getRendered();
+   const culled = substanceTool.getCulled();
+   SubstanceRules.registerSubstance(substnace, culled, parent);
+
+   if (!RenderedSubstances.meshers.has(rendered)) {
+    RenderedSubstances.add(rendered);
+   }
+  }
  },
 
  exposedCheck(subject: string, neightborVoxel: string) {

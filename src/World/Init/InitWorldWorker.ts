@@ -1,6 +1,6 @@
 import type { DivineVoxelEngineWorld } from "../DivineVoxelEngineWorld.js";
 import { ThreadComm } from "threadcomm";
-import { RegisterDataHooks } from "../Hooks/Data/DataHooks.js";
+import { RegisterDataHooks } from "../Hooks/Data/WorldDataHooks.js";
 import { WorldThreadState } from "../Threads/WorldThreadState.js";
 import { DataSync } from "../Data/DataSync.js";
 import { WorldLock } from "../Lock/WorldLock.js";
@@ -22,8 +22,21 @@ export function InitWorldWorker(DVEW: DivineVoxelEngineWorld): Promise<any> {
    checkInterval: 1,
   });
 
-  ThreadComm.registerTasks("sync-all-data", () => {
+  ThreadComm.registerTasks("sync-all-data", async () => {
    DataSync.$INIT();
+   await DVEW.ccm.__comms.map((comm) => comm.waitTillTasksExist("ready"));
+
+   await Promise.all(
+    DVEW.ccm.__comms.map(
+     (comm) =>
+      new Promise((resolve) => {
+       comm.runPromiseTasks("ready", [], [], () => {
+        resolve(true);
+       });
+      })
+    )
+   );
+
    resolve(true);
   });
 

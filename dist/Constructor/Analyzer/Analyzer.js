@@ -33,14 +33,13 @@ export const Analyzer = {
         this.processor.goThroughColumn(data[0], (x, y, z) => {
             if (!mainDT.loadInAt(x, y, z))
                 return;
-            const substance = mainDT.getSubstance();
             if (options.light) {
                 if (mainDT.isLightSource()) {
                     tasks.queues.rgb.update.push(x, y, z);
                 }
             }
             if (options.flow) {
-                if (substance == "#dve_liquid" || substance == "#dve_magma") {
+                if (mainDT.getSubstnaceData().isLiquid()) {
                     let add = false;
                     for (const check of this._flowChecks) {
                         if (secondaryDT.loadInAt(x + check[0], y + check[1], z + check[2])) {

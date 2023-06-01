@@ -67,7 +67,7 @@ export const FlowGradient = {
      if (!loadedIn) continue;
      const level = this.getLevel(tool);
      const hasVoxel = tool.nVoxel.isRenderable();
-     if (hasVoxel && tool.nVoxel.getSubstance() == "#dve_solid") {
+     if (hasVoxel && !tool.nVoxel.getSubstnaceData().isLiquid()) {
       voxelCount++;
      }
      if (iy == 1) {

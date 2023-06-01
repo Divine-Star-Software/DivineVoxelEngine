@@ -1,9 +1,8 @@
 import type { LocationData } from "voxelspaces";
 import type { DimensionData } from "Meta/Data/DimensionData.types.js";
 import type { CommBase, CommManager } from "threadcomm";
-import type { RegisterStringMapSync, WorldDataSync } from "Meta/Data/DataSync.types.js";
+import type { PaletteSyncData, RegisterObjectMapSync, RegisterStringMapSync, WorldDataSync } from "Meta/Data/DataSync.types.js";
 import type { RemoteTagManagerInitData } from "divine-binary-tags";
-import { VoxelPalette, VoxelPaletteMap } from "Meta/Data/WorldData.types.js";
 type CommSyncOptions = {
     worldData: boolean;
     worldDataTags: boolean;
@@ -31,34 +30,34 @@ declare class DataSyncNode<SyncInput, SyncOutput, UnSyncInput, UnSyncOutput> {
     syncInThread(commName: string, input: SyncInput): false | undefined;
 }
 export declare const DataSync: {
-    voxelDataCreator: {
-        $generateVoxelData(): void;
-        palette: {
-            _count: number;
-            _palette: VoxelPalette;
-            _map: Record<string, number>;
-            registerVoxel(voxel: import("../../index.js").VoxelData): void;
-            get(): VoxelPalette;
-            getMap(): Record<string, number>;
-        };
-    };
-    comms: Record<string, CommManager | CommBase>;
+    comms: Record<string, CommBase | CommManager>;
     commOptions: Record<string, CommSyncOptions>;
     _ready: boolean;
     $INIT(): void;
     isReady(): boolean;
     registerComm(comm: CommBase | CommManager, data?: Partial<CommSyncOptions>): void;
     loopThroughComms(func: (comm: CommBase | CommManager, options: CommSyncOptions) => void): void;
-    dimesnion: DataSyncNode<string | number, DimensionData, string | number, boolean>;
-    chunk: DataSyncNode<LocationData, WorldDataSync, LocationData, LocationData>;
-    column: DataSyncNode<LocationData, WorldDataSync, LocationData, LocationData>;
-    region: DataSyncNode<LocationData, WorldDataSync, LocationData, LocationData>;
-    regionHeader: DataSyncNode<LocationData, WorldDataSync, LocationData, boolean>;
-    voxelTags: DataSyncNode<void, [RemoteTagManagerInitData, SharedArrayBuffer], void, false>;
-    chunkTags: DataSyncNode<void, RemoteTagManagerInitData, void, false>;
-    columnTags: DataSyncNode<void, RemoteTagManagerInitData, void, false>;
-    regionTags: DataSyncNode<void, [RemoteTagManagerInitData, RemoteTagManagerInitData], void, false>;
-    voxelPalette: DataSyncNode<void, [VoxelPalette, VoxelPaletteMap], void, false>;
-    stringMap: DataSyncNode<RegisterStringMapSync, RegisterStringMapSync, void, false>;
+    worldData: {
+        dimesnion: DataSyncNode<string | number, DimensionData, string | number, boolean>;
+        chunk: DataSyncNode<LocationData, WorldDataSync, LocationData, LocationData>;
+        column: DataSyncNode<LocationData, WorldDataSync, LocationData, LocationData>;
+        region: DataSyncNode<LocationData, WorldDataSync, LocationData, LocationData>;
+        regionHeader: DataSyncNode<LocationData, WorldDataSync, LocationData, boolean>;
+    };
+    tags: {
+        voxel: DataSyncNode<void, [RemoteTagManagerInitData, SharedArrayBuffer], void, false>;
+        substance: DataSyncNode<void, RemoteTagManagerInitData, void, false>;
+        chunk: DataSyncNode<void, RemoteTagManagerInitData, void, false>;
+        column: DataSyncNode<void, RemoteTagManagerInitData, void, false>;
+        region: DataSyncNode<void, [RemoteTagManagerInitData, RemoteTagManagerInitData], void, false>;
+    };
+    palettes: {
+        voxel: DataSyncNode<void, PaletteSyncData, void, false>;
+        substance: DataSyncNode<void, PaletteSyncData, void, false>;
+    };
+    maps: {
+        strings: DataSyncNode<RegisterStringMapSync, RegisterStringMapSync, void, false>;
+        objects: DataSyncNode<RegisterObjectMapSync, RegisterObjectMapSync, void, false>;
+    };
 };
 export {};

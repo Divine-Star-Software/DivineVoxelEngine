@@ -39,16 +39,19 @@ export class DVENodeMesh {
             mesh.doNotSyncBoundingInfo = true;
         }
         mesh.isPickable = this.pickable;
-        mesh.type = "node";
+        mesh.type = !Boolean(this.data.type) ? "node" : this.data.type;
         if (!mesh.geometry) {
             const geo = new DVEBabylon.system.Geometry(DVEBabylon.system.Geometry.RandomId(), this.scene, undefined, undefined, mesh);
             geo._boundingInfo = this.defaultBb;
             geo.useBoundingInfoFromGeometry = true;
         }
+        mesh._updateBoundingInfo = () => {
+            console.log("sup");
+            return mesh;
+        };
         mesh.checkCollisions = this.checkCollisions;
         mesh.doNotSerialize = this.seralize;
         mesh.alwaysSelectAsActiveMesh = true;
-        mesh.doNotSyncBoundingInfo = true;
         this.updateVetexData(data, mesh);
         mesh.setEnabled(true);
         mesh.isVisible = true;

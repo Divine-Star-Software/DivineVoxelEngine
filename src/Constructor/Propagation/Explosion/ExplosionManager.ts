@@ -88,8 +88,6 @@ export const ExplosionManager = {
 
    if (dataTool.loadInAt(x, y, z)) {
     if (dataTool.isRenderable()) {
-     const substance = dataTool.getSubstance();
-
      for (const n of $3dCardinalNeighbors) {
       const nx = x + n[0];
       const ny = y + n[1];
@@ -111,8 +109,7 @@ export const ExplosionManager = {
      tasks.addNeighborsToRebuildQueue(x, y, z);
      if (
       dataTool.getHardness() > 10_000 ||
-      substance == "#dve_liquid" ||
-      substance == "#dve_magma"
+      dataTool.getSubstnaceData().isLiquid()
      ) {
       continue;
      }

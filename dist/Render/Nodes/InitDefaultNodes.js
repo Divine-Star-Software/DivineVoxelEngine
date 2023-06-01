@@ -8,27 +8,49 @@ const createVoxelShader = (id) => {
 export function InitDefaultNodes(managere) {
     managere.textures.addTextureType("#dve_node_texture");
     const defaultSubstances = ["#dve_solid", "#dve_flora", "#dve_liquid"];
-    defaultSubstances.forEach((s) => managere.textures.addTextureType(s));
+    //defaultSubstances.forEach((s) => managere.textures.addTextureType(s));
     managere.shaders.create([
         NodeShaders.createSkyBoxShader("#dve_skybox"),
         NodeShaders.createBasicTextureShader("#dve_node_texture"),
-        ...defaultSubstances.map((v) => createVoxelShader(v)),
+        // ...defaultSubstances.map((v) => createVoxelShader(v)),
     ]);
-    managere.meshes.add(defaultSubstances.map((v) => {
+    /*  managere.meshes.add(
+     defaultSubstances.map((v) => {
+      return {
+       boundingBoxMaxSize: [1, 1, 1],
+       id: v,
+       materialId: v,
+      };
+     })
+    );
+   
+    managere.materials.create(
+     defaultSubstances.map((v) => {
+      return {
+       id: v,
+       shaderId: v,
+       textureTypeId: v,
+       alphaBlending: v == "#dve_liquid" ? true : false,
+       alphaTesting: true,
+       backFaceCulling: v == "#dve_liquid" ? false : true,
+      };
+     })
+    );
+    */
+    managere.substances.add(defaultSubstances.map((id) => {
         return {
-            boundingBoxMaxSize: [1, 1, 1],
-            id: v,
-            materialId: v,
-        };
-    }));
-    managere.materials.create(defaultSubstances.map((v) => {
-        return {
-            id: v,
-            shaderId: v,
-            textureTypeId: v,
-            alphaBlending: v == "#dve_liquid" ? true : false,
-            alphaTesting: true,
-            backFaceCulling: v == "#dve_liquid" ? false : true,
+            id,
+            material: {
+                alphaBlending: id == "#dve_liquid" ? true : false,
+                alphaTesting: true,
+                backFaceCulling: id == "#dve_liquid" ? false : true,
+            },
+            texture: managere.textures.addTextureType(id),
+            shader: createVoxelShader(id),
+            mesh: {
+                materialId: id,
+                boundingBoxMaxSize: [1, 1, 1],
+            },
         };
     }));
     managere.meshes.add([

@@ -11,7 +11,7 @@ import { WorldComm, ParentComm, NexusComm, ConstructorComm, FXComm, DataComm, } 
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
 import { RichDataRegister } from "./Register/RichDataRegister.js";
-import { VoxelManager } from "../World/Data/Managers/VoxelManager.js";
+import { VoxelManager } from "../World/Data/Managers/DataManagers.js";
 import { ThreadComm } from "threadcomm";
 import { RichWorldTasks } from "./Tasks/RichWorldTasks.js";
 import { RichDataTool } from "./Tools/RichDataTool.js";

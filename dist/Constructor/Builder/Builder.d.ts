@@ -141,6 +141,7 @@ export declare const Builder: {
     };
     renderedSubstances: {
         meshers: import("../../Global/Util/UtilMap.js").UtilMap<string, import("./Tools/VoxelMesherDataTool.js").VoxelMesherDataTool>;
+        add(id: string): void;
     };
     $INIT(): void;
     buildChunk(location: LocationData, LOD?: number): boolean;

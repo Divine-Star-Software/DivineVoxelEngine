@@ -54,8 +54,8 @@ export const FlowManager = {
             return "";
         if (!this._sDataTool.isRenderable())
             return "";
-        const substance = this._sDataTool.getSubstance();
-        if (substance != "#dve_liquid" && substance != "#dve_magma")
+        const substance = this._sDataTool.getSubstnaceData();
+        if (!substance.isLiquid())
             return "";
         return this._sDataTool.getStringId();
     },

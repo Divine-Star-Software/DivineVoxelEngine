@@ -24,11 +24,11 @@
  },
  "dependencies": {
   "@babylonjs/core": "^6.5.0",
-  "divine-binary-object": "^0.0.45",
-  "divine-binary-tags": "^0.0.61",
-  "divine-hooks": "^0.0.4",
-  "divine-shaders": "^0.0.0",
-  "threadcomm": "^0.0.91",
-  "voxelspaces": "^1.0.11"
+  "divine-binary-object": "^0.1.6",
+  "divine-binary-tags": "^0.0.10",
+  "divine-hooks": "^0.0.11",
+  "divine-shaders": "^0.0.6",
+  "threadcomm": "^0.0.95",
+  "voxelspaces": "^1.0.14"
  }
 }

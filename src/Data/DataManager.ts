@@ -1,5 +1,5 @@
 import { DimensionsRegister } from "./World/Dimensions/DimensionsRegister.js";
-import { Register } from "./Register/Register.js";
+import { MappedDataRegister } from "./Register/MappedDataRegister.js";
 import { VoxelTags } from "./Voxel/VoxelTags.js";
 import { WorldBounds } from "./World/WorldBounds.js";
 import { WorldPainter } from "./World/WorldPainter.js";
@@ -9,16 +9,23 @@ import { ColumnTags } from "./World/Column/ColumnTags.js";
 import { RegionTags } from "./World/Region/RegionTags.js";
 import { WorldSpaces } from "./World/WorldSpaces.js";
 import { RegionHeaderRegister } from "./World/Region/RegionHeaderRegister.js";
+import { SubstanceTags } from "./Substance/SubstanceTags.js";
 export const DataManager = {
- dimensions: DimensionsRegister,
- voxelTags: VoxelTags,
  world: WorldPainter,
- worldRegister: WorldRegister,
- columnTags: ColumnTags,
  worldBounds: WorldBounds,
  spaces: WorldSpaces,
- register: Register,
- chunkTags: ChunkTags,
- regionTags: RegionTags,
- regionHeaderReigster: RegionHeaderRegister,
+
+ registers: {
+  dimensions: DimensionsRegister,
+  world: WorldRegister,
+  mapped: MappedDataRegister,
+  regionHeader: RegionHeaderRegister,
+ },
+ tags: {
+  voxels: VoxelTags,
+  substances: SubstanceTags,
+  chunks: ChunkTags,
+  column: ColumnTags,
+  region: RegionTags,
+ },
 };

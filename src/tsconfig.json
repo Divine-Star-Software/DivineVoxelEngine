@@ -1,11 +1,11 @@
 {
  "compilerOptions": {
-  "target": "esNext" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */,
-  "module": "esNext" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */,
-  "declaration": true /* Generates corresponding '.d.ts' file. */,
-  "outDir": "../dist" /* Redirect output structure to the directory. */,
-  "moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
-  "baseUrl": "./" /* Base directory to resolve non-absolute module names. */,
+  "target": "esNext",
+  "module": "esNext",
+  "declaration": true,
+  "outDir": "../dist",
+  "moduleResolution": "node",
+  "baseUrl": "./",
   "types": [
    "@babylonjs/core",
    "threadcomm",
@@ -13,15 +13,11 @@
    "divine-binary-object",
    "divine-shaders",
    "divine-hooks"
-  ] /* Type declaration files to be included in compilation. */,
-  "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */,
-  // "preserveSymlinks": true,                         /* Disable resolving symlinks to their realpath. This correlates to the same flag in node. */
-  "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
-
+  ],
+  "esModuleInterop": true,
+  "forceConsistentCasingInFileNames": true,
   "strictPropertyInitialization": false,
-  /* Type Checking */
-  "strict": true /* Enable all strict type-checking options. */,
-
-  "skipLibCheck": true /* Skip type checking all .d.ts files. */
+  "strict": true,
+  "skipLibCheck": true
  }
 }

@@ -17,9 +17,14 @@ type TagBuilderStringMapNode = {
     allowedComms: string[];
     default?: string;
 } & TagBuilderNodeBase;
+type TagBuilderObjectMapNode = {
+    type: "object-map";
+    allowedComms: string[];
+    default?: any;
+} & TagBuilderNodeBase;
 type TagBuilderBooleanNode = {
     type: "boolean";
     default: boolean;
 } & TagBuilderNodeBase;
-export type TagBuilderNodes = TagBuilderNumberNode | TagBuilderNumberArrayNode | TagBuilderStringMapNode | TagBuilderBooleanNode;
+export type TagBuilderNodes = TagBuilderNumberNode | TagBuilderNumberArrayNode | TagBuilderStringMapNode | TagBuilderBooleanNode | TagBuilderObjectMapNode;
 export {};

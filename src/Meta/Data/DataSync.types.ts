@@ -1,15 +1,13 @@
 import type { RemoteTagManagerInitData } from "divine-binary-tags";
 import { LocationData } from "voxelspaces";
-import type { DimensionData } from "./DimensionData.types";
-import type { VoxelPalette, VoxelPaletteMap } from "./WorldData.types";
 
 export type DataSyncTypes = "chunk" | "voxel-data" | "iten-data" | "shape-map";
 
 export type WorldDataSync = [location: LocationData, buffer: SharedArrayBuffer];
 
-export type VoxelPaletteSyncData = [
- voxelPalette: VoxelPalette,
- voxelPaletteMap: VoxelPaletteMap
+export type PaletteSyncData = [
+ voxelPalette: string[],
+ voxelPaletteMap: Record<string, number>
 ];
 
 export type VoxelDataSync = [
@@ -22,5 +20,9 @@ export type RegisterStringMapSync = [
  id: string,
  map: string[]
 ];
-
+export type RegisterObjectMapSync = [
+ segment: string,
+ id: string,
+ map: Record<number,any>
+];
 export type VoxelMapSyncData = string[];
