@@ -53,5 +53,6 @@ export declare const ExplosionManager: {
         addToRebuildQueue(x: number, y: number, z: number): boolean;
         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
         runRebuildQueue(): any;
+        clear(): void;
     }): void;
 };

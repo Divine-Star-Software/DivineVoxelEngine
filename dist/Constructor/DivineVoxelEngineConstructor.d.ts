@@ -106,6 +106,7 @@ export declare const DVEC: {
                 addToRebuildQueue(x: number, y: number, z: number): boolean;
                 addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                 runRebuildQueue(): any;
+                clear(): void;
             }): void;
         };
         flow: {
@@ -161,6 +162,7 @@ export declare const DVEC: {
                 addToRebuildQueue(x: number, y: number, z: number): boolean;
                 addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                 runRebuildQueue(): any;
+                clear(): void;
             }): Promise<void>;
             remove(tasks: {
                 rebuildQueMap: Map<string, boolean>;
@@ -214,6 +216,7 @@ export declare const DVEC: {
                 addToRebuildQueue(x: number, y: number, z: number): boolean;
                 addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                 runRebuildQueue(): any;
+                clear(): void;
             }): Promise<void>;
         };
         worldSun: {
@@ -248,6 +251,7 @@ export declare const DVEC: {
                 addToRebuildQueue(x: number, y: number, z: number): boolean;
                 addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                 runRebuildQueue(): any;
+                clear(): void;
             }): void;
         };
         rgb: {
@@ -292,6 +296,7 @@ export declare const DVEC: {
                 addToRebuildQueue(x: number, y: number, z: number): boolean;
                 addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                 runRebuildQueue(): any;
+                clear(): void;
             }): void;
             remove(tasks: {
                 rebuildQueMap: Map<string, boolean>;
@@ -334,6 +339,7 @@ export declare const DVEC: {
                 addToRebuildQueue(x: number, y: number, z: number): boolean;
                 addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                 runRebuildQueue(): any;
+                clear(): void;
             }): void;
         };
         sun: {
@@ -378,6 +384,7 @@ export declare const DVEC: {
                 addToRebuildQueue(x: number, y: number, z: number): boolean;
                 addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                 runRebuildQueue(): any;
+                clear(): void;
             }): void;
             remove(tasks: {
                 rebuildQueMap: Map<string, boolean>;
@@ -420,6 +427,7 @@ export declare const DVEC: {
                 addToRebuildQueue(x: number, y: number, z: number): boolean;
                 addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                 runRebuildQueue(): any;
+                clear(): void;
             }): void;
         };
     };
@@ -450,7 +458,7 @@ export declare const DVEC: {
         };
         _brushes: any[];
         setWorldGen(worldGen: import("../index.js").WorldGenInterface): void;
-        generate(data: import("../Meta/Tasks/Tasks.types.js").GenerateTasks, mode: "generate" | "decorate", onDone: Function): Promise<void>;
+        generate(data: import("../Meta/Tasks/Tasks.types.js").GenerateTasks, mode: "decorate" | "generate", onDone: Function): Promise<void>;
         getBrush(): import("./index.js").WorldGenBrush;
     };
     builder: {
@@ -492,6 +500,9 @@ export declare const DVEC: {
                 z: number;
             };
             nLocation: import("voxelspaces").LocationData;
+            _states: {
+                foundVoxel: boolean;
+            };
             _process(doSecondCheck?: boolean): void;
             build(location: import("voxelspaces").LocationData): void;
         };
@@ -781,10 +792,6 @@ export declare const DVEC: {
                     get(location: import("voxelspaces").LocationData): false | import("../Meta/Data/WorldData.types.js").Column;
                     remove(location: import("voxelspaces").LocationData): boolean;
                     fill(location: import("voxelspaces").LocationData): void;
-                    height: {
-                        getRelative(location: import("voxelspaces").LocationData): number;
-                        getAbsolute(location: import("voxelspaces").LocationData): number;
-                    };
                 };
                 chunk: {
                     add(location: import("voxelspaces").LocationData, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
@@ -817,7 +824,7 @@ export declare const DVEC: {
                     data: DataView;
                     buffer: SharedArrayBuffer;
                 } | undefined;
-                isStored(location: import("voxelspaces").LocationData): 0 | 1 | -1;
+                isStored(location: import("voxelspaces").LocationData): 1 | -1 | 0;
             };
         };
         tags: {
@@ -1006,6 +1013,7 @@ export declare const DVEC: {
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
             runRebuildQueue(): any;
+            clear(): void;
         };
         getFlowUpdateRequest(origin: import("voxelspaces").LocationData, buildQueue?: string, originThread?: string): {
             rebuildQueMap: Map<string, boolean>;
@@ -1059,6 +1067,7 @@ export declare const DVEC: {
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
             runRebuildQueue(): any;
+            clear(): void;
         };
         getVoxelUpdateRequests(origin: import("voxelspaces").LocationData, buildQueue?: string, originThread?: string): {
             rebuildQueMap: Map<string, boolean>;
@@ -1112,6 +1121,7 @@ export declare const DVEC: {
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
             runRebuildQueue(): any;
+            clear(): void;
         };
         getWorldSunRequests(origin: import("voxelspaces").LocationData, buildQueue?: string, originThread?: string): {
             rebuildQueMap: Map<string, boolean>;
@@ -1144,6 +1154,7 @@ export declare const DVEC: {
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
             runRebuildQueue(): any;
+            clear(): void;
         };
         getExplosionRequests(origin: import("voxelspaces").LocationData, radius: number, buildQueue?: string, originThread?: string): {
             rebuildQueMap: Map<string, boolean>;
@@ -1199,6 +1210,7 @@ export declare const DVEC: {
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
             runRebuildQueue(): any;
+            clear(): void;
         };
     };
     $INIT(): Promise<void>;

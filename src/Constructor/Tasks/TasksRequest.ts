@@ -147,6 +147,14 @@ class Request<T, Q> {
   this.rebuildQueMap.clear();
   return this;
  }
+
+ clear(){
+    this.buildTasks.priority = 0;
+  this.syncQueue = [];
+  this.aSyncQueue = [];
+  this.rebuildQueMap.clear();
+  this.buildMode = "sync";
+ }
 }
 
 type Vec3Array = [x: number, y: number, z: number][];

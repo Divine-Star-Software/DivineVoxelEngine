@@ -7,7 +7,7 @@ export type EngineSettingsData = {
  data: {
   enabled: boolean;
   autoSyncChunks: boolean;
-  mode : "server" | "indexdb" | "both"
+  mode: "server" | "indexdb" | "both";
  };
  richWorld: {
   enabled: boolean;
@@ -23,13 +23,13 @@ export type EngineSettingsData = {
   enabled: boolean;
  };
  textures: {
-  textureSize : number;
-  mipMapSizes : number[];
+  textureSize: number;
+  mipMapSizes: number[];
   animationTime: number;
  };
- floatingOrigin : {
-   enable : boolean;
- },
+ floatingOrigin: {
+  enable: boolean;
+ };
  world: {
   maxX: number;
   minX: number;
@@ -59,9 +59,10 @@ export type EngineSettingsData = {
   autoRGBLight: boolean;
   autoSunLight: boolean;
  };
- flow : {
-    enable : boolean;
- },
+ flow: {
+  enable: boolean;
+  baseFlowLimit: 100;
+ };
  voxels: {
   doColors: boolean;
  };
@@ -75,7 +76,7 @@ export type EngineSettingsData = {
   pickable: boolean;
  };
  materials: {
-  mode : "classic" | "standard",
+  mode: "classic" | "standard";
   disableFloraShaderEffects: boolean;
   disableLiquidShaderEffects: boolean;
   doAO: boolean;

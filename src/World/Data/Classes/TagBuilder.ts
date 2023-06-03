@@ -103,7 +103,7 @@ export class TagBuilder {
   }
  }
 
- build(totalTagIndexes: number) {
+ build(totalTagIndexes: number = 0) {
   if (this._built) return this._initData;
 
   const tags = new TagManager(this.id);

@@ -56,6 +56,7 @@ export declare class WorldGenBrush extends BrushTool {
         addToRebuildQueue(x: number, y: number, z: number): boolean;
         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
         runRebuildQueue(): any;
+        clear(): void;
     };
     richData: RichDataTool;
     paint(): this;

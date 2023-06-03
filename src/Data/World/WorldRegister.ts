@@ -163,7 +163,7 @@ export const WorldRegister = {
     }
    }
   },
-  height: {
+/*   height: {
    getRelative(location: LocationData) {
     location = [...location];
     const chunkWidth = WorldSpaces.chunk._bounds.x;
@@ -199,7 +199,7 @@ export const WorldRegister = {
     }
     return maxHeight + 1;
    },
-  },
+  }, */
  },
  chunk: {
   add(location: LocationData, sab: SharedArrayBuffer) {

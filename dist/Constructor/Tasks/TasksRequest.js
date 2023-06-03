@@ -129,6 +129,13 @@ class Request {
         this.rebuildQueMap.clear();
         return this;
     }
+    clear() {
+        this.buildTasks.priority = 0;
+        this.syncQueue = [];
+        this.aSyncQueue = [];
+        this.rebuildQueMap.clear();
+        this.buildMode = "sync";
+    }
 }
 const getLightQueues = () => {
     return {

@@ -29,6 +29,19 @@ class DataTool extends DataToolBase {
     };
     __secondary = false;
     tags = VoxelTags;
+    clear() {
+        this._loadedIn = false;
+        this._locationKey = "";
+        let i = this.data.raw.length;
+        while (i--) {
+            this.data.raw[i] = 0;
+        }
+        this.data.id = 0;
+        this.data.baseId = 0;
+        this.data.secondaryId = 0;
+        this.data.secondaryBaseId = 0;
+        return this;
+    }
     setDimension(dimensionId) {
         this.location[0] = DimensionsRegister.getDimensionStringId(dimensionId);
         return this;
@@ -102,11 +115,13 @@ class DataTool extends DataToolBase {
                 const substance = this.getTemplateSubstance();
                 //on add
                 if (heightMapUpdate == 1) {
-                    DataTool._heightMapTool.chunk.update("add", substance, this.location);
+                    DataTool._heightMapTool.chunk.setY(this.y).setHasVoxels(true);
+                    //  DataTool._heightMapTool.chunk.update("add", substance, this.location);
                 }
                 //on remove
                 if (heightMapUpdate == 2) {
-                    DataTool._heightMapTool.chunk.update("remove", substance, this.location);
+                    DataTool._heightMapTool.chunk.setY(this.y).setDirty(true);
+                    //   DataTool._heightMapTool.chunk.update("remove", substance, this.location);
                 }
             }
             this._loadedIn = false;

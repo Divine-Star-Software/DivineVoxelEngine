@@ -1,21 +1,23 @@
 import { FlowManager as FM } from "../FlowManager.js";
-export async function FlowUpdate(tasks, rebuild = true, vox = "") {
+import { EngineSettings } from "../../../../Data/Settings/EngineSettings.js";
+export async function FlowUpdate(tasks, rebuild = true) {
     const [dimension, x, y, z] = tasks.origin;
-    vox = FM.getVoxel(x, y, z);
+    const vox = FM.getVoxel(x, y, z);
     if (!vox)
         return;
-    const level = FM.getLevel(vox, x, y, z);
+    const flowRate = vox.getSubstnaceData().getFlowRate();
+    const level = FM.getLevel(vox.getStringId(), x, y, z);
     if (level < 0)
         return;
-    const levelState = FM.getLevelState(vox, x, y, z);
+    const levelState = FM.getLevelState(vox.getStringId(), x, y, z);
     tasks.queues.flow.update.queue.push([x, y, z, level, levelState]);
     while (tasks.queues.flow.update.queue.length != 0) {
         FM.setDimension(dimension);
-        RunFlowPropagation(tasks, vox);
-        RunFlowIncrease(tasks, vox);
+        RunFlowPropagation(tasks, vox.getStringId());
+        RunFlowIncrease(tasks, vox.getStringId());
         if (rebuild) {
             tasks.runRebuildQueue();
-            await FM.wait(100);
+            await FM.wait(EngineSettings.settings.flow.baseFlowLimit * flowRate);
         }
     }
 }

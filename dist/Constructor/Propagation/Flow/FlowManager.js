@@ -3,13 +3,15 @@ import { LightData } from "../../../Data/Light/LightByte.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
 import { SunRemove, SunUpdate } from "../Illumanation/Functions/SunUpdate.js";
-import { RGBUpdate } from "../Illumanation/Functions/RGBUpdate.js";
+import { RGBRemove, RGBUpdate } from "../Illumanation/Functions/RGBUpdate.js";
 import { IlluminationManager } from "../Illumanation/IlluminationManager.js";
+import { SubstanceDataTool } from "../../../Tools/Data/SubstanceDataTool.js";
 export const FlowManager = {
     lightData: LightData,
     _brush: new BrushTool(),
     _sDataTool: new DataTool(),
     _nDataTool: new DataTool(),
+    _substanceTool: new SubstanceDataTool(),
     setVoxel(tasks, vox, level, levelState, x, y, z) {
         this.sunCheck(tasks, x, y, z);
         SunRemove(tasks);
@@ -45,19 +47,29 @@ export const FlowManager = {
                 tasks.queues.rgb.update.push(nx, ny, nz);
             }
         }
+        this._nDataTool.loadInAt(x, y, z);
+        const currentLight = this._nDataTool.getLight();
         this._brush.setXYZ(x, y, z).erase();
+        this._nDataTool.clear().loadInAt(x, y, z);
+        this._nDataTool.setLight(currentLight).commit();
+        tasks.queues.rgb.remove.push(x, y, z);
+        RGBRemove(tasks);
         SunUpdate(tasks);
         RGBUpdate(tasks);
     },
+    getFlowRate(substance) {
+        this._substanceTool.setSubstance(substance);
+        return this._substanceTool.getFlowRate();
+    },
     getVoxel(x, y, z) {
         if (!this._sDataTool.loadInAt(x, y, z))
-            return "";
+            return false;
         if (!this._sDataTool.isRenderable())
-            return "";
+            return false;
         const substance = this._sDataTool.getSubstnaceData();
         if (!substance.isLiquid())
-            return "";
-        return this._sDataTool.getStringId();
+            return false;
+        return this._sDataTool;
     },
     setLevel(level, x, y, z) {
         this._nDataTool.loadInAt(x, y, z);
@@ -107,6 +119,8 @@ export const FlowManager = {
     _lightValues: [0, 0, 0, 0],
     getAbsorbLight(x, y, z) {
         for (const n of $3dCardinalNeighbors) {
+            if (!n[0] && !n[1] && !n[2])
+                continue;
             if (!this._nDataTool.loadInAt(x + n[0], y + n[1], z + n[2]))
                 continue;
             let l = this._nDataTool.getLight();

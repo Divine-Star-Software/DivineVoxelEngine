@@ -7,6 +7,7 @@ import { $3dCardinalNeighbors } from "../../../../Math/Constants/CardinalNeighbo
 import { WorldSpaces } from "../../../../Data/World/WorldSpaces.js";
 
 import { IlluminationManager as IM } from "../IlluminationManager.js";
+import { HeightMapTool } from "../../../../Tools/Data/WorldData/HeightMapTool.js";
 const inColumnBounds = (cx: number, cz: number, x: number, z: number) => {
  if (
   x >= cx &&
@@ -18,6 +19,8 @@ const inColumnBounds = (cx: number, cz: number, x: number, z: number) => {
  return false;
 };
 
+const heightMapTool = new HeightMapTool();
+
 export function RunWorldSun(tasks: WorldSunTaskRequest) {
  IM.setDimension(tasks.origin[0]);
  tasks.start();
@@ -26,8 +29,9 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
 
  const queue = tasks.queues.sun;
  IM._sDataTool.setDimension(dimension);
- const RmaxY = WorldRegister.column.height.getRelative(tasks.origin);
- const AmaxY = WorldRegister.column.height.getAbsolute(tasks.origin);
+ const RmaxY = heightMapTool.column.getRelative(tasks.origin);
+ const AmaxY = heightMapTool.column.getAbsolute(tasks.origin);
+ 
  //fill
  for (let iy = AmaxY; iy < WorldBounds.bounds.MaxY; iy++) {
   for (let iz = cz; iz < cz + WorldSpaces.chunk._bounds.z; iz++) {

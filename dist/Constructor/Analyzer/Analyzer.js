@@ -61,7 +61,7 @@ export const Analyzer = {
             const [x, y, z] = flowUpdate;
             if (!mainDT.loadInAt(x, y, z))
                 continue;
-            await FlowUpdate(TasksRequest.getFlowUpdateRequest([dimension, x, y, z], "none", "self"), false, mainDT.getStringId());
+            await FlowUpdate(TasksRequest.getFlowUpdateRequest([dimension, x, y, z], "none", "self"), false);
         }
         tasks.stop();
     },

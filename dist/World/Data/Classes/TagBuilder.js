@@ -80,7 +80,7 @@ export class TagBuilder {
             tagManager.setTag(node.id, data.found[v]);
         }
     }
-    build(totalTagIndexes) {
+    build(totalTagIndexes = 0) {
         if (this._built)
             return this._initData;
         const tags = new TagManager(this.id);

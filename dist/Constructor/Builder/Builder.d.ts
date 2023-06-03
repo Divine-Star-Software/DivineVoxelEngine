@@ -38,6 +38,9 @@ export declare const Builder: {
             z: number;
         };
         nLocation: LocationData;
+        _states: {
+            foundVoxel: boolean;
+        };
         _process(doSecondCheck?: boolean): void;
         build(location: LocationData): void;
     };

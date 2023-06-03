@@ -61,6 +61,7 @@ export type EngineSettingsData = {
     };
     flow: {
         enable: boolean;
+        baseFlowLimit: 100;
     };
     voxels: {
         doColors: boolean;

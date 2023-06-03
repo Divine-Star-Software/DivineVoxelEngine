@@ -46,8 +46,19 @@ SubstanceManager.registerData([
    ["#dve_rendered_substance", "#dve_liquid"],
    ["#dve_is_solid", false],
    ["#dve_is_liquid", true],
-   ["#dve_flow_rate", 7],
-   ["#dve_culled_substances", ["#dve_liquid","#dve_solid"]],
+   ["#dve_flow_rate", 1],
+   ["#dve_culled_substances", ["#dve_liquid", "#dve_solid"]],
+  ],
+ },
+ {
+  id: "#dve_magma",
+  tags: [
+   ["#dve_parent_substance", "#dve_liquid"],
+   ["#dve_rendered_substance", "#dve_liquid"],
+   ["#dve_is_solid", false],
+   ["#dve_is_liquid", true],
+   ["#dve_flow_rate", 3],
+   ["#dve_culled_substances", ["#dve_liquid", "#dve_solid"]],
   ],
  },
 ]);

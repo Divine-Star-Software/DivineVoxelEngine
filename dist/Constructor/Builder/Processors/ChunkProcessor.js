@@ -14,11 +14,15 @@ const heightMapTool = new HeightMapTool();
 export const ChunkProcessor = {
     relative: { x: 0, y: 0, z: 0 },
     nLocation: ["main", 0, 0, 0],
+    _states: {
+        foundVoxel: false,
+    },
     _process(doSecondCheck = false) {
         if (!mDataTool.loadInAtLocation(this.nLocation))
             return;
         if (!mDataTool.isRenderable())
             return;
+        this._states.foundVoxel = true;
         if (!doSecondCheck) {
             if (mDataTool.hasSecondaryVoxel()) {
                 this._process(true);
@@ -45,20 +49,35 @@ export const ChunkProcessor = {
         mDataTool.setDimension(location[0]);
         const [dimension, cx, cy, cz] = location;
         this.nLocation[0] = dimension;
-        let maxX = WorldSpaces.chunk._bounds.x + cx;
-        let maxZ = WorldSpaces.chunk._bounds.z + cz;
-        let [minY, maxY] = heightMapTool.chunk.getMinMax();
-        minY += cy;
-        maxY += cy + 1;
-        for (let y = minY; y < maxY; y++) {
-            for (let z = cz; z < maxZ; z++) {
-                for (let x = cx; x < maxX; x++) {
-                    this.nLocation[1] = x;
-                    this.nLocation[2] = y;
-                    this.nLocation[3] = z;
-                    this._process();
+        let index = 0;
+        let lastY = -Infinity;
+        const maxIndex = WorldSpaces.chunk.getVolume();
+        while (index < maxIndex) {
+            const position = WorldSpaces.voxel.getIndexToXYZ(index);
+            const x = position.x;
+            const y = position.y;
+            const z = position.z;
+            if (y != lastY) {
+                this._states.foundVoxel = false;
+                heightMapTool.chunk.setY(y);
+                if (!heightMapTool.chunk.hasVoxels() && !heightMapTool.chunk.isDirty()) {
+                    index += WorldSpaces.chunk.getIndexXYZ(0, 1, 0);
+                    lastY = y;
+                    continue;
                 }
             }
+            this.nLocation[1] = x + cx;
+            this.nLocation[2] = y + cy;
+            this.nLocation[3] = z + cz;
+            this._process();
+            if (y != lastY) {
+                if (heightMapTool.chunk.isDirty()) {
+                    heightMapTool.chunk.setHasVoxels(this._states.foundVoxel);
+                    heightMapTool.chunk.setDirty(false);
+                }
+            }
+            lastY = y;
+            index++;
         }
         WorldRegister.cache.disable();
         const chunks = [location, []];

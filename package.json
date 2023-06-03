@@ -20,7 +20,8 @@
  "author": "Divine Star Software",
  "license": "MIT",
  "devDependencies": {
-  "@types/node": "^16.11.7"
+  "@types/node": "^16.11.7",
+  "typedoc": "^0.24.7"
  },
  "dependencies": {
   "@babylonjs/core": "^6.5.0",

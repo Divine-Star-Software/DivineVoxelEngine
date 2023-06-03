@@ -54,6 +54,7 @@ export declare const Propagation: {
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
             runRebuildQueue(): any;
+            clear(): void;
         }): void;
     };
     flow: {
@@ -109,6 +110,7 @@ export declare const Propagation: {
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
             runRebuildQueue(): any;
+            clear(): void;
         }): Promise<void>;
         remove(tasks: {
             rebuildQueMap: Map<string, boolean>;
@@ -162,6 +164,7 @@ export declare const Propagation: {
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
             runRebuildQueue(): any;
+            clear(): void;
         }): Promise<void>;
     };
     worldSun: {
@@ -196,6 +199,7 @@ export declare const Propagation: {
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
             runRebuildQueue(): any;
+            clear(): void;
         }): void;
     };
     rgb: {
@@ -240,6 +244,7 @@ export declare const Propagation: {
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
             runRebuildQueue(): any;
+            clear(): void;
         }): void;
         remove(tasks: {
             rebuildQueMap: Map<string, boolean>;
@@ -282,6 +287,7 @@ export declare const Propagation: {
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
             runRebuildQueue(): any;
+            clear(): void;
         }): void;
     };
     sun: {
@@ -326,6 +332,7 @@ export declare const Propagation: {
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
             runRebuildQueue(): any;
+            clear(): void;
         }): void;
         remove(tasks: {
             rebuildQueMap: Map<string, boolean>;
@@ -368,6 +375,7 @@ export declare const Propagation: {
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
             runRebuildQueue(): any;
+            clear(): void;
         }): void;
     };
 };

@@ -33,6 +33,7 @@ declare class Request<T, Q> {
     addToRebuildQueue(x: number, y: number, z: number): boolean;
     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | this | undefined;
     runRebuildQueue(): this;
+    clear(): void;
 }
 type Vec3Array = [x: number, y: number, z: number][];
 type FlowVec3Array = number[][];

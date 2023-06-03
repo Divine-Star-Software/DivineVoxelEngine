@@ -1,12 +1,11 @@
 import type { VoxelMesherDataTool } from "../../Tools/VoxelMesherDataTool";
 import type { DirectionNames } from "Meta";
+import type { QuadVertexes } from "Constructor/Builder/Types";
 
 import { OverrideManager } from "../../Rules/Overrides/OverridesManager.js";
-
 import { LightData } from "../../../../Data/Light/LightByte.js";
 
 import { QuadVertexData } from "../../Classes/VertexData.js";
-import { QuadVertexes } from "Constructor/Builder/Types";
 import { SubstanceRules } from "../../Rules/SubstanceRules.js";
 import { FaceNormals } from "../../../../Math/Constants/Faces.js";
 

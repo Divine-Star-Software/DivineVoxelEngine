@@ -42,6 +42,7 @@ import { Task, ThreadComm } from "threadcomm";
 import { ChunkDataTags } from "./Data/Tags/ChunkTags.js";
 import { WorldTasks } from "./Tasks/WorldTasks.js";
 import { RichDataTool } from "../Tools/Data/RichDataTool.js";
+import { SubstanceTagBuilder } from "./Data/TagBuilders/SubstanceTagBuilder.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
@@ -76,6 +77,7 @@ export const DVEW = {
 
  tags: {
   voxels: VoxelTagBuilder,
+  substances : SubstanceTagBuilder,
   chunks: ChunkDataTags,
  },
 

@@ -37,7 +37,7 @@ export async function EreaseAndUpdate(data) {
     const [dimension, x, y, z] = data[0];
     const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[1], data[2]);
     tasks.setPriority(0).start().setBuldMode("sync").addToRebuildQueue(x, y, z);
-    tasks.setBuldMode("async");
+    tasks.setBuldMode("async").addNeighborsToRebuildQueue(x, y, z);
     if (ES.doFlow()) {
         if (dataTool.getSubstnaceData().isLiquid()) {
             await Propagation.flow.remove(tasks);
@@ -76,7 +76,7 @@ export async function PaintAndUpdate(data) {
     const raw = data[1];
     const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[2], data[3]);
     tasks.start().setPriority(0).setBuldMode("sync").addToRebuildQueue(x, y, z);
-    tasks.setBuldMode("async");
+    tasks.setBuldMode("async").addNeighborsToRebuildQueue(x, y, z);
     brushTool.setLocation(data[0]).setRaw(raw);
     nDataTool.loadInRaw(raw);
     const substanceData = nDataTool.getSubstnaceData();
@@ -126,7 +126,7 @@ export async function VoxelUpdate(data) {
     const [dimension, x, y, z] = data[0];
     const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[2], data[3]);
     tasks.setPriority(0).start().setBuldMode("sync").addToRebuildQueue(x, y, z);
-    tasks.setBuldMode("async");
+    tasks.setBuldMode("async").addNeighborsToRebuildQueue(x, y, z);
     dataTool.loadInRaw(data[1]);
     dataTool.commit();
     let doRGB = ES.doRGBPropagation();

@@ -34,7 +34,7 @@ SubstanceTagBuilder.addNode([
  {
   id: SubstanceTagIds.flowRate,
   type: "number",
-  numberType: "8ui",
+  numberType: "32f",
   default: 1,
  },
 ]);

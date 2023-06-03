@@ -66,6 +66,7 @@ export const EngineSettings = {
   },
   flow: {
    enable: true,
+   baseFlowLimit : 100
   },
   lighting: {
    doAO: true,

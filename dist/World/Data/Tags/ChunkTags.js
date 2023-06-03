@@ -47,9 +47,13 @@ ChunkDataTags.registerTag({
 export function InitalizeChunkTags() {
     ChunkDataTags.registerTag({
         id: ChunkTagIDs.heightMap,
-        type: "typed-number-array",
-        numberType: "32ui",
-        length: WorldSpaces.chunk.getArea() * 2,
+        type: "bit-array",
+        length: WorldSpaces.chunk.getHeight(),
+    });
+    ChunkDataTags.registerTag({
+        id: ChunkTagIDs.dirtyMap,
+        type: "bit-array",
+        length: WorldSpaces.chunk.getHeight(),
     });
     ChunkDataTags.registerTag({
         id: ChunkTagIDs.voxelIDSegment,

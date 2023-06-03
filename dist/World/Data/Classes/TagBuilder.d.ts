@@ -25,6 +25,6 @@ export declare class TagBuilder {
     setDefaults(tagManager: TagManagerBase): void;
     hasNode(id: string): boolean;
     setNode(id: string, value: any, tagManager: TagManagerBase): false | undefined;
-    build(totalTagIndexes: number): RemoteTagManagerInitData;
+    build(totalTagIndexes?: number): RemoteTagManagerInitData;
     sync(): void;
 }

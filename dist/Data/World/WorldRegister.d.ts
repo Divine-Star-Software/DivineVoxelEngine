@@ -29,10 +29,6 @@ export declare const WorldRegister: {
         get(location: LocationData): false | Column;
         remove(location: LocationData): boolean;
         fill(location: LocationData): void;
-        height: {
-            getRelative(location: LocationData): number;
-            getAbsolute(location: LocationData): number;
-        };
     };
     chunk: {
         add(location: LocationData, sab: SharedArrayBuffer): ChunkData | undefined;

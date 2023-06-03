@@ -169,7 +169,7 @@ export const LiquidVoxelShape = {
 OverrideManager.registerOverride("CullFace", "#dve_liquid", "Any", (data) => {
  if (
   data.face == "top" &&
-  data.neighborVoxel.getSubstance() != "#dve_liquid" &&
+  data.neighborVoxel.getSubstnaceData().isLiquid() && 
   data.currentVoxel.getStringId() != data.neighborVoxel.getStringId()
  ) {
   return true;

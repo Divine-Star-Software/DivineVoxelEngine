@@ -1,5 +1,6 @@
 import { DataTool } from "../../../Tools/Data/DataTool.js";
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
+import { SubstanceDataTool } from "../../../Tools/Data/SubstanceDataTool.js";
 export declare const FlowManager: {
     lightData: {
         SRS: number;
@@ -42,6 +43,7 @@ export declare const FlowManager: {
     _brush: BrushTool;
     _sDataTool: DataTool;
     _nDataTool: DataTool;
+    _substanceTool: SubstanceDataTool;
     setVoxel(tasks: {
         rebuildQueMap: Map<string, boolean>;
         comm: import("threadcomm").CommBase;
@@ -94,6 +96,7 @@ export declare const FlowManager: {
         addToRebuildQueue(x: number, y: number, z: number): boolean;
         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
         runRebuildQueue(): any;
+        clear(): void;
     }, vox: string, level: number, levelState: number, x: number, y: number, z: number): void;
     setDimension(dimension: string): void;
     removeVoxel(tasks: {
@@ -148,8 +151,10 @@ export declare const FlowManager: {
         addToRebuildQueue(x: number, y: number, z: number): boolean;
         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
         runRebuildQueue(): any;
+        clear(): void;
     }, x: number, y: number, z: number): void;
-    getVoxel(x: number, y: number, z: number): string;
+    getFlowRate(substance: string): number;
+    getVoxel(x: number, y: number, z: number): false | DataTool;
     setLevel(level: number, x: number, y: number, z: number): void;
     getLevel(vox: string, x: number, y: number, z: number): number;
     getLevelState(vox: string, x: number, y: number, z: number): number;
@@ -210,5 +215,6 @@ export declare const FlowManager: {
         addToRebuildQueue(x: number, y: number, z: number): boolean;
         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
         runRebuildQueue(): any;
+        clear(): void;
     }, x: number, y: number, z: number): void;
 };

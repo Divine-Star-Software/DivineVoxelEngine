@@ -1,28 +1,24 @@
 import type { ChunkData } from "Meta/Data/WorldData.types";
-import type { VoxelTemplateSubstanceType } from "Meta/Data/Voxels/Voxel.types.js";
+import type { LocationData } from "voxelspaces";
+import { LocationBoundTool } from "../../../Tools/Classes/LocationBoundTool.js";
 import { ChunkDataTool } from "./ChunkDataTool.js";
-import { LocationData } from "voxelspaces";
-export declare class HeightMapTool {
+export declare class HeightMapTool extends LocationBoundTool {
     static _chunkTool: ChunkDataTool;
-    _data: {
-        dimension: string;
-    };
-    constructor();
-    setDimension(dimensionId: string): void;
     chunk: {
-        _p: {
-            x: number;
-            z: number;
-        };
         _c: DataView;
-        _s: HeightMapTool;
-        loadInAt(x: number, y: number, z: number): false | undefined;
+        _y: number;
+        loadInAt: (x: number, y: number, z: number) => false | undefined;
         loadInAtLocation(location: LocationData): false | undefined;
         setChunk(chunk: ChunkData): void;
-        setXZ(x: number, z: number): any;
+        setY(y: number): any;
         getMinMax(): number[];
-        getMin(substance?: VoxelTemplateSubstanceType | "all"): number;
-        getMax(substance?: VoxelTemplateSubstanceType | "all"): number;
-        update(mode: "remove" | "add", substance: string | undefined, location: LocationData): void;
+        hasVoxels(): boolean;
+        isDirty(): boolean;
+        setHasVoxels(hasVoxels: boolean): number | void;
+        setDirty(isDirty: boolean): number | void;
+    };
+    column: {
+        getRelative(location: LocationData): number;
+        getAbsolute: (location: LocationData) => number;
     };
 }

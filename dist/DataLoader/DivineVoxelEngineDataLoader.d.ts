@@ -244,10 +244,6 @@ export declare const DVEDL: {
                     get(location: import("voxelspaces").LocationData): false | import("../Meta/Data/WorldData.types.js").Column;
                     remove(location: import("voxelspaces").LocationData): boolean;
                     fill(location: import("voxelspaces").LocationData): void;
-                    height: {
-                        getRelative(location: import("voxelspaces").LocationData): number;
-                        getAbsolute(location: import("voxelspaces").LocationData): number;
-                    };
                 };
                 chunk: {
                     add(location: import("voxelspaces").LocationData, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
@@ -280,7 +276,7 @@ export declare const DVEDL: {
                     data: DataView;
                     buffer: SharedArrayBuffer;
                 } | undefined;
-                isStored(location: import("voxelspaces").LocationData): 0 | 1 | -1;
+                isStored(location: import("voxelspaces").LocationData): 1 | -1 | 0;
             };
         };
         tags: {
@@ -355,11 +351,11 @@ export declare const DVEDL: {
         serializeRegion(location: import("voxelspaces").LocationData): false | [location: import("voxelspaces").LocationData, buffer: ArrayBuffer][];
         serializeColumn(location: import("voxelspaces").LocationData): false | Uint8Array;
         deSerializeRegion(regionBuffers: ArrayBuffer[] | SharedArrayBuffer[]): void;
-        deSerializeColumn(columnBuffer: ArrayBuffer | SharedArrayBuffer): {
+        deSerializeColumn(columnBuffer: SharedArrayBuffer | ArrayBuffer): {
             column: SharedArrayBuffer;
             chunks: SharedArrayBuffer[];
         };
-        _readDataIntoBuffer(offset: number, target: Uint8Array, source: ArrayBuffer | SharedArrayBuffer, sourceOffset?: number, sourceLength?: number): number;
+        _readDataIntoBuffer(offset: number, target: Uint8Array, source: SharedArrayBuffer | ArrayBuffer, sourceOffset?: number, sourceLength?: number): number;
     };
     dataHandler: {
         mode: import("./DataHandler/DataHandlerBaes.js").DataLoaderModes;

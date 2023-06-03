@@ -1,6 +1,5 @@
 import { DataHooks } from "../../Data/DataHooks.js";
 import { WorldBounds } from "./WorldBounds.js";
-import { $2dMooreNeighborhood } from "../../Math/Constants/CardinalNeighbors.js";
 import { DimensionsRegister } from "./Dimensions/DimensionsRegister.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
@@ -159,46 +158,43 @@ export const WorldRegister = {
                 }
             }
         },
-        height: {
-            getRelative(location) {
-                location = [...location];
-                const chunkWidth = WorldSpaces.chunk._bounds.x;
-                const chunkDepth = WorldSpaces.chunk._bounds.z;
-                let maxHeight = -Infinity;
-                const [dimension, x, y, z] = location;
-                for (const check of $2dMooreNeighborhood) {
-                    location[1] = check[0] * chunkWidth + x;
-                    location[3] = check[1] * chunkDepth + z;
-                    const height = this.getAbsolute(location);
-                    if (height > maxHeight) {
-                        maxHeight = height;
-                    }
-                }
-                return maxHeight;
-            },
-            getAbsolute(location) {
-                const column = WorldRegister.column.get(location);
-                if (!column)
-                    return WorldBounds.bounds.MinY;
-                if (column.chunks.size == 0)
-                    return WorldBounds.bounds.MinY;
-                let maxHeight = WorldBounds.bounds.MinY;
-                for (const [key, chunk] of column.chunks) {
-                    if (!chunk)
-                        continue;
-                    chunkTool.setChunk(chunk);
-                    const chunkPOS = chunkTool.getPositionData();
-                    let chunkMax = chunkTool.getTagValue("#dve_max_height");
-                    if (chunkMax == 0)
-                        continue;
-                    chunkMax += chunkPOS.y;
-                    if (maxHeight < chunkMax) {
-                        maxHeight = chunkMax;
-                    }
-                }
-                return maxHeight + 1;
-            },
-        },
+        /*   height: {
+           getRelative(location: LocationData) {
+            location = [...location];
+            const chunkWidth = WorldSpaces.chunk._bounds.x;
+            const chunkDepth = WorldSpaces.chunk._bounds.z;
+            let maxHeight = -Infinity;
+            const [dimension, x, y, z] = location;
+            for (const check of $2dMooreNeighborhood) {
+             location[1] = check[0] * chunkWidth + x;
+             location[3] = check[1] * chunkDepth + z;
+             const height = this.getAbsolute(location);
+             if (height > maxHeight) {
+              maxHeight = height;
+             }
+            }
+            return maxHeight;
+           },
+           getAbsolute(location: LocationData) {
+            const column = WorldRegister.column.get(location);
+            if (!column) return WorldBounds.bounds.MinY;
+            if (column.chunks.size == 0) return WorldBounds.bounds.MinY;
+            let maxHeight = WorldBounds.bounds.MinY;
+            for (const [key, chunk] of column.chunks) {
+             if (!chunk) continue;
+        
+             chunkTool.setChunk(chunk);
+             const chunkPOS = chunkTool.getPositionData();
+             let chunkMax = chunkTool.getTagValue("#dve_max_height");
+             if (chunkMax == 0) continue;
+             chunkMax += chunkPOS.y;
+             if (maxHeight < chunkMax) {
+              maxHeight = chunkMax;
+             }
+            }
+            return maxHeight + 1;
+           },
+          }, */
     },
     chunk: {
         add(location, sab) {

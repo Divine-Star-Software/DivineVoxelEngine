@@ -6,6 +6,9 @@ export declare const ChunkProcessor: {
         z: number;
     };
     nLocation: LocationData;
+    _states: {
+        foundVoxel: boolean;
+    };
     _process(doSecondCheck?: boolean): void;
     build(location: LocationData): void;
 };

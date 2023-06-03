@@ -243,10 +243,6 @@ export declare const DVEN: {
                     get(location: import("voxelspaces").LocationData): false | import("../Meta/Data/WorldData.types.js").Column;
                     remove(location: import("voxelspaces").LocationData): boolean;
                     fill(location: import("voxelspaces").LocationData): void;
-                    height: {
-                        getRelative(location: import("voxelspaces").LocationData): number;
-                        getAbsolute(location: import("voxelspaces").LocationData): number;
-                    };
                 };
                 chunk: {
                     add(location: import("voxelspaces").LocationData, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
@@ -279,7 +275,7 @@ export declare const DVEN: {
                     data: DataView;
                     buffer: SharedArrayBuffer;
                 } | undefined;
-                isStored(location: import("voxelspaces").LocationData): 0 | 1 | -1;
+                isStored(location: import("voxelspaces").LocationData): 1 | -1 | 0;
             };
         };
         tags: {

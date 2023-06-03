@@ -1,0 +1,154 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>divine-voxel-engine-dev</title><meta name="description" content="Documentation for divine-voxel-engine-dev"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/search.js" id="tsd-search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container">
+<div class="table-cell" id="tsd-search" data-base=".">
+<div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
+<div class="field">
+<div id="tsd-toolbar-links"></div></div>
+<ul class="results">
+<li class="state loading">Preparing search index...</li>
+<li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">divine-voxel-engine-dev</a></div>
+<div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="7" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="11" width="14" height="2" fill="var(--color-text)"></rect></svg></a></div></div></header>
+<div class="container container-main">
+<div class="col-content">
+<div class="tsd-page-title">
+<h2>divine-voxel-engine-dev</h2></div>
+<div class="tsd-panel tsd-typography"><h1 align="center">
+ ⛯ Divine Voxel Engine ⛯
+</h1>
+
+<p align="center">
+<img src="https://divine-star-software.github.io/DigitalAssets/images/logo-small.png">
+</p>
+
+<hr>
+<p><strong>WARNING:</strong>
+This is not finalized. Things will keep changing as development goes forward.
+Use a stable release for development.</p>
+<a id="md:what-is-this" class="tsd-anchor"></a><h1><a href="#md:what-is-this">What is this?</a></h1><p>A truly multi-threaded JavaScript voxel game engine written in TypeScript that uses Babylon.Js.</p>
+<p>Check out the <a href="https://github.com/Divine-Star-Software/DivineVoxelEngine/wiki">Wiki</a> and visit the <a href="https://github.com/Divine-Star-Software/DVETesting">DVE Testing</a> repo to get started.</p>
+<p>Need help or want to share your creations? Join the <a href="https://discord.gg/98xEVU7TKn">discord</a>.</p>
+<p><img src="https://divine-star-software.github.io/DigitalAssets/images/DVE/DVE-RM3.JPG" alt="DVE 1"></p>
+<a id="md:features" class="tsd-anchor"></a><h2><a href="#md:features">Features</a></h2><ul>
+<li>Different voxel types and shapes.</li>
+<li>Chunk-based rendering and meshing.</li>
+<li>In parallel mesh building, light updates, and other world updats.</li>
+<li>Multi-threaded data access.</li>
+<li>Ambient occlusion and smooth lighting.</li>
+<li>Animated and connected textures.</li>
+<li>Custom shaders and shader effects.</li>
+<li>Vertical and horizontal chunks.</li>
+<li>Voxel Lighting system.<ul>
+<li>Easy to update and remove.</li>
+<li>Support for different colored lights.</li>
+<li>Sunlight global illumination/</li>
+</ul>
+</li>
+<li>World Data API - Easy tools to build worlds.</li>
+<li>Easy to use auto-update world on voxel add/remove<ul>
+<li>Will auto update light sources for you.</li>
+</ul>
+</li>
+</ul>
+<a id="md:in-development" class="tsd-anchor"></a><h2><a href="#md:in-development">In Development</a></h2><ul>
+<li>Headless server use.</li>
+<li>Physics and collision detection.<ul>
+<li>Working to develop some helper functions to determine what voxel the player is looking at or touching.</li>
+<li>Instead of using collision detection with the actual meshes it will calculate collision in the world thread.</li>
+</ul>
+</li>
+<li>Liquid flow and magma flow like Minecraft.</li>
+<li>Same voxel different colors<ul>
+<li>Set a color directly on voxel data.</li>
+<li>Options to create shade gradient with neighbors.</li>
+</ul>
+</li>
+<li>Well-written wiki with tutorials on how to do anything that you could possibly want.</li>
+<li>Standard data format for the engine that will be called either .dsd or .dved for saving the world data and or structures.</li>
+</ul>
+<a id="md:long-term-goals" class="tsd-anchor"></a><h2><a href="#md:long-term-goals">Long Term Goals</a></h2><ul>
+<li>Dynamic Lighting system.<ul>
+<li>Will use Babylon&#39;s built-in dyamic lights and shadow casting.</li>
+</ul>
+</li>
+<li>More shader effects and custom voxel substances</li>
+<li>Structure creator software.</li>
+</ul>
+<a id="md:see-in-action" class="tsd-anchor"></a><h2><a href="#md:see-in-action">See In Action</a></h2><p><img src="https://divine-star-software.github.io/DigitalAssets/images/DVE/DVE-RM1.PNG" alt="DVE 1"></p>
+<p><img src="https://divine-star-software.github.io/DigitalAssets/images/DVE/DVE-RM2.PNG" alt="DVE 1"></p>
+<p><img src="https://divine-star-software.github.io/DigitalAssets/images/DVE/DVE-RM4.PNG" alt="DVE 1"></p>
+<p><img src="https://divine-star-software.github.io/DigitalAssets/images/DVE/DVE-RM5.PNG" alt="DVE 1"></p>
+<p>See videos of development here:
+<a href="https://www.youtube.com/channel/UC6n2h7qiuEHI6oLLvod5wdg">Divine Star Software YouTube Channel</a></p>
+<a id="md:want-to-contribute" class="tsd-anchor"></a><h3><a href="#md:want-to-contribute">Want to contribute?</a></h3><p>If you would like to contribute please read <a href="https://github.com/Divine-Star-Software/DivineVoxelEngine/wiki/Contributions-&-Code-Style-Guide">Contributions &amp; Code Style Guide</a> of the wiki.</p>
+<a id="md:asset-license" class="tsd-anchor"></a><h3><a href="#md:asset-license">Asset License</a></h3><p>Divine Voxel Engine Assets © 2022 by Lucas Damian Johnson is licensed under CC BY-NC-SA 4.0. To view a copy of this license, visit <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">http://creativecommons.org/licenses/by-nc-sa/4.0/</a></p>
+<p>All assets for the engine are copyright by Divine Star.
+You can use them for your own testing but you can not use them in any commerical product.</p>
+</div></div>
+<div class="col-sidebar">
+<div class="page-menu">
+<div class="tsd-navigation settings">
+<details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg>Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility">
+<h4 class="uppercase">Member Visibility</h4><form>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div>
+<div class="tsd-theme-toggle">
+<h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<details open class="tsd-index-accordion tsd-page-navigation"><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg>On This Page</h3></summary>
+<div class="tsd-accordion-details">
+<ul>
+<li>
+<ul>
+<li><a href="#md:what-is-this"><span>What is this?</span></a></li>
+<li>
+<ul>
+<li><a href="#md:features"><span>Features</span></a></li>
+<li><a href="#md:in-development"><span>In <wbr/>Development</span></a></li>
+<li><a href="#md:long-term-goals"><span>Long <wbr/>Term <wbr/>Goals</span></a></li>
+<li><a href="#md:see-in-action"><span>See <wbr/>In <wbr/>Action</span></a></li>
+<li>
+<ul>
+<li><a href="#md:want-to-contribute"><span>Want to contribute?</span></a></li>
+<li><a href="#md:asset-license"><span>Asset <wbr/>License</span></a></li></ul></li></ul></li></ul></li></ul></div></details></div>
+<div class="site-menu">
+<nav class="tsd-navigation"><a href="index.html" class="current"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-namespace)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-4-path"></rect><path d="M9.33 16V7.24H10.77L13.446 14.74C13.43 14.54 13.41 14.296 13.386 14.008C13.37 13.712 13.354 13.404 13.338 13.084C13.33 12.756 13.326 12.448 13.326 12.16V7.24H14.37V16H12.93L10.266 8.5C10.282 8.692 10.298 8.936 10.314 9.232C10.33 9.52 10.342 9.828 10.35 10.156C10.366 10.476 10.374 10.784 10.374 11.08V16H9.33Z" fill="var(--color-text)" id="icon-4-text"></path></svg><span>divine-<wbr/>voxel-<wbr/>engine-<wbr/>dev</span></a>
+<ul class="tsd-small-nested-navigation">
+<li>
+<details class="tsd-index-accordion" data-key="World"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg><a href="modules/World.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4-path"></use><use href="#icon-4-text"></use></svg><span>World</span></a></summary>
+<div class="tsd-accordion-details">
+<ul class="tsd-nested-navigation">
+<li><a href="types/World.DivineVoxelEngineWorld.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-type-alias)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-4194304-path"></rect><path d="M11.31 16V8.224H8.91V7.24H14.79V8.224H12.39V16H11.31Z" fill="var(--color-text)" id="icon-4194304-text"></path></svg><span>Divine<wbr/>Voxel<wbr/>Engine<wbr/>World</span></a></li>
+<li><a href="variables/World.DVEW.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-variable)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-32-path"></rect><path d="M11.106 16L8.85 7.24H9.966L11.454 13.192C11.558 13.608 11.646 13.996 11.718 14.356C11.79 14.708 11.842 14.976 11.874 15.16C11.906 14.976 11.954 14.708 12.018 14.356C12.09 13.996 12.178 13.608 12.282 13.192L13.758 7.24H14.85L12.582 16H11.106Z" fill="var(--color-text)" id="icon-32-text"></path></svg><span>DVEW</span></a></li></ul></div></details></li>
+<li>
+<details class="tsd-index-accordion" data-key="index"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg><a href="modules/index.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4-path"></use><use href="#icon-4-text"></use></svg><span>index</span></a></summary>
+<div class="tsd-accordion-details">
+<ul class="tsd-nested-navigation">
+<li><a href="types/index.ConstructorTextureData.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Constructor<wbr/>Texture<wbr/>Data</span></a></li>
+<li><a href="types/index.DirectionNames.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Direction<wbr/>Names</span></a></li>
+<li><a href="types/index.Light3Matrix.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Light3<wbr/>Matrix</span></a></li>
+<li><a href="types/index.Light4Matrix.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Light4<wbr/>Matrix</span></a></li>
+<li><a href="types/index.MeshData.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Mesh<wbr/>Data</span></a></li>
+<li><a href="types/index.RawVoxelData.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Raw<wbr/>Voxel<wbr/>Data</span></a></li>
+<li><a href="types/index.RecursivePartial.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Recursive<wbr/>Partial</span></a></li>
+<li><a href="types/index.TextureAnimationData.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Texture<wbr/>Animation<wbr/>Data</span></a></li>
+<li><a href="types/index.TextureData.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Texture<wbr/>Data</span></a></li>
+<li><a href="types/index.TextureDataBase.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Texture<wbr/>Data<wbr/>Base</span></a></li>
+<li><a href="types/index.TextureTypeUVMap.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Texture<wbr/>TypeUVMap</span></a></li>
+<li><a href="types/index.TextureTypes.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Texture<wbr/>Types</span></a></li>
+<li><a href="types/index.UV2Matrix.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>UV2<wbr/>Matrix</span></a></li>
+<li><a href="types/index.UV3Matrix.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>UV3<wbr/>Matrix</span></a></li>
+<li><a href="types/index.Vector2.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Vector2</span></a></li>
+<li><a href="types/index.Vector3.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Vector3</span></a></li>
+<li><a href="types/index.VoxelData.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Voxel<wbr/>Data</span></a></li>
+<li><a href="types/index.VoxelSubstanceType.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Voxel<wbr/>Substance<wbr/>Type</span></a></li>
+<li><a href="types/index.VoxelTemplateSubstanceType.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Voxel<wbr/>Template<wbr/>Substance<wbr/>Type</span></a></li>
+<li><a href="types/index.WorldGenInterface.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>World<wbr/>Gen<wbr/>Interface</span></a></li></ul></div></details></li></ul></nav></div></div></div>
+<div class="tsd-generator">
+<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
+<div class="overlay"></div></body></html>

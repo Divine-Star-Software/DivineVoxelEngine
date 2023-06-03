@@ -46,6 +46,7 @@ export declare class DataTool extends DataToolBase {
         loopThroughIndex(run: (data: number[]) => void): void;
         loopThroughAllIndexTags(run: (id: string, value: number, index: number) => void): void;
     };
+    clear(): this;
     setDimension(dimensionId: string | number): this;
     setSecondary(enable: boolean): this;
     _getBaseId(id: number): number;

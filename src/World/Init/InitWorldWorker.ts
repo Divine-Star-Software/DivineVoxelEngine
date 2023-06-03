@@ -1,4 +1,4 @@
-import type { DivineVoxelEngineWorld } from "../DivineVoxelEngineWorld.js";
+import type { DivineVoxelEngineWorld } from "../index.js";
 import { ThreadComm } from "threadcomm";
 import { RegisterDataHooks } from "../Hooks/Data/WorldDataHooks.js";
 import { WorldThreadState } from "../Threads/WorldThreadState.js";

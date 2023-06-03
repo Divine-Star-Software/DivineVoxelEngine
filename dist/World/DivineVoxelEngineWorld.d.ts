@@ -194,7 +194,10 @@ export declare const DVEW: {
                     }): any;
                 };
                 getRegionIndex(): number;
-                getRegionIndexXYZ(x: number, y: number, z: number): number;
+                getRegionIndexXYZ(x: number, y: number, z: number): number; /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
             };
             voxel: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace;
             setDimensions(data: {
@@ -258,10 +261,6 @@ export declare const DVEW: {
                     get(location: import("voxelspaces").LocationData): false | import("../Meta/Data/WorldData.types.js").Column;
                     remove(location: import("voxelspaces").LocationData): boolean;
                     fill(location: import("voxelspaces").LocationData): void;
-                    height: {
-                        getRelative(location: import("voxelspaces").LocationData): number;
-                        getAbsolute(location: import("voxelspaces").LocationData): number;
-                    };
                 };
                 chunk: {
                     add(location: import("voxelspaces").LocationData, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
@@ -294,7 +293,7 @@ export declare const DVEW: {
                     data: DataView;
                     buffer: SharedArrayBuffer;
                 } | undefined;
-                isStored(location: import("voxelspaces").LocationData): 0 | 1 | -1;
+                isStored(location: import("voxelspaces").LocationData): 1 | -1 | 0;
             };
         };
         tags: {
@@ -352,7 +351,7 @@ export declare const DVEW: {
         };
     };
     dataSync: {
-        comms: Record<string, import("threadcomm").CommBase | import("threadcomm").CommManager>;
+        comms: Record<string, import("threadcomm").CommManager | import("threadcomm").CommBase>;
         commOptions: Record<string, {
             worldData: boolean;
             worldDataTags: boolean;
@@ -364,7 +363,7 @@ export declare const DVEW: {
         _ready: boolean;
         $INIT(): void;
         isReady(): boolean;
-        registerComm(comm: import("threadcomm").CommBase | import("threadcomm").CommManager, data?: Partial<{
+        registerComm(comm: import("threadcomm").CommManager | import("threadcomm").CommBase, data?: Partial<{
             worldData: boolean;
             worldDataTags: boolean;
             voxelPalette: boolean;
@@ -372,7 +371,7 @@ export declare const DVEW: {
             materials: boolean;
             colliders: boolean;
         }>): void;
-        loopThroughComms(func: (comm: import("threadcomm").CommBase | import("threadcomm").CommManager, options: {
+        loopThroughComms(func: (comm: import("threadcomm").CommManager | import("threadcomm").CommBase, options: {
             worldData: boolean;
             worldDataTags: boolean;
             voxelPalette: boolean;
@@ -685,6 +684,7 @@ export declare const DVEW: {
     };
     tags: {
         voxels: import("./Data/Classes/TagBuilder.js").TagBuilder;
+        substances: import("./Data/Classes/TagBuilder.js").TagBuilder;
         chunks: import("divine-binary-tags").TagManager;
     };
     $INIT(): Promise<void>;

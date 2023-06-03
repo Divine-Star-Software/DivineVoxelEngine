@@ -108,6 +108,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                 };
                 flow: {
@@ -163,6 +164,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): Promise<void>;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
@@ -216,6 +218,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): Promise<void>;
                 };
                 worldSun: {
@@ -250,6 +253,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                 };
                 rgb: {
@@ -294,6 +298,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
@@ -336,6 +341,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                 };
                 sun: {
@@ -380,6 +386,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
@@ -422,6 +429,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                 };
             };
@@ -452,7 +460,7 @@ export declare const Analyzer: {
                 };
                 _brushes: any[];
                 setWorldGen(worldGen: import("../../index.js").WorldGenInterface): void;
-                generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, mode: "generate" | "decorate", onDone: Function): Promise<void>;
+                generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, mode: "decorate" | "generate", onDone: Function): Promise<void>;
                 getBrush(): import("../index.js").WorldGenBrush;
             };
             builder: {
@@ -494,6 +502,9 @@ export declare const Analyzer: {
                         z: number;
                     };
                     nLocation: LocationData;
+                    _states: {
+                        foundVoxel: boolean;
+                    };
                     _process(doSecondCheck?: boolean): void;
                     build(location: LocationData): void;
                 };
@@ -769,10 +780,6 @@ export declare const Analyzer: {
                             get(location: LocationData): false | import("../../Meta/Data/WorldData.types.js").Column;
                             remove(location: LocationData): boolean;
                             fill(location: LocationData): void;
-                            height: {
-                                getRelative(location: LocationData): number;
-                                getAbsolute(location: LocationData): number;
-                            };
                         };
                         chunk: {
                             add(location: LocationData, sab: SharedArrayBuffer): import("../../Meta/Data/WorldData.types.js").ChunkData | undefined;
@@ -805,7 +812,7 @@ export declare const Analyzer: {
                             data: DataView;
                             buffer: SharedArrayBuffer;
                         } | undefined;
-                        isStored(location: LocationData): 0 | 1 | -1;
+                        isStored(location: LocationData): 1 | -1 | 0;
                     };
                 };
                 tags: {
@@ -994,6 +1001,7 @@ export declare const Analyzer: {
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
+                    clear(): void;
                 };
                 getFlowUpdateRequest(origin: LocationData, buildQueue?: string, originThread?: string): {
                     rebuildQueMap: Map<string, boolean>;
@@ -1047,6 +1055,7 @@ export declare const Analyzer: {
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
+                    clear(): void;
                 };
                 getVoxelUpdateRequests(origin: LocationData, buildQueue?: string, originThread?: string): {
                     rebuildQueMap: Map<string, boolean>;
@@ -1100,6 +1109,7 @@ export declare const Analyzer: {
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
+                    clear(): void;
                 };
                 getWorldSunRequests(origin: LocationData, buildQueue?: string, originThread?: string): {
                     rebuildQueMap: Map<string, boolean>;
@@ -1132,6 +1142,7 @@ export declare const Analyzer: {
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
+                    clear(): void;
                 };
                 getExplosionRequests(origin: LocationData, radius: number, buildQueue?: string, originThread?: string): {
                     rebuildQueMap: Map<string, boolean>;
@@ -1187,6 +1198,7 @@ export declare const Analyzer: {
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
+                    clear(): void;
                 };
             };
             $INIT(): Promise<void>;
@@ -1298,6 +1310,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                 };
                 flow: {
@@ -1353,6 +1366,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): Promise<void>;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
@@ -1406,6 +1420,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): Promise<void>;
                 };
                 worldSun: {
@@ -1440,6 +1455,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                 };
                 rgb: {
@@ -1484,6 +1500,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
@@ -1526,6 +1543,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                 };
                 sun: {
@@ -1570,6 +1588,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
@@ -1612,6 +1631,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                 };
             };
@@ -1642,7 +1662,7 @@ export declare const Analyzer: {
                 };
                 _brushes: any[];
                 setWorldGen(worldGen: import("../../index.js").WorldGenInterface): void;
-                generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, mode: "generate" | "decorate", onDone: Function): Promise<void>;
+                generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, mode: "decorate" | "generate", onDone: Function): Promise<void>;
                 getBrush(): import("../index.js").WorldGenBrush;
             };
             builder: {
@@ -1684,6 +1704,9 @@ export declare const Analyzer: {
                         z: number;
                     };
                     nLocation: LocationData;
+                    _states: {
+                        foundVoxel: boolean;
+                    };
                     _process(doSecondCheck?: boolean): void;
                     build(location: LocationData): void;
                 };
@@ -1959,10 +1982,6 @@ export declare const Analyzer: {
                             get(location: LocationData): false | import("../../Meta/Data/WorldData.types.js").Column;
                             remove(location: LocationData): boolean;
                             fill(location: LocationData): void;
-                            height: {
-                                getRelative(location: LocationData): number;
-                                getAbsolute(location: LocationData): number;
-                            };
                         };
                         chunk: {
                             add(location: LocationData, sab: SharedArrayBuffer): import("../../Meta/Data/WorldData.types.js").ChunkData | undefined;
@@ -1995,7 +2014,7 @@ export declare const Analyzer: {
                             data: DataView;
                             buffer: SharedArrayBuffer;
                         } | undefined;
-                        isStored(location: LocationData): 0 | 1 | -1;
+                        isStored(location: LocationData): 1 | -1 | 0;
                     };
                 };
                 tags: {
@@ -2184,6 +2203,7 @@ export declare const Analyzer: {
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
+                    clear(): void;
                 };
                 getFlowUpdateRequest(origin: LocationData, buildQueue?: string, originThread?: string): {
                     rebuildQueMap: Map<string, boolean>;
@@ -2237,6 +2257,7 @@ export declare const Analyzer: {
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
+                    clear(): void;
                 };
                 getVoxelUpdateRequests(origin: LocationData, buildQueue?: string, originThread?: string): {
                     rebuildQueMap: Map<string, boolean>;
@@ -2290,6 +2311,7 @@ export declare const Analyzer: {
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
+                    clear(): void;
                 };
                 getWorldSunRequests(origin: LocationData, buildQueue?: string, originThread?: string): {
                     rebuildQueMap: Map<string, boolean>;
@@ -2322,6 +2344,7 @@ export declare const Analyzer: {
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
+                    clear(): void;
                 };
                 getExplosionRequests(origin: LocationData, radius: number, buildQueue?: string, originThread?: string): {
                     rebuildQueMap: Map<string, boolean>;
@@ -2377,6 +2400,7 @@ export declare const Analyzer: {
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
+                    clear(): void;
                 };
             };
             $INIT(): Promise<void>;
@@ -2488,6 +2512,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                 };
                 flow: {
@@ -2543,6 +2568,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): Promise<void>;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
@@ -2596,6 +2622,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): Promise<void>;
                 };
                 worldSun: {
@@ -2630,6 +2657,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                 };
                 rgb: {
@@ -2674,6 +2702,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
@@ -2716,6 +2745,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                 };
                 sun: {
@@ -2760,6 +2790,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
@@ -2802,6 +2833,7 @@ export declare const Analyzer: {
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
+                        clear(): void;
                     }): void;
                 };
             };
@@ -2832,7 +2864,7 @@ export declare const Analyzer: {
                 };
                 _brushes: any[];
                 setWorldGen(worldGen: import("../../index.js").WorldGenInterface): void;
-                generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, mode: "generate" | "decorate", onDone: Function): Promise<void>;
+                generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, mode: "decorate" | "generate", onDone: Function): Promise<void>;
                 getBrush(): import("../index.js").WorldGenBrush;
             };
             builder: {
@@ -2874,6 +2906,9 @@ export declare const Analyzer: {
                         z: number;
                     };
                     nLocation: LocationData;
+                    _states: {
+                        foundVoxel: boolean;
+                    };
                     _process(doSecondCheck?: boolean): void;
                     build(location: LocationData): void;
                 };
@@ -3149,10 +3184,6 @@ export declare const Analyzer: {
                             get(location: LocationData): false | import("../../Meta/Data/WorldData.types.js").Column;
                             remove(location: LocationData): boolean;
                             fill(location: LocationData): void;
-                            height: {
-                                getRelative(location: LocationData): number;
-                                getAbsolute(location: LocationData): number;
-                            };
                         };
                         chunk: {
                             add(location: LocationData, sab: SharedArrayBuffer): import("../../Meta/Data/WorldData.types.js").ChunkData | undefined;
@@ -3185,7 +3216,7 @@ export declare const Analyzer: {
                             data: DataView;
                             buffer: SharedArrayBuffer;
                         } | undefined;
-                        isStored(location: LocationData): 0 | 1 | -1;
+                        isStored(location: LocationData): 1 | -1 | 0;
                     };
                 };
                 tags: {
@@ -3374,6 +3405,7 @@ export declare const Analyzer: {
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
+                    clear(): void;
                 };
                 getFlowUpdateRequest(origin: LocationData, buildQueue?: string, originThread?: string): {
                     rebuildQueMap: Map<string, boolean>;
@@ -3427,6 +3459,7 @@ export declare const Analyzer: {
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
+                    clear(): void;
                 };
                 getVoxelUpdateRequests(origin: LocationData, buildQueue?: string, originThread?: string): {
                     rebuildQueMap: Map<string, boolean>;
@@ -3480,6 +3513,7 @@ export declare const Analyzer: {
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
+                    clear(): void;
                 };
                 getWorldSunRequests(origin: LocationData, buildQueue?: string, originThread?: string): {
                     rebuildQueMap: Map<string, boolean>;
@@ -3512,6 +3546,7 @@ export declare const Analyzer: {
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
+                    clear(): void;
                 };
                 getExplosionRequests(origin: LocationData, radius: number, buildQueue?: string, originThread?: string): {
                     rebuildQueMap: Map<string, boolean>;
@@ -3567,6 +3602,7 @@ export declare const Analyzer: {
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
+                    clear(): void;
                 };
             };
             $INIT(): Promise<void>;

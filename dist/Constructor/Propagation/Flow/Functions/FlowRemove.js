@@ -1,5 +1,6 @@
 import { FlowManager as FM } from "../FlowManager.js";
 import { FlowUpdate } from "./FlowUpdate.js";
+import { EngineSettings } from "../../../../Data/Settings/EngineSettings.js";
 function RunRemoveCheck(tasks, vox) {
     const [dimension, x, y, z] = tasks.origin;
     const queue = tasks.queues.flow.remove.queue;
@@ -31,16 +32,18 @@ export async function FlowRemove(tasks) {
     const vox = FM.getVoxel(x, y, z);
     if (!vox)
         return;
-    RunRemoveCheck(tasks, vox);
+    const voxId = vox.getStringId();
+    const flowRate = vox.getSubstnaceData().getFlowRate();
+    RunRemoveCheck(tasks, voxId);
     const noRemoveMap = tasks.queues.flow.remove.noRemoveMap;
     while (tasks.queues.flow.remove.queue.length != 0) {
         FM.setDimension(dimension);
-        RunRemovePropagation(tasks, vox);
-        RunFlowReduce(tasks, vox);
-        await FlowUpdate(tasks, false, vox);
+        RunRemovePropagation(tasks, voxId);
+        RunFlowReduce(tasks, voxId);
+        await FlowUpdate(tasks, false);
         noRemoveMap.clear();
         tasks.runRebuildQueue();
-        await FM.wait(100);
+        await FM.wait(EngineSettings.settings.flow.baseFlowLimit * flowRate);
     }
 }
 function RunRemovePropagation(tasks, vox) {

@@ -43,11 +43,19 @@ export const FlowGradient = {
   const cl = tool.voxel.getLevel();
   const cs = tool.voxel.getLevelState();
 
+  if (cl == 15 && cs == 1) {
+   if (tool.voxel.isSameVoxel(tool.voxel.x, tool.voxel.y + 1, tool.voxel.z)) {
+    flowStates.setAll(15);
+    return tool.getWorldLevel().setFromQuadData(flowStates);
+   }
+  }
+
   for (let vertex = <QuadVertexes>1; vertex <= 4; vertex++) {
    const checkSet = checkSets[vertex];
 
    if (cl == 15 && cs != 1) {
     flowStates.vetexes[vertex] = 15;
+
     continue;
    }
 

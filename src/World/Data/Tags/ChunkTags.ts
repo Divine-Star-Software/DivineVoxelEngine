@@ -1,5 +1,5 @@
 import { ChunkTags } from "../../../Data/World/Chunk/ChunkTags.js";
-import { TagManager } from "divine-binary-tags"
+import { TagManager } from "divine-binary-tags";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 import { WorldDataTagIDs } from "../../../Data/Constants/Tags/WorldDataTagIds.js";
 import { ChunkTagIDs } from "../../../Data/Constants/Tags/ChunkTagIds.js";
@@ -50,9 +50,13 @@ ChunkDataTags.registerTag({
 export function InitalizeChunkTags() {
  ChunkDataTags.registerTag({
   id: ChunkTagIDs.heightMap,
-  type: "typed-number-array",
-  numberType: "32ui",
-  length: WorldSpaces.chunk.getArea() * 2,
+  type: "bit-array",
+  length: WorldSpaces.chunk.getHeight(),
+ });
+ ChunkDataTags.registerTag({
+  id: ChunkTagIDs.dirtyMap,
+  type: "bit-array",
+  length: WorldSpaces.chunk.getHeight(),
  });
  ChunkDataTags.registerTag({
   id: ChunkTagIDs.voxelIDSegment,
