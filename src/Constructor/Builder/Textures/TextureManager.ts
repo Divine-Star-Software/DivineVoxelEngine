@@ -25,7 +25,7 @@ export const TextureManager = {
   return uv;
  },
 
- setUVTextureMap(data: TextureTypeUVMap) {
+ setTextureIndex(data: TextureTypeUVMap) {
   this.textureDataHasBeenSet = true;
   this.data = data;
  },

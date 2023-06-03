@@ -4,7 +4,7 @@ export declare const TextureManager: {
     textureDataHasBeenSet: boolean;
     data: TextureTypeUVMap;
     getTextureUV(data: ConstructorTextureData, overlay?: boolean): number;
-    setUVTextureMap(data: TextureTypeUVMap): void;
+    setTextureIndex(data: TextureTypeUVMap): void;
     releaseTextureData(): void;
     isReady(): boolean;
 };

@@ -9,12 +9,12 @@ SubstanceTagBuilder.addNode([
  {
   id: SubstanceTagIds.parent,
   type: "string-map",
-  allowedComms: ["constructor", "nexus", "fx", "world"],
+  allowedComms: ["constructor", "nexus", "fx", "world","render"],
  },
  {
   id: SubstanceTagIds.rendered,
   type: "string-map",
-  allowedComms: ["constructor", "nexus", "fx", "world"],
+  allowedComms: ["constructor", "nexus", "fx", "world","render"],
  },
  {
   id: SubstanceTagIds.culledSubstnaces,

@@ -5,6 +5,21 @@ import { DataToolBase } from "../Classes/DataToolBase.js";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
 import { SubstanceDataTool } from "./SubstanceDataTool.js";
 export declare class DataTool extends DataToolBase {
+    /**# World Data Mode
+     * ---
+     * Read data directly from the world.
+     */
+    static WORLD_DATA_MODE: number;
+    /**# Voxel Matrix Mode
+     * ---
+     * Read from a voxel matrix.
+     */
+    static VOXEL_MATRIX_MODE: number;
+    /**# Voxel Data Mode
+     * ---
+     * Read data from a single voxel passed in via `loadInRaw`
+     */
+    static VOXEL_DATA_MODE: number;
     static _dtutil: DataTool;
     _chunkTool: ChunkDataTool;
     _substanceTool: SubstanceDataTool;
@@ -12,7 +27,7 @@ export declare class DataTool extends DataToolBase {
     static _columntool: ColumnDataTool;
     _locationKey: string;
     _loadedIn: boolean;
-    _mode: "World" | "Entity";
+    _mode: number;
     data: {
         raw: RawVoxelData;
         id: number;
@@ -46,12 +61,14 @@ export declare class DataTool extends DataToolBase {
         loopThroughIndex(run: (data: number[]) => void): void;
         loopThroughAllIndexTags(run: (id: string, value: number, index: number) => void): void;
     };
+    setMode(mode: typeof DataTool.VOXEL_DATA_MODE | typeof DataTool.VOXEL_MATRIX_MODE | typeof DataTool.WORLD_DATA_MODE): this;
     clear(): this;
     setDimension(dimensionId: string | number): this;
     setSecondary(enable: boolean): this;
     _getBaseId(id: number): number;
     getSubstnaceData(): SubstanceDataTool;
-    loadInRaw(rawData: RawVoxelData): void;
+    getRaw(): RawVoxelData;
+    loadInRaw(rawData: RawVoxelData): this;
     __process(): void;
     loadIn(): boolean;
     commit(heightMapUpdate?: number): boolean;
@@ -84,6 +101,7 @@ export declare class DataTool extends DataToolBase {
     isBarrier(): boolean;
     getId(base?: boolean): number;
     setId(id: number): this;
+    setStringId(id: string): this;
     getStringId(): string;
     isRenderable(): boolean;
     isSameVoxel(cx: number, cy: number, cz: number): boolean;

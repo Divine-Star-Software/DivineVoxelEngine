@@ -28,6 +28,8 @@ import { $INITFunction } from "./Init/InitRender.js";
 import { RichDataTool } from "../Tools/Data/RichDataTool.js";
 import { NodeMeshTool } from "./Tools/NodeMeshTool.js";
 import { NodeManager } from "./Nodes/NodeManager.js";
+import { DataSyncNode } from "../Data/DataSyncNode.js";
+import { DataManager } from "../Data/DataManager.js";
 
 export const DVER = {
  UTIL: Util,
@@ -45,16 +47,13 @@ export const DVER = {
  settings: EngineSettings,
  render: RenderManager,
 
- data: {
-  worldBounds: WorldBounds,
-  spaces: WorldSpaces,
- },
+ dataSyncNode: DataSyncNode,
+ data: DataManager,
 
- nodes : NodeManager,
+ nodes: NodeManager,
 
  tasks: RenderTasks,
  async $INIT(initData: DVERInitData) {
-
   await InitWorkers(this, initData);
  },
 
@@ -75,5 +74,3 @@ export const DVER = {
 };
 
 export type DivineVoxelEngineRender = typeof DVER;
-
-

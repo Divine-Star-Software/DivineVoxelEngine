@@ -46,7 +46,7 @@ export const ConstructorCommManager = Util.merge(ThreadComm.createCommManager({
     },
     syncTextureData(dasta) {
         for (const constructor of ConstructorCommManager.__comms) {
-            constructor.runTasks("sync-uv-texuture-data", dasta);
+            constructor.runTasks("sync-texuture-index", dasta);
         }
     },
     setConstructors(constructors) {

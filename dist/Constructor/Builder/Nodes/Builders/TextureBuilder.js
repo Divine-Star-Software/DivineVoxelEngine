@@ -1,5 +1,6 @@
-import { MeshBuilderTool } from "../Tools/MeshBuilderTool.js";
-import { MesherDataTool } from "../Tools/MesherDataTools.js";
+import { MeshBuilderTool } from "../../Tools/MeshBuilderTool.js";
+import { MesherDataTool } from "../../Tools/MesherDataTools.js";
+import { NodeBuilder } from "../Classes/NodeBuilder.js";
 const POSFunction = {
     top: (face) => {
         const yStart = Math.abs(face.yEnd - (TextureProcessor.height - 1));
@@ -49,7 +50,7 @@ const mesherData = new MesherDataTool();
 mesherData.attributes.add([["cuv3", [[], 3, "32f"]]]);
 mesherData.vars.add([["texture", 0]]);
 mesher.setMesherTool(mesherData);
-export const TextureProcessor = {
+const TextureProcessor = {
     visitedMap: {
         top: {},
         bottom: {},
@@ -301,3 +302,9 @@ export const TextureProcessor = {
             .create();
     },
 };
+class TXTBuilderBase extends NodeBuilder {
+    build(data) {
+        return TextureProcessor.processTexture(data);
+    }
+}
+export const TextureBuilder = new TXTBuilderBase("#dve_node_texture");

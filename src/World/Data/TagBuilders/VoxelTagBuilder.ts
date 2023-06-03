@@ -6,7 +6,7 @@ VoxelTagBuilder.addNode([
  {
   id: VoxelTagIDs.substance,
   type: "string-map",
-  allowedComms: ["constructor", "nexus", "fx", "world"],
+  allowedComms: ["constructor", "nexus", "fx", "world","render"],
  },
  {
   id: VoxelTagIDs.shapeID,

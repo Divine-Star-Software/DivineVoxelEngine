@@ -27,9 +27,9 @@ const chunkTool = new ChunkDataTool();
 export const Tasks = {
  data: {
   syncTextures: ThreadComm.registerTasks(
-   "sync-uv-texuture-data",
+   "sync-texuture-index",
    (data: any) => {
-    DVEC.builder.textureManager.setUVTextureMap(data);
+    DVEC.builder.textureManager.setTextureIndex(data);
     DVEC.hooks.texturesRegistered.run(DVEC.builder.textureManager);
    }
   ),
@@ -38,12 +38,9 @@ export const Tasks = {
   nodeMesh: ThreadComm.registerTasks<BuildNodeMesh>(
    "build-node-mesh",
    (data, onDone) => {
-    if (data[1] == "#dve_node_texture") {
-     const [returnData, transfers] =
-      DVEC.builder.textureProcessor.processTexture(data);
-     if (onDone) onDone(returnData, transfers);
-    }
-    if (onDone) onDone(false);
+    const nodeData = DVEC.builder.nodes.buildNode(data);
+    if (!nodeData) return onDone ? onDone(false) : 0;
+    onDone ? onDone(nodeData[0], nodeData[1]) : 0;
    },
    "deferred"
   ),
@@ -118,7 +115,6 @@ export const Tasks = {
  worldSun: ThreadComm.registerTasks<WorldSunTask>(
   ConstructorTasks.worldSun,
   (data, onDone) => {
-
    DVEC.propagation.worldSun.run(
     TasksRequest.getWorldSunRequests(data[0], data[1])
    );

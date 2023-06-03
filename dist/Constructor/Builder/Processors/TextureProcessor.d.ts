@@ -1,5 +1,5 @@
 import { DirectionNames } from "Meta";
-import { BuildNodeMesh, SetNodeMesh } from "Meta/Tasks/RenderTasks.types.js";
+import { BuildNodeMesh } from "Meta/Tasks/RenderTasks.types.js";
 type FaceData = {
     xStart: number;
     xEnd: number;
@@ -23,35 +23,35 @@ export declare const TextureProcessor: {
         yStart: number;
         yEnd: number;
     };
-    processTexture(buildTask: BuildNodeMesh): readonly [SetNodeMesh, ArrayBuffer[]];
+    processTexture(buildTask: BuildNodeMesh): readonly [readonly [import("voxelspaces").LocationData, import("../Types/MeshData.types.js").MeshAttributes], ArrayBuffer[]];
     _process(data: number[][], x: number, y: number): {
         w: boolean;
         e: boolean;
         t: boolean;
         b: boolean;
     };
-    gettopFace(data: number[][], sx: number, y: number): {
+    getTopFace(data: number[][], sx: number, y: number): {
         xStart: number;
         xEnd: number;
         yStart: number;
         yEnd: number;
         type: Faces;
     };
-    getbottomFace(data: number[][], sx: number, y: number): {
+    getBottomFace(data: number[][], sx: number, y: number): {
         xStart: number;
         xEnd: number;
         yStart: number;
         yEnd: number;
         type: Faces;
     };
-    getwestFace(data: number[][], x: number, sy: number): {
+    getWestFace(data: number[][], x: number, sy: number): {
         xStart: number;
         xEnd: number;
         yStart: number;
         yEnd: number;
         type: Faces;
     };
-    geteastFace(data: number[][], x: number, sy: number): {
+    getEastFace(data: number[][], x: number, sy: number): {
         xStart: number;
         xEnd: number;
         yStart: number;

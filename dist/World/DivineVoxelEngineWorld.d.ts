@@ -293,7 +293,7 @@ export declare const DVEW: {
                     data: DataView;
                     buffer: SharedArrayBuffer;
                 } | undefined;
-                isStored(location: import("voxelspaces").LocationData): 1 | -1 | 0;
+                isStored(location: import("voxelspaces").LocationData): 0 | 1 | -1;
             };
         };
         tags: {
@@ -351,8 +351,9 @@ export declare const DVEW: {
         };
     };
     dataSync: {
-        comms: Record<string, import("threadcomm").CommManager | import("threadcomm").CommBase>;
-        commOptions: Record<string, {
+        commMap: Map<string, import("threadcomm").CommBase | import("threadcomm").CommManager>;
+        comms: (import("threadcomm").CommBase | import("threadcomm").CommManager)[];
+        commOptions: WeakMap<any, {
             worldData: boolean;
             worldDataTags: boolean;
             voxelPalette: boolean;
@@ -363,7 +364,7 @@ export declare const DVEW: {
         _ready: boolean;
         $INIT(): void;
         isReady(): boolean;
-        registerComm(comm: import("threadcomm").CommManager | import("threadcomm").CommBase, data?: Partial<{
+        registerComm(comm: import("threadcomm").CommBase | import("threadcomm").CommManager, data?: Partial<{
             worldData: boolean;
             worldDataTags: boolean;
             voxelPalette: boolean;
@@ -371,7 +372,7 @@ export declare const DVEW: {
             materials: boolean;
             colliders: boolean;
         }>): void;
-        loopThroughComms(func: (comm: import("threadcomm").CommManager | import("threadcomm").CommBase, options: {
+        loopThroughComms(func: (comm: import("threadcomm").CommBase | import("threadcomm").CommManager, options: {
             worldData: boolean;
             worldDataTags: boolean;
             voxelPalette: boolean;

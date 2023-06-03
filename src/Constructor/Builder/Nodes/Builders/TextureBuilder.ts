@@ -1,18 +1,8 @@
-import { TypedArrays } from "divine-binary-object/Types/DBO.types";
 import { DirectionNames } from "Meta";
 import { BuildNodeMesh, SetNodeMesh } from "Meta/Tasks/RenderTasks.types.js";
-import { MeshBuilderTool } from "../Tools/MeshBuilderTool.js";
-import { MesherDataTool } from "../Tools/MesherDataTools.js";
-
-type ItemShapeData = {
- id: string;
- faces: {
-  direction: DirectionNames;
-  position: [number, number, number];
-  dimensions: [number, number, number];
-  uvs: [number, number, number, number];
- }[];
-};
+import { MeshBuilderTool } from "../../Tools/MeshBuilderTool.js";
+import { MesherDataTool } from "../../Tools/MesherDataTools.js";
+import { NodeBuilder } from "../Classes/NodeBuilder.js";
 
 type FaceData = {
  xStart: number;
@@ -85,7 +75,7 @@ const mesherData = new MesherDataTool();
 mesherData.attributes.add([["cuv3", [[], 3, "32f"]]]);
 mesherData.vars.add([["texture", 0]]);
 mesher.setMesherTool(mesherData);
-export const TextureProcessor = {
+const TextureProcessor = {
  visitedMap: <Record<Faces, Record<string, boolean>>>{
   top: {},
   bottom: {},
@@ -127,7 +117,7 @@ export const TextureProcessor = {
   };
  },
 
- processTexture(buildTask: BuildNodeMesh) {
+ processTexture(buildTask: BuildNodeMesh): [SetNodeMesh, ArrayBuffer[]] {
   const [location, type, data] = buildTask;
   const textureId = data.textureId;
   const textureData = data.textureData;
@@ -176,22 +166,22 @@ export const TextureProcessor = {
     if (result.t && !this.visited(x, y, "top")) {
      this.visit(x, y, "top");
      mesher.quad.setDirection("top");
-     this.buildFace(this.gettopFace(processed, x, y));
+     this.buildFace(this.getTopFace(processed, x, y));
     }
     if (result.b && !this.visited(x, y, "bottom")) {
      this.visit(x, y, "bottom");
      mesher.quad.setDirection("bottom");
-     this.buildFace(this.getbottomFace(processed, x, y));
+     this.buildFace(this.getBottomFace(processed, x, y));
     }
     if (result.w && !this.visited(x, y, "west")) {
      this.visit(x, y, "west");
      mesher.quad.setDirection("west");
-     this.buildFace(this.getwestFace(processed, x, y));
+     this.buildFace(this.getWestFace(processed, x, y));
     }
     if (result.e && !this.visited(x, y, "east")) {
      this.visit(x, y, "east");
      mesher.quad.setDirection("east");
-     this.buildFace(this.geteastFace(processed, x, y));
+     this.buildFace(this.getEastFace(processed, x, y));
     }
    }
   }
@@ -202,14 +192,7 @@ export const TextureProcessor = {
   mesher.quad.clear();
   mesherData.resetAll();
 
-  const returnData: SetNodeMesh = [
-   location,
-   //@ts-ignore
-   attributes,
-  ];
-
-  
-  return [returnData, transfers] as const;
+  return [[location, attributes], transfers];
  },
 
  _process(data: number[][], x: number, y: number) {
@@ -252,7 +235,7 @@ export const TextureProcessor = {
   };
  },
 
- gettopFace(data: number[][], sx: number, y: number) {
+ getTopFace(data: number[][], sx: number, y: number) {
   const face = this.getBlankFace(sx, y, "top");
   let endX = sx;
   for (let x = sx; x < this.width; x++) {
@@ -271,7 +254,7 @@ export const TextureProcessor = {
   return face;
  },
 
- getbottomFace(data: number[][], sx: number, y: number) {
+ getBottomFace(data: number[][], sx: number, y: number) {
   const face = this.getBlankFace(sx, y, "bottom");
   let endX = sx;
   for (let x = sx; x < this.width; x++) {
@@ -290,7 +273,7 @@ export const TextureProcessor = {
   return face;
  },
 
- getwestFace(data: number[][], x: number, sy: number) {
+ getWestFace(data: number[][], x: number, sy: number) {
   const face = this.getBlankFace(x, sy, "west");
   let endY = sy;
   for (let y = sy; y < this.height; y++) {
@@ -310,7 +293,7 @@ export const TextureProcessor = {
   return face;
  },
 
- geteastFace(data: number[][], x: number, sy: number) {
+ getEastFace(data: number[][], x: number, sy: number) {
   const face = this.getBlankFace(x, sy, "east");
   let endY = sy;
   for (let y = sy; y < this.height; y++) {
@@ -368,3 +351,11 @@ export const TextureProcessor = {
    .create();
  },
 };
+
+class TXTBuilderBase extends NodeBuilder {
+ build(data: BuildNodeMesh) {
+  return TextureProcessor.processTexture(data);
+ }
+}
+
+export const TextureBuilder = new TXTBuilderBase("#dve_node_texture");

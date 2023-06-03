@@ -3,7 +3,7 @@ export declare const ConstructorHooks: {
         textureDataHasBeenSet: boolean;
         data: import("../..").TextureTypeUVMap;
         getTextureUV(data: import("../..").ConstructorTextureData, overlay?: boolean): number;
-        setUVTextureMap(data: import("../..").TextureTypeUVMap): void;
+        setTextureIndex(data: import("../..").TextureTypeUVMap): void;
         releaseTextureData(): void;
         isReady(): boolean;
     }, void>;

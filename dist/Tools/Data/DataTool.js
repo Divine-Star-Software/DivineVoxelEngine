@@ -12,6 +12,21 @@ import { VoxelTagIDs } from "../../Data/Constants/Tags/VoxelTagIds.js";
 import { MappedDataRegister } from "../../Data/Register/MappedDataRegister.js";
 import { SubstanceDataTool } from "./SubstanceDataTool.js";
 class DataTool extends DataToolBase {
+    /**# World Data Mode
+     * ---
+     * Read data directly from the world.
+     */
+    static WORLD_DATA_MODE = 0;
+    /**# Voxel Matrix Mode
+     * ---
+     * Read from a voxel matrix.
+     */
+    static VOXEL_MATRIX_MODE = 1;
+    /**# Voxel Data Mode
+     * ---
+     * Read data from a single voxel passed in via `loadInRaw`
+     */
+    static VOXEL_DATA_MODE = 2;
     static _dtutil = new DataTool();
     _chunkTool = new ChunkDataTool();
     _substanceTool = new SubstanceDataTool();
@@ -19,7 +34,7 @@ class DataTool extends DataToolBase {
     static _columntool = new ColumnDataTool();
     _locationKey = "";
     _loadedIn = false;
-    _mode = "World";
+    _mode = 0;
     data = {
         raw: [0, 0, 0, 0],
         id: 0,
@@ -29,6 +44,10 @@ class DataTool extends DataToolBase {
     };
     __secondary = false;
     tags = VoxelTags;
+    setMode(mode) {
+        this._mode = mode;
+        return this;
+    }
     clear() {
         this._loadedIn = false;
         this._locationKey = "";
@@ -63,9 +82,13 @@ class DataTool extends DataToolBase {
         this._substanceTool.setSubstance(this.getSubstance());
         return this._substanceTool;
     }
+    getRaw() {
+        return this.data.raw;
+    }
     loadInRaw(rawData) {
         this.data.raw = rawData;
         this.__process();
+        return this;
     }
     __process() {
         this.data.id = this.data.raw[0];
@@ -81,7 +104,7 @@ class DataTool extends DataToolBase {
     }
     loadIn() {
         this._c = this.tags.data;
-        if (this._mode == "World") {
+        if (this._mode == DataTool.WORLD_DATA_MODE) {
             if (!this._chunkTool.setLocation(this.location).loadIn())
                 return false;
             const index = WorldSpaces.voxel.getIndexLocation(this.location);
@@ -93,7 +116,13 @@ class DataTool extends DataToolBase {
             this._loadedIn = true;
             return true;
         }
-        if (this._mode == "Entity") {
+        if (this._mode == DataTool.VOXEL_MATRIX_MODE) {
+            return false;
+        }
+        if (this._mode == DataTool.VOXEL_DATA_MODE) {
+            this.data.raw[0] = 0;
+            this.data.raw[1] = LightData.getS(0xff);
+            this.data.raw[2] = 0;
             return false;
         }
         return false;
@@ -101,7 +130,7 @@ class DataTool extends DataToolBase {
     commit(heightMapUpdate = 0) {
         if (!this._loadedIn)
             return false;
-        if (this._mode == "World") {
+        if (this._mode == DataTool.WORLD_DATA_MODE) {
             const index = WorldSpaces.voxel.getIndexLocation(this.location);
             this._chunkTool.segments.id.set(index, this.data.raw[0]);
             this._chunkTool.segments.light.set(index, this.data.raw[1]);
@@ -127,7 +156,11 @@ class DataTool extends DataToolBase {
             this._loadedIn = false;
             return true;
         }
-        if (this._mode == "Entity") {
+        if (this._mode == DataTool.VOXEL_MATRIX_MODE) {
+            return false;
+        }
+        if (this._mode == DataTool.VOXEL_DATA_MODE) {
+            return false;
         }
         return false;
     }
@@ -144,6 +177,8 @@ class DataTool extends DataToolBase {
         return LightData.hasSunLight(light);
     }
     getLight() {
+        if (this._mode == DataTool.VOXEL_DATA_MODE)
+            return 0xf;
         const vID = this.getId(true);
         VoxelTags.setVoxel(vID);
         if (vID == 0)
@@ -316,6 +351,9 @@ class DataTool extends DataToolBase {
         this.data.id = id;
         this.data.baseId = this._getBaseId(id);
         return this;
+    }
+    setStringId(id) {
+        return this.setId(VoxelPaletteReader.id.numberFromString(id));
     }
     getStringId() {
         if (this.__secondary) {

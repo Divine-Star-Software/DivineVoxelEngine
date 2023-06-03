@@ -4,12 +4,12 @@ import { ChunkProcessor } from "./Processors/ChunkProcessor.js";
 import { OverrideManager } from "./Rules/Overrides/OverridesManager.js";
 import { RenderedSubstances } from "./Rules/RenderedSubstances.js";
 import { TextureManager } from "./Textures/TextureManager.js";
-import { TextureProcessor } from "./Processors/TextureProcessor.js";
+import { NodeBuilderManager } from "./Nodes/NodeBuilderManager.js";
 export const Builder = {
     constructors: VoxelConstructors,
     textureManager: TextureManager,
     chunkProcessor: ChunkProcessor,
-    textureProcessor: TextureProcessor,
+    nodes: NodeBuilderManager,
     overrides: OverrideManager,
     renderedSubstances: RenderedSubstances,
     $INIT() {

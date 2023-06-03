@@ -19,7 +19,7 @@ export const TextureManager = {
         }
         return uv;
     },
-    setUVTextureMap(data) {
+    setTextureIndex(data) {
         this.textureDataHasBeenSet = true;
         this.data = data;
     },

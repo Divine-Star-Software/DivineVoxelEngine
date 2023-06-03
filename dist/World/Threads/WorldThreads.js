@@ -20,6 +20,7 @@ DataSync.registerComm(NexusComm, {
 export const RichWorldComm = ThreadComm.createComm("rich-world");
 DataSync.registerComm(RichWorldComm);
 export const ParentComm = ThreadComm.parent;
+DataSync.registerComm(ParentComm);
 ThreadComm.registerTasks("sync-settings", (settings) => {
     EngineSettings.syncSettings(settings);
     WorldThreadState._settingsSynced = true;

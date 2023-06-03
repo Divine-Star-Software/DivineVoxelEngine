@@ -45,10 +45,6 @@ export class DVENodeMesh {
             geo._boundingInfo = this.defaultBb;
             geo.useBoundingInfoFromGeometry = true;
         }
-        mesh._updateBoundingInfo = () => {
-            console.log("sup");
-            return mesh;
-        };
         mesh.checkCollisions = this.checkCollisions;
         mesh.doNotSerialize = this.seralize;
         mesh.alwaysSelectAsActiveMesh = true;

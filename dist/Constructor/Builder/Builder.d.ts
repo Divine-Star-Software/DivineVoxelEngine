@@ -27,7 +27,7 @@ export declare const Builder: {
         textureDataHasBeenSet: boolean;
         data: import("../../index.js").TextureTypeUVMap;
         getTextureUV(data: import("../../index.js").ConstructorTextureData, overlay?: boolean): number;
-        setUVTextureMap(data: import("../../index.js").TextureTypeUVMap): void;
+        setTextureIndex(data: import("../../index.js").TextureTypeUVMap): void;
         releaseTextureData(): void;
         isReady(): boolean;
     };
@@ -44,97 +44,10 @@ export declare const Builder: {
         _process(doSecondCheck?: boolean): void;
         build(location: LocationData): void;
     };
-    textureProcessor: {
-        visitedMap: Record<"top" | "bottom" | "west" | "east", Record<string, boolean>>;
-        _resetVisitedMap(): void;
-        faceMap: Record<import("../../index.js").DirectionNames, number>;
-        height: number;
-        width: number;
-        depth: number;
-        getPosition: Record<"top" | "bottom" | "west" | "east", (face: {
-            xStart: number;
-            xEnd: number;
-            yStart: number;
-            yEnd: number;
-            type: "top" | "bottom" | "west" | "east";
-        }) => [number, number, number]>;
-        getDimensions: Record<"top" | "bottom" | "west" | "east", (face: {
-            xStart: number;
-            xEnd: number;
-            yStart: number;
-            yEnd: number;
-            type: "top" | "bottom" | "west" | "east";
-        }) => [number, number]>;
-        getTruePosition(face: {
-            xStart: number;
-            xEnd: number;
-            yStart: number;
-            yEnd: number;
-            type: "top" | "bottom" | "west" | "east";
-        }): {
-            xStart: number;
-            xEnd: number;
-            yStart: number;
-            yEnd: number;
-        };
-        processTexture(buildTask: import("../../Meta/Tasks/RenderTasks.types.js").BuildNodeMesh): readonly [import("../../Meta/Tasks/RenderTasks.types.js").SetNodeMesh, ArrayBuffer[]];
-        _process(data: number[][], x: number, y: number): {
-            w: boolean;
-            e: boolean;
-            t: boolean;
-            b: boolean;
-        };
-        gettopFace(data: number[][], sx: number, y: number): {
-            xStart: number;
-            xEnd: number;
-            yStart: number;
-            yEnd: number;
-            type: "top" | "bottom" | "west" | "east";
-        };
-        getbottomFace(data: number[][], sx: number, y: number): {
-            xStart: number;
-            xEnd: number;
-            yStart: number;
-            yEnd: number;
-            type: "top" | "bottom" | "west" | "east";
-        };
-        getwestFace(data: number[][], x: number, sy: number): {
-            xStart: number;
-            xEnd: number;
-            yStart: number;
-            yEnd: number;
-            type: "top" | "bottom" | "west" | "east";
-        };
-        geteastFace(data: number[][], x: number, sy: number): {
-            xStart: number;
-            xEnd: number;
-            yStart: number;
-            yEnd: number;
-            type: "top" | "bottom" | "west" | "east";
-        };
-        getBlankFace(x: number, y: number, face: "top" | "bottom" | "west" | "east"): {
-            xStart: number;
-            xEnd: number;
-            yStart: number;
-            yEnd: number;
-            type: "top" | "bottom" | "west" | "east";
-        };
-        visit(x: number, y: number, face: "top" | "bottom" | "west" | "east"): void;
-        visited(x: number, y: number, face: "top" | "bottom" | "west" | "east"): boolean;
-        calculateUV(face: {
-            xStart: number;
-            xEnd: number;
-            yStart: number;
-            yEnd: number;
-            type: "top" | "bottom" | "west" | "east";
-        }): [number, number, number, number];
-        buildFace(face: {
-            xStart: number;
-            xEnd: number;
-            yStart: number;
-            yEnd: number;
-            type: "top" | "bottom" | "west" | "east";
-        }): void;
+    nodes: {
+        builders: Map<string, import("./Nodes/Classes/NodeBuilder.js").NodeBuilder>;
+        registerBuilder(builder: import("./Nodes/Classes/NodeBuilder.js").NodeBuilder): void;
+        buildNode(data: import("../../Meta/Tasks/RenderTasks.types.js").BuildNodeMesh): false | [import("../../Meta/Tasks/RenderTasks.types.js").SetNodeMesh, ArrayBuffer[]];
     };
     overrides: {
         overrides: Record<import("./Types/Override.types.js").OverrideTypes, Map<string, Map<string, (data: import("./Types/Override.types.js").FaceDataOverride) => boolean>>>;

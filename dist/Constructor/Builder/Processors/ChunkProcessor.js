@@ -53,10 +53,7 @@ export const ChunkProcessor = {
         let lastY = -Infinity;
         const maxIndex = WorldSpaces.chunk.getVolume();
         while (index < maxIndex) {
-            const position = WorldSpaces.voxel.getIndexToXYZ(index);
-            const x = position.x;
-            const y = position.y;
-            const z = position.z;
+            const { x, y, z } = WorldSpaces.voxel.getIndexToXYZ(index);
             if (y != lastY) {
                 this._states.foundVoxel = false;
                 heightMapTool.chunk.setY(y);

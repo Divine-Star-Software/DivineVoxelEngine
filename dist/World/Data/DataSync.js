@@ -28,13 +28,13 @@ class DataSyncNode {
         });
     }
     unSyncInThread(commName, input) {
-        const comm = DataSync.comms[commName];
+        const comm = DataSync.commMap.get(commName);
         if (!comm)
             return;
         const output = this.data.getUnSyncData(input);
         if (!output)
             return false;
-        if (!this.data.commCheck(DataSync.commOptions[commName]))
+        if (!this.data.commCheck(DataSync.commOptions.get(comm)))
             return false;
         comm.unSyncData(this.data.dataSyncType, output);
     }
@@ -49,23 +49,26 @@ class DataSyncNode {
         });
     }
     syncInThread(commName, input) {
-        const comm = DataSync.comms[commName];
+        const comm = DataSync.commMap.get(commName);
         if (!comm)
             return;
         const output = this.data.getSyncData(input);
         if (!output)
             return false;
-        if (!this.data.commCheck(DataSync.commOptions[commName]))
+        if (!this.data.commCheck(DataSync.commOptions.get(comm)))
             return false;
         comm.syncData(this.data.dataSyncType, output);
     }
 }
-//type WorldDataSync = [LocationData,SharedArrayBuffer]
 export const DataSync = {
-    comms: {},
-    commOptions: {},
+    commMap: new Map(),
+    comms: [],
+    commOptions: new WeakMap(),
     _ready: false,
     $INIT() {
+        this.loopThroughComms((comm) => {
+            this.commMap.set(comm.name, comm);
+        });
         VoxelDataGenerator.$generate();
         VoxelTagBuilder.sync();
         SubstanceDataGenerator.$generate();
@@ -86,20 +89,19 @@ export const DataSync = {
         return this._ready;
     },
     registerComm(comm, data = {}) {
-        this.comms[comm.name] = comm;
-        this.commOptions[comm.name] = {
+        this.comms.push(comm);
+        this.commOptions.set(comm, {
             worldData: data.worldData !== undefined ? data.worldData : true,
             voxelPalette: data.voxelPalette !== undefined ? data.voxelPalette : true,
             voxelTags: data.voxelTags !== undefined ? data.voxelTags : true,
             materials: data.materials !== undefined ? data.materials : false,
             colliders: data.colliders !== undefined ? data.colliders : false,
             worldDataTags: data.worldDataTags !== undefined ? data.worldDataTags : true,
-        };
+        });
     },
     loopThroughComms(func) {
-        for (const commKey of Object.keys(DataSync.comms)) {
-            const comm = DataSync.comms[commKey];
-            const options = DataSync.commOptions[commKey];
+        for (const comm of DataSync.comms) {
+            const options = this.commOptions.get(comm);
             if (!comm.isReady())
                 continue;
             func(comm, options);

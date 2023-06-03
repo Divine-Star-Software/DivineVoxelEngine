@@ -61,11 +61,11 @@ class DataSyncNode<SyncInput, SyncOutput, UnSyncInput, UnSyncOutput> {
   });
  }
  unSyncInThread(commName: string, input: UnSyncInput) {
-  const comm = DataSync.comms[commName];
+  const comm = DataSync.commMap.get(commName);
   if (!comm) return;
   const output = this.data.getUnSyncData(input);
   if (!output) return false;
-  if (!this.data.commCheck(DataSync.commOptions[commName])) return false;
+  if (!this.data.commCheck(DataSync.commOptions.get(comm)!)) return false;
   comm.unSyncData(this.data.dataSyncType, output);
  }
  sync(input: SyncInput) {
@@ -77,20 +77,23 @@ class DataSyncNode<SyncInput, SyncOutput, UnSyncInput, UnSyncOutput> {
   });
  }
  syncInThread(commName: string, input: SyncInput) {
-  const comm = DataSync.comms[commName];
+  const comm = DataSync.commMap.get(commName);
   if (!comm) return;
   const output = this.data.getSyncData(input);
   if (!output) return false;
-  if (!this.data.commCheck(DataSync.commOptions[commName])) return false;
+  if (!this.data.commCheck(DataSync.commOptions.get(comm)!)) return false;
   comm.syncData(this.data.dataSyncType, output);
  }
 }
-//type WorldDataSync = [LocationData,SharedArrayBuffer]
 export const DataSync = {
- comms: <Record<string, CommBase | CommManager>>{},
- commOptions: <Record<string, CommSyncOptions>>{},
+ commMap: new Map<string, CommBase | CommManager>(),
+ comms: <(CommBase | CommManager)[]>[],
+ commOptions: new WeakMap<any, CommSyncOptions>(),
  _ready: false,
  $INIT() {
+  this.loopThroughComms((comm) => {
+   this.commMap.set(comm.name, comm);
+  });
   VoxelDataGenerator.$generate();
   VoxelTagBuilder.sync();
   SubstanceDataGenerator.$generate();
@@ -115,24 +118,21 @@ export const DataSync = {
   comm: CommBase | CommManager,
   data: Partial<CommSyncOptions> = {}
  ) {
-  this.comms[comm.name] = comm;
-  this.commOptions[comm.name] = {
+  this.comms.push(comm);
+  this.commOptions.set(comm, {
    worldData: data.worldData !== undefined ? data.worldData : true,
    voxelPalette: data.voxelPalette !== undefined ? data.voxelPalette : true,
    voxelTags: data.voxelTags !== undefined ? data.voxelTags : true,
    materials: data.materials !== undefined ? data.materials : false,
    colliders: data.colliders !== undefined ? data.colliders : false,
    worldDataTags: data.worldDataTags !== undefined ? data.worldDataTags : true,
-  };
+  });
  },
  loopThroughComms(
   func: (comm: CommBase | CommManager, options: CommSyncOptions) => void
  ) {
-  for (const commKey of Object.keys(DataSync.comms)) {
-   const comm = DataSync.comms[commKey];
-
-   const options = DataSync.commOptions[commKey];
-
+  for (const comm of DataSync.comms) {
+   const options = this.commOptions.get(comm)!;
    if (!comm.isReady()) continue;
    func(comm, options);
   }
@@ -294,19 +294,19 @@ export const DataSync = {
   }),
  },
 
- maps : {
-    strings: new DataSyncNode<
-    RegisterStringMapSync,
-    RegisterStringMapSync,
-    void,
-    false
-   >({
-    dataSyncType: DataSyncIds.registerStringMap,
-    commCheck: () => true,
-    getSyncData: (data) => data,
-    getUnSyncData: () => false,
-   }),
-   objects: new DataSyncNode<
+ maps: {
+  strings: new DataSyncNode<
+   RegisterStringMapSync,
+   RegisterStringMapSync,
+   void,
+   false
+  >({
+   dataSyncType: DataSyncIds.registerStringMap,
+   commCheck: () => true,
+   getSyncData: (data) => data,
+   getUnSyncData: () => false,
+  }),
+  objects: new DataSyncNode<
    RegisterObjectMapSync,
    RegisterObjectMapSync,
    void,
@@ -318,6 +318,4 @@ export const DataSync = {
    getUnSyncData: () => false,
   }),
  },
-
-
 };
