@@ -43,7 +43,7 @@ const swapAO = () => {
 };
 
 const shouldAOFlip = (face: DirectionNames) => {
- if (LightGradient.settings.doAO) return false;
+ if (states.ignoreAO) return false;
  LightGradient.tool.faceDataOverride.face = face;
  LightGradient.tool.faceDataOverride.default = false;
 

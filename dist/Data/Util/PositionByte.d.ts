@@ -1,4 +1,3 @@
-import { Vector3 } from "Meta/Util.types";
 /**# PositionByte
  * ---
  * Handles encoding a 32 bit float with a voxel space posiiton.

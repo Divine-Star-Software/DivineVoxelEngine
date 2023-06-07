@@ -19,7 +19,7 @@ const swapAO = () => {
     AOValue.set(AOValue.vetexes[1], AOValue.vetexes[2], AOValue.vetexes[3], AOValue.vetexes[4]);
 };
 const shouldAOFlip = (face) => {
-    if (LightGradient.settings.doAO)
+    if (states.ignoreAO)
         return false;
     LightGradient.tool.faceDataOverride.face = face;
     LightGradient.tool.faceDataOverride.default = false;

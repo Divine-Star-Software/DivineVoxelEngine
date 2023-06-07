@@ -1,4 +1,5 @@
-import { DirectionNames, Vector3 } from "Meta/Util.types";
+import { Position3Matrix } from "Math";
+import { DirectionNames } from "Meta/Util.types";
 
 export type GeometryBuildData = {
  positions: number[];
@@ -11,7 +12,7 @@ export type GeometryBuildData = {
  uvs: number[];
  overlayUVs: number[];
  indicieIndex: number;
- position: Vector3;
+ position: Position3Matrix;
 };
 export type UVCords = { start: number; end: number };
 export type AddQuadUVsData = {
@@ -27,9 +28,9 @@ export type AddQuadUVsData = {
 export type TextureRotations = 0 | 90 | 180 | 270 | 360 | 45 | 315;
 export type QuadDimensions = { width: number; height: number };
 export type QuadVertexes = 1 | 2 | 3 | 4;
-export type QuadTransforms = Record<QuadVertexes, Vector3>;
+export type QuadTransforms = Record<QuadVertexes, Position3Matrix>;
 export type TriangleVertexes = 1 | 2 | 3;
-export type TriangleTransforms = Record<TriangleVertexes, Vector3>;
+export type TriangleTransforms = Record<TriangleVertexes, Position3Matrix>;
 export type CustomVertexData = [number, number, number, number] | [number];
 export type AdvancedUVs = {
  hs1: number;

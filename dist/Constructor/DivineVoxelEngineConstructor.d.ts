@@ -458,7 +458,7 @@ export declare const DVEC: {
         };
         _brushes: any[];
         setWorldGen(worldGen: import("../index.js").WorldGenInterface): void;
-        generate(data: import("../Meta/Tasks/Tasks.types.js").GenerateTasks, mode: "generate" | "decorate", onDone: Function): Promise<void>;
+        generate(data: import("../Meta/Tasks/Tasks.types.js").GenerateTasks, mode: "decorate" | "generate", onDone: Function): Promise<void>;
         getBrush(): import("./index.js").WorldGenBrush;
     };
     builder: {

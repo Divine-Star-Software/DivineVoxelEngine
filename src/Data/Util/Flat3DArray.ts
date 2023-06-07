@@ -1,5 +1,6 @@
+import { Position3Matrix } from "Math";
 
-import { Vector3 } from "Meta/Util.types";
+
 
 /**# Flat 3D Array
  * ---
@@ -29,14 +30,14 @@ export const Flat3DArray = {
  getValue(x: number, y: number, z: number, array: Uint32Array | number[]) {
   return array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];
  },
- getValueUseObj(position: Vector3, array: Uint32Array | number[]) {
+ getValueUseObj(position: Position3Matrix, array: Uint32Array | number[]) {
   return array[
    position.x +
     position.y * this.bounds.x +
     position.z * this.bounds.z * this.bounds.y
   ];
  },
- getValueUseObjSafe(position: Vector3, array: Uint32Array | number[]) {
+ getValueUseObjSafe(position: Position3Matrix, array: Uint32Array | number[]) {
   if(array instanceof Uint32Array) {
   return Atomics.load(
    array,
@@ -50,7 +51,7 @@ export const Flat3DArray = {
  setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number) {
   array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] = value;
  },
- setValueUseObj(position: Vector3, array: Uint32Array | number[], value: number) {
+ setValueUseObj(position: Position3Matrix, array: Uint32Array | number[], value: number) {
   array[
    position.x +
     position.y * this.bounds.x +
@@ -58,7 +59,7 @@ export const Flat3DArray = {
   ] = value;
  },
  setValueUseObjSafe(
-  position: Vector3,
+  position: Position3Matrix,
   array: Uint32Array | number[],
   value: number
  ) {
@@ -77,7 +78,7 @@ export const Flat3DArray = {
   //@ts-ignore
   array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] = undefined;
  },
- deleteUseObj(position: Vector3, array: Uint32Array | number[]) {
+ deleteUseObj(position: Position3Matrix, array: Uint32Array | number[]) {
   //@ts-ignore
   array[
    position.x +
@@ -88,7 +89,7 @@ export const Flat3DArray = {
  getIndex(x: number, y: number, z: number) {
   return x + y * this.bounds.x + z * this.bounds.z * this.bounds.y;
  },
- getXYZ(index: number): Vector3 {
+ getXYZ(index: number): Position3Matrix {
   this._position.x = index % this.bounds.x >> 0;
   this._position.y = (index / this.bounds.x) % this.bounds.y >> 0;
   this._position.z = (index / (this.bounds.x * this.bounds.y)) >> 0;

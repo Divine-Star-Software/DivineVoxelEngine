@@ -17,3 +17,13 @@ export type Dimension3DArray = [width: number, height: number, depth: number];
 
 export type Vec2Array = [x: number, y: number];
 export type Vec3Array = [x: number, y: number, z: number];
+
+export type CompassDirectionNames =
+ | "north"
+ | "south"
+ | "east"
+ | "west"
+ | "north-west"
+ | "north-east"
+ | "south-west"
+ | "south-east";
