@@ -14,6 +14,17 @@ SubstanceManager.registerData([
         ],
     },
     {
+        id: "#dve_translucent",
+        tags: [
+            ["#dve_parent_substance", "#dve_flora"],
+            ["#dve_rendered_substance", "#dve_solid"],
+            ["#dve_is_solid", true],
+            ["#dve_is_liquid", false],
+            ["#dve_flow_rate", 0],
+            ["#dve_culled_substances", []],
+        ],
+    },
+    {
         id: "#dve_transparent",
         tags: [
             ["#dve_parent_substance", "#dve_solid"],

@@ -35,7 +35,7 @@ export const ChunkProcessor = {
   }
   const constructor = mDataTool.getConstructor();
   const mesher = RenderedSubstances.meshers.get(
-   SubstanceRules.getSubstanceParent(mDataTool.getSubstnaceData().getRendered())
+   mDataTool.getSubstnaceData().getRendered()
   );
 
   if (!mesher || !constructor) return;

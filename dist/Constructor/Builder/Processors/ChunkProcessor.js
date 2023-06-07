@@ -1,5 +1,3 @@
-//objects
-import { SubstanceRules } from "../Rules/SubstanceRules.js";
 import { RenderedSubstances } from "../Rules/RenderedSubstances.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 //data
@@ -29,7 +27,7 @@ export const ChunkProcessor = {
             }
         }
         const constructor = mDataTool.getConstructor();
-        const mesher = RenderedSubstances.meshers.get(SubstanceRules.getSubstanceParent(mDataTool.getSubstnaceData().getRendered()));
+        const mesher = RenderedSubstances.meshers.get(mDataTool.getSubstnaceData().getRendered());
         if (!mesher || !constructor)
             return;
         const voxelPOS = WorldSpaces.voxel.setLocation(this.nLocation).getPosition();

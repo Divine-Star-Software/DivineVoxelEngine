@@ -25,7 +25,7 @@ class SubstanceDataTool {
         return MappedDataRegister.stringMaps.get("substance", SubstanceTagIds.parent, SubstanceDataTool.getTagValue(this.substanceTagIndex, SubstanceTagIds.parent));
     }
     getRendered() {
-        return MappedDataRegister.stringMaps.get("substance", SubstanceTagIds.rendered, SubstanceDataTool.getTagValue(this.substanceTagIndex, SubstanceTagIds.parent));
+        return MappedDataRegister.stringMaps.get("substance", SubstanceTagIds.rendered, SubstanceDataTool.getTagValue(this.substanceTagIndex, SubstanceTagIds.rendered));
     }
     getCulled() {
         return MappedDataRegister.objectMaps.get("substance", SubstanceTagIds.culledSubstnaces, SubstanceDataTool.getTagValue(this.substanceTagIndex, SubstanceTagIds.culledSubstnaces));

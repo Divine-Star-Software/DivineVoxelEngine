@@ -26,7 +26,7 @@ Need help or want to share your creations? Join the [discord](https://discord.gg
 
 - Different voxel types and shapes.
 - Chunk-based rendering and meshing.
-- In parallel mesh building, light updates, and other world updats.
+- In parallel mesh building, light updates, and other world updates.
 - Multi-threaded data access.
 - Ambient occlusion and smooth lighting.
 - Animated and connected textures.
@@ -35,7 +35,7 @@ Need help or want to share your creations? Join the [discord](https://discord.gg
 - Voxel Lighting system.
   - Easy to update and remove.
   - Support for different colored lights.
-  - Sunlight global illumination/
+  - Sunlight global illumination.
 - World Data API - Easy tools to build worlds.
 - Easy to use auto-update world on voxel add/remove
   - Will auto update light sources for you.

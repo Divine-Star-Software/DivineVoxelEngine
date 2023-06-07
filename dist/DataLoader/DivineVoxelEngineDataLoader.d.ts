@@ -351,11 +351,11 @@ export declare const DVEDL: {
         serializeRegion(location: import("voxelspaces").LocationData): false | [location: import("voxelspaces").LocationData, buffer: ArrayBuffer][];
         serializeColumn(location: import("voxelspaces").LocationData): false | Uint8Array;
         deSerializeRegion(regionBuffers: ArrayBuffer[] | SharedArrayBuffer[]): void;
-        deSerializeColumn(columnBuffer: ArrayBuffer | SharedArrayBuffer): {
+        deSerializeColumn(columnBuffer: SharedArrayBuffer | ArrayBuffer): {
             column: SharedArrayBuffer;
             chunks: SharedArrayBuffer[];
         };
-        _readDataIntoBuffer(offset: number, target: Uint8Array, source: ArrayBuffer | SharedArrayBuffer, sourceOffset?: number, sourceLength?: number): number;
+        _readDataIntoBuffer(offset: number, target: Uint8Array, source: SharedArrayBuffer | ArrayBuffer, sourceOffset?: number, sourceLength?: number): number;
     };
     dataHandler: {
         mode: import("./DataHandler/DataHandlerBaes.js").DataLoaderModes;

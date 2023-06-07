@@ -48,7 +48,7 @@ export class SubstanceDataTool {
   return MappedDataRegister.stringMaps.get(
    "substance",
    SubstanceTagIds.rendered,
-   SubstanceDataTool.getTagValue(this.substanceTagIndex, SubstanceTagIds.parent)
+   SubstanceDataTool.getTagValue(this.substanceTagIndex, SubstanceTagIds.rendered)
   );
  }
  getCulled(): string[] {
