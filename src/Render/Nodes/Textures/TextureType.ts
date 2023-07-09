@@ -8,6 +8,7 @@ import { DVENodeMaterial } from "../Materials/NodeMaterial.js";
 
 class TextureSegment {
  totalTextures = 0;
+ textureMap = new Map<string, TextureData>();
  textures: TextureData[] = [];
  textureIndex: Record<string, number> = {};
  animationsMap: number[][] = [];
@@ -35,15 +36,23 @@ class TextureSegment {
   this.textureID = `${parentID}_${id}`.replace("#", "");
  }
 
+ /**# clearData
+  * ---
+  * Clear all un-needed data.
+  */
  clearData() {
   this.paths.clear();
   this.textures = [];
+  this.textureMap.clear();
   this.textureIndex = {};
   this.shaderTexture = [];
   this.animationsMap = [];
   this.animationTimes = [];
  }
-
+ /**# flush
+  * ---
+  * Clear all data.
+  */
  flush() {
   this.clearData();
   this.shaderTexture.forEach((t) => t.dispose());
@@ -127,6 +136,7 @@ export class TextureType {
   const segment = this.segments.get(data.segment ? data.segment : "main");
   if (!segment) return false;
   segment.textures.push(data);
+  segment.textureMap.set(data.id, data);
  }
 
  addToShader(shader: DivineShader) {

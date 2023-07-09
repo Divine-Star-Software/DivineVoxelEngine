@@ -41,6 +41,15 @@ export const TextureManager = {
     defineDefaultTexturePath(path) {
         this.defaultTexturePath = path;
     },
+    getTextureData([type, id, segment]) {
+        const t = this.getTextureType(type);
+        if (!t)
+            return undefined;
+        let s = segment ? t.segments.get(segment) : t.segments.get("main");
+        if (!s)
+            return undefined;
+        return s.textureMap.get(id);
+    },
     getTextureType(id) {
         const texture = this.textureTypes.get(id);
         if (!texture)

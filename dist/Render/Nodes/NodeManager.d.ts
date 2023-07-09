@@ -70,6 +70,7 @@ export declare const NodeManager: {
         $START_ANIMATIONS(): void;
         generateTextureUVMap(): import("../../index.js").TextureTypeUVMap;
         defineDefaultTexturePath(path: string): void;
+        getTextureData([type, id, segment]: import("../../index.js").ConstructorTextureData): import("../../index.js").TextureData | undefined;
         getTextureType(id: string): false | import("./Textures/TextureType.js").TextureType;
         addTextureType(id: string): import("./Textures/TextureType.js").TextureType;
         clearTextureData(): void;

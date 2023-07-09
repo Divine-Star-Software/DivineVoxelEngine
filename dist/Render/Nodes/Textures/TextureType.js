@@ -8,6 +8,7 @@ class TextureSegment {
     mode;
     attributeID;
     totalTextures = 0;
+    textureMap = new Map();
     textures = [];
     textureIndex = {};
     animationsMap = [];
@@ -26,14 +27,23 @@ class TextureSegment {
         this.attributeID = attributeID;
         this.textureID = `${parentID}_${id}`.replace("#", "");
     }
+    /**# clearData
+     * ---
+     * Clear all un-needed data.
+     */
     clearData() {
         this.paths.clear();
         this.textures = [];
+        this.textureMap.clear();
         this.textureIndex = {};
         this.shaderTexture = [];
         this.animationsMap = [];
         this.animationTimes = [];
     }
+    /**# flush
+     * ---
+     * Clear all data.
+     */
     flush() {
         this.clearData();
         this.shaderTexture.forEach((t) => t.dispose());
@@ -106,6 +116,7 @@ export class TextureType {
         if (!segment)
             return false;
         segment.textures.push(data);
+        segment.textureMap.set(data.id, data);
     }
     addToShader(shader) {
         const main = this.segments.get("main");

@@ -67,6 +67,14 @@ export const TextureManager = {
   this.defaultTexturePath = path;
  },
 
+ getTextureData([type, id, segment]: ConstructorTextureData): TextureData | undefined {
+  const t = this.getTextureType(type);
+  if (!t) return undefined;
+  let s = segment ? t.segments.get(segment) : t.segments.get("main")!;
+  if (!s) return undefined;
+  return s.textureMap.get(id);
+ },
+
  getTextureType(id: string) {
   const texture = this.textureTypes.get(id);
   if (!texture) return false;
@@ -156,4 +164,3 @@ export const TextureManager = {
   return map;
  },
 };
-

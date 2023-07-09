@@ -95,6 +95,7 @@ export declare const RenderManager: {
         voxelVertexFunctions: string[];
         _defaultShader: import("divine-shaders").DivineShader;
         $INIT(): void;
+        _addInstances(shader: import("divine-shaders").DivineShader): void;
         createVoxelShader(id: string): import("divine-shaders").DivineShader;
         createBasicTextureShader(id: string): import("divine-shaders").DivineShader;
         createSkyBoxShader(id: string): import("divine-shaders").DivineShader;

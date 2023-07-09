@@ -191,8 +191,7 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
         shader.setCodeBody("frag", `@standard_color`);
         this._defaultShader = shader;
     },
-    createVoxelShader(id) {
-        const shader = this._defaultShader.clone(id);
+    _addInstances(shader) {
         shader.data.vertexBeforeMain.GLSL = `
   #ifdef INSTANCES
   //matricies
@@ -203,10 +202,15 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
   //custom attributes
   #endif
 `;
+    },
+    createVoxelShader(id) {
+        const shader = this._defaultShader.clone(id);
+        this._addInstances(shader);
         return shader;
     },
     createBasicTextureShader(id) {
         const shader = DivineShaderBuilder.shaders.create(id);
+        this._addInstances(shader);
         shader.addAttributes([
             ["position", "vec3"],
             ["normal", "vec3"],
@@ -215,14 +219,8 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
             ["ocuv3", "vec4"],
         ]);
         shader.loadInFunctions(["#dve_fmb2", "#dve_fmb3", "#dve_fog", "doFog", "getBase", "getMainColor"], "frag");
-        shader.addUniform([
-            ["fogOptions", "vec4"],
-            ["vFogInfos", "vec4"],
-            ["vFogColor", "vec3"],
-            ["time", "float"],
-            ["cameraPosition", "vec3"],
-            ["cameraDirection", "vec3"],
-        ], "shared");
+        shader.addUniform([...this.voxelVertexUniforms], "vertex");
+        shader.addUniform([...this.voxelSharedUniforms], "shared");
         shader.addVarying([
             {
                 id: "cameraPOS",
@@ -268,12 +266,8 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
                 },
             },
         ]);
-        shader.addUniform([
-            ["world", "mat4"],
-            ["viewProjection", "mat4"],
-        ], "vertex");
         shader.setCodeBody("vertex", `@standard_position`);
-        shader.setCodeBody("frag", `vec4 rgb = getMainColor(vec2(0.,0.));
+        shader.setCodeBody("frag", `vec4 rgb = getMainColor();
    if (rgb.a < 0.5) { 
     discard;
   }

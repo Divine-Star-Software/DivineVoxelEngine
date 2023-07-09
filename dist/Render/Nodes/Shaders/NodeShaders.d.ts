@@ -41,6 +41,7 @@ export declare const NodeShaders: {
     voxelVertexFunctions: string[];
     _defaultShader: DivineShader;
     $INIT(): void;
+    _addInstances(shader: DivineShader): void;
     createVoxelShader(id: string): DivineShader;
     createBasicTextureShader(id: string): DivineShader;
     createSkyBoxShader(id: string): DivineShader;

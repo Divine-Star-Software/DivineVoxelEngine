@@ -198,6 +198,7 @@ export declare const DVER: {
             voxelVertexFunctions: string[];
             _defaultShader: import("divine-shaders").DivineShader;
             $INIT(): void;
+            _addInstances(shader: import("divine-shaders").DivineShader): void;
             createVoxelShader(id: string): import("divine-shaders").DivineShader;
             createBasicTextureShader(id: string): import("divine-shaders").DivineShader;
             createSkyBoxShader(id: string): import("divine-shaders").DivineShader;
@@ -533,6 +534,7 @@ export declare const DVER: {
             $START_ANIMATIONS(): void;
             generateTextureUVMap(): import("../index.js").TextureTypeUVMap;
             defineDefaultTexturePath(path: string): void;
+            getTextureData([type, id, segment]: import("../index.js").ConstructorTextureData): import("../index.js").TextureData | undefined;
             getTextureType(id: string): false | import("./Nodes/Textures/TextureType.js").TextureType;
             addTextureType(id: string): import("./Nodes/Textures/TextureType.js").TextureType;
             clearTextureData(): void;

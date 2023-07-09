@@ -8,6 +8,7 @@ declare class TextureSegment {
     mode: "sampler" | "overlay";
     attributeID: string;
     totalTextures: number;
+    textureMap: Map<string, TextureData>;
     textures: TextureData[];
     textureIndex: Record<string, number>;
     animationsMap: number[][];
@@ -27,7 +28,15 @@ declare class TextureSegment {
     shaderTexture: RawTexture2DArray[];
     textureID: string;
     constructor(parentID: string, id: string, mode: "sampler" | "overlay", attributeID: string);
+    /**# clearData
+     * ---
+     * Clear all un-needed data.
+     */
     clearData(): void;
+    /**# flush
+     * ---
+     * Clear all data.
+     */
     flush(): void;
 }
 export declare class TextureType {

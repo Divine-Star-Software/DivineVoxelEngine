@@ -12,6 +12,7 @@ export declare const TextureManager: {
     $START_ANIMATIONS(): void;
     generateTextureUVMap(): TextureTypeUVMap;
     defineDefaultTexturePath(path: string): void;
+    getTextureData([type, id, segment]: ConstructorTextureData): TextureData | undefined;
     getTextureType(id: string): false | TextureType;
     addTextureType(id: string): TextureType;
     clearTextureData(): void;
