@@ -3,8 +3,7 @@ import { TextureManager } from "../Nodes/Textures/TextureManager.js";
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
 import { NodeManager } from "../Nodes/NodeManager.js";
 import { DataTool } from "../../Tools/Data/DataTool.js";
-import { VoxelEntityTool } from "./VoxelEntityTool.js";
-import { TextureEntityTool } from "./TextureEntityTool.js";
+import { EntityTool } from "./EntityTool.js";
 export class NodeMeshTool extends LocationBoundTool {
     constructor() {
         super();
@@ -28,7 +27,7 @@ export class NodeMeshTool extends LocationBoundTool {
                 const mesh = NodeManager.meshes.create("#dve_node_texture", data);
                 if (!mesh)
                     return false;
-                const tool = new TextureEntityTool(mesh);
+                const tool = new EntityTool(mesh);
                 onDone(tool);
                 return;
             });
@@ -52,7 +51,7 @@ export class NodeMeshTool extends LocationBoundTool {
                     mesh.unfreezeWorldMatrix();
                     mesh.type = "node";
                     mesh.parent = DVER.render.fo.activeNode;
-                    onDone(new VoxelEntityTool(mesh));
+                    onDone(new EntityTool(mesh));
                 }
                 onDone(false);
                 return;

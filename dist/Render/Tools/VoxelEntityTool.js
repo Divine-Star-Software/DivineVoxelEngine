@@ -1,3 +1,3 @@
-import { EntityToolBase } from "./EntityToolBase.js";
-export class VoxelEntityTool extends EntityToolBase {
+import { EntityTool } from "./EntityTool.js";
+export class VoxelEntityTool extends EntityTool {
 }

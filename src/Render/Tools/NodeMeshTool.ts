@@ -1,4 +1,3 @@
-import type { Mesh } from "@babylonjs/core";
 import type { ConstructorTextureData, RawVoxelData } from "Meta/index.js";
 import { BuildNodeMesh, SetNodeMesh } from "Meta/Tasks/RenderTasks.types.js";
 import { DVER } from "../DivineVoxelEngineRender.js";
@@ -6,9 +5,7 @@ import { TextureManager } from "../Nodes/Textures/TextureManager.js";
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
 import { NodeManager } from "../Nodes/NodeManager.js";
 import { DataTool } from "../../Tools/Data/DataTool.js";
-import { DVEBabylon } from "../../Render/Nodes/DVEBabylon.js";
-import { VoxelEntityTool } from "./VoxelEntityTool.js";
-import { TextureEntityTool } from "./TextureEntityTool.js";
+import { EntityTool } from "./EntityTool.js";
 
 export class NodeMeshTool extends LocationBoundTool {
  constructor() {
@@ -20,7 +17,7 @@ export class NodeMeshTool extends LocationBoundTool {
   build: (
    textureIdData: ConstructorTextureData,
    textureData: Uint8ClampedArray,
-   onDone: (mesh: TextureEntityTool | false) => void
+   onDone: (mesh: EntityTool | false) => void
   ) => {
    const textureId = TextureManager.getTextureIndex(textureIdData);
    if (!textureId) return onDone(false);
@@ -40,7 +37,7 @@ export class NodeMeshTool extends LocationBoundTool {
      if (!data) return onDone(false);
      const mesh = NodeManager.meshes.create("#dve_node_texture", data);
      if (!mesh) return false;
-     const tool = new TextureEntityTool(mesh);
+     const tool = new EntityTool(mesh);
      onDone(tool);
      return;
     }
@@ -50,7 +47,7 @@ export class NodeMeshTool extends LocationBoundTool {
    textureIdData: ConstructorTextureData,
    textureData: Uint8ClampedArray
   ) {
-   return new Promise((resolve) => {
+   return new Promise<EntityTool | false>((resolve) => {
     this.build(textureIdData, textureData, (data) => {
      resolve(data);
     });
@@ -61,7 +58,7 @@ export class NodeMeshTool extends LocationBoundTool {
   dataTool: new DataTool(),
   build: (
    voxelData: RawVoxelData,
-   onDone: (mesh: VoxelEntityTool | false) => void
+   onDone: (mesh: EntityTool | false) => void
   ) => {
    DVER.constructorCommManager.runPromiseTasks<BuildNodeMesh>(
     "build-node-mesh",
@@ -77,7 +74,7 @@ export class NodeMeshTool extends LocationBoundTool {
       mesh.unfreezeWorldMatrix();
       (mesh as any).type = "node";
       mesh.parent = DVER.render.fo.activeNode;
-      onDone(new VoxelEntityTool(mesh));
+      onDone(new EntityTool(mesh));
      }
      onDone(false);
 
@@ -85,7 +82,7 @@ export class NodeMeshTool extends LocationBoundTool {
     }
    );
   },
-  buildAsync(voxelData: RawVoxelData): Promise<VoxelEntityTool | false> {
+  buildAsync(voxelData: RawVoxelData): Promise<EntityTool | false> {
    return new Promise((resolve) => {
     this.build(voxelData, (data) => {
      resolve(data);

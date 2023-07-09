@@ -2,7 +2,7 @@ import { Mesh } from "@babylonjs/core";
 import { MatrixArray, MatrixProperty } from "../../Math/Classes/MatrixArray.js";
 
 export class EntityInstance {
- constructor(private _tool: EntityToolBase, public _matrix: MatrixArray) {
+ constructor(private _tool: EntityTool, public _matrix: MatrixArray) {
   this.scale = this._matrix.scale;
   this.position = this._matrix.position;
  }
@@ -18,7 +18,7 @@ export class EntityInstance {
  }
 }
 
-export class EntityToolBase {
+export class EntityTool {
  _instanceAmount = 0;
  _matrixArray: MatrixArray;
  _usedInstances = new Map<number, EntityInstance>();

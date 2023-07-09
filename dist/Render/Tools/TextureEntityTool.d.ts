@@ -1,3 +1,3 @@
-import { EntityToolBase } from "./EntityToolBase.js";
-export declare class TextureEntityTool extends EntityToolBase {
+import { EntityTool } from "./EntityTool.js";
+export declare class TextureEntityTool extends EntityTool {
 }
