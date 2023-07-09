@@ -1,10 +1,13 @@
+import { SafeInterval } from "./SafeInterval.js";
 export const CreatePromiseCheck = (data) => {
     return new Promise((resolve) => {
         const times = {
             inte: -1,
             fail: -1,
         };
-        times.inte = setInterval(() => {
+        const inte = new SafeInterval()
+            .setInterval(data.checkInterval)
+            .setOnRun(() => {
             if (data.check()) {
                 if (data.onReady) {
                     data.onReady();
@@ -12,13 +15,14 @@ export const CreatePromiseCheck = (data) => {
                 if (times.fail > -1) {
                     clearTimeout(times.fail);
                 }
-                clearInterval(times.inte);
+                inte.stop();
                 resolve(true);
             }
-        }, data.checkInterval);
+        });
+        inte.start();
         if (data.failTimeOut) {
             times.fail = setTimeout(() => {
-                clearInterval(times.inte);
+                inte.stop();
                 if (data.onFail) {
                     data.onFail();
                 }

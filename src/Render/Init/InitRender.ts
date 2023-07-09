@@ -17,9 +17,13 @@ export async function $INITFunction(
  );
 
  NodeManager.init();
- NodeManager.materials.materials._map.forEach((m)=>{
-    m.getMaterial()!.setFloats("lightGradient",NodeManager.materials.unifrosm.lightGradient)    
- })
+ NodeManager.syncSettings();
+ NodeManager.materials.materials._map.forEach((m) => {
+  m.getMaterial()!.setFloats(
+   "lightGradient",
+   NodeManager.materials.unifrosm.lightGradient
+  );
+ });
  scene.registerBeforeRender(() => {
   NodeManager.materials.materials._map.forEach((_) => {
    _.updateUniforms();

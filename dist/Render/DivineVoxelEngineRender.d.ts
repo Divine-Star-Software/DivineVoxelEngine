@@ -111,6 +111,7 @@ export declare const DVER: {
             dimensions: {
                 add(id: string): Map<any, any>;
                 get(id: string): Map<string, import("../Meta/Render/Scene/MeshRegister.types.js").MushRegisterRegion> | undefined;
+                getAllMeshes(id: string): Generator<[location: import("voxelspaces").LocationData, substance: string, mesh: import("@babylonjs/core").Mesh], any, unknown>;
                 remove(id: string): boolean;
             };
             region: {
@@ -139,6 +140,7 @@ export declare const DVER: {
             removeColumnsOutsideRadius(origion: import("voxelspaces").LocationData, radius: number): void;
             chunks: {
                 remove(data: import("../Meta/Tasks/RenderTasks.types.js").RemoveChunkMeshTasks): false | undefined;
+                add(location: import("voxelspaces").LocationData, substance: string, meshData: import("../Meta/Tasks/RenderTasks.types.js").SetNodeMesh): void;
                 update(data: import("../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask): void;
                 removeColumn(data: import("voxelspaces").LocationData): false | undefined;
             };
@@ -375,7 +377,7 @@ export declare const DVER: {
                 chunk: {
                     add(location: import("voxelspaces").LocationData, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
                     _getChunkData(sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData;
-                    addFromServer(chunkBuffer: ArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
+                    addFromServer(location: import("voxelspaces").LocationData, chunkBuffer: ArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
                     get(location: import("voxelspaces").LocationData): false | import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
                     remove(location: import("voxelspaces").LocationData): boolean;
                 };
@@ -403,7 +405,7 @@ export declare const DVER: {
                     data: DataView;
                     buffer: SharedArrayBuffer;
                 } | undefined;
-                isStored(location: import("voxelspaces").LocationData): 0 | 1 | -1;
+                isStored(location: import("voxelspaces").LocationData): 1 | 0 | -1;
             };
         };
         tags: {
@@ -545,6 +547,7 @@ export declare const DVER: {
         };
         _scene: Scene;
         init(): void;
+        syncSettings(): void;
     };
     tasks: {
         setChunk: void;

@@ -10,6 +10,7 @@ import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 import { DataHooks } from "../../Data/DataHooks.js";
 import { WorldLock } from "../../World/Lock/WorldLock.js";
 import { LoaderRegister } from "./LoaderRegister.js";
+import { SafeInterval } from "../../Global/Util/SafeInterval.js";
 
 export class DataLoaderTool extends LocationBoundTool {
  static columnDataTool = new ColumnDataTool();
@@ -28,6 +29,11 @@ export class DataLoaderTool extends LocationBoundTool {
   if (!comm) {
    this._enabled = false;
    console.error("Data Loader comm must be set.");
+  } else {
+   if (!comm.isPortSet()) {
+    this._enabled = false;
+    comm.onSetPort(() => (this._enabled = true));
+   }
   }
   this.dataComm = comm;
   this.mode = EngineSettings.settings.data.mode;
@@ -43,7 +49,6 @@ export class DataLoaderTool extends LocationBoundTool {
    onDone ? onDone(data) : false;
   });
  }
-
 
  isEnabled() {
   return this._enabled;
@@ -101,6 +106,7 @@ export class DataLoaderTool extends LocationBoundTool {
  }
 
  loadIfExists(onDone?: (loaded: boolean) => void) {
+  if (!this._enabled) return onDone ? onDone(true) : false;
   const location = <LocationData>[...this.getLocation()];
 
   this.columnExists((exists) => {
@@ -228,12 +234,13 @@ export class DataLoaderTool extends LocationBoundTool {
     }
    }
   }
-  const inte = setInterval(() => {
+  const inte = new SafeInterval().setInterval(1).setOnRun(() => {
    if (totalColumns == 0) {
-    clearInterval(inte);
+    inte.stop();
     if (onDone) onDone();
    }
-  }, 1);
+  });
+  inte.start();
  }
  unLoadAllColumnsAsync() {
   return new Promise((resolve) => {
@@ -259,12 +266,13 @@ export class DataLoaderTool extends LocationBoundTool {
    }
   }
 
-  const inte = setInterval(() => {
+  const inte = new SafeInterval().setInterval(1).setOnRun(() => {
    if (totalColumns == 0) {
-    clearInterval(inte);
+    inte.stop();
     if (onDone) onDone();
    }
-  }, 1);
+  });
+  inte.start();
  }
 
  allColumns(run: (column: ColumnDataTool) => void) {

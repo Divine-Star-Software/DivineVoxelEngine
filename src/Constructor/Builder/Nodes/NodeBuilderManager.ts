@@ -12,7 +12,6 @@ export const NodeBuilderManager = {
 
  buildNode(data: BuildNodeMesh): [SetNodeMesh, ArrayBuffer[]] | false {
   const builder = this.builders.get(data[1]);
-  console.log("build node", data);
   if (!builder) return false;
 
   return builder.build(data);

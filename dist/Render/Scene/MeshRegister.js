@@ -19,6 +19,29 @@ export const MeshRegister = {
         get(id) {
             return MeshRegister._dimensions.get(id);
         },
+        *getAllMeshes(id) {
+            const dimension = MeshRegister._dimensions.get(id);
+            if (!dimension)
+                return false;
+            for (const [key, region] of dimension) {
+                for (const [columnKey, column] of region.columns) {
+                    for (const [chunkKey, chunk] of column.chunks) {
+                        for (const [substance, mesh] of chunk) {
+                            yield [
+                                [
+                                    column.location[0],
+                                    column.location[1],
+                                    column.location[2] + chunkKey * WorldSpaces.chunk._bounds.y,
+                                    column.location[3],
+                                ],
+                                substance,
+                                mesh.mesh,
+                            ];
+                        }
+                    }
+                }
+            }
+        },
         remove(id) {
             const dimension = MeshRegister._dimensions.get(id);
             if (!dimension)

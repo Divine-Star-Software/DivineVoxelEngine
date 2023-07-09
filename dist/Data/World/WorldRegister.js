@@ -223,14 +223,13 @@ export const WorldRegister = {
                 data: new DataView(sab),
             };
         },
-        addFromServer(chunkBuffer) {
+        addFromServer(location, chunkBuffer) {
             const sab = new SharedArrayBuffer(chunkBuffer.byteLength);
             const temp = new Uint8Array(chunkBuffer);
             const temp2 = new Uint8Array(sab);
             temp2.set(temp, 0);
             const chunk = this._getChunkData(sab);
             chunkTool.setChunk(chunk);
-            const location = chunkTool.getLocationData();
             let column = WorldRegister.column.get(location);
             if (!column)
                 return;

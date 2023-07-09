@@ -5,6 +5,7 @@ import { NodeMeshManager } from "./Meshes/NodeMeshManager.js";
 import { NodeShaderManager } from "./Shaders/NodeShaderManager.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { NodeSubstanceManager } from "./Substances/NodeSubstanceManager.js";
+import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 export const NodeManager = {
     shaders: NodeShaderManager,
     meshes: NodeMeshManager,
@@ -20,6 +21,11 @@ export const NodeManager = {
         this.materials.materials._map.forEach((_) => _.createMaterial(scene));
         this._scene = scene;
         this.materials.init();
+    },
+    syncSettings() {
+        for (const [key, mesh] of this.meshes.meshes._map) {
+            mesh.syncSettings(EngineSettings.settings);
+        }
     },
 };
 InitDefaultNodes(NodeManager);

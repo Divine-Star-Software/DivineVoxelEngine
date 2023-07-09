@@ -33,7 +33,7 @@ export declare const WorldRegister: {
     chunk: {
         add(location: LocationData, sab: SharedArrayBuffer): ChunkData | undefined;
         _getChunkData(sab: SharedArrayBuffer): ChunkData;
-        addFromServer(chunkBuffer: ArrayBuffer): ChunkData | undefined;
+        addFromServer(location: LocationData, chunkBuffer: ArrayBuffer): ChunkData | undefined;
         get(location: LocationData): false | ChunkData | undefined;
         remove(location: LocationData): boolean;
     };

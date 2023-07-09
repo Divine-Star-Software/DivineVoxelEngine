@@ -5,6 +5,7 @@ import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { DataLoaderTool } from "../../Tools/Loader/DataLoaderTool.js";
 import { UtilMap } from "../../Global/Util/UtilMap.js";
+import { SafeInterval } from "../../Global/Util/SafeInterval.js";
 
 export const WorldLock = {
  locks: new UtilMap<string, WorldLockTasks>(),
@@ -53,12 +54,13 @@ export const WorldLock = {
    };
    if (run()) return resolve(true);
 
-   const inte = setInterval(() => {
+   const inte = new SafeInterval().setInterval(100).setOnRun(() => {
     if (run()) {
-     clearInterval(inte);
+     inte.stop();
      resolve(true);
     }
-   }, 100);
+   });
+   inte.start();
   });
  },
 

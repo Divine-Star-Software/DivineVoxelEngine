@@ -3,6 +3,7 @@ import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { WorldGenRegister } from "./Register/WorldGenRegister.js";
 //tools
 import { WorldGenBrush } from "../Tools/WorldGenBrush.js";
+import { SafeInterval } from "../../Global/Util/SafeInterval.js";
 export const WorldGeneration = {
     worldGen: null,
     register: WorldGenRegister,
@@ -25,12 +26,13 @@ export const WorldGeneration = {
         if (mode == "decorate") {
             await this.worldGen.decorate(data);
         }
-        const inte = setInterval(() => {
+        const inte = new SafeInterval().setInterval(100).setOnRun(() => {
             if (WorldGenRegister.attemptRequestFullFill(requestsId)) {
                 onDone();
-                clearInterval(inte);
+                inte.stop();
             }
-        }, 100);
+        });
+        inte.start();
     },
     getBrush() {
         const brush = new WorldGenBrush();

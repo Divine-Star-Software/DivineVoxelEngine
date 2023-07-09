@@ -31,6 +31,22 @@ export const MeshManager = {
                 return false;
             NodeManager.meshes.get(substance).returnMesh(mesh);
         },
+        add(location, substance, meshData) {
+            let chunk = MeshRegister.chunk.get(location, substance);
+            let mesh;
+            if (!chunk) {
+                mesh = NodeManager.meshes.get(substance).createMesh(meshData);
+                mesh.type = "chunk";
+                MeshRegister.chunk.add(location, mesh, substance);
+                mesh.setEnabled(true);
+                mesh.isVisible = true;
+                NodeManager.meshes.get(substance).updateVetexData(meshData, mesh);
+            }
+            else {
+                mesh = chunk.mesh;
+                NodeManager.meshes.get(substance).updateVetexData(meshData, mesh);
+            }
+        },
         update(data) {
             const [location, chunks] = data;
             let i = chunks.length;

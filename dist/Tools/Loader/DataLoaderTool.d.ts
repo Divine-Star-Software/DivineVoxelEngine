@@ -17,7 +17,7 @@ export declare class DataLoaderTool extends LocationBoundTool {
     loadRegionAsync(): Promise<unknown>;
     saveColumn(onDone?: Function): void;
     saveColumnIfNotStored(onDone?: (saved: boolean) => void): boolean | void;
-    loadIfExists(onDone?: (loaded: boolean) => void): void;
+    loadIfExists(onDone?: (loaded: boolean) => void): false | void;
     saveColumnAsync(): Promise<unknown>;
     loadColumn(onDone?: Function): void;
     loadColumnAsync(): Promise<unknown>;

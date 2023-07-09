@@ -85,8 +85,8 @@ export class DVENodeMesh {
         if (settings.meshes.pickable) {
             this.pickable = true;
         }
-        if (settings.meshes.clearChachedGeometry) {
-            this.clearCachedGeometry = true;
+        if (typeof settings.meshes.clearChachedGeometry != "undefined") {
+            this.clearCachedGeometry = settings.meshes.clearChachedGeometry;
         }
         if (settings.meshes.seralize) {
             this.seralize = true;

@@ -3,7 +3,8 @@ import { TextureManager } from "../Nodes/Textures/TextureManager.js";
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
 import { NodeManager } from "../Nodes/NodeManager.js";
 import { DataTool } from "../../Tools/Data/DataTool.js";
-import { DVEBabylon } from "../../Render/Nodes/DVEBabylon.js";
+import { VoxelEntityTool } from "./VoxelEntityTool.js";
+import { TextureEntityTool } from "./TextureEntityTool.js";
 export class NodeMeshTool extends LocationBoundTool {
     constructor() {
         super();
@@ -24,7 +25,11 @@ export class NodeMeshTool extends LocationBoundTool {
             ], [textureData.buffer], (data) => {
                 if (!data)
                     return onDone(false);
-                onDone(NodeManager.meshes.create("#dve_node_texture", data));
+                const mesh = NodeManager.meshes.create("#dve_node_texture", data);
+                if (!mesh)
+                    return false;
+                const tool = new TextureEntityTool(mesh);
+                onDone(tool);
                 return;
             });
         },
@@ -45,10 +50,11 @@ export class NodeMeshTool extends LocationBoundTool {
                 const mesh = NodeManager.meshes.create(this.voxel.dataTool.loadInRaw(voxelData).getSubstnaceData().getRendered(), data);
                 if (mesh) {
                     mesh.unfreezeWorldMatrix();
-                    mesh.setPivotPoint(new DVEBabylon.system.Vector3(0.5, 0.5, 0.5));
+                    mesh.type = "node";
+                    mesh.parent = DVER.render.fo.activeNode;
+                    onDone(new VoxelEntityTool(mesh));
                 }
-                mesh.type = "node";
-                onDone(mesh);
+                onDone(false);
                 return;
             });
         },

@@ -23,6 +23,7 @@ const QMBase = {
   this.propagation.addQueue(queueKey);
   this.build.chunk.addQueue(queueKey);
   this.generate.addQueue(queueKey);
+  this.decorate.addQueue(queueKey);
   this._queueMap.set(queueKey, Date.now());
   return true;
  },
@@ -32,6 +33,7 @@ const QMBase = {
   this.propagation.addQueue(queueKey);
   this.build.chunk.addQueue(queueKey);
   this.generate.removeQueue(queueKey);
+  this.decorate.addQueue(queueKey);
   this._queueMap.delete(queueKey);
   return true;
  },

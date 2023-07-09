@@ -7,6 +7,7 @@ import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { WorldGenRegister } from "./Register/WorldGenRegister.js";
 //tools
 import { WorldGenBrush } from "../Tools/WorldGenBrush.js";
+import { SafeInterval } from "../../Global/Util/SafeInterval.js";
 
 export const WorldGeneration = {
  worldGen: <WorldGenInterface | null>null,
@@ -29,7 +30,6 @@ export const WorldGeneration = {
    throw new Error(`A World Generator must be set.`);
   }
 
-
   const requestsId = WorldGenRegister.registerRequest(data[0]);
   for (const brush of this._brushes) {
    brush.requestsId = requestsId;
@@ -42,12 +42,13 @@ export const WorldGeneration = {
    await this.worldGen.decorate(data);
   }
 
-  const inte = setInterval(() => {
+  const inte = new SafeInterval().setInterval(100).setOnRun(() => {
    if (WorldGenRegister.attemptRequestFullFill(requestsId)) {
     onDone();
-    clearInterval(inte);
+    inte.stop();
    }
-  }, 100);
+  });
+  inte.start();
  },
 
  getBrush() {

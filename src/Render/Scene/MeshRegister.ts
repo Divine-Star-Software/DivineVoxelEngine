@@ -9,7 +9,6 @@ import type { Mesh } from "@babylonjs/core";
 import type { VoxelTemplateSubstanceType } from "Meta/Data/Voxels/Voxel.types.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 
-
 export const MeshRegister = {
  _dimensions: <MeshRegisterDimensions>new Map(),
 
@@ -24,7 +23,6 @@ export const MeshRegister = {
   this._dimensions.set("main", new Map());
  },
 
-
  dimensions: {
   add(id: string) {
    const dimesnion = new Map();
@@ -33,6 +31,30 @@ export const MeshRegister = {
   },
   get(id: string) {
    return MeshRegister._dimensions.get(id);
+  },
+  *getAllMeshes(
+   id: string
+  ): Generator<[location: LocationData, substance: string, mesh: Mesh]> {
+   const dimension = MeshRegister._dimensions.get(id);
+   if (!dimension) return false;
+   for (const [key, region] of dimension) {
+    for (const [columnKey, column] of region.columns) {
+     for (const [chunkKey, chunk] of column.chunks) {
+      for (const [substance, mesh] of chunk) {
+       yield [
+        [
+         column.location[0],
+         column.location[1],
+         column.location[2] + chunkKey * WorldSpaces.chunk._bounds.y,
+         column.location[3],
+        ],
+        substance,
+        mesh.mesh,
+       ];
+      }
+     }
+    }
+   }
   },
   remove(id: string) {
    const dimension = MeshRegister._dimensions.get(id);

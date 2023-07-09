@@ -9,6 +9,7 @@ export declare const MeshRegister: {
     dimensions: {
         add(id: string): Map<any, any>;
         get(id: string): Map<string, MushRegisterRegion> | undefined;
+        getAllMeshes(id: string): Generator<[location: LocationData, substance: string, mesh: Mesh]>;
         remove(id: string): boolean;
     };
     region: {

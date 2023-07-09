@@ -67,6 +67,6 @@ export class RichDataTool extends RichDataSegmentTool {
 
  toBuffer() {
   if (!this.data) return false;
-  return DBO.toBuffer(this.data);
+  return DBO.objectToBuffer(this.data);
  }
 }

@@ -5,11 +5,13 @@ import { DVER } from "../DivineVoxelEngineRender.js";
 import {
  RemoveChunkMeshTasks,
  SetChunkMeshTask,
+ SetNodeMesh,
 } from "Meta/Tasks/RenderTasks.types.js";
 import { MeshRegister } from "./MeshRegister.js";
 import { LocationData } from "voxelspaces";
 import { Distance3D } from "../../Math/Functions/Distance3d.js";
 import { NodeManager } from "../Nodes/NodeManager.js";
+import { MeshAttributes } from "Constructor/Builder/Types/MeshData.types.js";
 export const MeshManager = {
  scene: <Scene>{},
  runningUpdate: false,
@@ -40,6 +42,22 @@ export const MeshManager = {
    const mesh = MeshRegister.chunk.remove(location, substance);
    if (!mesh) return false;
    NodeManager.meshes.get(substance)!.returnMesh(mesh);
+  },
+  add(location: LocationData, substance: string, meshData: SetNodeMesh) {
+   let chunk = MeshRegister.chunk.get(location, substance);
+   let mesh: Mesh;
+
+   if (!chunk) {
+    mesh = NodeManager.meshes.get(substance)!.createMesh(meshData);
+    (mesh as any).type = "chunk";
+    MeshRegister.chunk.add(location, mesh, substance);
+    mesh.setEnabled(true);
+    mesh.isVisible = true;
+    NodeManager.meshes.get(substance)!.updateVetexData(meshData, mesh);
+   } else {
+    mesh = chunk.mesh;
+    NodeManager.meshes.get(substance)!.updateVetexData(meshData, mesh);
+   }
   },
   update(data: SetChunkMeshTask) {
    const [location, chunks] = data;

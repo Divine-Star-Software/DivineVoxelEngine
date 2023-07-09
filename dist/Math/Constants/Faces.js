@@ -21,4 +21,8 @@ export const FaceNormals = {
     west: [-1, 0, 0],
     north: [0, 0, 1],
     south: [0, 0, -1],
+    "north-east": [1, 0, 1],
+    "north-west": [-1, 0, 1],
+    "south-east": [1, 0, -1],
+    "south-west": [-1, 0, -1],
 };

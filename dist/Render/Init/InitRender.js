@@ -7,6 +7,7 @@ export async function $INITFunction(DVER, scene) {
     await TextureManager.$INIT();
     DVER.constructorCommManager.syncTextureData(TextureManager.generateTextureUVMap());
     NodeManager.init();
+    NodeManager.syncSettings();
     NodeManager.materials.materials._map.forEach((m) => {
         m.getMaterial().setFloats("lightGradient", NodeManager.materials.unifrosm.lightGradient);
     });

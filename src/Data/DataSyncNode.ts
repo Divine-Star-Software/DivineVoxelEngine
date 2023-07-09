@@ -27,6 +27,7 @@ export const DataSyncNode = {
   strings: ThreadComm.onDataSync<RegisterStringMapSync, void>(
    DataSyncIds.registerStringMap,
    (data) => {
+
     MappedDataRegister.stringMaps.sync(data);
    }
   ),

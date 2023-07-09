@@ -8,6 +8,7 @@ export declare const RenderManager: {
         dimensions: {
             add(id: string): Map<any, any>;
             get(id: string): Map<string, import("../../Meta/Render/Scene/MeshRegister.types.js").MushRegisterRegion> | undefined;
+            getAllMeshes(id: string): Generator<[location: import("voxelspaces").LocationData, substance: string, mesh: import("@babylonjs/core").Mesh], any, unknown>;
             remove(id: string): boolean;
         };
         region: {
@@ -36,6 +37,7 @@ export declare const RenderManager: {
         removeColumnsOutsideRadius(origion: import("voxelspaces").LocationData, radius: number): void;
         chunks: {
             remove(data: import("../../Meta/Tasks/RenderTasks.types.js").RemoveChunkMeshTasks): false | undefined;
+            add(location: import("voxelspaces").LocationData, substance: string, meshData: import("../../Meta/Tasks/RenderTasks.types.js").SetNodeMesh): void;
             update(data: import("../../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask): void;
             removeColumn(data: import("voxelspaces").LocationData): false | undefined;
         };

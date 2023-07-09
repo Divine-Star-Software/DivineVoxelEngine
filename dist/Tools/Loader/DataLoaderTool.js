@@ -8,6 +8,7 @@ import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 import { DataHooks } from "../../Data/DataHooks.js";
 import { WorldLock } from "../../World/Lock/WorldLock.js";
 import { LoaderRegister } from "./LoaderRegister.js";
+import { SafeInterval } from "../../Global/Util/SafeInterval.js";
 class DataLoaderTool extends LocationBoundTool {
     static columnDataTool = new ColumnDataTool();
     static isEnabled() {
@@ -23,6 +24,12 @@ class DataLoaderTool extends LocationBoundTool {
         if (!comm) {
             this._enabled = false;
             console.error("Data Loader comm must be set.");
+        }
+        else {
+            if (!comm.isPortSet()) {
+                this._enabled = false;
+                comm.onSetPort(() => (this._enabled = true));
+            }
         }
         this.dataComm = comm;
         this.mode = EngineSettings.settings.data.mode;
@@ -78,6 +85,8 @@ class DataLoaderTool extends LocationBoundTool {
         return true;
     }
     loadIfExists(onDone) {
+        if (!this._enabled)
+            return onDone ? onDone(true) : false;
         const location = [...this.getLocation()];
         this.columnExists((exists) => {
             if (exists) {
@@ -189,13 +198,14 @@ class DataLoaderTool extends LocationBoundTool {
                 }
             }
         }
-        const inte = setInterval(() => {
+        const inte = new SafeInterval().setInterval(1).setOnRun(() => {
             if (totalColumns == 0) {
-                clearInterval(inte);
+                inte.stop();
                 if (onDone)
                     onDone();
             }
-        }, 1);
+        });
+        inte.start();
     }
     unLoadAllColumnsAsync() {
         return new Promise((resolve) => {
@@ -220,13 +230,14 @@ class DataLoaderTool extends LocationBoundTool {
                 });
             }
         }
-        const inte = setInterval(() => {
+        const inte = new SafeInterval().setInterval(1).setOnRun(() => {
             if (totalColumns == 0) {
-                clearInterval(inte);
+                inte.stop();
                 if (onDone)
                     onDone();
             }
-        }, 1);
+        });
+        inte.start();
     }
     allColumns(run) {
         const [dimension, sx, sy, sz] = this.location;

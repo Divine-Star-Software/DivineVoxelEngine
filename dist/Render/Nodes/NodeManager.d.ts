@@ -84,4 +84,5 @@ export declare const NodeManager: {
     };
     _scene: Scene;
     init(): void;
+    syncSettings(): void;
 };

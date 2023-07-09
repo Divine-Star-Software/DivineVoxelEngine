@@ -1,3 +1,5 @@
+import { SafeInterval } from "./SafeInterval.js";
+
 export const CreatePromiseCheck = (data: {
  check: () => boolean;
  onReady?: () => any;
@@ -10,22 +12,24 @@ export const CreatePromiseCheck = (data: {
    inte: -1,
    fail: -1,
   };
-  times.inte = setInterval(() => {
-   if (data.check()) {
-    if (data.onReady) {
-     data.onReady();
+  const inte = new SafeInterval()
+   .setInterval(data.checkInterval)
+   .setOnRun(() => {
+    if (data.check()) {
+     if (data.onReady) {
+      data.onReady();
+     }
+     if (times.fail > -1) {
+      clearTimeout(times.fail);
+     }
+     inte.stop();
+     resolve(true);
     }
-    if (times.fail > -1) {
-     clearTimeout(times.fail);
-    }
-    clearInterval(times.inte);
-    resolve(true);
-   }
-  }, data.checkInterval);
-
+   });
+  inte.start();
   if (data.failTimeOut) {
    times.fail = setTimeout(() => {
-    clearInterval(times.inte);
+    inte.stop();
     if (data.onFail) {
      data.onFail();
     }

@@ -3,6 +3,7 @@ import type { LocationData } from "voxelspaces";
 import { ThreadComm } from "threadcomm";
 import { DataHanlderWrapper } from "../../DataLoader/DataHandler/DataHandlerWrapper.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
+import { SafeInterval } from "../../Global/Util/SafeInterval.js";
 
 export const DataLoaderTasks = {
  loadRegionHeader: ThreadComm.registerTasks<LocationData>(
@@ -31,12 +32,13 @@ export const DataLoaderTasks = {
     return;
    }
    await DataHanlderWrapper.loadColumn(data);
-   const inte = setInterval(() => {
+   const inte = new SafeInterval().setInterval(1).setOnRun(() => {
     if (WorldRegister.column.get(data)) {
      onDone ? onDone(true) : false;
-     clearInterval(inte);
+     inte.stop();
     }
-   }, 1);
+   });
+   inte.stop();
   },
   "deferred"
  ),

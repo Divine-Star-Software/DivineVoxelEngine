@@ -2,6 +2,7 @@ import { Distance3D } from "../../Math/Functions/Distance3d.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
+import { SafeInterval } from "../../Global/Util/SafeInterval.js";
 
 export class AnaylzerTool extends LocationBoundTool {
  static columnDataTool = new ColumnDataTool();
@@ -20,11 +21,12 @@ export class AnaylzerTool extends LocationBoundTool {
     }
    }
   }
-  const inte = setInterval(() => {
+  const inte = new SafeInterval().setInterval(1).setOnRun(() => {
    if (totalColumns == 0) {
-    clearInterval(inte);
+    inte.stop();
     if (onDone) onDone();
    }
-  }, 1);
+  });
+  inte.start();
  }
 }

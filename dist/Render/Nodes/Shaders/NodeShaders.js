@@ -193,6 +193,16 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
     },
     createVoxelShader(id) {
         const shader = this._defaultShader.clone(id);
+        shader.data.vertexBeforeMain.GLSL = `
+  #ifdef INSTANCES
+  //matricies
+  in vec4 world0;
+  in vec4 world1;
+  in vec4 world2;
+  in vec4 world3;
+  //custom attributes
+  #endif
+`;
         return shader;
     },
     createBasicTextureShader(id) {

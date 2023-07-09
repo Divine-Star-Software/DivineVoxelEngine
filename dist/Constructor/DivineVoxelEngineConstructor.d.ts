@@ -458,7 +458,7 @@ export declare const DVEC: {
         };
         _brushes: any[];
         setWorldGen(worldGen: import("../index.js").WorldGenInterface): void;
-        generate(data: import("../Meta/Tasks/Tasks.types.js").GenerateTasks, mode: "decorate" | "generate", onDone: Function): Promise<void>;
+        generate(data: import("../Meta/Tasks/Tasks.types.js").GenerateTasks, mode: "generate" | "decorate", onDone: Function): Promise<void>;
         getBrush(): import("./index.js").WorldGenBrush;
     };
     builder: {
@@ -709,7 +709,7 @@ export declare const DVEC: {
                 chunk: {
                     add(location: import("voxelspaces").LocationData, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
                     _getChunkData(sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData;
-                    addFromServer(chunkBuffer: ArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
+                    addFromServer(location: import("voxelspaces").LocationData, chunkBuffer: ArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
                     get(location: import("voxelspaces").LocationData): false | import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
                     remove(location: import("voxelspaces").LocationData): boolean;
                 };

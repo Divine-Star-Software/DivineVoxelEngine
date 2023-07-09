@@ -93,6 +93,7 @@ export class DVENodeMesh {
   mesh.position.z = data[0][3];
 
   for (const [id, attribute, stride] of data[1]) {
+   
    switch (id) {
     case "position":
      mesh.setVerticesBuffer(
@@ -120,6 +121,7 @@ export class DVENodeMesh {
      break;
     case "indices":
      mesh.setIndices(attribute as any);
+
      break;
     default:
      mesh.setVerticesBuffer(
@@ -144,8 +146,8 @@ export class DVENodeMesh {
   if (settings.meshes.pickable) {
    this.pickable = true;
   }
-  if (settings.meshes.clearChachedGeometry) {
-   this.clearCachedGeometry = true;
+  if (typeof settings.meshes.clearChachedGeometry != "undefined") {
+   this.clearCachedGeometry =  settings.meshes.clearChachedGeometry;
   }
   if (settings.meshes.seralize) {
    this.seralize = true;
