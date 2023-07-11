@@ -38,11 +38,17 @@ export type TextureAnimationData = {
 };
 export type TextureDataBase = {
  /**# rawData
-  * Provide a base64 encoded string to use instead of fetching it from a server
+  * Provide a Uint8ClampedArray or an array of Uint8ClampedArray's instead of downloading
   */
  rawData?: Uint8ClampedArray | Uint8ClampedArray[];
- includeInRawDataMap ?: boolean;
- meshable ?: boolean;
+ /**# base64
+  * Provide a base64 encoded string to use instead of downloading
+  */
+ base64?: string | string[];
+ /**# includeInRawDataMap
+  * Will keep a Uint8ClampedArray of the loaded texture if set to true.
+  */
+ includeInRawDataMap?: boolean;
 };
 export type TextureData = {
  type: TextureTypes;

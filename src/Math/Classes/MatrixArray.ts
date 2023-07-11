@@ -36,7 +36,7 @@ export class MatrixProperty {
   this.data.setZ(value);
  }
  set w(value: number) {
-  this.data.setZ(value);
+  this.data.setW(value);
  }
  set(x: number, y: number, z: number) {
   this.x = x;
@@ -66,34 +66,36 @@ export class MatrixArray {
   (matrix as any).rows = [];
   (matrix as any).cols = [];
 
-  let i = -1;
-  let rows = 15;
+  let i = 0;
+  let rows = 16;
   while (i < rows) {
+   const row = i;
+
    matrix.rows.push(
     new MatrixProperty({
      getX: () => {
-      return matricies[i + 1 + matrix.trueIndex];
+      return matricies[row + matrix.trueIndex];
      },
      getY: () => {
-      return matricies[i + 2 + matrix.trueIndex];
+      return matricies[row + 1 + matrix.trueIndex];
      },
      getZ: () => {
-      return matricies[i + 3 + matrix.trueIndex];
+      return matricies[row + 2 + matrix.trueIndex];
      },
      getW: () => {
-      return matricies[i + 4 + matrix.trueIndex];
+      return matricies[row + 3 + matrix.trueIndex];
      },
      setX: (value: number) => {
-      matricies[i + 1 + matrix.trueIndex] = value;
+      matricies[row + matrix.trueIndex] = value;
      },
      setY: (value: number) => {
-      matricies[i + 2 + matrix.trueIndex] = value;
+      matricies[row + 1 + matrix.trueIndex] = value;
      },
      setZ: (value: number) => {
-      matricies[i + 3 + matrix.trueIndex] = value;
+      matricies[row + 2 + matrix.trueIndex] = value;
      },
      setW: (value: number) => {
-      matricies[i + 4 + matrix.trueIndex] = value;
+      matricies[row + 3 + matrix.trueIndex] = value;
      },
     })
    );
@@ -101,50 +103,47 @@ export class MatrixArray {
   }
   i = 0;
   while (i < 4) {
+   const col = i;
    matrix.cols.push(
     new MatrixProperty({
      getX: () => {
-      return matricies[i + matrix.trueIndex];
+      return matricies[col + matrix.trueIndex];
      },
      getY: () => {
-      return matricies[i + 1 * 4 + matrix.trueIndex];
+      return matricies[col + 1 * 4 + matrix.trueIndex];
      },
      getZ: () => {
-      return matricies[i + 2 * 4 + matrix.trueIndex];
+      return matricies[col + 2 * 4 + matrix.trueIndex];
      },
      getW: () => {
-      return matricies[i + 3 * 4 + matrix.trueIndex];
+      return matricies[col + 3 * 4 + matrix.trueIndex];
      },
      setX: (value: number) => {
       matricies[i + matrix.trueIndex] = value;
      },
      setY: (value: number) => {
-      matricies[i + 1 * 4 + matrix.trueIndex] = value;
+      matricies[col + 1 * 4 + matrix.trueIndex] = value;
      },
      setZ: (value: number) => {
-      matricies[i + 2 * 4 + matrix.trueIndex] = value;
+      matricies[col + 2 * 4 + matrix.trueIndex] = value;
      },
      setW: (value: number) => {
-      matricies[i + 3 * 4 + matrix.trueIndex] = value;
+      matricies[col + 3 * 4 + matrix.trueIndex] = value;
      },
     })
    );
    i++;
   }
-  Object.freeze(matrix.rows);
-  Object.freeze(matrix.cols);
  }
 
  trueIndex = 0;
  matricies: Float32Array;
  constructor(startData: number | MatrixArray, public index: number = 0) {
   this.setMatriciesIndex(index);
-  MatrixArray.buildProperties(this);
+
   if (startData instanceof MatrixArray) {
    this.matricies = startData.matricies;
-   this.rows = startData.rows;
-   this.cols = startData.cols;
-
+   MatrixArray.buildProperties(this);
    return;
   }
   this.matricies = new Float32Array(startData * 16);
@@ -159,6 +158,7 @@ export class MatrixArray {
    }
    k++;
   }
+  MatrixArray.buildProperties(this);
  }
 
  rows: [
@@ -237,4 +237,51 @@ export class MatrixArray {
   this.trueIndex = index * 16;
   return this;
  }
+
+ copy(matrix: MatrixArray) {
+  for (let i = 0; i < 16; i++) {
+   this.matricies[i + this.trueIndex] = matrix.matricies[i + matrix.trueIndex];
+  }
+ }
+ copyIndex() {
+  const index : number[]  = [];
+  for (let i = 0; i < 16; i++) {
+    index.push(
+    this.matricies[  i + this.trueIndex]
+    )
+   }
+   return index;
+ }
+ multiply(matirx: MatrixArray) {
+  for (let r = 0; r < 4; r++) {
+   tempMatrix.rows[r].x =
+    this.rows[r].x * matirx.cols[0].x +
+    this.rows[r].y * matirx.cols[0].y +
+    this.rows[r].z * matirx.cols[0].z +
+    this.rows[r].w * matirx.cols[0].w;
+
+   tempMatrix.rows[r].y =
+    this.rows[r].x * matirx.cols[1].x +
+    this.rows[r].y * matirx.cols[1].y +
+    this.rows[r].z * matirx.cols[1].z +
+    this.rows[r].w * matirx.cols[1].w;
+
+   tempMatrix.rows[r].z =
+    this.rows[r].x * matirx.cols[2].x +
+    this.rows[r].y * matirx.cols[2].y +
+    this.rows[r].z * matirx.cols[2].z +
+    this.rows[r].w * matirx.cols[2].w;
+
+   tempMatrix.rows[r].w =
+    this.rows[r].x * matirx.cols[3].x +
+    this.rows[r].y * matirx.cols[3].y +
+    this.rows[r].z * matirx.cols[3].z +
+    this.rows[r].w * matirx.cols[3].w;
+  }
+
+
+  this.copy(tempMatrix);
+
+ }
 }
+const tempMatrix = new MatrixArray(1, 0);

@@ -36,10 +36,12 @@ export class NodeMeshTool extends LocationBoundTool {
     (data: SetNodeMesh | false) => {
      if (!data) return onDone(false);
      const mesh = NodeManager.meshes.create("#dve_node_texture", data);
-     if (!mesh) return false;
-     const tool = new EntityTool(mesh);
-     onDone(tool);
-     return;
+     if (!mesh) return onDone(false);
+
+     mesh.unfreezeWorldMatrix();
+     (mesh as any).type = "node";
+     mesh.parent = DVER.render.fo.activeNode;
+     onDone(new EntityTool(mesh));
     }
    );
   },
@@ -70,15 +72,12 @@ export class NodeMeshTool extends LocationBoundTool {
       this.voxel.dataTool.loadInRaw(voxelData).getSubstnaceData().getRendered(),
       data
      );
-     if (mesh) {
-      mesh.unfreezeWorldMatrix();
-      (mesh as any).type = "node";
-      mesh.parent = DVER.render.fo.activeNode;
-      onDone(new EntityTool(mesh));
-     }
-     onDone(false);
+     if (!mesh) return onDone(false);
 
-     return;
+     mesh.unfreezeWorldMatrix();
+     (mesh as any).type = "node";
+     mesh.parent = DVER.render.fo.activeNode;
+     onDone(new EntityTool(mesh));
     }
    );
   },

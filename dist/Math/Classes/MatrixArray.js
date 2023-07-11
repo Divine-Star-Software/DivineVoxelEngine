@@ -26,7 +26,7 @@ export class MatrixProperty {
         this.data.setZ(value);
     }
     set w(value) {
-        this.data.setZ(value);
+        this.data.setW(value);
     }
     set(x, y, z) {
         this.x = x;
@@ -54,80 +54,78 @@ class MatrixArray {
         const matricies = matrix.matricies;
         matrix.rows = [];
         matrix.cols = [];
-        let i = -1;
-        let rows = 15;
+        let i = 0;
+        let rows = 16;
         while (i < rows) {
+            const row = i;
             matrix.rows.push(new MatrixProperty({
                 getX: () => {
-                    return matricies[i + 1 + matrix.trueIndex];
+                    return matricies[row + matrix.trueIndex];
                 },
                 getY: () => {
-                    return matricies[i + 2 + matrix.trueIndex];
+                    return matricies[row + 1 + matrix.trueIndex];
                 },
                 getZ: () => {
-                    return matricies[i + 3 + matrix.trueIndex];
+                    return matricies[row + 2 + matrix.trueIndex];
                 },
                 getW: () => {
-                    return matricies[i + 4 + matrix.trueIndex];
+                    return matricies[row + 3 + matrix.trueIndex];
                 },
                 setX: (value) => {
-                    matricies[i + 1 + matrix.trueIndex] = value;
+                    matricies[row + matrix.trueIndex] = value;
                 },
                 setY: (value) => {
-                    matricies[i + 2 + matrix.trueIndex] = value;
+                    matricies[row + 1 + matrix.trueIndex] = value;
                 },
                 setZ: (value) => {
-                    matricies[i + 3 + matrix.trueIndex] = value;
+                    matricies[row + 2 + matrix.trueIndex] = value;
                 },
                 setW: (value) => {
-                    matricies[i + 4 + matrix.trueIndex] = value;
+                    matricies[row + 3 + matrix.trueIndex] = value;
                 },
             }));
             i += 4;
         }
         i = 0;
         while (i < 4) {
+            const col = i;
             matrix.cols.push(new MatrixProperty({
                 getX: () => {
-                    return matricies[i + matrix.trueIndex];
+                    return matricies[col + matrix.trueIndex];
                 },
                 getY: () => {
-                    return matricies[i + 1 * 4 + matrix.trueIndex];
+                    return matricies[col + 1 * 4 + matrix.trueIndex];
                 },
                 getZ: () => {
-                    return matricies[i + 2 * 4 + matrix.trueIndex];
+                    return matricies[col + 2 * 4 + matrix.trueIndex];
                 },
                 getW: () => {
-                    return matricies[i + 3 * 4 + matrix.trueIndex];
+                    return matricies[col + 3 * 4 + matrix.trueIndex];
                 },
                 setX: (value) => {
                     matricies[i + matrix.trueIndex] = value;
                 },
                 setY: (value) => {
-                    matricies[i + 1 * 4 + matrix.trueIndex] = value;
+                    matricies[col + 1 * 4 + matrix.trueIndex] = value;
                 },
                 setZ: (value) => {
-                    matricies[i + 2 * 4 + matrix.trueIndex] = value;
+                    matricies[col + 2 * 4 + matrix.trueIndex] = value;
                 },
                 setW: (value) => {
-                    matricies[i + 3 * 4 + matrix.trueIndex] = value;
+                    matricies[col + 3 * 4 + matrix.trueIndex] = value;
                 },
             }));
             i++;
         }
-        Object.freeze(matrix.rows);
-        Object.freeze(matrix.cols);
     }
     trueIndex = 0;
     matricies;
     constructor(startData, index = 0) {
         this.index = index;
         this.setMatriciesIndex(index);
-        MatrixArray.buildProperties(this);
         if (startData instanceof MatrixArray) {
             this.matricies = startData.matricies;
-            this.rows = startData.rows;
-            this.cols = startData.cols;
+            MatrixArray.buildProperties(this);
             return;
         }
         this.matricies = new Float32Array(startData * 16);
@@ -142,6 +140,7 @@ class MatrixArray {
             }
             k++;
         }
+        MatrixArray.buildProperties(this);
     }
     rows;
     cols;
@@ -203,5 +202,43 @@ class MatrixArray {
         this.trueIndex = index * 16;
         return this;
     }
+    copy(matrix) {
+        for (let i = 0; i < 16; i++) {
+            this.matricies[i + this.trueIndex] = matrix.matricies[i + matrix.trueIndex];
+        }
+    }
+    copyIndex() {
+        const index = [];
+        for (let i = 0; i < 16; i++) {
+            index.push(this.matricies[i + this.trueIndex]);
+        }
+        return index;
+    }
+    multiply(matirx) {
+        for (let r = 0; r < 4; r++) {
+            tempMatrix.rows[r].x =
+                this.rows[r].x * matirx.cols[0].x +
+                    this.rows[r].y * matirx.cols[0].y +
+                    this.rows[r].z * matirx.cols[0].z +
+                    this.rows[r].w * matirx.cols[0].w;
+            tempMatrix.rows[r].y =
+                this.rows[r].x * matirx.cols[1].x +
+                    this.rows[r].y * matirx.cols[1].y +
+                    this.rows[r].z * matirx.cols[1].z +
+                    this.rows[r].w * matirx.cols[1].w;
+            tempMatrix.rows[r].z =
+                this.rows[r].x * matirx.cols[2].x +
+                    this.rows[r].y * matirx.cols[2].y +
+                    this.rows[r].z * matirx.cols[2].z +
+                    this.rows[r].w * matirx.cols[2].w;
+            tempMatrix.rows[r].w =
+                this.rows[r].x * matirx.cols[3].x +
+                    this.rows[r].y * matirx.cols[3].y +
+                    this.rows[r].z * matirx.cols[3].z +
+                    this.rows[r].w * matirx.cols[3].w;
+        }
+        this.copy(tempMatrix);
+    }
 }
 export { MatrixArray };
+const tempMatrix = new MatrixArray(1, 0);

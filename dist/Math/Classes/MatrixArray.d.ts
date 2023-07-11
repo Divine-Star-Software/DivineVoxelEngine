@@ -60,4 +60,7 @@ export declare class MatrixArray {
     scale: MatrixProperty;
     position: MatrixProperty;
     setMatriciesIndex(index: number): this;
+    copy(matrix: MatrixArray): void;
+    copyIndex(): number[];
+    multiply(matirx: MatrixArray): void;
 }
