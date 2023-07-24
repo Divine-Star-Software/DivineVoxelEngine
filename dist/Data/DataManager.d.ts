@@ -57,6 +57,7 @@ export declare const DataManager: {
                     y: number;
                     z: number;
                 }): any;
+                toArray(): [number, number, number];
             };
             getRegionPositonxXYZ(x: number, y: number, z: number): {
                 x: number;
@@ -74,6 +75,7 @@ export declare const DataManager: {
                     y: number;
                     z: number;
                 }): any;
+                toArray(): [number, number, number];
             };
             getRegionIndex(): number;
             getRegionIndexXYZ(x: number, y: number, z: number): number;
@@ -172,7 +174,7 @@ export declare const DataManager: {
                 data: DataView;
                 buffer: SharedArrayBuffer;
             } | undefined;
-            isStored(location: import("voxelspaces").LocationData): 0 | 1 | -1;
+            isStored(location: import("voxelspaces").LocationData): 1 | -1 | 0;
         };
     };
     tags: {

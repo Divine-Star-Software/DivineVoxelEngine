@@ -12,6 +12,7 @@ import { LocationData } from "voxelspaces";
 import { Distance3D } from "../../Math/Functions/Distance3d.js";
 import { NodeManager } from "../Nodes/NodeManager.js";
 import { MeshAttributes } from "Constructor/Builder/Types/MeshData.types.js";
+
 export const MeshManager = {
  scene: <Scene>{},
  runningUpdate: false,
@@ -41,6 +42,7 @@ export const MeshManager = {
    const [location, substance] = data;
    const mesh = MeshRegister.chunk.remove(location, substance);
    if (!mesh) return false;
+
    NodeManager.meshes.get(substance)!.returnMesh(mesh);
   },
   add(location: LocationData, substance: string, meshData: SetNodeMesh) {
@@ -53,7 +55,6 @@ export const MeshManager = {
     MeshRegister.chunk.add(location, mesh, substance);
     mesh.setEnabled(true);
     mesh.isVisible = true;
-    NodeManager.meshes.get(substance)!.updateVetexData(meshData, mesh);
    } else {
     mesh = chunk.mesh;
     NodeManager.meshes.get(substance)!.updateVetexData(meshData, mesh);

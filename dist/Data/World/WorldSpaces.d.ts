@@ -37,6 +37,7 @@ export declare const WorldSpaces: {
                 y: number;
                 z: number;
             }): any;
+            toArray(): [number, number, number];
         };
         getRegionPositonxXYZ(x: number, y: number, z: number): {
             x: number;
@@ -54,6 +55,7 @@ export declare const WorldSpaces: {
                 y: number;
                 z: number;
             }): any;
+            toArray(): [number, number, number];
         };
         getRegionIndex(): number;
         getRegionIndexXYZ(x: number, y: number, z: number): number;

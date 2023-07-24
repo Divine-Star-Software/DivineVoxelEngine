@@ -17,7 +17,7 @@ export const WorldLock = {
             const [b, ex, ey, ez] = WorldSpaces.column.getLocationXYZ(esx, esy, esz);
             const run = () => {
                 let allFound = true;
-                for (let y = sy; y < ey; y += WorldSpaces.column._bounds.y) {
+                for (let y = sy; y < ey + WorldSpaces.column._bounds.y; y += WorldSpaces.column._bounds.y) {
                     for (let x = sx; x < ex; x += WorldSpaces.column._bounds.x) {
                         for (let z = sz; z < ez; z += WorldSpaces.column._bounds.z) {
                             const location = [
@@ -27,14 +27,15 @@ export const WorldLock = {
                             if (WorldRegister.column.get(location))
                                 continue;
                             allFound = false;
-                            if (!this.dataLoader.isEnabled()) {
-                                WorldRegister.column.fill(location);
-                                continue;
-                            }
                             const key = location.toString();
                             if (this._loadMap.has(key))
                                 continue;
                             this._loadMap.set(key, true);
+                            if (!this.dataLoader.isEnabled()) {
+                                if (!WorldRegister.column.get(location)) {
+                                    WorldRegister.column.fill(location);
+                                }
+                            }
                             this.dataLoader.setLocation(location).loadIfExists((loaded) => {
                                 this._loadMap.remove(key);
                                 if (WorldRegister.column.get(location))

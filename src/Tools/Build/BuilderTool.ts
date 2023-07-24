@@ -20,9 +20,14 @@ export class BuilderTool extends LocationBoundTool {
  clearAll() {
   parentComm.runTasks("clear-all", []);
  }
- buildChunk(runQueue = false) {
+ addChukBuildToQuee() {
   this.tasks.build.chunk.queued.add(this.location);
-  if (runQueue) this.tasks.build.chunk.queued.run(() => {});
+ }
+ runChunkBuildQueue() {
+  this.tasks.build.chunk.queued.run(() => {});
+ }
+ buildChunk() {
+  this.tasks.build.chunk.deferred.run([this.location, 1], () => {});
   return this;
  }
  buildColumn(onDone?: (data: any) => void) {

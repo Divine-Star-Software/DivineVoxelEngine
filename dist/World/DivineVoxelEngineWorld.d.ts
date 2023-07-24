@@ -175,6 +175,7 @@ export declare const DVEW: {
                         y: number;
                         z: number;
                     }): any;
+                    toArray(): [number, number, number];
                 };
                 getRegionPositonxXYZ(x: number, y: number, z: number): {
                     x: number;
@@ -192,12 +193,10 @@ export declare const DVEW: {
                         y: number;
                         z: number;
                     }): any;
+                    toArray(): [number, number, number];
                 };
                 getRegionIndex(): number;
-                getRegionIndexXYZ(x: number, y: number, z: number): number; /**# Divine Voxel Engine World
-                 * ---
-                 * This handles everything in the world worker context.
-                 */
+                getRegionIndexXYZ(x: number, y: number, z: number): number;
             };
             voxel: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace;
             setDimensions(data: {
@@ -293,7 +292,7 @@ export declare const DVEW: {
                     data: DataView;
                     buffer: SharedArrayBuffer;
                 } | undefined;
-                isStored(location: import("voxelspaces").LocationData): 0 | 1 | -1;
+                isStored(location: import("voxelspaces").LocationData): 1 | -1 | 0;
             };
         };
         tags: {

@@ -2,7 +2,7 @@ import type { LightTaskRequest } from "Constructor/Tasks/TasksRequest";
 import { IlluminationManager as IM } from "../IlluminationManager.js";
 
 export function SunUpdate(tasks: LightTaskRequest) {
- const update = tasks.queues.sun.update;
+ const {update} = tasks.queues.sun;
  while (update.length > 0) {
   const x = update.shift()!;
   const y = update.shift()!;
@@ -75,16 +75,14 @@ export function SunUpdate(tasks: LightTaskRequest) {
 }
 
 export function SunRemove(tasks: LightTaskRequest, clearUpdateMap = true) {
- const remove = tasks.queues.sun.remove;
- const update = tasks.queues.sun.update;
- const removeMap = tasks.queues.sun.remvoeMap;
- const updateMap = tasks.queues.sun.updateMap;
+ const {remove,update,remvoeMap,updateMap} = tasks.queues.sun;
+
  while (remove.length != 0) {
   const x = remove.shift()!;
   const y = remove.shift()!;
   const z = remove.shift()!;
-  if (removeMap.inMap(x, y, z)) continue;
-  removeMap.add(x, y, z);
+  if (remvoeMap.inMap(x, y, z)) continue;
+  remvoeMap.add(x, y, z);
 
   if (!IM._sDataTool.loadInAt(x, y, z)) continue;
   const sl = IM._sDataTool.getLight();
@@ -195,5 +193,5 @@ export function SunRemove(tasks: LightTaskRequest, clearUpdateMap = true) {
   IM._sDataTool.setLight(IM.lightData.removeSunLight(sl)).commit();
  }
  if(clearUpdateMap) updateMap.clear();
- removeMap.clear();
+ remvoeMap.clear();
 }

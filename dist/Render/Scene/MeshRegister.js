@@ -127,7 +127,10 @@ export const MeshRegister = {
         },
         _getColumnData(location) {
             return {
-                location: location,
+                location: [
+                    location[0],
+                    ...WorldSpaces.column.getPositionLocation(location).toArray(),
+                ],
                 chunks: new Map(),
             };
         },

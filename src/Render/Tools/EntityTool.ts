@@ -195,7 +195,7 @@ export class EntityTool {
  }
  returnInstance(instance: EntityInstance) {
   instance.scale.setAll(0);
-  this._usedInstances.delete(instance._matrix.trueIndex);
+  this._usedInstances.delete(instance._matrix.index);
  }
  update() {
   this.mesh.thinInstanceBufferUpdated("matrix");

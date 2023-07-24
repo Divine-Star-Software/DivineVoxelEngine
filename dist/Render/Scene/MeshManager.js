@@ -40,7 +40,6 @@ export const MeshManager = {
                 MeshRegister.chunk.add(location, mesh, substance);
                 mesh.setEnabled(true);
                 mesh.isVisible = true;
-                NodeManager.meshes.get(substance).updateVetexData(meshData, mesh);
             }
             else {
                 mesh = chunk.mesh;
