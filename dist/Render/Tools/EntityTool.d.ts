@@ -35,10 +35,12 @@ export declare class EntityTool {
     mesh: Mesh;
     _instanceAmount: number;
     _matrixArray: MatrixArray;
-    _usedInstances: Map<number, EntityInstance>;
+    _instances: EntityInstance[];
+    _usedInstances: Set<EntityInstance>;
     constructor(mesh: Mesh);
     setInstanceAmount(amount: number): void;
     getInstance(): false | EntityInstance;
     returnInstance(instance: EntityInstance): void;
+    returnAll(): void;
     update(): void;
 }

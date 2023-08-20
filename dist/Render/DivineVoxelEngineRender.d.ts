@@ -408,7 +408,7 @@ export declare const DVER: {
                     data: DataView;
                     buffer: SharedArrayBuffer;
                 } | undefined;
-                isStored(location: import("voxelspaces").LocationData): 1 | -1 | 0;
+                isStored(location: import("voxelspaces").LocationData): 0 | 1 | -1;
             };
         };
         tags: {

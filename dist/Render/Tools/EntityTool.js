@@ -162,7 +162,8 @@ export class EntityTool {
     mesh;
     _instanceAmount = 0;
     _matrixArray;
-    _usedInstances = new Map();
+    _instances = [];
+    _usedInstances = new Set();
     constructor(mesh) {
         this.mesh = mesh;
     }
@@ -170,23 +171,32 @@ export class EntityTool {
         this._matrixArray = new MatrixArray(amount);
         this.mesh.thinInstanceSetBuffer("matrix", this._matrixArray.matricies);
         this._instanceAmount = amount;
-    }
-    getInstance() {
         let i = this._instanceAmount;
         while (i--) {
-            if (!this._usedInstances.get(i)) {
-                const newInstance = new EntityInstance(this, new MatrixArray(this._matrixArray, i));
-                newInstance.scale.setAll(1);
-                this._usedInstances.set(i, newInstance);
-                newInstance.update();
-                return newInstance;
-            }
+            const newInstance = new EntityInstance(this, new MatrixArray(this._matrixArray, i));
+            newInstance.scale.setAll(0);
+            newInstance.update();
+            this._instances.push(newInstance);
         }
-        return false;
+    }
+    getInstance() {
+        const instance = this._instances.shift();
+        if (!instance)
+            return false;
+        instance.scale.setAll(1);
+        this._usedInstances.add(instance);
+        return instance;
     }
     returnInstance(instance) {
         instance.scale.setAll(0);
-        this._usedInstances.delete(instance._matrix.index);
+        this._instances.push(instance);
+        this._usedInstances.delete(instance);
+    }
+    returnAll() {
+        for (const instance of this._usedInstances) {
+            this.returnInstance(instance);
+        }
+        this._usedInstances.clear();
     }
     update() {
         this.mesh.thinInstanceBufferUpdated("matrix");

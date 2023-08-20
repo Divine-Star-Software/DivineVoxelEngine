@@ -130,7 +130,6 @@ export class EntityInstance {
   this._matrix.position.y = -this.piviotPoint.y;
   this._matrix.position.z = -this.piviotPoint.z;
 
-  
   if (this.rotation.x) {
    xRotationMatrix.rows[1].y = Math.cos(this._rotation.x);
    xRotationMatrix.rows[1].z = -Math.sin(this._rotation.x);
@@ -170,32 +169,42 @@ export class EntityInstance {
 export class EntityTool {
  _instanceAmount = 0;
  _matrixArray: MatrixArray;
- _usedInstances = new Map<number, EntityInstance>();
+ _instances: EntityInstance[] = [];
+ _usedInstances = new Set<EntityInstance>();
  constructor(public mesh: Mesh) {}
  setInstanceAmount(amount: number) {
   this._matrixArray = new MatrixArray(amount);
   this.mesh.thinInstanceSetBuffer("matrix", this._matrixArray.matricies);
+
   this._instanceAmount = amount;
- }
- getInstance() {
   let i = this._instanceAmount;
   while (i--) {
-   if (!this._usedInstances.get(i)) {
-    const newInstance = new EntityInstance(
-     this,
-     new MatrixArray(this._matrixArray, i)
-    );
-    newInstance.scale.setAll(1);
-    this._usedInstances.set(i, newInstance);
-    newInstance.update();
-    return newInstance;
-   }
+   const newInstance = new EntityInstance(
+    this,
+    new MatrixArray(this._matrixArray, i)
+   );
+   newInstance.scale.setAll(0);
+   newInstance.update();
+   this._instances.push(newInstance);
   }
-  return false;
+ }
+ getInstance() {
+  const instance = this._instances.shift();
+  if (!instance) return false;
+  instance.scale.setAll(1);
+  this._usedInstances.add(instance);
+  return instance;
  }
  returnInstance(instance: EntityInstance) {
   instance.scale.setAll(0);
-  this._usedInstances.delete(instance._matrix.index);
+  this._instances.push(instance);
+  this._usedInstances.delete(instance);
+ }
+ returnAll() {
+  for (const instance of this._usedInstances) {
+    this.returnInstance(instance);
+  }
+  this._usedInstances.clear();
  }
  update() {
   this.mesh.thinInstanceBufferUpdated("matrix");

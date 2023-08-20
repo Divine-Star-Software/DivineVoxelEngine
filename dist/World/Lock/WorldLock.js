@@ -18,8 +18,8 @@ export const WorldLock = {
             const run = () => {
                 let allFound = true;
                 for (let y = sy; y < ey + WorldSpaces.column._bounds.y; y += WorldSpaces.column._bounds.y) {
-                    for (let x = sx; x < ex; x += WorldSpaces.column._bounds.x) {
-                        for (let z = sz; z < ez; z += WorldSpaces.column._bounds.z) {
+                    for (let x = sx; x <= ex; x += WorldSpaces.column._bounds.x) {
+                        for (let z = sz; z <= ez; z += WorldSpaces.column._bounds.z) {
                             const location = [
                                 ...WorldSpaces.column.getLocationXYZ(x, y, z),
                             ];
