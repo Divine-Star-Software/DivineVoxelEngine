@@ -22,8 +22,10 @@
  "devDependencies": {
   "@types/node": "^16.11.7"
  },
+ "peerDependencies": {
+    "@babylonjs/core": "^6.18.0"
+ },
  "dependencies": {
-  "@babylonjs/core": "^6.5.0",
   "divine-binary-object": "^0.0.45",
   "divine-binary-tags": "^0.0.61",
   "divine-hooks": "^0.0.4",

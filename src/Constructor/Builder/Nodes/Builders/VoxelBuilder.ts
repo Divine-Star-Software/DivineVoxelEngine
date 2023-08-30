@@ -25,7 +25,7 @@ class VoxelBuilderBase extends NodeBuilder {
   );
 
   if (!mesher || !constructor) return false;
-
+  mesher.resetAll();
   mesher.voxel.loadInRaw(rawVoxelData).setMode(BuilderDataTool.VOXEL_DATA_MODE);
   mesher.nVoxel
    .loadInRaw(rawVoxelData)

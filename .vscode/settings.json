@@ -3,5 +3,6 @@
     "search.exclude": {
         "**/node_modules": true,
         "**/dist": true,
+        "**/docs": true,
       }
 }

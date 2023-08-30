@@ -197,6 +197,7 @@ export class EntityTool {
  }
  returnInstance(instance: EntityInstance) {
   instance.scale.setAll(0);
+
   this._instances.push(instance);
   this._usedInstances.delete(instance);
  }

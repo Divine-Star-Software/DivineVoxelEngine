@@ -30,8 +30,8 @@ declare class DataSyncNode<SyncInput, SyncOutput, UnSyncInput, UnSyncOutput> {
     syncInThread(commName: string, input: SyncInput): false | undefined;
 }
 export declare const DataSync: {
-    commMap: Map<string, CommManager | CommBase>;
-    comms: (CommManager | CommBase)[];
+    commMap: Map<string, CommBase | CommManager>;
+    comms: (CommBase | CommManager)[];
     commOptions: WeakMap<any, CommSyncOptions>;
     _ready: boolean;
     $INIT(): void;

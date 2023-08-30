@@ -6,7 +6,7 @@ export function RegisterFragFunctions(builder: typeof DivineShaderBuilder) {
   output: "vec4",
   arguments: {},
   body: {
-   GLSL: () => `return base * vColors;`,
+   GLSL: () => /* glsl */`return base * vColors;`,
   },
  });
  builder.functions.create("getAO", {
@@ -15,7 +15,7 @@ export function RegisterFragFunctions(builder: typeof DivineShaderBuilder) {
   output: "vec4",
   arguments: {},
   body: {
-   GLSL: () => `
+   GLSL: () => /* glsl */`
    return  base * mix(base, vec4(VOXEL[1].r,VOXEL[1].r,VOXEL[1].r,1.) , 1.0);`,
   },
  });
@@ -25,7 +25,7 @@ export function RegisterFragFunctions(builder: typeof DivineShaderBuilder) {
   output: "vec4",
   arguments: {},
   body: {
-   GLSL: () => `
+   GLSL: () => /* glsl */`
 return base * VOXEL[0]; `,
   },
  });
@@ -35,7 +35,7 @@ return base * VOXEL[0]; `,
   output: "vec3",
   arguments: {},
   body: {
-   GLSL: () => `
+   GLSL: () => /* glsl */`
    switch (int(fogOptions)) {
       case 0:
          return mix( base.rgb, vFogColor, ExponentialFog() );
@@ -58,7 +58,7 @@ return base * VOXEL[0]; `,
   output: "vec4",
   arguments: {},
   body: {
-   GLSL: () => `
+   GLSL: () => /* glsl */`
    switch (int(mipMapLevel)) {
       case 0:
           return texture(tex[0], vec3(UV.x,UV.y,index));
@@ -84,7 +84,7 @@ builder.functions.create("getBaseColor", {
    overlayVarying: "vOVUV",
   },
   body: {
-   GLSL: (args) => `
+   GLSL: (args) => /* glsl */`
    UV.xy += ${args.mainVarying}.xy;
    vec4 rgb = getBase(${args.textureID},UV.xy,${args.mainVarying}.z);
    vec4 oRGB1 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.x);
@@ -119,7 +119,7 @@ builder.functions.create("getBaseColor", {
     mainVarying: "vUV",
    },
    body: {
-    GLSL: (args) => `
+    GLSL: (args) => /* glsl */`
  
     vec4 rgb = getBase(${args.textureID},${args.mainVarying}.xy,${args.mainVarying}.z);
     if (rgb.a < 0.85) { 

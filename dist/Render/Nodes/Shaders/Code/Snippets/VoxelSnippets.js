@@ -14,7 +14,7 @@ export function RegisterVoxelSnippets(builder) {
     builder.snippets.create({
         id: "#dve_flora_vertex",
         body: {
-            GLSL: () => `vec3 p = position;
+            GLSL: () => /* glsl */ `vec3 p = position;
 
 #ifdef INSTANCES
       mat4 finalWorld = mat4(world0,world1,world2,world3); 
@@ -56,7 +56,7 @@ export function RegisterVoxelSnippets(builder) {
     builder.snippets.create({
         id: "#dve_liquid_vertex",
         body: {
-            GLSL: () => `
+            GLSL: () => /* glsl */ `
   vFlow = 0.;
   if(VOXEL[1].y == 1.) {
     vFlow = 1.;
@@ -92,7 +92,7 @@ export function RegisterVoxelSnippets(builder) {
     builder.snippets.create({
         id: "#dve_liquid_frag",
         body: {
-            GLSL: () => `
+            GLSL: () => /* glsl */ `
   vec4 rgb = getBaseColor(vec2(0.,time * -4. * vFlow));
   rgb = getColor(rgb);
   vec4 mixLight = getLight(rgb);

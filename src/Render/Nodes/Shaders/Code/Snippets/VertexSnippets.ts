@@ -3,11 +3,11 @@ export function RegisterVertexSnippets(builder: typeof DivineShaderBuilder) {
  builder.snippets.create({
   id: "standard_position",
   body: {
-   GLSL: () => `
+   GLSL: () => /* glsl */`
 #ifdef INSTANCES
       mat4 finalWorld = mat4(world0,world1,world2,world3); 
 
-      vDistance = 0.;
+      vDistance = distance(cameraPOS , finalWorld[3].xyz );
       mipMapLevel = 0.;
 
       finalWorld[3].xyz += worldOrigin.xyz;

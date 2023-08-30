@@ -5,7 +5,7 @@ export function RegisterVertexFunctions(builder) {
         output: "int",
         arguments: {},
         body: {
-            GLSL: () => `
+            GLSL: () => /* glsl */ `
 int index = int(faceData);
 return  index & 0xff;`,
         },
@@ -19,7 +19,7 @@ return  index & 0xff;`,
         output: "vec3",
         arguments: {},
         body: {
-            GLSL: () => `
+            GLSL: () => /* glsl */ `
  p.xz += fbm(posWorld.xz * 0.15 + time) * 0.05;
 return p;`,
         },
@@ -33,7 +33,7 @@ return p;`,
         output: "vec3",
         arguments: {},
         body: {
-            GLSL: () => `
+            GLSL: () => /* glsl */ `
 float height = fbm(posWorld.xz * 0.08 + time );
 if(normal.z == 1.) {
     p.z += height * 0.05;
@@ -63,7 +63,7 @@ return p;`,
         output: "vec3",
         arguments: {},
         body: {
-            GLSL: () => `
+            GLSL: () => /* glsl */ `
 float height = fbm(posWorld.xz * 0.08 + time );
 p.xz += height * 0.05;
 return p;`,

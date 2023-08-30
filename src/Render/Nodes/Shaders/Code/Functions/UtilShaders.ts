@@ -8,7 +8,7 @@ export function RegisterNoiseFunctions(builder: typeof DivineShaderBuilder) {
   arguments: {},
   body: {
    GLSL: () =>
-    `return fract(sin(dot(p * 5.5, vec2(14.91, 67.31))) * 4791.9511);`,
+    /* glsl */`return fract(sin(dot(p * 5.5, vec2(14.91, 67.31))) * 4791.9511);`,
   },
  });
  builder.functions.create("noise", {
@@ -17,7 +17,7 @@ export function RegisterNoiseFunctions(builder: typeof DivineShaderBuilder) {
   output: "float",
   arguments: [],
   body: {
-   GLSL: () => `
+   GLSL: () => /* glsl */`
 vec2 p = floor(x);
 vec2 f = fract(x);
 f = f * f * (3.0 - 2.0 * f);
@@ -64,7 +64,7 @@ return height;`,
   output: "vec3",
   arguments: {},
   body: {
-   GLSL: () => `return x - floor(x * (1.0 / 289.0)) * 289.0;`,
+   GLSL: () => /* glsl */`return x - floor(x * (1.0 / 289.0)) * 289.0;`,
   },
   overrides: [
    {
@@ -72,7 +72,7 @@ return height;`,
     output: "vec4",
     arguments: {},
     body: {
-     GLSL: () => `return x - floor(x * (1.0 / 289.0)) * 289.0;`,
+     GLSL: () => /* glsl */`return x - floor(x * (1.0 / 289.0)) * 289.0;`,
     },
    },
   ],
@@ -83,7 +83,7 @@ return height;`,
   output: "vec4",
   arguments: {},
   body: {
-   GLSL: () => `return mod289(((x*34.0)+1.0)*x);`,
+   GLSL: () => /* glsl */`return mod289(((x*34.0)+1.0)*x);`,
   },
  });
  builder.functions.create("taylorInvSqrt", {
@@ -92,7 +92,7 @@ return height;`,
   output: "vec4",
   arguments: {},
   body: {
-   GLSL: () => `return 1.79284291400159 - 0.85373472095314 * r;`,
+   GLSL: () => /* glsl */`return 1.79284291400159 - 0.85373472095314 * r;`,
   },
  });
  builder.functions.create("snoise", {
@@ -101,7 +101,7 @@ return height;`,
   output: "float",
   arguments: {},
   body: {
-   GLSL: () => `const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
+   GLSL: () => /* glsl */`const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
 const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
 // First corner
 vec3 i  = floor(v + dot(v, C.yyy) );
@@ -165,7 +165,7 @@ return 105.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),dot(p2,x2), dot(p3,x3) ) )
   output: "float",
   arguments: {},
   body: {
-   GLSL: () => `
+   GLSL: () => /* glsl */`
    float value = 0.0;
    float amplitude = 0.5;
    float frequency = 0.0;

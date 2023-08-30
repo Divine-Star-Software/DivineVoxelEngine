@@ -5,7 +5,7 @@ export function RegisterFogShaders(builder) {
         output: "float",
         arguments: {},
         body: {
-            GLSL: () => `
+            GLSL: () => /* glsl */ `
    float fogCoeff = 1.0;
    //float fogDensity = fogOptions.y;
    //fogCoeff = 1.0 / pow(E, fFogDistance * fogDensity);
@@ -18,7 +18,7 @@ export function RegisterFogShaders(builder) {
         output: "float",
         arguments: {},
         body: {
-            GLSL: () => `
+            GLSL: () => /* glsl */ `
    float fogDensity = fogOptions.y;
    vec3 fogOrigin = cameraPOS;
    vec3 fogDirection = normalize(worldPOS - fogOrigin);
@@ -38,7 +38,7 @@ export function RegisterFogShaders(builder) {
         output: "float",
         arguments: {},
         body: {
-            GLSL: () => `
+            GLSL: () => /* glsl */ `
    float fogDensity = fogOptions.y;
    float fogTime = time * .5;
    vec3 fogOrigin = cameraPOS;

@@ -48,7 +48,7 @@ export const NodeShaders = {
    id: "VOXEL",
    type: "mat4",
    body: {
-    GLSL: () => `
+    GLSL: () => /* glsl */ `
 mat4 vData;
 
 uint vUID = uint(voxelData);
@@ -101,7 +101,7 @@ VOXEL = vData;
    id: "worldPOS",
    type: "vec3",
    body: {
-    GLSL: () => `vec4 worldPOSTemp =  world * vec4(position, 1.0);
+    GLSL: () => /* glsl */ `vec4 worldPOSTemp =  world * vec4(position, 1.0);
       worldPOS = vec3(worldPOSTemp.x,worldPOSTemp.y,worldPOSTemp.z);`,
    },
   },
@@ -116,7 +116,7 @@ VOXEL = vData;
    id: "worldPOSNoOrigin",
    type: "vec3",
    body: {
-    GLSL: () => `mat4 a;
+    GLSL: () => /* glsl */ `mat4 a;
 a[0] = world[0];
 a[1] = world[1];
 a[2] = world[2];
@@ -130,7 +130,7 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
    id: "mipMapLevel",
    type: "float",
    body: {
-    GLSL: () => `
+    GLSL: () => /* glsl */ `
     mipMapLevel = 0.;
     if(vDistance <= 30.) {
      mipMapLevel = 0.;
@@ -158,7 +158,7 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
    id: "vColors",
    type: "vec4",
    body: {
-    GLSL: () => `if(doColor == 1.0){
+    GLSL: () => /* glsl */ `if(doColor == 1.0){
      vColors = vec4(1.0,1.0,1.0,1.0); 
 } else {
      vColors = vec4(1.0,1.0,1.0,1.0); 
@@ -204,7 +204,7 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
  },
 
  _addInstances(shader: DivineShader) {
-  shader.data.vertexBeforeMain.GLSL = `
+  shader.data.vertexBeforeMain.GLSL = /* glsl */ `
   #ifdef INSTANCES
   //matricies
   in vec4 world0;
@@ -250,7 +250,7 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
     id: "worldPOS",
     type: "vec3",
     body: {
-     GLSL: () => `vec4 worldPOSTemp =  world * vec4(position, 1.0);
+     GLSL: () => /* glsl */ `vec4 worldPOSTemp =  world * vec4(position, 1.0);
    worldPOS = vec3(worldPOSTemp.x,worldPOSTemp.y,worldPOSTemp.z);`,
     },
    },
@@ -265,7 +265,7 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
     id: "mipMapLevel",
     type: "float",
     body: {
-     GLSL: () => `
+     GLSL: () => /* glsl */ `
       mipMapLevel = 0.;
       if(vDistance <= 30.) {
        mipMapLevel = 0.;
@@ -287,7 +287,7 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
   shader.setCodeBody("vertex", `@standard_position`);
   shader.setCodeBody(
    "frag",
-   `vec4 rgb = getMainColor();
+   /* glsl */ `vec4 rgb = getMainColor();
    if (rgb.a < 0.5) { 
     discard;
   }
@@ -308,6 +308,7 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
   shader.loadInFunctions(["#dve_fmb2", "#dve_fmb3", "#dve_fog", "doFog"]);
   shader.addUniform(
    [
+    ["doEffects", "float"],
     ["fogOptions", "vec4"],
     ["vFogInfos", "vec4"],
     ["vFogColor", "vec3"],
@@ -329,7 +330,7 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
     id: "worldPOS",
     type: "vec3",
     body: {
-     GLSL: () => `vec4 worldPOSTemp =  world * vec4(position, 1.0);
+     GLSL: () => /* glsl */ `vec4 worldPOSTemp =  world * vec4(position, 1.0);
 worldPOS = vec3(worldPOSTemp.x,worldPOSTemp.y,worldPOSTemp.z);`,
     },
    },
@@ -337,7 +338,9 @@ worldPOS = vec3(worldPOSTemp.x,worldPOSTemp.y,worldPOSTemp.z);`,
     id: "vDistance",
     type: "float",
     body: {
-     GLSL: () => " vDistance = distance(cameraPOS , worldPOS );\n",
+     GLSL: () => /* glsl */ `
+     vDistance = distance(cameraPOS , worldPOS );
+     `,
     },
    },
   ]);
@@ -349,17 +352,7 @@ worldPOS = vec3(worldPOSTemp.x,worldPOSTemp.y,worldPOSTemp.z);`,
    "vertex"
   );
   shader.setCodeBody("vertex", `@standard_position`);
-  shader.setCodeBody(
-   "frag",
-   `vec3 c = vFogColor.rgb;
-c.r -= .2;
-c.g -= .2;
-c.b -= .2;
-vec4 skyboxColor = vec4(c.rgb,1);
-vec3 finalColor = doFog(skyboxColor);
-FragColor = vec4(finalColor.rgb,1);
-`
-  );
+  shader.setCodeBody("frag", `@skybox_frag`);
   shader.compile();
 
   return shader;

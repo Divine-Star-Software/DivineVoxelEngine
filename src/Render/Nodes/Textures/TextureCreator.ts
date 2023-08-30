@@ -57,16 +57,11 @@ export const TextureCreator = {
   const scene = RenderManager.scene!;
   const resolvedImages: Uint8ClampedArray[] = [];
   //create blank fill to pad image array buffer
-  let index = 0;
-  const data = [];
-  for (let i = 0; i < width * 2; i++) {
-   for (let j = 0; j < height * 2; j++) {
-    if (index % 4 == 0) {
-     data[index] = 1;
-    } else {
-     data[index] = 0;
-    }
-    index++;
+
+  const data: number[] = [];
+  for (let i = 0; i < width; i++) {
+   for (let j = 0; j < height; j++) {
+    data.push(0, 0, 0, 1);
    }
   }
 
@@ -77,8 +72,10 @@ export const TextureCreator = {
   }
   resolvedImages.push(new Uint8ClampedArray(data));
 
-  let totalLength = images.size * width * height * 4 + width * height * 4 * 2;
-
+  let totalLength = 0;
+  for (const image of resolvedImages) {
+   totalLength += image.byteLength;
+  }
   const combinedImages = this._combineImageData(totalLength, resolvedImages);
   const _2DTextureArray = new DVEBabylon.system.RawTexture2DArray(
    combinedImages,
@@ -116,10 +113,9 @@ export const TextureCreator = {
     const image = new Image();
     image.src = imgSrcData;
     image.onload = () => {
-     const ctx = TextureCreator.context;
-     if (!ctx) return;
      //clear the canvas before re-rendering another image
-     ctx.clearRect(0, 0, width!, height!);
+     ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
+
      ctx.drawImage(image, 0, 0, width!, height!);
      const imgData = ctx.getImageData(0, 0, width!, height!);
 
@@ -131,6 +127,9 @@ export const TextureCreator = {
   }
   if (imgSrcData instanceof Uint8ClampedArray) {
    const prom: Promise<Uint8ClampedArray> = new Promise(async (resolve) => {
+    ctx.fillRect(0, 0, this._canvas.width, this._canvas.height);
+    ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
+
     const bitmap = await createImageBitmap(
      new ImageData(
       imgSrcData,
@@ -143,10 +142,6 @@ export const TextureCreator = {
       resizeQuality: "pixelated",
      }
     );
-
-    //clear the canvas before re-rendering another image
-    ctx.clearRect(0, 0, width!, height!);
-
     ctx.drawImage(bitmap, 0, 0, width!, height!);
     const imgData = ctx.getImageData(0, 0, width!, height!);
     resolve(imgData.data);
@@ -163,6 +158,7 @@ export const TextureCreator = {
   for (let i = 0; i < arrays.length; i++) {
    const array = arrays[i];
    const previousArrayIndex = length * i;
+
    combinedImagedata.set(array, previousArrayIndex);
   }
   return combinedImagedata;

@@ -17,6 +17,7 @@ class VoxelBuilderBase extends NodeBuilder {
         const mesher = RenderedSubstances.meshers.get(this.dataTool.getSubstnaceData().getRendered());
         if (!mesher || !constructor)
             return false;
+        mesher.resetAll();
         mesher.voxel.loadInRaw(rawVoxelData).setMode(BuilderDataTool.VOXEL_DATA_MODE);
         mesher.nVoxel
             .loadInRaw(rawVoxelData)
