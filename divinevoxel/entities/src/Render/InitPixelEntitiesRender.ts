@@ -1,4 +1,4 @@
-import { DivineShaderBuilder } from "divine-shaders/DivineShaderBuilder.js";
+import { DivineShaderBuilder } from "@divinestar/shaders/";
 import { DivineVoxelEngineRender } from "@divinevoxel/core/Render/DivineVoxelEngineRender.js";
 
 export async function InitPixelEntitesRender() {

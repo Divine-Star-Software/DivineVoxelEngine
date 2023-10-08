@@ -1,4 +1,4 @@
-import type { DataBase, ObjectStore } from "zeneithdb";
+import type { DataBase, ObjectStore } from "@divinestar/indexdb";
 import type { DVEDDataTypes } from "../../Types/DVED.types";
 
 export const WorldDataBase = {

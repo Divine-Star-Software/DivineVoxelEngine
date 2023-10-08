@@ -1,4 +1,4 @@
-import { DataBase, ZeneithDB } from "zeneithdb";
+import { DataBase, ZeneithDB } from "@divinestar/indexdb";
 import { WorldDataBase } from "./DataBase/WorldDataBase.js";
 
 export const DVEDBrowser = {
