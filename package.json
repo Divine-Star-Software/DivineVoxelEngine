@@ -41,6 +41,7 @@
     "@babylonjs/core": "^6.23.0"
   },
   "devDependencies": {
+    "jest": "^29.7.0",
     "typescript": "^5.2.2"
   },
   "description": ""

@@ -8,7 +8,8 @@
   "keywords": [],
   "scripts": {
     "build": "rm -rf dist/* && cp package.json dist/package.json && cd ./src && npx tsc",
-    "compile": "cd ./src && npx tsc --watch"
+    "compile": "cd ./src && npx tsc --watch",
+    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js"
   },
   "repository": {
     "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
