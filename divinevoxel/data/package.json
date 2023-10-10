@@ -1,23 +1,25 @@
 {
-  "name": "@divinevoxel/data",
-  "version": "0.0.0",
-  "description": "Default data handler implementation for dve.",
-  "main": "index.js",
-  "scripts": {
-    "build": 
-    "rm -rf dist/* && cp package.json dist/package.json && cd ./src && npx tsc",
-    "compile": "cd src && npx tsc --watch"
-  },
-  "keywords": [],
-  "author": "Divine Star Software",
-  "license": "MIT",
-  "repository": {
-    "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
-  },
-  "devDependencies": {
-    "@types/node": "^20.8.3"
-  }
+ "name": "@divinevoxel/data",
+ "version": "0.0.03",
+ "description": "Default data handler implementation for dve.",
+ "main": "index.js",
+ "scripts": {
+  "build": "rm -rf dist/* && cp package.json dist/package.json && cd ./src && npx tsc",
+  "compile": "cd src && npx tsc --watch"
+ },
+ "keywords": [],
+ "author": "Divine Star Software",
+ "license": "MIT",
+ "repository": {
+  "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
+ },
+ "bugs": {
+  "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
+ },
+ "dependencies": {
+  "@divinevoxel/core": "^0.0.03"
+ },
+ "devDependencies": {
+  "@types/node": "^20.8.3"
+ }
 }

@@ -20,12 +20,13 @@ export function RegisterDefaultTasks() {
       let cleared = false;
       const inte = setInterval(() => {
         tries++;
-        if ((gen.columnTool.loadInAt(x, y, z) || tries >= 5) && !ran) {
+        if (!(gen.columnTool.loadInAt(x, y, z) && tries >= 5) && !ran) {
           clearInterval(inte);
           onDone();
           console.error("force quit loading column");
           cleared = true;
         }
+        if (ran) clearInterval(inte);
       }, 1_000);
       gen.dataLoader
         .setLocation([gen.dimension, x, y, z])

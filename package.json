@@ -23,19 +23,19 @@
   "author": "Divine Star Software",
   "license": "MIT",
   "workspaces": [
-    "divinevoxel\\core\\dist",
-    "divinevoxel\\iwg\\dist",
-    "divinevoxel\\physics\\dist",
-    "divinevoxel\\player\\dist",
-    "divinevoxel\\data\\dist",
-    "divinevoxel\\entities\\dist",
-    "divinevoxel\\react\\dist",
-    "divinestar\\binary\\dist",
-    "divinestar\\voxelspaces\\dist",
-    "divinestar\\threads\\dist",
-    "divinestar\\shaders\\dist",
-    "divinestar\\utils\\dist",
-    "divinestar\\indexdb\\dist"
+    "divinevoxel/core/dist",
+    "divinevoxel/iwg/dist",
+    "divinevoxel/physics/dist",
+    "divinevoxel/player/dist",
+    "divinevoxel/data/dist",
+    "divinevoxel/entities/dist",
+    "divinevoxel/react/dist",
+    "divinestar/binary/dist",
+    "divinestar/voxelspaces/dist",
+    "divinestar/threads/dist",
+    "divinestar/shaders/dist",
+    "divinestar/utils/dist",
+    "divinestar/indexdb/dist"
   ],
   "dependencies": {
     "@babylonjs/core": "^6.23.0"

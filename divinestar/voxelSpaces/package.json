@@ -1,28 +1,28 @@
 {
-  "name": "@divinestar/voxelspaces",
-  "version": "0.0.0",
-  "module": "index.js",
-  "types": "index.d.ts",
-  "type": "module",
-  "description": "",
-  "keywords": [],
-  "scripts": {
-    "build": "rm -rf dist/* && cp package.json dist/package.json && cd ./src && npx tsc",
-    "compile": "cd ./src && npx tsc --watch",
-    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js"
-  },
-  "repository": {
-    "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
-  },
-  "homepage": "https://github.com/Divine-Star-Software/DivineVoxelEngine",
-  "author": "Divine Star Software",
-  "license": "MIT",
-  "devDependencies": {},
-  "main": "index.js",
-  "publishConfig": {
-    "access": "public"
-  }
+ "name": "@divinestar/voxelspaces",
+ "version": "0.0.03",
+ "module": "index.js",
+ "types": "index.d.ts",
+ "type": "module",
+ "description": "",
+ "keywords": [],
+ "scripts": {
+  "build": "rm -rf dist/* && cp package.json dist/package.json && cd ./src && npx tsc",
+  "compile": "cd ./src && npx tsc --watch",
+  "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js"
+ },
+ "repository": {
+  "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
+ },
+ "bugs": {
+  "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
+ },
+ "homepage": "https://github.com/Divine-Star-Software/DivineVoxelEngine",
+ "author": "Divine Star Software",
+ "license": "MIT",
+ "devDependencies": {},
+ "main": "index.js",
+ "publishConfig": {
+  "access": "public"
+ }
 }

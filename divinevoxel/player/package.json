@@ -1,20 +1,26 @@
 {
-  "name": "@divinevoxel/player",
-  "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
-  "devDependencies": {},
-  "scripts": {
-    "build": "rm -rf dist/* && cp package.json dist/package.json && cd ./src && npx tsc",
-    "compile": "cd src && npx tsc --watch"
-  },
-  "keywords": [],
-  "author": "Divine Star Software",
-  "license": "MIT",
-  "repository": {
-    "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
-  }
+ "name": "@divinevoxel/player",
+ "version": "0.0.03",
+ "description": "",
+ "main": "index.js",
+ "devDependencies": {},
+ "scripts": {
+  "build": "rm -rf dist/* && cp package.json dist/package.json && cd ./src && npx tsc",
+  "compile": "cd src && npx tsc --watch"
+ },
+ "keywords": [],
+ "author": "Divine Star Software",
+ "license": "MIT",
+ "repository": {
+  "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
+ },
+ "bugs": {
+  "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
+ },
+ "dependencies": {
+  "@divinevoxel/core": "^0.0.03"
+ },
+ "publishConfig": {
+  "access": "public"
+ }
 }
