@@ -1,7 +1,8 @@
-import type {
+import {
   ObjectCollectionGroupData,
   StoredCollection,
-} from "object-collection-schema/ObjectCollection.types.js";
+  ObjectCollection,
+} from "@divinestar/schemas/";
 import { GamepadManager } from "./Gamepads/GamepadManager.js";
 import {
   ControlData,
@@ -11,7 +12,6 @@ import {
   InputModeTypes,
   MouseButtonTypes,
 } from "Types/Control.types";
-import { ObjectCollection } from "object-collection-schema";
 import { DivineControlEventManager } from "./Events/DivineControlsEventManager.js";
 
 class HoldManager {

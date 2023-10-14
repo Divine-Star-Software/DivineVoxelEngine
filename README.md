@@ -84,4 +84,3 @@ Divine Voxel Engine Assets © 2022 by Lucas Damian Johnson is licensed under CC 
 All assets for the engine are copyright by Divine Star.
 You can use them for your own testing but you can not use them in any commerical product.
 
-test

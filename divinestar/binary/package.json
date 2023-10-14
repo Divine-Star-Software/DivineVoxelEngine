@@ -1,10 +1,11 @@
 {
  "name": "@divinestar/binary",
- "version": "0.0.03",
+ "version": "0.0.42",
  "module": "index.js",
  "types": "index.d.ts",
  "type": "module",
  "keywords": [],
+ "description": "Binary objects and binary tags.",
  "scripts": {
   "build": "rm -rf dist/* && cp package.json dist/package.json && cd ./src && npx tsc",
   "compile": "cd ./src && npx tsc --watch"
@@ -22,6 +23,5 @@
  "main": "index.js",
  "publishConfig": {
   "access": "public"
- },
- "description": ""
+ }
 }
