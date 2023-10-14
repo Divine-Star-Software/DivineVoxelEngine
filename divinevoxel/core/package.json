@@ -1,40 +1,40 @@
 {
- "name": "@divinevoxel/core",
- "version": "0.0.03",
- "module": "index.js",
- "types": "index.d.ts",
- "type": "module",
- "description": "TypeScript Voxel Engine - Uses Babylon.js",
- "keywords": [
-  "voxel",
-  "voxel engine",
-  "babylon.js"
- ],
- "scripts": {
-  "build": "rm -rf dist/* && cp package.json dist/package.json && cd ./src && npx tsc",
-  "compile": "cd ./src && npx tsc --watch",
-  "publish": "npm run build && cd ./dist && npm publish"
- },
- "repository": {
-  "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
- },
- "bugs": {
-  "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
- },
- "homepage": "https://github.com/Divine-Star-Software/DivineVoxelEngine",
- "author": "Divine Star Software",
- "license": "MIT",
- "devDependencies": {},
- "dependencies": {
-  "@babylonjs/core": "^6.23.0",
-  "@divinestar/binary": "^0.0.03",
-  "@divinestar/utils": "^0.0.03",
-  "@divinestar/shaders": "^0.0.03",
-  "@divinestar/threads": "^0.0.03",
-  "@divinestar/voxelspaces": "^0.0.03"
- },
- "main": "index.js",
- "publishConfig": {
-  "access": "public"
- }
+  "name": "@divinevoxel/core",
+  "version": "0.0.42",
+  "module": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "description": "TypeScript Voxel Engine - Uses Babylon.js",
+  "keywords": [
+    "voxel",
+    "voxel engine",
+    "babylon.js"
+  ],
+  "scripts": {
+    "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ../../LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
+    "compile": "cd ./src && npx tsc --watch",
+    "publish": "npm run build && cd ./dist && npm publish"
+  },
+  "repository": {
+    "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
+  },
+  "homepage": "https://github.com/Divine-Star-Software/DivineVoxelEngine",
+  "author": "Divine Star Software",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "@babylonjs/core": "^6.23.0",
+    "@divinestar/binary": "^0.0.42",
+    "@divinestar/utils": "^0.0.42",
+    "@divinestar/shaders": "^0.0.42",
+    "@divinestar/threads": "^0.0.42",
+    "@divinestar/voxelspaces": "^0.0.42"
+  },
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  }
 }

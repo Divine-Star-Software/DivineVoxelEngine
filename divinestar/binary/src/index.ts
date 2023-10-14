@@ -1,2 +1,2 @@
-export * from "./DBT/index";
-export * from "./DBO/index";
+export * from "./DBT/index.js";
+export * from "./DBO/index.js";

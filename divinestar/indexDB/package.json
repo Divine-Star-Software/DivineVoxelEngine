@@ -1,6 +1,6 @@
 {
  "name": "@divinestar/indexdb",
- "version": "0.0.03",
+ "version": "0.0.42",
  "module": "index.js",
  "types": "index.d.ts",
  "type": "module",

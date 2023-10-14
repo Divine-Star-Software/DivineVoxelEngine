@@ -1,11 +1,11 @@
 {
  "name": "@divinevoxel/iwg",
- "version": "0.0.03",
+ "version": "0.0.42",
  "description": "",
  "main": "index.js",
  "devDependencies": {},
  "scripts": {
-  "build": "rm -rf dist/* && cp package.json dist/package.json && cd ./src && npx tsc",
+    "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ../../LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
   "compile": "cd src && npx tsc --watch"
  },
  "keywords": [],
@@ -18,7 +18,7 @@
   "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
  },
  "dependencies": {
-  "@divinevoxel/core": "^0.0.03"
+  "@divinevoxel/core": "^0.0.42"
  },
  "publishConfig": {
   "access": "public"

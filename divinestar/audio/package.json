@@ -1,15 +1,14 @@
 {
- "name": "@divinestar/voxelspaces",
- "version": "0.0.42",
+ "name": "@divinestar/audio",
+ "version": "0.0.12",
  "module": "index.js",
  "types": "index.d.ts",
  "type": "module",
- "description": "",
+ "description": "Video game audio engine.",
  "keywords": [],
  "scripts": {
   "build": "rm -rf dist/* && cp package.json dist/package.json && cd ./src && npx tsc",
-  "compile": "cd ./src && npx tsc --watch",
-  "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js"
+  "compile": "cd ./src && npx tsc --watch"
  },
  "repository": {
   "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
