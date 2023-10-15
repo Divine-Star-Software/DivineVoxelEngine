@@ -1,12 +1,12 @@
-import { ControlEventTypes } from "Types/Event.types.js";
+import { ControlEventTypes } from "../Types/Event.types.js";
 import { DivineControlEvent } from "./DivineControlEventBase.js";
 import {
   DCBaseWheelDownEvent,
   DCBaseWheelUpEvent,
   DCGamepadDownEvent,
   DCGamepadUpEvent,
-  DCKeyDownEvent,
   DCKeyUpEvent,
+  DCKeyDownEvent,
   DCMouseDownEvent,
   DCMouseUpEvent,
   DCGamepadAxesMoveEvent,
@@ -38,8 +38,8 @@ DivineControlEventManager.registerEvents([
   //game axes
   new DCGamepadAxesMoveEvent(),
   //keyabord
-  new DCKeyDownEvent(),
   new DCKeyUpEvent(),
+  new DCKeyDownEvent(),
   new DCKeyHoldEvent(),
   //wheel
   new DCBaseWheelDownEvent(),

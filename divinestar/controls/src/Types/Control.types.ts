@@ -1,4 +1,4 @@
-import { DivineControlEvent } from "Events/DivineControlEventBase";
+import { DivineControlEvent } from "../Events/DivineControlEventBase";
 
 export type InputModeTypes = "down" | "up" | "hold";
 export type MouseButtonTypes = "primary" | "secondary" | "middle";

@@ -43,8 +43,8 @@
     "divinestar\\controls\\dist",
     "divinestar\\rng\\dist"
   ],
-  "dependencies": {
-    "@babylonjs/core": "^6.23.0"
+  "peerDependencies": {
+    "@babylonjs/core": "^6.24.0"
   },
   "devDependencies": {
     "jest": "^29.7.0",

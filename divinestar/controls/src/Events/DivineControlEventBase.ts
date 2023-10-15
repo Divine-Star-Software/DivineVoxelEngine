@@ -2,8 +2,8 @@ import {
   ControlInputData,
   ControlInputDataNode,
   ControlInputTypes,
-} from "Types/Control.types";
-import { ControlEventTypes } from "Types/Event.types";
+} from "../Types/Control.types";
+import { ControlEventTypes } from "../Types/Event.types";
 
 export abstract class DivineControlEvent<T extends ControlInputTypes> {
   abstract readonly eventType: ControlEventTypes;
