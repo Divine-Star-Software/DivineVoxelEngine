@@ -4,7 +4,7 @@
  "description": "Default data handler implementation for dve.",
  "main": "index.js",
  "scripts": {
-   "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ../../LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
+  "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ../../LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
   "compile": "cd src && npx tsc --watch"
  },
  "keywords": [],
@@ -17,12 +17,14 @@
   "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
  },
  "dependencies": {
+  "@divinestar/indexdb": "^0.0.42",
+  "@divinestar/voxelspaces": "^0.0.42",
   "@divinevoxel/core": "^0.0.42"
  },
  "devDependencies": {
   "@types/node": "^20.8.3"
  },
  "publishConfig": {
-    "access": "public"
-   }
+  "access": "public"
+ }
 }

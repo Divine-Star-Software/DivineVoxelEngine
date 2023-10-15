@@ -5,6 +5,7 @@ import { PlayerManager } from "../Data/PlayerManager.js";
 import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder.js";
 import { RenderPlayer } from "./RenderPlayer.js";
 import { Vector3, Color3 } from "@babylonjs/core/Maths/";
+import "@babylonjs/core/Rendering/edgesRenderer.js"
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial.js";
 export class PlayerPickCube {
   cube: Mesh;
@@ -31,16 +32,24 @@ export class PlayerPickCube {
   }
 
   constructor(DVER: DivineVoxelEngineRender, public player: RenderPlayer) {
-    const cubeMaterial = new StandardMaterial("picker-cube");
+    const cubeMaterial = new StandardMaterial(
+      "picker-cube",
+      DVER.render.scene!
+    );
     cubeMaterial.diffuseColor = new Color3(0.2, 0.2, 0.2);
     cubeMaterial.alpha = 0.3;
-    this.cube = CreateBox("playerblockdisplay", {
-      size: 1.1,
-    });
+    this.cube = CreateBox(
+      "playerblockdisplay",
+      {
+        size: 1.1,
+      },
+      DVER.render.scene!
+    );
     this.cube.isPickable = true;
     this.cube.material = cubeMaterial;
 
-    (this.cube as any).parent = DVER.render.fo.activeNode;
+
+    this.cube.parent = DVER.render.fo.activeNode;
     this.cube.enableEdgesRendering();
     this.cube.edgesWidth = 0.3;
     this.cube.edgesColor.set(0, 0, 0, 0.8);

@@ -15,6 +15,8 @@ export async function INIT_RENDER_PLAYER(
   DVER: DivineVoxelEngineRender,
   playerModel: Mesh
 ) {
+
+  console.log("got scene",scene);
   await SetUpPlayerData(DVER);
 
   PlayerManager.physics.eyeLevel = 0.7;

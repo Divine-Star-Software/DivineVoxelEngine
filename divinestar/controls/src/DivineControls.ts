@@ -11,8 +11,9 @@ import {
   DefaultGamePadButtons,
   InputModeTypes,
   MouseButtonTypes,
-} from "Types/Control.types";
+} from "./Types/Control.types";
 import { DivineControlEventManager } from "./Events/DivineControlsEventManager.js";
+import { DCKeyDownEvent } from "Events/Register/index.js";
 
 class HoldManager {
   private static _functions = new Map<
@@ -104,6 +105,7 @@ export class DivineControls {
   static _mapKey(key: string) {
     return key.length == 1 ? key.toLocaleLowerCase() : key;
   }
+  static _heldKesy = new Set();
 
   static _capturing = false;
   static _capturedData: ControlInputData | null = null;
@@ -187,7 +189,8 @@ export class DivineControls {
       down: {
         const control = this._keyboardInputs["down"].get(key);
 
-        if (!control) break down;
+        if (!control || this._heldKesy.has(key)) break down;
+        this._heldKesy.add(key);
         const dcEvent = DivineControlEventManager.getEvent("keyboard-down")!;
         control.action(dcEvent.setData(control));
       }
@@ -211,11 +214,22 @@ export class DivineControls {
 
     window.addEventListener("keyup", (event) => {
       const key = this._mapKey(event.key);
+      this._heldKesy.delete(key);
       HoldManager.removeHold(key);
-      const control = this._keyboardInputs["up"].get(key);
-      if (!control) return;
-      const dcEvent = DivineControlEventManager.getEvent("keyboard-up")!;
-      control.action(dcEvent.setData(control));
+      up: {
+        const control = this._keyboardInputs["up"].get(key);
+        if (!control) break up;
+        const dcEvent = DivineControlEventManager.getEvent("keyboard-up")!;
+        control.action(dcEvent.setData(control));
+      }
+      down: {
+        const control = this._keyboardInputs["down"].get(key);
+        if (!control) break down;
+        const dcEvent = DivineControlEventManager.getEvent(
+          "keyboard-down"
+        )! as DCKeyDownEvent;
+        dcEvent.observers.onRelease.notify();
+      }
     });
 
     window.addEventListener("wheel", (event) => {

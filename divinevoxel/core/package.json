@@ -25,8 +25,10 @@
   "author": "Divine Star Software",
   "license": "MIT",
   "devDependencies": {},
+  "peerDependencies": {
+    "@babylonjs/core": "^6.24.0"
+  },
   "dependencies": {
-    "@babylonjs/core": "^6.23.0",
     "@divinestar/binary": "^0.0.42",
     "@divinestar/utils": "^0.0.42",
     "@divinestar/shaders": "^0.0.42",

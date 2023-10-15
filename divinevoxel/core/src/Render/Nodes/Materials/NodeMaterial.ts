@@ -56,6 +56,8 @@ export class DVENodeMaterial {
     Effect.ShadersStore[`${this.id}VertexShader`] = shader.compiled.vertex;
 
     Effect.ShadersStore[`${this.id}FragmentShader`] = shader.compiled.fragment;
+
+    console.log("adding effect to shader store",Effect.ShadersStore)
     const shaderMaterial = new ShaderMaterial(this.id, scene, this.id, {
       attributes: shader.getAttributeList(),
       uniforms: shader.getUniformList(),

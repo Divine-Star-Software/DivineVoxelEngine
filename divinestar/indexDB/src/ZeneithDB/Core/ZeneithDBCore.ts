@@ -15,6 +15,7 @@ export const ZeneithDBCore = {
  util: ZeneithUtil,
 
  async initialize() {
+  console.log("init");
   this.dataBase = new DataBase(
    {
     databaseName: "ZeneithDB",

@@ -19,21 +19,21 @@ export function RegisterDefaultTasks() {
       let ran = false;
       let cleared = false;
       const inte = setInterval(() => {
+        if (ran) return clearInterval(inte);
         tries++;
-        if (!(gen.columnTool.loadInAt(x, y, z) && tries >= 5) && !ran) {
+        if (!gen.columnTool.loadInAt(x, y, z) && tries >= 20 && !ran) {
           clearInterval(inte);
           onDone();
           console.error("force quit loading column");
           cleared = true;
         }
-        if (ran) clearInterval(inte);
       }, 1_000);
       gen.dataLoader
         .setLocation([gen.dimension, x, y, z])
         .loadIfExists((exists) => {
+          ran = true;
           if (cleared) return;
 
-          ran = true;
           onDone();
           if (!exists) {
             gen.builder.setXYZ(x, y, z).fillColumn();

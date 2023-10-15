@@ -1,41 +1,41 @@
 {
-  "name": "@divinevoxel/react",
-  "version": "0.0.42",
-  "module": "index.js",
-  "types": "index.d.ts",
-  "type": "module",
-  "description": "React hooks for DVE.",
-  "keywords": [
-    "react",
-    "voxel",
-    "voxel engine",
-    "babylon.js"
-  ],
-  "scripts": {
-    "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ../../LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
-    "compile": "cd ./src && npx tsc --watch"
-  },
-  "repository": {
-    "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
-  },
-  "homepage": "https://github.com/Divine-Star-Software/DivineVoxelEngine",
-  "author": "Divine Star Software",
-  "license": "MIT",
-  "dependencies": {
-    "@divinevoxel/core": "^0.0.42",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.14.2"
-  },
-  "devDependencies": {
-    "@types/react": "^18.2.17",
-    "@types/react-dom": "^18.2.7"
-  },
-  "main": "index.js",
-  "publishConfig": {
-    "access": "public"
-  }
+ "name": "@divinevoxel/react",
+ "version": "0.0.42",
+ "module": "index.js",
+ "types": "index.d.ts",
+ "type": "module",
+ "description": "React hooks for DVE.",
+ "keywords": [
+  "react",
+  "voxel",
+  "voxel engine",
+  "babylon.js"
+ ],
+ "scripts": {
+  "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ../../LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
+  "compile": "cd ./src && npx tsc --watch"
+ },
+ "repository": {
+  "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
+ },
+ "bugs": {
+  "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
+ },
+ "homepage": "https://github.com/Divine-Star-Software/DivineVoxelEngine",
+ "author": "Divine Star Software",
+ "license": "MIT",
+ "dependencies": {
+  "@divinevoxel/core": "^0.0.42",
+  "react": "^18.2.0",
+  "react-dom": "^18.2.0",
+  "react-router-dom": "^6.14.2"
+ },
+ "devDependencies": {
+  "@types/react": "^18.2.17",
+  "@types/react-dom": "^18.2.7"
+ },
+ "main": "index.js",
+ "publishConfig": {
+  "access": "public"
+ }
 }

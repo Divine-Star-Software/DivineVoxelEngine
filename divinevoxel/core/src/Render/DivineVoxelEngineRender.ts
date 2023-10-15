@@ -1,10 +1,10 @@
 //types
-import type { Scene } from "@babylonjs/core";
+import {  type Scene } from "@babylonjs/core";
 //objects
 import { Util } from "../Global/Util.helper.js";
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import { RenderManager } from "./Scene/RenderManager.js";
-
+import {Effect} from "@babylonjs/core/Materials/effect";
 import { RenderTasks } from "./Tasks/RenderTasks.js";
 import { WorldBounds } from "../Data/World/WorldBounds.js";
 import { ThreadComm } from "@divinestar/threads/";
@@ -77,6 +77,8 @@ export class DivineVoxelEngineRender {
     if (initData.scene) {
       await $INITFunction(this, initData.scene);
     }
+
+    console.log(Effect.ShadersStore);
   }
 
   getSceneTool() {

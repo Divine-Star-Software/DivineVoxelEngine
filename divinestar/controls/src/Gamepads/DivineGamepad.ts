@@ -1,7 +1,7 @@
 import { DivineControlEventManager } from "../Events/DivineControlsEventManager.js";
 import { DivineControls } from "../DivineControls.js";
-import { DefaultGamePadButtons } from "index";
-import { DCGamepadAxesMoveEvent } from "Events/Register/Gamepad/Axes/DCGamepadAxesMoveEvent.js";
+import { DefaultGamePadButtons } from "../index.js";
+import { DCGamepadAxesMoveEvent } from "../Events/Register/Gamepad/Axes/DCGamepadAxesMoveEvent.js";
 
 export class DivineGamepad {
   static BINDINGS = {

@@ -1,8 +1,10 @@
 import type { CreatePixelEntityShapeTask } from "../Types/PixelEntities.types";
 import { DivineVoxelEngineConstructor } from "@divinevoxel/core/Constructor/DivineVoxelEngineConstructor.js";
 import { PixelEntitiesConstructor } from "./PixelEntitiesConstructor.js";
-export async function InitPixelEntitesConstructor() {
-  DivineVoxelEngineConstructor.instance.TC.registerTasks<CreatePixelEntityShapeTask>(
+export async function InitPixelEntitesConstructor(
+  DVEC: DivineVoxelEngineConstructor
+) {
+  DVEC.TC.registerTasks<CreatePixelEntityShapeTask>(
     "create-pixel-entity-shape",
     async (data, onDone) => {
       if (!onDone) return;
