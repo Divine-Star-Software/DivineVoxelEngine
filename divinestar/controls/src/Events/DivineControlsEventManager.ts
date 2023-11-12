@@ -26,6 +26,20 @@ export class DivineControlEventManager {
   }
 }
 
+export type DCEvents =
+  | DCBaseWheelDownEvent
+  | DCBaseWheelUpEvent
+  | DCGamepadDownEvent
+  | DCGamepadUpEvent
+  | DCKeyUpEvent
+  | DCKeyDownEvent
+  | DCMouseDownEvent
+  | DCMouseUpEvent
+  | DCGamepadAxesMoveEvent
+  | DCMouseHoldEvent
+  | DCGamepadButtonHoldEvent
+  | DCKeyHoldEvent;
+
 DivineControlEventManager.registerEvents([
   //mouse
   new DCMouseDownEvent(),

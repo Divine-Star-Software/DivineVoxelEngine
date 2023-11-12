@@ -31,6 +31,7 @@ export const NodeShaders = {
     ["doColor", "float"],
     ["doEffects", "float"],
     ["mipMapLevels", "float", 4],
+    ["mipMapBias", "float"],
   ],
   voxelVertexUniforms: <[id: string, type: ShaderDataTypes][]>[
     ["world", "mat4"],
@@ -49,7 +50,6 @@ export const NodeShaders = {
       body: {
         GLSL: () => /* glsl */ `
 mat4 vData;
-
 uint vUID = uint(voxelData);
 uint lightMask = uint(${0xf});
 uint aoMask = uint(${0b11});

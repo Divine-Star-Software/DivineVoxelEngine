@@ -59,17 +59,8 @@ return base * VOXEL[0]; `,
   arguments: {},
   body: {
    GLSL: () => /* glsl */`
-   switch (int(mipMapLevel)) {
-      case 0:
-          return texture(tex[0], vec3(UV.x,UV.y,index));
-      case 1:
-          return texture(tex[1], vec3(UV.x,UV.y,index));
-      case 2: 
-          return texture(tex[2], vec3(UV.x,UV.y,index));
-      case 3:
-          return texture(tex[3], vec3(UV.x,UV.y,index));
-      }
-  return  vec4(0.,0.,0.,0.); 
+
+     return texture(tex[0], vec3(UV.x,UV.y,index), mipMapBias );
   `,
   },
  });
@@ -87,26 +78,24 @@ builder.functions.create("getBaseColor", {
    GLSL: (args) => /* glsl */`
    UV.xy += ${args.mainVarying}.xy;
    vec4 rgb = getBase(${args.textureID},UV.xy,${args.mainVarying}.z);
-   vec4 oRGB1 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.x);
-   vec4 oRGB2 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.y);
-   vec4 oRGB3 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.z);
-   vec4 oRGB4 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.w);
 
-   if (rgb.a < 0.85 && oRGB1.a < 0.85 && oRGB2.a < 0.85 && oRGB3.a < 0.85 && oRGB4.a < 0.85) { 
-      return vec4(0.,0.,0.,0.);
-   }
-   if(oRGB1.a > 0.85) {
-      rgb = oRGB1;
-   }
-   if(oRGB2.a > 0.85) {
-      rgb = oRGB2;
-   }
-   if(oRGB3.a > 0.85) {
-      rgb = oRGB3;
-   }
-   if(oRGB4.a > 0.85) {
-      rgb = oRGB4;
-   }
+      vec4 oRGB1 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.x);
+      vec4 oRGB2 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.y);
+      vec4 oRGB3 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.z);
+      vec4 oRGB4 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.w);
+      if(oRGB1.a > 0.3) {
+         rgb = oRGB1;
+      }
+      if(oRGB2.a > 0.3) {
+         rgb = oRGB2;
+      }
+      if(oRGB3.a > 0.3) {
+         rgb = oRGB3;
+      }
+      if(oRGB4.a > 0.3) {
+         rgb = oRGB4;
+      }
+   
    return rgb;
     `,
   },

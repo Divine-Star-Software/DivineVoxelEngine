@@ -1,3 +1,4 @@
+import { DCEvents } from "Events/DivineControlsEventManager";
 import { DivineControlEvent } from "../Events/DivineControlEventBase";
 
 export type InputModeTypes = "down" | "up" | "hold";
@@ -39,7 +40,7 @@ export type ControlData = {
   groupId: string;
   name: string;
   input: ControlInputData;
-  action: (event: DivineControlEvent<any>) => void;
+  action: (event: DCEvents) => void;
 };
 
 export type ControlGroupData = {

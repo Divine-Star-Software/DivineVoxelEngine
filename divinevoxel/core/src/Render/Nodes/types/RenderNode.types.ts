@@ -11,6 +11,7 @@ export type NodeMaterialData = {
 export type NodeMaterialOptions = {
  alphaTesting: boolean;
  alphaBlending: boolean;
+ mipMapBias?:number;
  hasEffects?: boolean;
  backFaceCulling?: boolean;
 };

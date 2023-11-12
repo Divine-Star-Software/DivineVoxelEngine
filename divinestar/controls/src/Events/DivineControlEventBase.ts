@@ -1,5 +1,4 @@
 import {
-  ControlInputData,
   ControlInputDataNode,
   ControlInputTypes,
 } from "../Types/Control.types";

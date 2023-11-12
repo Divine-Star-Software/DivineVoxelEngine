@@ -1,7 +1,17 @@
 import { Engine } from "@babylonjs/core/Engines/engine.js";
+import { Constants } from "@babylonjs/core/Engines/constants.js";
 import { Texture } from "@babylonjs/core/Materials/Textures/texture.js";
 import { RenderManager } from "../../Scene/RenderManager.js";
 import { RawTexture2DArray } from "@babylonjs/core/Materials/Textures/rawTexture2DArray.js";
+import {
+  InternalTexture,
+  InternalTextureSource,
+} from "@babylonjs/core/Materials/Textures/internalTexture.js";
+import { Vector3, Vector4 } from "@babylonjs/core/Maths/math.vector.js";
+import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
+import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo.js";
+import { VertexBuffer } from "@babylonjs/core/Meshes/buffer.js";
+
 export const TextureCreator = {
   context: <CanvasRenderingContext2D | null>null,
 
@@ -9,13 +19,11 @@ export const TextureCreator = {
   imgWidth: 16,
   imgHeight: 16,
   _canvas: <HTMLCanvasElement>document.createElement("canvas"),
-  _mipMapSizes: [16, 12, 8, 4],
 
   defineTextureDimensions(textureSize: number, mipMapSizes: number[]) {
-    this.imgWidth = textureSize;
-    this.imgHeight = textureSize;
+    this.imgWidth = textureSize < 256 ? 256 : textureSize;
+    this.imgHeight = textureSize < 256 ? 256 : textureSize;
     this._textureSize = textureSize;
-    this._mipMapSizes = mipMapSizes;
   },
 
   setUpImageCreation() {
@@ -27,6 +35,7 @@ export const TextureCreator = {
     }
 
     context.imageSmoothingEnabled = false;
+    context.imageSmoothingQuality = "high";
     this.context = context;
   },
 
@@ -41,15 +50,97 @@ export const TextureCreator = {
     this._canvas.width = this.imgWidth;
     this._canvas.height = this.imgHeight;
     const textures: RawTexture2DArray[] = [];
-    for (const size of this._mipMapSizes) {
-      const texture = await this._createTextures(name, images, size, size);
+
+    return (await this._create(name, images, width, height)) as any;
+    /*    for (const size of this._mipMapSizes) {
+      const texture = await this._createOld(name, images, size, size);
       textures.push(texture);
     }
-    return textures;
+    return textures; */
   },
 
-  async _createTextures(
+  async _create(
     name: string,
+    images: Map<string, Uint8ClampedArray | false>,
+    width: number,
+    height: number
+  ) {
+    const scene = RenderManager.scene!;
+    const engine = scene.getEngine();
+
+    const texture = new RawTexture2DArray(
+      await this._createMipMap(0, images, width, height),
+      width,
+      height,
+      images.size + 2,
+      Engine.TEXTUREFORMAT_RGBA,
+      scene,
+      true,
+      false,
+      Texture.NEAREST_NEAREST_MIPLINEAR
+    );
+   // texture.anisotropicFilteringLevel = 16;
+
+/*     texture._noMipmap = false;
+    const iTexture = texture._texture!;
+    iTexture.generateMipMaps = true;
+    iTexture.useMipMaps = true;
+    engine._bindTextureDirectly(engine._gl.TEXTURE_2D_ARRAY, iTexture);
+
+    let w = width,
+      h = height,
+      mipMapLevel = 0;
+    while (w >= 1 && h >= 1) {
+      if (mipMapLevel < 3) {
+        this.context!.imageSmoothingEnabled = false;
+      } else {
+        this.context!.imageSmoothingEnabled = true;
+      }
+      const mip = await this._createMipMap(mipMapLevel, images, w, h);
+
+      const gl = engine._gl;
+      const textureType = engine._getWebGLTextureType(iTexture.type);
+      const format = engine._getInternalFormat(iTexture.format);
+      const internalFormat = engine._getRGBABufferInternalSizedFormat(
+        iTexture.type,
+        iTexture.format,
+        iTexture._useSRGBBuffer
+      );
+
+      engine._unpackFlipY(texture.invertY);
+
+      console.log(w, h);
+      let target = gl.TEXTURE_2D_ARRAY;
+
+      gl.texImage3D(
+        target,
+        mipMapLevel,
+        internalFormat,
+        w,
+        h,
+        images.size + 2,
+        0,
+        format,
+        textureType,
+        mip
+      );
+      w /= 2;
+      h /= 2;
+      mipMapLevel++;
+    }
+
+    iTexture.width = width;
+    iTexture.height = height;
+    iTexture.isReady = true;
+    //  iTexture.samplingMode = Texture.NEAREST_NEAREST_MIPLINEAR;
+    engine._bindTextureDirectly(engine._gl.TEXTURE_2D_ARRAY, null);
+    texture._texture = iTexture;
+ */
+
+    return [texture];
+  },
+  async _createMipMap(
+    level: number,
     images: Map<string, Uint8ClampedArray | false>,
     width: number,
     height: number
@@ -64,13 +155,13 @@ export const TextureCreator = {
         data.push(0, 0, 0, 1);
       }
     }
-
     resolvedImages.push(new Uint8ClampedArray(data));
     for (const [path, rawData] of images) {
       const data = await this.loadImage(
         rawData ? rawData : path,
         width,
-        height
+        height,
+        level
       );
       resolvedImages.push(data);
     }
@@ -80,28 +171,15 @@ export const TextureCreator = {
     for (const image of resolvedImages) {
       totalLength += image.byteLength;
     }
-    const combinedImages = this._combineImageData(totalLength, resolvedImages);
-    const _2DTextureArray = new RawTexture2DArray(
-      combinedImages,
-      width,
-      height,
-      images.size + 2,
-      Engine.TEXTUREFORMAT_RGBA,
-      scene,
-      false,
-      false,
-      Texture.NEAREST_SAMPLINGMODE
-    );
 
-    _2DTextureArray.name = name;
-
-    return _2DTextureArray;
+    return this._combineImageData(totalLength, resolvedImages);
   },
 
   loadImage(
     imgSrcData: string | Uint8ClampedArray,
-    width?: number,
-    height?: number
+    width: number = 0,
+    height: number = 0,
+    lod = 0
   ): Promise<Uint8ClampedArray> {
     if (!width) width = this.imgWidth;
     if (!height) height = this.imgHeight;
@@ -143,10 +221,13 @@ export const TextureCreator = {
           {
             resizeWidth: width,
             resizeHeight: height,
-            resizeQuality: "pixelated",
+            resizeQuality: lod < 3 ? "pixelated" : "high",
+            premultiplyAlpha: lod < 3 ? "none" : "premultiply",
           }
         );
+
         ctx.drawImage(bitmap, 0, 0, width!, height!);
+
         const imgData = ctx.getImageData(0, 0, width!, height!);
         resolve(imgData.data);
       });

@@ -57,7 +57,6 @@ export class DVENodeMaterial {
 
     Effect.ShadersStore[`${this.id}FragmentShader`] = shader.compiled.fragment;
 
-    console.log("adding effect to shader store",Effect.ShadersStore)
     const shaderMaterial = new ShaderMaterial(this.id, scene, this.id, {
       attributes: shader.getAttributeList(),
       uniforms: shader.getUniformList(),
@@ -79,6 +78,9 @@ export class DVENodeMaterial {
     if (type) type.addToMaterial(this);
 
     shaderMaterial.setVector3("worldOrigin", Vector3.Zero());
+    if (this.data.mipMapBias) {
+      shaderMaterial.setFloat("mipMapBias", this.data.mipMapBias);
+    }
     this.material.onBind = (mesh) => {
       if (!this.material) return;
       const effect = this.material.getEffect();
