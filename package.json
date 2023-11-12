@@ -50,5 +50,8 @@
     "jest": "^29.7.0",
     "typescript": "^5.2.2"
   },
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@babylonjs/gui": "^6.24.0"
+  }
 }

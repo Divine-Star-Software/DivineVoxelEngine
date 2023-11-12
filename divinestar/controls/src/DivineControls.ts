@@ -49,17 +49,15 @@ class HoldManager {
       const time = performance.now();
       if (node.activeDelay) {
         const activeDelta = time - node.activeTime;
-        if (activeDelta >= node.activeDelay) {
-          node.activeDelay = 0;
-        } else {
+        if (activeDelta <= node.delay) {
           continue;
         }
       }
 
       const delta = time - node.time;
-      if (delta >= node.delay) {
+      if (delta >= node.activeDelay) {
         node.run();
-        node.time = performance.now();
+        node.activeTime = performance.now();
       }
     }
   }
@@ -109,8 +107,6 @@ export class DivineControls {
 
   static _capturing = false;
   static _capturedData: ControlInputData | null = null;
-
-  static _holdFunctions = new Set<(animationRation: number) => void>();
 
   private constructor() {}
 
