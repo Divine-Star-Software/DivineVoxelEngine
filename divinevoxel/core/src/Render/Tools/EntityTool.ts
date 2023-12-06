@@ -184,19 +184,22 @@ export class EntityTool {
     new MatrixArray(this._matrixArray, i)
    );
    newInstance.scale.setAll(0);
-   newInstance.update();
    this._instances.push(newInstance);
   }
+  this.update();
  }
  getInstance() {
   const instance = this._instances.shift();
   if (!instance) return false;
   instance.scale.setAll(1);
+  instance.position.setAll(0);
+
   this._usedInstances.add(instance);
   return instance;
  }
  returnInstance(instance: EntityInstance) {
   instance.scale.setAll(0);
+  instance.position.setAll(0);
 
   this._instances.push(instance);
   this._usedInstances.delete(instance);

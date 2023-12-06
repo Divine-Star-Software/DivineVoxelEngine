@@ -32,6 +32,6 @@ export class AudioChannel {
       this._nodes.delete(gain);
     });
     gain.gain.value = AudioChannel.getNodeLevel(defaultLevel, this.level);
-    DAE.api.connectToMaster(gain);
+    DAE.api.connectToMain(gain);
   }
 }

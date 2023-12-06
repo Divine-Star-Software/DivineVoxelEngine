@@ -6,16 +6,25 @@ import {
 import { MusicTrackNodes } from "../Meta/AudioTypes";
 
 const context = new AudioContext();
-const masterChannel = context.createGain();
-masterChannel.gain.value = 1;
-masterChannel.connect(context.destination);
-
+const mainChanel = context.createGain();
+mainChanel.gain.value = 1;
+mainChanel.connect(context.destination);
+const mainCompression = context.createDynamicsCompressor();
+let connected = false;
+mainCompression.threshold.setValueAtTime(-50, context.currentTime);
+mainCompression.knee.setValueAtTime(40, context.currentTime);
+mainCompression.ratio.setValueAtTime(12, context.currentTime);
+mainCompression.attack.setValueAtTime(0, context.currentTime);
+mainCompression.release.setValueAtTime(0.25, context.currentTime);
+mainCompression.release.setValueAtTime(0.25, context.currentTime);
 export const APIManager = {
   context: context,
 
   _dissconectEvent: new Event("disconnect"),
 
-  master: masterChannel,
+  compressionEnabled: true,
+  compression: mainCompression,
+  main: mainChanel,
 
   pannerNodeDefaults: <Partial<PannerNodeData>>{
     panningModel: "HRTF",
@@ -30,7 +39,13 @@ export const APIManager = {
     }
   },
 
-  connectToMaster(node: AudioNode) {
+  connectToMain(node: AudioNode) {
+    if (this.compressionEnabled) {
+      node.connect(this.compression);
+      if (!connected) this.compression.connect(context.destination);
+      connected = true;
+      return;
+    }
     node.connect(context.destination);
   },
 
