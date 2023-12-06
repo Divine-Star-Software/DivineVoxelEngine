@@ -28,6 +28,7 @@ class HoldManager {
   >();
 
   static addHold(id: string, run: Function, delay: number, activeDelay = 0) {
+    if (this._functions.has(id)) return;
     this._functions.set(id, {
       time: performance.now(),
       delay,
@@ -44,26 +45,29 @@ class HoldManager {
     return this._functions.has(id);
   }
 
-  static run() {
+  static run(frameDelta: number) {
+    const time = performance.now();
     for (const [key, node] of this._functions) {
-      const time = performance.now();
-      if (node.activeDelay) {
-        const activeDelta = time - node.activeTime;
-        if (activeDelta <= node.delay) {
+      if (node.delay) {
+        const activeDelta = time - node.activeTime + frameDelta;
+        if (activeDelta < node.delay) {
           continue;
         }
       }
-
-      const delta = time - node.time;
-      if (delta >= node.activeDelay) {
-        node.run();
-        node.activeTime = performance.now();
+      if (node.activeDelay) {
+        const delta = time - node.time + frameDelta;
+        if (delta < node.activeDelay) {
+          continue;
+        }
       }
+      node.run();
+      node.activeTime = time;
     }
   }
 }
 
 export class DivineControls {
+  static gamepads = GamepadManager;
   static controls = new ObjectCollection<ControlData>();
   static holds = HoldManager;
   static _os: "widnows" | "linux" | "mac" | "android" | "ios" = "widnows";
@@ -371,8 +375,8 @@ export class DivineControls {
     this.controls.loadIn(data);
   }
 
-  static update() {
+  static update(delta = 0.16) {
     GamepadManager.updateGamepads();
-    HoldManager.run();
+    HoldManager.run(delta);
   }
 }
