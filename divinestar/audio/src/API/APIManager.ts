@@ -11,12 +11,12 @@ mainChanel.gain.value = 1;
 mainChanel.connect(context.destination);
 const mainCompression = context.createDynamicsCompressor();
 let connected = false;
-mainCompression.threshold.setValueAtTime(-50, context.currentTime);
-mainCompression.knee.setValueAtTime(40, context.currentTime);
-mainCompression.ratio.setValueAtTime(12, context.currentTime);
-mainCompression.attack.setValueAtTime(0, context.currentTime);
-mainCompression.release.setValueAtTime(0.25, context.currentTime);
-mainCompression.release.setValueAtTime(0.25, context.currentTime);
+mainCompression.threshold.value = -50;
+mainCompression.knee.value = 40;
+mainCompression.ratio.value = 12;
+mainCompression.attack.value = 0;
+mainCompression.release.value = 0.25;
+mainCompression.release.value = 0.25;
 export const APIManager = {
   context: context,
 

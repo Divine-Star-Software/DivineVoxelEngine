@@ -5,7 +5,7 @@
     "rootDir": "./",
     "rootDirs": [],
     "composite": true,
-    "types": ["react"],
+    "types": ["react","@webgpu/types"],
     "outDir": "../dist/",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

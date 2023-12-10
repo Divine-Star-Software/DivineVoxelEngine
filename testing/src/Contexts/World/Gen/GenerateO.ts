@@ -700,80 +700,279 @@ if(column_position.x % 2 == 1 || column_position.z % 2 == 1) {
   chunk_type = 0;
 }
 
-
 for (var x = column_position.x; x < column_position.x + voxel_world.column_size.x; x += 1.) {
   for (var z = column_position.z; z < column_position.z + voxel_world.column_size.z; z += 1.) {
     for (var y = 0.; y < voxel_world.column_size.y; y += 1.) {
-
-        if(y > 120) {
-          continue;
-        }
-        var place_voxel : bool = false;
-        var r = (perlinNoise3(vec3f(x / 20,y / 20,z / 20))) * .2;
-
-        if(y > 30) {
-          var n = (perlinNoise3(vec3f(x / 100,y / 100,z / 100))) * 50 + 129;
-          if((r > .1 && r < .8) && y <= n) {
-            place_voxel = true;
+         let rx = x - column_position.x;
+         let ry = y - column_position.y;
+         let rz = z - column_position.z;
+          if (y > minY + 1){ 
+            break;
           }
-        }
-  
-        if(y <= 30){
-          var n = (perlinNoise3(vec3f(x / 50,y / 100,z / 200))) * 50;
-          if((r > .1 && r < .8) || y <= n) {
-            place_voxel = true;
-          }
-        }
-        if(y == 0) {
-          place_voxel = true;
-        }
-  
-        if(place_voxel && y <= 40) {
-          set_voxel(
-              vec3(x,y,z),
-              Voxel(
-                ${VoxelPaletteReader.id.numberFromString("dve_dream_stone")},
-                0,
-                Light(0,0,0,0),
-                State(0,0,0)
-              )
-            );
-        }
-        if(place_voxel && y > 40) {
-          if(noise3(vec3f(x,y,z)) < .5) {
-          set_voxel(
-              vec3(x,y,z),
-              Voxel(
-                ${VoxelPaletteReader.id.numberFromString("dve_dream_stone")},
-                0,
-                Light(0,0,0,0),
-                State(0,0,0)
-              )
-            );
-           } else {
+
+          if (y == 0) {
             set_voxel(
               vec3(x,y,z),
               Voxel(
+                ${VoxelPaletteReader.id.numberFromString("dve_dream_stone")},
+                0,
+                Light(0,0,0,0),
+                State(0,0,0)
+              )
+            );
+            continue;
+          }
+          if(chunk_type == 0) {
+          if (
+            x == column_position.x ||
+            z == column_position.z ||
+            x == column_position.x + voxel_world.column_size.x - 1 ||
+            z == column_position.z + voxel_world.column_size.z - 1
+          ) {
+            set_voxel(
+              vec3(x,y,z),
+              Voxel(
+                ${VoxelPaletteReader.id.numberFromString("dve_dream_stone")},
+                0,
+                Light(0,0,0,0),
+                State(0,0,0)
+              )
+            );
+            continue;
+          }
+
+          if (y >= minY - 10 && y <= minY) {
+            set_voxel(
+              vec3(x,y,z),
+              Voxel(
+                ${VoxelPaletteReader.id.numberFromString(
+                  "dve_liquid_dream_ether"
+                )},
+                0,
+                Light(0,0,0,0),
+                State(15,0,0)
+              )
+            );
+          }
+        }
+        if(chunk_type == 1) {
+          if (rx == 0 || rz == 0 || rx == 15 || rz == 15) {
+     
+            if (y == minY) {
+              set_voxel(
+                vec3(x,y,z),
+                Voxel(
                 ${VoxelPaletteReader.id.numberFromString("dve_dream_lamp")},
                 0,
                 Light(0,15,0,15),
                 State(0,0,0)
-              )
-            );
-           }
-        }
-        if( y < 40 && !place_voxel) {
-          set_voxel(
-              vec3(x,y,z),
-              Voxel(
-                ${VoxelPaletteReader.id.numberFromString("dve_liquid_dream_ether")},
+                )
+              );
+              /*
+              if (Math.random() > 0.8) {
+                set_voxel(
+                vec3(x,y + 1,z),
+                Voxel(
+                ${VoxelPaletteReader.id.numberFromString("dve_dream_stone")},
                 0,
                 Light(0,0,0,0),
                 State(0,0,0)
-              )
-            );
+                )
+              );
+ 
+              }
+              */
+            }
+          }
+          if (rx == 1 || rz == 1 || rx == 14 || rz == 14) {
+            if (y == minY - 1) {
+              set_voxel(
+                vec3(x,y,z),
+                Voxel(
+                ${VoxelPaletteReader.id.numberFromString("dve_dream_stone")},
+                0,
+                Light(0,0,0,0),
+                State(0,0,0)
+                )
+              );
+               /*
+              if (Math.random() > 0.8) {
+                set_voxel(
+                vec3(x,y + 1,z),
+                Voxel(
+                  ${VoxelPaletteReader.id.numberFromString("dve_dream_grass")},
+                0,
+                Light(0,0,0,0),
+                State(0,0,0)
+                )
+              );
+ 
+              }
+              */
+            }
         }
+          if (rx == 2 || rz == 2 || rx == 13 || rz == 13) {
+            if (y == minY - 2) {
+              set_voxel(
+                vec3(x,y,z),
+                Voxel(
+                ${VoxelPaletteReader.id.numberFromString("dve_dream_stone")},
+                0,
+                Light(0,0,0,0),
+                State(0,0,0)
+                )
+              );
+               /*
+              if (Math.random() > 0.8) {
+                set_voxel(
+                vec3(x,y + 1,z),
+                Voxel(
+                  ${VoxelPaletteReader.id.numberFromString("dve_dream_grass")},
+                0,
+                Light(0,0,0,0),
+                State(0,0,0)
+                )
+              );
+ 
+              }
+              */
+            }
+          }
+          if (rx == 3 || rz == 3 || rx == 12 || rz == 12) {
+            if (y == minY - 3) {
+              set_voxel(
+                vec3(x,y,z),
+                Voxel(
+                ${VoxelPaletteReader.id.numberFromString("dve_dream_stone")},
+                0,
+                Light(0,0,0,0),
+                State(0,0,0)
+                )
+              );
+               /*
+              if (Math.random() > 0.8) {
+                set_voxel(
+                vec3(x,y + 1,z),
+                Voxel(
+                  ${VoxelPaletteReader.id.numberFromString("dve_dream_grass")},
+                0,
+                Light(0,0,0,0),
+                State(0,0,0)
+                )
+              );
+ 
+              }
+              */
+            }
+          }
+          if (rx == 4 || rz == 4 || rx == 11 || rz == 11) {
+            if (y == minY - 4) {
+              set_voxel(
+                vec3(x,y,z),
+                Voxel(
+                ${VoxelPaletteReader.id.numberFromString("dve_dream_stone")},
+                0,
+                Light(0,0,0,0),
+                State(0,0,0)
+                )
+              );
+               /*
+              if (Math.random() > 0.8) {
+                set_voxel(
+                vec3(x,y + 1,z),
+                Voxel(
+                  ${VoxelPaletteReader.id.numberFromString("dve_dream_grass")},
+                0,
+                Light(0,0,0,0),
+                State(0,0,0)
+                )
+              );
+ 
+              }
+              */
+            }
+          }
+          if (rx == 5 || rz == 5 || rx == 10 || rz == 10) {
+            if (y == minY - 5) {
+              set_voxel(
+                vec3(x,y,z),
+                Voxel(
+                ${VoxelPaletteReader.id.numberFromString("dve_dream_stone")},
+                0,
+                Light(0,0,0,0),
+                State(0,0,0)
+                )
+              );
+               /*
+              if (Math.random() > 0.8) {
+                set_voxel(
+                vec3(x,y + 1,z),
+                Voxel(
+                  ${VoxelPaletteReader.id.numberFromString("dve_dream_grass")},
+                0,
+                Light(0,0,0,0),
+                State(0,0,0)
+                )
+              );
+ 
+              }
+              */
+            }
+          }
+          if (rx == 6 || rz == 6 || rx == 9 || rz == 9) {
+            if (y == minY - 6) {
+              set_voxel(
+                vec3(x,y,z),
+                Voxel(
+                ${VoxelPaletteReader.id.numberFromString("dve_dream_stone")},
+                0,
+                Light(0,0,0,0),
+                State(0,0,0)
+                )
+              );
+               /*
+              if (Math.random() > 0.8) {
+                set_voxel(
+                vec3(x,y + 1,z),
+                Voxel(
+                  ${VoxelPaletteReader.id.numberFromString("dve_dream_grass")},
+                0,
+                Light(0,0,0,0),
+                State(0,0,0)
+                )
+              );
+ 
+              }
+              */
+            }
+          }
 
+          if (y < minY - 7) {
+            set_voxel(
+                vec3(x,y,z),
+                Voxel(
+                ${VoxelPaletteReader.id.numberFromString("dve_dream_stone")},
+                0,
+                Light(0,0,0,0),
+                State(0,0,0)
+                )
+              );
+               /*
+              if (Math.random() > 0.8) {
+                set_voxel(
+                vec3(x,y + 1,z),
+                Voxel(
+                  ${VoxelPaletteReader.id.numberFromString("dve_dream_grass")},
+                0,
+                Light(0,0,0,0),
+                State(0,0,0)
+                )
+              );
+ 
+              }
+              */
+          }
+        }
     }
   }
 }

@@ -1,5 +1,6 @@
 import { StartWorld } from "@divinevoxel/react/Contexts/World";
 import { GenerateWorld } from "./Gen/Generate";
+import { DivineVoxelEngineWorld } from "@divinevoxel/core/World";
 
 await StartWorld({
   voxels: [
@@ -231,4 +232,9 @@ await StartWorld({
   ],
 });
 
-await GenerateWorld();
+DivineVoxelEngineWorld.instance!.TC.registerTasks<OffscreenCanvas>(
+  "start",
+  async (canvas) => {
+    await GenerateWorld(canvas);
+  }
+);

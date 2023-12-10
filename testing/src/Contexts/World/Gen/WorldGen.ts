@@ -36,7 +36,7 @@ export const WorldGen = {
                   .paint();
               }
             }
-          }
+        }
           if (rx == 2 || rz == 2 || rx == 13 || rz == 13) {
             if (y == this.minY - 2) {
               brush.setId("dve_dream_stone").setXYZ(x, y, z).paint();

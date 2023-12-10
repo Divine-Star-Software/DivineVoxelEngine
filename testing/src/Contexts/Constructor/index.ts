@@ -2,6 +2,9 @@ import { StartContrusctor } from "@divinevoxel/react/Contexts/Constructor";
 import { GetLightDebugBox } from "./Voxels/LightDebugBox";
 import { GetMarkerBox } from "./Voxels/MarkerBox";
 import { GetDreamEther } from "./Voxels/LiquidDreamEther";
+import { DivineVoxelEngineConstructor } from "@divinevoxel/core/Constructor";
+import { Flat3DIndex, Vec3Array } from "@divinevoxel/core/Math";
+import { BrushTool } from "@divinevoxel/core/Tools/Brush/Brush";
 
 await StartContrusctor({
   getVoxelConstructors(voxelConstructors) {
@@ -98,3 +101,78 @@ await StartContrusctor({
     ];
   },
 });
+
+const flatIndex = new Flat3DIndex();
+flatIndex.bounds = {
+  x: 256,
+  y: 128,
+  z: 256,
+};
+const dataTool = DivineVoxelEngineConstructor.instance.getDataTool();
+const brushTool = new BrushTool();
+brushTool._update = false;
+DivineVoxelEngineConstructor.instance.TC.registerTasks<
+  [
+    dimension: string,
+    index: Vec3Array,
+    start: Vec3Array,
+    end: Vec3Array,
+    sab: SharedArrayBuffer
+  ]
+>(
+  "load-in-generated-world-segment",
+  async ([dimension, index, start, end, sab], onDone) => {
+    const data = new Uint32Array(sab);
+    const sx = start[0];
+    const sz = start[2];
+    const ex = end[0];
+    const ez = end[2];
+    const sy = start[1];
+    const ey = end[1];
+
+    brushTool.start();
+    let [six, siy, siz] = index;
+    let ix = six,
+      iy = siy,
+      iz = siz;
+
+    for (let x = sx; x < ex; x++) {
+      iz = siz;
+   
+      for (let z = sz; z < ez; z++) {
+        iy = siy;
+      
+        for (let y = sy; y < ey; y++) {
+         
+          const voxel_index = flatIndex.getIndex([ix, iy, iz]) * 2;
+
+          const mainData = data[voxel_index];
+          const stateData = data[voxel_index + 1];
+          let id = mainData & 0xffff;
+          let light = (mainData & (0xffff << 16)) >>> 16;
+          let state = stateData & 0xffff;
+          let secondaryId = (stateData & (0xffff << 16)) >>> 16;
+
+          if (!id) {
+            iy++;
+            brushTool._dt.setXYZ(x, y, z).loadIn();
+            brushTool._dt.setLight(light).commit();
+            continue;
+          }
+
+          brushTool.setXYZ(x, y, z).setRaw([id, light, state, secondaryId]);
+          brushTool.paint();
+          brushTool._dt.setXYZ(x, y, z).loadIn();
+          brushTool._dt.setLight(light).commit();
+
+          iy++;
+        }
+        iz++;
+      }
+      ix++;
+    }
+    brushTool.stop();
+    if (onDone) onDone();
+  },
+  "deferred"
+);
