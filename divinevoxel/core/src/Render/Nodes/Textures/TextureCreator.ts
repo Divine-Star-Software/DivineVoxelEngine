@@ -34,7 +34,7 @@ export const TextureCreator = {
       throw new Error("Context did not load for texture creation.");
     }
 
-    context.imageSmoothingEnabled = false;
+    context.imageSmoothingEnabled = true;
     context.imageSmoothingQuality = "high";
     this.context = context;
   },
@@ -79,9 +79,9 @@ export const TextureCreator = {
       false,
       Texture.NEAREST_NEAREST_MIPLINEAR
     );
-   // texture.anisotropicFilteringLevel = 16;
+    // texture.anisotropicFilteringLevel = 16;
 
-/*     texture._noMipmap = false;
+    /*     texture._noMipmap = false;
     const iTexture = texture._texture!;
     iTexture.generateMipMaps = true;
     iTexture.useMipMaps = true;
@@ -194,14 +194,26 @@ export const TextureCreator = {
       const prom: Promise<Uint8ClampedArray> = new Promise((resolve) => {
         const image = new Image();
         image.src = imgSrcData;
-        image.onload = () => {
-          //clear the canvas before re-rendering another image
+        image.onload = async () => {
           ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
+          ctx.drawImage(image, 0, 0, image.width!, image.height!);
+          const imgData = ctx.getImageData(0, 0, image.width!, image.height!);
 
-          ctx.drawImage(image, 0, 0, width!, height!);
-          const imgData = ctx.getImageData(0, 0, width!, height!);
+          const bitmap = await createImageBitmap(
+            new ImageData(imgData.data, image.width, image.height),
+            {
+              resizeWidth: width,
+              resizeHeight: height,
+              resizeQuality: lod < 3 ? "pixelated" : "high",
+              premultiplyAlpha: lod < 3 ? "none" : "premultiply",
+            }
+          );
+          ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
+          ctx.drawImage(bitmap, 0, 0, width!, height!);
+          const bitmapData = ctx.getImageData(0, 0, width!, height!);
+          //clear the canvas before re-rendering another image
 
-          resolve(imgData.data);
+          resolve(bitmapData.data);
         };
       });
 

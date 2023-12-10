@@ -3,7 +3,7 @@
 import { DataTool } from "../../../Tools/Data/DataTool.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 import { LightTaskRequest } from "Constructor/Tasks/TasksRequest.js";
-
+import {DivineCompute} from "@divinestar/compute/index.js"
 export const IlluminationManager = {
  lightData: LightData,
 
@@ -16,3 +16,4 @@ export const IlluminationManager = {
   this._nDataTool.setDimension(dimension);
  },
 };
+DivineCompute.init();

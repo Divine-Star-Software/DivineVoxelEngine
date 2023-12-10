@@ -1,5 +1,6 @@
 import type { AudioChannelData } from "../Meta/AudioChannelsTypes";
 import { DAE } from "../DivineAudioEngine.js";
+import { APIManager } from "../API/APIManager";
 
 export class AudioChannel {
   static getNodeLevel(defaultLevel: number, channelLevel: number) {
@@ -31,7 +32,12 @@ export class AudioChannel {
     gain.addEventListener("disconnect", () => {
       this._nodes.delete(gain);
     });
-    gain.gain.value = AudioChannel.getNodeLevel(defaultLevel, this.level);
+
+    const time = APIManager.context.currentTime;
+    gain.gain.exponentialRampToValueAtTime(
+      AudioChannel.getNodeLevel(defaultLevel, this.level),
+      time + 0.1
+    );
     DAE.api.connectToMain(gain);
   }
 }

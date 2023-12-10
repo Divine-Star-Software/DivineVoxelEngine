@@ -1,3 +1,4 @@
+import { APIManager } from "../API/APIManager";
 import { AudioChannel } from "../Channels/AudioChannel";
 import { DAE } from "../DivineAudioEngine.js";
 import { SFXData, SFXPlayOptions } from "../Meta/AudioTypes";
@@ -51,7 +52,7 @@ export class SFXNode {
   }
 
   play(options?: SFXPlayOptions) {
-    if(!DAE._initalized) return;
+    if (!DAE._initalized) return;
     const data = this.data;
 
     if (this._sfxPlayCount > 30) return;
@@ -107,6 +108,7 @@ export class SFXNode {
         master,
         disconnectNodes
       );
+
       const sourceGain = DAE.api.createGain();
       if (options?.dryLevel !== undefined) {
         sourceGain.gain.value = options.dryLevel;
@@ -119,11 +121,7 @@ export class SFXNode {
       finalNode.connect(master);
     }
 
-    if (options?.level !== undefined) {
-      master.gain.value = options.level;
-    }
-
-    this.channel.add(master, master.gain.value);
+    this.channel.add(master, options?.level !== undefined ? options.level : 1);
 
     disconnectNodes.push(source, master);
 

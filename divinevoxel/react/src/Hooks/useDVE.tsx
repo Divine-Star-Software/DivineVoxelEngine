@@ -7,8 +7,10 @@ import { HemisphericLight, type Camera } from "@babylonjs/core";
 import { Scene } from "@babylonjs/core/scene.js";
 import { Engine } from "@babylonjs/core/Engines/engine.js";
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera.js";
+import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera.js";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
 import { SceneTool } from "@divinevoxel/core/Render/Tools/SceneTool";
+import { Observable } from "@divinestar/utils/Observers/Observable";
 class RenderNodes {
   scene: Scene;
   camera: Camera;
@@ -17,12 +19,19 @@ class RenderNodes {
   sceneTool: SceneTool;
   DVER: DivineVoxelEngineRender;
 }
+const DVEObservers = {
+  ready: new Observable<DivineVoxelEngineRender>(),
+};
 type UseDVEProps = {
   textureAssetPath?: "assets/textures";
   textures: TextureData[];
   init: DVERInitData;
   useFloatingOrigin?: boolean;
   useSkyBox?: boolean;
+  staturate: (
+    DVE: DivineVoxelEngineRender,
+    observers: typeof DVEObservers
+  ) => void;
 };
 export function useDVE(props: UseDVEProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -33,6 +42,8 @@ export function useDVE(props: UseDVEProps) {
       if (!canvasRef.current) return;
       if (DivineVoxelEngineRender.initialized) return;
       const DVER = new DivineVoxelEngineRender();
+      props.staturate(DVER, DVEObservers);
+
       if (props.textureAssetPath) {
         DVER.nodes.textures.defineDefaultTexturePath(props.textureAssetPath);
       }
@@ -47,7 +58,7 @@ export function useDVE(props: UseDVEProps) {
 
       props.init.scene = nodes.scene;
       await DVER.init(props.init);
-
+      DVER.render.scene = nodes.scene;
       nodes.DVER = DVER;
       if (props.useSkyBox) {
         const skybox = CreateBox("skyBox", { size: 800.0 }, nodes.scene);
@@ -81,8 +92,10 @@ export function useDVE(props: UseDVEProps) {
         .fog.setColor(0.6)
         .fog.setMode("volumetric")
         .fog.setDensity(0.0005);
+      
+      DVEObservers.ready.notify(DVER);
     })();
-  }, [canvasRef.current]);
+  }, []);
 
   return {
     nodes: nodesRef.current,
@@ -97,7 +110,6 @@ export function useDVE(props: UseDVEProps) {
 function InitScene(canvas: HTMLCanvasElement, nodes: RenderNodes) {
   let antialias = false;
   const engine = new Engine(canvas, antialias);
-
   engine.doNotHandleContextLost = true;
   engine.enableOfflineSupport = false;
 
@@ -116,24 +128,26 @@ function InitScene(canvas: HTMLCanvasElement, nodes: RenderNodes) {
   scene.skipPointerMovePicking = true;
   scene.constantlyUpdateMeshUnderPointer = false;
 
-  const camera = new ArcRotateCamera(
+  /*   const camera = new ArcRotateCamera(
     "",
     Math.PI / 2,
     Math.PI / 4,
     20,
     new Vector3(0, 65, 0)
-  );
+  ); */
+
+  const camera = new FreeCamera("", new Vector3(0, 10, 0));
 
   camera.position.y = 70;
-  camera.speed = 1;
+//  camera.speed = 1;
   camera.maxZ = 1000;
   camera.fov = 1.8;
   camera.attachControl(canvas, true);
-  camera.inputs.attached.keyboard.detachControl();
+ // camera.inputs.attached.keyboard.detachControl();
 
   scene.activeCamera = camera;
   scene.collisionsEnabled = false;
-  camera.inertia = 0.2;
+ // camera.inertia = 0.2;
 
   const hemLight = new HemisphericLight("", new Vector3(0, 3, 0), scene);
 
