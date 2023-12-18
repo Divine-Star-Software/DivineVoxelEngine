@@ -12,7 +12,7 @@ import { MeshRegister } from "../../Render/Scene/MeshRegister.js";
 
 export const RenderTasks = {
  setChunk: ThreadComm.registerTasks<SetChunkMeshTask>("set-chunk", (data) => {
-  MeshManager.chunks.update(data);
+    MeshManager.chunks.update(data);
  }),
  removeChunk: ThreadComm.registerTasks<RemoveChunkMeshTasks>(
   "remove-chunk",

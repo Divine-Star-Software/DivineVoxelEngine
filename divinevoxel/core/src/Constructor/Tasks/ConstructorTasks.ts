@@ -60,13 +60,14 @@ export const Tasks = {
     column: ThreadComm.registerTasks<BuildTasks>(
       ConstructorTasks.buildColumn,
       async (data, onDone) => {
+        const DVEC = DivineVoxelEngineConstructor.instance;
+  
         const column = WorldRegister.column.get(data[0]);
         if (!column) return false;
         if (column.chunks.size == 0) return false;
         let totalChunks = 0;
         const location = data[0];
         for (const [key, chunk] of column.chunks) {
-          const DVEC = DivineVoxelEngineConstructor.instance;
           chunkTool.setChunk(chunk);
           const chunkPOS = chunkTool.getPositionData();
           location[1] = chunkPOS.x;

@@ -45,10 +45,10 @@ export function App() {
         setReady(true);
         nodes.sceneTool.levels
           .setSun(0.1)
-          .levels.setBase(0.1)
+          //.levels.setBase(0)
           .fog.setColor(0.1)
           .fog.setMode("volumetric")
-          .fog.setDensity(0.0);
+          .fog.setDensity(0.0); 
           (window as any).nodes = nodes;
       });
     },
