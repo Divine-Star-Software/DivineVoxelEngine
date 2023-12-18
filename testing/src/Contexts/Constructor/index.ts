@@ -5,7 +5,8 @@ import { GetDreamEther } from "./Voxels/LiquidDreamEther";
 import { DivineVoxelEngineConstructor } from "@divinevoxel/core/Constructor";
 import { Flat3DIndex, Vec3Array } from "@divinevoxel/core/Math";
 import { BrushTool } from "@divinevoxel/core/Tools/Brush/Brush";
-
+import { TemplateProcessor } from "@divinevoxel/core/Constructor/Builder/Processors/TemplateProcessor";
+import { LocationData } from "@divinestar/voxelspaces";
 await StartContrusctor({
   getVoxelConstructors(voxelConstructors) {
     const { defaults } = voxelConstructors;
@@ -102,8 +103,8 @@ await StartContrusctor({
   },
 });
 
-const flatIndex = new Flat3DIndex();
-flatIndex.bounds = {
+const loadInFlatIndex = new Flat3DIndex();
+loadInFlatIndex.bounds = {
   x: 256,
   y: 128,
   z: 256,
@@ -130,48 +131,124 @@ DivineVoxelEngineConstructor.instance.TC.registerTasks<
     const sy = start[1];
     const ey = end[1];
 
-    brushTool.start();
+    const location: LocationData = [dimension, 0, 0, 0];
     let [six, siy, siz] = index;
     let ix = six,
       iy = siy,
       iz = siz;
 
-    for (let x = sx; x < ex; x++) {
+    for (let x = sx; x < ex; x += 16) {
       iz = siz;
-   
-      for (let z = sz; z < ez; z++) {
+
+      for (let z = sz; z < ez; z += 16) {
         iy = siy;
-      
-        for (let y = sy; y < ey; y++) {
-         
-          const voxel_index = flatIndex.getIndex([ix, iy, iz]) * 2;
 
-          const mainData = data[voxel_index];
-          const stateData = data[voxel_index + 1];
-          let id = mainData & 0xffff;
-          let light = (mainData & (0xffff << 16)) >>> 16;
-          let state = stateData & 0xffff;
-          let secondaryId = (stateData & (0xffff << 16)) >>> 16;
-
-          if (!id) {
-            iy++;
-            brushTool._dt.setXYZ(x, y, z).loadIn();
-            brushTool._dt.setLight(light).commit();
+        for (let y = sy; y < ey; y += 16) {
+          if (!dataTool._chunkTool.loadInAtLocation([dimension, x, y, z]))
             continue;
+
+          let vix = ix,
+            viy = iy,
+            viz = iz;
+
+          for (let cx = x; cx < x + 16; cx++) {
+            viz = iz;
+            for (let cz = z; cz < z + 16; cz++) {
+              viy = iy;
+              for (let cy = y; cy < y + 16; cy++) {
+                location[1] = cx;
+                location[2] = cy;
+                location[3] = cz;
+
+                const index =
+                  DivineVoxelEngineConstructor.instance.data.spaces.voxel.getIndexLocation(
+                    location
+                  );
+
+                const voxel_index =
+                  loadInFlatIndex.getIndex([vix, viy, viz]) * 2;
+
+                const mainData = data[voxel_index];
+                const stateData = data[voxel_index + 1];
+                dataTool._chunkTool.segments.id.set(index, mainData & 0xffff);
+                dataTool._chunkTool.segments.light.set(
+                  index,
+                  (mainData & (0xffff << 16)) >>> 1
+                );
+                dataTool._chunkTool.segments.state.set(
+                  index,
+                  stateData & 0xffff
+                );
+                dataTool._chunkTool.segments.secondaryId.set(
+                  index,
+                  (stateData & (0xffff << 16)) >>> 16
+                );
+                viy++;
+              }
+              viz++;
+            }
+            vix++;
           }
 
-          brushTool.setXYZ(x, y, z).setRaw([id, light, state, secondaryId]);
-          brushTool.paint();
-          brushTool._dt.setXYZ(x, y, z).loadIn();
-          brushTool._dt.setLight(light).commit();
+          iy += 16;
+        }
+        iz += 16;
+      }
+      ix += 16;
+    }
 
+    if (onDone) onDone();
+  },
+  "deferred"
+);
+
+const templateInFlatIndex = new Flat3DIndex();
+templateInFlatIndex.bounds = {
+  x: 64,
+  y: 128,
+  z: 64,
+};
+DivineVoxelEngineConstructor.instance.TC.registerTasks<
+  [
+    dimension: string,
+    index: Vec3Array,
+    start: Vec3Array,
+    end: Vec3Array,
+    sab: SharedArrayBuffer
+  ]
+>(
+  "build-world-template",
+  async ([dimension, index, start, end, sab], onDone) => {
+    const data = new Uint32Array(sab);
+    const sx = start[0];
+    const sz = start[2];
+    const ex = end[0];
+    const ez = end[2];
+    const sy = start[1];
+    const ey = end[1];
+
+    let [six, siy, siz] = index;
+    let ix = six,
+      iy = siy,
+      iz = siz;
+    for (let x = sx; x < ex; x += 16) {
+      iz = siz;
+      for (let z = sz; z < ez; z += 16) {
+        iy = siy;
+        for (let y = sy; y < ey; y += 16) {
+          TemplateProcessor.build(
+            [dimension, x, y, z],
+            data,
+            [ix * 16, iy * 16, iz * 16],
+            templateInFlatIndex
+          );
           iy++;
         }
         iz++;
       }
       ix++;
     }
-    brushTool.stop();
+
     if (onDone) onDone();
   },
   "deferred"

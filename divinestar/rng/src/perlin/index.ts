@@ -1,3 +1,5 @@
+import { LCG } from "seededRandom/LCG";
+
 /**# Perlin Noise 3d
  * ---
  * TypeScript version of the library found here:
@@ -19,7 +21,7 @@ export class PerlinNoise3d {
 
   SINCOS_PRECISION = 0.5;
   SINCOS_LENGTH = Math.floor(360 / this.SINCOS_PRECISION);
-  sinLUT = new Array(this.SINCOS_LENGTH);
+ // sinLUT = new Array(this.SINCOS_LENGTH);
   cosLUT = new Array(this.SINCOS_LENGTH);
   DEG_TO_RAD = Math.PI / 180.0;
   perlin_octaves = 4; // default to medium smooth
@@ -27,47 +29,20 @@ export class PerlinNoise3d {
   perlin: null | any[] = null;
   perlin_PI = this.SINCOS_LENGTH;
 
+  lcg: LCG;
   constructor() {
     this.perlin_PI >>= 1;
     for (let i = 0; i < this.SINCOS_LENGTH; i++) {
-      this.sinLUT[i] = Math.sin(i * this.DEG_TO_RAD * this.SINCOS_PRECISION);
+   //   this.sinLUT[i] = Math.sin(i * this.DEG_TO_RAD * this.SINCOS_PRECISION);
       this.cosLUT[i] = Math.cos(i * this.DEG_TO_RAD * this.SINCOS_PRECISION);
     }
   }
-  lcg() {
-    // Set to values from http://en.wikipedia.org/wiki/Numerical_Recipes
-    // m is basically chosen to be large (as it is the max period)
-    // and for its relationships to a and c
-    let m = 4294967296,
-      // a - 1 should be divisible by m's prime factors
-      a = 1664525,
-      // c and m should be co-prime
-      c = 1013904223,
-      seed: number,
-      z: number;
-    return {
-      setSeed: function (val: number) {
-        // pick a random seed if val is undefined or null
-        // the >>> 0 casts the seed to an unsigned 32-bit integer
-        z = seed = (val == null ? Math.random() * m : val) >>> 0;
-      },
-      getSeed: function () {
-        return seed;
-      },
-      rand: function () {
-        // define the recurrence relationship
-        z = (a * z + c) % m;
-        // return a float in [0, 1)
-        // if z = m then z / m = 0 therefore (z % m) / m < 1 always
-        return z / m;
-      },
-    };
-  }
+
   noiseSeed(seed: number) {
     // Linear Congruential Generator
     // Variant of a Lehman Generator
-
-    const lcg = this.lcg();
+    const lcg = new LCG(seed);
+    this.lcg = lcg;
     lcg.setSeed(seed);
     this.perlin = new Array(this.PERLIN_SIZE + 1);
     for (let i = 0; i < this.PERLIN_SIZE + 1; i++) {
