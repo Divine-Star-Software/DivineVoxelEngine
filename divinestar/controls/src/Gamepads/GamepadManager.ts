@@ -13,6 +13,7 @@ export class GamepadManager {
     const newGamePad = new DivineGamepad(event.gamepad);
     this._gamepads.set(event.gamepad.index, newGamePad);
     this.observers.gamepadAdded.notify(newGamePad);
+    return newGamePad;
   }
   static removeGamepad(event: GamepadEvent) {
     if (!this._gamepads.has(event.gamepad.index)) return;

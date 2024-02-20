@@ -331,7 +331,7 @@ export class GPUWorldGen {
     raw_template.segment_2 = 
     (raw_template.segment_2 & ~(byte_mask << 0)) | (face_byte  << 0);
 
-    //enode light
+    //encode light
     //top
     { 
       raw_template.segment_3[0] = encode_light(voxel_template.light.top.p1);

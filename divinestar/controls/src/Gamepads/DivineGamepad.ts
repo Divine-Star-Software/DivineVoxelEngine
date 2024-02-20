@@ -2,6 +2,7 @@ import { DivineControlEventManager } from "../Events/DivineControlsEventManager.
 import { DivineControls } from "../DivineControls.js";
 import { DefaultGamePadButtons } from "../index.js";
 import { DCGamepadAxesMoveEvent } from "../Events/Register/Gamepad/Axes/DCGamepadAxesMoveEvent.js";
+import { Observable } from "@divinestar/utils/Observers/Observable.js";
 
 export class DivineGamepad {
   static BINDINGS = {
@@ -34,6 +35,11 @@ export class DivineGamepad {
 
   axes: number[];
 
+  observables = {
+    buttonPressed: new Observable<{number:number,key:string}>(),
+    buttonReleased: new Observable<{number:number,key:string}>(),
+  }
+
   constructor(public gamepad: Gamepad) {
     for (const button of DivineGamepad.BINDINGS.XBOX360) {
       this.pressed[button] = -1;
@@ -51,7 +57,7 @@ export class DivineGamepad {
     return (value * 100) >> 0;
   }
 
-  update(animationRatio = 1) {
+  update() {
     const gp = navigator.getGamepads()[this.gamepad.index]!;
 
     if (this._testAxes(gp.axes[0]) || this._testAxes(gp.axes[1])) {
@@ -94,6 +100,10 @@ export class DivineGamepad {
             )!;
             control.action(dcEvent.setData(control));
           }
+          this.observables.buttonPressed.notify({
+            number:i,
+            key:this.bindings[i]
+          });
           this.pressed[this.bindings[i]] = 1;
         }
 
@@ -138,6 +148,10 @@ export class DivineGamepad {
           DivineControls.holds.removeHold(id);
         }
         this.pressed[this.bindings[i]] = -1;
+        this.observables.buttonReleased.notify({
+          number:i,
+          key:this.bindings[i]
+        });
       }
     }
   }

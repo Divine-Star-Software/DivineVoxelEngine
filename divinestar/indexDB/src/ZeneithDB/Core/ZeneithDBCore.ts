@@ -15,7 +15,6 @@ export const ZeneithDBCore = {
  util: ZeneithUtil,
 
  async initialize() {
-  console.log("init");
   this.dataBase = new DataBase(
    {
     databaseName: "ZeneithDB",
@@ -139,7 +138,7 @@ export const ZeneithDBCore = {
  tasks: {
   close(comm: CommBase | CommManager, id: string) {
    return new Promise(async (resolve, reject) => {
-    console.log("closing ", id, comm instanceof CommBase);
+   
     if (comm instanceof CommBase) {
      return comm.runPromiseTasks("zdb-close-database", id, [], () => {
       resolve(true);
@@ -152,7 +151,6 @@ export const ZeneithDBCore = {
         new Promise((r) => {
          _.runPromiseTasks("zdb-close-database", id, [], () => {
           r(true);
-          console.log(id, "close", _.name);
          });
         })
       )

@@ -14,6 +14,7 @@ import {
 } from "./Types/Control.types";
 import { DivineControlEventManager } from "./Events/DivineControlsEventManager.js";
 import { DCKeyDownEvent } from "Events/Register/index.js";
+import { RecursivePartial } from "@divinestar/utils";
 
 class HoldManager {
   private static _functions = new Map<
@@ -110,7 +111,8 @@ export class DivineControls {
   static _heldKesy = new Set();
 
   static _capturing = false;
-  static _capturedData: ControlInputData | null = null;
+  static _capturingMode: "gamepad" | "keyboard" = "gamepad";
+  static _capturedData: RecursivePartial<ControlInputData> | null = null;
 
   private constructor() {}
 
@@ -121,14 +123,28 @@ export class DivineControls {
     if (navigator.userAgent.indexOf("Android") != -1) this._os = "android";
     if (navigator.userAgent.indexOf("like Mac") != -1) this._os = "ios";
     window.addEventListener("gamepadconnected", (e) => {
-      GamepadManager.addGamepad(e);
+      const newGamepad = GamepadManager.addGamepad(e);
+      newGamepad.observables.buttonPressed.subscribe(
+        DivineControls,
+        ({ number, key }) => {
+          if (this._capturing && this._capturingMode == "gamepad") {
+            this._capturedData = {
+              "gamepad-button": {
+                button: key as any,
+              },
+            };
+            this._capturing = false;
+            return;
+          }
+        }
+      );
     });
     window.addEventListener("gamepaddisconnected", (e) => {
       GamepadManager.removeGamepad(e);
     });
     window.addEventListener("mousedown", (event) => {
       const button = this._mapMoueButton(event.button);
-      if (this._capturing) {
+      if (this._capturing && this._capturingMode == "keyboard") {
         this._capturedData = {
           mouse: {
             mode: "down",
@@ -175,7 +191,7 @@ export class DivineControls {
 
     window.addEventListener("keydown", (event) => {
       const key = this._mapKey(event.key);
-      if (this._capturing) {
+      if (this._capturing && this._capturingMode == "keyboard") {
         this._capturedData = {
           keyboard: {
             key: key,
@@ -234,7 +250,7 @@ export class DivineControls {
 
     window.addEventListener("wheel", (event) => {
       if (event.deltaY < 0) {
-        if (this._capturing) {
+        if (this._capturing && this._capturingMode == "keyboard") {
           this._capturedData = {
             scroll: {
               mode: "up",
@@ -248,7 +264,7 @@ export class DivineControls {
         const dcEvent = DivineControlEventManager.getEvent("wheel-up")!;
         control.action(dcEvent.setData(control));
       } else {
-        if (this._capturing) {
+        if (this._capturing && this._capturingMode == "keyboard") {
           this._capturedData = {
             scroll: {
               mode: "down",
@@ -326,8 +342,12 @@ export class DivineControls {
     return this.controls.getData(id);
   }
 
-  static captureControlForInput(controlId: string) {
+  static captureControlForInput(
+    controlId: string,
+    mode: "keyboard" | "gamepad" = "keyboard"
+  ) {
     return new Promise((resolve) => {
+      this._capturingMode = mode;
       setTimeout(() => {
         this._capturing = true;
         const inte = setInterval(() => {
@@ -335,11 +355,7 @@ export class DivineControls {
             resolve(true);
             clearInterval(inte);
             if (!this._capturedData) return;
-            this.updateControlInputData(
-              controlId,
-              "keyboard",
-              this._capturedData
-            );
+            this.updateControlInputData(controlId, this._capturedData);
           }
         }, 100);
       }, 200);
@@ -348,8 +364,7 @@ export class DivineControls {
 
   static updateControlInputData(
     controlId: string,
-    type: ControlInputTypes,
-    data: ControlInputData
+    data: RecursivePartial<ControlInputData>
   ) {
     const control = this.getControl(controlId);
     if (!control) {
@@ -361,7 +376,7 @@ export class DivineControls {
       //@ts-ignore
       if (!data[type]) continue;
       //@ts-ignore
-      control.input[type] = structuredClone(data[type]);
+      control.input[type] = { ...control.input[type], ...data[type] };
     }
 
     this._addControlInput(control);
