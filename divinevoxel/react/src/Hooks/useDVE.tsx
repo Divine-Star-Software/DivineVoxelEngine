@@ -11,14 +11,8 @@ import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera.js";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
 import { SceneTool } from "@divinevoxel/core/Render/Tools/SceneTool";
 import { Observable } from "@divinestar/utils/Observers/Observable";
-class RenderNodes {
-  scene: Scene;
-  camera: Camera;
-  engine: Engine;
-  canvas: HTMLCanvasElement;
-  sceneTool: SceneTool;
-  DVER: DivineVoxelEngineRender;
-}
+import { RenderNodes } from "../Classes/RednerNodes.js";
+
 const DVEObservers = {
   ready: new Observable<DivineVoxelEngineRender>(),
 };
@@ -92,7 +86,7 @@ export function useDVE(props: UseDVEProps) {
         .fog.setColor(0.6)
         .fog.setMode("volumetric")
         .fog.setDensity(0.0005);
-      
+
       DVEObservers.ready.notify(DVER);
     })();
   }, []);
@@ -139,15 +133,15 @@ function InitScene(canvas: HTMLCanvasElement, nodes: RenderNodes) {
   const camera = new FreeCamera("", new Vector3(0, 10, 0));
 
   camera.position.y = 70;
-//  camera.speed = 1;
+  //  camera.speed = 1;
   camera.maxZ = 1000;
   camera.fov = 1.8;
   camera.attachControl(canvas, true);
- // camera.inputs.attached.keyboard.detachControl();
+  // camera.inputs.attached.keyboard.detachControl();
 
   scene.activeCamera = camera;
   scene.collisionsEnabled = false;
- // camera.inertia = 0.2;
+  // camera.inertia = 0.2;
 
   const hemLight = new HemisphericLight("", new Vector3(0, 3, 0), scene);
 

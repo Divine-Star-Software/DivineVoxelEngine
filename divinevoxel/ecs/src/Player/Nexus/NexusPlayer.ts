@@ -9,7 +9,7 @@ import {
 import { PlayerStatsData } from "../Data/PlayerStatsData.js";
 import { ValueEaseAndTween } from "../../Math/EaseAndTween.js";
 import { DVP } from "../../Physics";
-console.log(ValueEaseAndTween);
+
 export class NexusPlayer extends EntityBase {
   states = {
     cilmbingStair: false,
@@ -248,7 +248,7 @@ export class NexusPlayer extends EntityBase {
         }
         const collider = this.node.dataTool.getColliderObj();
         if (collider && collider.hasFlag(DVP.constants.flags.climbable)) {
-          console.log("climb")
+  
           this.states.climbing = true;
         }
       }

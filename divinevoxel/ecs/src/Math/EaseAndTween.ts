@@ -208,7 +208,7 @@ export class ValueEaseAndTween {
     this._start = data.start;
     this._change = data.end - data.start;
     this._func = this.data.function;
-    console.log(this._func)
+   
   }
   update() {
     if (!this._alive) return;

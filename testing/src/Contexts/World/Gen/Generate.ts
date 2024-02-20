@@ -1,7 +1,7 @@
 import { DivineVoxelEngineWorld } from "@divinevoxel/core/World";
 import { VoxelPaletteReader } from "@divinevoxel/core/Data/Voxel/VoxelPalette";
 import { GPUWorldGen } from "./DVEWorldCompute";
-export async function GenerateWorld(canvas: any) {
+export async function GenerateWorld() {
   const DVEW = DivineVoxelEngineWorld.instance;
   const gpuGen = new GPUWorldGen();
   await gpuGen.init();
@@ -107,7 +107,7 @@ for (var x = column_position.x; x < column_position.x + voxel_world.column_size.
   let endX = 16 * numChunks;
   let endZ = 16 * numChunks;
 
-/*   const builder = DVEW.getBuilder();
+  /*   const builder = DVEW.getBuilder();
   console.log("start build");
   for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {

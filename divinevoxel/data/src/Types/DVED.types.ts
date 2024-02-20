@@ -14,4 +14,3 @@ export type DVEDSyncFile = {
 };
 
 
-console.log("what the fuck")

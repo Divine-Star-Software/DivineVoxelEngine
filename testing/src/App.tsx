@@ -1,5 +1,6 @@
 import { DivineVoxelEngineRender } from "@divinevoxel/core/Render";
 import { useDVE } from "@divinevoxel/react";
+import { WorldMapComponent } from "Map/WorldMapComponent";
 import { useEffect, useRef, useState } from "react";
 const worldWorker = new Worker(new URL("./Contexts/World/", import.meta.url), {
   type: "module",
@@ -14,29 +15,6 @@ for (let i = 0; i < navigator.hardwareConcurrency - 1; i++) {
   );
 }
 
-const OffScreenCanvas = () => {
-  const ref = useRef<HTMLCanvasElement>(null);
-  useEffect(() => {
-    if (!ref.current) return;
-    (async () => {
-      const canvas = ref.current!;
-      const OffScreenCanvas = canvas.transferControlToOffscreen();
-      const DVER = DivineVoxelEngineRender.instance;
-      await DVER.worldComm.waitTillTasksExist("start");
-      await DVER.worldComm.runAsyncTasks("start", OffScreenCanvas, [
-        OffScreenCanvas,
-      ]);
-    })();
-  }, []);
-  return (
-    <canvas
-      style={{
-        display: "none",
-      }}
-      ref={ref}
-    />
-  );
-};
 export function App() {
   const [ready, setReady] = useState(false);
   const { DVECanvas, nodes } = useDVE({
@@ -48,8 +26,8 @@ export function App() {
           //.levels.setBase(0)
           .fog.setColor(0.1)
           .fog.setMode("volumetric")
-          .fog.setDensity(0.0); 
-          (window as any).nodes = nodes;
+          .fog.setDensity(0.0);
+        (window as any).nodes = nodes;
       });
     },
     useSkyBox: true,
@@ -233,7 +211,8 @@ export function App() {
   return (
     <>
       <div className="render-canvas-container">{DVECanvas}</div>
-      {ready && <OffScreenCanvas />}
+
+      {ready && <WorldMapComponent nodes={nodes} />}
     </>
   );
 }

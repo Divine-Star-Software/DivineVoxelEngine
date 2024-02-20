@@ -3,7 +3,7 @@ import type { LocationData } from "@divinestar/voxelspaces";
 import { ThreadComm } from "@divinestar/threads/";
 import { DataHanlderWrapper } from "../../DataLoader/DataHandler/DataHandlerWrapper.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
-import { SafeInterval } from "../../Global/Util/SafeInterval.js";
+import { SafeInterval } from "@divinestar/utils/Intervals/SafeInterval.js";
 
 export const DataLoaderTasks = {
   loadRegionHeader: ThreadComm.registerTasks<LocationData>(

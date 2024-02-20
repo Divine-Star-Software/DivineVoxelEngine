@@ -232,9 +232,5 @@ await StartWorld({
   ],
 });
 
-DivineVoxelEngineWorld.instance!.TC.registerTasks<OffscreenCanvas>(
-  "start",
-  async (canvas) => {
-    await GenerateWorld(canvas);
-  }
-);
+
+await GenerateWorld();

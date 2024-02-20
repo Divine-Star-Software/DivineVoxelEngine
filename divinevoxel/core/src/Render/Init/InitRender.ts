@@ -10,10 +10,8 @@ export async function $INITFunction(
   scene: Scene
 ) {
   DVER.render.$INIT(scene);
-  console.log("Start building the thing");
   await TextureCreator.setUpImageCreation();
   await TextureManager.$INIT();
-  console.log("done building textures", TextureManager.generateTextureUVMap());
   DVER.constructorCommManager.syncTextureData(
     TextureManager.generateTextureUVMap()
   );

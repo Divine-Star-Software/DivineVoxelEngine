@@ -7,7 +7,7 @@ import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { WorldGenRegister } from "./Register/WorldGenRegister.js";
 //tools
 import { WorldGenBrush } from "../Tools/WorldGenBrush.js";
-import { SafeInterval } from "../../Global/Util/SafeInterval.js";
+import { SafeInterval } from "@divinestar/utils/Intervals/SafeInterval.js";
 
 export const WorldGeneration = {
  worldGen: <WorldGenInterface | null>null,

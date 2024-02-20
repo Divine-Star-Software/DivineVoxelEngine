@@ -2,7 +2,7 @@ import { Distance3D } from "../../Math/Functions/Distance3d.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
-import { SafeInterval } from "../../Global/Util/SafeInterval.js";
+import { SafeInterval } from "@divinestar/utils/Intervals/SafeInterval.js";
 
 export class AnaylzerTool extends LocationBoundTool {
  static columnDataTool = new ColumnDataTool();

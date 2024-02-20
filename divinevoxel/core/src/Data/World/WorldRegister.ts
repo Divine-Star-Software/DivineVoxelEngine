@@ -59,6 +59,12 @@ export const WorldRegister = {
   },
  },
 
+ clearAll() {
+  this._dimensions.clear();
+  this._chunkCache.clear();
+  this._columnCache.clear();
+ },
+
  region: {
   add(location: LocationData, sab: SharedArrayBuffer) {
    let dimension = WorldRegister.dimensions.get(location[0]);

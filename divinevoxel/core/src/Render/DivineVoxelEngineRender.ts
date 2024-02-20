@@ -1,10 +1,10 @@
 //types
-import {  type Scene } from "@babylonjs/core";
+import { type Scene } from "@babylonjs/core";
 //objects
 import { Util } from "../Global/Util.helper.js";
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import { RenderManager } from "./Scene/RenderManager.js";
-import {Effect} from "@babylonjs/core/Materials/effect";
+import { Effect } from "@babylonjs/core/Materials/effect";
 import { RenderTasks } from "./Tasks/RenderTasks.js";
 import { WorldBounds } from "../Data/World/WorldBounds.js";
 import { ThreadComm } from "@divinestar/threads/";
@@ -22,7 +22,7 @@ import {
 } from "./Threads/RenderThreads.js";
 //functions
 import { InitWorkers } from "./Init/InitThreads.js";
-import { $INITFunction } from "./Init/InitRender.js";
+import { $INITFunction as initFunction } from "./Init/InitRender.js";
 import { RichDataTool } from "../Tools/Data/RichDataTool.js";
 import { NodeMeshTool } from "./Tools/NodeMeshTool.js";
 import { NodeManager } from "./Nodes/NodeManager.js";
@@ -71,14 +71,14 @@ export class DivineVoxelEngineRender {
     DivineVoxelEngineRender.instance = this;
   }
   async init(initData: DVERInitData) {
-    if(DivineVoxelEngineRender.initialized) return;
+    if (DivineVoxelEngineRender.initialized) return;
     DivineVoxelEngineRender.initialized = true;
     await InitWorkers(this, initData);
     if (initData.scene) {
-      await $INITFunction(this, initData.scene);
+      await initFunction(this, initData.scene);
     }
 
-    console.log(Effect.ShadersStore);
+
   }
 
   getSceneTool() {
@@ -89,5 +89,19 @@ export class DivineVoxelEngineRender {
   }
   getNodeMeshTool() {
     return new NodeMeshTool();
+  }
+
+  /**# clearAll
+   *---
+   * Clear all world data and meshes.
+   */
+  async clearAll() {
+    this.render.meshRegister.clearAll();
+    await this.worldComm.runAsyncTasks("clear-all", "", []);
+    await Promise.all(
+      this.constructorCommManager.__comms.map((_) =>
+        _.runAsyncTasks("clear-all", "")
+      )
+    );
   }
 }

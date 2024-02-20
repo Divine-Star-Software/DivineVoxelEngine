@@ -67,7 +67,7 @@ export class AnimatedPixelEntityType {
   }
 
   constructor(public data: PixelEntityData) {
-    console.log(data);
+ 
     this._render(data);
   }
 

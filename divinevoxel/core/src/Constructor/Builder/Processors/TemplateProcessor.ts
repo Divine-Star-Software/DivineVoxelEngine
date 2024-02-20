@@ -4,13 +4,11 @@ import type { SetChunkMeshTask } from "Types/Tasks/RenderTasks.types.js";
 import { Flat3DIndex } from "../../../Math/Flat3DIndex.js";
 import type { Vec3Array } from "../../../Math/";
 //objects
-import { SubstanceRules } from "../Rules/SubstanceRules.js";
 import { RenderedSubstances } from "../Rules/RenderedSubstances.js";
 import { DivineVoxelEngineConstructor } from "../../DivineVoxelEngineConstructor.js";
 
 //data
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
-import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 
 //tools
 import { HeightMapTool } from "../../../Tools/Data/WorldData/HeightMapTool.js";

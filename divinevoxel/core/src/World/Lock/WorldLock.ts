@@ -5,7 +5,7 @@ import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { DataLoaderTool } from "../../Tools/Loader/DataLoaderTool.js";
 import { UtilMap } from "../../Global/Util/UtilMap.js";
-import { SafeInterval } from "../../Global/Util/SafeInterval.js";
+import { SafeInterval } from "@divinestar/utils/Intervals/SafeInterval.js";
 
 export const WorldLock = {
  locks: new UtilMap<string, WorldLockTasks>(),

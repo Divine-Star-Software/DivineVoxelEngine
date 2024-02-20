@@ -10,7 +10,7 @@ import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 import { DataHooks } from "../../Data/DataHooks.js";
 import { WorldLock } from "../../World/Lock/WorldLock.js";
 import { LoaderRegister } from "./LoaderRegister.js";
-import { SafeInterval } from "../../Global/Util/SafeInterval.js";
+import { SafeInterval } from "@divinestar/utils/Intervals/SafeInterval.js";
 
 export class DataLoaderTool extends LocationBoundTool {
   static columnDataTool = new ColumnDataTool();

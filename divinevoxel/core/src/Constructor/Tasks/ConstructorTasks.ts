@@ -25,6 +25,9 @@ import { TasksRequest } from "./TasksRequest.js";
 const chunkTool = new ChunkDataTool();
 
 export const Tasks = {
+  clearAll: ThreadComm.registerTasks("clear-all", () => {
+    WorldRegister.clearAll();
+  }),
   data: {
     syncTextures: ThreadComm.registerTasks(
       "sync-texuture-index",
@@ -61,7 +64,7 @@ export const Tasks = {
       ConstructorTasks.buildColumn,
       async (data, onDone) => {
         const DVEC = DivineVoxelEngineConstructor.instance;
-  
+
         const column = WorldRegister.column.get(data[0]);
         if (!column) return false;
         if (column.chunks.size == 0) return false;

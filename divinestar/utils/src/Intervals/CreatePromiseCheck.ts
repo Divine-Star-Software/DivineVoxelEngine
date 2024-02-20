@@ -34,7 +34,7 @@ export const CreatePromiseCheck = (data: {
      data.onFail();
     }
     resolve(false);
-   }, data.failTimeOut);
+   }, data.failTimeOut) as any;
   }
  });
 };

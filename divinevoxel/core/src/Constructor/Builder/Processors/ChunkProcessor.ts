@@ -27,6 +27,7 @@ export const ChunkProcessor = {
   _process(doSecondCheck = false) {
     if (!mDataTool.loadInAtLocation(this.nLocation)) return;
     if (!mDataTool.isRenderable()) return;
+
     this._states.foundVoxel = true;
     if (!doSecondCheck) {
       if (mDataTool.hasSecondaryVoxel()) {
@@ -39,6 +40,7 @@ export const ChunkProcessor = {
     );
 
     if (!mesher || !constructor) return;
+
     const voxelPOS = WorldSpaces.voxel
       .setLocation(this.nLocation)
       .getPosition();
@@ -55,6 +57,7 @@ export const ChunkProcessor = {
   },
 
   build(location: LocationData) {
+  
     WorldRegister.cache.enable();
     heightMapTool.chunk.loadInAtLocation(location);
     mDataTool.setDimension(location[0]);
@@ -107,6 +110,7 @@ export const ChunkProcessor = {
 
       const [attributes, buffers] = mesher.getAllAttributes();
 
+
       trasnfers.push(...buffers);
       chunks[1].push([substance, [location, attributes]]);
       mesher.resetAll();
@@ -117,5 +121,6 @@ export const ChunkProcessor = {
       chunks,
       trasnfers
     );
+    
   },
 };

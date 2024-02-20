@@ -1,5 +1,5 @@
-import { CreatePromiseCheck } from "./Util/CreatePromiseCheck.js";
-import { Queue } from "./Util/Queue.js";
+import { CreatePromiseCheck } from "@divinestar/utils/Intervals/CreatePromiseCheck.js";
+import { Queue } from "@divinestar/utils/DataStructures/Queue.js";
 export const Util = {
  createPromiseCheck: CreatePromiseCheck,
  getEnviorment(): "node" | "browser" {

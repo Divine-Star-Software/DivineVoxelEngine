@@ -108,7 +108,7 @@ VOXEL = vData;
       id: "vDistance",
       type: "float",
       body: {
-        GLSL: () => " vDistance = distance(cameraPOS , worldPOS );\n",
+        GLSL: () => "vDistance = distance(cameraPOS , worldPOS );\n",
       },
     },
     {
@@ -124,7 +124,6 @@ vec4 temp =  a * vec4(position , 1.0);
 worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
       },
     },
-
     {
       id: "mipMapLevel",
       type: "float",
