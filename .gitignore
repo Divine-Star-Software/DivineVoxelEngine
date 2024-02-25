@@ -4,3 +4,4 @@ scripts
 package-lock.json
 meta.json
 *.env
+emsdk

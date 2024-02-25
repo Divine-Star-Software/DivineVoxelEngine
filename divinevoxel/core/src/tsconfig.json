@@ -3,6 +3,9 @@
   "compilerOptions": {
     "outDir": "../dist",
     "baseUrl": "./",
-    "types": ["@babylonjs/core"]
+    "types": ["@babylonjs/core"],
+    "allowJs": true,
+    "checkJs": false,
+
   }
 }

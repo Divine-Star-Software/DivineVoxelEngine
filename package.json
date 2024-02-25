@@ -9,7 +9,6 @@
     "init:dve:ecs": "cd ./divinevoxel/ecs && npm run build && cd ../../divinevoxel && npm init -y --scope @divinevoxel -w ./divinevoxel/ecs/dist",
     "init:dve:react": "cd ./divinevoxel/react && npm run build && cd ../../ && npm init -y --scope @divinevoxel -w ./divinevoxel/react/dist",
     "init:dve:all": "npm run init:dve:core && npm run init:dve:iwg && npm run init:dve:ecs && npm run init:dve:react",
-    "init:ds:compute": "cd ./divinestar/compute && npm run build && cd ../../ && npm init -y --scope @divinestar -w ./divinestar/compute/dist",
     "init:ds:binary": "cd ./divinestar/binary && npm run build && cd ../../ && npm init -y --scope @divinestar -w ./divinestar/binary/dist",
     "init:ds:voxelspaces": "cd ./divinestar/voxelspaces && npm run build && cd ../../ && npm init -y --scope @divinestar -w ./divinestar/voxelspaces/dist",
     "init:ds:threads": "cd ./divinestar/threads && npm run build && cd ../../ && npm init -y --scope @divinestar -w ./divinestar/threads/dist",
@@ -42,8 +41,7 @@
     "divinestar\\compression\\dist",
     "divinestar\\schemas\\dist",
     "divinestar\\controls\\dist",
-    "divinestar\\rng\\dist",
-    "divinestar\\compute\\dist"
+    "divinestar\\rng\\dist"
   ],
   "devDependencies": {
     "@webgpu/types": "^0.1.40",

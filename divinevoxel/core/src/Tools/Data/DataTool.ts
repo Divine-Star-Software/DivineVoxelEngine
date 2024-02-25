@@ -21,6 +21,9 @@ export class DataTool extends DataToolBase {
   static GetVoxelIDFromString(id: string) {
     return DataTool._dtutil.setStringId(id).getId();
   }
+  static GetVoxelIDFromNumber(id: number) {
+    return DataTool._dtutil.setId(id).getStringId();
+  }
   /**# World Data Mode
    * ---
    * Read data directly from the world.

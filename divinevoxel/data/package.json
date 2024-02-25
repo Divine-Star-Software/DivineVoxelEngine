@@ -1,6 +1,6 @@
 {
  "name": "@divinevoxel/data",
- "version": "0.0.42",
+ "version": "0.0.44",
  "description": "Default data handler implementation for dve.",
  "main": "index.js",
  "scripts": {
@@ -17,9 +17,9 @@
   "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
  },
  "dependencies": {
-  "@divinestar/indexdb": "^0.0.42",
-  "@divinestar/voxelspaces": "^0.0.42",
-  "@divinevoxel/core": "^0.0.42"
+  "@divinestar/indexdb": "^0.0.44",
+  "@divinestar/voxelspaces": "^0.0.44",
+  "@divinevoxel/core": "^0.0.44"
  },
  "devDependencies": {
   "@types/node": "^20.8.3"

@@ -36,7 +36,7 @@ export class DVENodeMaterial {
     this.material.setFloat("sunLightLevel", level);
   }
   setBaseLevel(level: number) {
-    if (!this.material) return;
+  if (!this.material) return;
     this.material.setFloat("baseLevel", level);
   }
 
@@ -45,9 +45,18 @@ export class DVENodeMaterial {
       this.data.textureTypeId ? this.data.textureTypeId : this.id
     );
 
+    if (!type && this.data.textureTypeId) {
+      throw new Error(
+        `Could find the texture type for material ${this.id}. Texture typeid:  ${this.data.textureTypeId}`
+      );
+    }
     const shader = NodeManager.shaders.get(this.data.shaderId);
 
-    if (!shader) return false;
+    if (!shader) {
+      throw new Error(
+        `Could find the shader for material ${this.id}. Shader id:  ${this.data.shaderId}`
+      );
+    }
     if (type) type.addToShader(shader);
 
     this.shader = shader;

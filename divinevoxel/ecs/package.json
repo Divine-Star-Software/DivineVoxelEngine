@@ -1,6 +1,6 @@
 {
  "name": "@divinevoxel/ecs",
- "version": "0.0.0",
+ "version": "0.0.11",
  "description": "",
  "main": "index.js",
  "types": "index.d.ts",
@@ -20,7 +20,7 @@
   "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
  },
  "dependencies": {
-  "@divinevoxel/core": "^0.0.42"
+  "@divinevoxel/core": "^0.0.44"
  },
  "publishConfig": {
   "access": "public"

@@ -100,7 +100,7 @@ export function RegisterVoxelSnippets(builder: typeof DivineShaderBuilder) {
   rgb = getColor(rgb);
   vec4 mixLight = getLight(rgb);
   vec3 finalColor = doFog(mixLight);
-  FragColor = = toGammaSpace( vec4(finalColor.rgb , .6 ) );`,
+  FragColor = vec4(finalColor.rgb , .6 );`,
   },
  });
 }

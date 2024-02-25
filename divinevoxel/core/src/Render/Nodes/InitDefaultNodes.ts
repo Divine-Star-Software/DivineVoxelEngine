@@ -81,7 +81,7 @@ export function InitDefaultNodes(managere: typeof NodeManager) {
     {
       id: "#dve_skybox",
       shaderId: "#dve_skybox",
-      textureTypeId: "#dve_skybox",
+      textureTypeId: "",
       alphaBlending: false,
       alphaTesting: false,
       backFaceCulling: false,

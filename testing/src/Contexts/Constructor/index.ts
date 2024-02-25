@@ -103,7 +103,7 @@ await StartContrusctor({
   },
 });
 
-const loadInFlatIndex = new Flat3DIndex();
+const loadInFlatIndex = Flat3DIndex.GetXZYOrder();
 loadInFlatIndex.bounds = {
   x: 256,
   y: 128,
@@ -202,7 +202,7 @@ DivineVoxelEngineConstructor.instance.TC.registerTasks<
   "deferred"
 );
 
-const templateInFlatIndex = new Flat3DIndex();
+const templateInFlatIndex = Flat3DIndex.GetXZYOrder();
 templateInFlatIndex.bounds = {
   x: 64,
   y: 128,

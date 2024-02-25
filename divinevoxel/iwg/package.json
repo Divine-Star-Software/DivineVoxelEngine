@@ -1,6 +1,6 @@
 {
  "name": "@divinevoxel/iwg",
- "version": "0.0.42",
+ "version": "0.0.44",
  "description": "",
  "main": "index.js",
  "devDependencies": {},
@@ -18,7 +18,7 @@
   "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
  },
  "dependencies": {
-  "@divinevoxel/core": "^0.0.42"
+  "@divinevoxel/core": "^0.0.44"
  },
  "publishConfig": {
   "access": "public"

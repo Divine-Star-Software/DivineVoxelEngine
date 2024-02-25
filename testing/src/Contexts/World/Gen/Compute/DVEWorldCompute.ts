@@ -912,7 +912,7 @@ export class GPUWorldGen {
 
     await WorldLock.addLock(["main", [sx, sy, sz], [ex, ey, ez]]);
 
-    const index = new Flat3DIndex();
+    const index = Flat3DIndex.GetXZYOrder();
     index.bounds = {
       x: Constants.PROCESSING_X,
       y: Constants.PROCESSING_Y,
@@ -930,7 +930,6 @@ export class GPUWorldGen {
     let ix = 0,
       iy = 0,
       iz = 0;
-
 
     for (let x = sx; x < ex; x += segmentSize) {
       iz = 0;
@@ -1144,7 +1143,6 @@ export class GPUWorldGen {
       console.log(finalWorldData);
 
       worldSABView.set(finalWorldData);
-
 
       await this.loadIntoWorld(run.start, worldSAB);
     }

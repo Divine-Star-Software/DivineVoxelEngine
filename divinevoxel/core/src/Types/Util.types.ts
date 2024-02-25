@@ -1,4 +1,4 @@
-import { CompassDirectionNames } from "Math";
+import { CompassDirectionNames } from "../Math/Types/Math.types";
 
 export type DirectionNames =
  | "top"

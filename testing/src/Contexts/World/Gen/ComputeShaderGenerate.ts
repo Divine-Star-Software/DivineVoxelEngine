@@ -1,7 +1,7 @@
 import { DivineVoxelEngineWorld } from "@divinevoxel/core/World";
 import { VoxelPaletteReader } from "@divinevoxel/core/Data/Voxel/VoxelPalette";
-import { GPUWorldGen } from "./DVEWorldCompute";
-export async function GenerateWorld() {
+import { GPUWorldGen } from "./Compute/DVEWorldCompute";
+export async function ComputeShaderGenerate() {
   const DVEW = DivineVoxelEngineWorld.instance;
   const gpuGen = new GPUWorldGen();
   await gpuGen.init();
@@ -101,43 +101,5 @@ for (var x = column_position.x; x < column_position.x + voxel_world.column_size.
 `,
   });
   console.log("GEN IS DONE", performance.now() - t1);
-  const numChunks = 8;
-  let startX = -16 * numChunks;
-  let startZ = -16 * numChunks;
-  let endX = 16 * numChunks;
-  let endZ = 16 * numChunks;
 
-  /*   const builder = DVEW.getBuilder();
-  console.log("start build");
-  for (let x = startX; x < endX; x += 16) {
-    for (let z = startZ; z < endZ; z += 16) {
-      builder.setXZ(x, z).buildColumn();
-    }
-  }
-
-  console.log("end  build"); */
-  /* 
-
-  const tasks = DVEW.getTasksTool();
-  tasks.setFocalPoint(["main", 0, 0, 0]);
-  const t1 = performance.now();
-  for (let x = startX; x < endX; x += 16) {
-    for (let z = startZ; z < endZ; z += 16) {
-   //   WorldGen.generateWorldColumn(x, z);
-      tasks.worldSun.queued.add(["main", x, 0, z]);
-    }
-  }
-
-  console.log("gen time", performance.now() - t1);
-  const t2 = performance.now();
-  //await ComputeTest(canvas);
-
-  await tasks.worldSun.queued.runAndAwait();
-  console.log("sun light time ", performance.now() - t2);
-
-  for (let x = startX; x < endX; x += 16) {
-    for (let z = startZ; z < endZ; z += 16) {
-      builder.setXZ(x, z).buildColumn();
-    }
-  }  */
 }
