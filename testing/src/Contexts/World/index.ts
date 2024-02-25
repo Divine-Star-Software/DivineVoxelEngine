@@ -1,6 +1,8 @@
 import { StartWorld } from "@divinevoxel/react/Contexts/World";
-import { GenerateWorld } from "./Gen/Generate";
+import { ComputeShaderGenerate } from "./Gen/ComputeShaderGenerate";
 import { DivineVoxelEngineWorld } from "@divinevoxel/core/World";
+import { CPUGenerate } from "./Gen/CPUGenerate";
+import { WasmTest } from "./WasmTest";
 
 await StartWorld({
   voxels: [
@@ -232,5 +234,12 @@ await StartWorld({
   ],
 });
 
+let doComputeGen = false;
+if (doComputeGen) {
+  await ComputeShaderGenerate();
+} else {
+  await CPUGenerate();
+}
 
-await GenerateWorld();
+
+await WasmTest();

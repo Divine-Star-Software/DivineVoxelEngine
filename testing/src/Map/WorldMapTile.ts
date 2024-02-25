@@ -1,6 +1,6 @@
 import { LocationData } from "@divinestar/voxelspaces";
 import { WorldMap } from "./WorldMap";
-import { EntityInstance } from "@divinevoxel/core/Render/Tools/EntityTool";
+import { EntityInstance } from "@divinevoxel/core/Render/Tools/EntityInstance";
 
 export class WorldMapTile {
   static GetQuad() {

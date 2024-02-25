@@ -36,7 +36,8 @@ export function App() {
       worldWorker,
       constructorWorkers,
     },
-    textures: [
+    textures: 
+    [
       {
         type: "#dve_solid",
         id: "dve_debug_box",

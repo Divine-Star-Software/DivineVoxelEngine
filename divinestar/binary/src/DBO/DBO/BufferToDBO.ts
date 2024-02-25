@@ -52,7 +52,10 @@ export const BufferToDBO = {
       }
       return index + length * BC["16ui"];
     },
-    object: (dv, index) => {},
+    //made this actually do something not sure if it is was meant not to 
+    object: (dv, index) => {
+      return BC["8ui"] + index;
+    },
     "object-start": (dv, index) => {
       let newObj: any;
       if (BufferToDBO._mode == "object") {

@@ -1,6 +1,6 @@
 {
  "name": "@divinestar/rng",
- "version": "0.0.12",
+ "version": "0.0.14",
  "module": "index.js",
  "types": "index.d.ts",
  "type": "module",

@@ -15,8 +15,11 @@ module.exports = {
       template: "./src/index.html",
     }),
   ],
+  externals: {
+    // Exclude 'your_module' from bundling
+    'your_module': 'commonjs your_module',
+  },
   resolve: {
-
     plugins: [
       new TsconfigPathsPlugin({
         configFile: "./src/tsconfig.json",
@@ -25,8 +28,16 @@ module.exports = {
     ],
     extensions: [".tsx", ".ts", ".js", ".css"],
   },
+  experiments: {
+    asyncWebAssembly: true, // Enable WebAssembly as an async module
+    // syncWebAssembly: true, // Enable if you need synchronous WebAssembly modules
+  },
   module: {
     rules: [
+      {
+        test: /\.wasm$/,
+        type: "webassembly/async", // Use 'webassembly/sync' for synchronous modules
+      },
       {
         test: /\.(png|jpe?g|gif)$/i,
         use: [
@@ -52,6 +63,7 @@ module.exports = {
       },
       {
         test: /\.(js|jsx)$/,
+        
         resolve: {
           fullySpecified: false,
         },
