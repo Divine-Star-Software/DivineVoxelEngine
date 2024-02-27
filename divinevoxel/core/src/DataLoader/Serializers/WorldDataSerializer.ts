@@ -37,9 +37,9 @@ export const WorldDataSerialize = {
   const columnBuffer = new ArrayBuffer(columnSize);
   const columnArray = new Uint8Array(columnBuffer);
   const column = this.columns.getColumn();
-  let offset = this._readDataIntoBuffer(0, columnArray, column.buffer);
+  let offset = this._readDataIntoBuffer(0, columnArray, column.stateBuffer);
   column.chunks.forEach((chunk) => {
-   offset += this._readDataIntoBuffer(offset, columnArray, chunk.buffer);
+   offset += this._readDataIntoBuffer(offset, columnArray, chunk.stateBuffer);
   });
   return columnArray;
  },

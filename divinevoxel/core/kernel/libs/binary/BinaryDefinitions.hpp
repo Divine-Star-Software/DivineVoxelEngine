@@ -16,4 +16,18 @@ enum ByteCounts
     ByteCounts_Int64 = 8,
 };
 
+enum BinaryTypes
+{
+    BinaryTypes_Int8,
+    BinaryTypes_UInt8,
+    BinaryTypes_UIntClamped8,
+    BinaryTypes_Int16,
+    BinaryTypes_UInt16,
+    BinaryTypes_Float32,
+    BinaryTypes_Int32,
+    BinaryTypes_UInt32,
+    BinaryTypes_Float64,
+    BinaryTypes_UInt64,
+    BinaryTypes_Int64,
+};
 #endif // BinaryDefinitions_Module

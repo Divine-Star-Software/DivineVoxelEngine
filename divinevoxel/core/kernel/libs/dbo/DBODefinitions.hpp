@@ -3,7 +3,7 @@
 #include <variant>
 #include <string>
 #include <optional>
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 
@@ -40,30 +40,5 @@ enum DBOMarkers
     DBOMarkers_Boolean,
     DBOMarkers_Undefined,
 };
-
-enum DBOPrimitive {
-    DBOPrimitive_Int8,
-    DBOPrimitive_UInt8,
-    DBOPrimitive_UIntClamped8,
-    DBOPrimitive_Int16,
-    DBOPrimitive_UInt16,
-    DBOPrimitive_Float32,
-    DBOPrimitive_Int32,
-    DBOPrimitive_UInt32,
-    DBOPrimitive_Float64,
-    DBOPrimitive_BigInt,
-    DBOPrimitive_BigUInt,
-};
-enum DBORich {
-    DBORich_FixedTypedArray,
-    DBORich_FixedString,
-    DBORich_String,
-    DBORich_FixedStringArray,
-    DBORich_StringArray,
-    DBORich_TypedArray,
-    DBORich_JSON,
-    DBORich_DBO,
-    DBORich_Boolean,
-    DBORich_Undefined,
-};
+ 
 #endif // DBO_Definitions_Module

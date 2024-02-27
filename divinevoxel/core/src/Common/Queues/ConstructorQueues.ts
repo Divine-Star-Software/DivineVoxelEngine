@@ -62,19 +62,19 @@ const QMBase = {
    }
   });
  },
- worldSun: CCM.addQueue<UpdateTasks>("world-sun", ConstructorTasks.worldSun),
+ worldSun: CCM.addQueue<UpdateTasks>("world-sun", ConstructorTasks.WorldSun),
  propagation: CCM.addQueue<UpdateTasks>(
   "propagation",
-  ConstructorTasks.analyzerPropagation
+  ConstructorTasks.AnalyzerPropagation
  ),
  build: {
   chunk: CCM.addQueue<PriorityTask<BuildTasks>>(
    "build-chunk",
-   ConstructorTasks.buildChunk
+   ConstructorTasks.BuildChunk
   ),
  },
- generate: CCM.addQueue<GenerateTasks>("generatek", ConstructorTasks.generate),
- decorate: CCM.addQueue<GenerateTasks>("decorate", ConstructorTasks.decorate),
+ generate: CCM.addQueue<GenerateTasks>("generatek", ConstructorTasks.Generate),
+ decorate: CCM.addQueue<GenerateTasks>("decorate", ConstructorTasks.Decorate),
 };
 
 export const ConstructorQueues = QMBase;

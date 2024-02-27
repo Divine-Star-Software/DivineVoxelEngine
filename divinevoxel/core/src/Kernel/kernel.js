@@ -1,4 +1,5 @@
 export
+export
 
 var DVEKernelWASM = (() => {
   var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
@@ -2449,13 +2450,14 @@ var wasmImports = {
   /** @export */
   invoke_viiiii: invoke_viiiii,
   /** @export */
+  invoke_vij: invoke_vij,
+  /** @export */
   memory: wasmMemory || Module['wasmMemory']
 };
 var wasmExports = createWasm();
 var ___wasm_call_ctors = createExportWrapper('__wasm_call_ctors');
 var _bufferToDBO = Module['_bufferToDBO'] = createExportWrapper('bufferToDBO');
 var ___cxa_free_exception = createExportWrapper('__cxa_free_exception');
-var _main = createExportWrapper('main');
 var __emscripten_tls_init = Module['__emscripten_tls_init'] = createExportWrapper('_emscripten_tls_init');
 var _pthread_self = Module['_pthread_self'] = () => (_pthread_self = Module['_pthread_self'] = wasmExports['pthread_self'])();
 var __emscripten_thread_init = Module['__emscripten_thread_init'] = createExportWrapper('_emscripten_thread_init');
@@ -2484,6 +2486,7 @@ var ___cxa_decrement_exception_refcount = createExportWrapper('__cxa_decrement_e
 var ___get_exception_message = createExportWrapper('__get_exception_message');
 var ___cxa_can_catch = createExportWrapper('__cxa_can_catch');
 var ___cxa_is_pointer_type = createExportWrapper('__cxa_is_pointer_type');
+var dynCall_vij = Module['dynCall_vij'] = createExportWrapper('dynCall_vij');
 var dynCall_ji = Module['dynCall_ji'] = createExportWrapper('dynCall_ji');
 var dynCall_jiji = Module['dynCall_jiji'] = createExportWrapper('dynCall_jiji');
 
@@ -2634,6 +2637,17 @@ function invoke_viid(index,a1,a2,a3) {
   var sp = stackSave();
   try {
     getWasmTableEntry(index)(a1,a2,a3);
+  } catch(e) {
+    stackRestore(sp);
+    if (!(e instanceof EmscriptenEH)) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_vij(index,a1,a2,a3) {
+  var sp = stackSave();
+  try {
+    dynCall_vij(index,a1,a2,a3);
   } catch(e) {
     stackRestore(sp);
     if (!(e instanceof EmscriptenEH)) throw e;

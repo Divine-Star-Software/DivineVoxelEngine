@@ -1,27 +1,26 @@
 //types
-import type { Region } from "Types/Data/WorldData.types.js";
 //objects
+import { Region } from "../../../Data/World/Classes/Region.js";
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { EncodedPositionDataTool } from "../../Classes/DataToolBase.js";
-import { RegionTags } from "../../../Data/World/Region/RegionTags.js";
 
 export class RegionDataTool extends EncodedPositionDataTool {
- tags = RegionTags;
+ tags = Region.Tags;
  _region = <Region>{};
 
  loadIn() {
   const reigon = WorldRegister.region.get(this.location);
   if (!reigon) return false;
-  this.tags.setBuffer(reigon.data);
+  this.tags.setBuffer(reigon.stateBuffer);
   this._region = reigon;
-  this._c = reigon.data;
+  this._c = reigon.stateBuffer;
   return true;
  }
 
  setRegion(region: Region) {
-  this.tags.setBuffer(region.data);
+  this.tags.setBuffer(region.stateBuffer);
   this._region = region;
-  this._c = region.data;
+  this._c = region.stateBuffer;
   return this;
  }
 
@@ -33,7 +32,7 @@ export class RegionDataTool extends EncodedPositionDataTool {
   const region = this._region;
   let totalChunks = 0;
   region.columns.forEach((column) => {
-   totalChunks += column.chunks.size;
+   totalChunks += column.chunks.length;
   });
   return {
    chunks: totalChunks,

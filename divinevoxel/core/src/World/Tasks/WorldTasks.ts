@@ -13,7 +13,7 @@ import {
 import { RegionDataTool } from "../../Tools/Data/WorldData/RegionDataTool.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
-import { RegionHeaderRegister } from "../../Data/World/Region/RegionHeaderRegister.js";
+import { RegionHeaderRegister } from "../../Data/Register/RegionHeaderRegister.js";
 import { DataLoaderTool } from "../../Tools/Loader/DataLoaderTool.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { BuilderTool } from "../../Tools/Build/BuilderTool.js";
@@ -77,7 +77,7 @@ export const WorldTasks = {
         DataSync.worldData.column.unSync(data);
         WorldRegister.column.remove(data);
         const region = WorldRegister.region.get(data);
-        if (region && region.columns.size == 0) {
+        if (region && Object.keys(region.columns).length == 0) {
           WorldRegister.region.remove(data);
           DataSync.worldData.region.unSync(data);
         }
@@ -87,7 +87,7 @@ export const WorldTasks = {
     ),
   },
   load: {
-    loadRegino: ThreadComm.registerTasks<LoadWorldDataTasks>(
+/*     loadRegino: ThreadComm.registerTasks<LoadWorldDataTasks>(
       "load-region",
       ([location, sab]) => {
         regionTool.setBuffer(sab);
@@ -127,6 +127,6 @@ export const WorldTasks = {
     ),
     clearAll: ThreadComm.registerTasks("clear-all", () => {
       WorldRegister.clearAll();
-    }),
+    }), */
   },
 };

@@ -12,19 +12,19 @@ class DataView
 {
 
 private:
-    std::vector<uint8_t> buffer;
+    std::vector<uint8_t>* buffer;
 
     template <typename T>
     T read(size_t offset, bool littleEndian) const
     {
         T value;
         const size_t size = sizeof(T);
-        if (offset + size > buffer.size())
+        if (offset + size > buffer->size())
         {
             throw std::out_of_range("Offset is out of the buffer's bounds");
         }
         uint8_t temp[size];
-        std::copy(buffer.begin() + offset, buffer.begin() + offset + size, temp);
+        std::copy(buffer->begin() + offset, buffer->begin() + offset + size, temp);
         if (!littleEndian && size > 1)
         {
             std::reverse(temp, temp + size);
@@ -37,9 +37,9 @@ private:
     void write(size_t offset, T value, bool littleEndian)
     {
         const size_t size = sizeof(T);
-        if (offset + size > buffer.size())
+        if (offset + size > buffer->size())
         {
-            buffer.resize(offset + size);
+            buffer->resize(offset + size);
         }
         uint8_t temp[size];
         std::memcpy(temp, &value, size);
@@ -47,11 +47,11 @@ private:
         {
             std::reverse(temp, temp + size);
         }
-        std::copy(temp, temp + size, buffer.begin() + offset);
+        std::copy(temp, temp + size, buffer->begin() + offset);
     }
 
 public:
-    DataView(std::vector<uint8_t> &externalBuffer) : buffer(externalBuffer) {}
+    DataView(std::vector<uint8_t> *externalBuffer) : buffer(externalBuffer) {}
 
     // Signed integers
     int8_t getInt8(size_t offset) const
@@ -59,12 +59,12 @@ public:
         return read<int8_t>(offset, true); // Endianness doesn't matter for 1 byte
     }
 
-    int16_t getInt16(size_t offset, bool littleEndian = true) const
+    int16_t getInt16(size_t offset, bool littleEndian = false) const
     {
         return read<int16_t>(offset, littleEndian);
     }
 
-    int32_t getInt32(size_t offset, bool littleEndian = true) const
+    int32_t getInt32(size_t offset, bool littleEndian = false) const
     {
         return read<int32_t>(offset, littleEndian);
     }
@@ -75,23 +75,23 @@ public:
         return read<uint8_t>(offset, true); // Endianness doesn't matter for 1 byte
     }
 
-    uint16_t getUint16(size_t offset, bool littleEndian = true) const
+    uint16_t getUint16(size_t offset, bool littleEndian = false) const
     {
         return read<uint16_t>(offset, littleEndian);
     }
 
-    uint32_t getUint32(size_t offset, bool littleEndian = true) const
+    uint32_t getUint32(size_t offset, bool littleEndian = false) const
     {
         return read<uint32_t>(offset, littleEndian);
     }
 
     // Floating point
-    float getFloat32(size_t offset, bool littleEndian = true) const
+    float getFloat32(size_t offset, bool littleEndian = false) const
     {
         return read<float>(offset, littleEndian);
     }
 
-    double getFloat64(size_t offset, bool littleEndian = true) const
+    double getFloat64(size_t offset, bool littleEndian = false) const
     {
         return read<double>(offset, littleEndian);
     }
@@ -107,32 +107,32 @@ public:
         write<uint8_t>(offset, value, true); // Endianness doesn't matter for 1 byte
     }
 
-    void setInt16(size_t offset, int16_t value, bool littleEndian = true)
+    void setInt16(size_t offset, int16_t value, bool littleEndian = false)
     {
         write<int16_t>(offset, value, littleEndian);
     }
 
-    void setUint16(size_t offset, uint16_t value, bool littleEndian = true)
+    void setUint16(size_t offset, uint16_t value, bool littleEndian = false)
     {
         write<uint16_t>(offset, value, littleEndian);
     }
 
-    void setInt32(size_t offset, int32_t value, bool littleEndian = true)
+    void setInt32(size_t offset, int32_t value, bool littleEndian = false)
     {
         write<int32_t>(offset, value, littleEndian);
     }
 
-    void setUint32(size_t offset, uint32_t value, bool littleEndian = true)
+    void setUint32(size_t offset, uint32_t value, bool littleEndian = false)
     {
         write<uint32_t>(offset, value, littleEndian);
     }
 
-    void setFloat32(size_t offset, float value, bool littleEndian = true)
+    void setFloat32(size_t offset, float value, bool littleEndian = false)
     {
         write<float>(offset, value, littleEndian);
     }
 
-    void setFloat64(size_t offset, double value, bool littleEndian = true)
+    void setFloat64(size_t offset, double value, bool littleEndian = false)
     {
         write<double>(offset, value, littleEndian);
     }
@@ -140,7 +140,7 @@ public:
     
     size_t size() const
     {
-        return buffer.size();
+        return buffer->size();
     }
 };
 

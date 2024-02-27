@@ -1,5 +1,5 @@
 import type { LocationData } from "@divinestar/voxelspaces";
-import { RegionHeaderRegister } from "../../Data/World/Region/RegionHeaderRegister.js";
+import { RegionHeaderRegister } from "../../Data/Register/RegionHeaderRegister.js";
 
 import { ThreadComm, CommBase } from "@divinestar/threads/";
 import { ColumnDataTool } from "../Data/WorldData/ColumnDataTool.js";
@@ -220,11 +220,11 @@ export class DataLoaderTool extends LocationBoundTool {
     onDone?: Function
   ) {
     const [dimension, sx, sy, sz] = this.location;
-    const regions = WorldRegister.dimensions.get(dimension);
-    if (!regions) return;
+    const dim = WorldRegister.dimensions.get(dimension);
+    if (!dim) return;
     let totalColumns = 0;
-    for (const [key, region] of regions) {
-      for (const [ckey, column] of region.columns) {
+    for (const [key, region] of dim.regions) {
+      for (const column of region.getColumns()) {
         DataLoaderTool.columnDataTool.setColumn(column);
         if (DataLoaderTool.columnDataTool.isPersistent()) continue;
         const [dimension, cx, cy, cz] =
@@ -256,11 +256,11 @@ export class DataLoaderTool extends LocationBoundTool {
   }
   unLoadAllColumns(onDone?: Function) {
     const [dimension, sx, sy, sz] = this.location;
-    const regions = WorldRegister.dimensions.get(dimension);
-    if (!regions) return;
+    const dim = WorldRegister.dimensions.get(dimension);
+    if (!dim) return;
     let totalColumns = 0;
-    for (const [key, region] of regions) {
-      for (const [ckey, column] of region.columns) {
+    for (const [key, region] of dim.regions) {
+      for (const column of region.getColumns()) {
         DataLoaderTool.columnDataTool.setColumn(column);
         const [dimension, cx, cy, cz] =
           DataLoaderTool.columnDataTool.getLocationData();
@@ -282,10 +282,10 @@ export class DataLoaderTool extends LocationBoundTool {
 
   allColumns(run: (column: ColumnDataTool) => void) {
     const [dimension, sx, sy, sz] = this.location;
-    const regions = WorldRegister.dimensions.get(dimension);
-    if (!regions) return;
-    for (const [key, region] of regions) {
-      for (const [ckey, column] of region.columns) {
+    const dim = WorldRegister.dimensions.get(dimension);
+    if (!dim) return;
+    for (const [key, region] of dim.regions) {
+      for (const column of region.getColumns()) {
         DataLoaderTool.columnDataTool.setColumn(column);
         run(DataLoaderTool.columnDataTool);
       }
@@ -296,10 +296,10 @@ export class DataLoaderTool extends LocationBoundTool {
     run: (dimension: string, x: number, y: number, z: number) => void
   ) {
     const [dimension, sx, sy, sz] = this.location;
-    const regions = WorldRegister.dimensions.get(dimension);
-    if (!regions) return;
-    for (const [key, region] of regions) {
-      for (const [ckey, column] of region.columns) {
+    const dim = WorldRegister.dimensions.get(dimension);
+    if (!dim) return;
+    for (const [key, region] of dim.regions) {
+      for (const column of region.getColumns()) {
         DataLoaderTool.columnDataTool.setColumn(column);
         if (DataLoaderTool.columnDataTool.isStored()) continue;
         const [dimension, cx, cy, cz] =

@@ -1,27 +1,25 @@
-//types
-import type { Column } from "Types/Data/WorldData.types.js";
 //objects
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { EncodedPositionDataTool } from "../../Classes/DataToolBase.js";
-import { ColumnTags } from "../../../Data/World/Column/ColumnTags.js";
-import { ChunkTags } from "../../../Data/World/Chunk/ChunkTags.js";
+import { Chunk } from "../../../Data/World/Classes/Chunk.js";
+import { Column } from "../../../Data/World/Classes/Column.js";
 
 export class ColumnDataTool extends EncodedPositionDataTool {
- tags = ColumnTags;
+ tags = Column.Tags;
  _column = <Column>{};
 
  loadIn() {
   const column = WorldRegister.column.get(this.location);
   if (!column) return false;
-  this.tags.setBuffer(column.data);
-  this._c = column.data;
+  this.tags.setBuffer(column.columnState);
+  this._c = column.columnState;
   this._column = column;
   return true;
  }
 
  setColumn(column: Column) {
-  this.tags.setBuffer(column.data);
-  this._c = column.data;
+  this.tags.setBuffer(column.columnState);
+  this._c = column.columnState;
   this._column = column;
   return this;
  }
@@ -31,11 +29,11 @@ export class ColumnDataTool extends EncodedPositionDataTool {
  }
 
  getNumChunks() {
-  return this._column.chunks.size;
+  return this._column.chunks.length;
  }
 
  getBufferSizeForWholeColumn() {
-  return ColumnTags.tagSize + ChunkTags.tagSize * this.getNumChunks();
+  return Column.Tags.tagSize + Column.Tags.tagSize * this.getNumChunks();
  }
 
  isStored() {

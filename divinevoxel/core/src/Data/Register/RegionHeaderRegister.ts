@@ -1,6 +1,7 @@
 import type { LocationData } from "@divinestar/voxelspaces";
-import { WorldSpaces } from "../WorldSpaces.js";
-import { RegionHeaderTags } from "./RegionTags.js";
+import { WorldSpaces } from "../World/WorldSpaces.js";
+import { RemoteTagManager } from "@divinestar/binary/";
+export const RegionHeaderTags = new RemoteTagManager("region-header-tags");
 
 type RegionHeaderData = Map<
  string,

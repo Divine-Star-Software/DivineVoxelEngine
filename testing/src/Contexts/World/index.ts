@@ -4,6 +4,7 @@ import { DivineVoxelEngineWorld } from "@divinevoxel/core/World";
 import { CPUGenerate } from "./Gen/CPUGenerate";
 import { WasmTest } from "./WasmTest";
 
+
 await StartWorld({
   voxels: [
     //util
@@ -234,12 +235,20 @@ await StartWorld({
   ],
 });
 
+
+console.log("WORLD IS READY")
 let doComputeGen = false;
-if (doComputeGen) {
-  await ComputeShaderGenerate();
-} else {
-  await CPUGenerate();
-}
+
+DivineVoxelEngineWorld.instance.TC.registerTasks("start-world",async()=>{
+  if (doComputeGen) {
+    await ComputeShaderGenerate();
+  } else {
+    await CPUGenerate();
+  }
+  
+})
 
 
 await WasmTest();
+
+console.log(DivineVoxelEngineWorld.instance!.data.registers.world._dimensions)

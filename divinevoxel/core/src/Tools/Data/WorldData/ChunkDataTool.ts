@@ -1,87 +1,68 @@
-//types
-import type { ChunkData } from "Types/Data/WorldData.types.js";
 //objects
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
-import { ChunkTags } from "../../../Data/World/Chunk/ChunkTags.js";
 import { EncodedPositionDataTool } from "../../Classes/DataToolBase.js";
-import { ChunkTagIDs } from "../../../Data/Constants/Tags/ChunkTagIds.js";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
+import { Chunk } from "../../../Data/World/Classes/Chunk.js";
 
 export class ChunkDataTool extends EncodedPositionDataTool {
- tags = ChunkTags;
+  tags = Chunk.Tags;
 
- constructor() {
-  super();
-  this.segments.id._s = this;
-  this.segments.light._s = this;
-  this.segments.state._s = this;
-  this.segments.secondaryId._s = this;
- }
+  constructor() {
+    super();
+  }
 
- loadIn() {
-  WorldSpaces.chunk.updateLoaction(this.location);
-  const chunk = WorldRegister.chunk.get(this.location);
-  if (!chunk) return false;
+  _chunk: Chunk;
 
-  this.tags.setBuffer(chunk.data);
-  this._c = chunk.data;
-  return true;
- }
+  loadIn() {
+    WorldSpaces.chunk.updateLoaction(this.location);
+    const chunk = WorldRegister.chunk.get(this.location);
+    if (!chunk) return false;
 
- setChunk(chunk: ChunkData) {
-  this.tags.setBuffer(chunk.data);
-  this._c = chunk.data;
-  return this;
- }
+    this.tags.setBuffer(chunk.chunkState);
+    this._c = chunk.chunkState;
+    this._chunk = chunk;
+    return true;
+  }
 
- segments = {
-  id: {
-   _s: <ChunkDataTool>{},
-   get(index: number) {
-    return this._s.getArrayTagValue(ChunkTagIDs.voxelIDSegment, index);
-   },
-   set(index: number, value: number) {
-    return this._s.setArrayTagValue(ChunkTagIDs.voxelIDSegment, index, value);
-   },
-  },
-  light: {
-   _s: <ChunkDataTool>{},
-   get(index: number) {
-    return this._s.getArrayTagValue(ChunkTagIDs.voxelLightSegment, index);
-   },
-   set(index: number, value: number) {
-    return this._s.setArrayTagValue(
-     ChunkTagIDs.voxelLightSegment,
-     index,
-     value
-    );
-   },
-  },
-  state: {
-   _s: <ChunkDataTool>{},
-   get(index: number) {
-    return this._s.getArrayTagValue(ChunkTagIDs.voxelStateSegment, index);
-   },
-   set(index: number, value: number) {
-    return this._s.setArrayTagValue(
-     ChunkTagIDs.voxelStateSegment,
-     index,
-     value
-    );
-   },
-  },
-  secondaryId: {
-   _s: <ChunkDataTool>{},
-   get(index: number) {
-    return this._s.getArrayTagValue(ChunkTagIDs.voxelSecondaryIDSegment, index);
-   },
-   set(index: number, value: number) {
-    return this._s.setArrayTagValue(
-     ChunkTagIDs.voxelSecondaryIDSegment,
-     index,
-     value
-    );
-   },
-  },
- };
+  setChunk(chunk: Chunk) {
+    this.tags.setBuffer(chunk.chunkState);
+    this._c = chunk.chunkState;
+    this._chunk = chunk;
+    return this;
+  }
+
+  segments = {
+    id: {
+      get: (index: number) => {
+        return this._chunk.ids[index];
+      },
+      set: (index: number, value: number) => {
+        return (this._chunk.ids[index] = value);
+      },
+    },
+    light: {
+      get: (index: number) => {
+        return this._chunk.light[index];
+      },
+      set: (index: number, value: number) => {
+        return (this._chunk.light[index] = value);
+      },
+    },
+    state: {
+      get: (index: number) => {
+        return this._chunk.state[index];
+      },
+      set: (index: number, value: number) => {
+        return (this._chunk.state[index] = value);
+      },
+    },
+    secondaryId: {
+      get: (index: number) => {
+        return this._chunk.secondaryIds[index];
+      },
+      set: (index: number, value: number) => {
+        return (this._chunk.secondaryIds[index] = value);
+      },
+    },
+  };
 }

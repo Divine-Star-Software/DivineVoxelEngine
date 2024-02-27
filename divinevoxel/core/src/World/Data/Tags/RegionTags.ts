@@ -1,7 +1,9 @@
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
-import { RegionHeaderTags, RegionTags } from "../../../Data/World/Region/RegionTags.js";
+
 import { TagManager } from "@divinestar/binary/"
 import { WorldDataTagIDs } from "../../../Data/Constants/Tags/WorldDataTagIds.js";
+import { Region } from "../../../Data/World/Classes/Region.js";
+import { RegionHeaderTags } from "../../../Data/Register/RegionHeaderRegister.js";
 export const RegionDataTags = new TagManager("region-tags");
 RegionDataTags.registerTag({
  id: WorldDataTagIDs.header,
@@ -44,7 +46,7 @@ export function InitalizeRegionTags() {
  const initData = RegionDataTags.$INIT({
   indexBufferMode: "shared",
  });
- RegionTags.$INIT(initData);
+ Region.Tags.$INIT(initData);
  RegionHeaderTagManager.registerTag({
   id: "#dved-column-sector-index",
   type: "typed-number-array",

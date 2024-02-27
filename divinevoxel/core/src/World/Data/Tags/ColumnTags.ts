@@ -1,6 +1,7 @@
 import { TagManager } from "@divinestar/binary/";
-import { ColumnTags } from "../../../Data/World/Column/ColumnTags.js";
+
 import { WorldDataTagIDs } from "../../../Data/Constants/Tags/WorldDataTagIds.js";
+import { Column } from "../../../Data/World/Classes/Column.js";
 export const ColumnDataTags = new TagManager("column-tags");
 ColumnDataTags.registerTag({
  id: WorldDataTagIDs.header,
@@ -88,5 +89,5 @@ export function InitalizeColumnTags() {
   indexBufferMode: "shared",
  });
 
- ColumnTags.$INIT(initData);
+ Column.Tags.$INIT(initData);
 }

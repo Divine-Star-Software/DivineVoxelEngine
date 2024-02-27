@@ -22,12 +22,13 @@ export function App() {
       observers.ready.subscribe("", () => {
         setReady(true);
         nodes.sceneTool.levels
-          .setSun(0.1)
-          //.levels.setBase(0)
+          .setSun(0.5)
+          .levels.setBase(0)
           .fog.setColor(0.1)
           .fog.setMode("volumetric")
           .fog.setDensity(0.0);
         (window as any).nodes = nodes;
+        DVER.worldComm.runTasks("start-world", []);
       });
     },
     useSkyBox: true,
@@ -36,8 +37,7 @@ export function App() {
       worldWorker,
       constructorWorkers,
     },
-    textures: 
-    [
+    textures: [
       {
         type: "#dve_solid",
         id: "dve_debug_box",

@@ -41,7 +41,7 @@ export class BuilderTool extends LocationBoundTool {
  removeColumn() {
   const column = WorldRegister.column.get(this.location);
   if (!column) return false;
-  if (column.chunks.size == 0) return false;
+  if (column.chunks.length == 0) return false;
 
   parentComm.runTasks<LocationData>("remove-column", this.location);
   return this;

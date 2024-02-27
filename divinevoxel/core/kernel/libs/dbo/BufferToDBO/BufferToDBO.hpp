@@ -7,8 +7,6 @@ class BufferToDBO
 public:
     BufferToDBO();
     DBONode *create(DataView* view);
-
-
 };
 
 #endif // BufferToDBO_Module

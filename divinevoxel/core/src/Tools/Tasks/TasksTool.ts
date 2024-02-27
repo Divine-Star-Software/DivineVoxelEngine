@@ -55,7 +55,7 @@ export class TaskTool {
     mode: TaskRunModes = "sync"
    ) => {
     CCM.runPromiseTasks<VoxelUpdateTasks>(
-     ConstructorTasks.voxelUpdate,
+     ConstructorTasks.VoxelUpdate,
      [location, raw, this._data.queue, this._thread],
      [],
      onDone,
@@ -70,7 +70,7 @@ export class TaskTool {
     mode: TaskRunModes = "sync"
    ) => {
     CCM.runPromiseTasks<UpdateTasks>(
-     ConstructorTasks.voxelErease,
+     ConstructorTasks.VoxelErease,
      [location, this._data.queue, this._thread],
      [],
      onDone,
@@ -86,7 +86,7 @@ export class TaskTool {
     mode: TaskRunModes = "sync"
    ) => {
     CCM.runPromiseTasks<VoxelUpdateTasks>(
-     ConstructorTasks.voxelPaint,
+     ConstructorTasks.VoxelPaint,
      [location, raw, this._data.queue, this._thread],
      [],
      onDone,
@@ -100,7 +100,7 @@ export class TaskTool {
    deferred: {
     run: (buildTasks: BuildTasks, onDone: (data: any) => void) => {
      CCM.runPromiseTasks<PriorityTask<BuildTasks>>(
-      ConstructorTasks.buildChunk,
+      ConstructorTasks.BuildChunk,
       {
        data: buildTasks,
        priority: this._priority,
@@ -136,7 +136,7 @@ export class TaskTool {
    deferred: {
     run: (location: LocationData, onDone: (data: any) => void) => {
      CCM.runPromiseTasks<BuildTasks>(
-      ConstructorTasks.buildColumn,
+      ConstructorTasks.BuildColumn,
       [location, 1],
       [],
       onDone,
@@ -154,7 +154,7 @@ export class TaskTool {
    onDone: (data: any) => void
   ) => {
    CCM.runPromiseTasks<ExplosionTasks>(
-    ConstructorTasks.explosion,
+    ConstructorTasks.Explosion,
     [location, radius, "", ""],
     [],
     onDone,
@@ -167,7 +167,7 @@ export class TaskTool {
   update: {
    run: (location: LocationData, onDone: (data: any) => void) => {
     CCM.runPromiseTasks<UpdateTasksO>(
-     ConstructorTasks.analyzerUpdate,
+     ConstructorTasks.AnalyzerUpdate,
      [location, this._data.queue, this._thread],
      [],
      onDone,
@@ -181,7 +181,7 @@ export class TaskTool {
   deferred: {
    run: (location: LocationData, onDone: (data: any) => void) => {
     CCM.runPromiseTasks<UpdateTasksO>(
-     ConstructorTasks.analyzerPropagation,
+     ConstructorTasks.AnalyzerPropagation,
      [location, this._data.queue, this._thread],
      [],
      onDone,
@@ -210,7 +210,7 @@ export class TaskTool {
   deferred: {
    run(location: LocationData, data: any, onDone: (data: any) => void) {
     CCM.runPromiseTasks<GenerateTasks>(
-     ConstructorTasks.generate,
+     ConstructorTasks.Generate,
      [location, data],
      [],
      onDone,
@@ -236,7 +236,7 @@ export class TaskTool {
   deferred: {
    run: (location: LocationData, data: any, onDone: (data: any) => void) => {
     CCM.runPromiseTasks<GenerateTasks>(
-     ConstructorTasks.decorate,
+     ConstructorTasks.Decorate,
      [location, data],
      [],
      onDone,
@@ -262,7 +262,7 @@ export class TaskTool {
   deferred: {
    run: (location: LocationData, onDone: (data: any) => void) => {
     CCM.runPromiseTasks<WorldSunTask>(
-     ConstructorTasks.worldSun,
+     ConstructorTasks.WorldSun,
      [location, this._thread],
      [],
      onDone,

@@ -51,7 +51,7 @@ export const Tasks = {
     ),
     chunk: {
       tasks: ThreadComm.registerTasks<PriorityTask<BuildTasks>>(
-        ConstructorTasks.buildChunk,
+        ConstructorTasks.BuildChunk,
         async (buildData, onDone) => {
           const DVEC = DivineVoxelEngineConstructor.instance;
           const location = buildData.data[0];
@@ -61,16 +61,16 @@ export const Tasks = {
       ),
     },
     column: ThreadComm.registerTasks<BuildTasks>(
-      ConstructorTasks.buildColumn,
+      ConstructorTasks.BuildColumn,
       async (data, onDone) => {
         const DVEC = DivineVoxelEngineConstructor.instance;
 
         const column = WorldRegister.column.get(data[0]);
         if (!column) return false;
-        if (column.chunks.size == 0) return false;
+        if (column.chunks.length == 0) return false;
         let totalChunks = 0;
         const location = data[0];
-        for (const [key, chunk] of column.chunks) {
+        for (const chunk of column.chunks) {
           chunkTool.setChunk(chunk);
           const chunkPOS = chunkTool.getPositionData();
           location[1] = chunkPOS.x;
@@ -86,7 +86,7 @@ export const Tasks = {
   },
   voxelUpdate: {
     update: ThreadComm.registerTasks<VoxelUpdateTasks>(
-      ConstructorTasks.voxelUpdate,
+      ConstructorTasks.VoxelUpdate,
       async (data, onDone) => {
         await VoxelUpdate(data);
         if (onDone) onDone();
@@ -94,7 +94,7 @@ export const Tasks = {
       "deferred"
     ),
     erase: ThreadComm.registerTasks<UpdateTasksO>(
-      ConstructorTasks.voxelErease,
+      ConstructorTasks.VoxelErease,
       async (data, onDone) => {
         await EreaseAndUpdate(data);
         if (onDone) onDone();
@@ -103,7 +103,7 @@ export const Tasks = {
     ),
 
     paint: ThreadComm.registerTasks<VoxelUpdateTasks>(
-      ConstructorTasks.voxelPaint,
+      ConstructorTasks.VoxelPaint,
       async (data, onDone) => {
         await PaintAndUpdate(data);
         if (onDone) onDone();
@@ -112,7 +112,7 @@ export const Tasks = {
     ),
   },
   explosion: ThreadComm.registerTasks<ExplosionTasks>(
-    ConstructorTasks.explosion,
+    ConstructorTasks.Explosion,
     async (data) => {
       const DVEC = DivineVoxelEngineConstructor.instance;
       await DVEC.propagation.expolosion.run(
@@ -122,7 +122,7 @@ export const Tasks = {
   ),
 
   worldSun: ThreadComm.registerTasks<WorldSunTask>(
-    ConstructorTasks.worldSun,
+    ConstructorTasks.WorldSun,
     (data, onDone) => {
       const DVEC = DivineVoxelEngineConstructor.instance;
       DVEC.propagation.worldSun.run(
@@ -134,7 +134,7 @@ export const Tasks = {
   ),
   worldGen: {
     generate: ThreadComm.registerTasks<GenerateTasks>(
-      ConstructorTasks.generate,
+      ConstructorTasks.Generate,
       (data, onDone) => {
         if (!onDone) return;
         const DVEC = DivineVoxelEngineConstructor.instance;
@@ -143,7 +143,7 @@ export const Tasks = {
       "deferred"
     ),
     decorate: ThreadComm.registerTasks<GenerateTasks>(
-      ConstructorTasks.decorate,
+      ConstructorTasks.Decorate,
       (data, onDone) => {
         if (!onDone) return;
         const DVEC = DivineVoxelEngineConstructor.instance;
@@ -154,7 +154,7 @@ export const Tasks = {
   },
   anaylzer: {
     propagation: ThreadComm.registerTasks<UpdateTasksO>(
-      ConstructorTasks.analyzerPropagation,
+      ConstructorTasks.AnalyzerPropagation,
       async (data, onDone) => {
         const DVEC = DivineVoxelEngineConstructor.instance;
         await DVEC.analyzer.runPropagation(data);
@@ -163,7 +163,7 @@ export const Tasks = {
       "deferred"
     ),
     update: ThreadComm.registerTasks<UpdateTasksO>(
-      ConstructorTasks.analyzerUpdate,
+      ConstructorTasks.AnalyzerUpdate,
       async (data, onDone) => {
         const DVEC = DivineVoxelEngineConstructor.instance;
         await DVEC.analyzer.runUpdate(data);

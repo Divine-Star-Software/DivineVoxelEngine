@@ -1,8 +1,9 @@
-import { ChunkTags } from "../../../Data/World/Chunk/ChunkTags.js";
+
 import { TagManager } from "@divinestar/binary/";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 import { WorldDataTagIDs } from "../../../Data/Constants/Tags/WorldDataTagIds.js";
 import { ChunkTagIDs } from "../../../Data/Constants/Tags/ChunkTagIds.js";
+import { Chunk } from "../../../Data/World/Classes/Chunk.js";
 
 export const ChunkDataTags = new TagManager("chunk-tags");
 ChunkDataTags.registerTag({
@@ -58,33 +59,10 @@ export function InitalizeChunkTags() {
   type: "bit-array",
   length: WorldSpaces.chunk.getHeight(),
  });
- ChunkDataTags.registerTag({
-  id: ChunkTagIDs.voxelIDSegment,
-  type: "typed-number-array",
-  numberType: "16ui",
-  length: WorldSpaces.chunk.getVolume(),
- });
- ChunkDataTags.registerTag({
-  id: ChunkTagIDs.voxelLightSegment,
-  type: "typed-number-array",
-  numberType: "16ui",
-  length: WorldSpaces.chunk.getVolume(),
- });
- ChunkDataTags.registerTag({
-  id: ChunkTagIDs.voxelStateSegment,
-  type: "typed-number-array",
-  numberType: "16ui",
-  length: WorldSpaces.chunk.getVolume(),
- });
- ChunkDataTags.registerTag({
-  id: ChunkTagIDs.voxelSecondaryIDSegment,
-  type: "typed-number-array",
-  numberType: "16ui",
-  length: WorldSpaces.chunk.getVolume(),
- });
+
  const initData = ChunkDataTags.$INIT({
   indexBufferMode: "shared",
  });
 
- ChunkTags.$INIT(initData);
+ Chunk.Tags.$INIT(initData);
 }
