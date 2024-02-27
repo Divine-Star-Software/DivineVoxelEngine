@@ -110,6 +110,7 @@ export const ByteParser = {
     return this;
   },
   addBytes(data: number[]) {
+
     for (let i = 0; i < this.count; i++) {
       data.push(this.view.getUint8(i));
     }

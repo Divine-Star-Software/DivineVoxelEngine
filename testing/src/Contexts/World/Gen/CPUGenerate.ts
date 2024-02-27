@@ -7,18 +7,10 @@ export async function CPUGenerate() {
   const numChunks = 2;
   let startX = -16 * numChunks;
   let startZ = -16 * numChunks;
-  let endX = 16 * numChunks;
-  let endZ = 16 * numChunks;
+  let endX =   16 * numChunks;
+  let endZ =   16 * numChunks;
 
   const builder = DVEW.getBuilder();
-  console.log("start build");
-  for (let x = startX; x < endX; x += 16) {
-    for (let z = startZ; z < endZ; z += 16) {
-      builder.setXZ(x, z).buildColumn();
-    }
-  }
-
-  console.log("end  build");
 
   const tasks = DVEW.getTasksTool();
   tasks.setFocalPoint(["main", 0, 0, 0]);
@@ -30,11 +22,13 @@ export async function CPUGenerate() {
     }
   }
 
+
   console.log("gen time", performance.now() - t1);
   const t2 = performance.now();
   //await ComputeTest(canvas);
 
   await tasks.worldSun.queued.runAndAwait();
+  await tasks.propagation.queued.runAndAwait();
   console.log("sun light time ", performance.now() - t2);
 
   for (let x = startX; x < endX; x += 16) {

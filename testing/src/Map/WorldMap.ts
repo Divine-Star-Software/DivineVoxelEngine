@@ -97,7 +97,6 @@ export class WorldMap {
       }
 
       if (!this.tilesRegister.column.get([location[0], cx, 0, cz])) {
-        console.log("add tile", [cx, 0, cz]);
         this.tilesRegister.column.add([location[0], cx, 0, cz]);
       }
     }

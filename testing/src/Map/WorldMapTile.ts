@@ -53,7 +53,7 @@ export class WorldMapTile {
     } else {
       this._instance = instance;
     }
-    console.log("CREATE THE TILE", [location[1], location[2], location[3]]);
+   
     this._instance.position.set(location[1], location[2], location[3]);
   }
 }
