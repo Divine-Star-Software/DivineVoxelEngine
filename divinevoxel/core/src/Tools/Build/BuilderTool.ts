@@ -2,7 +2,7 @@
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { ChunkDataTool } from "../Data/WorldData/ChunkDataTool.js";
 import { ThreadComm } from "@divinestar/threads/";
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
 import { TaskTool } from "../../Tools/Tasks/TasksTool.js";
 import { RemoveChunksOutsideDistance } from "Types/Tasks/RenderTasks.types.js";

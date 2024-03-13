@@ -1,5 +1,5 @@
 import type { RawVoxelData } from "Types/Data/Voxels/Voxel.types.js";
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
 

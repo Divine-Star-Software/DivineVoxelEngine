@@ -1,5 +1,5 @@
 import type { UpdateTasksO } from "Types/Tasks/Tasks.types.js";
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 //propagation
 import { FlowUpdate } from "../Propagation/Flow/Functions/FlowUpdate.js";
 import { Propagation } from "../Propagation/Propagation.js";

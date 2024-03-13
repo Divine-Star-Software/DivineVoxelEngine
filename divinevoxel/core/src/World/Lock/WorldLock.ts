@@ -1,5 +1,5 @@
 import type { WorldLockTasks } from "Types/Tasks/Tasks.types.js";
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
@@ -33,7 +33,7 @@ export const WorldLock = {
       for (let z = sz; z <= ez; z += WorldSpaces.column._bounds.z) {
        const location: LocationData = [
         ...WorldSpaces.column.getLocationXYZ(x, y, z),
-       ];
+       ] as LocationData
        location[0] = dim;
        if (WorldRegister.column.get(location)) continue;
        allFound = false;

@@ -1,5 +1,5 @@
 import type { RemoteTagManagerInitData } from "@divinestar/binary/";
-import { LocationData } from "@divinestar/voxelspaces";
+import { LocationData } from "Math/index.js";
 
 export type DataSyncTypes = "chunk" | "voxel-data" | "iten-data" | "shape-map";
 

@@ -31,10 +31,10 @@ export const ShapeBuilder = {
     .overlayTexture.add(ShapeTool.data.getOverlayTextures());
    AOValue.setAll(0);
    AOValue.set(
-    quad[3][0] < 0 ? aoData.vetexes[getIndex(quad[3][0])] : quad[3][0],
-    quad[3][1] < 0 ? aoData.vetexes[getIndex(quad[3][1])] : quad[3][1],
-    quad[3][2] < 0 ? aoData.vetexes[getIndex(quad[3][2])] : quad[3][2],
-    quad[3][3] < 0 ? aoData.vetexes[getIndex(quad[3][3])] : quad[3][3]
+    quad[3][0] < 0 ? aoData.vertices[getIndex(quad[3][0])] : quad[3][0],
+    quad[3][1] < 0 ? aoData.vertices[getIndex(quad[3][1])] : quad[3][1],
+    quad[3][2] < 0 ? aoData.vertices[getIndex(quad[3][2])] : quad[3][2],
+    quad[3][3] < 0 ? aoData.vertices[getIndex(quad[3][3])] : quad[3][3]
    );
 
    ShapeTool.builder.quad.AO.add(AOValue);
@@ -44,10 +44,10 @@ export const ShapeBuilder = {
     this._getBrightestLight(lightData);
    } else {
     LightValue.set(
-     quad[4][0] < 0 ? lightData.vetexes[getIndex(quad[4][0])] : quad[4][0],
-     quad[4][1] < 0 ? lightData.vetexes[getIndex(quad[4][1])] : quad[4][1],
-     quad[4][2] < 0 ? lightData.vetexes[getIndex(quad[4][2])] : quad[4][2],
-     quad[4][3] < 0 ? lightData.vetexes[getIndex(quad[4][3])] : quad[4][3]
+     quad[4][0] < 0 ? lightData.vertices[getIndex(quad[4][0])] : quad[4][0],
+     quad[4][1] < 0 ? lightData.vertices[getIndex(quad[4][1])] : quad[4][1],
+     quad[4][2] < 0 ? lightData.vertices[getIndex(quad[4][2])] : quad[4][2],
+     quad[4][3] < 0 ? lightData.vertices[getIndex(quad[4][3])] : quad[4][3]
     );
    }
    ShapeTool.builder.quad.light.add(LightValue);

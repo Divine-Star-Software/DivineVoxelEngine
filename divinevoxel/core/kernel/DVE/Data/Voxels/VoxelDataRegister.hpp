@@ -3,12 +3,29 @@
 #define VoxelDataRegister_Module
 #include "./VoxelPalette.hpp"
 #include "./VoxelSubstancePalette.hpp"
-
-class VoxelDataRegister
+namespace DVE
 {
-public:
-    VoxelPalette *voxelPalette = new VoxelPalette();
-    VoxelSubstancePalette *voxelSubstancePalette = new VoxelSubstancePalette();
-};
+    class VoxelDataRegister
+    {
+    private:
+        VoxelDataRegister() {}
+        VoxelDataRegister(const VoxelDataRegister &) = delete;
 
+        static const VoxelDataRegister *instance;
+
+    public:
+        static const VoxelDataRegister &getInstance()
+        {
+            if (!instance)
+            {
+                instance = new VoxelDataRegister();
+            }
+            return *instance;
+        }
+
+        VoxelPalette &voxelPalette = VoxelPalette::getInstance();
+        VoxelSubstancePalette &voxelSubstancePalette = VoxelSubstancePalette::getInstance();
+    };
+
+}
 #endif // DVEKernel_Module

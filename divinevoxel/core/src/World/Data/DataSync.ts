@@ -1,5 +1,5 @@
 //types
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 import type { DimensionData } from "Types/Data/DimensionData.types.js";
 import type { CommBase, CommManager } from "@divinestar/threads/";
 

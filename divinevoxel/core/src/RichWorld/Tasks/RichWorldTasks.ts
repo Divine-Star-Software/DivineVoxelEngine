@@ -8,7 +8,7 @@ import { RichDataRegister } from "../Register/RichDataRegister.js";
 import { RichColumnDataTool } from "../Tools/RichColumnDataTool.js";
 import { RichDataTool } from "../Tools/RichDataTool.js";
 import { ThreadComm } from "@divinestar/threads/";
-import { LocationData } from "@divinestar/voxelspaces";
+import { LocationData } from "Math/index.js";
 
 const richTool = new RichDataTool();
 const richColumnTool = new RichColumnDataTool();

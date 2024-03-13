@@ -40,17 +40,17 @@ export const LiquidVoxelShape = {
    vertexLevel.setFromQuadData(ShapeTool.data.getWorldLevel());
 
    vertexValue.set(
-    vertexLevel.vetexes[1] / 15 - 1,
-    vertexLevel.vetexes[2] / 15 - 1,
-    vertexLevel.vetexes[3] / 15 - 1,
-    vertexLevel.vetexes[4] / 15 - 1
+    vertexLevel.vertices[1] / 15 - 1,
+    vertexLevel.vertices[2] / 15 - 1,
+    vertexLevel.vertices[3] / 15 - 1,
+    vertexLevel.vertices[4] / 15 - 1
    );
 
    ShapeTool.builder.quad
-    .setTransform(1, 0, vertexValue.vetexes[1], 0)
-    .setTransform(2, 0, vertexValue.vetexes[2], 0)
-    .setTransform(3, 0, vertexValue.vetexes[3], 0)
-    .setTransform(4, 0, vertexValue.vetexes[4], 0)
+    .setTransform(1, 0, vertexValue.vertices[1], 0)
+    .setTransform(2, 0, vertexValue.vertices[2], 0)
+    .setTransform(3, 0, vertexValue.vertices[3], 0)
+    .setTransform(4, 0, vertexValue.vertices[4], 0)
     .textures.setRoation(getAngle());
    addData("top")
     .updatePosition(0.5, 1, 0.5)
@@ -73,17 +73,17 @@ export const LiquidVoxelShape = {
    ShapeTool.builder.quad
     .setDirection("north")
     .updatePosition(0.5, 0.5, 1)
-    .setTransform(1, 0, vertexValue.vetexes[3], 0)
-    .setTransform(2, 0, vertexValue.vetexes[2], 0)
+    .setTransform(1, 0, vertexValue.vertices[3], 0)
+    .setTransform(2, 0, vertexValue.vertices[2], 0)
     .light.add(ShapeTool.data.getWorldLight())
     .overlayTexture.add(ShapeTool.data.getOverlayTextures())
     .animationState.add(flowAnimationState);
    if (topFaceExposed) {
     ShapeTool.builder.quad.textures.advancedUVs.hs1 = Math.abs(
-     vertexValue.vetexes[3]
+     vertexValue.vertices[3]
     );
     ShapeTool.builder.quad.textures.advancedUVs.hs2 = Math.abs(
-     vertexValue.vetexes[2]
+     vertexValue.vertices[2]
     );
     ShapeTool.builder.quad.textures.addAdvancedUVs(ShapeTool.data.getTexture());
    } else {
@@ -97,17 +97,17 @@ export const LiquidVoxelShape = {
    ShapeTool.builder.quad
     .setDirection("south")
     .updatePosition(0.5, 0.5, 0)
-    .setTransform(1, 0, vertexValue.vetexes[1], 0)
-    .setTransform(2, 0, vertexValue.vetexes[4], 0)
+    .setTransform(1, 0, vertexValue.vertices[1], 0)
+    .setTransform(2, 0, vertexValue.vertices[4], 0)
     .light.add(ShapeTool.data.getWorldLight())
     .overlayTexture.add(ShapeTool.data.getOverlayTextures())
     .animationState.add(flowAnimationState);
    if (topFaceExposed) {
     ShapeTool.builder.quad.textures.advancedUVs.hs1 = Math.abs(
-     vertexValue.vetexes[1]
+     vertexValue.vertices[1]
     );
     ShapeTool.builder.quad.textures.advancedUVs.hs2 = Math.abs(
-     vertexValue.vetexes[4]
+     vertexValue.vertices[4]
     );
     ShapeTool.builder.quad.textures.addAdvancedUVs(ShapeTool.data.getTexture());
    } else {
@@ -121,17 +121,17 @@ export const LiquidVoxelShape = {
    ShapeTool.builder.quad
     .setDirection("east")
     .updatePosition(1, 0.5, 0.5)
-    .setTransform(1, 0, vertexValue.vetexes[4], 0)
-    .setTransform(2, 0, vertexValue.vetexes[3], 0)
+    .setTransform(1, 0, vertexValue.vertices[4], 0)
+    .setTransform(2, 0, vertexValue.vertices[3], 0)
     .light.add(ShapeTool.data.getWorldLight())
     .overlayTexture.add(ShapeTool.data.getOverlayTextures())
     .animationState.add(flowAnimationState);
    if (topFaceExposed) {
     ShapeTool.builder.quad.textures.advancedUVs.hs1 = Math.abs(
-     vertexValue.vetexes[4]
+     vertexValue.vertices[4]
     );
     ShapeTool.builder.quad.textures.advancedUVs.hs2 = Math.abs(
-     vertexValue.vetexes[3]
+     vertexValue.vertices[3]
     );
     ShapeTool.builder.quad.textures.addAdvancedUVs(ShapeTool.data.getTexture());
    } else {
@@ -145,17 +145,17 @@ export const LiquidVoxelShape = {
    ShapeTool.builder.quad
     .setDirection("west")
     .updatePosition(0, 0.5, 0.5)
-    .setTransform(1, 0, vertexValue.vetexes[2], 0)
-    .setTransform(2, 0, vertexValue.vetexes[1], 0)
+    .setTransform(1, 0, vertexValue.vertices[2], 0)
+    .setTransform(2, 0, vertexValue.vertices[1], 0)
     .light.add(ShapeTool.data.getWorldLight())
     .overlayTexture.add(ShapeTool.data.getOverlayTextures())
     .animationState.add(flowAnimationState);
    if (topFaceExposed) {
     ShapeTool.builder.quad.textures.advancedUVs.hs1 = Math.abs(
-     vertexValue.vetexes[2]
+     vertexValue.vertices[2]
     );
     ShapeTool.builder.quad.textures.advancedUVs.hs2 = Math.abs(
-     vertexValue.vetexes[1]
+     vertexValue.vertices[1]
     );
     ShapeTool.builder.quad.textures.addAdvancedUVs(ShapeTool.data.getTexture());
    } else {
@@ -182,10 +182,10 @@ const getAngle = (): TextureRotations => {
   flowAnimationState.setAll(0);
   return 0;
  }
- const v1 = vertexLevel.vetexes[1];
- const v2 = vertexLevel.vetexes[2];
- const v3 = vertexLevel.vetexes[3];
- const v4 = vertexLevel.vetexes[4];
+ const v1 = vertexLevel.vertices[1];
+ const v2 = vertexLevel.vertices[2];
+ const v3 = vertexLevel.vertices[3];
+ const v4 = vertexLevel.vertices[4];
 
  if (v1 == v2 && v3 == v4 && v1 == v4 && v2 == v3) {
   flowAnimationState.setAll(0);

@@ -1,5 +1,5 @@
 import { Hooks } from "@divinestar/utils/Hooks";
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 import { DimensionData } from "Types/Data/DimensionData.types.js";
 import { EngineSettingsData } from "Types/Data/Settings/EngineSettings.types.js";
 import { Chunk,Column,Region } from "./World/Classes/index.js";

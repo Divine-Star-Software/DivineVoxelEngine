@@ -4,7 +4,7 @@ import type {
  SetChunkMeshTask,
  SetNodeMesh,
 } from "Types/Tasks/RenderTasks.types";
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 import { Distance3D } from "../../Math/Functions/Distance3d.js";
 import { ThreadComm } from "@divinestar/threads/";
 import { MeshManager } from "../Scene/MeshManager.js";

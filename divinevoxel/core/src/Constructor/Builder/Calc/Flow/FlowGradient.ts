@@ -54,7 +54,7 @@ export const FlowGradient = {
    const checkSet = checkSets[vertex];
 
    if (cl == 15 && cs != 1) {
-    flowStates.vetexes[vertex] = 15;
+    flowStates.vertices[vertex] = 15;
 
     continue;
    }
@@ -121,7 +121,7 @@ export const FlowGradient = {
    if (finalLevel > 15) finalLevel = 15;
    if (finalLevel < 1) finalLevel = 1;
 
-   flowStates.vetexes[vertex] = finalLevel;
+   flowStates.vertices[vertex] = finalLevel;
   }
   tool.getWorldLevel().setFromQuadData(flowStates);
  },

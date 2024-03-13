@@ -107,10 +107,10 @@ class VoxelQuadBulder extends QuadBuilderTool {
    const attribute = this._s.tool.getAttribute("ocuv3")!;
    while (i--) {
     attribute.push(
-     data.vetexes[1],
-     data.vetexes[2],
-     data.vetexes[3],
-     data.vetexes[4]
+     data.vertices[1],
+     data.vertices[2],
+     data.vertices[3],
+     data.vertices[4]
     );
    }
    return this._s;

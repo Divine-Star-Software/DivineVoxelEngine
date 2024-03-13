@@ -45,6 +45,7 @@ export const QuadBuilder = {
      origin.z - QuadBuilder.height + transform[4].z
     );
    } else {
+
     tool.addPositions(
      //v1
      origin.x + QuadBuilder.width + transform[4].x,

@@ -1,5 +1,5 @@
 //types
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 import type { SetChunkMeshTask } from "Types/Tasks/RenderTasks.types.js";
 import { Flat3DIndex } from "../../../Math/Flat3DIndex.js";
 import type { Vec3Array } from "../../../Math/";

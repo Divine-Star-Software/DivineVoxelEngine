@@ -1,4 +1,4 @@
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 import { RegionHeaderRegister } from "../../Data/Register/RegionHeaderRegister.js";
 
 import { ThreadComm, CommBase } from "@divinestar/threads/";

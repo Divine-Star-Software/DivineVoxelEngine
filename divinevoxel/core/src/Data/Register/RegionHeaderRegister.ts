@@ -1,4 +1,4 @@
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 import { WorldSpaces } from "../World/WorldSpaces.js";
 import { RemoteTagManager } from "@divinestar/binary/";
 export const RegionHeaderTags = new RemoteTagManager("region-header-tags");

@@ -3,7 +3,7 @@ import { WorldRegister } from "./WorldRegister.js";
 import { DataHooks } from "../DataHooks.js";
 import { VoxelPaletteReader } from "../Voxel/VoxelPalette.js";
 import { DataTool } from "../../Tools/Data/DataTool.js";
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 
 const WP = {
   _currentionDimension: "main",

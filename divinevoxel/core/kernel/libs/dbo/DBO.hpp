@@ -1,10 +1,12 @@
 #ifndef DBO_Module
 #define DBO_Module
 #include "./BufferToDBO/BufferToDBO.hpp"
-class DBO
+namespace DBO
 {
-public:
-    BufferToDBO bufferToDBO;
-};
-
+    class Object
+    {
+    public:
+        BufferToDBO bufferToDBO;
+    };
+}
 #endif // DBO_Module

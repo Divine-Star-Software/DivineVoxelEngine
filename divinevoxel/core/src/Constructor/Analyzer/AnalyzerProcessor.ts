@@ -1,4 +1,4 @@
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { HeightMapTool } from "../../Tools/Data/WorldData/HeightMapTool.js";

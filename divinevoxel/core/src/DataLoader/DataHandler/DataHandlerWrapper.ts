@@ -2,7 +2,7 @@ import type {
  LoadRegionHeadertasks,
  LoadWorldDataTasks,
 } from "Types/Tasks/Tasks.types.js";
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 //objects
 import { DVEDL } from "../DivineVoxelEngineDataLoader.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";

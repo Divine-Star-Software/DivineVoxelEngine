@@ -1,4 +1,4 @@
-import { LocationData } from "@divinestar/voxelspaces";
+import { LocationData } from "Math/index.js";
 import type { Vec3Array } from "../Types/Math.types.js";
 import { Distance3D } from "./Distance3d.js";
 export function Vec3ArrayDistanceSort(origion: Vec3Array, array: Vec3Array[]) {

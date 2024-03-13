@@ -31,14 +31,13 @@
  "license": "MIT",
  "devDependencies": {},
  "peerDependencies": {
-  "@babylonjs/core": "^6.24.0"
+    "@babylonjs/core": "^6.46.0"
  },
  "dependencies": {
   "@divinestar/binary": "^0.0.44",
   "@divinestar/utils": "^0.0.44",
   "@divinestar/shaders": "^0.0.44",
-  "@divinestar/threads": "^0.0.44",
-  "@divinestar/voxelspaces": "^0.0.44"
+  "@divinestar/threads": "^0.0.44"
  },
  "main": "index.js",
  "publishConfig": {

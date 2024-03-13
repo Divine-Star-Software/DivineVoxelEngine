@@ -7,28 +7,45 @@
 #include <string>
 #include <sstream>
 #include <stdexcept> // Include for std::runtime_error
-class VoxelSubstancePalette
+namespace DVE
 {
-public:
-    void setData(std::unordered_map<uint16_t, std::string> palette,
-                 std::unordered_map<std::string, uint16_t> paletteMap)
+    class VoxelSubstancePalette
     {
-        _palette = palette;
-        _paletteMap = paletteMap;
-    };
+    private:
+        VoxelSubstancePalette() {}
+        VoxelSubstancePalette(const VoxelSubstancePalette &) = delete;
+        static VoxelSubstancePalette *instance;
 
-    std::string stringFromNumber(uint16_t id)
-    {
-        return _palette[id];
-    };
+    public:
+        static VoxelSubstancePalette &getInstance()
+        {
+            if (!instance)
+            {
+                instance = new VoxelSubstancePalette();
+            }
+            return *instance;
+        }
 
-    uint16_t numberFromString(std::string id)
-    {
-        return _paletteMap[id];
-    };
-private:
-    std::unordered_map<uint16_t, std::string> _palette;
-    std::unordered_map<std::string, uint16_t> _paletteMap;
-};
+        void setData(std::unordered_map<uint16_t, std::string> palette,
+                     std::unordered_map<std::string, uint16_t> paletteMap)
+        {
+            _palette = palette;
+            _paletteMap = paletteMap;
+        };
 
+        std::string stringFromNumber(uint16_t id)
+        {
+            return _palette[id];
+        };
+
+        uint16_t numberFromString(std::string id)
+        {
+            return _paletteMap[id];
+        };
+
+    private:
+        std::unordered_map<uint16_t, std::string> _palette;
+        std::unordered_map<std::string, uint16_t> _paletteMap;
+    };
+}
 #endif // VoxelSubstancePalette_Module

@@ -6,7 +6,7 @@ import {
   SetNodeMesh,
 } from "Types/Tasks/RenderTasks.types.js";
 import { MeshRegister } from "./MeshRegister.js";
-import { LocationData } from "@divinestar/voxelspaces";
+import { LocationData } from "Math/index.js";
 import { Distance3D } from "../../Math/Functions/Distance3d.js";
 import { NodeManager } from "../Nodes/NodeManager.js";
 

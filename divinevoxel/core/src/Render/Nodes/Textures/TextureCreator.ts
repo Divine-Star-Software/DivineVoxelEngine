@@ -1,16 +1,7 @@
 import { Engine } from "@babylonjs/core/Engines/engine.js";
-import { Constants } from "@babylonjs/core/Engines/constants.js";
 import { Texture } from "@babylonjs/core/Materials/Textures/texture.js";
 import { RenderManager } from "../../Scene/RenderManager.js";
 import { RawTexture2DArray } from "@babylonjs/core/Materials/Textures/rawTexture2DArray.js";
-import {
-  InternalTexture,
-  InternalTextureSource,
-} from "@babylonjs/core/Materials/Textures/internalTexture.js";
-import { Vector3, Vector4 } from "@babylonjs/core/Maths/math.vector.js";
-import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
-import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo.js";
-import { VertexBuffer } from "@babylonjs/core/Meshes/buffer.js";
 
 export const TextureCreator = {
   context: <CanvasRenderingContext2D | null>null,

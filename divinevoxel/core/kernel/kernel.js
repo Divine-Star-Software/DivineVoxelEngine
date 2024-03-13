@@ -1,5 +1,4 @@
 export
-export
 
 var DVEKernelWASM = (() => {
   var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
@@ -29,7 +28,7 @@ Module['ready'] = new Promise((resolve, reject) => {
   readyPromiseResolve = resolve;
   readyPromiseReject = reject;
 });
-["_bufferToDBO","__emscripten_thread_init","__emscripten_thread_exit","__emscripten_thread_crashed","__emscripten_thread_mailbox_await","__emscripten_tls_init","_pthread_self","checkMailbox","establishStackSpace","invokeEntryPoint","PThread","getExceptionMessage","$incrementExceptionRefcount","$decrementExceptionRefcount","___indirect_function_table","onRuntimeInitialized"].forEach((prop) => {
+["_sabTest","_bufferToDBO","_DVE_BRIDGE_RUN_WORLD_SUN_LIGHT","_DVE_BRIDGE_REMOVE_RGB_LIGHT","_DVE_BRIDGE_UPDATE_RGB_LIGHT","_DVE_BRIDGE_REMOVE_SUN_LIGHT","_DVE_BRIDGE_UPDATE_SUN_LIGHT","_DVE_BRIDGE_SYNC_VOXEL_TAGS","_DVE_BRIDGE_SYNC_VOXEL_PALETTE","_DVE_BRIDGE_SYNC_VOXEL_SUBSTANCE_PALETTE","_DVE_BRIDGE_SYNC_VOXEL_SUBSTANCE_TAGS","_DVE_BRIDGE_SYNC_CHUNK_TAGS","_DVE_BRIDGE_SYNC_CHUNK","_DVE_BRIDGE_UN_SYNC_CHUNK","_DVE_BRIDGE_SYNC_COLUMN_TAGS","_DVE_BRIDGE_SYNC_COLUMN","_DVE_BRIDGE_UN_SYNC_COLUMN","_DVE_BRIDGE_SYNC_REGION_TAGS","_DVE_BRIDGE_SYNC_REGION","_DVE_BRIDGE_UN_SYNC_REGION","__emscripten_thread_init","__emscripten_thread_exit","__emscripten_thread_crashed","__emscripten_thread_mailbox_await","__emscripten_tls_init","_pthread_self","checkMailbox","establishStackSpace","invokeEntryPoint","PThread","getExceptionMessage","$incrementExceptionRefcount","$decrementExceptionRefcount","___indirect_function_table","onRuntimeInitialized"].forEach((prop) => {
   if (!Object.getOwnPropertyDescriptor(Module['ready'], prop)) {
     Object.defineProperty(Module['ready'], prop, {
       get: () => abort('You are getting ' + prop + ' on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js'),
@@ -2456,7 +2455,26 @@ var wasmImports = {
 };
 var wasmExports = createWasm();
 var ___wasm_call_ctors = createExportWrapper('__wasm_call_ctors');
+var _DVE_BRIDGE_RUN_WORLD_SUN_LIGHT = Module['_DVE_BRIDGE_RUN_WORLD_SUN_LIGHT'] = createExportWrapper('DVE_BRIDGE_RUN_WORLD_SUN_LIGHT');
+var _DVE_BRIDGE_REMOVE_RGB_LIGHT = Module['_DVE_BRIDGE_REMOVE_RGB_LIGHT'] = createExportWrapper('DVE_BRIDGE_REMOVE_RGB_LIGHT');
+var _DVE_BRIDGE_UPDATE_RGB_LIGHT = Module['_DVE_BRIDGE_UPDATE_RGB_LIGHT'] = createExportWrapper('DVE_BRIDGE_UPDATE_RGB_LIGHT');
+var _DVE_BRIDGE_REMOVE_SUN_LIGHT = Module['_DVE_BRIDGE_REMOVE_SUN_LIGHT'] = createExportWrapper('DVE_BRIDGE_REMOVE_SUN_LIGHT');
+var _DVE_BRIDGE_UPDATE_SUN_LIGHT = Module['_DVE_BRIDGE_UPDATE_SUN_LIGHT'] = createExportWrapper('DVE_BRIDGE_UPDATE_SUN_LIGHT');
+var _DVE_BRIDGE_SYNC_VOXEL_TAGS = Module['_DVE_BRIDGE_SYNC_VOXEL_TAGS'] = createExportWrapper('DVE_BRIDGE_SYNC_VOXEL_TAGS');
+var _DVE_BRIDGE_SYNC_VOXEL_PALETTE = Module['_DVE_BRIDGE_SYNC_VOXEL_PALETTE'] = createExportWrapper('DVE_BRIDGE_SYNC_VOXEL_PALETTE');
+var _DVE_BRIDGE_SYNC_VOXEL_SUBSTANCE_PALETTE = Module['_DVE_BRIDGE_SYNC_VOXEL_SUBSTANCE_PALETTE'] = createExportWrapper('DVE_BRIDGE_SYNC_VOXEL_SUBSTANCE_PALETTE');
+var _DVE_BRIDGE_SYNC_VOXEL_SUBSTANCE_TAGS = Module['_DVE_BRIDGE_SYNC_VOXEL_SUBSTANCE_TAGS'] = createExportWrapper('DVE_BRIDGE_SYNC_VOXEL_SUBSTANCE_TAGS');
+var _DVE_BRIDGE_SYNC_CHUNK_TAGS = Module['_DVE_BRIDGE_SYNC_CHUNK_TAGS'] = createExportWrapper('DVE_BRIDGE_SYNC_CHUNK_TAGS');
+var _DVE_BRIDGE_SYNC_CHUNK = Module['_DVE_BRIDGE_SYNC_CHUNK'] = createExportWrapper('DVE_BRIDGE_SYNC_CHUNK');
+var _DVE_BRIDGE_UN_SYNC_CHUNK = Module['_DVE_BRIDGE_UN_SYNC_CHUNK'] = createExportWrapper('DVE_BRIDGE_UN_SYNC_CHUNK');
+var _DVE_BRIDGE_SYNC_COLUMN_TAGS = Module['_DVE_BRIDGE_SYNC_COLUMN_TAGS'] = createExportWrapper('DVE_BRIDGE_SYNC_COLUMN_TAGS');
+var _DVE_BRIDGE_SYNC_COLUMN = Module['_DVE_BRIDGE_SYNC_COLUMN'] = createExportWrapper('DVE_BRIDGE_SYNC_COLUMN');
+var _DVE_BRIDGE_UN_SYNC_COLUMN = Module['_DVE_BRIDGE_UN_SYNC_COLUMN'] = createExportWrapper('DVE_BRIDGE_UN_SYNC_COLUMN');
+var _DVE_BRIDGE_SYNC_REGION_TAGS = Module['_DVE_BRIDGE_SYNC_REGION_TAGS'] = createExportWrapper('DVE_BRIDGE_SYNC_REGION_TAGS');
+var _DVE_BRIDGE_SYNC_REGION = Module['_DVE_BRIDGE_SYNC_REGION'] = createExportWrapper('DVE_BRIDGE_SYNC_REGION');
+var _DVE_BRIDGE_UN_SYNC_REGION = Module['_DVE_BRIDGE_UN_SYNC_REGION'] = createExportWrapper('DVE_BRIDGE_UN_SYNC_REGION');
 var _bufferToDBO = Module['_bufferToDBO'] = createExportWrapper('bufferToDBO');
+var _sabTest = Module['_sabTest'] = createExportWrapper('sabTest');
 var ___cxa_free_exception = createExportWrapper('__cxa_free_exception');
 var __emscripten_tls_init = Module['__emscripten_tls_init'] = createExportWrapper('_emscripten_tls_init');
 var _pthread_self = Module['_pthread_self'] = () => (_pthread_self = Module['_pthread_self'] = wasmExports['pthread_self'])();
@@ -2512,6 +2530,17 @@ function invoke_iii(index,a1,a2) {
   }
 }
 
+function invoke_iiii(index,a1,a2,a3) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3);
+  } catch(e) {
+    stackRestore(sp);
+    if (!(e instanceof EmscriptenEH)) throw e;
+    _setThrew(1, 0);
+  }
+}
+
 function invoke_vii(index,a1,a2) {
   var sp = stackSave();
   try {
@@ -2549,17 +2578,6 @@ function invoke_viii(index,a1,a2,a3) {
   var sp = stackSave();
   try {
     getWasmTableEntry(index)(a1,a2,a3);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiii(index,a1,a2,a3) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3);
   } catch(e) {
     stackRestore(sp);
     if (!(e instanceof EmscriptenEH)) throw e;

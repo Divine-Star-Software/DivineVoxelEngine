@@ -2,11 +2,13 @@
 #define BufferToDBO_Module
 #include "../../binary/DataView.hpp"
 #include "../DBONodes.hpp"
-class BufferToDBO
+namespace DBO
 {
-public:
-    BufferToDBO();
-    DBONode *create(DataView* view);
-};
-
+    class BufferToDBO
+    {
+    public:
+        BufferToDBO();
+        DBONode *create(Binary::DataView *view);
+    };
+}
 #endif // BufferToDBO_Module

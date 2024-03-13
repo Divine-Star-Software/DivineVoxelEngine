@@ -1,4 +1,4 @@
-import { LocationData } from "@divinestar/voxelspaces";
+import { LocationData } from "Math/index.js";
 import { DataHanlderWrapper } from "./DataHandlerWrapper.js";
 export type DataLoaderModes =  "server" | "indexdb" | "both" ;
 export type DataLoaderSegments = "world-data" | "rich-data" | "dbo" | "entities";

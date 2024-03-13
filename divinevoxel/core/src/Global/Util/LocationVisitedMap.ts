@@ -1,4 +1,4 @@
-import { LocationData } from "@divinestar/voxelspaces";
+import { LocationData } from "Math/index.js";
 
 export class LocationVisitedMap {
  _map: Map<string, boolean> = new Map();

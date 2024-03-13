@@ -4,7 +4,7 @@ import type {
   WorldDataSync,
   RegisterStringMapSync,
 } from "Types/Data/DataSync.types.js";
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 import type { DimensionData } from "Types/Data/DimensionData.types.js";
 //objects
 import { ThreadComm } from "@divinestar/threads/";

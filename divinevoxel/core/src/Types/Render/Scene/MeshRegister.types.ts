@@ -1,5 +1,5 @@
 import type { Mesh } from "@babylonjs/core";
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 
 export type MeshRegisterChunk = {
  mesh: Mesh;

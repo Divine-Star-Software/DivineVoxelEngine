@@ -3,7 +3,7 @@ import type {
  RichRegion,
  RichWorldDimensions,
 } from "Types/Data/RichWorldData.types.js";
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 
 export const RichDataRegister = {

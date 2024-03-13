@@ -1,4 +1,4 @@
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 
 import { ThreadComm } from "@divinestar/threads/";
 //data
@@ -87,7 +87,7 @@ export const WorldTasks = {
     ),
   },
   load: {
-/*     loadRegino: ThreadComm.registerTasks<LoadWorldDataTasks>(
+    /*     loadRegino: ThreadComm.registerTasks<LoadWorldDataTasks>(
       "load-region",
       ([location, sab]) => {
         regionTool.setBuffer(sab);
@@ -125,8 +125,9 @@ export const WorldTasks = {
         DataSync.worldData.chunk.sync(sl);
       }
     ),
+ */
     clearAll: ThreadComm.registerTasks("clear-all", () => {
       WorldRegister.clearAll();
-    }), */
+    }),
   },
 };

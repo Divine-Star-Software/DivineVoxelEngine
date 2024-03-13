@@ -16,7 +16,7 @@ import {
 } from "Types/Tasks/Tasks.types.js";
 
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
-import { LocationData } from "@divinestar/voxelspaces";
+import { LocationData } from "Math/index.js";
 import type { RawVoxelData } from "Types/Data/Voxels/Voxel.types.js";
 
 export type TaskRunModes = "async" | "sync";

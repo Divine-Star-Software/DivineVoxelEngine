@@ -77,8 +77,6 @@ export class DivineVoxelEngineRender {
     if (initData.scene) {
       await initFunction(this, initData.scene);
     }
-
-
   }
 
   getSceneTool() {
@@ -98,6 +96,7 @@ export class DivineVoxelEngineRender {
   async clearAll() {
     this.render.meshRegister.clearAll();
     await this.worldComm.runAsyncTasks("clear-all", "", []);
+
     await Promise.all(
       this.constructorCommManager.__comms.map((_) =>
         _.runAsyncTasks("clear-all", "")

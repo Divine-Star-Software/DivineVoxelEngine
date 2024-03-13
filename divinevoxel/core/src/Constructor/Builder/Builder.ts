@@ -1,5 +1,5 @@
 import { ConstructorHooks } from "../Hooks/ConstructorHooks.js";
-import { LocationData } from "@divinestar/voxelspaces";
+import { LocationData } from "Math/index.js";
 import { VoxelConstructors } from "./Constructors/Voxel/VoxelConstructors.js";
 import { ChunkProcessor } from "./Processors/ChunkProcessor.js";
 import { OverrideManager } from "./Rules/Overrides/OverridesManager.js";

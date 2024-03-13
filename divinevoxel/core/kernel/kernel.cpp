@@ -2,18 +2,14 @@
 #include <iostream>
 #include <string>
 #include <cstdio>
-#include "./libs/binary/DataView.hpp"
-#include "./libs/dbo/DBO.hpp"
-
 #include "./DVEKernelBridge.hpp"
-
-// data sync
-
+#include "./libs/dbo/DBO.hpp"
 extern "C"
 {
+
     /*
-    TASKS
-    */
+TASKS
+*/
     void DVE_BRIDGE_RUN_WORLD_SUN_LIGHT(void *locationBuffer)
     {
     }
@@ -53,12 +49,25 @@ extern "C"
     }
     void DVE_BRIDGE_SYNC_CHUNK(
         void *locationBuffer,
+        int locationBufferSize,
         void *stateBuffer,
+        int stateBufferSize,
         void *voxelIdsBuffer,
+        int voxelIdsBufferSize,
         void *voxelLightBuffer,
+        int voxelLightBufferSize,
         void *voxelStateBuffer,
-        void *voxelSecondaryIdBuffer)
+        int voxelStateBufferSize,
+        void *voxelSecondaryIdBuffer,
+        int voxelSecondaryIdBufferSize)
     {
+        /*         DVEBridge::SYNC_CHUNK(
+                    DVEBridge::DBO_TO_LOCATION(DVEBridge::sabToDataView(locationBuffer, locationBufferSize)),
+                    DVEBridge::sabToDataUint8Array(stateBuffer, stateBufferSize),
+                    DVEBridge::sabToDataUint16Array(voxelIdsBuffer, voxelIdsBufferSize),
+                    DVEBridge::sabToDataUint16Array(voxelLightBuffer, voxelLightBufferSize),
+                    DVEBridge::sabToDataUint16Array(voxelStateBuffer, voxelStateBufferSize),
+                    DVEBridge::sabToDataUint16Array(voxelSecondaryIdBuffer, voxelSecondaryIdBufferSize)); */
     }
     void DVE_BRIDGE_UN_SYNC_CHUNK(void *locationBuffer)
     {
@@ -92,9 +101,33 @@ extern "C"
 
     void bufferToDBO(void *buffer, int size)
     {
-        DataView *view = new DataView(static_cast<std::vector<uint8_t> *>(buffer));
-        DBO dbo;
+        Binary::DataView *view = DVEBridge::sabToDataView(buffer, size);
+        DBO::Object dbo;
+        printf("%s %i %s %zu \n", "start parse| passed size", size, " data view size ", view->size());
         auto object = dbo.bufferToDBO.create(view);
-        printf("%s\n", object->toString().c_str());
+        printf("%s \n", object->toString().c_str());
+    }
+
+    void sabTest(uint16_t *array, int length)
+    {
+        printf("%s %i %s \n", "start sab test", length);
+        for (int i = 0; i < length; i++)
+        {
+            printf("%zu -> %hu \n", i, array[i]);
+            array[i] = 128;
+            printf("UPDATED %zu -> %hu \n", i, array[i]);
+        }
+    }
+    void sabTestO(void *buffer, size_t length)
+    {
+        printf("%s %i %s \n", "start sab test", length);
+        std::vector<uint16_t> bufferVector(static_cast<uint16_t *>(buffer), static_cast<uint16_t *>(buffer) + length);
+        for (size_t i = 0; i < length; ++i)
+        {
+            printf("%zu -> %hu \n", i, bufferVector[i]);
+
+            bufferVector[i] = 128;
+            printf("UPDATED %zu -> %hu \n", i, bufferVector[i]);
+        }
     }
 }

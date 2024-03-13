@@ -1,5 +1,5 @@
 import { DVEDL } from "../DivineVoxelEngineDataLoader.js";
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 import { ThreadComm } from "@divinestar/threads/";
 import { DataHanlderWrapper } from "../../DataLoader/DataHandler/DataHandlerWrapper.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";

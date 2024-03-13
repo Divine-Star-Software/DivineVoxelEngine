@@ -3,42 +3,42 @@ import { DataMatrix } from "./DataMatrix.js";
 import { Flat3DIndex } from "../Math/Flat3DIndex";
 import { DataTool } from "../Tools/Data/DataTool";
 
-export class VoxelMatrix extends DataMatrix<string | number> {
+export class VoxelIDMatrix extends DataMatrix<string | number> {
   static dataTool = new DataTool();
-  index =  Flat3DIndex.GetXYZOrder();
-  
+  index = Flat3DIndex.GetXYZOrder();
+
   constructor(public size: Vec3Array) {
     super(size, 0);
+    this.setBounds(size);
+  }
+
+  setBounds(size: Vec3Array) {
     this.index.setBounds(size[0], size[1], size[2]);
   }
 
   toFlatArray() {
     const voxels: number[] = [];
     for (const [location, vox] of this.getAll()) {
+      const i = this.index.getIndex(location);
       if (typeof vox !== "string") {
-        voxels[this.index.getIndex(location)] = 0;
+        voxels[i] = 0;
         continue;
       }
-      voxels[this.index.getIndex(location)] = VoxelMatrix.dataTool
-        .setStringId(vox)
-        .getId();
+      voxels[i] = VoxelIDMatrix.dataTool.setStringId(vox).getId();
     }
-
     return voxels;
   }
   toTypedArray() {
     const length = this.sizeX * this.sizeY * this.sizeZ;
     const voxels = new Uint16Array(length);
     for (const [location, vox] of this.getAll()) {
+      const i = this.index.getIndex(location);
       if (typeof vox !== "string") {
-        voxels[this.index.getIndex(location)] = 0;
+        voxels[i] = 0;
         continue;
       }
-      voxels[this.index.getIndex(location)] = VoxelMatrix.dataTool
-        .setStringId(vox)
-        .getId();
+      voxels[i] = VoxelIDMatrix.dataTool.setStringId(vox).getId();
     }
-
     return voxels;
   }
   fromFlatArray(voxels: ArrayLike<number>) {
@@ -48,15 +48,15 @@ export class VoxelMatrix extends DataMatrix<string | number> {
         this.setVec3(location, 0);
         continue;
       }
-
       this.setVec3(
         location,
-        VoxelMatrix.dataTool.setId(rawValue).getStringId()
+        VoxelIDMatrix.dataTool.setId(rawValue).getStringId()
       );
     }
   }
 
-  copy(matrix: VoxelMatrix) {
-    this._matrix = structuredClone(matrix._matrix);
+  copy(matrix: VoxelIDMatrix) {
+    this.setBounds(matrix.size);
+    this.setMatrix(matrix.cloneMatrix());
   }
 }

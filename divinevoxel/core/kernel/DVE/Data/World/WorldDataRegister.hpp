@@ -8,60 +8,86 @@
 #include "./Column.hpp"
 #include "./Chunk.hpp"
 #include "../../Spaces/Location.hpp"
-class WorldDataRegister
+namespace DVE
 {
-
-public:
-    std::unordered_map<std::string, Dimension *> *_register = new std::unordered_map<std::string, Dimension *>();
-
-    Dimension *addDimension(std::string id)
+    class WorldDataRegister
     {
-        Dimension *newDimension = new Dimension(id);
-        _register->insert({id, newDimension});
-        return newDimension;
-    }
-    std::optional<Dimension *> getDimension(std::string id)
-    {
-        auto it = _register->find(id); // Use find() to search for the key
-        if (it != _register->end())
+
+    private:
+        WorldDataRegister() {}
+        WorldDataRegister(const WorldDataRegister &) = delete;
+
+        static WorldDataRegister *instance;
+
+    public:
+        static WorldDataRegister &getInstance()
         {
-            return it->second;
+            if (!instance)
+            {
+                instance = new WorldDataRegister();
+            }
+            return *instance;
         }
-        else
+
+        std::unordered_map<std::string, Dimension *> *_register = new std::unordered_map<std::string, Dimension *>();
+
+        Dimension *addDimension(std::string id) const
+        {
+            Dimension *newDimension = new Dimension(id);
+            _register->insert({id, newDimension});
+            return newDimension;
+        }
+        std::optional<Dimension *> getDimension(std::string id) const
+        {
+            auto it = _register->find(id); // Use find() to search for the key
+            if (it != _register->end())
+            {
+                return it->second;
+            }
+            else
+            {
+                return std::nullopt;
+            }
+        }
+
+        Region *addRegion(VoxelLocation location, Region *region) const
+        {
+            return region;
+        }
+        std::optional<Region *> getRegion(VoxelLocation location) const
         {
             return std::nullopt;
         }
-    }
+        bool removeRegion(VoxelLocation location)
+        {
+            return true;
+        }
 
-    Region *addRegion(VoxelLocation location, Region *region)
-    {
-    }
-    std::optional<Region *> getRegion(VoxelLocation location)
-    {
-    }
-    bool removeRegion(VoxelLocation location)
-    {
-    }
+        Column *addColumn(VoxelLocation location, Column *column) const
+        {
+            return column;
+        }
+        std::optional<Column *> getColumn(VoxelLocation location) const
+        {
+            return std::nullopt;
+        }
+        bool removeColumn(VoxelLocation location)
+        {
+            return true;
+        }
 
-    Column *addColumn(VoxelLocation location, Column *column)
-    {
-    }
-    std::optional<Column *> getColumn(VoxelLocation location)
-    {
-    }
-    bool removeColumn(VoxelLocation location)
-    {
-    }
-
-    Chunk *addChunk(VoxelLocation location, Chunk *chunk)
-    {
-    }
-    std::optional<Chunk *> getChunk(VoxelLocation location)
-    {
-    }
-    bool removeChunk(VoxelLocation location)
-    {
-    }
-};
-
+        Chunk *addChunk(VoxelLocation location, Chunk *chunk) const
+        {
+            return chunk;
+        }
+        std::optional<Chunk *> getChunk(VoxelLocation location) const
+        {
+            return std::nullopt;
+        }
+        bool removeChunk(VoxelLocation location) const
+        {
+            return true;
+        }
+    };
+}
 #endif // WorldDataRegister_Module

@@ -3,7 +3,7 @@ import { Geometry } from "@babylonjs/core/Meshes/geometry.js";
 import { Vector3 } from "@babylonjs/core/Maths/";
 import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo.js";
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 import type { EngineSettingsData } from "Types/Data/Settings/EngineSettings.types.js";
 import { ChunkMeshData, SetNodeMesh } from "Types/Tasks/RenderTasks.types";
 import { NodeManager } from "../NodeManager.js";

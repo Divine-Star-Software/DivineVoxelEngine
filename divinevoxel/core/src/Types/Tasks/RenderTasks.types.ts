@@ -1,4 +1,4 @@
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 import type { VoxelTemplateSubstanceType } from "Types/Data/Voxels/Voxel.types";
 import type { MeshAttributes } from "../../Constructor/Builder/Types/MeshData.types";
 

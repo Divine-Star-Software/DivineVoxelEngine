@@ -1,6 +1,6 @@
 import { Chunk } from "../.././../Data/World/Classes/index.js";
 //types
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 import type { VoxelTemplateSubstanceType } from "Types/Data/Voxels/Voxel.types.js";
 //Data
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";

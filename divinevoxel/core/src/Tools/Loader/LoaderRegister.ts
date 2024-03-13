@@ -1,5 +1,5 @@
 import { CommBase } from "@divinestar/threads/";
-import { LocationData } from "@divinestar/voxelspaces";
+import { LocationData } from "Math/index.js";
 import { UtilMap } from "../../Global/Util/UtilMap.js";
 
 export const LoaderRegister = {

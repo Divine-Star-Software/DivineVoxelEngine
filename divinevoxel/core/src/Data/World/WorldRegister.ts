@@ -7,7 +7,7 @@ import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { RegionDataTool } from "../../Tools/Data/WorldData/RegionDataTool.js";
 import { WorldSpaces } from "./WorldSpaces.js";
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 
 const chunkTool = new ChunkDataTool();
 const columnTool = new ColumnDataTool();

@@ -1,4 +1,4 @@
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "Math/index.js";
 import type { RawVoxelData } from "Types/Data/Voxels/Voxel.types";
 import { Vec3Array } from "Math";
 

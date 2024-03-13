@@ -1,18 +1,29 @@
 #ifndef Propagation_Module
 #define Propagation_Module
 #include "../Spaces/Location.hpp"
-#include "../DVEKernel.hpp"
 #include "./Illumanation/Illumanation.hpp"
-class Propagation
+
+namespace DVE
 {
-
-public:
-    DVEKernel const &DVE;
-    Illumanation *illumanation;
-    Propagation(DVEKernel const &_DVE) : DVE(_DVE)
+    class Propagation
     {
-        illumanation = new Illumanation(DVE);
-    }
-};
+    private:
+        Propagation() {}
+        Propagation(const Propagation &) = delete;
 
+        static const Propagation *instance;
+
+    public:
+        const Illumanation &illumanation = Illumanation::getInstance();
+
+        static const Propagation &getInstance()
+        {
+            if (!instance)
+            {
+                instance = new Propagation();
+            }
+            return *instance;
+        }
+    };
+}
 #endif // Propagation_Module

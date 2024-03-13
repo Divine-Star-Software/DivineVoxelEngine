@@ -1,5 +1,6 @@
 import fs from "fs/promises";
 const functions = [
+  "sabTest",
   "bufferToDBO",
   "DVE_BRIDGE_RUN_WORLD_SUN_LIGHT",
   "DVE_BRIDGE_REMOVE_RGB_LIGHT",
@@ -22,6 +23,8 @@ const functions = [
 ].map((_) => `_${_}`);
 
 const flags = [
+  //optimize for size | production only
+//  "-Os",
   `-s EXPORTED_FUNCTIONS=${functions.join(",")}`,
   "-s EXPORTED_RUNTIME_METHODS=ccall,cwrap",
   "-s MODULARIZE=1",
@@ -30,12 +33,15 @@ const flags = [
   "-s SHARED_MEMORY=1",
   "-s USE_PTHREADS=1",
 ];
-
+//emcc $(find ./ -name '*.cpp')  -o kernel.js $INCLUDE_DIRS ${flags.join(" ")}
 const compileScript = /* sh  */ `
-    INCLUDE_DIRS=$(find ./libs -type d | sed 's/^/-I/')
-    emcc $(find ./ -name '*.cpp')  -o kernel.js $INCLUDE_DIRS ${flags.join(" ")}
-    cp ./kernel.js ../src/Kernel/kernel.js
-    cp ./kernel.wasm ../../../testing/static/kernel.wasm
-    `;
+rm kernel.js
+rm kernel.wasm
+INCLUDE_DIRS=$(find ./libs -type d | sed 's/^/-I/')
+emcc $(find ./ -name '*.cpp')  -o kernel.js $INCLUDE_DIRS ${flags.join(" ")}
+echo 'export' | cat - kernel.js > temp && mv temp kernel.js
+cp ./kernel.js ../src/Kernel/kernel.js
+cp ./kernel.wasm ../../../testing/static/kernel.wasm
+`;
 
 fs.writeFile("./compile.sh", compileScript);

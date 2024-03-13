@@ -6,7 +6,7 @@ import {
 } from "Types/Tasks/Tasks.types";
 import { CommBase, ThreadComm } from "@divinestar/threads/";
 import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
-import { LocationData } from "@divinestar/voxelspaces";
+import { LocationData } from "Math/index.js";
 
 export class RichDataTool extends LocationBoundTool {
  segment = "voxels";
