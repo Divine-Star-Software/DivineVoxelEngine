@@ -15,7 +15,20 @@ const RGBState = new QuadVertexData();
 const SunState = new QuadVertexData();
 const AOValue = new QuadVertexData();
 const AOState = new QuadVertexData();
-const swapSun = () => {
+/**
+
+1 Top-left corner
+2 Bottom-left corner
+3 Bottom-right corner
+4 Top-right corner
+And for the flipped case, you've rearranged them to:
+
+4 Top-right corner
+1 Top-left corner
+2 Bottom-left corner
+3 Bottom-right corner
+ */
+const flipSun = () => {
   LightValue.set(
     LD.setS(LD.getS(LightValue.vertices[4]), LightValue.vertices[1]),
     LD.setS(LD.getS(LightValue.vertices[1]), LightValue.vertices[2]),
@@ -23,23 +36,53 @@ const swapSun = () => {
     LD.setS(LD.getS(LightValue.vertices[3]), LightValue.vertices[4])
   );
 };
-
-const swapRGB = () => {
+const flipRGB = () =>
   LightValue.set(
     LD.setRGB(LD.getRGB(LightValue.vertices[4]), LightValue.vertices[1]),
     LD.setRGB(LD.getRGB(LightValue.vertices[1]), LightValue.vertices[2]),
     LD.setRGB(LD.getRGB(LightValue.vertices[2]), LightValue.vertices[3]),
     LD.setRGB(LD.getRGB(LightValue.vertices[3]), LightValue.vertices[4])
   );
-};
 
-const swapAO = () => {
+const flipAO = () =>
   AOValue.set(
+    AOValue.vertices[4],
     AOValue.vertices[1],
     AOValue.vertices[2],
-    AOValue.vertices[3],
-    AOValue.vertices[4]
+    AOValue.vertices[3]
   );
+
+const shouldSunFlip = (face: DirectionNames) => {
+  const v1 = LD.getS(LightValue.vertices[1]);
+  const v2 = LD.getS(LightValue.vertices[2]);
+  const v3 = LD.getS(LightValue.vertices[3]);
+  const v4 = LD.getS(LightValue.vertices[4]);
+  if (
+    (v1 > v2 && v1 > v4 && v1 > v3) ||
+    (v3 > v2 && v3 > v4 && v3 > v1) ||
+    v3 + v1 > v2 + v4 ||
+    SunState.isEqualTo(1, 1, 0, 1) ||
+    SunState.isEqualTo(0, 1, 1, 1) ||
+    SunState.isEqualTo(0, 1, 0, 1)
+  )
+    return true;
+  return false;
+};
+const shouldRGBFlip = (face: DirectionNames) => {
+  const v1 = LD.getRGB(LightValue.vertices[1]);
+  const v2 = LD.getRGB(LightValue.vertices[2]);
+  const v3 = LD.getRGB(LightValue.vertices[3]);
+  const v4 = LD.getRGB(LightValue.vertices[4]);
+  if (
+    (v1 > v2 && v1 > v4 && v1 > v3) ||
+    (v3 > v2 && v3 > v4 && v3 > v1) ||
+    v3 + v1 > v2 + v4 ||
+    RGBState.isEqualTo(1, 1, 0, 1) ||
+    RGBState.isEqualTo(0, 1, 1, 1) ||
+    RGBState.isEqualTo(0, 1, 0, 1)
+  )
+    return true;
+  return false;
 };
 
 const shouldAOFlip = (face: DirectionNames) => {
@@ -59,41 +102,26 @@ const shouldAOFlip = (face: DirectionNames) => {
   }
 
   return (
-    AOState.isEqualTo(0, 1, 1, 1) ||
     AOState.isEqualTo(1, 1, 0, 1) ||
+    AOState.isEqualTo(0, 1, 1, 1) ||
     AOState.isEqualTo(0, 1, 0, 1)
   );
 };
 
 const flipCheck = (face: DirectionNames) => {
-  const rgbFlip =
-    RGBState.isEqualTo(0, 1, 1, 1) ||
-    RGBState.isEqualTo(1, 1, 0, 1) ||
-    RGBState.isEqualTo(0, 1, 0, 1);
-  const sunFlip =
-    SunState.isEqualTo(0, 1, 1, 1) ||
-    SunState.isEqualTo(1, 1, 0, 1) ||
-    SunState.isEqualTo(0, 1, 0, 1);
+  const rgbFlip = shouldRGBFlip(face);
+  const sunFlip = shouldSunFlip(face);
   const aoFlip = shouldAOFlip(face);
-  if (rgbFlip && !sunFlip) {
-    swapSun();
-  }
-  if (!rgbFlip && sunFlip) {
-    swapRGB();
-  }
 
-  if ((sunFlip || rgbFlip) && !aoFlip) {
-    swapAO();
-  }
+  const shouldFlip = rgbFlip || sunFlip || aoFlip;
+  if (rgbFlip) flipRGB();
+  if (sunFlip) flipSun();
+  if (aoFlip) flipAO();
+  if (shouldFlip && !rgbFlip) flipRGB();
+  if (shouldFlip && !sunFlip) flipSun();
+  if (shouldFlip && !aoFlip) flipAO();
 
-  if (!sunFlip && aoFlip) {
-    swapSun();
-  }
-  if (!rgbFlip && aoFlip) {
-    swapRGB();
-  }
-
-  return rgbFlip || sunFlip || aoFlip;
+  return shouldFlip;
 };
 
 const checkSets: Record<DirectionNames, Record<QuadVertexes, number[]>> = {
@@ -187,6 +215,7 @@ export const LightGradient = {
         light = 0;
       }
     }
+
     if (tool.nVoxel.isRenderable() && !tool.nVoxel.isLightSource()) {
       tool.faceDataOverride.face = face;
       tool.faceDataOverride.default = false;
@@ -250,22 +279,22 @@ export const LightGradient = {
               if (nlValues.b == 0) zeroCheck.b++;
               if (!LD.removeS(nl)) break doRGB;
               if (nlValues.r > RGBValues.r && RGBValues.r < 15) {
-                RGBValues.r++;
+                RGBValues.r = nlValues.r;
               }
 
               if (nlValues.g > RGBValues.g && RGBValues.g < 15) {
-                RGBValues.g++;
+                RGBValues.g = nlValues.g;
               }
 
               if (nlValues.b > RGBValues.b && RGBValues.b < 15) {
-                RGBValues.b++;
+                RGBValues.b = nlValues.b;
               }
             }
             doSun: if (this.settings.doSun) {
               if (nlValues.s == 0) zeroCheck.s++;
               if (!LD.getS(nl)) break doSun;
               if (sunValues.s < nlValues.s && sunValues.s < 15) {
-                sunValues.s += LD.SRS;
+                sunValues.s = nlValues.s;
               }
             }
           }
@@ -358,32 +387,9 @@ export const LightGradient = {
         AOValue.setVertex(vertex, AOValues.a);
       }
     }
-  
 
-    if (flipCheck(face)) {
-      tool
-        .setFaceFlipped(true)
-        .getWorldLight()
-        .set(
-          LightValue.vertices[2],
-          LightValue.vertices[1],
-          LightValue.vertices[4],
-          LightValue.vertices[3]
-        );
-
-      if (!states.ignoreAO) {
-
-        tool.getWorldAO().set(
-          AOValue.vertices[2],
-          AOValue.vertices[1],
-          AOValue.vertices[4],
-          AOValue.vertices[3]
-        );
-      }
-      return;
-    }
     tool
-      .setFaceFlipped(false)
+      .setFaceFlipped(flipCheck(face))
       .getWorldLight()
       .set(
         LightValue.vertices[1],
@@ -391,6 +397,7 @@ export const LightGradient = {
         LightValue.vertices[3],
         LightValue.vertices[4]
       );
+
     if (!states.ignoreAO) {
       tool
         .getWorldAO()
