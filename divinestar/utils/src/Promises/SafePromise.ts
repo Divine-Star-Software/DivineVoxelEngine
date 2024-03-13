@@ -29,7 +29,7 @@ export class SafePromise<T = any> {
 
   observers = {
     died: new Observable<SafePromiseDiedError>(),
-    cancled: new Observable<void>(),
+    canceled: new Observable<void>(),
     rejected: new Observable<void>(),
     resolved: new Observable<T>(),
     finally: new Observable<void>(),
