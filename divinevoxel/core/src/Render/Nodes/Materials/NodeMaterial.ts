@@ -36,7 +36,7 @@ export class DVENodeMaterial {
     this.material.setFloat("sunLightLevel", level);
   }
   setBaseLevel(level: number) {
-  if (!this.material) return;
+    if (!this.material) return;
     this.material.setFloat("baseLevel", level);
   }
 
@@ -109,6 +109,7 @@ export class DVENodeMaterial {
     if (this.data.backFaceCulling !== undefined) {
       this.material.backFaceCulling = this.data.backFaceCulling;
     }
+
 
     this.afterCreate.forEach((_) => _(this.material));
   }

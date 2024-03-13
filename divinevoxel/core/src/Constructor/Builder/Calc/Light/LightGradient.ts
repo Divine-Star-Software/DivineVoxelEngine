@@ -15,19 +15,7 @@ const RGBState = new QuadVertexData();
 const SunState = new QuadVertexData();
 const AOValue = new QuadVertexData();
 const AOState = new QuadVertexData();
-/**
 
-1 Top-left corner
-2 Bottom-left corner
-3 Bottom-right corner
-4 Top-right corner
-And for the flipped case, you've rearranged them to:
-
-4 Top-right corner
-1 Top-left corner
-2 Bottom-left corner
-3 Bottom-right corner
- */
 const flipSun = () => {
   LightValue.set(
     LD.setS(LD.getS(LightValue.vertices[4]), LightValue.vertices[1]),
@@ -57,10 +45,12 @@ const shouldSunFlip = (face: DirectionNames) => {
   const v2 = LD.getS(LightValue.vertices[2]);
   const v3 = LD.getS(LightValue.vertices[3]);
   const v4 = LD.getS(LightValue.vertices[4]);
+  if (v3 > v2 && v3 > v1 && v3 > v4) return true;
+  if (v1 > v2 && v1 > v3 && v1 > v4) return true;
+  if (v4 > v1 && v4 > v2 && v4 > v3) return false;
+  if (v2 > v1 && v2 > v4 && v2 > v3) return false;
   if (
-    (v1 > v2 && v1 > v4 && v1 > v3) ||
-    (v3 > v2 && v3 > v4 && v3 > v1) ||
-    v3 + v1 > v2 + v4 ||
+  //  v3 + v1 > v2 + v4 ||
     SunState.isEqualTo(1, 1, 0, 1) ||
     SunState.isEqualTo(0, 1, 1, 1) ||
     SunState.isEqualTo(0, 1, 0, 1)
@@ -68,14 +58,17 @@ const shouldSunFlip = (face: DirectionNames) => {
     return true;
   return false;
 };
+
 const shouldRGBFlip = (face: DirectionNames) => {
   const v1 = LD.getRGB(LightValue.vertices[1]);
   const v2 = LD.getRGB(LightValue.vertices[2]);
   const v3 = LD.getRGB(LightValue.vertices[3]);
   const v4 = LD.getRGB(LightValue.vertices[4]);
+  if (v3 > v2 && v3 > v1 && v3 > v4) return true;
+  if (v1 > v2 && v1 > v3 && v1 > v4) return true;
+  if (v4 > v1 && v4 > v2 && v4 > v3) return false;
+  if (v2 > v1 && v2 > v4 && v2 > v3) return false;
   if (
-    (v1 > v2 && v1 > v4 && v1 > v3) ||
-    (v3 > v2 && v3 > v4 && v3 > v1) ||
     v3 + v1 > v2 + v4 ||
     RGBState.isEqualTo(1, 1, 0, 1) ||
     RGBState.isEqualTo(0, 1, 1, 1) ||
@@ -100,16 +93,29 @@ const shouldAOFlip = (face: DirectionNames) => {
   ) {
     return false;
   }
+  const v1 = AOValue.vertices[1];
+  const v2 = AOValue.vertices[2];
+  const v3 = AOValue.vertices[3];
+  const v4 = AOValue.vertices[4];
 
-  return (
+  if (v2 > v3 && v2 > v1) return false;
+  if (v4 > v3 && v4 > v1) return false;
+  if (v2 < v3 || v2 < v1) return true;
+  if (v4 < v3 || v4 < v1) return true;
+  if (
+    v3 + v1 > v2 + v4 ||
     AOState.isEqualTo(1, 1, 0, 1) ||
     AOState.isEqualTo(0, 1, 1, 1) ||
     AOState.isEqualTo(0, 1, 0, 1)
-  );
+  )
+    return true;
+  return false;
 };
 
+let flippedRGB = false;
 const flipCheck = (face: DirectionNames) => {
   const rgbFlip = shouldRGBFlip(face);
+  flippedRGB = rgbFlip;
   const sunFlip = shouldSunFlip(face);
   const aoFlip = shouldAOFlip(face);
 
@@ -123,7 +129,33 @@ const flipCheck = (face: DirectionNames) => {
 
   return shouldFlip;
 };
+/**
+normal
+1       4
+|    /  |
+|   /   |
+|  /    |
+| /     |
+2       3
+1 Top-left corner
+2 Bottom-left corner
+3 Bottom-right corner
+4 Top-right corner
+And for the flipped case, you've rearranged them to:
 
+flipped
+1      4
+| \    |
+|  \   |
+|   \  |
+|    \ |
+2      3
+
+4 Top-right corner
+1 Top-left corner
+2 Bottom-left corner
+3 Bottom-right corner
+ */
 const checkSets: Record<DirectionNames, Record<QuadVertexes, number[]>> = {
   top: {
     1: [-1, 1, 0, 0, 1, -1, -1, 1, -1],
@@ -408,5 +440,8 @@ export const LightGradient = {
           AOValue.vertices[4]
         );
     }
+    /*     if (flippedRGB) {
+      tool.getWorldAO().set(0, 0, 0, 0);
+    } */
   },
 };

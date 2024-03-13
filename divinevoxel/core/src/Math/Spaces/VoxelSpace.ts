@@ -26,17 +26,27 @@ class VSVec3 {
     return [this.x, this.y, this.z];
   }
 }
+const alignToPowerOf2 = (value: number, powerOf2: number) => {
+  const mask = (1 << powerOf2) - 1;
+  return value & ~mask;
+};
 
 //Objects
 export class VoxelSpace {
   static index = Flat3DIndex.GetXZYOrder();
   static simpleCubeHash(space: VoxelSpace) {
-    space._position.x =
-      (space._position.x >> space._boundsPower2.x) << space._boundsPower2.x;
-    space._position.y =
-      (space._position.y >> space._boundsPower2.y) << space._boundsPower2.y;
-    space._position.z =
-      (space._position.z >> space._boundsPower2.z) << space._boundsPower2.z;
+    space._position.x = alignToPowerOf2(
+      space._position.x,
+      space._boundsPower2.x
+    );
+    space._position.y = alignToPowerOf2(
+      space._position.y,
+      space._boundsPower2.y
+    );
+    space._position.z = alignToPowerOf2(
+      space._position.z,
+      space._boundsPower2.z
+    );
     return space._position;
   }
 
@@ -70,12 +80,9 @@ export class VoxelSpace {
       space._position.y,
       space._position.z
     );
-    space._hashedPosition.x =
-      Math.abs(space._position.x - parentPosition.x) / divisor.x;
-    space._hashedPosition.y =
-      Math.abs(space._position.y - parentPosition.y) / divisor.y;
-    space._hashedPosition.z =
-      Math.abs(space._position.z - parentPosition.z) / divisor.z;
+    space._hashedPosition.x = space._position.x - parentPosition.x / divisor.x;
+    space._hashedPosition.y = space._position.y - parentPosition.y / divisor.y;
+    space._hashedPosition.z = space._position.z - parentPosition.z / divisor.z;
     return space._hashedPosition;
   }
 
