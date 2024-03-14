@@ -50,7 +50,7 @@ const shouldSunFlip = (face: DirectionNames) => {
   if (v4 > v1 && v4 > v2 && v4 > v3) return false;
   if (v2 > v1 && v2 > v4 && v2 > v3) return false;
   if (
-  //  v3 + v1 > v2 + v4 ||
+    //  v3 + v1 > v2 + v4 ||
     SunState.isEqualTo(1, 1, 0, 1) ||
     SunState.isEqualTo(0, 1, 1, 1) ||
     SunState.isEqualTo(0, 1, 0, 1)
@@ -112,10 +112,8 @@ const shouldAOFlip = (face: DirectionNames) => {
   return false;
 };
 
-let flippedRGB = false;
 const flipCheck = (face: DirectionNames) => {
   const rgbFlip = shouldRGBFlip(face);
-  flippedRGB = rgbFlip;
   const sunFlip = shouldSunFlip(face);
   const aoFlip = shouldAOFlip(face);
 
@@ -209,7 +207,6 @@ export const LightGradient = {
     doRGB: true,
     doSun: true,
   },
-
   calculate(
     face: DirectionNames,
     tool: VoxelMesherDataTool,
