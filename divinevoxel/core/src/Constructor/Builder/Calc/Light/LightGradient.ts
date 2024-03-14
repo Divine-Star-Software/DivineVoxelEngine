@@ -45,15 +45,23 @@ const shouldSunFlip = (face: DirectionNames) => {
   const v2 = LD.getS(LightValue.vertices[2]);
   const v3 = LD.getS(LightValue.vertices[3]);
   const v4 = LD.getS(LightValue.vertices[4]);
-  if (v3 > v2 && v3 > v1 && v3 > v4) return true;
-  if (v1 > v2 && v1 > v3 && v1 > v4) return true;
   if (v4 > v1 && v4 > v2 && v4 > v3) return false;
   if (v2 > v1 && v2 > v4 && v2 > v3) return false;
+  const totalLight = v1 + v2 + v3 + v4;
+  const averageLight = totalLight / 4;
+  const threshold = 1; 
   if (
-    //  v3 + v1 > v2 + v4 ||
-    SunState.isEqualTo(1, 1, 0, 1) ||
-    SunState.isEqualTo(0, 1, 1, 1) ||
-    SunState.isEqualTo(0, 1, 0, 1)
+    Math.abs(v1 - averageLight) <= threshold &&
+    Math.abs(v2 - averageLight) <= threshold &&
+    Math.abs(v3 - averageLight) <= threshold &&
+    Math.abs(v4 - averageLight) <= threshold
+  ) {
+    return false;
+  }
+
+  if (
+    v3 + v1 >
+    v2 + v4
   )
     return true;
   return false;
@@ -64,15 +72,23 @@ const shouldRGBFlip = (face: DirectionNames) => {
   const v2 = LD.getRGB(LightValue.vertices[2]);
   const v3 = LD.getRGB(LightValue.vertices[3]);
   const v4 = LD.getRGB(LightValue.vertices[4]);
-  if (v3 > v2 && v3 > v1 && v3 > v4) return true;
-  if (v1 > v2 && v1 > v3 && v1 > v4) return true;
   if (v4 > v1 && v4 > v2 && v4 > v3) return false;
   if (v2 > v1 && v2 > v4 && v2 > v3) return false;
+  const totalLight = v1 + v2 + v3 + v4;
+  const averageLight = totalLight / 4;
+  const threshold = 1; 
   if (
-    v3 + v1 > v2 + v4 ||
-    RGBState.isEqualTo(1, 1, 0, 1) ||
-    RGBState.isEqualTo(0, 1, 1, 1) ||
-    RGBState.isEqualTo(0, 1, 0, 1)
+    Math.abs(v1 - averageLight) <= threshold &&
+    Math.abs(v2 - averageLight) <= threshold &&
+    Math.abs(v3 - averageLight) <= threshold &&
+    Math.abs(v4 - averageLight) <= threshold
+  ) {
+    return false;
+  }
+
+  if (
+    v3 + v1 >
+    v2 + v4
   )
     return true;
   return false;
@@ -437,8 +453,5 @@ export const LightGradient = {
           AOValue.vertices[4]
         );
     }
-    /*     if (flippedRGB) {
-      tool.getWorldAO().set(0, 0, 0, 0);
-    } */
   },
 };
