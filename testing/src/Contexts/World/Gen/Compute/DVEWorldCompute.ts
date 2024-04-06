@@ -913,11 +913,12 @@ export class GPUWorldGen {
     await WorldLock.addLock(["main", [sx, sy, sz], [ex, ey, ez]]);
 
     const index = Flat3DIndex.GetXZYOrder();
-    index.bounds = {
-      x: Constants.PROCESSING_X,
-      y: Constants.PROCESSING_Y,
-      z: Constants.PROCESSING_Z,
-    };
+    index.setBounds(
+      Constants.PROCESSING_X,
+      Constants.PROCESSING_Y,
+      Constants.PROCESSING_Z,
+    )
+
     const mash = 0xff;
     const segments: [
       dimension: string,

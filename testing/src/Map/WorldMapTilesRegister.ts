@@ -1,4 +1,4 @@
-import type { LocationData } from "@divinestar/voxelspaces";
+import type { LocationData } from "@divinevoxel/core/Math";
 import type { Mesh } from "@babylonjs/core";
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces";
 import { WorldMapTile } from "./WorldMapTile";
@@ -112,10 +112,10 @@ export class WorldMapTilesRegister {
       const columnLocation: LocationData = [
         location[0],
         ...WorldSpaces.column.getPositionLocation(location).toArray(),
-      ];
+      ] as LocationData;
       return {
         location: columnLocation,
-        tile: new WorldMapTile(this.worldMap, columnLocation),
+      tile: new WorldMapTile(this.worldMap, columnLocation),
       };
     },
     get: (location: LocationData) => {

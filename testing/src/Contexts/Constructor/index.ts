@@ -5,12 +5,12 @@ import { GetDreamEther } from "./Voxels/LiquidDreamEther";
 import { DivineVoxelEngineConstructor } from "@divinevoxel/core/Constructor";
 import { Flat3DIndex, Vec3Array } from "@divinevoxel/core/Math";
 import { BrushTool } from "@divinevoxel/core/Tools/Brush/Brush";
-import { TemplateProcessor } from "@divinevoxel/core/Constructor/Builder/Processors/TemplateProcessor";
-import { LocationData } from "@divinestar/voxelspaces";
+import { LocationData } from "@divinevoxel/core/Math";
+import { DVEDefaultBuilder } from "@divinevoxel/default/Builder/Builder";
+const defaults = DVEDefaultBuilder.defaults;
 await StartContrusctor({
-  getVoxelConstructors(voxelConstructors) {
-    const { defaults } = voxelConstructors;
-    return [
+  builder: new DVEDefaultBuilder({
+    constructors: [
       GetLightDebugBox(),
       GetMarkerBox(),
       GetDreamEther(),
@@ -99,16 +99,13 @@ await StartContrusctor({
         "#dve_solid",
         "dve_dread_grass",
       ]),
-    ];
-  },
+    ],
+  }),
+
 });
 
 const loadInFlatIndex = Flat3DIndex.GetXZYOrder();
-loadInFlatIndex.bounds = {
-  x: 256,
-  y: 128,
-  z: 256,
-};
+loadInFlatIndex.setBounds(256, 128, 256);
 const dataTool = DivineVoxelEngineConstructor.instance.getDataTool();
 const brushTool = new BrushTool();
 brushTool._update = false;
@@ -203,11 +200,7 @@ DivineVoxelEngineConstructor.instance.TC.registerTasks<
 );
 
 const templateInFlatIndex = Flat3DIndex.GetXZYOrder();
-templateInFlatIndex.bounds = {
-  x: 64,
-  y: 128,
-  z: 64,
-};
+templateInFlatIndex.setBounds(64, 128, 64);
 DivineVoxelEngineConstructor.instance.TC.registerTasks<
   [
     dimension: string,
@@ -236,12 +229,12 @@ DivineVoxelEngineConstructor.instance.TC.registerTasks<
       for (let z = sz; z < ez; z += 16) {
         iy = siy;
         for (let y = sy; y < ey; y += 16) {
-          TemplateProcessor.build(
+    /*       TemplateProcessor.build(
             [dimension, x, y, z],
             data,
             [ix * 16, iy * 16, iz * 16],
             templateInFlatIndex
-          );
+          ); */
           iy++;
         }
         iz++;

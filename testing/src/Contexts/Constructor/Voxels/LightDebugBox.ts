@@ -1,5 +1,6 @@
+import { VoxelConstructor } from "@divinevoxel/default/Builder/Constructors/Voxel/Classes/VoxelConstructor";
+import { BoxVoxelShape } from "@divinevoxel/default/Builder/Shapes/default/Box/Box.voxel.shape";
 
-import { BoxVoxelShape, VoxelConstructor } from "@divinevoxel/core/Constructor";
 import { DataTool } from "@divinevoxel/core/Tools/Data/DataTool";
 const getData = (dataTool: DataTool, x: number, y: number, z: number) => {
   let data = 0;
@@ -9,7 +10,7 @@ const getData = (dataTool: DataTool, x: number, y: number, z: number) => {
   return data;
 };
 
-export function GetLightDebugBox() : VoxelConstructor{
+export function GetLightDebugBox(): VoxelConstructor {
   const textures: number[] = [];
   return {
     id: "dve_light_debug",

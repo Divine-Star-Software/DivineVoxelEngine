@@ -8,7 +8,7 @@ import {
   StandardMaterial,
   ShaderMaterial,
 } from "@babylonjs/core";
-import { LocationData } from "@divinestar/voxelspaces";
+import { LocationData } from "@divinevoxel/core/Math";
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces";
 import { $2dMooreNeighborhood } from "@divinevoxel/core/Math/Constants/CardinalNeighbors.js";
 import { Distance3D, Vec3Array } from "@divinevoxel/core/Math";

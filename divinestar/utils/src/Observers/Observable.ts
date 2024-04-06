@@ -1,5 +1,5 @@
-type ObservableFunction<T> = (data: T) => void;
-type ObserverKeys = Object | string | Symbol | Function;
+export type ObservableFunction<T> = (data: T) => void;
+export type ObserverKeys = Object | string | Symbol | Function;
 export class Observable<T = void> {
   observers = new Map<ObserverKeys, ObservableFunction<T>>();
   onceObservers: Function[] = [];
@@ -41,5 +41,14 @@ export class Observable<T = void> {
       const observer = this.onceObservers.shift()!;
       await observer(data);
     }
+  }
+
+  /**# clear
+   * ---
+   * Removes all observers.
+   */
+  clear() {
+    this.onceObservers = [];
+    this.observers.clear();
   }
 }
