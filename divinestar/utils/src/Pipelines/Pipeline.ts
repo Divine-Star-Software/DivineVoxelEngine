@@ -1,7 +1,7 @@
 type SyncPipelineFunction<T> = (data: T) => T;
 type AsyncPipelineFunction<T> = (data: T) => Promise<T> | T;
+export type PipelineKeys = Object | string | Symbol | Function;
 
-type PipelineKeys = string | Symbol | Function;
 export class Pipeline<T extends any = {}> {
   private pipes = new Map<PipelineKeys, SyncPipelineFunction<T>>();
 
@@ -11,7 +11,7 @@ export class Pipeline<T extends any = {}> {
     this.pipes.set(key, func);
   }
 
-  unRegister(key: string) {
+  unRegister(key: PipelineKeys) {
     this.pipes.delete(key);
   }
 
@@ -31,7 +31,7 @@ export class AsyncPipeline<T extends any = {}> {
     this.pipes.set(key, func);
   }
 
-  unRegister(key: string) {
+  unRegister(key: PipelineKeys) {
     this.pipes.delete(key);
   }
 

@@ -9,7 +9,6 @@ import { Engine } from "@babylonjs/core/Engines/engine.js";
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera.js";
 import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera.js";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
-import { SceneTool } from "@divinevoxel/core/Render/Tools/SceneTool";
 import { Observable } from "@divinestar/utils/Observers/Observable";
 import { RenderNodes } from "../Classes/RednerNodes.js";
 
@@ -18,8 +17,8 @@ const DVEObservers = {
 };
 type UseDVEProps = {
   textureAssetPath?: "assets/textures";
-  textures: TextureData[];
-  init: DVERInitData;
+//  textures: TextureData[];
+ // init: DVERInitData;
   useFloatingOrigin?: boolean;
   useSkyBox?: boolean;
   staturate: (
@@ -38,23 +37,22 @@ export function useDVE(props: UseDVEProps) {
       const DVER = new DivineVoxelEngineRender();
       props.staturate(DVER, DVEObservers);
 
-      if (props.textureAssetPath) {
+/*       if (props.textureAssetPath) {
         DVER.nodes.textures.defineDefaultTexturePath(props.textureAssetPath);
       }
 
       DVER.nodes.textures.registerTexture(props.textures);
-
+ */
       const nodes = nodesRef.current;
       const canvas = canvasRef.current;
       nodes.canvas = canvas;
 
       InitScene(canvas, nodes);
 
-      props.init.scene = nodes.scene;
-      await DVER.init(props.init);
-      DVER.render.scene = nodes.scene;
+
+  
       nodes.DVER = DVER;
-      if (props.useSkyBox) {
+/*       if (props.useSkyBox) {
         const skybox = CreateBox("skyBox", { size: 800.0 }, nodes.scene);
         skybox.infiniteDistance = true;
         const bmat = DVER.nodes.materials.get("#dve_skybox");
@@ -62,8 +60,8 @@ export function useDVE(props: UseDVEProps) {
           //@ts-ignore
           skybox.material = bmat.getMaterial();
         }
-      }
-
+      } */
+ /* 
       if (props.useFloatingOrigin) {
         const oriign = new Vector3();
         nodes.scene.onBeforeActiveMeshesEvaluationObservable.add(() => {
@@ -73,7 +71,7 @@ export function useDVE(props: UseDVEProps) {
         });
       }
 
-      nodes.sceneTool = DVER.getSceneTool();
+     nodes.sceneTool = DVER.getSceneTool();
       nodes.sceneTool.fog.setMode("animated-volumetric");
       nodes.sceneTool.options
         .doEffects(true)
@@ -85,7 +83,7 @@ export function useDVE(props: UseDVEProps) {
         .levels.setBase(0.1)
         .fog.setColor(0.6)
         .fog.setMode("volumetric")
-        .fog.setDensity(0.0005);
+        .fog.setDensity(0.0005); */
 
       DVEObservers.ready.notify(DVER);
     })();

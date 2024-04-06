@@ -1,6 +1,5 @@
 import { Util } from "../../Global/Util.helper.js";
 import { ThreadComm } from "@divinestar/threads/";
-import type { TextureTypeUVMap } from "Types/Render/Textures/Texture.types.js";
 
 export const WorldComm = ThreadComm.createComm("world");
 
@@ -53,11 +52,7 @@ export const ConstructorCommManager = Util.merge(
     }
    }
   },
-  syncTextureData(dasta: TextureTypeUVMap) {
-   for (const constructor of ConstructorCommManager.__comms) {
-    constructor.runTasks("sync-texuture-index", dasta);
-   }
-  },
+
   setConstructors(constructors: Worker[]) {
    ConstructorCommManager.addPorts(constructors);
   },

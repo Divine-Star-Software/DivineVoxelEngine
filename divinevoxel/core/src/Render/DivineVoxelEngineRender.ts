@@ -1,44 +1,36 @@
-//types
-import { type Scene } from "@babylonjs/core";
 //objects
 import { Util } from "../Global/Util.helper.js";
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import { RenderManager } from "./Scene/RenderManager.js";
-import { Effect } from "@babylonjs/core/Materials/effect";
 import { RenderTasks } from "./Tasks/RenderTasks.js";
-import { WorldBounds } from "../Data/World/WorldBounds.js";
 import { ThreadComm } from "@divinestar/threads/";
-import { WorldSpaces } from "../Data/World/WorldSpaces.js";
-import { SceneTool } from "./Tools/SceneTool.js";
+
 import "@babylonjs/core/Meshes/thinInstanceMesh";
 //inter commsP
 import {
   DataComm,
-  FXComm,
   NexusComm,
   WorldComm,
   ConstructorCommManager,
   RichWorldComm,
 } from "./Threads/RenderThreads.js";
 //functions
-import { InitWorkers } from "./Init/InitThreads.js";
-import { $INITFunction as initFunction } from "./Init/InitRender.js";
-import { RichDataTool } from "../Tools/Data/RichDataTool.js";
-import { NodeMeshTool } from "./Tools/NodeMeshTool.js";
-import { NodeManager } from "./Nodes/NodeManager.js";
+import InitWorkers from "./Init/InitThreads.js";
 import { DataSyncNode } from "../Data/DataSyncNode.js";
 import { DataManager } from "../Data/DataManager.js";
 
 import type { EngineSettingsData } from "../Types/Data/Settings/EngineSettings.types";
 import type { RecursivePartial } from "../Types/Util.types";
+import { DVERenderer } from "../Interfaces/Render/DVERenderer.js";
 
 export type DVERInitData = {
   worldWorker: Worker;
   constructorWorkers: Worker[];
-  scene?: Scene;
+  renderer: DVERenderer;
+
   nexusWorker?: Worker;
   dataWorker?: Worker;
-  fxWorker?: Worker;
+
   richWorldWorker?: Worker;
 } & RecursivePartial<EngineSettingsData>;
 
@@ -51,17 +43,16 @@ export class DivineVoxelEngineRender {
   worldComm = WorldComm;
   nexusComm = NexusComm;
   dataComm = DataComm;
-  fxComm = FXComm;
+
   richWorldComm = RichWorldComm;
   constructorCommManager = ConstructorCommManager;
 
   settings = EngineSettings;
   render = RenderManager;
 
+  renderer: DVERenderer;
   dataSyncNode = DataSyncNode;
   data = DataManager;
-
-  nodes = NodeManager;
 
   tasks = RenderTasks;
 
@@ -74,19 +65,8 @@ export class DivineVoxelEngineRender {
     if (DivineVoxelEngineRender.initialized) return;
     DivineVoxelEngineRender.initialized = true;
     await InitWorkers(this, initData);
-    if (initData.scene) {
-      await initFunction(this, initData.scene);
-    }
-  }
-
-  getSceneTool() {
-    return new SceneTool();
-  }
-  getRichDataTool() {
-    return new RichDataTool();
-  }
-  getNodeMeshTool() {
-    return new NodeMeshTool();
+    this.renderer = initData.renderer;
+    await this.renderer.init();
   }
 
   /**# clearAll

@@ -4,14 +4,12 @@ import type { EngineSettingsData } from "Types/Data/Settings/EngineSettings.type
 //objects
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { Builder } from "./Builder/Builder.js";
 import { Propagation } from "./Propagation/Propagation.js";
 import { WorldGeneration } from "./WorldGeneration/WorldGeneration.js";
 import { Analyzer } from "./Analyzer/Analyzer.js";
 //data
 import { DataManager } from "../Data/DataManager.js";
 import { DataSyncNode } from "../Data/DataSyncNode.js";
-import { VoxelConstructors } from "./Builder/Constructors/Voxel/VoxelConstructors.js";
 //threadcomm
 import { ThreadComm } from "@divinestar/threads/";
 import { WorldComm, ParentComm } from "./Threads/ConstrcutorTheads.js";
@@ -22,6 +20,11 @@ import { ConstructorHooks } from "./Hooks/ConstructorHooks.js";
 import { RichDataTool } from "../Tools/Data/RichDataTool.js";
 import { TasksRequest } from "./Tasks/TasksRequest.js";
 import { DataTool } from "../Tools/Data/DataTool.js";
+import { DVEBuilder } from "Interfaces/Builder/DVEBuilder.js";
+
+export type DivineVoxelEngineConstructorInitData = {
+  builder: DVEBuilder;
+};
 
 export class DivineVoxelEngineConstructor {
   static environment: "node" | "browser" = "browser";
@@ -32,12 +35,11 @@ export class DivineVoxelEngineConstructor {
 
   propagation = Propagation;
   worldGen = WorldGeneration;
-  builder = Builder;
+  builder: DVEBuilder;
   analyzer = Analyzer;
 
   dataSyncNode = DataSyncNode;
   data = DataManager;
-  voxelManager = VoxelConstructors;
 
   TC = ThreadComm;
   parentComm = ParentComm;
@@ -52,7 +54,8 @@ export class DivineVoxelEngineConstructor {
     DivineVoxelEngineConstructor.instance = this;
   }
 
-  async init() {
+  async init(data: DivineVoxelEngineConstructorInitData) {
+    this.builder = data.builder;
     await InitWorker(this);
   }
 

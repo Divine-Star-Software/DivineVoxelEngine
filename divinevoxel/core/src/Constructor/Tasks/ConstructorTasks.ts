@@ -1,7 +1,6 @@
 import { ConstructorTasks } from "../../Common/Threads/Contracts/ConstructorTasks.js";
 import { DivineVoxelEngineConstructor } from "../DivineVoxelEngineConstructor.js";
 import { ThreadComm } from "@divinestar/threads/";
-import type { BuildNodeMesh } from "Types/Tasks/RenderTasks.types.js";
 
 import type {
   BuildTasks,
@@ -28,27 +27,8 @@ export const Tasks = {
   clearAll: ThreadComm.registerTasks("clear-all", () => {
     WorldRegister.clearAll();
   }),
-  data: {
-    syncTextures: ThreadComm.registerTasks(
-      "sync-texuture-index",
-      (data: any) => {
-        const DVEC = DivineVoxelEngineConstructor.instance;
-        DVEC.builder.textureManager.setTextureIndex(data);
-        DVEC.hooks.texturesRegistered.run(DVEC.builder.textureManager);
-      }
-    ),
-  },
+  data: {},
   build: {
-    nodeMesh: ThreadComm.registerTasks<BuildNodeMesh>(
-      "build-node-mesh",
-      (data, onDone) => {
-        const DVEC = DivineVoxelEngineConstructor.instance;
-        const nodeData = DVEC.builder.nodes.buildNode(data);
-        if (!nodeData) return onDone ? onDone(false) : 0;
-        onDone ? onDone(nodeData[0], nodeData[1]) : 0;
-      },
-      "deferred"
-    ),
     chunk: {
       tasks: ThreadComm.registerTasks<PriorityTask<BuildTasks>>(
         ConstructorTasks.BuildChunk,
@@ -77,7 +57,7 @@ export const Tasks = {
           location[2] = chunkPOS.y;
           location[3] = chunkPOS.z;
           totalChunks++;
-          DVEC.builder.buildChunk([...location]);
+          DVEC.builder.buildChunk([...location], 1);
         }
         if (onDone) onDone();
       },

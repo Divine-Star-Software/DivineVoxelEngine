@@ -1,0 +1,29 @@
+{
+  "name": "@divinevoxel/default",
+  "version": "0.0.0",
+  "description": "Default shaders for DVE.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "devDependencies": {},
+  "scripts": {
+    "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ../../LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
+    "compile": "cd src && npx tsc --watch"
+  },
+  "keywords": [],
+  "author": "Divine Star Software",
+  "license": "MIT",
+  "repository": {
+    "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
+  },
+  "dependencies": {
+    "@divinestar/shaders": "^0.0.44",
+    "@divinevoxel/core": "^0.0.44"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

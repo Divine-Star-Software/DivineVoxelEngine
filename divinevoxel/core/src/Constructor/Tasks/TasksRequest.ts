@@ -13,9 +13,9 @@ import { $3dMooreNeighborhood } from "../../Math/Constants/CardinalNeighbors.js"
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
-import { Builder } from "../../Constructor/Builder/Builder.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
 import { VisitedMap } from "../../Global/Util/VisistedMap.js";
+import { DivineVoxelEngineConstructor } from "../DivineVoxelEngineConstructor.js";
 
 const chunkTool = new ChunkDataTool();
 type RebuildModes = "sync" | "async";
@@ -142,7 +142,7 @@ class Request<T, Q> {
   while (this.syncQueue.length !== 0) {
    const node = this.syncQueue.shift();
    if (!node) break;
-   Builder.buildChunk(node);
+   DivineVoxelEngineConstructor.instance.builder.buildChunk(node,1);
   }
   this.rebuildQueMap.clear();
   return this;

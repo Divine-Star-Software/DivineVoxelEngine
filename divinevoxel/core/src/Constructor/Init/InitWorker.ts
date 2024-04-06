@@ -4,7 +4,6 @@ import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 import { ConstructorThreadState } from "../Threads/ConstructorThreadState.js";
 import { ThreadComm } from "@divinestar/threads/";
 import { DataHooks } from "../../Data/DataHooks.js";
-import { SubstanceRules } from "../Builder/Rules/SubstanceRules.js";
 
 export async function InitWorker(DVEC: DivineVoxelEngineConstructor) {
   let parent = "render";
@@ -12,7 +11,7 @@ export async function InitWorker(DVEC: DivineVoxelEngineConstructor) {
     parent = "server";
   }
   await ThreadComm.$INIT("constructor", parent);
-  DVEC.builder.$INIT();
+  DVEC.builder.init();
 
   ThreadComm.registerTasks<EngineSettingsData>("sync-settings", (settings) => {
     EngineSettings.syncSettings(settings);
@@ -27,7 +26,5 @@ export async function InitWorker(DVEC: DivineVoxelEngineConstructor) {
     onReady() {},
     checkInterval: 1,
   });
-  ThreadComm.registerTasks("ready", () => {
-    SubstanceRules.$BuildRules();
-  });
+
 }

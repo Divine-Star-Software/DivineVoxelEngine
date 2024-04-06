@@ -1,23 +1,18 @@
-import type { Mesh, Scene } from "@babylonjs/core";
 
 import {
   RemoveChunkMeshTasks,
   SetChunkMeshTask,
-  SetNodeMesh,
 } from "Types/Tasks/RenderTasks.types.js";
 import { MeshRegister } from "./MeshRegister.js";
-import { LocationData } from "Math/index.js";
+import { LocationData } from "../../Math/index.js";
 import { Distance3D } from "../../Math/Functions/Distance3d.js";
-import { NodeManager } from "../Nodes/NodeManager.js";
+
+import { DivineVoxelEngineRender } from "../../Render/DivineVoxelEngineRender.js";
+import { URIMesh } from "@divinestar/uri/Meshes/URIMesh.js";
+import { DVENodeMeshAttributes } from "../../Interfaces/Render/Nodes/DVERenderNode.types.js";
 
 export const MeshManager = {
-  scene: <Scene>{},
   runningUpdate: false,
-
-  $INIT(scene: Scene) {
-    this.scene = scene;
-    scene.freeActiveMeshes();
-  },
 
   removeColumnsOutsideRadius(origion: LocationData, radius: number) {
     const [dimesnionId, x, y, z] = origion;
@@ -40,21 +35,36 @@ export const MeshManager = {
       const mesh = MeshRegister.chunk.remove(location, substance);
       if (!mesh) return false;
 
-      NodeManager.meshes.get(substance)!.returnMesh(mesh);
+      DivineVoxelEngineRender.instance.renderer.nodes.meshes
+        .get(substance)!
+        .returnMesh(mesh);
     },
-    add(location: LocationData, substance: string, meshData: SetNodeMesh) {
+    add(
+      location: LocationData,
+      substance: string,
+      meshData: DVENodeMeshAttributes
+    ) {
       let chunk = MeshRegister.chunk.get(location, substance);
-      let mesh: Mesh;
+      let mesh: URIMesh<any, any>;
 
       if (!chunk) {
-        mesh = NodeManager.meshes.get(substance)!.createMesh(meshData);
+        mesh = DivineVoxelEngineRender.instance.renderer.nodes.meshes
+          .get(substance)!
+          .createMesh([location[1], location[2], location[3]], meshData);
+
         (mesh as any).type = "chunk";
         MeshRegister.chunk.add(location, mesh, substance);
         mesh.setEnabled(true);
         mesh.isVisible = true;
       } else {
         mesh = chunk.mesh;
-        NodeManager.meshes.get(substance)!.updateVetexData(meshData, mesh);
+        DivineVoxelEngineRender.instance.renderer.nodes.meshes
+          .get(substance)!
+          .updateVetexData(
+            [location[1], location[2], location[3]],
+            meshData,
+            mesh
+          );
       }
     },
     update(data: SetChunkMeshTask) {
@@ -67,21 +77,29 @@ export const MeshManager = {
         if (remove) {
           const mesh = MeshRegister.chunk.remove(location, substance);
           if (mesh) {
-            NodeManager.meshes.get(substance)!.returnMesh(mesh);
+            DivineVoxelEngineRender.instance.renderer.nodes.meshes
+              .get(substance)!
+              .returnMesh(mesh);
           }
           continue;
         }
         let chunk = MeshRegister.chunk.get(location, substance);
-        let mesh: Mesh;
+        let mesh: URIMesh;
         if (!chunk) {
-          mesh = NodeManager.meshes.get(substance)!.createMesh(chunkData[1]);
+          mesh = DivineVoxelEngineRender.instance.renderer.nodes.meshes
+            .get(substance)!
+            .createMesh([location[1], location[2], location[3]], chunkData[1][1]);
           (mesh as any).type = "chunk";
           MeshRegister.chunk.add(location, mesh, substance);
         } else {
           mesh = chunk.mesh;
-          NodeManager.meshes
+          DivineVoxelEngineRender.instance.renderer.nodes.meshes
             .get(substance)!
-            .updateVetexData(chunkData[1], mesh);
+            .updateVetexData(
+              [location[1], location[2], location[3]],
+              chunkData[1][1],
+              mesh
+            );
         }
       }
     },
@@ -90,7 +108,9 @@ export const MeshManager = {
       if (!column) return false;
       for (const [key, chunk] of column.chunks) {
         for (const [substance, mesh] of chunk) {
-          NodeManager.meshes.get(substance)!.returnMesh(mesh.mesh);
+          DivineVoxelEngineRender.instance.renderer.nodes.meshes
+            .get(substance)!
+            .returnMesh(mesh.mesh);
         }
       }
     },

@@ -2,10 +2,8 @@ import type {
  RemoveChunkMeshTasks,
  RemoveChunksOutsideDistance,
  SetChunkMeshTask,
- SetNodeMesh,
 } from "Types/Tasks/RenderTasks.types";
 import type { LocationData } from "Math/index.js";
-import { Distance3D } from "../../Math/Functions/Distance3d.js";
 import { ThreadComm } from "@divinestar/threads/";
 import { MeshManager } from "../Scene/MeshManager.js";
 import { MeshRegister } from "../../Render/Scene/MeshRegister.js";
@@ -36,8 +34,4 @@ export const RenderTasks = {
     MeshManager.removeColumnsOutsideRadius(data[0], data[1]);
    }
   ),
- setNodeMesh: ThreadComm.registerTasks<SetNodeMesh>(
-  "set-node-mesh",
-  (data) => {}
- ),
 };

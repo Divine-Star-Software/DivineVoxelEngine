@@ -3,11 +3,11 @@ import type {
   MeshRegisterDimensions,
   MushRegisterRegion,
   MeshRegisterColumn,
-} from "Types/Render/Scene/MeshRegister.types.js";
+} from "Render/Scene/MeshRegister.types.js";
 import type { LocationData } from "Math/index.js";
-import type { Mesh } from "@babylonjs/core";
 import type { VoxelTemplateSubstanceType } from "Types/Data/Voxels/Voxel.types.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
+import { URIMesh } from "@divinestar/uri/Meshes/URIMesh.js";
 
 export const MeshRegister = {
   _dimensions: <MeshRegisterDimensions>new Map(),
@@ -34,7 +34,7 @@ export const MeshRegister = {
     },
     *getAllMeshes(
       id: string
-    ): Generator<[location: LocationData, substance: string, mesh: Mesh]> {
+    ): Generator<[location: LocationData, substance: string, mesh: URIMesh]> {
       const dimension = MeshRegister._dimensions.get(id);
       if (!dimension) return false;
       for (const [key, region] of dimension) {
@@ -151,7 +151,7 @@ export const MeshRegister = {
   chunk: {
     add(
       location: LocationData,
-      mesh: Mesh,
+      mesh: URIMesh,
       substance: VoxelTemplateSubstanceType
     ) {
       let column = MeshRegister.column.get(location);
@@ -167,7 +167,7 @@ export const MeshRegister = {
       chunk.set(substance, this._getChunkData(mesh));
       return chunk;
     },
-    _getChunkData(mesh: Mesh): MeshRegisterChunk {
+    _getChunkData(mesh: URIMesh): MeshRegisterChunk {
       return {
         mesh: mesh,
       };

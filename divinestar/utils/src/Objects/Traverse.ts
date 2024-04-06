@@ -1,6 +1,6 @@
 export function Traverse(
   read: any,
-  run: (key: string, data: any) => void,
+  run: (key: string, data: any, depth: number) => null | void,
   maxDepth = Infinity
 ) {
   const travserse = (read: any, depth: number) => {
@@ -8,7 +8,8 @@ export function Traverse(
     for (const key in read) {
       if (read[key] === undefined) continue;
       const readData = read[key];
-      run(key, readData);
+      const ran = run(key, readData, depth);
+      if (ran === null) break;
       if (typeof readData == "object") {
         travserse(readData, depth + 1);
         continue;

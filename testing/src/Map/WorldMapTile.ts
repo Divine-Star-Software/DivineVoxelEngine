@@ -1,4 +1,4 @@
-import { LocationData } from "@divinestar/voxelspaces";
+import { LocationData } from "@divinevoxel/core/Math";
 import { WorldMap } from "./WorldMap";
 import { EntityInstance } from "@divinevoxel/core/Render/Tools/EntityInstance";
 

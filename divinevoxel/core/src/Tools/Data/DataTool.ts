@@ -17,6 +17,24 @@ import { VoxelTagIDs } from "../../Data/Constants/Tags/VoxelTagIds.js";
 import { MappedDataRegister } from "../../Data/Register/MappedDataRegister.js";
 import { SubstanceDataTool } from "./SubstanceDataTool.js";
 
+export enum DataToolModes {
+  /**# World Data Mode
+   * ---
+   * Read data directly from the world.
+   */
+  WORLD = 0,
+  /**# Voxel Matrix Mode
+   * ---
+   * Read from a voxel matrix.
+   */
+  VOXEL_MATRIX = 1,
+  /**# Voxel Data Mode
+   * ---
+   * Read data from a single voxel passed in via `loadInRaw`
+   */
+  VOXEL_DATA = 2,
+}
+
 export class DataTool extends DataToolBase {
   static GetVoxelIDFromString(id: string) {
     return DataTool._dtutil.setStringId(id).getId();
@@ -24,30 +42,16 @@ export class DataTool extends DataToolBase {
   static GetVoxelIDFromNumber(id: number) {
     return DataTool._dtutil.setId(id).getStringId();
   }
-  /**# World Data Mode
-   * ---
-   * Read data directly from the world.
-   */
-  static WORLD_DATA_MODE = 0;
-  /**# Voxel Matrix Mode
-   * ---
-   * Read from a voxel matrix.
-   */
-  static VOXEL_MATRIX_MODE = 1;
-  /**# Voxel Data Mode
-   * ---
-   * Read data from a single voxel passed in via `loadInRaw`
-   */
-  static VOXEL_DATA_MODE = 2;
 
+  static Modes = DataToolModes;
   static _dtutil = new DataTool();
-  _chunkTool = new ChunkDataTool();
-  _substanceTool = new SubstanceDataTool();
   static _heightMapTool = new HeightMapTool();
   static _columntool = new ColumnDataTool();
-  _locationKey = "";
+  _chunkTool = new ChunkDataTool();
+  _substanceTool = new SubstanceDataTool();
+
   _loadedIn = false;
-  _mode = 0;
+  _mode = DataToolModes.WORLD;
   data = {
     raw: <RawVoxelData>[0, 0, 0, 0],
     id: 0,
@@ -55,23 +59,20 @@ export class DataTool extends DataToolBase {
     secondaryId: 0,
     secondaryBaseId: 0,
   };
+  /**## secondary
+   * If the data tool is processing secondary voxoels
+   */
   __secondary = false;
 
   tags = VoxelTags;
 
-  setMode(
-    mode:
-      | typeof DataTool.VOXEL_DATA_MODE
-      | typeof DataTool.VOXEL_MATRIX_MODE
-      | typeof DataTool.WORLD_DATA_MODE
-  ) {
+  setMode(mode: DataToolModes) {
     this._mode = mode;
     return this;
   }
 
   clear() {
     this._loadedIn = false;
-    this._locationKey = "";
     let i = this.data.raw.length;
     while (i--) {
       this.data.raw[i] = 0;
@@ -130,7 +131,7 @@ export class DataTool extends DataToolBase {
 
   loadIn() {
     this._c = this.tags.data;
-    if (this._mode == DataTool.WORLD_DATA_MODE) {
+    if (this._mode == DataTool.Modes.WORLD) {
       if (!this._chunkTool.setLocation(this.location).loadIn()) return false;
 
       const index = WorldSpaces.voxel.getIndexLocation(this.location);
@@ -142,10 +143,10 @@ export class DataTool extends DataToolBase {
       this._loadedIn = true;
       return true;
     }
-    if (this._mode == DataTool.VOXEL_MATRIX_MODE) {
+    if (this._mode == DataTool.Modes.VOXEL_MATRIX) {
       return false;
     }
-    if (this._mode == DataTool.VOXEL_DATA_MODE) {
+    if (this._mode == DataTool.Modes.VOXEL_DATA) {
       this.data.raw[0] = 0;
       this.data.raw[1] = LightData.getS(0xff);
       this.data.raw[2] = 0;
@@ -157,7 +158,7 @@ export class DataTool extends DataToolBase {
 
   commit(heightMapUpdate = 0) {
     if (!this._loadedIn) return false;
-    if (this._mode == DataTool.WORLD_DATA_MODE) {
+    if (this._mode == DataTool.Modes.WORLD) {
       const index = WorldSpaces.voxel.getIndexLocation(this.location);
 
       this._chunkTool.segments.id.set(index, this.data.raw[0]);
@@ -184,10 +185,10 @@ export class DataTool extends DataToolBase {
       this._loadedIn = false;
       return true;
     }
-    if (this._mode == DataTool.VOXEL_MATRIX_MODE) {
+    if (this._mode == DataTool.Modes.VOXEL_MATRIX) {
       return false;
     }
-    if (this._mode == DataTool.VOXEL_DATA_MODE) {
+    if (this._mode == DataTool.Modes.VOXEL_DATA) {
       return false;
     }
     return false;
@@ -204,7 +205,7 @@ export class DataTool extends DataToolBase {
     return LightData.hasSunLight(light);
   }
   getLight() {
-    if (this._mode == DataTool.VOXEL_DATA_MODE) return 0xf;
+    if (this._mode == DataTool.Modes.VOXEL_DATA) return 0xf;
     const vID = this.getId(true);
     VoxelTags.setVoxel(vID);
     if (vID == 0) return this.data.raw[1];

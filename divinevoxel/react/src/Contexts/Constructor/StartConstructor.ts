@@ -1,22 +1,14 @@
-import type { VoxelData } from "@divinevoxel/core";
-import {
-  DivineVoxelEngineConstructor,
-  VoxelConstructor,
-} from "@divinevoxel/core/Constructor";
-import { VoxelConstructors } from "@divinevoxel/core/Constructor/Builder/Constructors/Voxel/VoxelConstructors";
+import { DivineVoxelEngineConstructor } from "@divinevoxel/core/Constructor";
+import { DVEBuilder } from "@divinevoxel/core/Interfaces/Builder/DVEBuilder";
 type StartContructorProps = {
-  getVoxelConstructors(
-    contructors: typeof VoxelConstructors
-  ): VoxelConstructor[];
+  builder: DVEBuilder;
 };
 export async function StartContrusctor(props: StartContructorProps) {
   const DVEC = new DivineVoxelEngineConstructor();
-  const contructors = props.getVoxelConstructors(VoxelConstructors);
-  for (const voxel of contructors) {
-    DVEC.voxelManager.registerVoxel(voxel);
-  }
-  await DVEC.init();
 
+  await DVEC.init({
+    builder: props.builder,
+  });
 
   return {
     DVEW: DVEC,
