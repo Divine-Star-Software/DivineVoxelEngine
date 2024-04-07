@@ -15,7 +15,7 @@ Either fork or use at your own risks.
 
 # What is this?
 
-A truly multi-threaded JavaScript Minecraft style voxel game engine written in TypeScript that uses Babylon.Js.
+A multi-threaded, renderer independent, fully customizable TypeScript voxel engine. 
 
 Need help or want to share your creations? Join the [discord](https://discord.gg/98xEVU7TKn).
 
@@ -23,6 +23,9 @@ Need help or want to share your creations? Join the [discord](https://discord.gg
 
 ## Features
 
+- BabylonJs Renderer
+- ThreeJS Renderer
+- React Three Fiber Implementation 
 - Different voxel types and shapes.
 - Chunk-based rendering and meshing.
 - In parallel mesh building, light updates, and other world updates.
