@@ -34,6 +34,7 @@ export class DivineMesh {
         }
       }
     }
+    console.log("CLONE MESH",mesh);
     return mesh;
   }
 

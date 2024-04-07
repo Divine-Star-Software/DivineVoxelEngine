@@ -11,6 +11,7 @@ export type ShaderDataTypes =
  | "vec3"
  | "vec2"
  | "float"
+ | "mat3"
  | "mat4"
  | "int";
 export type ShaderData = {
