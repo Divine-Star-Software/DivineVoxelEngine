@@ -382,7 +382,7 @@ export class DivineControls {
     this._addControlInput(control);
   }
 
-  static seralizeInputData(): StoredCollection {
+  static serializeInputData(): StoredCollection {
     return this.controls.store();
   }
 

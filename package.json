@@ -5,8 +5,9 @@
   "scripts": {
     "init:dve:core": "cd ./divinevoxel/core ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/core/dist",
     "init:dve:default": "cd ./divinevoxel/default ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/default/dist",
-    "init:dve:babylonrenderer": "cd ./divinevoxel/babylonrenderer ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/babylonrenderer/dist",
-    "init:dve:threerenderer": "cd ./divinevoxel/threerenderer ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/threerenderer/dist",
+    "init:dve:babylon-renderer": "cd ./divinevoxel/babylon-renderer ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/babylon-renderer/dist",
+    "init:dve:three-renderer": "cd ./divinevoxel/three-renderer ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/three-renderer/dist",
+    "init:dve:react-three": "cd ./divinevoxel/react-three ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/react-three/dist",
     "init:dve:iwg": "cd ./divinevoxel/iwg ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/iwg/dist",
     "init:dve:data": "cd ./divinevoxel/data ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/data/dist",
     "init:dve:ecs": "cd ./divinevoxel/ecs ; npm run build ; cd ../../divinevoxel ; npm init -y --scope @divinevoxel -w ./divinevoxel/ecs/dist",
@@ -48,9 +49,13 @@
     "divinestar\\uri\\dist",
     "divinevoxel\\shaders\\dist",
     "divinevoxel\\babylonrenderer\\dist",
-    "divinevoxel\\default\\dist"
+    "divinevoxel\\default\\dist",
+    "divinevoxel\\babylon-renderer\\dist",
+    "divinevoxel\\three-renderer\\dist",
+    "divinevoxel\\react-three\\dist"
   ],
   "devDependencies": {
+    "@types/three": "^0.163.0",
     "@webgpu/types": "^0.1.40",
     "jest": "^29.7.0",
     "typescript": "^5.2.2"
@@ -59,6 +64,9 @@
   "dependencies": {
     "@babylonjs/core": "^6.46.0",
     "@babylonjs/gui": "^6.46.0",
-    "@babylonjs/loaders": "^6.46.0"
+    "@babylonjs/loaders": "^6.46.0",
+    "@react-three/drei": "^9.105.1",
+    "@react-three/fiber": "^8.16.1",
+    "three": "^0.163.0"
   }
 }

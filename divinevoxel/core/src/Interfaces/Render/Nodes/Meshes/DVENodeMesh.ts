@@ -12,7 +12,7 @@ export abstract class DVENodeMesh {
     data: DVENodeMeshAttributes
   ): URIMesh;
   abstract returnMesh(mesh: URIMesh): void;
-  abstract updateVetexData(
+  abstract updateVertexData(
     position: Vec3Array,
     data: DVENodeMeshAttributes,
     mesh: URIMesh

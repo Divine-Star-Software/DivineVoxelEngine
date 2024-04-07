@@ -16,6 +16,11 @@ export function RegisterVertexSnippets(builder: typeof DivineShaderBuilder) {
 #ifndef INSTANCES
       vec4 worldPosition = world * vec4(position, 1.0);
       gl_Position = viewProjection * world * vec4(position, 1.0); 
+
+#endif
+
+#ifdef THREE 
+gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 #endif
 
     `,

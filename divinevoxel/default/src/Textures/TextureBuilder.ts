@@ -38,12 +38,11 @@ export const TextureBuilder = {
     images: Map<string, Uint8ClampedArray | false>,
     width: number = -1,
     height: number = -1
-  ): Promise<URITexture[]> {
+  ): Promise<URITexture> {
     if (width == -1) width = this.imgWidth;
     if (height == -1) height = this.imgHeight;
     this._canvas.width = this.imgWidth;
     this._canvas.height = this.imgHeight;
-    const textures: URITexture[] = [];
 
     return (await this._create(name, images, width, height)) as any;
     /*    for (const size of this._mipMapSizes) {
@@ -130,7 +129,7 @@ export const TextureBuilder = {
     texture._texture = iTexture;
  */
 
-    return [texture];
+    return texture;
   },
   async _createMipMap(
     level: number,

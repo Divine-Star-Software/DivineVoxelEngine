@@ -9,6 +9,7 @@ import { URIScene } from "@divinestar/uri/Scenes/URIScene.js";
 import { DVEMeshCuller } from "./DVEMeshCuller.js";
 import { DVEFOManager } from "./DVEFOManager.js";
 import { DVENodeManager } from "./Nodes/DVENodeManager.js";
+import { DivineVoxelEngineRender } from "Render/DivineVoxelEngineRender.js";
 export abstract class DVERenderer {
   abstract scene: URIScene;
   abstract foManager: DVEFOManager;
@@ -18,5 +19,5 @@ export abstract class DVERenderer {
   abstract createMesh(): URIMesh;
   abstract createInstanceMesh(mesh: URIMesh): URIInstanceMesh;
   abstract createMaterial(id: string): URIMaterial;
-  abstract init(): Promise<void>;
+  abstract init(dver: DivineVoxelEngineRender): Promise<void>;
 }

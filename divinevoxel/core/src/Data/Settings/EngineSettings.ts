@@ -81,7 +81,7 @@ export const EngineSettings = {
       checkLiquidCollisions: false,
       checkFloraCollisions: false,
       checkSolidCollisions: false,
-      seralize: false,
+      serialize: false,
       pickable: false,
     },
     materials: {

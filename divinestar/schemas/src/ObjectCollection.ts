@@ -96,7 +96,7 @@ export class ObjectCollection<
   }
 
   store() {
-    const seralized: StoredCollection = [];
+    const serialized: StoredCollection = [];
     for (const [key, data] of this._nodes) {
       let value = data.value;
       if (data.data.input) {
@@ -105,9 +105,9 @@ export class ObjectCollection<
           value = data.data.input.beforeStore(value as any);
         }
       }
-      seralized.push([key, value]);
+      serialized.push([key, value]);
     }
-    return seralized;
+    return serialized;
   }
 
   loadIn(data: StoredCollection) {

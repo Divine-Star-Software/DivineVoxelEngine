@@ -5,7 +5,7 @@ import { RenderManager } from "./Scene/RenderManager.js";
 import { RenderTasks } from "./Tasks/RenderTasks.js";
 import { ThreadComm } from "@divinestar/threads/";
 
-import "@babylonjs/core/Meshes/thinInstanceMesh";
+
 //inter commsP
 import {
   DataComm,
@@ -66,7 +66,7 @@ export class DivineVoxelEngineRender {
     DivineVoxelEngineRender.initialized = true;
     await InitWorkers(this, initData);
     this.renderer = initData.renderer;
-    await this.renderer.init();
+    await this.renderer.init(this);
   }
 
   /**# clearAll

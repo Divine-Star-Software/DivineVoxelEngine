@@ -32,7 +32,7 @@ export class DVEDefaultBuilder extends DVEBuilder {
     if (!DVEDefaultBuilder.instance) DVEDefaultBuilder.instance = this;
 
     this.constructors.registerVoxel(data.constructors);
-   
+
     return DVEDefaultBuilder.instance;
   }
 
@@ -45,12 +45,9 @@ export class DVEDefaultBuilder extends DVEBuilder {
     DivineVoxelEngineConstructor.instance.TC.registerTasks(
       "sync-texuture-index",
       (data: any) => {
-        console.log("SYNC TEXTURE INDEX",data);
         const DVEC = DivineVoxelEngineConstructor.instance;
         this.textureManager.setTextureIndex(data);
         DVEC.hooks.texturesRegistered.run(DVEC.builder.textureManager);
-
-
       }
     );
     DivineVoxelEngineConstructor.instance.TC.registerTasks<BuildNodeMesh>(

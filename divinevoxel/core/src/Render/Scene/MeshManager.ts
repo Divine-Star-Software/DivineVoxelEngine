@@ -60,7 +60,7 @@ export const MeshManager = {
         mesh = chunk.mesh;
         DivineVoxelEngineRender.instance.renderer.nodes.meshes
           .get(substance)!
-          .updateVetexData(
+          .updateVertexData(
             [location[1], location[2], location[3]],
             meshData,
             mesh
@@ -95,7 +95,7 @@ export const MeshManager = {
           mesh = chunk.mesh;
           DivineVoxelEngineRender.instance.renderer.nodes.meshes
             .get(substance)!
-            .updateVetexData(
+            .updateVertexData(
               [location[1], location[2], location[3]],
               chunkData[1][1],
               mesh

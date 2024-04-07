@@ -85,7 +85,13 @@ export class DivineShader {
       ...this.data.textures.keys(),
     ];
   }
-
+  getUniformDataList(): [string, ShaderUniformData][] {
+    return [
+      [...this.data.sharedUniforms],
+      [...this.data.fragxUniforms],
+      [...this.data.vertexUniforms],
+    ].flatMap((_) => _);
+  }
   getAttributeList() {
     return this.data.mesh.getAttributeList();
   }
@@ -194,7 +200,10 @@ export class DivineShader {
     return this;
   }
 
-  compile() {
+  compile(
+    header = `#version 300 es
+  precision highp float;`
+  ) {
     const data = this.data;
     const defines = DivineShaderBuilder.define.build(data.sharedDefines);
     const vertexDefines = DivineShaderBuilder.define.build(data.vertexDefines);
@@ -264,8 +273,7 @@ export class DivineShader {
     }
 
     this.compiled.vertex = DivineShaderBuilder.snippets.build(
-      `#version 300 es
-precision highp float;
+      /* glsl  */ `${header}
 ${this.data.vertexTop.GLSL}
 
 //defines 
@@ -295,9 +303,8 @@ ${data.vertexMain.GLSL}
 }`,
       this
     );
-    this.compiled.fragment = DivineShaderBuilder.snippets.build(
-      `#version 300 es
-precision highp float;
+    this.compiled.fragment = DivineShaderBuilder.snippets
+      .build(/* glsl  */ `${header}
 precision highp sampler2DArray;
 
 
@@ -327,8 +334,7 @@ out vec4 FragColor;
 void main(void) {
 ${data.fragMainTop.GLSL}
 ${data.fragMain.GLSL}
-}`
-    );
+}`);
     return this.compiled;
   }
 
@@ -340,19 +346,16 @@ ${data.fragMain.GLSL}
     if (overrideMesh) {
       shader.data.mesh = this.data.mesh.clone(shader.id);
     }
+    console.log("MERGE", this.id, "to", shader.id);
     for (const dataKey in this.data) {
       const data = (this as any).data[dataKey];
+      if (data instanceof DivineMesh) continue;
       if (data instanceof Map) {
         for (const [key, value] of data) {
           (shader as any).data[dataKey].set(key, value);
         }
+
         continue;
-      }
-      if (typeof data == "object" && "GLSL" in data) {
-        data.GLSL = (shader as any).data[dataKey].GLSL;
-      }
-      if (typeof data == "object" && "WGSL" in data) {
-        data.GLSL = (shader as any).data[dataKey].GLSL;
       }
       if (Array.isArray(data)) {
         for (const node of data) {
@@ -360,8 +363,20 @@ ${data.fragMain.GLSL}
             (shader as any).data[dataKey].push(node);
           }
         }
+        if (this.id == "#dve_solid") {
+          console.log(dataKey, data, (shader as any).data[dataKey]);
+        }
+        continue;
       }
+      if (this.id == "#dve_solid") {
+        console.log(dataKey, data);
+      }
+      const otherData = (shader as any).data[dataKey];
+      if (otherData.GLSL !== "") continue;
+
+      (shader as any).data[dataKey] = JSON.parse(JSON.stringify(data));
     }
+    console.log(this.data, shader.data);
     return shader;
   }
 }

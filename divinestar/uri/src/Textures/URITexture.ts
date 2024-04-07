@@ -48,10 +48,11 @@ export abstract class URITexture<
   Scene extends URIScene = URIScene<any>,
   InteralTexture extends any = any
 > {
-  _texture: InteralTexture;
+  _texture: InteralTexture | null = null;
   constructor(data: URITextureData<Scene>) {
-    Object.assign(data);
-    this._texture = this._create(data);
+    this._create(data);
+
+    console.log("CREATED NEW TEXTURE", this, this._texture);
   }
   abstract _create(data: URITextureData<Scene>): InteralTexture;
   abstract dispose(): void;

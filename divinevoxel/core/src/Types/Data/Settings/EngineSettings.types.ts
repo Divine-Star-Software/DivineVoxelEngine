@@ -72,7 +72,7 @@ export type EngineSettingsData = {
   checkLiquidCollisions: boolean;
   checkFloraCollisions: boolean;
   checkSolidCollisions: boolean;
-  seralize: boolean;
+  serialize: boolean;
   pickable: boolean;
  };
  materials: {

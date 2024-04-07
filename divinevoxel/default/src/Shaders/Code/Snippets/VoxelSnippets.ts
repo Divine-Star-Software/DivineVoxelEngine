@@ -44,7 +44,11 @@ export function RegisterVoxelSnippets(builder: typeof DivineShaderBuilder) {
     }
     gl_Position = viewProjection * world * vec4(p, 1.0); 
 #endif
-  
+
+#ifdef THREE 
+gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+#endif
+
   `,
 
   
@@ -89,6 +93,11 @@ export function RegisterVoxelSnippets(builder: typeof DivineShaderBuilder) {
   
   gl_Position = viewProjection * world * vec4(p, 1.0); 
 #endif
+
+#ifdef THREE 
+gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+#endif
+
   `,
   },
  });

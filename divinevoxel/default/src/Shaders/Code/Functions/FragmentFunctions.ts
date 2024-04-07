@@ -71,7 +71,7 @@ return base * VOXEL[0]; `,
   builder.functions.create("getBase", {
     setID: "#dve_frag",
     inputs: [
-      ["tex", ["sampler2DArray", 4]],
+      ["tex", "sampler2DArray"],
       ["UV", "vec2"],
       ["index", "float"],
     ],
@@ -80,7 +80,7 @@ return base * VOXEL[0]; `,
     body: {
       GLSL: () => /* glsl */ `
 
-     return  texture(tex[0], vec3(UV.x,UV.y,index), mipMapBias );
+     return  texture(tex, vec3(UV.x,UV.y,index), mipMapBias );
   `,
     },
   });
