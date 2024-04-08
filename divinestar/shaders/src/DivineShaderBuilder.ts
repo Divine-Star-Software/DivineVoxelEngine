@@ -1,7 +1,5 @@
 import { DivineShader } from "./Classes/DivineShader.js";
 import type {
-  GeneratedShaderCodeBody,
-  ShaderCodeBody,
   ShaderDefinesData,
   ShaderFunctionData,
   ShaderSnippetData,
@@ -66,17 +64,20 @@ ${data.output} ${id}(${paramters}){
     build(
       id: string,
       data: ShaderFunctionData<any> | null = null,
-      shader: DivineShader | null = null
+      shader: DivineShader | null = null,
+      predicate: (id: string, type: ShaderFunctionData<any>) => boolean = () =>
+        true
     ) {
       const set = this._functionSets.get(id);
       if (set) {
         let functions = "";
         for (const key of set) {
           const data = this._functions.get(key);
-          if (!data) continue;
+          if (!data || !predicate(key, data)) continue;
           functions += this._processFunctinos(key, data, shader);
           if (data.overrides) {
             for (const func of data.overrides) {
+              if (!predicate(key, func)) continue;
               functions += this._processFunctinos(key, func, shader);
             }
           }
@@ -87,11 +88,12 @@ ${data.output} ${id}(${paramters}){
       if (!data) {
         data = this._functions.get(id)!;
       }
-      if (!data) return "";
+      if (!data || !predicate(id, data)) return "";
       let functions = "";
       functions += this._processFunctinos(id, data, shader);
       if (data.overrides) {
         for (const func of data.overrides) {
+          if (!predicate(id, func)) continue;
           functions += this._processFunctinos(id, func, shader);
         }
       }
@@ -136,20 +138,20 @@ ${data.output} ${id}(${paramters}){
       return `uniform ${type} ${name};\n`;
     },
     build(
-      data:
-        | ShaderUniformData
-        | ShaderUniformData[]
-        | Map<string, ShaderUniformData>
+      data: ShaderUniformData[] | Map<string, ShaderUniformData>,
+      predicate: (id: string, type: ShaderUniformData) => boolean = () => true
     ) {
       let output = "";
       if (data instanceof Map) {
         for (const [key, unfirom] of data) {
+          if (!predicate(key, unfirom)) continue;
           output += this._process(unfirom as ShaderUniformData);
         }
         return output;
       }
       if (Array.isArray(data)) {
         for (const unfirom of data) {
+          if (!predicate(unfirom[0], unfirom)) continue;
           output += this._process(unfirom as ShaderUniformData);
         }
         return output;
@@ -217,5 +219,3 @@ ${data.output} ${id}(${paramters}){
     },
   },
 };
-
-

@@ -171,7 +171,18 @@ export const WorldGen = {
       }
     }
   },
-
+  generateBlankChunk(chunkX: number, chunkZ: number) {
+    for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
+      for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
+        for (let y = 0; y < this.minY + 10; y++) {
+          brush.setXYZ(x, y, z);
+          if (y < this.minY - 3) {
+            brush.setId("dve_dream_stone").paint();
+          }
+        }
+      }
+    }
+  },
   generateBoxChunk(chunkX: number, chunkZ: number) {
     for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
       for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
@@ -203,6 +214,7 @@ export const WorldGen = {
 
   generateWorldColumn(chunkX: number, chunkZ: number) {
     brush.start();
+  //  return this.generateBlankChunk(chunkX, chunkZ);
     let toss = Math.random();
 
     if (
