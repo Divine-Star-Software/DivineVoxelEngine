@@ -86,6 +86,7 @@ gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 #ifndef INSTANCES
   vec3 p = position;
   vec4 worldPosition = world * vec4(p , 1.0);
+  
   if(doEffects == 1.){
   float height = fbm(worldPosition.xz * 0.08 + time);
     p.y += (height * 0.03) - .05;

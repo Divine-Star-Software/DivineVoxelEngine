@@ -54,6 +54,7 @@ export class DVEBRPBRMaterial extends URIMaterial<
       data.data.textureTypeId ? data.data.textureTypeId : this.id
     );
 
+    this.scene = data.scene._scene;
     if (!textureType && data.data.textureTypeId) {
       throw new Error(
         `Could find the texture type for material ${this.id}. Texture typeid:  ${data.data.textureTypeId}`
@@ -92,11 +93,11 @@ export class DVEBRPBRMaterial extends URIMaterial<
           );
         }
       }
-      if(!synced) {
+      
+      if (!synced) {
         DefaultMaterialManager.sync();
         synced = true;
       }
-  
     };
     const pluginId = `${this.id.replace("#", "")}`;
 
@@ -111,25 +112,39 @@ export class DVEBRPBRMaterial extends URIMaterial<
       };
     `
     )(pluginBase);
- 
+
     const plugin = new newPlugin(material, pluginId, this, () => {});
     this.plugin = plugin;
     this._material = material;
 
-    if(this.data.alphaTesting) {
+    if (this.data.alphaTesting) {
       material.alphaMode = Material.MATERIAL_ALPHATEST;
     }
-    material.roughness = 0;
-    material.metallic = 0;
-    material.disableLighting = true;
-    material.sheen.isEnabled = false;
-    material.sheen.intensity = 0;
-  //  material.emissiveColor.set(0,0,0);
-   // material.ambientColor.set(0,0,0);
-    material.anisotropy.dispose()
-    //material.reflectionColor.set(0.1,0.1,0.1);
+    if (this.id.includes("liquid")) {
+      console.log("CREATE THE LIQUID MATERIAL", this.id, material.roughness);
+      material.roughness = 0.1;
+      //  material.refractionTexture = this.scene.environmentTexture;
+      material.reflectionColor.set(0.1, 0.1, 0.1);
+      material.metallic = 1;
+      // material.reflectivityColor.set(1,1,1);
+      material.reflectivityColor.set(1, 1, 1);
+      //  material.linkRefractionWithTransparency = true;
+      material.alphaMode = Material.MATERIAL_ALPHABLEND;
+      material.backFaceCulling = false;
+      //  material.refractionTexture = this.scene.environmentTexture;
+      material.alpha = 0.9;
+    } else {
+      material.metallic = 0.0;
+      material.roughness = 0;
+      material.reflectionColor.set(0, 0, 0);
+    }
 
-
+    // material.sheen.isEnabled = false;
+    // material.sheen.intensity = 0;
+    //  material.emissiveColor.set(0,0,0);
+    // material.ambientColor.set(0,0,0);
+    material.anisotropy.dispose();
+    //  material.refraction.set(0.1,0.1,0.1);
     return this._material;
   }
 
@@ -146,7 +161,8 @@ export class DVEBRPBRMaterial extends URIMaterial<
   }
 
   setNumber(uniform: string, value: number): void {
-    if (!this.plugin.uniformBuffer) return;
+    if (!this.plugin.uniformBuffer)
+      return// console.warn(`Material is not ready ${uniform} ${this.id}`);
     this.plugin.uniformBuffer.updateFloat(uniform, value);
   }
   setNumberArray(uniform: string, value: ArrayLike<number>): void {

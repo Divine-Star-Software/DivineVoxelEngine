@@ -168,12 +168,13 @@ export class DVEBRNodeMesh extends DVENodeMesh {
 
   _clearCached(dveMesh: DVEBRMesh) {
     if (!this.clearCachedGeometry) return;
-    const mesh = dveMesh._mesh;
+/*     const mesh = dveMesh._mesh;
     mesh.geometry!.clearCachedData();
     if (mesh.subMeshes) {
       for (const sm of mesh.subMeshes) {
         sm.setBoundingInfo(this.defaultBb);
       }
-    }
+    } */
+
   }
 }

@@ -8,6 +8,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babylonjs/inspector": "^7.1.0",
     "@types/react": "^18.2.17",
     "@types/react-dom": "^18.2.7",
     "css-loader": "^6.8.1",

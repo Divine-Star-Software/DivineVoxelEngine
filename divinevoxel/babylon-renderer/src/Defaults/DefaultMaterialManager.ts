@@ -72,7 +72,9 @@ export class DefaultMaterialManager {
   static runEffects() {
     for (const [id, mat] of DVEBabylonRenderer.instance.nodes.materials
       .materials) {
+  
       mat.setNumber("time", this.time);
+      this.time += .1;
     }
   }
 

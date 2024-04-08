@@ -113,13 +113,13 @@ function InitScene(canvas: HTMLCanvasElement, nodes: RenderNodes) {
   });
 
   const scene = new Scene(engine);
-
+/* 
   scene.fogEnabled = true;
   scene.autoClear = false;
   scene.autoClearDepthAndStencil = false;
   scene.skipPointerMovePicking = true;
   scene.constantlyUpdateMeshUnderPointer = false;
-
+ */
   /*   const camera = new ArcRotateCamera(
     "",
     Math.PI / 2,
@@ -150,6 +150,6 @@ function InitScene(canvas: HTMLCanvasElement, nodes: RenderNodes) {
   engine.runRenderLoop(() => {
     scene.render();
   });
-  scene.clearColor.set(1, 1, 1, 1);
+  //scene.clearColor.set(1, 1, 1, 1);
   engine.clear(scene.clearColor, true, true);
 }

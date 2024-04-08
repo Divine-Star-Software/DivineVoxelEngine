@@ -123,6 +123,7 @@ export class DVEPBRMaterialPlugin extends MaterialPluginBase {
   _textureBound = false;
   bindForSubMesh(uniformBuffer: UniformBuffer, scene: Scene, engine: Engine) {
     if (!this.uniformBuffer) this.uniformBuffer = uniformBuffer;
+  
   }
 
   //@ts-ignore
@@ -150,9 +151,40 @@ ${varying.vertexTop}
 ${functions.vertex}
 #endif
 `,
+CUSTOM_VERTEX_UPDATE_NORMAL: /*glsl*/ `
+#ifdef  DVE_${this.name}
+#ifdef  DVE_dve_liquid
+vec3 noisePOS = vec3(worldPOSNoOrigin.x/10., worldPOSNoOrigin.y, worldPOSNoOrigin.z/10.);
+
+// Sample the noise at the current position
+float noiseSample = fbm3(noisePOS  + time * 0.01) * 0.1;
+
+// Calculate the gradient (partial derivatives) of the noise to adjust normals
+vec3 dNoise_dPos;
+dNoise_dPos.x = fbm3(noisePOS + vec3(0.01, 0.0, 0.0) + time * 0.01) - noiseSample;
+dNoise_dPos.y = fbm3(noisePOS + vec3(0.0, 0.01, 0.0) + time * 0.01) - noiseSample;
+dNoise_dPos.z = fbm3(noisePOS + vec3(0.0, 0.0, 0.01) + time * 0.01) - noiseSample;
+
+// Adjust the normal with the gradient of the noise function
+normalUpdated += dNoise_dPos * 0.1; // Adjust multiplier as needed for visual effect
+
+// Update the position to simulate wave heights
+positionUpdated = vec3(
+    positionUpdated.x,
+    positionUpdated.y + noiseSample, // Adding, assuming 'y' is up. Adjust as needed.
+    positionUpdated.z
+);
+
+#endif
+#endif
+
+`,
         CUSTOM_VERTEX_MAIN_BEGIN: /*glsl*/ `
 #ifdef  DVE_${this.name}
 ${varying.vertexMainTop}
+
+
+
 #endif
         `,
       };
@@ -172,23 +204,38 @@ ${functions.fragment}
         CUSTOM_FRAGMENT_UPDATE_ALBEDO: /*glsl*/ `
 #ifdef  DVE_${this.name}
 
+#ifndef  DVE_dve_liquid
 vec4 voxelBaseColor = getBaseColor(vec2(0.,0.));
 voxelBaseColor = getColor(voxelBaseColor);
-#ifndef  DVE_dve_liquid
 voxelBaseColor = getAO(voxelBaseColor);
-#endif
 vec4 voxelMixLight = getLight(voxelBaseColor);
 vec3 voxelColor = doFog(voxelMixLight);
 surfaceAlbedo = toLinearSpace(vec3(voxelMixLight.r,voxelMixLight.g,voxelMixLight.b));
 alpha = voxelBaseColor.a;
 #endif
-`,
-CUSTOM_FRAGMENT_MAIN_END: /*glsl*/  `
 
-if (glFragColor.a < 0.05) { 
+#ifdef  DVE_dve_liquid
+surfaceAlbedo = vec3(.2, .58, .79);
+alpha = .9;
+
+#endif
+
+
+#endif
+`,
+CUSTOM_FRAGMENT_BEFORE_FRAGCOLOR: /*glsl*/  `
+#ifdef  DVE_${this.name}
+
+
+
+#endif
+`,
+CUSTOM_FRAGMENT_MAIN_END :/*glsl*/  `
+#ifdef  DVE_${this.name}
+if (glFragColor.a < 0.05) {
   discard;
 }
-
+#endif
 `
       };
     }

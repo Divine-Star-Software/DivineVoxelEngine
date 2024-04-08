@@ -20,7 +20,6 @@
     "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
   },
   "dependencies": {
-    "@babylonjs/core": "^6.46.0",
     "@divinevoxel/core": "^0.0.44"
   },
   "publishConfig": {
