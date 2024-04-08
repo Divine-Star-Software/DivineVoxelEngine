@@ -62,9 +62,9 @@
   },
   "description": "",
   "dependencies": {
-    "@babylonjs/core": "^6.46.0",
-    "@babylonjs/gui": "^6.46.0",
-    "@babylonjs/loaders": "^6.46.0",
+    "@babylonjs/core": "^7.1.0",
+    "@babylonjs/gui": "^7.1.0",
+    "@babylonjs/loaders": "^7.1.0",
     "@react-three/drei": "^9.105.1",
     "@react-three/fiber": "^8.16.1",
     "three": "^0.163.0"

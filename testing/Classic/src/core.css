@@ -42,6 +42,10 @@ body {
   overflow: hidden;
 }
 
+#inspector-host {
+  position: absolute !important;
+}
+
 #main {
   touch-action: none;
   outline: none;

@@ -1,10 +1,10 @@
 import { DivineVoxelEngineWorld } from "@divinevoxel/core/World";
-import { WorldGen } from "./WorldGen";
+import { PerlinGen } from "./PerlinGen";
 
 export async function CPUGenerate() {
   const DVEW = DivineVoxelEngineWorld.instance;
 
-  const numChunks = 2;
+  const numChunks = 4;
   let startX = -16 * numChunks;
   let startZ = -16 * numChunks;
   let endX =   16 * numChunks;
@@ -17,8 +17,8 @@ export async function CPUGenerate() {
   const t1 = performance.now();
   for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
-      WorldGen.generateWorldColumn(x, z);
-      tasks.worldSun.queued.add(["main", x, 0, z]);
+      PerlinGen.generateWorldColumn(x, z);
+    //  tasks.worldSun.queued.add(["main", x, 0, z]);
     }
   }
 
@@ -27,7 +27,7 @@ export async function CPUGenerate() {
   const t2 = performance.now();
   //await ComputeTest(canvas);
 
-  await tasks.worldSun.queued.runAndAwait();
+ // await tasks.worldSun.queued.runAndAwait();
   await tasks.propagation.queued.runAndAwait();
   console.log("sun light time ", performance.now() - t2);
 

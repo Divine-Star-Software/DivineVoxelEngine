@@ -1,4 +1,4 @@
-import { LCG } from "seededRandom/LCG";
+import { LCG } from "../seededRandom/LCG.js";
 
 /**# Perlin Noise 3d
  * ---

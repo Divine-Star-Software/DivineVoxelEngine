@@ -5,6 +5,8 @@ import {
   DefaultRenderingPipeline,
   ImageProcessingConfiguration,
 } from "@babylonjs/core";
+//import "@babylonjs/core/Debug/debugLayer"; // Import the debug layer
+//import "@babylonjs/inspector"; // Import the inspector
 import InitDVER from "@divinevoxel/babylon-renderer/Defaults/PBR/InitDVEBRPBR";
 const worldWorker = new Worker(new URL("./Contexts/World/", import.meta.url), {
   type: "module",
@@ -27,29 +29,25 @@ export function App() {
         console.log("SATURARE", nodes.scene);
         const scene = nodes.scene;
 
-        const pipeline = new DefaultRenderingPipeline(
-          "atom",
-          true,
-          nodes.scene,
-          [nodes.camera]
+
+        const hdrTexture = new CubeTexture(
+          "assets/environment.env",
+          nodes.scene
         );
+        hdrTexture.invertZ = true;
+        nodes.scene.environmentTexture = hdrTexture;
 
-        const postprocess = pipeline.imageProcessing;
-        postprocess.toneMappingEnabled = true;
-        postprocess.toneMappingType =
-          ImageProcessingConfiguration.TONEMAPPING_ACES;
 
-        //pipeline.bloomEnabled = true;
-        // pipeline.sharpenEnabled = true;
-        pipeline.depthOfFieldEnabled = true;
-        pipeline.depthOfField.fStop = 50;
-        pipeline.depthOfField.focalLength = 300;
-        pipeline.depthOfField.focusDistance = 1000;
 
-        pipeline.fxaaEnabled = true;
-        pipeline.fxaa.adaptScaleToCurrentViewport = true;
+/* 
+        scene.debugLayer.show({
+          showExplorer: true,
+          showInspector: true,
+          embedMode: false,
+        });
+    */
 
-      //  postprocess.exposure = 1.5;
+        //  postprocess.exposure = 1.5;
         await DVER.init({
           renderer: InitDVER({
             textureTypes: [],
