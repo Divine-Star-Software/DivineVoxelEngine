@@ -33,7 +33,7 @@ export const TextureAnimationCreator = {
    }
    segment.animationUniforID =
     `${texture.id}_${key}_texture_animations`.replace("#", "");
-   segment.varyingID = `${texture.id}_${key}_texture_varying`.replace("#", "");
+   segment.varyingID = `${texture.id}_${key}_texture_index`.replace("#", "");
    const functionName =
     `get_${texture.id}_${key}_texture_animation_frame`.replace("#", "");
    texture.shader.addUniform([

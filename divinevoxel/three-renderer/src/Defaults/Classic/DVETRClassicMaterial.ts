@@ -184,12 +184,6 @@ export class DVEBRClassicMaterial extends URIMaterial<
       samplerId,
       sampler.map((_) => _._texture)
     );
-    console.log(
-      "SET TEXTURE ARRAY",
-      sampler,
-      sampler.map((_) => _._texture),
-      this._material.uniforms[samplerId]
-    );
   }
   setTexture(samplerId: string, sampler: URITexture<URIScene<any>, any>): void {
     this._setUnfirom(samplerId, sampler._texture);

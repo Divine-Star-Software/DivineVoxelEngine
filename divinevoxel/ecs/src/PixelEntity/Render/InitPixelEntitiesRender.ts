@@ -242,19 +242,19 @@ vData[1] = vec4(AOVL,animVL,0.,0.);
     
     
       if(cuv3.x == 0.) {
-        dve_pixel_entity_main_texture_varying.x = uvXs;
+        dve_pixel_entity_main_texture_index.x = uvXs;
       }
       if(cuv3.y == 0.) {
-        dve_pixel_entity_main_texture_varying.y = uvYs;
+        dve_pixel_entity_main_texture_index.y = uvYs;
       }
       
       if(cuv3.x == 1.) {
-        dve_pixel_entity_main_texture_varying.x = uvXe;
+        dve_pixel_entity_main_texture_index.x = uvXe;
       }
       if(cuv3.y == 1.) {
-        dve_pixel_entity_main_texture_varying.y = uvYe;
+        dve_pixel_entity_main_texture_index.y = uvYe;
       }
-      dve_pixel_entity_main_texture_varying.z = faceData.w;      
+      dve_pixel_entity_main_texture_index.z = faceData.w;      
 `,
     },
   });

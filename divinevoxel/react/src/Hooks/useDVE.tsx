@@ -141,8 +141,9 @@ function InitScene(canvas: HTMLCanvasElement, nodes: RenderNodes) {
   scene.collisionsEnabled = false;
   // camera.inertia = 0.2;
 
-  const hemLight = new HemisphericLight("", new Vector3(0, 3, 0), scene);
-
+/*   const hemLight = new HemisphericLight("", new Vector3(0, 1, 0), scene);
+  hemLight.intensity = .1;
+  hemLight.specular.set(0,0,0); */
   nodes.camera = camera;
   nodes.scene = scene;
 

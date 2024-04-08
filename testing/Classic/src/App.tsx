@@ -1,8 +1,11 @@
-import { DivineVoxelEngineRender } from "@divinevoxel/core/Render";
 import { useDVE } from "@divinevoxel/react";
-import { WorldMapComponent } from "Map/WorldMapComponent";
-import { useEffect, useRef, useState } from "react";
-import InitDVEBRClassic from "@divinevoxel/babylonrenderer/Defaults/Classic/InitDVEBRClassic";
+import { useState } from "react";
+import {
+  CubeTexture,
+  DefaultRenderingPipeline,
+  ImageProcessingConfiguration,
+} from "@babylonjs/core";
+import InitDVER from "@divinevoxel/babylon-renderer/Defaults/PBR/InitDVEBRPBR";
 const worldWorker = new Worker(new URL("./Contexts/World/", import.meta.url), {
   type: "module",
 });
@@ -22,14 +25,37 @@ export function App() {
     staturate: async (DVER, observers) => {
       observers.ready.subscribe("", async () => {
         console.log("SATURARE", nodes.scene);
+        const scene = nodes.scene;
+
+        const pipeline = new DefaultRenderingPipeline(
+          "atom",
+          true,
+          nodes.scene,
+          [nodes.camera]
+        );
+
+        const postprocess = pipeline.imageProcessing;
+        postprocess.toneMappingEnabled = true;
+        postprocess.toneMappingType =
+          ImageProcessingConfiguration.TONEMAPPING_ACES;
+
+        //pipeline.bloomEnabled = true;
+        // pipeline.sharpenEnabled = true;
+        pipeline.depthOfFieldEnabled = true;
+        pipeline.depthOfField.fStop = 50;
+        pipeline.depthOfField.focalLength = 300;
+        pipeline.depthOfField.focusDistance = 1000;
+
+        pipeline.fxaaEnabled = true;
+        pipeline.fxaa.adaptScaleToCurrentViewport = true;
+
+      //  postprocess.exposure = 1.5;
         await DVER.init({
-          renderer: InitDVEBRClassic({
+          renderer: InitDVER({
             textureTypes: [],
             substances: [],
-            dver: DVER,
             scene: nodes.scene,
-            textureData:
-             [
+            textureData: [
               {
                 type: "#dve_solid",
                 id: "dve_debug_box",
@@ -204,7 +230,7 @@ export function App() {
           constructorWorkers,
         });
         setReady(true);
-     /*    nodes.sceneTool.levels
+        /*    nodes.sceneTool.levels
           .setSun(0.5)
           .levels.setBase(0)
           .fog.setColor(0.1)
@@ -221,8 +247,6 @@ export function App() {
   return (
     <>
       <div className="render-canvas-container">{DVECanvas}</div>
-
-      {ready && <WorldMapComponent nodes={nodes} />}
     </>
   );
 }

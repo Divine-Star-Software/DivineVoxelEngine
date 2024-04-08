@@ -59,17 +59,18 @@ export const TextureBuilder = {
     height: number
   ) {
     // const scene = RenderManager.scene!;
-    const data = await this._createMipMap(0, images, width, height) as any;
-   const texture =  DivineVoxelEngineRender.instance.renderer.createTexture({
-      type: URITextureTypes.Texture2DArray,
-      data,
-      width,
-      height,
-      scene: DivineVoxelEngineRender.instance.renderer.scene,
-      layers: images.size + 2,
-      format: URITextureFormat.Rgba,
-      samplingMode: URITextureSamplingMode.NearestNearestMipLinear,
-    });
+    const data = (await this._createMipMap(0, images, width, height)) as any;
+    const texture =
+      DivineVoxelEngineRender.instance.renderer.engine.createTexture({
+        type: URITextureTypes.Texture2DArray,
+        data,
+        width,
+        height,
+        scene: DivineVoxelEngineRender.instance.renderer.scene,
+        layers: images.size + 2,
+        format: URITextureFormat.Rgba,
+        samplingMode: URITextureSamplingMode.NearestNearestMipLinear,
+      });
 
     // texture.anisotropicFilteringLevel = 16;
 

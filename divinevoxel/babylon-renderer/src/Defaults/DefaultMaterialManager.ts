@@ -4,6 +4,7 @@ import type { RenderFogOptions } from "@divinevoxel/default/Shaders/Types/Shader
 import { RecursivePartial } from "@divinevoxel/core";
 import { DVEBabylonRenderer } from "../DVEBabylonRenderer";
 import { DVEShaders } from "@divinevoxel/default/Shaders/DVEShaders";
+import { SceneTool } from "./Tools/SceneTool.js";
 export class DefaultMaterialManager {
   static time = 0;
   static shaders = DVEShaders;
@@ -24,7 +25,9 @@ export class DefaultMaterialManager {
     ],
   };
 
+  static sceneTool: SceneTool;
   static init() {
+    this.sceneTool = new SceneTool();
     this.fogData = new Vector4();
     this.fogOptions = {
       mode: "volumetric",
@@ -39,6 +42,22 @@ export class DefaultMaterialManager {
       .materials) {
       mat.setNumberArray("lightGradient", this.unifrosm.lightGradient);
     }
+  }
+
+  static sync() {
+    this.updateFogData(this.fogData);
+
+    this.sceneTool.levels.setBase(this.sceneTool.levels.baseLevel);
+    this.sceneTool.levels.setSun(this.sceneTool.levels.sunLevel);
+    this.sceneTool.options.doAO(this.sceneTool.options.isDoingAO);
+    this.sceneTool.options.doRGB(this.sceneTool.options.isDoingRGB);
+    this.sceneTool.options.doSun(this.sceneTool.options.isDoingSun);
+    this.sceneTool.options.doColor(this.sceneTool.options.isDoingColor);
+    this.sceneTool.options.doEffects(this.sceneTool.options.isDoingEffects);
+    this.sceneTool.fog.setMode(this.sceneTool.fog.mode);
+    this.sceneTool.fog.setColor(...this.sceneTool.fog.color);
+    this.sceneTool.fog.setDensity(this.sceneTool.fog.denisty);
+    this.sceneTool.fog.setHeightFactor(this.sceneTool.fog.heightFactor);
   }
 
   static updateUniforms() {
@@ -58,7 +77,6 @@ export class DefaultMaterialManager {
   }
 
   static updateFogData(data: Vector4) {
-    console.log("update fog", DVEBabylonRenderer.instance);
     for (const [id, mat] of DVEBabylonRenderer.instance.nodes.materials
       .materials) {
       mat.setVector4("fogOptions", data.x, data.y, data.z, data.w);

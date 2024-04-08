@@ -3,6 +3,7 @@ import { Effect } from "@babylonjs/core/Materials/effect.js";
 import { ShaderMaterial } from "@babylonjs/core/Materials/shaderMaterial.js";
 import { Matrix, Vector2, Vector3 } from "@babylonjs/core/Maths/";
 import { TextureManager } from "@divinevoxel/default/Textures/TextureManager.js";
+import { TextureBuilder } from "@divinevoxel/default/Textures/TextureBuilder";
 
 import { DivineShader } from "@divinestar/shaders";
 import {

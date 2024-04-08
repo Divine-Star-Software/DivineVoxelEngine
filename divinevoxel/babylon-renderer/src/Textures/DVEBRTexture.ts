@@ -14,8 +14,9 @@ import {
   DVEBRTextureSamplingModeMap,
 } from "../Constants/DVEBRTextureConstants";
 import { DVEBRScene } from "../Scene/DVEBRScene";
+import type { Texture } from "@babylonjs/core";
 
-export class DVEBRTexture extends URITexture<DVEBRScene> {
+export class DVEBRTexture extends URITexture<DVEBRScene,Texture> {
   _create(data: URITextureData<DVEBRScene>) {
     if (data.type == URITextureTypes.Texture2D) {
     }
@@ -30,8 +31,8 @@ export class DVEBRTexture extends URITexture<DVEBRScene> {
         throw new Error(
           `Could not create Raw2DTextureArray invalid data. ${data}`
         );
-    
-      return new RawTexture2DArray(
+
+      const texture = new RawTexture2DArray(
         rawData,
         textureData.width,
         textureData.height,
@@ -44,13 +45,18 @@ export class DVEBRTexture extends URITexture<DVEBRScene> {
         false,
         (textureData.samplingMode !== undefined &&
           DVEBRTextureSamplingModeMap[textureData.samplingMode]) ||
-          DVEBRTextureSamplingModeMap[URITextureSamplingMode.NearestLinearMipLinear]
+          DVEBRTextureSamplingModeMap[
+            URITextureSamplingMode.NearestLinearMipLinear
+          ]
       );
+      this._texture = texture;
+      return texture;
     }
     throw new Error(`Unsuppourted texture type`);
   }
 
   dispose(): void {
-    this._texture.dispose();
+    this._texture?.dispose();
+    this._texture =  null;
   }
 }

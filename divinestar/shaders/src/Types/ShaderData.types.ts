@@ -1,6 +1,17 @@
 import type { DivineMesh } from "../Classes/DivineMesh";
 
 export type ShaerTextureTypes = "sampler2DArray";
+export type ShaderCodeSections = {
+  fragMain: ShaderCodeBody;
+  vertexMain: ShaderCodeBody;
+  fragTop: ShaderCodeBody;
+  vertexTop: ShaderCodeBody;
+  fragBeforeMain: ShaderCodeBody;
+  vertexBeforeMain: ShaderCodeBody;
+  fragMainTop: ShaderCodeBody;
+  vertexMainTop: ShaderCodeBody;
+}
+
 export type ShaderTextureData = {
  isArray?: boolean;
  arrayLength?: number;
@@ -47,7 +58,11 @@ export type ShaderData = {
  vertexBeforeMain: ShaderCodeBody;
  fragMainTop: ShaderCodeBody;
  vertexMainTop: ShaderCodeBody;
-};
+} & ShaderCodeSections;
+
+
+
+
 export type ShaderCodeBody = {
  GLSL: string;
  WGSL?: string;

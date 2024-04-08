@@ -2,8 +2,6 @@ import { StartWorld } from "@divinevoxel/react/Contexts/World";
 import { ComputeShaderGenerate } from "./Gen/ComputeShaderGenerate";
 import { DivineVoxelEngineWorld } from "@divinevoxel/core/World";
 import { CPUGenerate } from "./Gen/CPUGenerate";
-import { WasmTest } from "./WasmTest";
-
 
 await StartWorld({
   voxels: [
@@ -249,6 +247,6 @@ DivineVoxelEngineWorld.instance.TC.registerTasks("start-world",async()=>{
 })
 
 
-await WasmTest();
+
 
 console.log(DivineVoxelEngineWorld.instance!.data.registers.world._dimensions)

@@ -52,6 +52,7 @@ export class DVEBRNodeMesh extends DVENodeMesh {
     if (!mat) {
       throw new Error(`Material: ${this.data.id} does not exist`);
     }
+    console.log(`%cMAT:${mat.id} ${this.data.id}`, "color: red;");
 
     if (DVEBabylonRenderer.instance.foManager.activeNode) {
       mesh.parent = DVEBabylonRenderer.instance.foManager.activeNode;
@@ -84,11 +85,13 @@ export class DVEBRNodeMesh extends DVENodeMesh {
     mesh.setEnabled(true);
     mesh.isVisible = true;
     mesh.material = mat._material;
+    DVEBabylonRenderer.instance.observers.meshCreated.notify(dveMesh);
     return dveMesh;
   }
 
   returnMesh(mesh: DVEBRMesh) {
     mesh._mesh.dispose();
+    DVEBabylonRenderer.instance.observers.meshDisposed.notify(mesh);
   }
   updateVertexData(
     location: Vec3Array,
@@ -132,6 +135,7 @@ export class DVEBRNodeMesh extends DVENodeMesh {
 
           break;
         default:
+    
           mesh.setVerticesBuffer(
             new VertexBuffer(
               this.engine,
