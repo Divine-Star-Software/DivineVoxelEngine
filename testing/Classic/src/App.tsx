@@ -29,7 +29,6 @@ export function App() {
         console.log("SATURARE", nodes.scene);
         const scene = nodes.scene;
 
-
         const hdrTexture = new CubeTexture(
           "assets/environment.env",
           nodes.scene
@@ -37,9 +36,7 @@ export function App() {
         hdrTexture.invertZ = true;
         nodes.scene.environmentTexture = hdrTexture;
 
-
-
-/* 
+        /* 
         scene.debugLayer.show({
           showExplorer: true,
           showInspector: true,
