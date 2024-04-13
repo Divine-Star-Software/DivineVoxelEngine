@@ -10,10 +10,8 @@ export class DVETRMeshCuller extends DVEMeshCuller {
     this.init(scene);
   }
   init(scene: DVETRScene) {
-    console.log("MESH CULLER", this);
-
     const fallbackNode = new Group();
-
+    
     const min = new Vector3();
     const max = new Vector3();
     const box = new Box3(min, max);

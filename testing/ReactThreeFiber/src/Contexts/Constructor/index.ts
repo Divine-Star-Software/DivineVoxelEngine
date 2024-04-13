@@ -6,7 +6,7 @@ import { DivineVoxelEngineConstructor } from "@divinevoxel/core/Constructor";
 import { Flat3DIndex, Vec3Array } from "@divinevoxel/core/Math";
 import { BrushTool } from "@divinevoxel/core/Tools/Brush/Brush";
 import { LocationData } from "@divinevoxel/core/Math";
-import { DVEDefaultBuilder } from "@divinevoxel/default/Builder/Builder";
+import { DVEDefaultBuilder } from "@divinevoxel/foundation/Builder/Builder";
 const defaults = DVEDefaultBuilder.defaults;
 await StartContrusctor({
   builder: new DVEDefaultBuilder({

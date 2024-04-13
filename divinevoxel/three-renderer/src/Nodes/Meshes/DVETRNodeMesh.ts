@@ -1,7 +1,5 @@
 import * as THREE from "three";
-import { Scene } from "three";
 import type { Vector3Tuple } from "three";
-import { Mesh } from "three";
 import { Box3, Vector3 } from "three";
 
 import type {
@@ -13,7 +11,7 @@ import { DVEThreeRenderer } from "../../DVEThreeRenderer";
 import { DVETRMesh } from "./DVETRMesh";
 import { DVETRScene } from "Scene/DVETRScene";
 import { DVENodeMesh } from "@divinevoxel/core/Interfaces/Render/Nodes/Meshes/DVENodeMesh";
-import { EngineSettingsData } from "@divinevoxel/core/Types/Data/Settings/EngineSettings.types";
+import { EngineSettingsData } from "@divinevoxel/core/Types/EngineSettings.types";
 
 export class DVETRNodeMesh extends DVENodeMesh {
   pickable = false;

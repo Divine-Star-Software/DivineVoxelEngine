@@ -16,12 +16,14 @@ import {
 import { URIMesh } from "@divinestar/uri/Meshes/URIMesh";
 import { DVETRNodeManager } from "./Nodes/DVEBRNodeManager";
 import { DVETRTexture } from "./Textures/DVETRTexture";
-import { DivineVoxelEngineRender } from "@divinevoxel/core/Render/DivineVoxelEngineRender";
+import { DivineVoxelEngineRender } from "@divinevoxel/core/Contexts/Render/DivineVoxelEngineRender";
+import { URIEngine } from "@divinestar/uri/Engine/URIEngine";
 export interface DVEThreeRendererInitData {
   scene: Scene;
   camera: Camera;
 }
 export class DVEThreeRenderer extends DVERenderer {
+  engine: URIEngine<unknown>;
   static instance: DVEThreeRenderer;
   nodes: DVETRNodeManager;
   scene: DVETRScene;

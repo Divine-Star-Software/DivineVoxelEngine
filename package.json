@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "init:dve:core": "cd ./divinevoxel/core ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/core/dist",
-    "init:dve:default": "cd ./divinevoxel/default ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/default/dist",
+    "init:dve:foundation": "cd ./divinevoxel/foundation ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/foundation/dist",
     "init:dve:babylon-renderer": "cd ./divinevoxel/babylon-renderer ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/babylon-renderer/dist",
     "init:dve:three-renderer": "cd ./divinevoxel/three-renderer ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/three-renderer/dist",
     "init:dve:react-three": "cd ./divinevoxel/react-three ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/react-three/dist",
@@ -52,7 +52,8 @@
     "divinevoxel\\default\\dist",
     "divinevoxel\\babylon-renderer\\dist",
     "divinevoxel\\three-renderer\\dist",
-    "divinevoxel\\react-three\\dist"
+    "divinevoxel\\react-three\\dist",
+    "divinevoxel\\foundation\\dist"
   ],
   "devDependencies": {
     "@types/three": "^0.163.0",

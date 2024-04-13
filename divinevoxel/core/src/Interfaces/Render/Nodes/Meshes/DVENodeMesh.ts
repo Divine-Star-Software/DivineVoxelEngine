@@ -1,4 +1,4 @@
-import type { EngineSettingsData } from "Types/Data/Settings/EngineSettings.types.js";
+import type { EngineSettingsData } from "Types/EngineSettings.types.js";
 
 import { URIMesh } from "@divinestar/uri/Meshes/URIMesh.js";
 import { NodeMeshData, DVENodeMeshAttributes } from "../DVERenderNode.types";

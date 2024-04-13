@@ -4,7 +4,7 @@ import { Vector3 } from "@babylonjs/core/Maths/";
 import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo.js";
 import type { Vec3Array } from "@divinevoxel/core/Math/Types/Math.types";
-import type { EngineSettingsData } from "@divinevoxel/core/Types/Data/Settings/EngineSettings.types.js";
+import type { EngineSettingsData } from "@divinevoxel/core/Types/EngineSettings.types";
 
 import type {
   DVENodeMeshAttributes,
@@ -52,7 +52,6 @@ export class DVEBRNodeMesh extends DVENodeMesh {
     if (!mat) {
       throw new Error(`Material: ${this.data.id} does not exist`);
     }
-    console.log(`%cMAT:${mat.id} ${this.data.id}`, "color: red;");
 
     if (DVEBabylonRenderer.instance.foManager.activeNode) {
       mesh.parent = DVEBabylonRenderer.instance.foManager.activeNode;
@@ -135,7 +134,6 @@ export class DVEBRNodeMesh extends DVENodeMesh {
 
           break;
         default:
-    
           mesh.setVerticesBuffer(
             new VertexBuffer(
               this.engine,
@@ -168,13 +166,12 @@ export class DVEBRNodeMesh extends DVENodeMesh {
 
   _clearCached(dveMesh: DVEBRMesh) {
     if (!this.clearCachedGeometry) return;
-/*     const mesh = dveMesh._mesh;
+    /*     const mesh = dveMesh._mesh;
     mesh.geometry!.clearCachedData();
     if (mesh.subMeshes) {
       for (const sm of mesh.subMeshes) {
         sm.setBoundingInfo(this.defaultBb);
       }
     } */
-
   }
 }

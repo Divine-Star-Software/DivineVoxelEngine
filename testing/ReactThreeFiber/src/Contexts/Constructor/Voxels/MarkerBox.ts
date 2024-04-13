@@ -1,5 +1,5 @@
-import { VoxelConstructor } from "@divinevoxel/default/Builder/Constructors/Voxel/Classes/VoxelConstructor";
-import { BoxVoxelShape } from "@divinevoxel/default/Builder/Shapes/default/Box/Box.voxel.shape";
+import { VoxelConstructor } from "@divinevoxel/foundation/Builder/Constructors/Voxel/Classes/VoxelConstructor";
+import { BoxVoxelShape } from "@divinevoxel/foundation/Builder/Shapes/default/Box/Box.voxel.shape";
 
 export function GetMarkerBox(): VoxelConstructor {
   const textures: number[] = [];

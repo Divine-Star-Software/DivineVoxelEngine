@@ -1,7 +1,7 @@
 import type {
  RegisterObjectMapSync,
  RegisterStringMapSync,
-} from "Types/Data/DataSync.types.js";
+} from "Types/DataSync.types.js";
 
 export const MappedDataRegister = {
  stringMaps: {

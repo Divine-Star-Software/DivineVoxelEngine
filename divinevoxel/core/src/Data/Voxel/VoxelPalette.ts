@@ -1,4 +1,4 @@
-import { VoxelPalette, VoxelPaletteMap } from "Types/Data/WorldData.types";
+import { VoxelPalette, VoxelPaletteMap } from "../../Types/Voxel.types";
 
 export const VoxelPaletteReader = {
  _palette: <VoxelPalette>["dve_air", "dve_barrier"],

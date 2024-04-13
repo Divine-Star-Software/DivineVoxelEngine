@@ -4,7 +4,7 @@ import { DVEBRMeshCuller } from "./DVEBRMeshCuller";
 import { DVEBRFOManager } from "./DVEBRFOManger";
 import { DVEBRScene } from "./Scene/DVEBRScene";
 import { DVEBRNodeManager } from "./Nodes/DVEBRNodeManager.js";
-import { DivineVoxelEngineRender } from "@divinevoxel/core/Render/DivineVoxelEngineRender.js";
+import { DivineVoxelEngineRender } from "@divinevoxel/core/Contexts/Render/DivineVoxelEngineRender.js";
 import { Observable } from "@divinestar/utils/Observers/Observable.js";
 import { DVEBRMesh } from "./Nodes/Meshes/DVEBRMesh.js";
 import { DVEBREngine } from "./Engine/DVEBREngine.js";
@@ -32,10 +32,10 @@ export class DVEBabylonRenderer extends DVERenderer {
     this.foManager = new DVEBRFOManager(this.scene);
     this.meshCuller = new DVEBRMeshCuller(this.scene, this.foManager);
     this.nodes = new DVEBRNodeManager();
-    console.log("CREATED", DVEBabylonRenderer);
+
     if (!DVEBabylonRenderer.instance) DVEBabylonRenderer.instance = this;
 
-    console.log(DVEBabylonRenderer.instance);
+
     return DVEBabylonRenderer.instance;
   }
   async init(dver: DivineVoxelEngineRender) {}

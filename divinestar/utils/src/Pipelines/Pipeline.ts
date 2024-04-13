@@ -7,6 +7,10 @@ export class Pipeline<T extends any = {}> {
 
   constructor() {}
 
+  isRegistered(key: PipelineKeys) {
+    return this.pipes.has(key);
+  }
+
   regiser(key: PipelineKeys, func: SyncPipelineFunction<T>) {
     this.pipes.set(key, func);
   }
@@ -26,6 +30,10 @@ export class AsyncPipeline<T extends any = {}> {
   private pipes = new Map<PipelineKeys, AsyncPipelineFunction<T>>();
 
   constructor() {}
+
+  isRegistered(key: PipelineKeys) {
+    return this.pipes.has(key);
+  }
 
   regiser(key: PipelineKeys, func: AsyncPipelineFunction<T>) {
     this.pipes.set(key, func);

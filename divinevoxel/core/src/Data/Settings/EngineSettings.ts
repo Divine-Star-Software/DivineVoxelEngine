@@ -1,14 +1,14 @@
-import { Util } from "../../Global/Util.helper.js";
-import type { EngineSettingsData } from "Types/Data/Settings/EngineSettings.types";
+import type { EngineSettingsData } from "Types/EngineSettings.types.js";
 import { WorldBounds } from "../World/WorldBounds.js";
 import { WorldSpaces } from "../World/WorldSpaces.js";
+import { Environment } from "@divinestar/utils/Environment/Environment.js";
 
 /**# Engine Settings
  * ---
  * Handles common settings for all contexts
  */
 export const EngineSettings = {
-  enviorment: Util.getEnviorment(),
+  enviorment: Environment.nodeJS.isNode ? "node" : "browser",
   //context: <EngineSettingsContext>"MatrixLoadedThread",
   settings: <EngineSettingsData>{
     nexus: {
