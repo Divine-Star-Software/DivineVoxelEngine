@@ -52,7 +52,7 @@ export abstract class URITexture<
   constructor(data: URITextureData<Scene>) {
     this._create(data);
 
-    console.log("CREATED NEW TEXTURE", this, this._texture);
+
   }
   abstract _create(data: URITextureData<Scene>): InteralTexture;
   abstract dispose(): void;

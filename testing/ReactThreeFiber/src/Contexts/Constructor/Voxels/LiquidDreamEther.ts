@@ -1,7 +1,7 @@
-import { VoxelConstructor } from "@divinevoxel/default/Builder/Constructors/Voxel/Classes/VoxelConstructor";
-import { LiquidVoxelShape } from "@divinevoxel/default/Builder/Shapes/default/Liquid/Liquid.voxel.shape";
+import { VoxelConstructor } from "@divinevoxel/foundation/Builder/Constructors/Voxel/Classes/VoxelConstructor";
+import { LiquidVoxelShape } from "@divinevoxel/foundation/Builder/Shapes/default/Liquid/Liquid.voxel.shape";
 
-import { OutlinedVoxelTool } from "@divinevoxel/default/Builder/Tools/OutlinedVoxelTool";
+import { OutlinedVoxelTool } from "@divinevoxel/foundation/Builder/Tools/OutlinedVoxelTool";
 export function GetDreamEther(): VoxelConstructor {
   let uv = 0;
 
