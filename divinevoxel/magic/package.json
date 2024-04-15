@@ -1,0 +1,39 @@
+{
+  "name": "@divinevoxel/magic",
+  "version": "0.0.44",
+  "module": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "description": "TypeScript Voxel Engine - Uses Babylon.js",
+  "keywords": [
+    "voxel",
+    "voxel engine",
+    "babylon.js"
+  ],
+  "scripts": {
+    "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ../../LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
+    "compile": "cd ./src && npx tsc --watch",
+    "publish": "npm run build && cd ./dist && npm publish",
+    "copy-js": "cd src && for file in $(find ./ -name '*.js')  \n do \n cp ${file} ../dist/${file} \n done",
+    "sync-wasm": "cp ./kernel/kernel.wasm ../../testing/static/kernel.wasm",
+    "sync-js": "cp ./kernel/kernel.js ./src/Kernel/kernel.js && cp ./kernel/kernel.js ./dist/Kernel/kernel.js"
+  },
+  "repository": {
+    "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
+  },
+  "homepage": "https://github.com/Divine-Star-Software/DivineVoxelEngine",
+  "author": "Divine Star Software",
+  "license": "MIT",
+  "devDependencies": {},
+  "peerDependencies": {},
+  "dependencies": {
+    "@divinevoxel/core": "^0.0.44"
+  },
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  }
+}

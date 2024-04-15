@@ -62,6 +62,9 @@ export class DVEPBRMaterialPlugin extends MaterialPluginBase {
 
   getAttributes(attributes: string[]) {
     const shader = this.dveMaterial?.shader || shaders.get(this._material.id)!;
+    for(const atr of shader.data.mesh.getAttributeList()){
+      if(["position","normal"].includes(atr))continue;
+    }
     attributes.push(...shader.data.mesh.getAttributeList());
   }
 
