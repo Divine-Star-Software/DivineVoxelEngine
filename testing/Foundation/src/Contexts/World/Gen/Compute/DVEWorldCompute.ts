@@ -819,7 +819,7 @@ export class GPUWorldGen {
   
 `;
 
-      return /* rust  */ `
+      return /* wgsl */ `
     @group(0) @binding(0) var<storage, read_write> WORLD_DATA: array<vec2u>;
     
     struct TEMPLATE_DATA_STRUCT {
