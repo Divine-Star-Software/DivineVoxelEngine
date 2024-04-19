@@ -1,12 +1,15 @@
+import { Texture } from "../../Core/Textures/Texture";
 import { QuantumEngine } from "../../Engine/QuantumEngine";
 import { RaySceneCompute } from "./RaySceneCompute";
 
 export class RayPipeline {
   engine: QuantumEngine;
   quadVertexBuffer: GPUBuffer;
-  outputTexture: GPUTexture;
   renderPipeline: GPURenderPipeline;
   bindGroup: GPUBindGroup;
+
+
+  outputTexture: Texture;
 
   rayScene: RaySceneCompute;
   constructor(canvas: HTMLCanvasElement | OffscreenCanvas) {
@@ -15,27 +18,26 @@ export class RayPipeline {
     this.engine = new QuantumEngine(canvas);
   }
 
-  async init() {
+  async init(rayScene: RaySceneCompute) {
     await this.engine.init();
     this.initBuffers();
     this.createOutputTexture();
     await this.initMaterial();
-    this.rayScene = new RaySceneCompute(this);
+    this.rayScene = rayScene;
   }
 
   initBuffers() {
     const quadVertices = new Float32Array([
       // x, y, u, v
       // vertex 1
-      -1.0, -1.0, 0.0, 0.0, 
+      -1.0, -1.0, 0.0, 0.0,
       // vertex 2
       1.0, -1.0, 1.0, 0.0,
       // vertex 3
       -1.0, 1.0, 0.0, 1.0,
       // vertex 4
-    1.0, 1.0, 1.0, 1.0, 
+      1.0, 1.0, 1.0, 1.0,
     ]);
-
 
     this.quadVertexBuffer = this.engine.device.createBuffer({
       size: quadVertices.byteLength,
@@ -131,7 +133,7 @@ export class RayPipeline {
       },
     });
 
-    const textureView = this.outputTexture.createView({
+    const textureView = this.outputTexture._texture.createView({
       format: "rgba32float",
     });
     const sampler = this.engine.device.createSampler();
@@ -146,7 +148,7 @@ export class RayPipeline {
   }
 
   render() {
-/*     const render = () => {
+    /*     const render = () => {
       this._renderPass();
       requestAnimationFrame(render);
     };
@@ -156,15 +158,22 @@ export class RayPipeline {
   }
 
   createOutputTexture() {
-    this.outputTexture = this.engine.device.createTexture({
-      size: [this.engine.canvas.width, this.engine.canvas.height],
-      format: "rgba32float",
-      usage:
-        GPUTextureUsage.TEXTURE_BINDING |
-        GPUTextureUsage.COPY_DST |
-        GPUTextureUsage.RENDER_ATTACHMENT |
-        GPUTextureUsage.STORAGE_BINDING,
-    });
+    this.outputTexture = new Texture(
+      this.engine,
+      "outputTexture",
+      {
+        size: [this.engine.canvas.width, this.engine.canvas.height],
+        format: "rgba32float",
+        usage:
+          GPUTextureUsage.TEXTURE_BINDING |
+          GPUTextureUsage.COPY_DST |
+          GPUTextureUsage.RENDER_ATTACHMENT |
+          GPUTextureUsage.STORAGE_BINDING,
+      },
+      "var outputTexture: texture_storage_2d<rgba32float, write>"
+    );
+
+
   }
 
   private _renderPass() {

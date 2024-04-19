@@ -1,52 +1,76 @@
+import { StorageBuffer } from "../../Core/Buffers/StorageBuffer";
+import { BindGroup } from "../../Core/Bind/BindGroup";
 import { RayPipeline } from "./RayPipeline";
-import { SDFShader } from "./SDFShader";
-import { VoxelShader } from "./VoxelShader";
+import { Texture } from "../../Core/Textures/Texture";
+import { TextureSampler } from "../../Core/Textures/TextureSampler";
+import { UniformBuffer } from "../../Core/Buffers/UniformBuffer";
+
+type RaySceneComputeInitData = {
+  uniforms: UniformBuffer[];
+  buffers: StorageBuffer[];
+  textures: Texture[];
+  sampler: TextureSampler[];
+  code: {
+    top: string;
+    beforeMain: string;
+  };
+};
 
 export class RaySceneCompute {
   private computePipeline: GPUComputePipeline;
-  voxelLookUpTableBuffer: GPUBuffer;
-  voxelGridBuffer: GPUBuffer;
+  bindGroup: BindGroup;
+  _initalized = false;
 
-  constructor(public pipeline: RayPipeline) {
-    this.setupComputePipeline();
-  }
+  constructor(public pipeline: RayPipeline) {}
 
-  setBuffers(voxelLookUpTableData: Uint8Array, voxelGridData: Uint32Array) {
-    this.voxelLookUpTableBuffer = this.pipeline.engine.device.createBuffer({
-      size: voxelLookUpTableData.byteLength,
-      usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+  init(data: RaySceneComputeInitData) {
+    this.bindGroup = new BindGroup(this.pipeline.engine);
+    this.bindGroup.addTexture(this.pipeline.outputTexture, {
+      binding: 0,
+      visibility: GPUShaderStage.COMPUTE,
+      storageTexture: { format: "rgba32float" },
     });
-
-    this.voxelGridBuffer = this.pipeline.engine.device.createBuffer({
-      size: voxelGridData.byteLength,
-
-      usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
-    });
-
-    // Upload data to the buffers
-    this.pipeline.engine.device.queue.writeBuffer(
-      this.voxelLookUpTableBuffer,
-      0,
-      voxelLookUpTableData.buffer
-    );
-    this.pipeline.engine.device.queue.writeBuffer(
-      this.voxelGridBuffer,
-      0,
-      voxelGridData.buffer
-    );
-  }
-
-  private setupComputePipeline() {
+    for (const buffers of data.uniforms) {
+      this.bindGroup.addUniform(buffers, {
+        binding: 0,
+        visibility: GPUShaderStage.COMPUTE,
+        buffer: { type:"uniform" },
+      });
+    }
+    for (const buffers of data.buffers) {
+      this.bindGroup.addBuffer(buffers, {
+        binding: 0,
+        visibility: GPUShaderStage.COMPUTE,
+        buffer: { type: "storage" },
+      });
+    }
+    for (const buffers of data.buffers) {
+      this.bindGroup.addBuffer(buffers, {
+        binding: 0,
+        visibility: GPUShaderStage.COMPUTE,
+        buffer: { type: "storage" },
+      });
+    }
+    for (const texture of data.textures) {
+      this.bindGroup.addTexture(texture, {
+        binding: 0,
+        visibility: GPUShaderStage.COMPUTE,
+        storageTexture: { format: "rgba32float" },
+      });
+    }
+    for (const sampler of data.sampler) {
+      this.bindGroup.addSampler(sampler, {
+        binding: 0,
+        visibility: GPUShaderStage.COMPUTE,
+        sampler: { type: "non-filtering" },
+      });
+    }
     const device = this.pipeline.engine.device;
     const shaderCode = /* wgsl */ `
-      ${VoxelShader.define}
-      @group(0) @binding(0) var<storage, read_write> voxelLookUpTable: VoxelLookup;
-      @group(0) @binding(1) var<storage, read_write> voxelGrid: VoxelData;
-      @group(0) @binding(2) var outputTexture: texture_storage_2d<rgba32float, write>;
+      ${data.code.top}
+      ${this.bindGroup.createGroupCode()}
 
-
-
-      ${VoxelShader.functions}
+      ${data.code.beforeMain}
       @compute @workgroup_size(8, 8, 1)
       fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
           textureStore(
@@ -57,26 +81,11 @@ export class RaySceneCompute {
       }
     `;
 
+    console.log(shaderCode);
     const shaderModule = device.createShaderModule({ code: shaderCode });
-    const bindGroupLayout = this.pipeline.engine.device.createBindGroupLayout({
-      entries: [
-        {
-          binding: 0,
-          visibility: GPUShaderStage.COMPUTE,
-          buffer: { type: "storage" },
-        },
-        {
-          binding: 1,
-          visibility: GPUShaderStage.COMPUTE,
-          buffer: { type: "storage" },
-        },
-        {
-          binding: 2,
-          visibility: GPUShaderStage.COMPUTE,
-          storageTexture: { format: "rgba32float" },
-        },
-      ],
-    });
+    const bindGroupLayout = this.pipeline.engine.device.createBindGroupLayout(
+      this.bindGroup.getLayout()
+    );
 
     this.computePipeline = device.createComputePipeline({
       layout: this.pipeline.engine.device.createPipelineLayout({
@@ -87,21 +96,17 @@ export class RaySceneCompute {
         entryPoint: "main",
       },
     });
+    this._initalized = true;
   }
 
   compute() {
-    if(!this.voxelGridBuffer || !this.voxelLookUpTableBuffer) return;
+    if (!this._initalized) return;
     const device = this.pipeline.engine.device;
     const commandEncoder = device.createCommandEncoder();
 
-    const bindGroup = device.createBindGroup({
-      layout: this.computePipeline.getBindGroupLayout(0),
-      entries: [
-        { binding: 0, resource: { buffer: this.voxelLookUpTableBuffer } },
-        { binding: 1, resource: { buffer: this.voxelGridBuffer } },
-        { binding: 2, resource: this.pipeline.outputTexture.createView() },
-      ],
-    });
+    const bindGroup = this.bindGroup.createBindGroup(
+      this.computePipeline.getBindGroupLayout(this.bindGroup.index)
+    );
 
     const passEncoder = commandEncoder.beginComputePass();
     passEncoder.setPipeline(this.computePipeline);

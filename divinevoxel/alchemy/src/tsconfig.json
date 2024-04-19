@@ -1,0 +1,11 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../dist",
+    "baseUrl": "./",
+    "types": ["@types/node"],
+    "allowJs": true,
+    "checkJs": false,
+
+  }
+}

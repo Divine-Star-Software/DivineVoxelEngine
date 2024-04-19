@@ -1,8 +1,10 @@
+import { DualContouring } from "./DualContouring";
+
 export class VoxParser {
   private dataView: DataView;
   private cursor: number = 0;
   voxels: { x: number; y: number; z: number; colorIndex: number }[] = [];
-  palette: number[] = [];
+  palette: { r: number; g: number; b: number; a: number }[] = [];
   size: { x: number; y: number; z: number } | null = null;
 
   constructor(arrayBuffer: ArrayBuffer) {
@@ -14,21 +16,17 @@ export class VoxParser {
     this.readMainChunk();
     console.log("Voxel Data:", this.voxels);
 
-    console.log(
-      "Palette:",
-      this.palette.map((color) => "#" + color.toString(16).padStart(8, "0"))
-    );
     console.log("Model Size:", this.size);
 
     console.log(this);
   }
 
   getGPUData() {
-    const voxelLookUpTable = this.createCubeAssistedLookUpTable();
     const voxelGrid = this.getVoxelGrid();
+    const voxelLookUp = this.createCubeAssistedLookUpTable();
     return {
-      voxelLookUpTable,
       voxelGrid,
+      voxelLookUp,
     };
   }
 
@@ -99,19 +97,18 @@ export class VoxParser {
     this.cursor = start + contentSize + childrenSize; // Move to the next chunk
   }
 
-  private _voxelGrid: Uint32Array;
-
   getIndex(x: number, y: number, z: number) {
     const { x: dimX, y: dimY, z: dimZ } = this.size!;
     return x + y * dimX + z * dimX * dimY;
   }
+  private _voxelGrid: Uint32Array;
   getVoxelGrid() {
     if (this._voxelGrid) return this._voxelGrid;
     if (!this.size) throw new Error("Model size not set.");
     const { x: dimX, y: dimY, z: dimZ } = this.size;
     const voxelGrid = new Uint32Array(dimX * dimY * dimZ);
-    this.voxels.forEach(({ x, y, z }) => {
-      voxelGrid[this.getIndex(x,y,z)] = 1; // Mark the voxel presence
+    this.voxels.forEach(({ x, y, z, colorIndex }) => {
+      voxelGrid[this.getIndex(x, y, z)] = colorIndex; // Mark the voxel presence
     });
     this._voxelGrid = voxelGrid;
     return voxelGrid;
@@ -155,7 +152,7 @@ export class VoxParser {
     }
 
     // Buffer for storing maximum cube sizes at each voxel
-    const maxCubes = new Uint8Array(voxelGrid.length);
+    const maxCubes = new Uint32Array(voxelGrid.length);
 
     // Compute maximum cube size for each voxel using binary search
     for (let z = 0; z < dimZ; z++) {
@@ -241,8 +238,193 @@ export class VoxParser {
       const g = this.dataView.getUint8(this.cursor++);
       const b = this.dataView.getUint8(this.cursor++);
       const a = this.dataView.getUint8(this.cursor++);
-      const color = ((r << 24) | (g << 16) | (b << 8) | a) >>> 0;
-      this.palette.push(color);
+      this.palette.push({
+        r,
+        g,
+        b,
+        a,
+      });
     }
+  }
+
+  _sdfGrid: Float32Array | null = null;
+  getSDFGrid() {
+    if (this._sdfGrid) return this._sdfGrid;
+    if (!this.size) throw new Error("Model size not set.");
+    const { x: dimX, y: dimY, z: dimZ } = this.size!;
+    const voxelGrid = this.getVoxelGrid();
+    const sdfGrid = new Float32Array(dimX * dimY * dimZ);
+
+    // Initialize the grid: Inside surface set to -infinity, outside to +infinity
+    const INF = Number.MAX_SAFE_INTEGER;
+    for (let i = 0; i < sdfGrid.length; i++) {
+      sdfGrid[i] = voxelGrid[i] ? 0 : INF;
+    }
+
+    // Perform the first pass (forward)
+    for (let z = 0; z < dimZ; z++) {
+      for (let y = 0; y < dimY; y++) {
+        for (let x = 0; x < dimX; x++) {
+          const idx = this.getIndex(x, y, z);
+          if (x > 0)
+            sdfGrid[idx] = Math.min(sdfGrid[idx], sdfGrid[idx - 1] + 1);
+          if (y > 0)
+            sdfGrid[idx] = Math.min(sdfGrid[idx], sdfGrid[idx - dimX] + 1);
+          if (z > 0)
+            sdfGrid[idx] = Math.min(
+              sdfGrid[idx],
+              sdfGrid[idx - dimX * dimY] + 1
+            );
+        }
+      }
+    }
+
+    // Perform the second pass (backward)
+    for (let z = dimZ - 1; z >= 0; z--) {
+      for (let y = dimY - 1; y >= 0; y--) {
+        for (let x = dimX - 1; x >= 0; x--) {
+          const idx = x + y * dimX + z * dimX * dimY;
+          if (x < dimX - 1)
+            sdfGrid[idx] = Math.min(sdfGrid[idx], sdfGrid[idx + 1] + 1);
+          if (y < dimY - 1)
+            sdfGrid[idx] = Math.min(sdfGrid[idx], sdfGrid[idx + dimX] + 1);
+          if (z < dimZ - 1)
+            sdfGrid[idx] = Math.min(
+              sdfGrid[idx],
+              sdfGrid[idx + dimX * dimY] + 1
+            );
+        }
+      }
+    }
+
+    // Convert grid values from "distance to nearest empty voxel" to actual SDF
+    for (let i = 0; i < sdfGrid.length; i++) {
+      if (voxelGrid[i] === 0) {
+        // Outside voxels have positive distance
+        sdfGrid[i] = Math.sqrt(sdfGrid[i]);
+      } else {
+        // Inside voxels have negative distance (invert and subtract 1 to include the boundary voxel)
+        sdfGrid[i] = -Math.sqrt(sdfGrid[i]);
+      }
+    }
+
+    this._sdfGrid = sdfGrid;
+
+  //  this.applyGaussianBlur(sdfGrid, this.size.x, this.size.y, this.size.z);
+  //  this.applyGaussianBlur(sdfGrid, this.size.x, this.size.y, this.size.z);
+
+    return sdfGrid;
+  }
+  private applyMedianFilter(
+    sdfGrid: Float32Array,
+    width: number,
+    height: number,
+    depth: number
+  ) {
+    const newGrid = new Float32Array(sdfGrid.length);
+
+    for (let z = 1; z < depth - 1; z++) {
+      for (let y = 1; y < height - 1; y++) {
+        for (let x = 1; x < width - 1; x++) {
+          const neighbors = [];
+          // Collect the values of the 3x3x3 neighborhood
+          for (let dz = -1; dz <= 1; dz++) {
+            for (let dy = -1; dy <= 1; dy++) {
+              for (let dx = -1; dx <= 1; dx++) {
+                const nx = x + dx,
+                  ny = y + dy,
+                  nz = z + dz;
+                neighbors.push(sdfGrid[this.getIndex(nx, ny, nz)]);
+              }
+            }
+          }
+          // Sort and find the median
+          neighbors.sort((a, b) => a - b);
+          const midIndex = Math.floor(neighbors.length / 2);
+          newGrid[this.getIndex(x, y, z)] = neighbors[midIndex];
+        }
+      }
+    }
+
+    // Copy the new, smoothed values back to the original grid
+    sdfGrid.set(newGrid);
+  }
+  private applyGaussianBlur(
+    sdfGrid: Float32Array,
+    width: number,
+    height: number,
+    depth: number
+  ) {
+    // Example of a larger 5x5x5 kernel with more blur (values are illustrative)
+    const kernelSize = 5;
+    const kernelHalfSize = Math.floor(kernelSize / 2);
+    const kernel = new Float32Array(kernelSize * kernelSize * kernelSize);
+    const sigma = 10; // Standard deviation for Gaussian distribution
+    let sum = 0;
+
+    // Generate Gaussian kernel
+    for (let z = -kernelHalfSize; z <= kernelHalfSize; z++) {
+      for (let y = -kernelHalfSize; y <= kernelHalfSize; y++) {
+        for (let x = -kernelHalfSize; x <= kernelHalfSize; x++) {
+          const idx =
+            (z + kernelHalfSize) * kernelSize * kernelSize +
+            (y + kernelHalfSize) * kernelSize +
+            (x + kernelHalfSize);
+          const exp = Math.exp(-(x * x + y * y + z * z) / (2 * sigma * sigma));
+          kernel[idx] = exp;
+          sum += exp;
+        }
+      }
+    }
+
+    // Normalize the kernel
+    for (let i = 0; i < kernel.length; i++) {
+      kernel[i] /= sum;
+    }
+
+    const newGrid = new Float32Array(sdfGrid.length);
+
+    for (let z = 0; z < depth; z++) {
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          let kernelSum = 0,
+            valueSum = 0;
+          for (let dz = -kernelHalfSize; dz <= kernelHalfSize; dz++) {
+            for (let dy = -kernelHalfSize; dy <= kernelHalfSize; dy++) {
+              for (let dx = -kernelHalfSize; dx <= kernelHalfSize; dx++) {
+                const nx = x + dx,
+                  ny = y + dy,
+                  nz = z + dz;
+                if (
+                  nx >= 0 &&
+                  nx < width &&
+                  ny >= 0 &&
+                  ny < height &&
+                  nz >= 0 &&
+                  nz < depth
+                ) {
+                  const idx = this.getIndex(nx, ny, nz);
+                  const kernelIdx =
+                    (dz + kernelHalfSize) * kernelSize * kernelSize +
+                    (dy + kernelHalfSize) * kernelSize +
+                    (dx + kernelHalfSize);
+                  valueSum += sdfGrid[idx] * kernel[kernelIdx];
+                  kernelSum += kernel[kernelIdx];
+                }
+              }
+            }
+          }
+
+          const idx = this.getIndex(x, y, z);
+          newGrid[idx] = kernelSum > 0 ? valueSum / kernelSum : sdfGrid[idx];
+        }
+      }
+    }
+
+    sdfGrid.set(newGrid); // Copy the blurred values back to the original grid
+  }
+  getDualContouringMesher() {
+    const grid = this.getSDFGrid();
+    return new DualContouring(grid, this.size!);
   }
 }
