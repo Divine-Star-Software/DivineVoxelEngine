@@ -1,26 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import { VoxParser } from "@divinevoxel/magic/index";
-import { RayPipeline } from "@divinevoxel/quantum-renderer/Pipelines/Ray/RayPipeline";
+import InitDVEM from "@divinevoxel/quantum-renderer/Defaults/Magic/InitDVEMRayMarching";
 export function App() {
   const ref = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     (async () => {
       if (!ref.current) return;
-      const vox = await (await fetch("/nature.vox")).arrayBuffer();
+      const vox = await (await fetch("/monu3.vox")).arrayBuffer();
       console.log("got vox buffer", vox.byteLength);
       const parsed = new VoxParser(vox);
+
       parsed.parse();
-
-      const rayPipeLine = new RayPipeline(ref.current);
-
-      await rayPipeLine.init();
-
-      const { voxelGrid, voxelLookUpTable } = parsed.getGPUData();
-      console.log("got voxel data",voxelGrid,voxelLookUpTable)
-      rayPipeLine.rayScene.setBuffers(voxelLookUpTable,voxelGrid);
-
-      rayPipeLine.render();
+      console.log("VOX PARSED",parsed);
+       await InitDVEM({
+        casnvas: ref.current,
+        parsed, 
+      }); 
     })();
   }, []);
 
