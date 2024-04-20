@@ -1,5 +1,5 @@
 <h1 align="center">
-@divinevoxel/core
+@divinevoxel/magic
 </h1>
 
 <p align="center">
@@ -8,4 +8,4 @@
 
 ---
 
-The core of Divine Voxel Engine. Contains abstract interfaces and utils.
+A plugin for Divine Voxel Engine for working with Magic Voxel files and styled worlds. 

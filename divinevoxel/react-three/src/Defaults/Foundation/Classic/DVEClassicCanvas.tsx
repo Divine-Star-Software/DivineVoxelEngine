@@ -1,14 +1,14 @@
 import { Canvas, Props, events, useFrame, useThree } from "@react-three/fiber";
 import InitClassic, {
   NodeSubstanceData,
-} from "@divinevoxel/three-renderer/Defaults/Classic/InitDVETRClassic";
+} from "@divinevoxel/three-renderer/Defaults/Foundation/Classic/InitDVETRClassic";
 import { TextureData } from "@divinevoxel/foundation/Textures/Texture.types";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DVEThreeRenderer } from "@divinevoxel/three-renderer/DVEThreeRenderer";
-import { DivineVoxelEngineRender } from "@divinevoxel/core/Render/DivineVoxelEngineRender";
+import { DivineVoxelEngineRender } from "@divinevoxel/core/Contexts/Render/DivineVoxelEngineRender";
 import { RecursivePartial } from "@divinevoxel/core";
-import { EngineSettingsData } from "@divinevoxel/core/Types/Data/Settings/EngineSettings.types";
-
+import { EngineSettingsData } from "@divinevoxel/core/Types/EngineSettings.types";
+import { DVEFTRCore } from "@divinevoxel/three-renderer/Defaults/Foundation/DVEFTRCore";
 interface R3FCanvasProps
   extends Props,
     React.RefAttributes<HTMLCanvasElement> {}
@@ -47,12 +47,14 @@ function DVEInit({
         substances: canvasProps.substances,
       });
       dveRendererRef.current = renderer;
+      const core = new DVEFTRCore();
 
       await dver.init({
         worldWorker: canvasProps.worldWorker,
         constructorWorkers: canvasProps.constructorWorkers,
-        nexusWorker: canvasProps.nexusWorker,
-        dataWorker: canvasProps.dataWorker,
+        core,
+        //   nexusWorker: canvasProps.nexusWorker,
+        //  dataWorker: canvasProps.dataWorker,
         renderer,
         ...canvasProps.engineSettings,
       });

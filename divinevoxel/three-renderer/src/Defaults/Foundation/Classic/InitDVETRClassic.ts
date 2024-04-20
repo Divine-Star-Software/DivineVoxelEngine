@@ -5,9 +5,9 @@ import { TextureBuilder } from "@divinevoxel/foundation/Textures/TextureBuilder"
 import { DivineVoxelEngineRender } from "@divinevoxel/core/Contexts/Render/DivineVoxelEngineRender";
 import { TextureManager } from "@divinevoxel/foundation/Textures/TextureManager";
 import { DefaultMaterialManager } from "../DefaultMaterialManager";
-import { DVEThreeRenderer } from "../../DVEThreeRenderer";
+import { DVEThreeRenderer } from "../../../DVEThreeRenderer";
 import { DVEBRClassicMaterial } from "./DVETRClassicMaterial";
-import { DVETRNodeMesh } from "../../Nodes/Meshes/DVETRNodeMesh";
+import { DVETRNodeMesh } from "../../../Nodes/Meshes/DVETRNodeMesh";
 import { SceneTool } from "../SceneTool";
 export type DVEBRClassicData = {
   textureData: TextureData[];

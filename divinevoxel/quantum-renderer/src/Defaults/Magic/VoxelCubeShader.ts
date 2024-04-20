@@ -37,7 +37,7 @@ export class VoxelCubeShader {
    var epsilon = voxelParams.scene.y; 
     if(interSectionCheck.x > 0) {
         t =  interSectionCheck.x;;
-        epsilon = .001;
+        epsilon = .0001;
     } else {
         if (rayDirection.y != 0.0) {
             let tFloor: f32 = -rayOrigin.y / rayDirection.y; // Solve for when y component of the ray equals 0
@@ -124,7 +124,7 @@ export class VoxelCubeShader {
                 let voxelIndex: u32 = getIndex(p);
                 let voxelValue: f32 = voxelLookUp.distance[voxelIndex];
     
-                t += max(epsilon , voxelValue * voxelParams.grid.w * .01);
+                t += epsilon;
             }
     
     

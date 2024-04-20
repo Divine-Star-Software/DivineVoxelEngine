@@ -1,12 +1,10 @@
 import {
-  RawShaderMaterial,
   Matrix,
   Vector2,
   Vector3,
   Scene,
   Vector4,
   DoubleSide,
-  FrontSide,
   ShaderMaterialParameters,
   Matrix4,
   Matrix3,
@@ -15,12 +13,12 @@ import {
   BackSide,
 } from "three";
 import { TextureManager } from "@divinevoxel/foundation/Textures/TextureManager.js";
-import { DivineShader } from "@divinestar/shaders";
+import { URIShader } from "@divinestar/uri/Shaders/Classes/URIShader.js";
 import {
   URIMaterial,
   URIMaterialData,
 } from "@divinestar/uri/Materials/URIMaterial.js";
-import { DVETRScene } from "../../Scene/DVETRScene.js";
+import { DVETRScene } from "../../../Scene/DVETRScene.js";
 import { URIScene } from "@divinestar/uri/Scenes/URIScene.js";
 import { URITexture } from "@divinestar/uri/Textures/URITexture.js";
 import { DefaultMaterialManager } from "../DefaultMaterialManager";
@@ -42,7 +40,7 @@ export class DVEBRClassicMaterial extends URIMaterial<
 > {
   scene: Scene;
 
-  shader: DivineShader;
+  shader: URIShader;
 
   afterCreate: ((material: ShaderMaterial) => void)[] = [];
   constructor(public id: string, public data: DVETRClassicMaterialData) {

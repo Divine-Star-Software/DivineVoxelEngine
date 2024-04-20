@@ -1,5 +1,5 @@
 <h1 align="center">
-@divinevoxel/core
+@divinevoxel/foundation
 </h1>
 
 <p align="center">
@@ -8,4 +8,4 @@
 
 ---
 
-The core of Divine Voxel Engine. Contains abstract interfaces and utils.
+Divine Voxel Engine Foundation is the orginal set up for DVE. It allows you to create Minecraft style voxel worlds.

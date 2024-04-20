@@ -8,9 +8,9 @@ import type {
 import { MaterialPluginBase } from "@babylonjs/core/Materials/materialPluginBase";
 import { DVEBRPBRMaterial } from "./DVEBRPBRMaterial";
 
-import { DivineShader } from "@divinestar/shaders";
+import { URIShader } from "@divinestar/uri/Shaders/Classes/URIShader";
 import { TextureType } from "@divinevoxel/foundation/Textures/TextureType";
-const shaders = new Map<string, DivineShader>();
+const shaders = new Map<string, URIShader>();
 const textures = new Map<string, TextureType>();
 export class DVEPBRMaterialPlugin extends MaterialPluginBase {
   uniformBuffer: UniformBuffer;

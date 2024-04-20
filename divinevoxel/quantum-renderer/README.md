@@ -1,5 +1,5 @@
 <h1 align="center">
-@divinevoxel/core
+@divinevoxel/quantum-renderer
 </h1>
 
 <p align="center">
@@ -8,4 +8,5 @@
 
 ---
 
-The core of Divine Voxel Engine. Contains abstract interfaces and utils.
+An expirmental web gpu based renderer for DVE.
+

@@ -30,7 +30,9 @@
   "devDependencies": {},
   "peerDependencies": {},
   "dependencies": {
-    "@divinevoxel/core": "^0.0.44"
+    "@divinevoxel/core": "^0.0.44",
+    "@divinevoxel/foundation": "^0.0.44",
+    "@divinevoxel/magic": "^0.0.44"
   },
   "main": "index.js",
   "publishConfig": {

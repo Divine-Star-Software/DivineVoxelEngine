@@ -21,8 +21,10 @@
   },
   "dependencies": {
     "@divinestar/shaders": "^0.0.44",
+    "three": "^0.163.0",
     "@divinevoxel/core": "^0.0.44",
-    "three": "^0.163.0"
+    "@divinevoxel/foundation": "^0.0.44",
+    "@divinevoxel/magic": "^0.0.44"
   },
   "publishConfig": {
     "access": "public"

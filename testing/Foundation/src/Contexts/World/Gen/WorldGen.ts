@@ -114,14 +114,21 @@ export const WorldGen = {
       for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
         for (let y = 0; y < this.worldHeight; y++) {
           brush.setXYZ(x, y, z);
-          if (y > this.minY + 1) break;
+          if (y > this.minY + 2) break;
           if (
             x == chunkX ||
             z == chunkZ ||
             x == chunkX + this.chunkWidth - 1 ||
             z == chunkZ + this.chunkDepth - 1
           ) {
-            brush.setId("dve_dream_stone").paint();
+            if (y == this.minY + 2) {
+              if (Math.random() > 0.8) {
+                brush.setId("dve_dream_grass").setXYZ(x, y, z).paint();
+              }
+            } else {
+              brush.setId("dve_dream_stone").paint();
+            }
+
             continue;
           }
           if (y < this.minY - 10) {
@@ -233,7 +240,6 @@ export const WorldGen = {
     //  return this.generateBlankChunk(chunkX, chunkZ);
     let toss = Math.random();
 
-    return this.test(chunkX, chunkZ);
     if (
       (chunkX == 0 && chunkZ == 0) ||
       (chunkX == 0 && chunkZ == -16) ||

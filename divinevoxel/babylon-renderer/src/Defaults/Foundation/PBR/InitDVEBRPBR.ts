@@ -33,7 +33,7 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
   const pipeline = new DefaultRenderingPipeline("atom", true, initData.scene, [
     initData.scene.activeCamera!,
   ]);
-  const hdrTexture = new HDRCubeTexture("assets/nightskybox.hdr", scene, 512);
+  const hdrTexture = new HDRCubeTexture("assets/skybox.hdr", scene, 512);
   initData.scene.activeCamera!.maxZ = 600;
   const postprocess = pipeline.imageProcessing;
   postprocess.toneMappingEnabled = true;
@@ -111,7 +111,7 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
         initData.scene
       );
 
-      sunLight.intensity = 0.5;
+      sunLight.intensity = 10;
       sunLight.shadowMinZ = 1;
       sunLight.shadowMaxZ = 500;
       sunLight.position.y = 200;

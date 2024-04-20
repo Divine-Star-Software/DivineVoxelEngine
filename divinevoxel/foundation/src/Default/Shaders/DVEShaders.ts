@@ -1,5 +1,9 @@
-import type { ShaderDataTypes, ShaderVaryingData } from "@divinestar/shaders";
-import { DivineShader, DivineShaderBuilder } from "@divinestar/shaders";
+import { URIShaderBuilder } from "@divinestar/uri/Shaders/URIShaderBuilder.js";
+import {
+  ShaderDataTypes,
+  ShaderVaryingData,
+} from "@divinestar/uri/Shaders/Types/ShaderData.types.js";
+
 import { RegisterFragFunctions } from "./Code/Functions/FragmentFunctions.js";
 import { RegisterVertexFunctions } from "./Code/Functions/VertexFunctions.js";
 import { RegisterVertexSnippets } from "./Code/Snippets/VertexSnippets.js";
@@ -8,9 +12,10 @@ import { RegisterFogShaders } from "./Code/Functions/FogShaders.js";
 import { RegisterNoiseFunctions } from "./Code/Functions/UtilShaders.js";
 import { RegisterVoxelSnippets } from "./Code/Snippets/VoxelSnippets.js";
 import { DVEShaderRegister } from "./DVEShaderRegister.js";
+import { URIShader } from "@divinestar/uri/Shaders/Classes/URIShader.js";
 export const DVEShaders = {
   register: new DVEShaderRegister(),
-  builder: DivineShaderBuilder,
+  builder: URIShaderBuilder,
   voxelAttributes: <[id: string, type: ShaderDataTypes][]>[
     ["position", "vec3"],
     ["normal", "vec3"],
@@ -180,16 +185,16 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
   voxelFragFunctions: <string[]>[],
   voxelVertexFunctions: <string[]>[],
 
-  _defaultShader: <DivineShader>{},
+  _defaultShader: <URIShader>{},
 
   $INIT() {
-    RegisterVoxelSnippets(DivineShaderBuilder);
-    RegisterVertexSnippets(DivineShaderBuilder);
-    RegisterFragmentSnippets(DivineShaderBuilder);
-    RegisterNoiseFunctions(DivineShaderBuilder);
-    RegisterFogShaders(DivineShaderBuilder);
-    RegisterVertexFunctions(DivineShaderBuilder);
-    RegisterFragFunctions(DivineShaderBuilder);
+    RegisterVoxelSnippets(URIShaderBuilder);
+    RegisterVertexSnippets(URIShaderBuilder);
+    RegisterFragmentSnippets(URIShaderBuilder);
+    RegisterNoiseFunctions(URIShaderBuilder);
+    RegisterFogShaders(URIShaderBuilder);
+    RegisterVertexFunctions(URIShaderBuilder);
+    RegisterFragFunctions(URIShaderBuilder);
     this.voxelFragFunctions = [
       "#dve_fmb2",
       "#dve_fmb3",
@@ -198,7 +203,7 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
     ];
     this.voxelVertexFunctions = ["#dve_fmb2", "#dve_fmb3", "#dve_vertex"];
 
-    const shader = DivineShaderBuilder.shaders.create("default");
+    const shader = URIShaderBuilder.shaders.create("default");
     shader.addAttributes(this.voxelAttributes);
     shader.addUniform(this.voxelSharedUniforms, "shared");
     shader.addUniform(this.voxelVertexUniforms, "vertex");
@@ -212,7 +217,7 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
     this._defaultShader = shader;
   },
 
-  _addInstances(shader: DivineShader) {
+  _addInstances(shader: URIShader) {
     shader.data.vertexBeforeMain.GLSL = /* glsl */ `
   #ifdef INSTANCES
   //matricies
@@ -231,7 +236,7 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
   },
 
   createBasicTextureShader(id: string) {
-    const shader = DivineShaderBuilder.shaders.create(id);
+    const shader = URIShaderBuilder.shaders.create(id);
     this._addInstances(shader);
 
     shader.addAttributes([
@@ -315,7 +320,7 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
   },
 
   createSkyBoxShader(id: string) {
-    const shader = DivineShaderBuilder.shaders.create(id);
+    const shader = URIShaderBuilder.shaders.create(id);
     shader.addAttributes([
       ["position", "vec3"],
       ["indices", "float"],

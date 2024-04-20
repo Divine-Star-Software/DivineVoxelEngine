@@ -1,5 +1,5 @@
 <h1 align="center">
- ⛯ Divine Voxel Engine Babylon Renderer ⛯
+@divinevoxel/babylon-renderer
 </h1>
 
 <p align="center">

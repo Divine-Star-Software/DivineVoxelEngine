@@ -1,6 +1,6 @@
 import type { RenderFogOptions } from "@divinevoxel/foundation/Default/Shaders/Types/Shader.types.js";
 import { RecursivePartial } from "@divinevoxel/core";
-import { DVEThreeRenderer } from "../DVEThreeRenderer";
+import { DVEThreeRenderer } from "../../DVEThreeRenderer";
 import { DVEShaders } from "@divinevoxel/foundation/Default/Shaders/DVEShaders";
 import { Vector4 } from "three";
 export class DefaultMaterialManager {

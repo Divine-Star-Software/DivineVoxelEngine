@@ -5,7 +5,7 @@ import { Matrix, Vector2, Vector3 } from "@babylonjs/core/Maths/";
 import { TextureManager } from "@divinevoxel/foundation/Textures/TextureManager.js";
 import { TextureBuilder } from "@divinevoxel/foundation/Textures/TextureBuilder";
 
-import { DivineShader } from "@divinestar/shaders";
+import { URIShader } from "@divinestar/uri/Shaders/Classes/URIShader";
 import {
   URIMaterial,
   URIMaterialData,
@@ -32,7 +32,7 @@ export class DVEBRClassicMaterial extends URIMaterial<
 > {
   scene: Scene;
 
-  shader: DivineShader;
+  shader: URIShader;
 
   afterCreate: ((material: ShaderMaterial) => void)[] = [];
   constructor(public id: string, public data: DVEBRClassicMaterialData) {

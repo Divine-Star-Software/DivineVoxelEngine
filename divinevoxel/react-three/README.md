@@ -1,5 +1,5 @@
 <h1 align="center">
-@divinevoxel/core
+@divinevoxel/react-three
 </h1>
 
 <p align="center">
@@ -8,4 +8,5 @@
 
 ---
 
-The core of Divine Voxel Engine. Contains abstract interfaces and utils.
+An intergration of Divine Voxel Engine into React Three Fiber.  
+

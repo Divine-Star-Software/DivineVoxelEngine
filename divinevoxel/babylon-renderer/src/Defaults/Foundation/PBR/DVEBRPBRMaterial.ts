@@ -3,7 +3,7 @@ import { Material, Scene } from "@babylonjs/core";
 import { PBRMaterial } from "@babylonjs/core/Materials/PBR/pbrMaterial";
 import { Vector3, Vector4 } from "@babylonjs/core/Maths/";
 
-import { DivineShader } from "@divinestar/shaders";
+import { URIShader } from "@divinestar/uri/Shaders/Classes/URIShader";
 import {
   URIMaterial,
   URIMaterialData,
@@ -35,7 +35,7 @@ export class DVEBRPBRMaterial extends URIMaterial<
   scene: Scene;
 
   plugin: DVEPBRMaterialPlugin;
-  shader: DivineShader;
+  shader: URIShader;
   texture: TextureType;
 
   afterCreate: ((material: PBRMaterial) => void)[] = [];

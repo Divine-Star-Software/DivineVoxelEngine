@@ -1,5 +1,5 @@
 import type { TextureData } from "./Texture.types";
-import { DivineShader } from "@divinestar/shaders";
+import { URIShader } from "@divinestar/uri/Shaders/Classes/URIShader";
 import { TextureManager } from "./TextureManager.js";
 import { TextureAnimationCreator } from "./TextureAnimations.js";
 import { TextureBuilder } from "./TextureBuilder.js";
@@ -69,7 +69,7 @@ export class TextureType {
   extension = "png";
   segments: Map<string, TextureSegment>;
   materials: Map<string, URIMaterial> = new Map();
-  shader: DivineShader;
+  shader: URIShader;
   constructor(public id: string) {
     const main = new TextureSegment(id, "main", "sampler", "cuv3");
     const overlay = new TextureSegment(id, "overlay", "overlay", "ocuv3");
@@ -87,7 +87,7 @@ export class TextureType {
 
   async build() {
     this.buildTextureIndex();
-    this.shader = new DivineShader(this.id);
+    this.shader = new URIShader(this.id);
     for (const [id, segment] of this.segments) {
       segment.shaderTexture = await TextureBuilder.createMaterialTexture(
         id,
@@ -138,7 +138,7 @@ export class TextureType {
     segment.textureMap.set(data.id, data);
   }
 
-  addToShader(shader: DivineShader) {
+  addToShader(shader: URIShader) {
     const main = this.segments.get("main")!;
     const overlay = this.segments.get("overlay")!;
     if (overlay) {

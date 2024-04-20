@@ -1,5 +1,5 @@
 <h1 align="center">
-@divinevoxel/core
+@divinevoxel/three-renderer
 </h1>
 
 <p align="center">
@@ -8,4 +8,5 @@
 
 ---
 
-The core of Divine Voxel Engine. Contains abstract interfaces and utils.
+A renderer for Divine Voxel Engine that uses ThreeJS. 
+

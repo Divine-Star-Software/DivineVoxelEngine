@@ -1,11 +1,12 @@
-import { DivineShader, DivineShaderBuilder } from "@divinestar/shaders";
+import { URIShaderBuilder } from "@divinestar/uri/Shaders/URIShaderBuilder.js";
+import { URIShader } from "@divinestar/uri/Shaders/Classes/URIShader.js";
+
 import { UtilMap } from "../../Util/UtilMap.js";
 
-
 export class DVEShaderRegister {
-  shaders = new UtilMap<string, DivineShader>();
+  shaders = new UtilMap<string, URIShader>();
 
-  create(shaders: DivineShader[]) {
+  create(shaders: URIShader[]) {
     for (const shader of shaders) {
       this.shaders.add([[shader.id, shader]]);
     }
@@ -14,6 +15,6 @@ export class DVEShaderRegister {
     return this.shaders.get(id);
   }
   getBulder() {
-    return DivineShaderBuilder;
+    return URIShaderBuilder;
   }
 }
