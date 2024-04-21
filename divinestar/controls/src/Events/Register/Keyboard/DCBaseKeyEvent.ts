@@ -1,16 +1,9 @@
-import { ControlInputTypes } from "../../../Types/Control.types";
-import { ControlEventTypes } from "../../../Types/Event.types";
+import { ControlInputTypes } from "../../../Controls/Control.types.js";
 import { DivineControlEvent } from "../../DivineControlEventBase.js";
 
-export class DCBaseKeyEvent extends DivineControlEvent<"keyboard"> {
-  readonly eventType: ControlEventTypes = "keyboard-down";
-  readonly inputType: ControlInputTypes = "keyboard";
-  constructor() {
-    super();
-  }
-
+export abstract class DCBaseKeyEvent extends DivineControlEvent<ControlInputTypes.KeyBoard> {
+  readonly inputType = ControlInputTypes.KeyBoard;
   getKey() {
-    return this.getData()!.key;
+    return this.controler.data.input[ControlInputTypes.KeyBoard]?.key;
   }
-  
 }

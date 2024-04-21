@@ -1,6 +1,6 @@
 {
  "name": "@divinestar/controls",
- "version": "0.0.14",
+ "version": "0.0.20",
  "module": "index.js",
  "types": "index.d.ts",
  "type": "module",
@@ -20,8 +20,8 @@
  "author": "Divine Star Software",
  "license": "MIT",
  "dependencies": {
-  "@divinestar/schemas": "^0.0.14",
-  "@divinestar/utils": "^0.0.44"
+  "@divinestar/schemas": "^0.0.17",
+  "@divinestar/utils": "^0.0.50"
  },
  "main": "index.js",
  "publishConfig": {

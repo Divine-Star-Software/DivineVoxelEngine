@@ -1,5 +1,6 @@
 import { Observable } from "@divinestar/utils/Observers/Observable.js";
 import { DivineGamepad } from "./DivineGamepad.js";
+import { DCUserManager } from "../Users/DCUserManager.js";
 
 export class GamepadManager {
   static _gamepads = new Map<number, DivineGamepad>();
@@ -10,7 +11,8 @@ export class GamepadManager {
   };
 
   static addGamepad(event: GamepadEvent) {
-    const newGamePad = new DivineGamepad(event.gamepad);
+    const user = DCUserManager.addUser(event.gamepad.index);
+    const newGamePad = new DivineGamepad(user, event.gamepad);
     this._gamepads.set(event.gamepad.index, newGamePad);
     this.observers.gamepadAdded.notify(newGamePad);
     return newGamePad;

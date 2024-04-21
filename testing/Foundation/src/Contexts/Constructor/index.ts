@@ -110,7 +110,7 @@ loadInFlatIndex.setBounds(256, 128, 256);
 const dataTool = new DataTool();
 const brushTool = new BrushTool();
 brushTool._update = false;
-DivineVoxelEngineConstructor.instance.TC.registerTasks<
+/* DivineVoxelEngineConstructor.instance.TC.registerTasks<
   [
     dimension: string,
     index: Vec3Array,
@@ -227,12 +227,7 @@ DivineVoxelEngineConstructor.instance.TC.registerTasks<
       for (let z = sz; z < ez; z += 16) {
         iy = siy;
         for (let y = sy; y < ey; y += 16) {
-          /*       TemplateProcessor.build(
-            [dimension, x, y, z],
-            data,
-            [ix * 16, iy * 16, iz * 16],
-            templateInFlatIndex
-          ); */
+  
           iy++;
         }
         iz++;
@@ -244,3 +239,4 @@ DivineVoxelEngineConstructor.instance.TC.registerTasks<
   },
   "deferred"
 );
+ */

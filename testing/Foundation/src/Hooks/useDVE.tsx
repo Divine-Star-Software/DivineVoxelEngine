@@ -6,7 +6,6 @@ import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera.js";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
 import { Observable } from "@divinestar/utils/Observers/Observable";
 import { RenderNodes } from "../Classes/RednerNodes";
-import { DVEFBRCore } from "../Classes/DVEFBRCore";
 
 const DVEObservers = {
   ready: new Observable<DivineVoxelEngineRender>(),
@@ -31,7 +30,7 @@ export function useDVE(props: UseDVEProps) {
     (async () => {
       if (!canvasRef.current) return;
       if (DivineVoxelEngineRender.initialized) return;
-      const core = new DVEFBRCore();
+
       const DVER = new DivineVoxelEngineRender();
       props.staturate(DVER, DVEObservers);
 
@@ -42,7 +41,7 @@ export function useDVE(props: UseDVEProps) {
       DVER.nodes.textures.registerTexture(props.textures);
  */
       const nodes = nodesRef.current;
-      nodes.core = core;
+
       const canvas = canvasRef.current;
       nodes.canvas = canvas;
 

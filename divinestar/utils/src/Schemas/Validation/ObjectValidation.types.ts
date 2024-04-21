@@ -1,4 +1,4 @@
-import type { ObjectCollectionData } from "ObjectCollection.types";
+import type { ObjectCollectionData } from "../ObjectCollection.types"
 
 export type ObjectPropertyValidatorError = {
   id: string;

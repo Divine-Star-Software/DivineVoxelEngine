@@ -4,6 +4,9 @@ import { DivineVoxelEngineWorld } from "@divinevoxel/core/Contexts/World";
 import { CPUGenerate } from "./Gen/CPUGenerate";
 
 await StartWorld({
+  dataLoaderEnabled: true,
+  nexusEnabled: true,
+  richWorldEnabled: true,
   voxels: [
     //util
     {
@@ -233,11 +236,9 @@ await StartWorld({
   ],
 });
 
-console.log("WORLD IS READY");
 let doComputeGen = false;
 
 DivineVoxelEngineWorld.instance.TC.registerTasks("start-world", async () => {
-  console.log("GENERATE THE WORLD");
   if (doComputeGen) {
     await ComputeShaderGenerate();
   } else {

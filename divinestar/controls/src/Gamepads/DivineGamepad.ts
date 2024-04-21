@@ -1,8 +1,10 @@
-import { DivineControlEventManager } from "../Events/DivineControlsEventManager.js";
 import { DivineControls } from "../DivineControls.js";
 import { DefaultGamePadButtons } from "../index.js";
 import { DCGamepadAxesMoveEvent } from "../Events/Register/Gamepad/Axes/DCGamepadAxesMoveEvent.js";
 import { Observable } from "@divinestar/utils/Observers/Observable.js";
+import { DCUser } from "../Users/DCUser.js";
+import { ControlsMap } from "../ControlsMap.js";
+import { HoldRegister } from "../HoldRegister.js";
 
 export class DivineGamepad {
   static BINDINGS = {
@@ -36,11 +38,11 @@ export class DivineGamepad {
   axes: number[];
 
   observables = {
-    buttonPressed: new Observable<{number:number,key:string}>(),
-    buttonReleased: new Observable<{number:number,key:string}>(),
-  }
+    buttonPressed: new Observable<{ number: number; key: string }>(),
+    buttonReleased: new Observable<{ number: number; key: string }>(),
+  };
 
-  constructor(public gamepad: Gamepad) {
+  constructor(public user: DCUser, public gamepad: Gamepad) {
     for (const button of DivineGamepad.BINDINGS.XBOX360) {
       this.pressed[button] = -1;
     }
@@ -61,96 +63,85 @@ export class DivineGamepad {
     const gp = navigator.getGamepads()[this.gamepad.index]!;
 
     if (this._testAxes(gp.axes[0]) || this._testAxes(gp.axes[1])) {
-      const control = DivineControls._gamePadStickInputs.get("Left");
+      const key = ControlsMap.getGamePadAxeusId("Left");
+      const control = this.user.getControlByType(key);
+      control && control.run(key);
       if (control) {
-        const dcEvent = <DCGamepadAxesMoveEvent>(
-          DivineControlEventManager.getEvent("gamepad-axes-move")!
-        );
+        const dcEvent = control.getEvent(key) as DCGamepadAxesMoveEvent;
         dcEvent.axes[0] = gp.axes[0];
         dcEvent.axes[1] = gp.axes[1] * (this.invertYAxis ? -1 : 1);
-
-        control.action(dcEvent.setData(control.input["gamepad-axes"]));
+        control.run(key);
       }
     }
 
     if (this._testAxes(gp.axes[2]) || this._testAxes(gp.axes[3])) {
-      const control = DivineControls._gamePadStickInputs.get("Right");
+      const key = ControlsMap.getGamePadAxeusId("Left");
+      const control = this.user.getControlByType(key);
+      control && control.run(key);
       if (control) {
-        const dcEvent = <DCGamepadAxesMoveEvent>(
-          DivineControlEventManager.getEvent("gamepad-axes-move")!
-        );
+        const dcEvent = control.getEvent(key) as DCGamepadAxesMoveEvent;
         dcEvent.axes[0] = gp.axes[2];
         dcEvent.axes[1] = gp.axes[3] * (this.invertYAxis ? -1 : 1);
-
-        control.action(dcEvent.setData(control.input["gamepad-axes"]));
+        control.run(key);
       }
     }
     for (let i = 0; i < gp.buttons.length; i++) {
       //   if (!this.bindings[i]) continue;
       const id = `${i}-${this.gamepad.index}`;
       const button = gp.buttons[i];
+      const buttonKey = this.bindings[i];
       if (button.pressed) {
-        if (this.pressed[this.bindings[i]] < 0) {
-          const control = DivineControls._gamePadInputs.down.get(
-            this.bindings[i]
-          );
+        if (this.pressed[buttonKey] < 0) {
+          const key = ControlsMap.getGamePadId(buttonKey, "down");
+          const control = this.user.getControlByType(key);
           if (control) {
-            const dcEvent = DivineControlEventManager.getEvent(
-              "gamepad-botton-down"
-            )!;
-            control.action(dcEvent.setData(control));
+            control.run(key);
           }
           this.observables.buttonPressed.notify({
-            number:i,
-            key:this.bindings[i]
+            number: i,
+            key: buttonKey,
           });
-          this.pressed[this.bindings[i]] = 1;
+          this.pressed[buttonKey] = 1;
         }
 
-        this.pressed[this.bindings[i]]++;
+        this.pressed[buttonKey]++;
 
-        const control = DivineControls._gamePadInputs.hold.get(
-          this.bindings[i]
-        );
+        const key = ControlsMap.getGamePadId(buttonKey, "hold");
+        const control = this.user.getControlByType(key);
 
         if (control) {
-          const dcEvent = DivineControlEventManager.getEvent(
-            "gamepad-botton-down"
-          )!;
-          if (!DivineControls.holds.hasHold(id)) {
-            control.action(dcEvent.setData(control));
-            let delay = control.input["gamepad-button"]?.holdDelay;
+          if (!HoldRegister.hasHold(id)) {
+            control.run(key);
+            const input = control.data.input;
+            let delay = input["gamepad-button"]?.holdDelay;
             delay = delay ? delay : 10;
-            DivineControls.holds.addHold(
+            HoldRegister.addHold(
               id,
               () => {
-                control.action(dcEvent.setData(control));
+                control.run(key);
               },
               delay,
-              control.input["gamepad-button"]?.initHoldDelay
-                ? control.input["gamepad-button"]?.initHoldDelay
+              input["gamepad-button"]?.initHoldDelay
+                ? input["gamepad-button"]?.initHoldDelay
                 : 250
             );
           }
         }
       } else {
-        if (this.pressed[this.bindings[i]]) {
-          const control = DivineControls._gamePadInputs.up.get(
-            this.bindings[i]
-          );
+        if (this.pressed[buttonKey]) {
+          const key = ControlsMap.getGamePadId(buttonKey, "up");
+          const control = this.user.getControlByType(key);
           if (control) {
-            const dcEvent =
-              DivineControlEventManager.getEvent("gamepad-botton-up")!;
-            control.action(dcEvent.setData(control));
+            control.run(key);
           }
         }
-        if (DivineControls.holds.hasHold(id)) {
-          DivineControls.holds.removeHold(id);
+        if (HoldRegister.hasHold(id)) {
+          HoldRegister.removeHold(id);
         }
-        this.pressed[this.bindings[i]] = -1;
+        this.pressed[buttonKey] = -1;
         this.observables.buttonReleased.notify({
-          number:i,
-          key:this.bindings[i]
+          number: i,
+          key: buttonKey,
         });
       }
     }

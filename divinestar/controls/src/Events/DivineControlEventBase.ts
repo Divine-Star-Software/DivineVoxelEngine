@@ -1,20 +1,21 @@
+import { DCControl } from "Controls/DCControl";
 import {
   ControlInputDataNode,
   ControlInputTypes,
-} from "../Types/Control.types";
-import { ControlEventTypes } from "../Types/Event.types";
+} from "../Controls/Control.types";
+import { ControlEventTypes } from "./Event.types";
 
-export abstract class DivineControlEvent<T extends ControlInputTypes> {
+export interface DivineControlEventConstructor<
+  T extends ControlInputTypes = any
+> {
+  eventType: string;
+  new ( controler: DCControl): DivineControlEvent<T>;
+}
+
+export abstract class DivineControlEvent<T extends ControlInputTypes = any> {
   abstract readonly eventType: ControlEventTypes;
-  abstract readonly inputType : ControlInputTypes;
-  private data: ControlInputDataNode<T>;
-  constructor() {}
+  abstract readonly inputType: T;
+  constructor(public controler: DCControl) {}
 
-  getData() {
-    return this.data;
-  }
-  setData(data: ControlInputDataNode<T>) {
-    this.data = data;
-    return this;
-  }
+
 }

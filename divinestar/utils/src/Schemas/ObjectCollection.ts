@@ -1,4 +1,4 @@
-import { ObjectPropertyValidatorResponse } from "Validation/ObjectValidation.types";
+import { ObjectPropertyValidatorResponse } from "./Validation/ObjectValidation.types"
 import {
   ObjectCollectionData,
   ObjectCollectionGroupData,

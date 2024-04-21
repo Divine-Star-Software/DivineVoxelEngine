@@ -1,15 +1,10 @@
-import { ControlInputTypes } from "../../../../Types/Control.types";
-import { ControlEventTypes } from "../../../../Types/Event.types";
+import { ControlInputTypes } from "../../../../Controls/Control.types.js";
 import { DivineControlEvent } from "../../../DivineControlEventBase.js";
 
-export class DCBaseGamepadButtonEvent extends DivineControlEvent<"gamepad-button"> {
-  readonly eventType: ControlEventTypes = "gamepad-botton-down";
-  readonly inputType: ControlInputTypes = "gamepad-button";
-  constructor() {
-    super();
-  }
+export abstract class DCBaseGamepadButtonEvent extends DivineControlEvent<ControlInputTypes.GamePadButton> {
+  readonly inputType = ControlInputTypes.GamePadButton;
 
   getButton() {
-    return this.getData()!.button;
+    return this.controler.data.input[ControlInputTypes.GamePadButton]?.button;
   }
 }
