@@ -145,7 +145,7 @@ export class DataLoaderTool extends LocationBoundTool {
 
   unLoadColumn(onDone: (done: boolean) => void) {
     const location = this.getLocation();
-    if (WorldLock.isLocked(location) || !WorldRegister.column.get(location))
+    if (WorldLock.isLocked(location) || !WorldRegister.instance.column.get(location))
       return onDone ? onDone(false) : false;
     this.dataComm.runPromiseTasks("unload-column", location, [], () => {
       onDone ? onDone(true) : false;
@@ -221,7 +221,7 @@ export class DataLoaderTool extends LocationBoundTool {
     onDone?: Function
   ) {
     const [dimension, sx, sy, sz] = this.location;
-    const dim = WorldRegister.dimensions.get(dimension);
+    const dim = WorldRegister.instance.dimensions.get(dimension);
     if (!dim) return;
     let totalColumns = 0;
     for (const [key, region] of dim.regions) {
@@ -257,7 +257,7 @@ export class DataLoaderTool extends LocationBoundTool {
   }
   unLoadAllColumns(onDone?: Function) {
     const [dimension, sx, sy, sz] = this.location;
-    const dim = WorldRegister.dimensions.get(dimension);
+    const dim = WorldRegister.instance.dimensions.get(dimension);
     if (!dim) return;
     let totalColumns = 0;
     for (const [key, region] of dim.regions) {
@@ -283,7 +283,7 @@ export class DataLoaderTool extends LocationBoundTool {
 
   allColumns(run: (column: ColumnDataTool) => void) {
     const [dimension, sx, sy, sz] = this.location;
-    const dim = WorldRegister.dimensions.get(dimension);
+    const dim = WorldRegister.instance.dimensions.get(dimension);
     if (!dim) return;
     for (const [key, region] of dim.regions) {
       for (const column of region.getColumns()) {
@@ -297,7 +297,7 @@ export class DataLoaderTool extends LocationBoundTool {
     run: (dimension: string, x: number, y: number, z: number) => void
   ) {
     const [dimension, sx, sy, sz] = this.location;
-    const dim = WorldRegister.dimensions.get(dimension);
+    const dim = WorldRegister.instance.dimensions.get(dimension);
     if (!dim) return;
     for (const [key, region] of dim.regions) {
       for (const column of region.getColumns()) {

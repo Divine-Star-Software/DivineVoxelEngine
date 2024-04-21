@@ -285,7 +285,7 @@ export class TaskTool {
           [location, this._data.queue, this._thread],
           this._data.queue
         );
-        WorldRegister.column.fill(location);
+        WorldRegister.instance.column.fill(location);
       },
       run: (onDone: Function) => {
         DVEFWorldCore.instance.queues.worldSun.run(this._data.queue);

@@ -1,16 +1,13 @@
-//objects
-
-import { WorldDataSerialize } from "./Serializers/WorldDataSerializer.js";
 //intercomms
 import { DataLoaderThreads } from "./Threads/DataLoaderThreads.js";
 //functions
 import InitWorker from "./InitWorker.js";
-import { DataLoaderTasks } from "./Tasks/DataLoaderTasks.js";
+import DataLoaderTasks from "./DataLoaderTasks.js";
 import { DataHanlderWrapper } from "./DataHandler/DataHandlerWrapper.js";
 import { ThreadComm } from "@divinestar/threads/";
 import { RichDataTool } from "../../Default/Tools/Data/RichDataTool.js";
 import { DataTool } from "../../Default/Tools/Data/DataTool.js";
-import { DataHandler } from "./DataHandler/DataHandlerBaes.js";
+import { DataHandler } from "./DataHandler/DataHandlerBase.js";
 import { DVEDataCore } from "@divinevoxel/core/Interfaces/Data/DVEDataCore.js";
 
 export type DivineVoxelEngineDataLoaderInitData = {
@@ -25,22 +22,15 @@ export class DivineVoxelEngineDataLoader {
   TC = ThreadComm;
   data: DVEDataCore;
   threads = new DataLoaderThreads();
-
+  dataHandler = new DataHanlderWrapper();
   constructor(data: DivineVoxelEngineDataLoaderInitData) {
     if (DivineVoxelEngineDataLoader.instance)
       return DivineVoxelEngineDataLoader.instance;
-
     DivineVoxelEngineDataLoader.instance = this;
-
-    this.dataHandler.$INIT(data.dataHanlder);
+    this.dataHandler.init(data.dataHanlder);
     this.data = data.data;
+    DataLoaderTasks(this);
   }
-
-  tasks = DataLoaderTasks;
-
-  serializer = WorldDataSerialize;
-
-  dataHandler = DataHanlderWrapper;
 
   async init() {
     await InitWorker(this);

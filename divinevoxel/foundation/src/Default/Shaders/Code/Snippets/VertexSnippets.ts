@@ -1,5 +1,5 @@
-import type { DivineShaderBuilder } from "@divinestar/shaders";
-export function RegisterVertexSnippets(builder: typeof DivineShaderBuilder) {
+import type { URIShaderBuilder } from "@divinestar/uri/Shaders/URIShaderBuilder";
+export function RegisterVertexSnippets(builder: typeof URIShaderBuilder) {
  builder.snippets.create({
   id: "standard_position",
   body: {

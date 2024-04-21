@@ -1,24 +1,21 @@
 import { DBO } from "@divinestar/binary/";
-import { RichDataRegister } from "../Register/RichDataRegister.js";
 import { RichColumn } from "../../../Data/Types/RichWorldData.types.js";
 import { RichDataSegmentTool } from "../../../Default/Tools/Classes/RichDataToolBase.js";
-
+import { DivineVoxelEngineRichWorld as DVERW } from "../DivineStarVoxelEngineRichWorld.js";
 export class RichColumnDataTool extends RichDataSegmentTool {
- column: RichColumn;
- loadIn() {
-  let column = RichDataRegister.column.get(this.location);
-  if (!column) {
-   column = RichDataRegister.column.add(this.location);
+  column: RichColumn;
+  loadIn() {
+    let column = DVERW.instance.register.column.get(this.location);
+    if (!column) {
+      column = DVERW.instance.register.column.add(this.location);
+    }
+
+    this.sceham = column.data;
+    this.column = column;
+    return true;
   }
 
-  this.sceham = column.data;
-  this.column = column;
-  return true;
- }
-
- toBuffer() {
-  return DBO.objectToBuffer(this.sceham);
- }
-
-
+  toBuffer() {
+    return DBO.objectToBuffer(this.sceham);
+  }
 }

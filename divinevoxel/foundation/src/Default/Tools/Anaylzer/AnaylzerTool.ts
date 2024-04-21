@@ -8,7 +8,7 @@ export class AnaylzerTool extends LocationBoundTool {
   static columnDataTool = new ColumnDataTool();
   runUpdate(radius: number, onDone: Function) {
     const [dimension, sx, sy, sz] = this.location;
-    const dim = WorldRegister.dimensions.get(dimension);
+    const dim = WorldRegister.instance.dimensions.get(dimension);
     if (!dim) return;
     let totalColumns = 0;
     for (const [key, region] of dim.regions) {

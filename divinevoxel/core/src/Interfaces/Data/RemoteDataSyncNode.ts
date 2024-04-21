@@ -23,6 +23,7 @@ export abstract class RemoteDataSyncNode
     strings: ThreadComm.onDataSync<RegisterStringMapSync, void>(
       DataSyncIds.RegisterStringMap,
       (data) => {
+   
         MappedDataRegister.stringMaps.sync(data);
       }
     ),

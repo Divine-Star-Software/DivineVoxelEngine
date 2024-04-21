@@ -8,6 +8,7 @@ import { arrayBufferToSharedArrayBuffer } from "@divinestar/utils/Buffers/arrayB
 export abstract class DataToolBase extends LocationBoundTool {
   tags: RemoteTagManager;
   _c: ArrayBuffer | SharedArrayBuffer | DataView;
+  _dimensionRegister = new DimensionsRegister();
 
   constructor() {
     super();
@@ -96,12 +97,12 @@ export abstract class EncodedPositionDataTool extends DataToolBase {
   setDimensionId(dimensionId: string) {
     this.setTagValue(
       WorldDataTagIDs.dimensionId,
-      DimensionsRegister.getDimensionNumericId(dimensionId)
+      this._dimensionRegister.getDimensionNumericId(dimensionId)
     );
   }
 
   getDimensionId() {
-    return DimensionsRegister.getDimensionStringId(
+    return this._dimensionRegister.getDimensionStringId(
       this.getTagValue(WorldDataTagIDs.dimensionId)
     );
   }

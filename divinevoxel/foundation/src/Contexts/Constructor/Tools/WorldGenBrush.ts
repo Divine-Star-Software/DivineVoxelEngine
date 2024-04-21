@@ -40,7 +40,7 @@ export class WorldGenBrush extends BrushTool {
       DVEFConstrucotrCore.instance.propagation.sunRemove(this.tasks);
     }
 
-    WorldPainter.paint.voxel(this.location, this.data);
+    this._worldPainter.paintVoxel(this.location, this.data);
 
     return this;
   }
@@ -63,7 +63,7 @@ export class WorldGenBrush extends BrushTool {
       DVEFConstrucotrCore.instance.propagation.sunRemove(this.tasks);
     }
 
-    WorldPainter.paint.erase(this.location);
+    this._worldPainter.eraseVoxel(this.location);
   }
 
   runUpdates() {

@@ -57,7 +57,7 @@ export class ChunkProcessor {
   }
 
   build(location: LocationData) {
-    WorldRegister.cache.enable();
+    WorldRegister.instance.cache.enable();
     this.heightMapTool.chunk.loadInAtLocation(location);
     this.mDataTool.setDimension(location[0]);
     const [dimension, cx, cy, cz] = location;
@@ -96,7 +96,7 @@ export class ChunkProcessor {
       index++;
     }
 
-    WorldRegister.cache.disable();
+    WorldRegister.instance.cache.disable();
 
     const chunks = <SetChunkMeshTask>[location, []];
     const trasnfers: any[] = [];
@@ -114,7 +114,7 @@ export class ChunkProcessor {
       mesher.resetAll();
     }
 
-   // console.log("send build",chunks,location)
+
     DivineVoxelEngineConstructor.instance.core.threads.parent.runTasks<SetChunkMeshTask>(
       "set-chunk",
       chunks,

@@ -1,5 +1,5 @@
 import type { Vec3Array } from "Math";
-import type { DivineShader } from "@divinestar/shaders";
+import type { URIShader } from "@divinestar/uri/Shaders/Classes/URIShader";
 import type { TypedArrays } from "@divinestar/binary/DBO/Types/DBO.types";
 
 export type DVENodeMeshAttributes = [
@@ -39,7 +39,7 @@ export type NodeMeshOptions = {
 
 export type NodeSubstanceData = {
  id: string;
- shader: DivineShader;
+ shader: URIShader;
 // texture: TextureType;
  material: NodeMaterialOptions;
  mesh: NodeMeshOptions;

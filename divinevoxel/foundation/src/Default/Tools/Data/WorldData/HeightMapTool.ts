@@ -19,13 +19,13 @@ export class HeightMapTool extends LocationBoundTool {
     _c: <DataView>new DataView(new ArrayBuffer(0)),
     _y: 0,
     loadInAt: (x: number, y: number, z: number) => {
-      const chunk = WorldRegister.chunk.get([this.dimension, x, y, z]);
+      const chunk = WorldRegister.instance.chunk.get([this.dimension, x, y, z]);
       if (!chunk) return false;
       HeightMapTool._chunkTool.setChunk(chunk);
       this.chunk._c = chunk.chunkState;
     },
     loadInAtLocation(location: LocationData) {
-      const chunk = WorldRegister.chunk.get(location);
+      const chunk = WorldRegister.instance.chunk.get(location);
       if (!chunk) return false;
       HeightMapTool._chunkTool.setChunk(chunk);
       this._c = chunk.chunkState;
@@ -106,7 +106,7 @@ export class HeightMapTool extends LocationBoundTool {
       return maxHeight;
     },
     getAbsolute: (location: LocationData) => {
-      const column = WorldRegister.column.get(location);
+      const column = WorldRegister.instance.column.get(location);
       if (!column) return WorldBounds.bounds.MinY;
       if (column.chunks.length == 0) return WorldBounds.bounds.MinY;
       let maxHeight = WorldBounds.bounds.MinY;

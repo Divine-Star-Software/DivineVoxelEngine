@@ -8,7 +8,7 @@ export class ColumnDataTool extends EncodedPositionDataTool {
  _column = <Column>{};
 
  loadIn() {
-  const column = WorldRegister.column.get(this.location);
+  const column = WorldRegister.instance.column.get(this.location);
   if (!column) return false;
   this.tags.setBuffer(column.columnState);
   this._c = column.columnState;

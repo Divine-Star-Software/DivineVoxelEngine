@@ -1,5 +1,5 @@
-import type { DivineShaderBuilder } from "@divinestar/shaders";
-export function RegisterVertexFunctions(builder: typeof DivineShaderBuilder) {
+import type { URIShaderBuilder } from "@divinestar/uri/Shaders/URIShaderBuilder";
+export function RegisterVertexFunctions(builder: typeof URIShaderBuilder) {
  builder.functions.create("getAnimationType", {
   setID: "#dve_vertex",
   inputs: [],

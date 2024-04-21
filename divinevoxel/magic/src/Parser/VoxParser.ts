@@ -14,11 +14,7 @@ export class VoxParser {
   parse() {
     this.readHeader();
     this.readMainChunk();
-    console.log("Voxel Data:", this.voxels);
-
-    console.log("Model Size:", this.size);
-
-    console.log(this);
+ 
   }
 
   getGPUData() {
@@ -36,7 +32,7 @@ export class VoxParser {
       throw new Error("Invalid VOX file.");
     }
     const version = this.readInt();
-    console.log(`VOX version ${version}`);
+
   }
 
   private readString(length: number): string {
@@ -75,9 +71,6 @@ export class VoxParser {
     const start = this.cursor;
     const end = start + contentSize;
 
-    console.log(
-      `Chunk: ${id}, content size: ${contentSize}, children size: ${childrenSize}`
-    );
 
     switch (id) {
       case "SIZE":
@@ -90,7 +83,7 @@ export class VoxParser {
         this.readRGBA(end);
         break;
       default:
-        console.log(`Unknown chunk type: ${id}`);
+        console.warn(`Unknown chunk type: ${id}`);
         break;
     }
 

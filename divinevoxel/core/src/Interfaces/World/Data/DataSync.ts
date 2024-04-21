@@ -43,6 +43,8 @@ export abstract class DataSync {
 
   async init(world: DVEWorldCore) {
     for (const comm of world.threads.comms) {
+      if(!comm.isReady())continue;
+
       this.registerComm(comm);
     }
     this.loopThroughComms((comm) => {
@@ -50,6 +52,7 @@ export abstract class DataSync {
     });
     VoxelDataGenerator.generate();
     VoxelTagBuilder.sync();
+    
     SubstanceDataGenerator.$generate();
     SubstanceTagBuilder.sync();
     this.palettes.voxel.sync();
@@ -73,8 +76,8 @@ export abstract class DataSync {
       worldData: data.worldData !== undefined ? data.worldData : true,
       voxelPalette: data.voxelPalette !== undefined ? data.voxelPalette : true,
       voxelTags: data.voxelTags !== undefined ? data.voxelTags : true,
-      materials: data.materials !== undefined ? data.materials : false,
-      colliders: data.colliders !== undefined ? data.colliders : false,
+      materials: data.materials !== undefined ? data.materials : true,
+      colliders: data.colliders !== undefined ? data.colliders : true,
       worldDataTags:
         data.worldDataTags !== undefined ? data.worldDataTags : true,
     });

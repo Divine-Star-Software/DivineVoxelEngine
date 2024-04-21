@@ -24,7 +24,7 @@ import { LevelParticles } from "./LevelParticles";
 export type DVEBRClassicData = DVEBRDefaultMaterialBaseData;
 
 export default function InitDVEPBR(initData: DVEBRClassicData) {
-  console.log("INIT DVE PBR",initData);
+
   const scene = initData.scene;
   scene.getEngine()!.createRenderTargetCubeTexture 
   const probe = new ReflectionProbe("", 512, initData.scene);
@@ -138,7 +138,7 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
       renderer.observers.meshCreated.subscribe(InitDVEPBR, (mesh) => {
         if (!probe.renderList) probe.renderList = [];
         if (mesh._mesh.id.includes("glow")) {
-          console.log("ADD THAT NEW MESH BRO");
+
           glow.referenceMeshToUseItsOwnMaterial(mesh._mesh);
         }
         shadows.addShadowCaster(mesh._mesh);
@@ -168,11 +168,11 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
       skybox.material = skyboxMaterial;
       probe.renderList!.push(skybox);
 
-      LevelParticles.start(
+   /*    LevelParticles.start(
         new Color4(0, 1, 1, 1),
         new Color4(0, 1, 1, 0.7),
         new Color4(0, 1, 1, 0.5)
-      );
+      ); */
  
       //   skybox.material = renderer.nodes.materials.get("#dve_skybox")!._material;
     },

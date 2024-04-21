@@ -5,7 +5,7 @@ import { DVEFConstructorThreads } from "./DVEFConstructorThreads";
 import { DVEPropagation } from "Interfaces/Propagation/DVEPropagation";
 import { DVEAnaylzer } from "Interfaces/Anaylzer/DVEAnaylzer";
 import { WorldGeneration } from "./WorldGeneration/WorldGeneration";
-import { ConstructorTasks } from "./Tasks/ConstructorTasks";
+import ConstructorTasks from "./ConstructorTasks";
 
 export type DVEFConstrucotrCoreInitData = {
   builder: DVEBuilder;
@@ -15,7 +15,7 @@ export type DVEFConstrucotrCoreInitData = {
 
 export class DVEFConstrucotrCore extends DVEConstructorCore {
   static instance: DVEFConstrucotrCore;
-  tasks: ConstructorTasks;
+
   threads = new DVEFConstructorThreads();
   data = new DVEFDataCore();
   worldGen = WorldGeneration;
@@ -29,7 +29,7 @@ export class DVEFConstrucotrCore extends DVEConstructorCore {
     this.builder = data.builder;
     this.propagation = data.propagation;
     this.analyzer = data.analyzer;
-    this.tasks = new ConstructorTasks();
+    ConstructorTasks(this);
   }
   async init(): Promise<void> {
     await this.builder.init();

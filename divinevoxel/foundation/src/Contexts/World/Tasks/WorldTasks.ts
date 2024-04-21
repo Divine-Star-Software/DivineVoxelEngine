@@ -19,18 +19,18 @@ import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces.js";
 import { BuilderTool } from "../../../Default/Tools/Build/BuilderTool.js";
 import { WorldLock } from "../Lock/WorldLock.js";
 
-const regionTool = new RegionDataTool();
-const columnTool = new ColumnDataTool();
-const chunkTool = new ChunkDataTool();
-const dataLoaderTool = new DataLoaderTool();
-const builderTool = new BuilderTool();
-const loadInMap: Map<string, boolean> = new Map();
-export const WorldTasks = {
-  addChunk: ThreadComm.registerTasks("add-chunk", (location: LocationData) => {
-    const chunk = WorldRegister.chunk.get(location);
+export default function (DVEW: DVEFWorldCore) {
+  const regionTool = new RegionDataTool();
+  const columnTool = new ColumnDataTool();
+  const chunkTool = new ChunkDataTool();
+  const dataLoaderTool = new DataLoaderTool();
+  const builderTool = new BuilderTool();
+  const loadInMap: Map<string, boolean> = new Map();
+  ThreadComm.registerTasks("add-chunk", (location: LocationData) => {
+    const chunk = WorldRegister.instance.chunk.get(location);
 
     if (chunk) {
-      DVEFWorldCore.instance.dataSync.worldData.chunk.sync(location);
+      DVEW.dataSync.worldData.chunk.sync(location);
       return;
     }
     if (dataLoaderTool.isEnabled()) {
@@ -50,44 +50,45 @@ export const WorldTasks = {
     }
 
     if (!chunk) {
-      WorldRegister.chunk.add(location, WorldDataGenerator.chunk.create());
+      WorldRegister.instance.chunk.add(
+        location,
+        WorldDataGenerator.chunk.create()
+      );
     }
-  }),
-  worldAlloc: ThreadComm.registerTasks<WorldLockTasks>(
+  });
+  ThreadComm.registerTasks<WorldLockTasks>(
     "world-alloc",
     async (data, onDone) => {
       await WorldLock.addLock(data);
       if (onDone) onDone();
     },
     "deferred"
-  ),
-  worldDealloc: ThreadComm.registerTasks<WorldLockTasks>(
+  );
+  ThreadComm.registerTasks<WorldLockTasks>(
     "world-dealloc",
     async (data, onDone) => {
       await WorldLock.removeLock(data);
       if (onDone) onDone();
     },
     "deferred"
-  ),
-  unLoad: {
-    unLoadColumn: ThreadComm.registerTasks<LocationData>(
-      "unload-column",
-      (data, onDone) => {
-        if (WorldLock.isLocked(data)) return onDone ? onDone(false) : 0;
-        DVEFWorldCore.instance.dataSync.worldData.column.unSync(data);
-        WorldRegister.column.remove(data);
-        const region = WorldRegister.region.get(data);
-        if (region && Object.keys(region.columns).length == 0) {
-          WorldRegister.region.remove(data);
-          DVEFWorldCore.instance.dataSync.worldData.region.unSync(data);
-        }
-        return onDone ? onDone(true) : 0;
-      },
-      "deferred"
-    ),
-  },
-  load: {
-    /*     loadRegino: ThreadComm.registerTasks<LoadWorldDataTasks>(
+  );
+  ThreadComm.registerTasks<LocationData>(
+    "unload-column",
+    (data, onDone) => {
+      if (WorldLock.isLocked(data)) return onDone ? onDone(false) : 0;
+      DVEW.dataSync.worldData.column.unSync(data);
+      WorldRegister.instance.column.remove(data);
+      const region = WorldRegister.instance.region.get(data);
+      if (region && Object.keys(region.columns).length == 0) {
+        WorldRegister.instance.region.remove(data);
+        DVEW.dataSync.worldData.region.unSync(data);
+      }
+      return onDone ? onDone(true) : 0;
+    },
+    "deferred"
+  );
+
+  /*     loadRegino: ThreadComm.registerTasks<LoadWorldDataTasks>(
       "load-region",
       ([location, sab]) => {
         regionTool.setBuffer(sab);
@@ -126,8 +127,7 @@ export const WorldTasks = {
       }
     ),
  */
-    clearAll: ThreadComm.registerTasks("clear-all", () => {
-      WorldRegister.clearAll();
-    }),
-  },
-};
+  ThreadComm.registerTasks("clear-all", () => {
+    WorldRegister.instance.clearAll();
+  });
+}

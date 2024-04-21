@@ -29,7 +29,7 @@ export default async function InitDVEMRayMarching({
   for (const color of parsed.palette) {
     material.setIndex(index);
     material.setColor(color);
-    console.log("set colot",color)
+
     index++;
   }
   rayScene.init({
@@ -71,6 +71,6 @@ export default async function InitDVEMRayMarching({
     },
   });
 
-  console.log("Start rendering");
+
   rayPipeLine.render();
 }

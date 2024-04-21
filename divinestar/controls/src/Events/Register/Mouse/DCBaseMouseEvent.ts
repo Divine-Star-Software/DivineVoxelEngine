@@ -1,14 +1,8 @@
-import { ControlInputTypes } from "../../../Types/Control.types";
-import { ControlEventTypes } from "../../../Types/Event.types";
+import { ControlInputTypes } from "../../../Controls/Control.types.js";
 import { DivineControlEvent } from "../../DivineControlEventBase.js";
-
-export class DCBaseMouseEvent extends DivineControlEvent<"mouse"> {
-  readonly eventType: ControlEventTypes = "mouse-down";
-  readonly inputType: ControlInputTypes = "mouse";
-  constructor() {
-    super();
-  }
+export abstract class DCBaseMouseEvent extends DivineControlEvent<ControlInputTypes.Mouse> {
+  readonly inputType = ControlInputTypes.Mouse;
   getButton() {
-    return this.getData()!.button;
+    return this.controler.data.input[ControlInputTypes.Mouse]?.button;
   }
 }

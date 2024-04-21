@@ -8,12 +8,12 @@ import { Region } from "./World/Classes/Region.js";
 import { DVEFDataSyncNode } from "./DVEFDataSyncNode.js";
 import { DataManager } from "@divinevoxel/core/Interfaces/Data/DataManager.js";
 export class DVEFDataManager extends DataManager {
-  world = WorldPainter;
+  world = new WorldPainter();
   dataSync = new DVEFDataSyncNode();
 
   registers = {
     dimensions: DimensionsRegister,
-    world: WorldRegister,
+    world: new WorldRegister(),
     regionHeader: RegionHeaderRegister,
   };
   worldDataTags = {

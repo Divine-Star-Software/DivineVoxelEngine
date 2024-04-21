@@ -85,7 +85,7 @@ export class DVEFDataSync extends DataSync {
         dataSyncType: DVEFDataSyncIds.Dimesnion,
         commCheck: (options) => options.worldData,
         getSyncData: (input) => {
-          const dimensionData = DimensionsRegister.getDimension(input);
+          const dimensionData = DimensionsRegister.instance.getDimension(input);
           if (!dimensionData) return false;
           return dimensionData;
         },
@@ -104,7 +104,7 @@ export class DVEFDataSync extends DataSync {
         dataSyncType: DVEFDataSyncIds.Chunk,
         commCheck: (options) => options.worldData,
         getSyncData: (input) => {
-          const chunk = WorldRegister.chunk.get(input);
+          const chunk = WorldRegister.instance.chunk.get(input);
           if (!chunk) return false;
           return [input, chunk];
         },
@@ -123,7 +123,7 @@ export class DVEFDataSync extends DataSync {
         dataSyncType: DVEFDataSyncIds.Column,
         commCheck: (options) => options.worldData,
         getSyncData: (input) => {
-          const column = WorldRegister.column.get(input);
+          const column = WorldRegister.instance.column.get(input);
           if (!column) return false;
           return [input, column];
         },
@@ -142,7 +142,7 @@ export class DVEFDataSync extends DataSync {
         dataSyncType: DVEFDataSyncIds.Region,
         commCheck: (options) => options.worldData,
         getSyncData: (input) => {
-          const region = WorldRegister.region.get(input);
+          const region = WorldRegister.instance.region.get(input);
           if (!region) return false;
           return [input, region];
         },

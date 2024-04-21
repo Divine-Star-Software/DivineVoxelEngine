@@ -38,10 +38,9 @@ export class DVEThreeRenderer extends DVERenderer {
     this.foManager = new DVETRFOManager(this.scene);
     this.meshCuller = new DVETRMeshCuller(this.scene, this.foManager);
     this.nodes = new DVETRNodeManager();
-    console.log("CREATED", DVEThreeRenderer);
+
     if (!DVEThreeRenderer.instance) DVEThreeRenderer.instance = this;
 
-    console.log(DVEThreeRenderer.instance);
     return DVEThreeRenderer.instance;
   }
   async init(dver: DivineVoxelEngineRender) {}

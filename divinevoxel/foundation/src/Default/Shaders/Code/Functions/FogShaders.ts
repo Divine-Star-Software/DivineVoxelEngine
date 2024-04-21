@@ -1,6 +1,6 @@
-import type { DivineShaderBuilder } from "@divinestar/shaders";
+import type { URIShaderBuilder } from "@divinestar/uri/Shaders/URIShaderBuilder";
 
-export function RegisterFogShaders(builder: typeof DivineShaderBuilder) {
+export function RegisterFogShaders(builder: typeof URIShaderBuilder) {
  builder.functions.create("ExponentialFog", {
   setID: "#dve_fog",
   inputs: [],

@@ -1,6 +1,6 @@
 {
  "name": "@divinevoxel/core",
- "version": "0.0.44",
+ "version": "0.0.51",
  "module": "index.js",
  "types": "index.d.ts",
  "type": "module",
@@ -17,8 +17,6 @@
   "copy-js": "cd src && for file in $(find ./ -name '*.js')  \n do \n cp ${file} ../dist/${file} \n done",
   "sync-wasm": "cp ./kernel/kernel.wasm ../../testing/static/kernel.wasm",
   "sync-js": "cp ./kernel/kernel.js ./src/Kernel/kernel.js && cp ./kernel/kernel.js ./dist/Kernel/kernel.js"
-
- 
  },
  "repository": {
   "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
@@ -31,10 +29,10 @@
  "license": "MIT",
  "devDependencies": {},
  "dependencies": {
-  "@divinestar/binary": "^0.0.44",
-  "@divinestar/utils": "^0.0.44",
-  "@divinestar/shaders": "^0.0.44",
-  "@divinestar/threads": "^0.0.44"
+  "@divinestar/binary": "^0.0.50",
+  "@divinestar/utils": "^0.0.50",
+  "@divinestar/uri": "^0.0.15",
+  "@divinestar/threads": "^0.0.50"
  },
  "main": "index.js",
  "publishConfig": {

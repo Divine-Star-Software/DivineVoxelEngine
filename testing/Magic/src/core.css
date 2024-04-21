@@ -48,7 +48,7 @@ body {
 }
 
 #main {
-  touch-action: none;
+
   outline: none;
   display: inline;
   border: none;  user-select: none;

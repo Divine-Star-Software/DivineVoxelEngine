@@ -24,7 +24,7 @@ const heightMapTool = new HeightMapTool();
 export function RunWorldSun(tasks: WorldSunTaskRequest) {
  IM.setDimension(tasks.origin[0]);
  tasks.start();
- if (!WorldRegister.column.get(tasks.origin)) return false;
+ if (!WorldRegister.instance.column.get(tasks.origin)) return false;
  const [dimension, cx, cy, cz] = tasks.origin;
 
  const queue = tasks.queues.sun;

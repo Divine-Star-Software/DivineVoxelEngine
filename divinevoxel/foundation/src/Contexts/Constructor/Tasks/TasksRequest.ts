@@ -52,11 +52,11 @@ class Request<T, Q> {
   }
 
   start() {
-    WorldRegister.cache.enable();
+    WorldRegister.instance.cache.enable();
     return this;
   }
   stop() {
-    WorldRegister.cache.disable();
+    WorldRegister.instance.cache.disable();
     return this;
   }
 

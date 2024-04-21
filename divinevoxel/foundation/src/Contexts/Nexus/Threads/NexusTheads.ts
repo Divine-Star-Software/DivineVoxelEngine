@@ -1,5 +1,5 @@
 import type { EngineSettingsData } from "@divinevoxel/core/Types/EngineSettings.types.js";
-import { EngineSettings } from "@divinevoxel/core/data/Settings/EngineSettings.js";
+import { EngineSettings } from "@divinevoxel/core/Data/Settings/EngineSettings.js";
 import { ThreadComm } from "@divinestar/threads/";
 import { NexusThreadState } from "./NexusThreadState.js";
 import { DataHooks } from "../../../Data/DataHooks.js";

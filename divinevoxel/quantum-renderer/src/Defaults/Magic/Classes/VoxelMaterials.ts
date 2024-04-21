@@ -54,7 +54,7 @@ export class VoxelMaterials {
     this.view[this._trueIndex + 10] = value;
   }
   sync() {
-    console.log("sync data", this.view);
+
     this.uniform.write(this.view.buffer);
     return this;
   }

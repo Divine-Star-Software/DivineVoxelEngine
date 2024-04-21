@@ -6,12 +6,29 @@ import {
   ImageProcessingConfiguration,
   AxesViewer,
 } from "@babylonjs/core";
+import { DVEFBRCore } from "./Classes/DVEFBRCore";
 //import "@babylonjs/core/Debug/debugLayer"; // Import the debug layer
 //import "@babylonjs/inspector"; // Import the inspector
 import InitDVER from "@divinevoxel/babylon-renderer/Defaults/Foundation/PBR/InitDVEBRPBR";
+import { SetUpControls } from "./SetUpControls";
 const worldWorker = new Worker(new URL("./Contexts/World/", import.meta.url), {
   type: "module",
 });
+const dataLoaderWorker = new Worker(
+  new URL("./Contexts/DataLoader", import.meta.url),
+  {
+    type: "module",
+  }
+);
+const nexusWorker = new Worker(new URL("./Contexts/Nexus", import.meta.url), {
+  type: "module",
+});
+const richWorldWorker = new Worker(
+  new URL("./Contexts/RichWorld", import.meta.url),
+  {
+    type: "module",
+  }
+);
 
 const constructorWorkers: Worker[] = [];
 for (let i = 0; i < navigator.hardwareConcurrency - 1; i++) {
@@ -21,13 +38,14 @@ for (let i = 0; i < navigator.hardwareConcurrency - 1; i++) {
     })
   );
 }
+SetUpControls();
 
 export function App() {
   const [ready, setReady] = useState(false);
   const { DVECanvas, nodes } = useDVE({
     staturate: async (DVER, observers) => {
       observers.ready.subscribe("", async () => {
-        console.log("SATURARE", nodes.scene);
+
         const scene = nodes.scene;
 
         const renderer = await InitDVER({
@@ -219,14 +237,20 @@ export function App() {
         view.zAxis.position.y += 80; */
 
         //  postprocess.exposure = 1.5;
-        console.log("BEFORE DVER INIT");
+
+        const core = new DVEFBRCore({
+          dataLoaderWorker,
+          richWorldWorker,
+          nexusWorker,
+        });
+        nodes.core = core;
         await DVER.init({
           core: nodes.core,
           renderer,
           worldWorker,
           constructorWorkers,
         });
-        console.log("AFTER DVER INIT");
+
         setReady(true);
         /*    nodes.sceneTool.levels
           .setSun(0.5)

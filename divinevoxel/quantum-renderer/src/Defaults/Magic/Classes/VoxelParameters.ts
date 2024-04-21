@@ -47,7 +47,7 @@ export class VoxelParameters {
   }
 
   sync() {
-    console.log("sync data",this.view)
+
     this.uniform.write(this.view.buffer);
     return this;
   }

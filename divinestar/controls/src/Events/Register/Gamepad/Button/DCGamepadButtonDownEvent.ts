@@ -1,11 +1,7 @@
-import { ControlInputTypes } from "../../../../Types/Control.types";
-import { ControlEventTypes } from "../../../../Types/Event.types";
+import { ControlEventTypes } from "../../../Event.types";
 import { DCBaseGamepadButtonEvent } from "./DCBaseGamepadButtonEvent.js";
 
 export class DCGamepadDownEvent extends DCBaseGamepadButtonEvent {
-  readonly eventType: ControlEventTypes = "gamepad-botton-down";
-  readonly inputType: ControlInputTypes = "gamepad-button";
-  constructor() {
-    super();
-  }
+  static eventType = ControlEventTypes.GamePadButtonDown;
+  readonly eventType = ControlEventTypes.GamePadButtonDown;
 }

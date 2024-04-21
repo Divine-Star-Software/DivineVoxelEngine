@@ -1,6 +1,7 @@
 //objects
-import { WorldRegister } from "../../../../Data/World/WorldRegister.js";
 import { EncodedPositionDataTool } from "../../Classes/DataToolBase.js";
+import { WorldRegister } from "../../../../Data/World/WorldRegister.js";
+
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces.js";
 import { Chunk } from "../../../../Data/World/Classes/Chunk.js";
 
@@ -15,7 +16,7 @@ export class ChunkDataTool extends EncodedPositionDataTool {
 
   loadIn() {
     WorldSpaces.chunk.updateLoaction(this.location);
-    const chunk = WorldRegister.chunk.get(this.location);
+    const chunk = WorldRegister.instance.chunk.get(this.location);
     if (!chunk) return false;
 
     this.tags.setBuffer(chunk.chunkState);

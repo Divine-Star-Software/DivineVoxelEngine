@@ -81,7 +81,7 @@ export class RaySceneCompute {
       }
     `;
 
-    console.log(shaderCode);
+
     const shaderModule = device.createShaderModule({ code: shaderCode });
     const bindGroupLayout = this.pipeline.engine.device.createBindGroupLayout(
       this.bindGroup.getLayout()

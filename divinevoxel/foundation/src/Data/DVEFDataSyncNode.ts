@@ -18,34 +18,34 @@ export class DVEFDataSyncNode extends RemoteDataSyncNode {
     dimension: ThreadComm.onDataSync<DimensionData, void>(
       DVEFDataSyncIds.Dimesnion,
       (data) => {
-        DimensionsRegister.registerDimension(data.id, data.options);
+        DimensionsRegister.instance.registerDimension(data.id, data.options);
       }
     ),
     chunk: ThreadComm.onDataSync<[LocationData, Chunk], LocationData>(
       DVEFDataSyncIds.Chunk,
       (data) => {
-        WorldRegister.chunk.add(data[0], data[1]);
+        WorldRegister.instance.chunk.add(data[0], data[1]);
       },
       (data) => {
-        WorldRegister.chunk.remove(data);
+        WorldRegister.instance.chunk.remove(data);
       }
     ),
     column: ThreadComm.onDataSync<[LocationData, Column], LocationData>(
       DVEFDataSyncIds.Column,
       (data) => {
-        WorldRegister.column.add(data[0], data[1]);
+        WorldRegister.instance.column.add(data[0], data[1]);
       },
       (data) => {
-        WorldRegister.column.remove(data);
+        WorldRegister.instance.column.remove(data);
       }
     ),
     region: ThreadComm.onDataSync<[LocationData, Region], LocationData>(
       DVEFDataSyncIds.Region,
       (data) => {
-        WorldRegister.region.add(data[0], data[1]);
+        WorldRegister.instance.region.add(data[0], data[1]);
       },
       (data) => {
-        WorldRegister.region.remove(data);
+        WorldRegister.instance.region.remove(data);
       }
     ),
     regionHeader: ThreadComm.onDataSync<WorldDataSync, LocationData>(

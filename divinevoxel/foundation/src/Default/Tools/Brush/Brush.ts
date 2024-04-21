@@ -17,6 +17,7 @@ export class BrushTool extends LocationBoundTool {
   };
 
   _update = true;
+  _worldPainter = new WorldPainter();
 
   _dt = new DataTool();
 
@@ -120,22 +121,22 @@ export class BrushTool extends LocationBoundTool {
   }
 
   paint() {
-    WorldPainter.paint.voxel(this.location, this.data, this._update);
+    this._worldPainter.paintVoxel(this.location, this.data, this._update);
     return this;
   }
 
   erase() {
-    WorldPainter.paint.erase(this.location);
+    this._worldPainter.eraseVoxel(this.location);
     return this;
   }
 
   start() {
-    WorldRegister.cache.enable();
+    WorldRegister.instance.cache.enable();
     return this;
   }
 
   stop() {
-    WorldRegister.cache.disable();
+    WorldRegister.instance.cache.disable();
     return this;
   }
 }

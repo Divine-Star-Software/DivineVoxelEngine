@@ -1,8 +1,9 @@
-import { ControlEventTypes } from "../Types/Event.types.js";
-import { DivineControlEvent } from "./DivineControlEventBase.js";
+import { InputModeTypes } from "Controls/Control.types.js";
+import { ControlEventTypes } from "./Event.types.js";
+import { DivineControlEventConstructor } from "./DivineControlEventBase.js";
 import {
-  DCBaseWheelDownEvent,
-  DCBaseWheelUpEvent,
+  DCWheelDownEvent,
+  DCWheelUpEvent,
   DCGamepadDownEvent,
   DCGamepadUpEvent,
   DCKeyUpEvent,
@@ -16,19 +17,21 @@ import {
 } from "./Register/index.js";
 
 export class DivineControlEventManager {
-  private static _events = new Map<string, DivineControlEvent<any>>();
+  private static _events = new Map<string, DivineControlEventConstructor>();
 
-  static registerEvents(event: DivineControlEvent<any>[]) {
+  static registerEvents(event: DivineControlEventConstructor[]) {
     event.forEach((event) => this._events.set(event.eventType, event));
   }
   static getEvent(id: ControlEventTypes) {
     return this._events.get(id)!;
   }
+
+
 }
 
 export type DCEvents =
-  | DCBaseWheelDownEvent
-  | DCBaseWheelUpEvent
+  | DCWheelDownEvent
+  | DCWheelUpEvent
   | DCGamepadDownEvent
   | DCGamepadUpEvent
   | DCKeyUpEvent
@@ -42,20 +45,20 @@ export type DCEvents =
 
 DivineControlEventManager.registerEvents([
   //mouse
-  new DCMouseDownEvent(),
-  new DCMouseUpEvent(),
-  new DCMouseHoldEvent(),
+  DCMouseDownEvent,
+  DCMouseUpEvent,
+  DCMouseHoldEvent,
   //gamepad button
-  new DCGamepadDownEvent(),
-  new DCGamepadUpEvent(),
-  new DCGamepadButtonHoldEvent(),
+  DCGamepadDownEvent,
+  DCGamepadUpEvent,
+  DCGamepadButtonHoldEvent,
   //game axes
-  new DCGamepadAxesMoveEvent(),
+  DCGamepadAxesMoveEvent,
   //keyabord
-  new DCKeyUpEvent(),
-  new DCKeyDownEvent(),
-  new DCKeyHoldEvent(),
+  DCKeyUpEvent,
+  DCKeyDownEvent,
+  DCKeyHoldEvent,
   //wheel
-  new DCBaseWheelDownEvent(),
-  new DCBaseWheelUpEvent(),
+  DCWheelDownEvent,
+  DCWheelUpEvent,
 ]);

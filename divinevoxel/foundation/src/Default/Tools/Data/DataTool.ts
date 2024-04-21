@@ -4,7 +4,7 @@ import type {
   VoxelTemplateSubstanceType,
 } from "@divinevoxel/core/Types/Voxel.types.js";
 import { DimensionsRegister } from "../../../Data/World/DimensionsRegister.js";
-import { VoxelReader } from "../../../Data/VoxelReader.js";
+import { VoxelStateReader } from "../../../Data/VoxelStateReader.js";
 import { VoxelTags } from "@divinevoxel/core/Data/Voxel/VoxelTags.js";
 import { VoxelPaletteReader }  from "@divinevoxel/core/Data/Voxel/VoxelPalette.js";
 import { ChunkDataTool } from "./WorldData/ChunkDataTool.js";
@@ -85,7 +85,7 @@ export class DataTool extends DataToolBase {
   }
 
   setDimension(dimensionId: string | number) {
-    this.location[0] = DimensionsRegister.getDimensionStringId(dimensionId);
+    this.location[0] = DimensionsRegister.instance.getDimensionStringId(dimensionId);
     return this;
   }
 
@@ -234,24 +234,24 @@ export class DataTool extends DataToolBase {
   }
 
   getLevel() {
-    return VoxelReader.getLevel(this.data.raw[2]);
+    return VoxelStateReader.getLevel(this.data.raw[2]);
   }
   setLevel(level: number) {
-    this.data.raw[2] = VoxelReader.setLevel(this.data.raw[2], level);
+    this.data.raw[2] = VoxelStateReader.setLevel(this.data.raw[2], level);
     return this;
   }
   getLevelState() {
-    return VoxelReader.getLevelState(this.data.raw[2]);
+    return VoxelStateReader.getLevelState(this.data.raw[2]);
   }
   setLevelState(state: number) {
-    this.data.raw[2] = VoxelReader.setLevelState(this.data.raw[2], state);
+    this.data.raw[2] = VoxelStateReader.setLevelState(this.data.raw[2], state);
     return this;
   }
   getShapeState() {
-    return VoxelReader.getShapeState(this.data.raw[2]);
+    return VoxelStateReader.getShapeState(this.data.raw[2]);
   }
   setShapeState(state: number) {
-    this.data.raw[2] = VoxelReader.setShapeState(this.data.raw[2], state);
+    this.data.raw[2] = VoxelStateReader.setShapeState(this.data.raw[2], state);
     return this;
   }
   hasSecondaryVoxel() {

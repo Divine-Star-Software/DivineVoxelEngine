@@ -1,5 +1,5 @@
-import type { DivineShaderBuilder } from "@divinestar/shaders";
-export function RegisterNoiseFunctions(builder: typeof DivineShaderBuilder) {
+import type { URIShaderBuilder } from "@divinestar/uri/Shaders/URIShaderBuilder";
+export function RegisterNoiseFunctions(builder: typeof URIShaderBuilder) {
  //VEC2 fbm
  builder.functions.create("hash", {
   setID: "#dve_fmb2",

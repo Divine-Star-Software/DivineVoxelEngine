@@ -13,9 +13,8 @@ export class AdvancedBrush extends BrushTool {
     return this;
   }
   paintAndAwaitUpdate() {
-    const self = this;
     return new Promise((resolve) => {
-      self.paintAndUpdate(() => {
+      this.paintAndUpdate(() => {
         resolve(true);
       });
     });
@@ -30,10 +29,12 @@ export class AdvancedBrush extends BrushTool {
   }
   paintAndUpdate(onDone?: Function) {
     tasks.setFocalPoint(this.location);
+    console.log("run voxel updte", this.getRaw());
     tasks.voxelUpdate.paint.run(
       this.location,
       this.getRaw(),
       () => {
+        console.log("DONE", this.getRaw());
         if (onDone) onDone();
       },
       this.mode

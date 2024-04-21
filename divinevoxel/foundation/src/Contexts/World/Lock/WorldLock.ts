@@ -35,21 +35,21 @@ export const WorldLock = {
                 ...WorldSpaces.column.getLocationXYZ(x, y, z),
               ] as LocationData;
               location[0] = dim;
-              if (WorldRegister.column.get(location)) continue;
+              if (WorldRegister.instance.column.get(location)) continue;
               allFound = false;
               const key = location.toString();
               if (this._loadMap.has(key)) continue;
               this._loadMap.set(key, true);
               if (!this.dataLoader.isEnabled()) {
-                if (!WorldRegister.column.get(location)) {
-                  WorldRegister.column.fill(location);
+                if (!WorldRegister.instance.column.get(location)) {
+                  WorldRegister.instance.column.fill(location);
                 }
               }
               this.dataLoader.setLocation(location).loadIfExists((loaded) => {
                 this._loadMap.remove(key);
-                if (WorldRegister.column.get(location)) return;
+                if (WorldRegister.instance.column.get(location)) return;
                 if (!loaded) {
-                  WorldRegister.column.fill(location);
+                  WorldRegister.instance.column.fill(location);
                 }
               });
             }

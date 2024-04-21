@@ -15,7 +15,7 @@ export const AnalyzerProcessor = {
     run: (x: number, y: number, z: number, column: ColumnDataTool) => void
   ) {
     if (!columnTool.setLocation(location).loadIn()) return;
-    WorldRegister.cache.enable();
+    WorldRegister.instance.cache.enable();
     const column = columnTool.getColumn();
     let maxX = WorldSpaces.chunk._bounds.x + location[1];
     let maxZ = WorldSpaces.chunk._bounds.z + location[3];
@@ -34,6 +34,6 @@ export const AnalyzerProcessor = {
         }
       }
     }
-    WorldRegister.cache.disable();
+    WorldRegister.instance.cache.disable();
   },
 };

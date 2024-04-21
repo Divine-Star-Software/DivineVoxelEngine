@@ -9,7 +9,7 @@ export class RegionDataTool extends EncodedPositionDataTool {
  _region = <Region>{};
 
  loadIn() {
-  const reigon = WorldRegister.region.get(this.location);
+  const reigon = WorldRegister.instance.region.get(this.location);
   if (!reigon) return false;
   this.tags.setBuffer(reigon.stateBuffer);
   this._region = reigon;

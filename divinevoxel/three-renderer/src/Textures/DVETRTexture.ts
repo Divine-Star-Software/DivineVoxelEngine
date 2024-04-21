@@ -53,7 +53,7 @@ export class DVETRTexture extends URITexture<DVETRScene, THREE.Texture> {
       texture.needsUpdate = true;
 
       this._texture = texture;
-      console.log("CREATED TEXTURE", this, texture, this._texture);
+
       return texture;
     }
     throw new Error(`Unsupported texture type: ${data.type}`);

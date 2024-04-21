@@ -89,7 +89,7 @@ export default function InitDVEBRClassic(initData: DVEBRClassicData) {
     ]);
 
     await TextureBuilder.setUpImageCreation();
-    console.log("REIGSTER TEXTURES", initData.textureData);
+
     TextureManager.registerTexture(initData.textureData);
     await TextureManager.$INIT();
     const uvMap = TextureManager.generateTextureUVMap();
@@ -144,7 +144,7 @@ export default function InitDVEBRClassic(initData: DVEBRClassicData) {
       renderer.nodes.meshes.register(mesh.data.id, mesh);
     }
     for (const mat of materials) {
-      console.log("CREATE MATERIAL",mat.id)
+
       mat.createMaterial(initData.scene);
       renderer.nodes.materials.register(mat.id, mat);
     }

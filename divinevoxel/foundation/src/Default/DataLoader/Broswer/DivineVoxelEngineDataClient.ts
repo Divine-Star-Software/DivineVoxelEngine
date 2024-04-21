@@ -1,5 +1,5 @@
 import { DataBase, ZeneithDB } from "@divinestar/indexdb";
-import { WorldDataBase } from "./DataBase/WorldDataBase.js";
+import { WorldDataBase } from "./DataBase/WorldDataBase";
 
 export const DVEDBrowser = {
   async $INIT() {

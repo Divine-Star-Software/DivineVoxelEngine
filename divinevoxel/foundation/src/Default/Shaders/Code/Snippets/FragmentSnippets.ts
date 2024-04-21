@@ -1,5 +1,5 @@
-import type { DivineShaderBuilder } from "@divinestar/shaders";
-export function RegisterFragmentSnippets(builder: typeof DivineShaderBuilder) {
+import type { URIShaderBuilder } from "@divinestar/uri/Shaders/URIShaderBuilder";
+export function RegisterFragmentSnippets(builder: typeof URIShaderBuilder) {
  builder.snippets.create({
   id: "standard_color",
   body: {

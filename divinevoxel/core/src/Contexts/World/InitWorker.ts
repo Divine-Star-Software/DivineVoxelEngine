@@ -19,7 +19,7 @@ export default function (DVEW: DivineVoxelEngineWorld): Promise<any> {
 
     ThreadComm.registerTasks("sync-all-data", async () => {
       await DVEW.core.dataSync.init(DVEW.core);
-      console.log("SYNC ALL DATA IN THE WORLD WORKER");
+
       await DVEW.core.threads.constructors.__comms.map((comm) =>
         comm.waitTillTasksExist("ready")
       );

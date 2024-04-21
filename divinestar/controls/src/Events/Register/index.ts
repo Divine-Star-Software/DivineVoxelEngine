@@ -16,5 +16,5 @@ export * from "./Mouse/DCMouseUpEvent.js";
 export * from "./Mouse/DCMouseHoldEvent.js";
 
 //wheel events
-export * from "./Wheel/DCBaseWheelDownEvent.js";
-export * from "./Wheel/DCBaseWheelUpEvent.js";
+export * from "./Mouse/Wheel/DCWheelDownEvent.js";
+export * from "./Mouse/Wheel/DCWheelUpEvent.js";

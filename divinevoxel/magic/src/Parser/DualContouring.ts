@@ -42,14 +42,14 @@ export class DualContouring {
         }
       }
     }
-    console.log("GENEATED MESH",this.hermiteData,this.sdfGrid);
+
     for (let z = 0; z < this.size.z - 1; z++) {
       for (let y = 0; y < this.size.y - 1; y++) {
         for (let x = 0; x < this.size.x - 1; x++) {
             const cellKey = `cell-${x}-${y}-${z}`;
 
           if (this.hermiteData.has(cellKey)) {
-            console.log("hast cell")
+       
             const vertexPosition = this.solveQEF(x, y, z!); // Assume solveQEF returns the optimal vertex position
             const vertexIndex = vertices.length; // Index of this new vertex
             vertices.push(vertexPosition);

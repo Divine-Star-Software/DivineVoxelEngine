@@ -38,7 +38,7 @@ export class BuilderTool extends LocationBoundTool {
     return this;
   }
   removeColumn() {
-    const column = WorldRegister.column.get(this.location);
+    const column = WorldRegister.instance.column.get(this.location);
     if (!column) return false;
     if (column.chunks.length == 0) return false;
 
@@ -46,7 +46,7 @@ export class BuilderTool extends LocationBoundTool {
     return this;
   }
   fillColumn() {
-    WorldRegister.column.fill(this.location);
+    WorldRegister.instance.column.fill(this.location);
     return this;
   }
   removeColumnsOutsideRadius(radius: number) {

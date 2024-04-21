@@ -1,5 +1,5 @@
-import type { DivineShaderBuilder } from "@divinestar/shaders";
-export function RegisterFragFunctions(builder: typeof DivineShaderBuilder) {
+import type { URIShaderBuilder } from "@divinestar/uri/Shaders/URIShaderBuilder";
+export function RegisterFragFunctions(builder: typeof URIShaderBuilder) {
   builder.functions.create("toLinearSpace", {
     setID: "#dve_frag",
     inputs: [["base", "vec4"]],

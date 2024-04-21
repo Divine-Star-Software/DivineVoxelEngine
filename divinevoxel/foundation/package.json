@@ -1,29 +1,29 @@
 {
-  "name": "@divinevoxel/foundation",
-  "version": "0.0.44",
-  "description": "Default shaders for DVE.",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "type": "module",
-  "devDependencies": {},
-  "scripts": {
-    "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ../../LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
-    "compile": "cd src && npx tsc --watch"
-  },
-  "keywords": [],
-  "author": "Divine Star Software",
-  "license": "MIT",
-  "repository": {
-    "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
-  },
-  "dependencies": {
-    "@divinestar/shaders": "^0.0.44",
-    "@divinevoxel/core": "^0.0.44"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+ "name": "@divinevoxel/foundation",
+ "version": "0.0.48",
+ "description": "Default shaders for DVE.",
+ "main": "index.js",
+ "types": "index.d.ts",
+ "type": "module",
+ "devDependencies": {},
+ "scripts": {
+  "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ../../LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
+  "compile": "cd src && npx tsc --watch"
+ },
+ "keywords": [],
+ "author": "Divine Star Software",
+ "license": "MIT",
+ "repository": {
+  "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
+ },
+ "bugs": {
+  "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
+ },
+ "dependencies": {
+  "@divinestar/uri": "^0.0.15",
+  "@divinevoxel/core": "^0.0.51"
+ },
+ "publishConfig": {
+  "access": "public"
+ }
 }

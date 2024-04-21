@@ -1,11 +1,11 @@
-import { ThreadComm } from "@divinestar/threads/";
+import { CommManager, ThreadComm } from "@divinestar/threads/";
 import { EngineSettingsData } from "../../../Types/EngineSettings.types.js";
 import { EngineSettings } from "../../../Data/Settings/EngineSettings.js";
 import { WorldThreadState } from "./WorldThreadState.js";
 import { ThreadManager } from "../../../Interfaces/Classes/ThreadManager.js";
 export abstract class WorldThreadManager extends ThreadManager {
   abstract state: WorldThreadState;
-  constructors = ThreadComm.createCommManager({
+  constructors: CommManager = ThreadComm.createCommManager({
     name: "constructor",
     onPortSet(port, commName) {},
   });
@@ -18,6 +18,7 @@ export abstract class WorldThreadManager extends ThreadManager {
     ThreadComm.registerTasks<EngineSettingsData>(
       "sync-settings",
       (settings) => {
+
         EngineSettings.syncSettings(settings);
         this.state.settingsSynced = true;
       }

@@ -57,7 +57,7 @@ export class DefaultMaterialManager {
   }
 
   static updateFogData(data: Vector4) {
-    console.log("update fog", DVEThreeRenderer.instance);
+
     for (const [id, mat] of DVEThreeRenderer.instance.nodes.materials
       .materials) {
       mat.setVector4("fogOptions", data.x, data.y, data.z, data.w);

@@ -1,7 +1,9 @@
+import { ThreadComm } from "@divinestar/threads";
 import { ThreadState } from "../../Classes/ThreadState";
 
 export class WorldThreadState extends ThreadState {
   isReady() {
-    return this.settingsSynced;
+
+    return this.settingsSynced && this.threads.comms.every((_) => _.isReady());
   }
 }

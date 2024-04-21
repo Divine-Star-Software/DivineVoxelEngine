@@ -17,25 +17,35 @@ import { RegisterDataHooks } from "./WorldDataHooks";
 import { DVEFDataReigster } from "./Data/DVEFDataRegister";
 import { DVEFDataTags } from "./Data/DVEFDataTags";
 import { AdvancedBrush } from "../../Default/Tools/Brush/AdvancedBrushTool";
-
+import WorldTasks from "./Tasks/WorldTasks";
+export type DVEFWorldCoreProps = {
+  nexusEnabled?: boolean;
+  richWorldEnabled?: boolean;
+  dataLoaderEnabled?: boolean;
+};
 export class DVEFWorldCore extends DVEWorldCore {
   static instance: DVEFWorldCore;
-  threads = new DVEFWorldThreads();
-  dataSync = new DVEFDataSync();
-  queues = new DVEFoundationTasksQueues();
-  dataRegiser = new DVEFDataReigster();
-  dataTagBulders = new DVEFDataTags();
+  threads: DVEFWorldThreads;
+  dataSync: DVEFDataSync;
+  queues: DVEFoundationTasksQueues;
+  dataRegiser: DVEFDataReigster;
+  dataTagBulders: DVEFDataTags;
 
-  constructor() {
+  constructor(public props: DVEFWorldCoreProps = {}) {
     super();
-    console.log("CONSTRUCT THE WORLD core", DVEFWorldCore.instance);
-    this.queues.init(this);
+
     DVEFWorldCore.instance = this;
+    this.threads = new DVEFWorldThreads(this);
+
+    this.dataSync = new DVEFDataSync();
+    this.queues = new DVEFoundationTasksQueues();
+    this.dataRegiser = new DVEFDataReigster();
+    this.dataTagBulders = new DVEFDataTags();
+    this.queues.init(this);
+    WorldTasks(this);
   }
 
   async init() {
-    console.log("init dve world core",this)
-
     RegisterDataHooks();
     WorldLock.init(new DataLoaderTool());
   }

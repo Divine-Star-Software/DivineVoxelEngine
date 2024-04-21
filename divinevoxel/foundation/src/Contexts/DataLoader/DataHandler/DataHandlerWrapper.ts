@@ -8,20 +8,22 @@ import { DivineVoxelEngineDataLoader } from "../DivineVoxelEngineDataLoader.js";
 import { WorldDataSerialize } from "../Serializers/WorldDataSerializer.js";
 
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
-import { DataHandler, DataLoaderModes } from "./DataHandlerBaes.js";
+import { DataHandler, DataLoaderModes } from "./DataHandlerBase.js";
 import { DataHooks } from "../../../Data/DataHooks.js";
 import { RichDataTool } from "../../../Default/Tools/Data/RichDataTool.js";
 import { ColumnDataTool } from "../../../Default/Tools/Data/WorldData/ColumnDataTool.js";
 import { arrayBufferToSharedArrayBuffer } from "@divinestar/utils/Buffers/arrayBufferToSharedArrayBuffer.js";
-const columnDatatool = new ColumnDataTool();
-export const DataHanlderWrapper = {
-  mode: <DataLoaderModes>"indexdb",
-  handler: <DataHandler>{},
-  richData: <RichDataTool>{},
-  $INIT(handler: DataHandler) {
+
+export class DataHanlderWrapper {
+  columnDatatool = new ColumnDataTool();
+  static mode: DataLoaderModes = "indexdb";
+  handler: DataHandler;
+  richData: RichDataTool;
+  seralizer = new WorldDataSerialize();
+  init(handler: DataHandler) {
     this.handler = handler;
     this.richData = new RichDataTool();
-  },
+  }
 
   async loadRegionHeader(location: LocationData) {
     this.handler.setDataType("world-data");
@@ -40,19 +42,19 @@ export const DataHanlderWrapper = {
       console.error(error);
       return false;
     }
-  },
+  }
   async saveColumn(location: LocationData) {
     this.handler.setDataType("world-data");
-    if (columnDatatool.setLocation(location).loadIn()) {
+    if (this.columnDatatool.setLocation(location).loadIn()) {
       try {
-        if (columnDatatool.isStored()) return true;
-        columnDatatool.markAsStored();
-        const column = WorldDataSerialize.serializeColumn(location);
+        if (this.columnDatatool.isStored()) return true;
+        this.columnDatatool.markAsStored();
+        const column = this.seralizer.serializeColumn(location);
         if (!column) return false;
         this.handler.setDataType("world-data");
         const success = await this.handler.saveColumn(location, column);
         if (!success) {
-          columnDatatool.markAsNotStored();
+          this.columnDatatool.markAsNotStored();
           throw new Error(`Could not store column at ${location.toString()}`);
         }
 
@@ -65,7 +67,7 @@ export const DataHanlderWrapper = {
             this.handler.setDataType("rich-data");
             const success = await this.handler.saveColumn(location, column);
             if (!success) {
-              columnDatatool.markAsNotStored();
+              this.columnDatatool.markAsNotStored();
               throw new Error(
                 `Rich data could not store column at ${location.toString()}`
               );
@@ -79,16 +81,16 @@ export const DataHanlderWrapper = {
         console.error(error);
       }
     }
-  },
+  }
 
   async loadColumn(location: LocationData) {
     this.handler.setDataType("world-data");
     try {
-      if (WorldRegister.column.get(location)) return true;
+      if (WorldRegister.instance.column.get(location)) return true;
       this.handler.setDataType("world-data");
       const column = await this.handler.getColumn(location);
-      const data = WorldDataSerialize.deSerializeColumn(column);
-      columnDatatool.setBuffer(data.column);
+      const data = this.seralizer.deSerializeColumn(column);
+      this.columnDatatool.setBuffer(data.column);
       DivineVoxelEngineDataLoader.instance.threads.world.runTasks<LoadWorldDataTasks>(
         "load-column",
         [location, data.column]
@@ -99,7 +101,7 @@ export const DataHanlderWrapper = {
           [location, chunk]
         );
       }
-      if (this.richData._enabled && columnDatatool.hasRichData()) {
+      if (this.richData._enabled && this.columnDatatool.hasRichData()) {
         this.handler.setDataType("rich-data");
         const richColumn = await this.handler.getColumn(location);
         if (!richColumn) return false;
@@ -113,13 +115,13 @@ export const DataHanlderWrapper = {
       console.error(error);
       return false;
     }
-  },
+  }
 
   async unLoadColumn(location: LocationData) {
     this.handler.setDataType("world-data");
-    if (columnDatatool.setLocation(location).loadIn()) {
+    if (this.columnDatatool.setLocation(location).loadIn()) {
       try {
-        if (!columnDatatool.isStored()) {
+        if (!this.columnDatatool.isStored()) {
           await this.saveColumn(location);
         }
 
@@ -138,7 +140,7 @@ export const DataHanlderWrapper = {
     } else {
       return true;
     }
-  },
+  }
 
   async setPath(id: string) {
     this.handler.setDataType("world-data");
@@ -150,12 +152,12 @@ export const DataHanlderWrapper = {
       console.error(error);
       return false;
     }
-  },
+  }
 
   async columnExists(location: LocationData) {
     this.handler.setDataType("world-data");
     try {
-      if (WorldRegister.column.get(location)) return true;
+      if (WorldRegister.instance.column.get(location)) return true;
       return await this.handler.columnExists(location);
     } catch (error: any) {
       console.error(
@@ -164,7 +166,7 @@ export const DataHanlderWrapper = {
       console.error(error);
       return false;
     }
-  },
+  }
 
   async columnTimestamp(location: LocationData) {
     this.handler.setDataType("world-data");
@@ -177,8 +179,8 @@ export const DataHanlderWrapper = {
       console.error(error);
       return 0;
     }
-  },
-};
+  }
+}
 
 DataHooks.settingsSynced.subscribe("data-handler-wrapper", (data) => {
   DataHanlderWrapper.mode = data.data.mode;

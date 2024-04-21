@@ -69,11 +69,10 @@ export function CreateDefaultRenderer(
         "#dve_node_texture"
       ),
     ]);
-console.log("render init",1);
+
     await TextureBuilder.setUpImageCreation();
     TextureManager.registerTexture(initData.textureData);
     await TextureManager.$INIT();
-    console.log("render init",2);
 
     const uvMap = TextureManager.generateTextureUVMap();
     for (const constructor of dver.core.threads.construcotrs.__comms) {
@@ -156,7 +155,6 @@ console.log("render init",1);
       .doRGB(true);
 
     initData.afterCreate && (await initData.afterCreate());
-    console.log("render init",4);
 
   };
   return renderer;
