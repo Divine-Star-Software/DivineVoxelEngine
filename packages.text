@@ -1,0 +1,10 @@
+@divinestar/audio
+@divinestar/binary
+@divinestar/controls
+@divinestar/threads
+@divinestar/utils
+@divinestar/rng
+@divinestar/uri
+@divinestar/indexdb
+
+npm install @divinestar/audio @divinestar/binary @divinestar/controls @divinestar/threads @divinestar/utils @divinestar/rng @divinestar/uri @divinestar/indexdb

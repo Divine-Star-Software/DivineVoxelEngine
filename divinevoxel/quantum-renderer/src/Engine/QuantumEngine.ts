@@ -12,13 +12,13 @@ export class QuantumEngine {
     if (!adapter || !device || !context) {
       throw new Error(`Could not initalize.`);
     }
-    this.context = context;
+    this.context = context as any;
     this.adapter = adapter;
     this.device = device;
 
     const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
     this.presentationFormat = presentationFormat;
-    context.configure({
+    (context as any).configure({
       device,
       format: presentationFormat,
     });
