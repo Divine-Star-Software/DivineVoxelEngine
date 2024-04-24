@@ -6,7 +6,7 @@ import {
   ImageProcessingConfiguration,
   AxesViewer,
 } from "@babylonjs/core";
-import { DVEFBRCore } from "./Classes/DVEFBRCore";
+import { DVEFBRCore } from "@divinevoxel/babylon-renderer/Defaults/Foundation/DVEFBRCore";
 //import "@babylonjs/core/Debug/debugLayer"; // Import the debug layer
 //import "@babylonjs/inspector"; // Import the inspector
 import InitDVER from "@divinevoxel/babylon-renderer/Defaults/Foundation/PBR/InitDVEBRPBR";
@@ -45,7 +45,6 @@ export function App() {
   const { DVECanvas, nodes } = useDVE({
     staturate: async (DVER, observers) => {
       observers.ready.subscribe("", async () => {
-
         const scene = nodes.scene;
 
         const renderer = await InitDVER({
