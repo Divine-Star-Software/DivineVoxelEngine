@@ -23,6 +23,7 @@ export async function StartContrusctor(props: {
   });
 
   return {
-    DVEW: DVEC,
+    DVEC,
+    core,
   };
 }

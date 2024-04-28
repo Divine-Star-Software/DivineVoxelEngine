@@ -12,6 +12,7 @@ import { DVERenderer } from "../../Interfaces/Render/DVERenderer.js";
 import { MeshManager } from "./Scene/MeshManager.js";
 import { MeshRegister } from "./Scene/MeshRegister.js";
 import { DVERenderCore } from "../../Interfaces/Render/DVERenderCore.js";
+import { RenderThreadManager } from "../../Interfaces/Render/Threads/RenderThreads.js";
 
 type PartialEngineSettings = RecursivePartial<EngineSettingsData>;
 export interface DVERInitData extends PartialEngineSettings {
@@ -35,7 +36,7 @@ export class DivineVoxelEngineRender {
 
   tasks = RenderTasks;
 
-  get threads() {
+  get threads(): RenderThreadManager {
     return this.core.threads;
   }
 
@@ -44,7 +45,7 @@ export class DivineVoxelEngineRender {
       return DivineVoxelEngineRender.instance;
     DivineVoxelEngineRender.instance = this;
   }
-  
+
   async init(initData: DVERInitData) {
     if (DivineVoxelEngineRender.initialized) return;
     DivineVoxelEngineRender.initialized = true;

@@ -1,6 +1,6 @@
 {
  "name": "@divinevoxel/three-renderer",
- "version": "0.0.13",
+ "version": "0.0.17",
  "description": "ThreeJS Renderer for DVE.",
  "main": "index.js",
  "types": "index.d.ts",
@@ -22,9 +22,9 @@
  "dependencies": {
   "@divinestar/uri": "^0.0.15",
   "three": "^0.163.0",
-  "@divinevoxel/core": "^0.0.51",
-  "@divinevoxel/foundation": "^0.0.48",
-  "@divinevoxel/magic": "^0.0.48"
+  "@divinevoxel/core": "^0.0.55",
+  "@divinevoxel/foundation": "^0.0.52",
+  "@divinevoxel/magic": "^0.0.52"
  },
  "publishConfig": {
   "access": "public"

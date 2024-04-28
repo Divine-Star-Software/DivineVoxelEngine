@@ -1,6 +1,6 @@
 {
  "name": "@divinevoxel/core",
- "version": "0.0.51",
+ "version": "0.0.55",
  "module": "index.js",
  "types": "index.d.ts",
  "type": "module",

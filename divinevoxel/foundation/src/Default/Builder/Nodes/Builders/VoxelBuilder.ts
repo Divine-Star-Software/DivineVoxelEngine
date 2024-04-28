@@ -1,4 +1,3 @@
-
 import { NodeBuilder } from "../Classes/NodeBuilder.js";
 import { BuilderDataTool } from "../../Tools/BuilderDataTool.js";
 import { RenderedSubstances } from "../../Rules/RenderedSubstances.js";

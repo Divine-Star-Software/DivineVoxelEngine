@@ -4,16 +4,19 @@ import { ConstructorThreadState } from "./ConstructorThreadState";
 import { EngineSettings } from "../../../Data/Settings/EngineSettings";
 import { EngineSettingsData } from "../../../Types/EngineSettings.types";
 
+const world = ThreadComm.createComm("world");
+
 export abstract class ConstructorThreadManager extends ThreadManager {
   static instnace: ConstructorThreadManager;
   abstract state: ConstructorThreadState;
   parent = ThreadComm.parent;
-  world = ThreadComm.createComm("world");
+  world = world;
 
   constructor() {
     super();
     ConstructorThreadManager.instnace = this;
     this.addComm(this.world);
+
     this.addComm(this.parent);
     ThreadComm.registerTasks<EngineSettingsData>(
       "sync-settings",

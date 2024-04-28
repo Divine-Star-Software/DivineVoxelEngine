@@ -18,7 +18,6 @@ export abstract class RenderThreadManager extends ThreadManager {
     this.pipelines.setPorts.regiser("render", (threads) => {
       for (const comm of this.construcotrs.__comms) {
         this.world.connectToComm(comm);
-  
       }
 
       return threads;

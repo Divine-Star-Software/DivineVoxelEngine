@@ -230,13 +230,13 @@ alpha = .9;
 CUSTOM_FRAGMENT_BEFORE_FINALCOLORCOMPOSITION: /*glsl*/  `
 #ifdef  DVE_${this.name}
 
-if(VOXEL[2].r > 0.) {
+if(finalDiffuse.r * VOXEL[2].r > finalDiffuse.r) {
   finalDiffuse.r *= VOXEL[2].r;
 }
-if(VOXEL[2].g > 0.) {
+if(finalDiffuse.g * VOXEL[2].g > finalDiffuse.g) {
   finalDiffuse.g *= VOXEL[2].g;
 }
-if(VOXEL[2].b > 0.) {
+if(finalDiffuse.b * VOXEL[2].b > finalDiffuse.b) {
   finalDiffuse.b *= VOXEL[2].b;
 }
 //add base color

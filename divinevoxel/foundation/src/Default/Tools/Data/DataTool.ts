@@ -6,7 +6,7 @@ import type {
 import { DimensionsRegister } from "../../../Data/World/DimensionsRegister.js";
 import { VoxelStateReader } from "../../../Data/VoxelStateReader.js";
 import { VoxelTags } from "@divinevoxel/core/Data/Voxel/VoxelTags.js";
-import { VoxelPaletteReader }  from "@divinevoxel/core/Data/Voxel/VoxelPalette.js";
+import { VoxelPaletteReader } from "@divinevoxel/core/Data/Voxel/VoxelPalette.js";
 import { ChunkDataTool } from "./WorldData/ChunkDataTool.js";
 import { HeightMapTool } from "./WorldData/HeightMapTool.js";
 import { DataToolBase } from "../Classes/DataToolBase.js";
@@ -85,7 +85,8 @@ export class DataTool extends DataToolBase {
   }
 
   setDimension(dimensionId: string | number) {
-    this.location[0] = DimensionsRegister.instance.getDimensionStringId(dimensionId);
+    this.location[0] =
+      DimensionsRegister.instance.getDimensionStringId(dimensionId);
     return this;
   }
 
@@ -398,7 +399,7 @@ export class DataTool extends DataToolBase {
 
   //util
   isRenderable() {
-    if (this.data.id < 2 && this.data.secondaryId < 2 || !this._loadedIn) return false;
+    if (this.data.id < 2 && this.data.secondaryId < 2) return false;
     return true;
   }
   isSameVoxel(cx: number, cy: number, cz: number) {

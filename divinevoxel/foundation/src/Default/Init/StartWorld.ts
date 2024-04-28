@@ -23,5 +23,6 @@ export async function StartWorld(props: StartWorldProps) {
 
   return {
     DVEW,
+    core
   };
 }

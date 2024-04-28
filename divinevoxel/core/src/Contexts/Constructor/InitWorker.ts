@@ -8,6 +8,7 @@ export default async function (DVEC: DivineVoxelEngineConstructor) {
     parent = "server";
   }
   await ThreadComm.$INIT("constructor", parent);
+  DVEC.TC.registerTasks("thread-ready", () => {});
   await DVEC.core.init();
 
   await CreatePromiseCheck({

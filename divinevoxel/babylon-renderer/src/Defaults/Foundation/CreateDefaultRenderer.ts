@@ -1,6 +1,5 @@
 import { DVEBabylonRenderer } from "../../DVEBabylonRenderer.js";
 import { DefaultMaterialManager } from "./DefaultMaterialManager.js";
-import { SceneTool } from "./Tools/SceneTool";
 import {
   DVEBRDefaultMaterialBaseData,
   NodeSubstanceData,
@@ -12,6 +11,7 @@ import { NodeMaterialData } from "@divinevoxel/core/Interfaces/Render/Nodes/DVER
 import { DVEBRNodeMesh } from "../../Nodes/Meshes/DVEBRNodeMesh.js";
 import { TextureBuilder } from "@divinevoxel/foundation/Textures/TextureBuilder";
 import { TextureManager } from "@divinevoxel/foundation/Textures/TextureManager";
+import { SceneTool } from "./Tools/SceneTool.js";
 const defaultSubstances = [
   "#dve_glow",
   "#dve_flora",
@@ -25,9 +25,9 @@ export function CreateDefaultRenderer(
       scene: DVEBRScene,
       matData: NodeMaterialData
     ) => URIMaterial<DVEBRScene, any, Material>;
-    afterCreate?: () => Promise<void>;
+    afterCreate?: (sceneTool: SceneTool) => Promise<void>;
   }
-) {
+): DVEBabylonRenderer {
   const renderer = new DVEBabylonRenderer({
     scene: initData.scene,
   });
@@ -51,17 +51,18 @@ export function CreateDefaultRenderer(
       textureType: id,
       shaderId: createVoxelShader(id),
       mesh: {
-        materialId: id,
         boundingBoxMaxSize: [1, 1, 1],
+        type: "chunk",
       },
     };
   });
 
   renderer.init = async (dver) => {
     const substances = [...DefaultSubstances, ...initData.substances];
-    TextureManager.addTextureType("#dve_node_texture");
+    console.log("START BUILDING TEXTURES", [...TextureManager.textureTypes]);
+    TextureManager.getOrAddTextureType("#dve_node_texture");
     for (const data of substances) {
-      TextureManager.addTextureType(data.textureType);
+      TextureManager.getOrAddTextureType(data.textureType);
     }
     DefaultMaterialManager.shaders.register.create([
       DefaultMaterialManager.shaders.createSkyBoxShader("#dve_skybox"),
@@ -69,10 +70,14 @@ export function CreateDefaultRenderer(
         "#dve_node_texture"
       ),
     ]);
+    console.log("BEFORE BUILDING TEXTURES", [...TextureManager.textureTypes]);
 
     await TextureBuilder.setUpImageCreation();
     TextureManager.registerTexture(initData.textureData);
+    console.log("AFTER NEW REGISER TEXTURES", [...TextureManager.textureTypes]);
+
     await TextureManager.$INIT();
+    console.log("AFTER BUILDING TEXTURES", [...TextureManager.textureTypes]);
 
     const uvMap = TextureManager.generateTextureUVMap();
     for (const constructor of dver.core.threads.construcotrs.__comms) {
@@ -94,6 +99,7 @@ export function CreateDefaultRenderer(
           id: substance.id,
           materialId: newMaterial.id,
           boundingBoxMaxSize: [16, 16, 16],
+          type: substance.mesh.type,
         })
       );
     }
@@ -116,8 +122,8 @@ export function CreateDefaultRenderer(
     );
     meshes.push(
       new DVEBRNodeMesh({
-        id: "dve_node_texture",
-        materialId: "dve_node_texture",
+        id: "#dve_node_texture",
+        materialId: "#dve_node_texture",
         boundingBoxMaxSize: [1, 1, 1],
       })
     );
@@ -147,15 +153,14 @@ export function CreateDefaultRenderer(
 
       .fog.setColor(0.1)
       .fog.setMode("volumetric")
-      .fog.setDensity(0.1)
+      .fog.setDensity(0.0)
       .fog.setHeightFactor(10.1)
       .options.doAO(true)
       .doEffects(false)
       .doSun(false)
       .doRGB(true);
 
-    initData.afterCreate && (await initData.afterCreate());
-
+    initData.afterCreate && (await initData.afterCreate(sceneTool));
   };
   return renderer;
 }

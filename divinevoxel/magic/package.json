@@ -1,6 +1,6 @@
 {
  "name": "@divinevoxel/magic",
- "version": "0.0.48",
+ "version": "0.0.52",
  "module": "index.js",
  "types": "index.d.ts",
  "type": "module",
@@ -30,7 +30,7 @@
  "devDependencies": {},
  "peerDependencies": {},
  "dependencies": {
-  "@divinevoxel/core": "^0.0.51"
+  "@divinevoxel/core": "^0.0.55"
  },
  "main": "index.js",
  "publishConfig": {

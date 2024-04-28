@@ -13,6 +13,7 @@ import type { ConstructorTextureData } from "@divinevoxel/foundation/Textures/Co
 
 import { DataTool } from "@divinevoxel/foundation/Default/Tools/Data/DataTool.js";
 import { EntityTool } from "./EntityTool.js";
+import { DVEBabylonRenderer } from "../../../DVEBabylonRenderer.js";
 
 export class NodeMeshTool extends LocationBoundTool {
   constructor() {
@@ -27,6 +28,7 @@ export class NodeMeshTool extends LocationBoundTool {
       onDone: (mesh: EntityTool | false) => void
     ) => {
       const textureId = TextureManager.getTextureIndex(textureIdData);
+      console.log("building texture", textureData);
       if (!textureId) return onDone(false);
 
       DVER.instance.core.threads.construcotrs.runPromiseTasks<BuildNodeMesh>(
@@ -41,16 +43,20 @@ export class NodeMeshTool extends LocationBoundTool {
         ],
         [textureData.buffer],
         (data: SetNodeMesh | false) => {
-          /*        if (!data) return onDone(false);
-          const mesh = DivineVoxelEngineRender.instance.renderer.nodes.meshes
+          console.log("set node mesh", data);
+          if (!data) return onDone(false);
+          const mesh = DVEBabylonRenderer.instance.nodes.meshes
             .get("#dve_node_texture")
             .createMesh([data[0][1], data[0][2], data[0][3]], data[1]);
+          console.log("get mesh", mesh);
           if (!mesh) return onDone(false);
 
-          mesh..unfreezeWorldMatrix();
-          (mesh as any).type = "node";
-          mesh.parent = DVER.instance.renderer.foManager.getActiveNode();
-          onDone(new EntityTool(mesh)); */
+          mesh._mesh.unfreezeWorldMatrix();
+          (mesh._mesh as any).type = "node";
+          mesh._mesh.parent =
+            DVEBabylonRenderer.instance.foManager.getActiveNode()?._node ||
+            null;
+          onDone(new EntityTool(mesh._mesh));
         }
       );
     },
@@ -71,25 +77,31 @@ export class NodeMeshTool extends LocationBoundTool {
       voxelData: RawVoxelData,
       onDone: (mesh: EntityTool | false) => void
     ) => {
+      console.log("building voxel", voxelData);
       DVER.instance.core.threads.construcotrs.runPromiseTasks<BuildNodeMesh>(
         "build-node-mesh",
         [this.location, "#dve_node_voxel", voxelData],
         [],
         (data: SetNodeMesh | false) => {
-          /*           if (!data) return onDone(false);
-          const mesh = DivineVoxelEngineRender.instance.nodes.meshes.create(
-            this.voxel.dataTool
-              .loadInRaw(voxelData)
-              .getSubstnaceData()
-              .getRendered(),
-            data
-          );
+          console.log("got voxel", data);
+          if (!data) return onDone(false);
+          const mesh = DVEBabylonRenderer.instance.nodes.meshes
+            .get(
+              this.voxel.dataTool
+                .loadInRaw(voxelData)
+                .getSubstnaceData()
+                .getRendered()
+            )
+            .createMesh([data[0][1], data[0][2], data[0][3]], data[1]);
+          console.log("got node mesh", mesh);
           if (!mesh) return onDone(false);
 
-          mesh.unfreezeWorldMatrix();
-          (mesh as any).type = "node";
-          mesh.parent = DVER.instance.renderer.foManager.getActiveNode();
-          onDone(new EntityTool(mesh)); */
+          mesh._mesh.unfreezeWorldMatrix();
+          (mesh._mesh as any).type = "node";
+          mesh._mesh.parent =
+            DVEBabylonRenderer.instance.foManager.getActiveNode()?._node ||
+            null;
+          onDone(new EntityTool(mesh._mesh));
         }
       );
     },

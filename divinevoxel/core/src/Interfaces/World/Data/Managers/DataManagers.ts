@@ -25,7 +25,7 @@ SubstanceManager.registerData([
       ["#dve_is_solid", true],
       ["#dve_is_liquid", false],
       ["#dve_flow_rate", 0],
-      ["#dve_culled_substances", ["#dve_solid"]],
+      ["#dve_culled_substances", []],
     ],
   },
   {

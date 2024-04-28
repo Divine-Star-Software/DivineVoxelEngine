@@ -5,7 +5,7 @@ import { Scene } from "@babylonjs/core/scene.js";
 import { Engine } from "@babylonjs/core/Engines/engine.js";
 
 import { SceneTool } from "@divinevoxel/babylon-renderer/Defaults/Foundation/Tools/SceneTool";
-import { DVEFBRCore } from "./DVEFBRCore";
+import { DVEFBRCore } from "@divinevoxel/babylon-renderer/Defaults/Foundation/DVEFBRCore";
 
 export class RenderNodes {
   scene: Scene;

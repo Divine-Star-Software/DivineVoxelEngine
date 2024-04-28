@@ -3,11 +3,11 @@ import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import { DVEBRScene } from "../../Scene/DVEBRScene";
 export class DVEBRMesh extends URIMesh<DVEBRScene, Mesh> {
   dispose(): void {
-    throw new Error("Method not implemented.");
+    this._mesh.dispose();
   }
   isVisible: boolean;
   setEnabled(enabled: boolean): void {
-    throw new Error("Method not implemented.");
+    this._mesh.setEnabled(enabled);
   }
   setIndicies(indicies: ArrayLike<number>): void {
     throw new Error("Method not implemented.");

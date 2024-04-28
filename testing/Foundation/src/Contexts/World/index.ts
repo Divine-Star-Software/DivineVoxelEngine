@@ -1,6 +1,7 @@
-import { StartWorld } from "@divinevoxel/foundation/Default/Init/StartWorld";
+
 import { ComputeShaderGenerate } from "./Gen/ComputeShaderGenerate";
 import { DivineVoxelEngineWorld } from "@divinevoxel/core/Contexts/World";
+import { StartWorld } from "@divinevoxel/foundation/Default/Init/StartWorld";
 import { CPUGenerate } from "./Gen/CPUGenerate";
 
 await StartWorld({

@@ -239,6 +239,24 @@ export class VoxelGeometry {
             .setAnimation(0)
             .getValue()
         );
+
+        {
+          const uvs = tool.getAttribute("cuv3");
+          uvs.push(
+            u1,
+            v1,
+            texture,
+            u2,
+            v2,
+            texture,
+            u3,
+            v3,
+            texture,
+            u4,
+            v4,
+            texture
+          );
+        }
       }
     } else {
       {
@@ -267,25 +285,26 @@ export class VoxelGeometry {
             .getValue()
         );
       }
+
+      {
+        const uvs = tool.getAttribute("cuv3");
+        uvs.push(
+          u2,
+          v2,
+          texture,
+          u1,
+          v1,
+          texture,
+          u4,
+          v4,
+          texture,
+          u3,
+          v3,
+          texture
+        );
+      }
     }
 
-    {
-      const uvs = tool.getAttribute("cuv3");
-      uvs.push(
-        u1,
-        v1,
-        texture,
-        u2,
-        v2,
-        texture,
-        u3,
-        v3,
-        texture,
-        u4,
-        v4,
-        texture
-      );
-    }
     {
       const uvs = tool.getAttribute("ocuv3");
       uvs.push(

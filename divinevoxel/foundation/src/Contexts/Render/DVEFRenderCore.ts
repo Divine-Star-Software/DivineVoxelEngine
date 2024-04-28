@@ -10,6 +10,7 @@ export type DVEFRenderCoreProps = {
 };
 
 export abstract class DVEFRenderCore extends DVERenderCore {
+  
   threads = new DVEFRenderThreads();
   data = new DVEFDataCore();
   abstract renderer: DVERenderer;

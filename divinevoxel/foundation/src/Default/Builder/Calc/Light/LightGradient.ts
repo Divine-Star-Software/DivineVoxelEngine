@@ -2,7 +2,7 @@ import type { VoxelMesherDataTool } from "../../Tools/VoxelMesherDataTool";
 import type { DirectionNames } from "@divinevoxel/core/Types";
 
 import { OverrideManager } from "../../Rules/Overrides/OverridesManager.js";
-import { LightData } from "../../../../Data/LightData"
+import { LightData } from "../../../../Data/LightData";
 
 import { QuadVertexData } from "@divinevoxel/core/Meshing/";
 import { SubstanceRules } from "../../Rules/SubstanceRules.js";
@@ -22,21 +22,18 @@ const shouldSunFlip = (face: DirectionNames) => {
   const v3 = LD.getS(LightValue.vertices[QuadVerticies.BottomLeft]);
   const v4 = LD.getS(LightValue.vertices[QuadVerticies.BottomRight]);
 
-  if (v4 > v1 && v4 > v2 && v4 > v3) return false;
-  if (v2 > v1 && v2 > v4 && v2 > v3) return false;
-  const totalLight = v1 + v2 + v3 + v4;
-  const averageLight = totalLight / 4;
-  const threshold = 1;
+  if (v2 > v3 && v2 > v1) return true;
+  if (v4 > v3 && v4 > v1) return true;
+  if (v2 < v3 || v2 < v1) return false;
+  if (v4 < v3 || v4 < v1) return false;
   if (
-    Math.abs(v1 - averageLight) <= threshold &&
-    Math.abs(v2 - averageLight) <= threshold &&
-    Math.abs(v3 - averageLight) <= threshold &&
-    Math.abs(v4 - averageLight) <= threshold
-  ) {
+    v3 + v1 > v2 + v4 ||
+    SunState.isEqualTo(0, 1, 1, 1) ||
+    SunState.isEqualTo(1, 1, 0, 1) ||
+    SunState.isEqualTo(0, 1, 0, 1)
+  )
     return false;
-  }
 
-  if (v3 + v1 > v2 + v4) return true;
   return false;
 };
 
@@ -47,25 +44,23 @@ const shouldRGBFlip = (face: DirectionNames) => {
   const v3 = LD.getRGB(LightValue.vertices[QuadVerticies.BottomRight]); // BottomRight
   const v4 = LD.getRGB(LightValue.vertices[QuadVerticies.TopRight]); // TopRight
 
-  if (v4 > v1 && v4 > v2 && v4 > v3) return false;
-  if (v2 > v1 && v2 > v4 && v2 > v3) return false;
-  const totalLight = v1 + v2 + v3 + v4;
-  const averageLight = totalLight / 4;
-  const threshold = 1;
+  if (v2 > v3 && v2 > v1) return true;
+  if (v4 > v3 && v4 > v1) return true;
+  if (v2 < v3 || v2 < v1) return false;
+  if (v4 < v3 || v4 < v1) return false;
   if (
-    Math.abs(v1 - averageLight) <= threshold &&
-    Math.abs(v2 - averageLight) <= threshold &&
-    Math.abs(v3 - averageLight) <= threshold &&
-    Math.abs(v4 - averageLight) <= threshold
-  ) {
+    v3 + v1 > v2 + v4 ||
+    RGBState.isEqualTo(0, 1, 1, 1) ||
+    RGBState.isEqualTo(1, 1, 0, 1) ||
+    RGBState.isEqualTo(0, 1, 0, 1)
+  )
     return false;
-  }
 
-  if (v3 + v1 > v2 + v4) return true;
   return false;
 };
 
 const shouldAOFlip = (face: DirectionNames) => {
+  if (states.ignoreAO) return false;
   if (states.ignoreAO) return false;
   LightGradient.tool.faceDataOverride.face = face;
   LightGradient.tool.faceDataOverride.default = false;
@@ -80,33 +75,33 @@ const shouldAOFlip = (face: DirectionNames) => {
   ) {
     return false;
   }
-  const v1 = AOValue.vertices[QuadVerticies.TopRight];
-  const v2 = AOValue.vertices[QuadVerticies.TopLeft];
-  const v3 = AOValue.vertices[QuadVerticies.BottomLeft];
-  const v4 = AOValue.vertices[QuadVerticies.BottomRight];
+  const v1 = AOValue.vertices[QuadVerticies.TopLeft];
+  const v2 = AOValue.vertices[QuadVerticies.BottomLeft];
+  const v3 = AOValue.vertices[QuadVerticies.BottomRight];
+  const v4 = AOValue.vertices[QuadVerticies.TopRight];
 
-  if (v2 > v3 && v2 > v1) return false;
-  if (v4 > v3 && v4 > v1) return false;
-  if (v2 < v3 || v2 < v1) return true;
-  if (v4 < v3 || v4 < v1) return true;
+  if (v2 > v3 && v2 > v1) return true;
+  if (v4 > v3 && v4 > v1) return true;
+  if (v2 < v3 || v2 < v1) return false;
+  if (v4 < v3 || v4 < v1) return false;
   if (
     v3 + v1 > v2 + v4 ||
-    AOState.isEqualTo(1, 1, 0, 1) ||
     AOState.isEqualTo(0, 1, 1, 1) ||
+    AOState.isEqualTo(1, 1, 0, 1) ||
     AOState.isEqualTo(0, 1, 0, 1)
   )
-    return true;
+    return false;
   return false;
 };
 
 const flipCheck = (face: DirectionNames) => {
-  const rgbFlip = !shouldRGBFlip(face);
+  const rgbFlip = shouldRGBFlip(face);
   const sunFlip = shouldSunFlip(face);
   const aoFlip = shouldAOFlip(face);
 
   const shouldFlip = rgbFlip || sunFlip || aoFlip;
 
-  return rgbFlip;
+  return shouldFlip;
 };
 /**
  * 

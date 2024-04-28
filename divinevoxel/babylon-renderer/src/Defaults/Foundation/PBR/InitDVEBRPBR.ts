@@ -24,9 +24,8 @@ import { LevelParticles } from "./LevelParticles";
 export type DVEBRClassicData = DVEBRDefaultMaterialBaseData;
 
 export default function InitDVEPBR(initData: DVEBRClassicData) {
-
   const scene = initData.scene;
-  scene.getEngine()!.createRenderTargetCubeTexture 
+  scene.getEngine()!.createRenderTargetCubeTexture;
   const probe = new ReflectionProbe("", 512, initData.scene);
   initData.scene.environmentTexture = probe.cubeTexture;
   initData.scene.environmentIntensity = 1;
@@ -41,7 +40,7 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
   pipeline.imageProcessing.contrast = 1.5;
   pipeline.imageProcessing.exposure = 1;
   pipeline.bloomEnabled = true;
-  pipeline.bloomThreshold = 0.1;
+  pipeline.bloomThreshold = 0.15;
   // pipeline.sharpenEnabled = true;
   pipeline.depthOfFieldEnabled = true;
   pipeline.depthOfField.fStop = 50;
@@ -51,9 +50,9 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
   pipeline.fxaaEnabled = true;
   pipeline.fxaa.adaptScaleToCurrentViewport = true;
 
-  const glow = new GlowLayer("", scene);
-  glow.intensity = 1.5;
-
+  /*   const glow = new GlowLayer("", scene);
+  glow.intensity = 1;
+ */
   LevelParticles.init(scene);
   const ssr = new SSRRenderingPipeline("ssr", initData.scene, [
     initData.scene.activeCamera!,
@@ -80,6 +79,7 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
           shaderId: matData.shaderId,
           textureTypeId: matData.textureTypeId || "",
         },
+        ...matData,
       });
       newMat.createMaterial(scene._scene);
       return newMat;
@@ -95,6 +95,7 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
         hemLight.specular.set(0, 0, 0);
         hemLight.intensity = 0.2;
         hemLight.diffuse.set(0.5, 0.5, 0.5);
+        hemLight.groundColor.set(1,1,1);
       }
 
       /*     */
@@ -117,14 +118,14 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
       sunLight.position.y = 200;
 
       sunLight.specular.set(0, 0, 0);
-      const shadows = new ShadowGenerator(1024, sunLight);
+      const shadows = new ShadowGenerator(2048, sunLight);
       // this.shadows.usePoissonSampling = true;
       shadows.usePercentageCloserFiltering = true;
 
-      shadows.forceBackFacesOnly = true;
+    //  shadows.forceBackFacesOnly = true;
       shadows.useContactHardeningShadow = true;
       //   shadows.contactHardeningLightSizeUVRatio = 0.05;
-      shadows.setDarkness(0);
+      shadows.setDarkness(0.1);
 
       // this.shadows.blurScale = 0;
       // initData.scene.useRightHandedSystem = false;
@@ -137,10 +138,10 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
 
       renderer.observers.meshCreated.subscribe(InitDVEPBR, (mesh) => {
         if (!probe.renderList) probe.renderList = [];
-        if (mesh._mesh.id.includes("glow")) {
+        /*    if (mesh._mesh.id.includes("glow")) {
 
           glow.referenceMeshToUseItsOwnMaterial(mesh._mesh);
-        }
+        } */
         shadows.addShadowCaster(mesh._mesh);
 
         mesh._mesh.receiveShadows = true;
@@ -168,12 +169,12 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
       skybox.material = skyboxMaterial;
       probe.renderList!.push(skybox);
 
-   /*    LevelParticles.start(
+      /*    LevelParticles.start(
         new Color4(0, 1, 1, 1),
         new Color4(0, 1, 1, 0.7),
         new Color4(0, 1, 1, 0.5)
       ); */
- 
+
       //   skybox.material = renderer.nodes.materials.get("#dve_skybox")!._material;
     },
   });

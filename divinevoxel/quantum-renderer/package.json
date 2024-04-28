@@ -1,6 +1,6 @@
 {
  "name": "@divinevoxel/quantum-renderer",
- "version": "0.0.48",
+ "version": "0.0.52",
  "module": "index.js",
  "types": "index.d.ts",
  "type": "module",
@@ -30,9 +30,9 @@
  "devDependencies": {},
  "peerDependencies": {},
  "dependencies": {
-  "@divinevoxel/core": "^0.0.51",
-  "@divinevoxel/foundation": "^0.0.48",
-  "@divinevoxel/magic": "^0.0.48"
+  "@divinevoxel/core": "^0.0.55",
+  "@divinevoxel/foundation": "^0.0.52",
+  "@divinevoxel/magic": "^0.0.52"
  },
  "main": "index.js",
  "publishConfig": {

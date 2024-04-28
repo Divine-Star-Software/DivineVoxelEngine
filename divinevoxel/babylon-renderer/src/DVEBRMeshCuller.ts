@@ -14,7 +14,6 @@ export class DVEBRMeshCuller extends DVEMeshCuller {
     this.init(scene._scene);
   }
   init(scene: Scene) {
-
     const box = new BoundingBox(Vector3.Zero(), Vector3.Zero());
     const fallbackNode = new TransformNode("", scene);
 

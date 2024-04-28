@@ -34,7 +34,15 @@ export default async function (
       "Supplied data for the Constructor Workers is not correct. Must be path to worker or an array workers."
     );
   }
+
+
+
+  for (const thread of DVER.threads.construcotrs.__comms) {
+    await thread.waitTillTasksExist("thread-ready");
+  }
+
   await DVER.threads.pipelines.setPorts.pipe(DVER.threads);
+
   for (const thread of DVER.threads.comms) {
     if (thread instanceof CommManager) {
       for (const com of thread.__comms) {

@@ -26,6 +26,8 @@ export class DVEDefaultBuilder extends DVEBuilder {
   overrides = OverrideManager;
   renderedSubstances = RenderedSubstances;
 
+  observers = DVEBuilder.observers;
+
   constructor(data: DVEDefaultBuilderInitData) {
     super();
     if (!DVEDefaultBuilder.instance) DVEDefaultBuilder.instance = this;

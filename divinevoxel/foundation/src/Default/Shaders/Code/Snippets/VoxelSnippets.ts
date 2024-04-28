@@ -12,6 +12,20 @@ export function RegisterVoxelSnippets(builder: typeof URIShaderBuilder) {
    GLSL: () => `@standard_color`,
   },
  });
+
+ builder.snippets.create( {
+  id: "#dve_glow_vertex",
+  body: {
+   GLSL: () => `@standard_position`,
+  },
+ });
+ builder.snippets.create( {
+  id: "#dve_glow_frag",
+  body: {
+   GLSL: () => `@standard_color`,
+  },
+ });
+
  builder.snippets.create( {
   id: "#dve_flora_vertex",
   body: {
@@ -83,12 +97,12 @@ gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   gl_Position = viewProjection *   finalWorld * vec4(position, 1.0);  
 #endif  
 
-#ifndef INSTANCES
+#ifndef INSTANCESw
   vec3 p = position;
   vec4 worldPosition = world * vec4(p , 1.0);
   
   if(doEffects == 1.){
-  float height = fbm(worldPosition.xz * 0.08 + time);
+  float height = fbm(worldPosition.xz * 0.08 + time * .01);
     p.y += (height * 0.03) - .05;
    }
   
@@ -103,10 +117,10 @@ gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   },
  });
  builder.snippets.create( {
-  id: "#dve_liquid_frag",
+  id: "#dve_liquid_frag", 
   body: {
    GLSL: () => /* glsl */`
-  vec4 rgb = getBaseColor(vec2(0.,time * -4. * vFlow));
+  vec4 rgb = getBaseColor(vec2(0.,time * .01 * -4. * vFlow));
   rgb = getColor(rgb);
   vec4 mixLight = getLight(rgb);
   vec3 finalColor = doFog(mixLight);

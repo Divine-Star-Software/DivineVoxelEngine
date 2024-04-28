@@ -5,12 +5,16 @@ import {
   DefaultRenderingPipeline,
   ImageProcessingConfiguration,
   AxesViewer,
+  CreateBox,
+  Matrix,
 } from "@babylonjs/core";
 import { DVEFBRCore } from "@divinevoxel/babylon-renderer/Defaults/Foundation/DVEFBRCore";
 //import "@babylonjs/core/Debug/debugLayer"; // Import the debug layer
 //import "@babylonjs/inspector"; // Import the inspector
 import InitDVER from "@divinevoxel/babylon-renderer/Defaults/Foundation/PBR/InitDVEBRPBR";
 import { SetUpControls } from "./SetUpControls";
+import { NodeMeshTool } from "@divinevoxel/babylon-renderer/Defaults/Foundation/Tools/NodeMeshTool";
+import { DataTool } from "@divinevoxel/foundation/Default/Tools/Data/DataTool";
 const worldWorker = new Worker(new URL("./Contexts/World/", import.meta.url), {
   type: "module",
 });
@@ -238,6 +242,7 @@ export function App() {
         //  postprocess.exposure = 1.5;
 
         const core = new DVEFBRCore({
+          renderer,
           dataLoaderWorker,
           richWorldWorker,
           nexusWorker,
@@ -258,7 +263,56 @@ export function App() {
           .fog.setMode("volumetric")
           .fog.setDensity(0.0); */
         (window as any).nodes = nodes;
+
         DVER.threads.world.runTasks("start-world", []);
+
+        const dataTool = new DataTool();
+        const nodeMeshTool = new NodeMeshTool();
+        const voxelEntityTool = await nodeMeshTool
+          .setXYZ(0, 0, 0)
+          .voxel.buildAsync(
+            nodeMeshTool.voxel.dataTool
+              .setStringId("dve_dream_grass")
+              .setLevelState(1)
+              .setLevel(15)
+              .getRaw()
+          );
+        console.log("got voxel entity tool", voxelEntityTool);
+
+        if (voxelEntityTool) {
+          console.log(voxelEntityTool);
+          voxelEntityTool.setInstanceAmount(1);
+
+          /* 
+          let i = 1;
+          while(i--) {
+            const inst = voxelEntityTool.getInstance();
+            console.log("got voxel entity instance", inst);
+
+            if (inst)  {
+              inst.position.y = 60 + Math.abs(i);
+            }
+          }
+          console.log(voxelEntityTool._matrixArray.matricies)
+          voxelEntityTool.update(); */
+
+          const box = CreateBox("", {}, scene);
+          box.position.set(0, 0, 0);
+          box.thinInstanceAdd(Matrix.Translation(-5, 60, 0));
+          box.thinInstanceAdd(Matrix.Translation(-10, 60, 0));
+
+          voxelEntityTool._instances[0].position.set(0,60,0);
+          voxelEntityTool._instances[0].scale.set(1,1,1);
+          voxelEntityTool.update();
+        
+     /*      console.log(voxelEntityTool._matrixArray.matricies.slice())
+          voxelEntityTool.mesh.thinInstanceSetBuffer(
+            "matrix",
+            voxelEntityTool._matrixArray.matricies,
+            16
+          );
+          console.log(Matrix.Translation(0, 60, 0).toArray()); */
+        }
       });
     },
     useSkyBox: true,

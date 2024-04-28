@@ -9,6 +9,7 @@ export type DivineVoxelEngineConstructorInitData = {
   core: DVEConstructorCore;
 };
 
+
 export class DivineVoxelEngineConstructor {
   static environment: "node" | "browser" = "browser";
   static instance: DivineVoxelEngineConstructor;

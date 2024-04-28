@@ -11,13 +11,13 @@ export class EntityTool {
   constructor(public mesh: Mesh) {}
 
   addBuffer(id: string, buffer: Float32Array, stride?: number) {
-    this.mesh.thinInstanceSetBuffer(id, buffer,stride);
+    this.mesh.thinInstanceSetBuffer(id, buffer, stride, false);
     this._bufferIds.push(id);
   }
 
   setInstanceAmount(amount: number) {
     this._matrixArray = new MatrixArray(amount);
-    this.addBuffer("matrix", this._matrixArray.matricies);
+    this.addBuffer("matrix", this._matrixArray.matricies, 16);
 
     this._instanceAmount = amount;
     let i = this._instanceAmount;

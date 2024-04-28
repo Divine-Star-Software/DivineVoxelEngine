@@ -80,6 +80,11 @@ export const TextureManager = {
   return texture;
  },
 
+ getOrAddTextureType(id: string) {
+  const texture = this.textureTypes.get(id);
+  if (!texture) return this.addTextureType(id);
+  return texture;
+ },
  addTextureType(id: string) {
   const newType = new TextureType(id);
   this.textureTypes.set(id, newType);
@@ -93,14 +98,14 @@ export const TextureManager = {
  registerTexture(textureData: TextureData | TextureData[]) {
   if (Array.isArray(textureData)) {
    for (const texture of textureData) {
-    const type = this.getTextureType(texture.type);
+    const type = this.getOrAddTextureType(texture.type);
     if (!type) continue;
     type.addTexture(texture);
     continue;
    }
    return;
   }
-  const type = this.getTextureType(textureData.type);
+  const type = this.getOrAddTextureType(textureData.type);
   if (!type) return;
   type.addTexture(textureData);
  },

@@ -18,7 +18,9 @@ export function RegisterFragmentSnippets(builder: typeof URIShaderBuilder) {
   if (FragColor.a < 0.05) { 
     discard;
   }
-
+  #ifdef INSTANCES
+  FragColor = vec4(1.,1.,1.,1.);
+  #endif     
   `,
   },
  });

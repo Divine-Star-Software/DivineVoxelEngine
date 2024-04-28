@@ -72,7 +72,6 @@ export class DVEBRClassicMaterial extends URIMaterial<
     Effect.ShadersStore[`${this.id}VertexShader`] = shader.compiled.vertex;
 
     Effect.ShadersStore[`${this.id}FragmentShader`] = shader.compiled.fragment;
-
     const shaderMaterial = new ShaderMaterial(
       this.id,
       data.scene._scene,

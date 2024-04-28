@@ -3,7 +3,7 @@ import { LocationData } from "@divinevoxel/core/Math";
 import { TextureRegister } from "../../Textures/TextureRegister";
 
 export abstract class DVEBuilder {
-  observers = {
+  static observers = {
     texturesRegistered: new Observable<typeof TextureRegister>(),
   };
   abstract init(): void;

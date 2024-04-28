@@ -77,9 +77,9 @@ export default function InitDVEBRClassic(initData: DVEBRClassicData) {
 
   renderer.init = async (dver:DivineVoxelEngineRender) => {
     const substances = [...DefaultSubstances, ...initData.substances];
-    TextureManager.addTextureType("#dve_node_texture");
+    TextureManager.getOrAddTextureType("#dve_node_texture");
     for (const data of substances) {
-      TextureManager.addTextureType(data.textureType);
+      TextureManager.getOrAddTextureType(data.textureType);
     }
     DefaultMaterialManager.shaders.register.create([
       DefaultMaterialManager.shaders.createSkyBoxShader("#dve_skybox"),

@@ -8,6 +8,7 @@ import { DivineVoxelEngineRender } from "@divinevoxel/core/Contexts/Render/Divin
 import { Observable } from "@divinestar/utils/Observers/Observable.js";
 import { DVEBRMesh } from "./Nodes/Meshes/DVEBRMesh.js";
 import { DVEBREngine } from "./Engine/DVEBREngine.js";
+import { SceneTool } from "./Defaults/Foundation/Tools/SceneTool.js";
 export interface DVEBabylonRendererInitData {
   scene: Scene;
 }
@@ -22,6 +23,7 @@ export class DVEBabylonRenderer extends DVERenderer {
   scene: DVEBRScene;
   foManager: DVEBRFOManager;
   meshCuller: DVEBRMeshCuller;
+  sceneTool:SceneTool
 
   constructor(data: DVEBabylonRendererInitData) {
     super();
@@ -32,12 +34,14 @@ export class DVEBabylonRenderer extends DVERenderer {
     this.foManager = new DVEBRFOManager(this.scene);
     this.meshCuller = new DVEBRMeshCuller(this.scene, this.foManager);
     this.nodes = new DVEBRNodeManager();
-
+    this.sceneTool = new SceneTool();
+    this.meshCuller.init(this.scene._scene);
     if (!DVEBabylonRenderer.instance) DVEBabylonRenderer.instance = this;
-
 
     return DVEBabylonRenderer.instance;
   }
-  async init(dver: DivineVoxelEngineRender) {}
+  async init(dver: DivineVoxelEngineRender) {
+
+  }
 
 }

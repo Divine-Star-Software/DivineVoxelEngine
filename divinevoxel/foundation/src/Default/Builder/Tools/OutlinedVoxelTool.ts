@@ -79,82 +79,82 @@ const uvsSets: Record<string, Record<number, number>> = {
   },
 };
 
-export const OutlinedVoxelTool = {
-  _currentTexts: <number[]>[],
+export class OutlinedVoxelTool {
+  static _currentTexts: number[] = [];
 
-  setCurrentTextures(textures: number[]) {
+  static setCurrentTextures(textures: number[]) {
     this._currentTexts = textures;
-  },
+  }
 
-  addTo: {
-    top(tool: VoxelMesherDataTool) {
+  static addTo = {
+    top: (tool: VoxelMesherDataTool) => {
       tool
         .getOverlayTextures()
         .set(
-          OutlinedVoxelTool.getTexture("north", "top", tool),
-          OutlinedVoxelTool.getTexture("south", "top", tool),
-          OutlinedVoxelTool.getTexture("east", "top", tool),
-          OutlinedVoxelTool.getTexture("west", "top", tool)
+          this.getTexture("north", "top", tool),
+          this.getTexture("south", "top", tool),
+          this.getTexture("east", "top", tool),
+          this.getTexture("west", "top", tool)
         );
     },
-    bottom(tool: VoxelMesherDataTool) {
+    bottom: (tool: VoxelMesherDataTool) => {
       tool
         .getOverlayTextures()
         .set(
-          OutlinedVoxelTool.getTexture("north", "bottom", tool),
-          OutlinedVoxelTool.getTexture("south", "bottom", tool),
-          OutlinedVoxelTool.getTexture("east", "bottom", tool),
-          OutlinedVoxelTool.getTexture("west", "bottom", tool)
+          this.getTexture("north", "bottom", tool),
+          this.getTexture("south", "bottom", tool),
+          this.getTexture("east", "bottom", tool),
+          this.getTexture("west", "bottom", tool)
         );
     },
-    north(tool: VoxelMesherDataTool) {
+    north: (tool: VoxelMesherDataTool) => {
       tool
         .getOverlayTextures()
         .set(
-          OutlinedVoxelTool.getTexture("top", "north", tool),
-          OutlinedVoxelTool.getTexture("bottom", "north", tool),
-          OutlinedVoxelTool.getTexture("right", "north", tool),
-          OutlinedVoxelTool.getTexture("left", "north", tool)
+          this.getTexture("top", "north", tool),
+          this.getTexture("bottom", "north", tool),
+          this.getTexture("right", "north", tool),
+          this.getTexture("left", "north", tool)
         );
     },
-    south(tool: VoxelMesherDataTool) {
+    south: (tool: VoxelMesherDataTool) => {
       tool
         .getOverlayTextures()
         .set(
-          OutlinedVoxelTool.getTexture("top", "south", tool),
-          OutlinedVoxelTool.getTexture("bottom", "south", tool),
-          OutlinedVoxelTool.getTexture("right", "south", tool),
-          OutlinedVoxelTool.getTexture("left", "south", tool)
+          this.getTexture("top", "south", tool),
+          this.getTexture("bottom", "south", tool),
+          this.getTexture("right", "south", tool),
+          this.getTexture("left", "south", tool)
         );
     },
-    east(tool: VoxelMesherDataTool) {
+    east: (tool: VoxelMesherDataTool) => {
       tool
         .getOverlayTextures()
         .set(
-          OutlinedVoxelTool.getTexture("top", "east", tool),
-          OutlinedVoxelTool.getTexture("bottom", "east", tool),
-          OutlinedVoxelTool.getTexture("right", "east", tool),
-          OutlinedVoxelTool.getTexture("left", "east", tool)
+          this.getTexture("top", "east", tool),
+          this.getTexture("bottom", "east", tool),
+          this.getTexture("right", "east", tool),
+          this.getTexture("left", "east", tool)
         );
     },
-    west(tool: VoxelMesherDataTool) {
+    west: (tool: VoxelMesherDataTool) => {
       tool
         .getOverlayTextures()
         .set(
-          OutlinedVoxelTool.getTexture("top", "west", tool),
-          OutlinedVoxelTool.getTexture("bottom", "west", tool),
-          OutlinedVoxelTool.getTexture("right", "west", tool),
-          OutlinedVoxelTool.getTexture("left", "west", tool)
+          this.getTexture("top", "west", tool),
+          this.getTexture("bottom", "west", tool),
+          this.getTexture("right", "west", tool),
+          this.getTexture("left", "west", tool)
         );
     },
-  },
+  };
 
-  getOutlineUVs(
+  static getOutlineUVs(
     texture: ConstructorTextureData,
     onRegister: (uvs: number[]) => void
   ) {
     const overlayTextures: number[] = [];
-    DVEDefaultBuilder.instance.observers.texturesRegistered.subscribe(
+    DVEDefaultBuilder.observers.texturesRegistered.subscribe(
       this,
       (textureManager) => {
         const type = texture[0];
@@ -181,9 +181,9 @@ export const OutlinedVoxelTool = {
         onRegister(overlayTextures);
       }
     );
-  },
+  }
 
-  getTexture(
+  static getTexture(
     direction: DirectionNames | "left" | "right",
     face: DirectionNames,
     tool: VoxelMesherDataTool
@@ -263,5 +263,5 @@ export const OutlinedVoxelTool = {
     if (uvsSets[direction][key] == undefined) return 0;
     const index = uvsSets[direction][key];
     return this._currentTexts[index];
-  },
-};
+  }
+}
