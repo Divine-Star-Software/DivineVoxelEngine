@@ -184,7 +184,7 @@ export const WorldGen = {
         for (let y = 0; y < this.minY + 10; y++) {
           brush.setXYZ(x, y, z);
           if (y < this.minY - 3) {
-            brush.setId("dve_dream_stone").paint();
+            brush.setId("dve_liquid_dream_ether").paint();
           }
         }
       }
@@ -237,7 +237,7 @@ export const WorldGen = {
 
   generateWorldColumn(chunkX: number, chunkZ: number) {
     brush.start();
-    //  return this.generateBlankChunk(chunkX, chunkZ);
+      return this.generateBlankChunk(chunkX, chunkZ);
     let toss = Math.random();
 
     if (
