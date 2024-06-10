@@ -1,41 +1,57 @@
-import { RemoteTagManager } from "@divinestar/binary/";
+import { RemoteBinaryStruct } from "@divinestar/binary/";
 import { Column } from "./Column";
 import {
   DVEMessageHeader,
   WorldDataHeaders,
 } from "../../Constants/DataHeaders.js";
-interface RegionData {
+export interface RegionData {
   stateBuffer: ArrayBuffer;
-  columns: Map<number, Column>;
+  columns: Record<number, Column>;
 }
-export interface Region extends RegionData {}
+export interface Region {}
 
 export class Region {
-  static CreateNew() {
-    const stateBuffer = new SharedArrayBuffer(Region.Tags.tagSize);
-    Region.Tags.setBuffer(stateBuffer);
-    Region.Tags.setTag("#dve_header", DVEMessageHeader);
-    Region.Tags.setTag("#dve_data_type", WorldDataHeaders.region);
-    return new Region({
+  static CreateNew(): RegionData {
+    const stateBuffer = new SharedArrayBuffer(Region.StateStruct.structSize);
+    Region.StateStruct.setBuffer(stateBuffer);
+    Region.StateStruct.setProperty("#dve_header", DVEMessageHeader);
+    Region.StateStruct.setProperty("#dve_data_type", WorldDataHeaders.region);
+    return {
       stateBuffer,
-      columns: new Map<number,Column>(),
-    });
+      columns: {},
+    };
   }
-  static AddNew(data: RegionData) {
-    return new Region({
-      ...data,
-    });
+  static toObject(data: RegionData) {
+    return new Region(data);
   }
-  static Tags = new RemoteTagManager("region-tags");
+  static StateStruct = new RemoteBinaryStruct("region-tags");
+  stateBuffer: ArrayBuffer;
+  columns = new Map<number, Column>();
   regionState: DataView;
   constructor(data: RegionData) {
     this.regionState = new DataView(data.stateBuffer);
-    return Object.assign(data, this);
+    this.stateBuffer = data.stateBuffer;
+    const keys = Object.keys(data.columns);
+    for (const key in keys) {
+      data.columns[Number(key)] &&
+        this.columns.set(Number(key), data.columns[Number(key)]);
+    }
   }
 
   *getColumns(): Generator<Column> {
     for (const [key, column] of this.columns) {
       yield column;
     }
+  }
+
+  toJSON(): RegionData {
+    const columns: Record<number, Column> = {};
+    for (const [key, col] of this.columns) {
+      columns[key] = col;
+    }
+    return {
+      stateBuffer: this.stateBuffer,
+      columns: columns,
+    };
   }
 }

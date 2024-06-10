@@ -5,6 +5,7 @@ export abstract class IWGLoadBase {
     doSearchUpdate: true,
     doWorldGenUpdate: true,
     doSaveUpate: true,
+    doBuildUpdate: false,
     timeout: 500,
   };
   constructor(public gen: Generator) {}
@@ -35,14 +36,22 @@ export abstract class IWGLoadBase {
   ) {
     return new Promise((resolve) => {
       const searchInte = setInterval(() => {
-        if (this.settings.doSearchUpdate) this.gen.searchUpdate();
-        if (this.settings.doWorldGenUpdate) this.gen.worldGenUpdate(Infinity);
+        if (this.settings.doSearchUpdate) this.gen.generateUpdate();
+        if (this.settings.doWorldGenUpdate) {
+          this.gen.worldGenUpdate(Infinity);
+          this.gen.propagationUpdate();
+        }
+        if (this.settings.doBuildUpdate) {
+          this.gen.renderTaskUpdate(Infinity);
+          this.gen.renderUpdate();
+        }
         if (this.settings.doSaveUpate) this.gen.saveUpdate(Infinity);
       }, 10);
 
       setTimeout(() => {
         const tasksInte = setInterval(() => {
           onCheck(this.gen);
+     
           if (
             this._getTotalTasks(type) == 0 &&
             this._getTotalInProgress(type) == 0

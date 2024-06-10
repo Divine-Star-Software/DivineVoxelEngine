@@ -1,7 +1,7 @@
 import type { MesherDataTool } from "@divinevoxel/core/Meshing/Tools/MesherDataTools.js";
 import type { QuadDimensions, QuadTransforms } from "../Types/Geometry.types";
 import type { DirectionNames } from "@divinevoxel/core/Types/Util.types";
-import type { Position3Matrix } from "@divinevoxel/core/Math/index.js";
+import type { Vector3Like } from "@divinevoxel/core/Math/index.js";
 
 export const QuadBuilder = {
  defaultTransform: <QuadTransforms>{
@@ -17,7 +17,7 @@ export const QuadBuilder = {
   Record<
    DirectionNames,
    (
-    origin: Position3Matrix,
+    origin: Vector3Like,
     tool: MesherDataTool,
     transform: QuadTransforms,
     flip?: boolean
@@ -345,7 +345,7 @@ export const QuadBuilder = {
  create(
   tool: MesherDataTool,
   direction: DirectionNames,
-  origin: Position3Matrix,
+  origin: Vector3Like,
   dimensions: QuadDimensions,
   flip: boolean,
   transform?: QuadTransforms

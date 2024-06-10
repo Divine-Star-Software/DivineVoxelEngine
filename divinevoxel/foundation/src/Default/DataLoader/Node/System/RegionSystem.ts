@@ -20,7 +20,7 @@ export const RegionSystem = {
   },
 
   _getTagIndex(id: string, index: number) {
-    return DVED.regionTags.getArrayTagByteIndex(id, index);
+    return DVED.regionTags.getArrayPropertyValue(id, index);
   },
 
   _getIndex(index: number | LocationData): number {

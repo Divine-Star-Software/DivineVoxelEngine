@@ -1,4 +1,4 @@
-import type { Position3Matrix, Vec3Array } from "../../Math";
+import type { Vector3Like, Vec3Array } from "../../Math";
 
 import { GeometryNormals } from "./GeometryNormals.js";
 import { MesherDataTool } from "../Tools/MesherDataTools.js";
@@ -7,7 +7,7 @@ import { QuadVertexVec3Data } from "../Geometry.types";
 export class GeometryBuilder {
   static addTriangle(
     tool: MesherDataTool,
-    origin: Position3Matrix,
+    origin: Vector3Like,
     [[p1x, p1y, p1z], [p2x, p2y, p2z], [p3x, p3y, p3z]]: [
       Vec3Array,
       Vec3Array,
@@ -61,7 +61,7 @@ export class GeometryBuilder {
   static addQuadAttributes() {}
   static addQuad(
     tool: MesherDataTool,
-    origin: Position3Matrix,
+    origin: Vector3Like,
     doubleSided: boolean,
     [
       [p1x, p1y, p1z],
@@ -203,7 +203,7 @@ export class GeometryBuilder {
 
   static addSimpleQuad(
     tool: MesherDataTool,
-    origin: Position3Matrix,
+    origin: Vector3Like,
     orientation: 0 | 1,
     flip: boolean,
     [start, end]: [Vec3Array, Vec3Array]

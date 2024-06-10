@@ -5,7 +5,7 @@ import type {
 } from "@divinevoxel/core/Types/Voxel.types.js";
 import { DimensionsRegister } from "../../../Data/World/DimensionsRegister.js";
 import { VoxelStateReader } from "../../../Data/VoxelStateReader.js";
-import { VoxelTags } from "@divinevoxel/core/Data/Voxel/VoxelTags.js";
+import { VoxelStruct } from "@divinevoxel/core/Data/Voxel/VoxelStruct.js";
 import { VoxelPaletteReader } from "@divinevoxel/core/Data/Voxel/VoxelPalette.js";
 import { ChunkDataTool } from "./WorldData/ChunkDataTool.js";
 import { HeightMapTool } from "./WorldData/HeightMapTool.js";
@@ -13,9 +13,16 @@ import { DataToolBase } from "../Classes/DataToolBase.js";
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces.js";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
 import { LightData } from "../../../Data/LightData.js";
-import { VoxelTagIDs } from "../../../Data/Constants/Tags/VoxelTagIds.js";
+import { VoxelStructProperties } from "../../../Data/Constants/Structs/VoxelStructProperties.js";
 import { MappedDataRegister } from "@divinevoxel/core/Data/Register/MappedDataRegister.js";
 import { SubstanceDataTool } from "./SubstanceDataTool.js";
+import { SafeInterval } from "@divinestar/utils/Intervals/SafeInterval.js";
+import { SafePromise } from "@divinestar/utils/Promises/SafePromise.js";
+import { LocationData } from "@divinevoxel/core/Math/index.js";
+import { WorldRegister } from "../../../Data/World/WorldRegister.js";
+import { AddVoxelData } from "Data/Types/WorldData.types.js";
+import { VoxelTagIDs } from "@divinevoxel/core/Data/Constants/VoxelTagIds.js";
+import { SubstancePaletteReader } from "@divinevoxel/core/Data/Substance/SubstancePalette.js";
 
 export enum DataToolModes {
   /**# World Data Mode
@@ -43,6 +50,33 @@ export class DataTool extends DataToolBase {
     return DataTool._dtutil.setId(id).getStringId();
   }
 
+  static VoxelDataToRaw(data: Partial<AddVoxelData>, light = 0): RawVoxelData {
+    const id =
+      (data.id !== undefined &&
+        VoxelPaletteReader.id.getPaletteId(
+          data.id,
+          data.state ? data.state : 0
+        )) ||
+      0;
+    const secondaryId =
+      (data.secondaryVoxelId !== undefined &&
+        VoxelPaletteReader.id.getPaletteId(
+          data.secondaryVoxelId,
+          data.secondaryState ? data.secondaryState : 0
+        )) ||
+      0;
+    let stateData = 0;
+
+    if (data.level !== undefined)
+      stateData = VoxelStateReader.setLevel(stateData, data.level);
+    if (data.levelState !== undefined)
+      stateData = VoxelStateReader.setLevel(stateData, data.levelState);
+    if (data.shapeState !== undefined)
+      stateData = VoxelStateReader.setLevel(stateData, data.shapeState);
+
+    return [id, light, stateData, secondaryId];
+  }
+
   static Modes = DataToolModes;
   static _dtutil = new DataTool();
   static _heightMapTool = new HeightMapTool();
@@ -64,7 +98,7 @@ export class DataTool extends DataToolBase {
    */
   __secondary = false;
 
-  tags = VoxelTags;
+  _struct = VoxelStruct.instance;
 
   setMode(mode: DataToolModes) {
     this._mode = mode;
@@ -93,9 +127,9 @@ export class DataTool extends DataToolBase {
   setSecondary(enable: boolean) {
     this.__secondary = enable;
     if (enable) {
-      VoxelTags.setVoxel(this.data.secondaryBaseId);
+      VoxelStruct.setVoxel(this.data.secondaryBaseId);
     } else {
-      VoxelTags.setVoxel(this.data.baseId);
+      VoxelStruct.setVoxel(this.data.baseId);
     }
     return this;
   }
@@ -112,10 +146,36 @@ export class DataTool extends DataToolBase {
     return this.data.raw;
   }
 
+  async waitTillCanLoad(
+    locatin: LocationData,
+    maxWaitTime = 60_000
+  ): Promise<boolean> {
+    if (WorldRegister.instance.chunk.get(locatin)) return true;
+    return new SafePromise(
+      "wait-till-can-load",
+      (resolve, reject, prom) => {
+        const inte = new SafeInterval();
+        prom.observers.died.subscribe(resolve, () => inte.stop());
+        prom.observers.canceled.subscribe(resolve, () => inte.stop());
+        prom.observers.finally.subscribe(resolve, () => inte.stop());
+        inte.setOnRun(() => {
+          if (WorldRegister.instance.chunk.get(locatin)) {
+            resolve(true);
+          }
+        });
+      },
+      maxWaitTime
+    ).run();
+  }
+
   loadInRaw(rawData: RawVoxelData) {
     this.data.raw = rawData;
     this.__process();
     return this;
+  }
+
+  loadInData(data: Partial<AddVoxelData>, light = 0) {
+    this.loadInRaw(DataTool.VoxelDataToRaw(data, light));
   }
 
   __process() {
@@ -127,11 +187,10 @@ export class DataTool extends DataToolBase {
     } else {
       this.data.secondaryBaseId = 0;
     }
-    VoxelTags.setVoxel(this.data.baseId);
+    VoxelStruct.setVoxel(this.data.baseId);
   }
 
   loadIn() {
-    this._c = this.tags.data;
     if (this._mode == DataTool.Modes.WORLD) {
       if (!this._chunkTool.setLocation(this.location).loadIn()) return false;
 
@@ -171,7 +230,7 @@ export class DataTool extends DataToolBase {
       }
       if (heightMapUpdate) {
         DataTool._heightMapTool.chunk._c = <DataView>this._chunkTool._c;
-        const substance = this.getTemplateSubstance();
+
         //on add
         if (heightMapUpdate == 1) {
           DataTool._heightMapTool.chunk.setY(this.y).setHasVoxels(true);
@@ -208,18 +267,18 @@ export class DataTool extends DataToolBase {
   getLight() {
     if (this._mode == DataTool.Modes.VOXEL_DATA) return 0xf;
     const vID = this.getId(true);
-    VoxelTags.setVoxel(vID);
+    VoxelStruct.setVoxel(vID);
     if (vID == 0) return this.data.raw[1];
     if (vID < 2) return -1;
-    const lightValue = this.getTagValue(VoxelTagIDs.lightValue);
+    const lightValue = VoxelStruct.instance[VoxelTagIDs.lightValue];
     if (this.isOpaque()) {
-      if (this.getTagValue(VoxelTagIDs.isLightSource) && lightValue) {
+      if (VoxelStruct.instance[VoxelTagIDs.isLightSource] && lightValue) {
         return lightValue;
       } else {
         return -1;
       }
     }
-    if (this.getTagValue("#dve_is_light_source") && lightValue) {
+    if (VoxelStruct.instance[VoxelTagIDs.isLightSource] && lightValue) {
       return LightData.mixLight(this.data.raw[1], lightValue);
     }
     return this.data.raw[1];
@@ -230,8 +289,7 @@ export class DataTool extends DataToolBase {
   }
 
   isOpaque() {
-    const substance = this.getSubstance();
-    if (substance == "#dve_solid") return true;
+    return this.getSubstnaceData().isOpaque();
   }
 
   getLevel() {
@@ -263,79 +321,70 @@ export class DataTool extends DataToolBase {
   getShapeId() {
     const vID = this.getId(true);
     if (vID < 2) return "";
-    VoxelTags.setVoxel(vID);
+    VoxelStruct.setVoxel(vID);
     return MappedDataRegister.stringMaps.get(
       "voxel",
-      VoxelTagIDs.shapeID,
-      VoxelTags.getTag(VoxelTagIDs.shapeID)
+      VoxelStructProperties.shapeID,
+      VoxelStruct.instance[VoxelTagIDs.shapeID]
     );
   }
   isLightSource() {
     const vID = this.getId(true);
     if (vID < 2) return false;
-    VoxelTags.setVoxel(vID);
-    return VoxelTags.getTag(VoxelTagIDs.isLightSource) == 1;
+    VoxelStruct.setVoxel(vID);
+    return VoxelStruct.instance[VoxelTagIDs.isLightSource] == 1;
   }
   getLightSourceValue() {
     const vID = this.getId(true);
     if (vID < 2) return 0;
-    VoxelTags.setVoxel(vID);
-    return VoxelTags.getTag(VoxelTagIDs.lightValue);
+    VoxelStruct.setVoxel(vID);
+    return VoxelStruct.instance[VoxelTagIDs.lightValue];
+  }
+  getSubstanceStringId() {
+    const vID = this.getId(true);
+    if (vID < 2) return "#dve_transparent";
+    return SubstancePaletteReader.id.stringFromNumber(this.getSubstance());
   }
   getSubstance() {
     const vID = this.getId(true);
-    if (vID < 2) return "#dve_transparent";
-    VoxelTags.setVoxel(vID);
-    const s = <VoxelSubstanceType>(
-      MappedDataRegister.stringMaps.get(
-        "voxel",
-        VoxelTagIDs.substance,
-        VoxelTags.getTag(VoxelTagIDs.substance)
-      )
-    );
-    return s;
+    if (vID < 2) return -1;
+    VoxelStruct.setVoxel(vID);
+    return VoxelStruct.instance[VoxelTagIDs.substance];
   }
   getMaterial() {
     const vID = this.getId(true);
     if (vID < 2) return "none";
-    VoxelTags.setVoxel(vID);
+    VoxelStruct.setVoxel(vID);
     return MappedDataRegister.stringMaps.get(
       "voxel",
-      VoxelTagIDs.material,
-      VoxelTags.getTag(VoxelTagIDs.material)
+      VoxelStructProperties.material,
+      VoxelStruct.instance[VoxelTagIDs.material]
     );
   }
   getHardness() {
     const vID = this.getId(true);
     if (vID < 2) return 0;
-    VoxelTags.setVoxel(vID);
-    return VoxelTags.getTag(VoxelTagIDs.hardness);
+    VoxelStruct.setVoxel(vID);
+    return VoxelStruct.instance[VoxelTagIDs.hardness];
   }
   getCollider() {
     const vID = this.getId(true);
     if (vID < 2) return "none";
-    VoxelTags.setVoxel(vID);
+    VoxelStruct.setVoxel(vID);
     return MappedDataRegister.stringMaps.get(
       "voxel",
-      VoxelTagIDs.colliderID,
-      VoxelTags.getTag(VoxelTagIDs.colliderID)
+      VoxelStructProperties.colliderID,
+      VoxelStruct.instance[VoxelTagIDs.colliderID]
     );
   }
   checkCollisions() {
     const vID = this.getId(true);
     if (vID == 0) return false;
     if (vID == 1) return true;
-    VoxelTags.setVoxel(vID);
-    return this.getTagValue(VoxelTagIDs.checkCollisions) == 1;
+    VoxelStruct.setVoxel(vID);
+    return VoxelStruct.instance[VoxelTagIDs.checkCollisions] == 1;
   }
 
-  getTemplateSubstance(): VoxelTemplateSubstanceType {
-    let substance = this.getSubstance();
-    if (substance == "#dve_transparent") {
-      substance = "#dve_solid";
-    }
-    return <VoxelTemplateSubstanceType>substance;
-  }
   getState() {
     if (this.__secondary) {
       return this.data.secondaryId - this.data.secondaryBaseId;
@@ -345,8 +394,8 @@ export class DataTool extends DataToolBase {
   isRich() {
     const vID = this.getId(true);
     if (vID < 2) return 0;
-    VoxelTags.setVoxel(vID);
-    return VoxelTags.getTag(VoxelTagIDs.isLightSource);
+    VoxelStruct.setVoxel(vID);
+    return VoxelStruct.instance[VoxelTagIDs.isRich] == 1;
   }
 
   //util

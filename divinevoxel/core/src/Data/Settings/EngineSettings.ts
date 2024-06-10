@@ -1,104 +1,26 @@
-import type { EngineSettingsData } from "Types/EngineSettings.types.js";
+import { EngineSettingsData } from "../../Types/EngineSettings.types.js";
 import { WorldBounds } from "../World/WorldBounds.js";
-import { WorldSpaces } from "../World/WorldSpaces.js";
+import { InitWorldSpaces, WorldSpaces } from "../World/WorldSpaces.js";
 import { Environment } from "@divinestar/utils/Environment/Environment.js";
+import { Observable } from "@divinestar/utils/Observers/Observable.js";
 
 /**# Engine Settings
  * ---
  * Handles common settings for all contexts
  */
-export const EngineSettings = {
-  enviorment: Environment.nodeJS.isNode ? "node" : "browser",
-  //context: <EngineSettingsContext>"MatrixLoadedThread",
-  settings: <EngineSettingsData>{
-    nexus: {
-      enabled: false,
-      autoSyncChunks: true,
-      autoSyncVoxelPalette: true,
-    },
-    data: {
-      enabled: false,
-      autoSyncChunks: true,
-      mode: "server",
-    },
-    fx: {
-      enabled: false,
-      autoSyncChunks: true,
-      autoSyncVoxelPalette: true,
-    },
-    server: {
-      enabled: false,
-    },
-    richWorld: {
-      enabled: false,
-      autoSyncChunks: true,
-      autoSyncVoxelPalette: true,
-    },
-    textures: {
-      animationTime: 20,
-      textureSize: 16,
-      mipMapSizes: [16, 12, 8, 4],
-    },
-    updating: {
-      autoRebuild: true,
-    },
-    world: {
-      maxX: Infinity,
-      minX: -Infinity,
-      maxZ: Infinity,
-      minZ: -Infinity,
-      maxY: 256,
-      minY: 0,
-    },
-    regions: {
-      regionXPow2: 9,
-      regionYPow2: 8,
-      regionZPow2: 9,
-    },
-    chunks: {
-      autoHeightMap: true,
-      chunkXPow2: 4,
-      chunkYPow2: 4,
-      chunkZPow2: 4,
-    },
-    voxels: {
-      doColors: true,
-    },
-    flow: {
-      enable: true,
-      baseFlowLimit: 100,
-    },
-    lighting: {
-      doAO: true,
-      doSunLight: true,
-      doRGBLight: true,
-      autoRGBLight: true,
-      autoSunLight: true,
-    },
-    meshes: {
-      clearChachedGeometry: true,
-      checkMagmaCollisions: false,
-      checkLiquidCollisions: false,
-      checkFloraCollisions: false,
-      checkSolidCollisions: false,
-      serialize: false,
-      pickable: false,
-    },
-    materials: {
-      mode: "classic",
-      doAO: true,
-      doSunLight: true,
-      doRGBLight: true,
-      disableFloraShaderEffects: false,
-      disableLiquidShaderEffects: false,
-    },
-  },
+export class EngineSettings {
+  static observers = {
+    updated: new Observable<EngineSettingsData>(),
+  };
+  static enviorment: "node" | "browser" = Environment.nodeJS.isNode
+    ? "node"
+    : "browser";
+  static settings = new EngineSettingsData();
+  static getSettings() {
+    return this.settings;
+  }
 
-  getSettings() {
-    return <EngineSettingsData>this.settings;
-  },
-
-  syncSettings(data: EngineSettingsData) {
+  static syncSettings(data: EngineSettingsData) {
     //safetly set data without prototype pollution
     for (const settingsKey of Object.keys(data)) {
       if (settingsKey.includes("__")) {
@@ -122,11 +44,7 @@ export const EngineSettings = {
         }
       }
     }
-    this.__syncWithObjects();
-  },
-
-  __syncWithObjects() {
-    WorldSpaces.$INIT(this.settings);
+    InitWorldSpaces(this.settings);
     if (this.settings.world) {
       WorldBounds.setWorldBounds(
         this.settings.world.minX,
@@ -137,56 +55,51 @@ export const EngineSettings = {
         this.settings.world.maxY
       );
     }
-  },
+    this.observers.updated.notify(this.settings);
+  }
 
-  syncWithWorldBounds(worldBounds: typeof WorldBounds) {},
-
-  getSettingsCopy() {
+  static getSettingsCopy() {
     return JSON.parse(JSON.stringify(this.settings));
-  },
+  }
 
-  syncChunkInRichWorldThread() {
+  static syncChunkInRichWorldThread() {
     return (
       this.settings.richWorld.enabled && this.settings.richWorld.autoSyncChunks
     );
-  },
+  }
 
-  richDataEnabled() {
+  static richDataEnabled() {
     return this.settings.richWorld.enabled;
-  },
+  }
 
-  syncChunkInFXThread() {
-    return this.settings.fx.enabled && this.settings.fx.autoSyncChunks;
-  },
-
-  syncChunkInDataThread() {
+  static syncChunkInDataThread() {
     return this.settings.data.enabled && this.settings.data.autoSyncChunks;
-  },
+  }
 
-  syncChunksInNexusThread() {
+  static syncChunksInNexusThread() {
     return this.settings.nexus.enabled && this.settings.nexus.autoSyncChunks;
-  },
+  }
 
-  doSunPropagation() {
+  static doSunPropagation() {
     return this.settings.lighting.autoSunLight == true;
-  },
-  doRGBPropagation() {
+  }
+  static doRGBPropagation() {
     return this.settings.lighting.autoRGBLight == true;
-  },
+  }
 
-  doLight() {
+  static doLight() {
     return this.doRGBPropagation() || this.doSunPropagation();
-  },
-  doFlow() {
+  }
+  static doFlow() {
     return this.settings.flow.enable;
-  },
-  saveWorldData() {
+  }
+  static saveWorldData() {
     return this.settings.data.enabled;
-  },
-  isServer() {
+  }
+  static isServer() {
     return this.settings.server.enabled && this.enviorment == "node";
-  },
-  isClient() {
+  }
+  static isClient() {
     return this.enviorment != "browser";
-  },
-};
+  }
+}

@@ -4,7 +4,7 @@ import type {
   MushRegisterRegion,
   MeshRegisterColumn,
 } from "../Scene/MeshRegister.types.js";
-import type { LocationData } from "../../../Math/index.js";
+import { Vector3Like, type LocationData } from "../../../Math/index.js";
 import type { VoxelTemplateSubstanceType } from "../../../Types/Voxel.types.js";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 import { URIMesh } from "@divinestar/uri/Meshes/URIMesh.js";
@@ -137,7 +137,9 @@ export const MeshRegister = {
       return {
         location: [
           location[0],
-          ...WorldSpaces.column.getPositionLocation(location).toArray(),
+          ...Vector3Like.ToArray(
+            WorldSpaces.column.getPositionLocation(location)
+          ),
         ] as LocationData,
         chunks: new Map(),
       };

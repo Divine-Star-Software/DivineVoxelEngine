@@ -2,14 +2,14 @@ import type * as FileSystem from "fs";
 import { NodeRegionTool } from "./Tools/NodeRegionTool.js";
 import { RegionData, RegionTagIds, SecotrData } from "./Util/DVED.util.js";
 import { VoxelSpaces } from "@divinevoxel/core/Math/Spaces/VoxelSpaces.js";
-import { TagManager } from "@divinestar/binary/";
+import { BinaryNumberTypes, BinaryStruct } from "@divinestar/binary/";
 import { System } from "./System/System.js";
 import { SystemPath } from "./System/SystemPath.js";
 
 type Vector3 = { x: number; y: number; z: number };
 
-const voxelSpaces = VoxelSpaces.getVoxelSpaces();
-const regionTagManager = new TagManager("region-tagsx");
+const voxelSpaces = new VoxelSpaces();
+const regionTagManager = new BinaryStruct("region-tagsx");
 
 export const DVED = {
   spaces: voxelSpaces,
@@ -34,26 +34,26 @@ export const DVED = {
     System.$INIT(data.fs);
     this.spaces.setDimensions(data.spaceBounds);
     const numberColumns = this.spaces.region.getColumnVolume();
-    regionTagManager.registerTag({
+    regionTagManager.registerProperty({
       id: RegionTagIds.sectorIndex,
       type: "typed-number-array",
-      numberType: "16ui",
+      numberType: BinaryNumberTypes.Uint16,
       length: numberColumns,
     });
-    regionTagManager.registerTag({
+    regionTagManager.registerProperty({
       id: RegionTagIds.columnLength,
       type: "typed-number-array",
-      numberType: "16ui",
+      numberType: BinaryNumberTypes.Uint16,
       length: numberColumns,
     });
-    regionTagManager.registerTag({
+    regionTagManager.registerProperty({
       id: RegionTagIds.timeStamp,
       type: "typed-number-array",
-      numberType: "32ui",
+      numberType: BinaryNumberTypes.Uint32,
       length: numberColumns,
     });
-    regionTagManager.$INIT();
-    RegionData.headByteSize = regionTagManager.tagSize;
+    regionTagManager.init();
+    RegionData.headByteSize = regionTagManager.structSize;
     RegionData.numColumns = numberColumns;
   },
 

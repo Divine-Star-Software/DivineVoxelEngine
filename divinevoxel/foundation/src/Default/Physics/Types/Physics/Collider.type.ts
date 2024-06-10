@@ -1,8 +1,8 @@
-import { DimensionsVector3 } from "@divinevoxel/core/Math/";
+import { VolumeDimensions  } from "@divinevoxel/core/Math/";
 
 export type ColliderReturnData = {
     name : string,
-    boundingBox : DimensionsVector3,
+    boundingBox : VolumeDimensions ,
     position : [number,number,number]
     
 }[];

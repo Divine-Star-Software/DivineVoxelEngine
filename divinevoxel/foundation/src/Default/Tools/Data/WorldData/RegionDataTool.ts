@@ -5,20 +5,20 @@ import { WorldRegister } from "../../../../Data/World/WorldRegister.js";
 import { EncodedPositionDataTool } from "../../Classes/DataToolBase.js";
 
 export class RegionDataTool extends EncodedPositionDataTool {
- tags = Region.Tags;
+ struct = Region.StateStruct;
  _region = <Region>{};
 
  loadIn() {
   const reigon = WorldRegister.instance.region.get(this.location);
   if (!reigon) return false;
-  this.tags.setBuffer(reigon.stateBuffer);
+  this.struct.setBuffer(reigon.stateBuffer);
   this._region = reigon;
   this._c = reigon.stateBuffer;
   return true;
  }
 
  setRegion(region: Region) {
-  this.tags.setBuffer(region.stateBuffer);
+  this.struct.setBuffer(region.stateBuffer);
   this._region = region;
   this._c = region.stateBuffer;
   return this;

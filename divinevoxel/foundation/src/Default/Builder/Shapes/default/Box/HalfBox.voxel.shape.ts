@@ -7,7 +7,7 @@ const animationState = new QuadVertexData();
 export const HalfBoxVoxelShape = {
  _createFace() {
   animationState.setAll(
-   ShapeTool.data.voxel.getSubstance() == "#dve_flora" ? 3 : 0
+   ShapeTool.data.voxel.getSubstanceStringId() == "#dve_flora" ? 3 : 0
   );
   ShapeTool.builder.quad
 

@@ -1,4 +1,4 @@
-import { DBO } from "@divinestar/binary//index.js";
+import { BinaryObject } from "@divinestar/binary";
 import {
  GetRichDataTasks,
  SetRichColumnTasks,
@@ -66,7 +66,7 @@ export class RichDataTool extends LocationBoundTool {
    [],
    (data: ArrayBuffer) => {
     if (!data) return onDone(false);
-    onDone(DBO.bufferToObject(data));
+    onDone(BinaryObject.bufferToObject(data));
    }
   );
  }
@@ -80,7 +80,7 @@ export class RichDataTool extends LocationBoundTool {
  }
 
  setData<T = any>(data: T, onDone = (data: boolean) => {}) {
-  const buffer = DBO.objectToBuffer(data);
+  const buffer = BinaryObject.objectToBuffer(data);
   this.comm.runPromiseTasks<SetRichDataTasks>(
    "set-data",
    [this.location, this.segment, buffer],

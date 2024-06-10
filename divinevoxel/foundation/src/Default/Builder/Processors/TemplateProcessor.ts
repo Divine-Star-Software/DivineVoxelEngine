@@ -62,6 +62,8 @@ export const TemplateProcessor = {
     let ix = six,
       iy = siy,
       iz = siz;
+    
+    const curosr = new Int32Array(3);
 
     for (let x = cx; x < cx + 16; x++) {
       iz = siz;
@@ -71,14 +73,17 @@ export const TemplateProcessor = {
           this.nLocation[1] = x;
           this.nLocation[2] = y;
           this.nLocation[3] = z;
-          this._process(templateIndex.getIndex([ix, iy, iz]) * 17, template);
+          curosr[0] = ix;
+          curosr[1] = iy;
+          curosr[2] = iz;
+          this._process(templateIndex.getIndex(curosr) * 17, template);
           iy++;
         }
         iz++;
       }
       ix++;
     }
-    const chunks = <SetChunkMeshTask>[location, []];
+    const chunks = <SetChunkMeshTask>[location, [],0];
     const trasnfers: any[] = [];
     for (const [substance, mesher] of RenderedSubstances.meshers._map) {
       if (mesher.getAttribute("position").length == 0) {

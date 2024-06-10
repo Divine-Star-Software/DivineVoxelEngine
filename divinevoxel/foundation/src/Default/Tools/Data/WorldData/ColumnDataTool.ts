@@ -4,20 +4,20 @@ import { EncodedPositionDataTool } from "../../Classes/DataToolBase.js";
 import { Column } from "../../../../Data/World/Classes/Column.js";
 
 export class ColumnDataTool extends EncodedPositionDataTool {
- tags = Column.Tags;
+ struct = Column.StateStruct;
  _column = <Column>{};
 
  loadIn() {
   const column = WorldRegister.instance.column.get(this.location);
   if (!column) return false;
-  this.tags.setBuffer(column.columnState);
+  this.struct.setBuffer(column.columnState);
   this._c = column.columnState;
   this._column = column;
   return true;
  }
 
  setColumn(column: Column) {
-  this.tags.setBuffer(column.columnState);
+  this.struct.setBuffer(column.columnState);
   this._c = column.columnState;
   this._column = column;
   return this;
@@ -32,11 +32,11 @@ export class ColumnDataTool extends EncodedPositionDataTool {
  }
 
  getBufferSizeForWholeColumn() {
-  return Column.Tags.tagSize + Column.Tags.tagSize * this.getNumChunks();
+  return Column.StateStruct.structSize + Column.StateStruct.structSize * this.getNumChunks();
  }
 
  isStored() {
-  return this.getTagValue("#dve_is_stored") == 1;
+  return this.getStructValue("#dve_is_stored") == 1;
  }
 
  markAsNotStored() {
@@ -50,7 +50,7 @@ export class ColumnDataTool extends EncodedPositionDataTool {
  }
 
  isPersistent() {
-  return this.getTagValue("#dve_persistent") == 1;
+  return this.getStructValue("#dve_persistent") == 1;
  }
 
  setPersistence(value: boolean) {
@@ -58,7 +58,7 @@ export class ColumnDataTool extends EncodedPositionDataTool {
  }
 
  isDirty() {
-  return this.getTagValue("#dve_is_dirty") == 1;
+  return this.getStructValue("#dve_is_dirty") == 1;
  }
 
  setDirty(value: boolean) {
@@ -66,7 +66,7 @@ export class ColumnDataTool extends EncodedPositionDataTool {
  }
 
  getLastSaveTimestamp() {
-  return this.getTagValue("#dve_last_save_timestamp");
+  return this.getStructValue("#dve_last_save_timestamp");
  }
 
  setLastSaveTimestamp() {
@@ -74,7 +74,7 @@ export class ColumnDataTool extends EncodedPositionDataTool {
  }
 
  getLastAnalyzerUpdateTimestamp() {
-  return this.getTagValue("#dve_last_analyzer_update_timestamp");
+  return this.getStructValue("#dve_last_analyzer_update_timestamp");
  }
 
  setLastAnalyzerUpdateTimestamp() {
@@ -82,7 +82,7 @@ export class ColumnDataTool extends EncodedPositionDataTool {
  }
 
  hasRichData() {
-  return this.getTagValue("#dve_has_rich_data") == 1;
+  return this.getStructValue("#dve_has_rich_data") == 1;
  }
 
  setRichData(value: boolean) {
@@ -90,7 +90,7 @@ export class ColumnDataTool extends EncodedPositionDataTool {
  }
 
  hasEntityData() {
-  return this.getTagValue("#dve_has_entity_data") == 1;
+  return this.getStructValue("#dve_has_entity_data") == 1;
  }
 
  setEntityData(value: boolean) {

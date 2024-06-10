@@ -1,47 +1,74 @@
-import { WorldData } from "./WorldData";
-
-
-
+import { WorldDataTool } from "./WorldDataTool";
 import { LocationData } from "@divinevoxel/core/Math";
-import { DataHandler } from "../../../Contexts/DataLoader/DataHandler/DataHandlerBase";
+import { DVEDataHandler } from "../../../Interfaces/DataLoader/DVEDataHandler";
+import { WorldDataBaseManager } from "./WorldDataBaseManager";
+import { WorldDataBase } from "./WorldDataBase";
 
-export class DefaultDataHandler extends DataHandler {
+export class DefaultDataHandler extends DVEDataHandler {
+  static instance: DefaultDataHandler;
+  worldDataTool: WorldDataTool;
+  worldData: WorldDataBase;
+
+  constructor() {
+    super();
+    if (DefaultDataHandler.instance) return DefaultDataHandler.instance;
+    DefaultDataHandler.instance = this;
+  }
+
+  async init() {
+    await WorldDataBaseManager.init();
+  }
+
+  async openWorldDataBae(id: string, dimension = "main") {
+    const worldDataBase = await WorldDataBaseManager.getWorldDataBase(id);
+    await worldDataBase.setDimension(dimension);
+    this.worldData = worldDataBase;
+    this.worldDataTool = worldDataBase.worldDataTool;
+  }
+
+  
+
   async getRegionHeader(location: LocationData) {
-    WorldData.setType(this.dataType);
-
-    return await WorldData.loadRegionHeader(location);
+    this.worldDataTool.setType(this.dataType);
+    return await this.worldDataTool.loadRegionHeader(location);
   }
+
   async getColumn(location: LocationData) {
-    WorldData.setType(this.dataType);
-
-    return await WorldData.loadColumn(location);
+    this.worldDataTool.setType(this.dataType);
+    return await this.worldDataTool.loadColumn(location);
   }
+
   async saveColumn(location: LocationData, buffer: ArrayBuffer) {
-    WorldData.setType(this.dataType);
-
-    return await WorldData.saveColumn(location, buffer);
+    this.worldDataTool.setType(this.dataType);
+    return await this.worldDataTool.saveColumn(location, buffer);
   }
-  async setPath(id: string) {
-    WorldData.setType(this.dataType);
 
-    return WorldData.setPath(id);
+  async setPath(id: string) {
+    this.worldDataTool.setType(this.dataType);
+    return this.worldDataTool.setPath(id);
   }
 
   async columnExists(location: LocationData) {
-    WorldData.setType(this.dataType);
+    this.worldDataTool.setType(this.dataType);
+    return await this.worldDataTool.columnExists(location);
+  }
 
 
-    return await WorldData.columnExists(location);
+  async columnExistsBatch(location: LocationData[]) {
+    this.worldDataTool.setType(this.dataType);
+    return await this.worldDataTool.columnExistsBatch(location);
   }
 
   async columnTimestamp(location: LocationData) {
-    WorldData.setType(this.dataType);
-
-    return await WorldData.columnTimestamp(location);
+    this.worldDataTool.setType(this.dataType);
+    return await this.worldDataTool.columnTimestamp(location);
   }
-  async columnHasSegment(location : LocationData,segment: "rich-data" | "dbo" | "entities"): Promise<boolean> {
 
-    WorldData.setType(segment);
-    return await WorldData.columnExists(location);
+  async columnHasSegment(
+    location: LocationData,
+    segment: "rich-data" | "dbo" | "entities"
+  ): Promise<boolean> {
+    this.worldDataTool.setType(segment);
+    return await this.worldDataTool.columnExists(location);
   }
 }

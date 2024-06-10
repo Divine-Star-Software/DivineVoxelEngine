@@ -143,7 +143,7 @@ class Request<T, Q> {
     while (this.syncQueue.length !== 0) {
       const node = this.syncQueue.shift();
       if (!node) break;
-      DVEFConstrucotrCore.instance.builder.buildChunk(node, 1);
+      DVEFConstrucotrCore.instance.builder.buildChunk(node, 1, 0);
     }
     this.rebuildQueMap.clear();
     return this;

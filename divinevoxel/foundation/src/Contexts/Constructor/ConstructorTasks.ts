@@ -33,21 +33,20 @@ export default function (DVEC: DVEFConstrucotrCore) {
     ConstructorTasksIds.BuildChunk,
     async (buildData, onDone) => {
       const location = buildData.data[0];
-      await DVEC.builder.buildChunk(location, buildData.data[1]);
+      await DVEC.builder.buildChunk(location, buildData.data[1],0);
       if (onDone) onDone();
     }
   );
   ThreadComm.registerTasks<BuildTasks>(
     ConstructorTasksIds.BuildColumn,
     async (data, onDone) => {
+      const t1 = performance.now();
       const column = WorldRegister.instance.column.get(data[0]);
-
       if (!column) {
         console.warn("Tried building a column that does not exists.", data);
         return false;
       }
       if (column.chunks.length == 0) return false;
-      let totalChunks = 0;
       const location = data[0];
       for (const chunk of column.chunks) {
         chunkTool.setChunk(chunk);
@@ -55,9 +54,9 @@ export default function (DVEC: DVEFConstrucotrCore) {
         location[1] = chunkPOS.x;
         location[2] = chunkPOS.y;
         location[3] = chunkPOS.z;
-        totalChunks++;
-        DVEC.builder.buildChunk([...location], 1);
+        DVEC.builder.buildChunk([...location], 1,100);
       }
+      console.log("done building",data,performance.now() - t1)
       if (onDone) onDone();
     },
     "deferred"
@@ -108,24 +107,7 @@ export default function (DVEC: DVEFConstrucotrCore) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks<GenerateTasks>(
-    ConstructorTasksIds.Generate,
-    (data, onDone) => {
-      if (!onDone) return;
 
-      DVEC.worldGen.generate(data, "generate", onDone);
-    },
-    "deferred"
-  );
-  ThreadComm.registerTasks<GenerateTasks>(
-    ConstructorTasksIds.Decorate,
-    (data, onDone) => {
-      if (!onDone) return;
-
-      DVEC.worldGen.generate(data, "decorate", onDone);
-    },
-    "deferred"
-  );
 
   ThreadComm.registerTasks<AnaylzerTask>(
     ConstructorTasksIds.AnalyzerPropagation,

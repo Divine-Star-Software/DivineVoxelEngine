@@ -1,8 +1,8 @@
 import type { LocationData } from "@divinevoxel/core/Math";
 
-import { RemoteTagManager } from "@divinestar/binary/";
+import { RemoteBinaryStruct } from "@divinestar/binary/";
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces";
-export const RegionHeaderTags = new RemoteTagManager("region-header-tags");
+export const RegionHeaderTags = new RemoteBinaryStruct("region-header-tags");
 
 type RegionHeaderData = Map<
  string,
@@ -66,7 +66,7 @@ export const RegionHeaderRegister = {
    location[2],
    location[3]
   );
-  return RegionHeaderTags.getArrayTagValue(
+  return RegionHeaderTags.getArrayPropertyValue(
    "#dved-column-save-timestamp",
    columnIndex
   ) != 0

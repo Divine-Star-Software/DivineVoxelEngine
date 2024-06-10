@@ -3,6 +3,7 @@ import { MappedDataRegister } from "@divinevoxel/core/Data/Register/MappedDataRe
 
 import { RenderedSubstances } from "./RenderedSubstances.js";
 import { SubstanceDataTool } from "../../Tools/Data/SubstanceDataTool.js";
+import { SubstancePaletteReader } from "@divinevoxel/core/Data/Substance/SubstancePalette.js";
 
 export const SubstanceRules = {
   rules: <Map<string, Map<string, boolean>>>new Map(),
@@ -25,11 +26,9 @@ export const SubstanceRules = {
 
   $BuildRules() {
     const substanceTool = new SubstanceDataTool();
-    const allSubstances = MappedDataRegister.stringMaps.segments
-      .get("voxel")!
-      .get("#dve_substance")!;
+    const allSubstances = SubstancePaletteReader._palette;
     for (const substnace of allSubstances) {
-      substanceTool.setSubstance(substnace);
+      substanceTool.setSubstanceFromString(substnace);
       const parent = substanceTool.getParent();
       const rendered = substanceTool.getRendered();
       const culled = substanceTool.getCulled();
@@ -38,6 +37,8 @@ export const SubstanceRules = {
         RenderedSubstances.add(rendered);
       }
     }
+
+
   },
 
   exposedCheck(subject: string, neightborVoxel: string) {

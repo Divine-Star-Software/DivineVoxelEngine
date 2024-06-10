@@ -1,6 +1,6 @@
 import type { SubstanceData } from "Types/Substances.types.js";
-import { SubstanceTagBuilder } from "../TagBuilders/SubstanceTagBuilder.js";
-import { SubstanceTags } from "../../../../Data/Substance/SubstanceTags.js";
+import { SubstanceTagBuilder } from "../StructBuilders/SubstanceStructBuilder.js";
+import { SubstanceStruct } from "../../../../Data/Substance/SubstanceStruct.js";
 import { SubstancePaletteReader } from "../../../../Data/Substance/SubstancePalette.js";
 import { SubstanceManager } from "../Managers/DataManagers.js";
 
@@ -13,27 +13,27 @@ export const SubstanceDataGenerator = {
     SubstancePaletteReader.setPalette(this.palette._palette, this.palette._map);
 
     //create data buffer
-    const initData = SubstanceTagBuilder.build( this.palette._count);
-    const buffer = new SharedArrayBuffer(initData.bufferSize);
-    initData.buffer = buffer;
-    SubstanceTags.$INIT(initData);
-    SubstanceTags.setBuffer(buffer);
+    const tags = SubstanceTagBuilder.build(this.palette._count);
+    const buffer = new SharedArrayBuffer(tags.initData.bufferSize);
+    tags.initData.buffer = buffer;
+    tags.setBuffer(buffer);
 
     //build data
     for (const [key, substance] of SubstanceManager.data) {
       const substanceID = SubstancePaletteReader.id.numberFromString(key);
       if (typeof substanceID == undefined) continue;
-      SubstanceTags.setTagIndex(substanceID);
-      SubstanceTagBuilder.setDefaults(SubstanceTags);
+      tags.setStructArrayIndex(substanceID);
+
+      SubstanceTagBuilder.setDefaults(tags);
       for (const tag of substance.tags) {
         const [id, value] = tag;
         if (!SubstanceTagBuilder.hasNode(id)) continue;
 
-        SubstanceTagBuilder.setNode(id, value, SubstanceTags);
+        SubstanceTagBuilder.setNode(id, value, tags);
       }
     }
-
-    SubstanceTags.$INIT(initData);
+    SubstanceStruct.init(tags.initData);
+    SubstanceStruct.instance.setBuffer(buffer);
   },
   palette: {
     _count: 0,

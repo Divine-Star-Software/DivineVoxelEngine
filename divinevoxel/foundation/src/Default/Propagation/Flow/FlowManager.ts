@@ -75,7 +75,7 @@ export const FlowManager = {
  },
 
  getFlowRate(substance: string) {
-  this._substanceTool.setSubstance(substance);
+  this._substanceTool.setSubstanceFromString(substance);
   return this._substanceTool.getFlowRate();
  },
 

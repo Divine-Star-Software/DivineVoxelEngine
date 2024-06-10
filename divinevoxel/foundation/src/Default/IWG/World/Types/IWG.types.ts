@@ -8,30 +8,29 @@ export type IWGGeneratorData = {
     | Float64Array
     | Int32Array
     | Int16Array;
-
+  velocityWatch?:
+    | number[]
+    | Float32Array
+    | Float64Array
+    | Int32Array
+    | Int16Array;
+  velocityScale?: number;
 } & IWGSettignsData;
-
 
 export type IWGSettignsData = {
   renderDistance: number;
   generateDistance: number;
-  saveWorldData ?: boolean;
+  saveWorldData?: boolean;
   maxDistance?: number;
+  generateLeadDistance?: number;
   anaylzerDistance?: number;
-}
-
-export type IWGTasksData = {
-  id: string;
-  name : string,
-  run: (
-    generator: Generator,
-    x: number,
-    y: number,
-    z: number,
-    onDone: Function
-  ) => void;
-  propagationBlocking?: boolean;
-
 };
 
-export type IWGTasksTypes = "world-gen" | "saving" | "updating";
+
+
+export enum IWGTasksTypes {
+  WorldGen = "world-gen",
+  Rendering = "rendering",
+  Saving = "saving",
+  Updating = "updating",
+}

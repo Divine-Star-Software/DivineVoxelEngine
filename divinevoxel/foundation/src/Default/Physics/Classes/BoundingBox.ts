@@ -1,4 +1,4 @@
-import type { Position3Matrix, Vec3Array } from "@divinevoxel/core/Math";
+import type { Vector3Like, Vec3Array } from "@divinevoxel/core/Math";
 import { Vector3 } from "@divinevoxel/core/Math/Classes/Vector3.js";
 export class BoundingBox {
   bounds = {
@@ -70,7 +70,7 @@ export class BoundingBox {
     return this._half.d;
   }
 
-  pointIsInside(point: Position3Matrix) {
+  pointIsInside(point: Vector3Like) {
     return (
       point.x >= this.bounds.minX &&
       point.x <= this.bounds.maxX &&

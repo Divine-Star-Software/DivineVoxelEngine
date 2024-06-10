@@ -1,8 +1,8 @@
 import { MappedDataRegister } from "../../Data/Register/MappedDataRegister";
 import { WorldBounds } from "../../Data/World/WorldBounds";
 import { WorldSpaces } from "../../Data/World/WorldSpaces";
-import { VoxelTags } from "../../Data/Voxel/VoxelTags";
-import { SubstanceTags } from "../../Data/Substance/SubstanceTags";
+import { VoxelStruct } from "../../Data/Voxel/VoxelStruct";
+import { SubstanceStruct } from "../../Data/Substance/SubstanceStruct";
 
 export abstract class DataManager {
 
@@ -10,7 +10,7 @@ export abstract class DataManager {
   spaces = WorldSpaces;
   mapped = MappedDataRegister;
   tags = {
-    voxels: VoxelTags,
-    substances: SubstanceTags,
+    voxels: VoxelStruct,
+    substances: SubstanceStruct,
   };
 }

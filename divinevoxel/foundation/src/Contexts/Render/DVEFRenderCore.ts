@@ -6,7 +6,7 @@ import { DVEFRenderThreads } from "./DVEFRenderThreads";
 export type DVEFRenderCoreProps = {
   nexusWorker?: Worker;
   richWorldWorker?: Worker;
-  dataLoaderWorker?: Worker;
+ // dataLoaderWorker?: Worker;
 };
 
 export abstract class DVEFRenderCore extends DVERenderCore {
@@ -24,9 +24,9 @@ export abstract class DVEFRenderCore extends DVERenderCore {
       this.threads.richWorld.setPort(props.richWorldWorker);
       this.threads.addComm(this.threads.richWorld);
     }
-    if (props.dataLoaderWorker) {
+  /*   if (props.dataLoaderWorker) {
       this.threads.dataLoader.setPort(props.dataLoaderWorker);
       this.threads.addComm(this.threads.dataLoader);
-    }
+    } */
   }
 }

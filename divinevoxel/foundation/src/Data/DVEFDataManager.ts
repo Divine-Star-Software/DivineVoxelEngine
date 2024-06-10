@@ -17,8 +17,8 @@ export class DVEFDataManager extends DataManager {
     regionHeader: RegionHeaderRegister,
   };
   worldDataTags = {
-    chunks: Chunk.Tags,
-    column: Column.Tags,
-    region: Region.Tags,
+    chunks: Chunk.StateStruct,
+    column: Column.StateStruct,
+    region: Region.StateStruct,
   };
 }

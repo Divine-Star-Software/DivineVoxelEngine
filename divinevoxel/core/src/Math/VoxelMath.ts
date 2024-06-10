@@ -3,7 +3,7 @@ import { Plane } from "./Classes/Plane.js";
 import { SimpleBoundingBox } from "./Classes/SimpleBoundingBox.js";
 import { Vector3 } from "./Classes/Vector3.js";
 import { VisitAll } from "./Functions/VisitAll.js";
-import { DimensionsVector3 } from "./Types/Math.types.js";
+import { VolumeDimensions  } from "./Types/Math.types.js";
 /**# Voxel Math
  * ---
  * Can be used in any thread that needs it.
@@ -25,7 +25,7 @@ export const VoxelMath = {
   });
  },
 
- getSimpleBoundingBox(origin: Vector3, dimensions: DimensionsVector3) {
+ getSimpleBoundingBox(origin: Vector3, dimensions: VolumeDimensions ) {
   return new SimpleBoundingBox(origin, dimensions);
  },
 

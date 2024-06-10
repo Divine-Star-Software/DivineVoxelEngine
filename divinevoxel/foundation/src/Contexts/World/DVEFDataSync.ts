@@ -3,25 +3,27 @@ import { DataSyncNode } from "@divinevoxel/core/Interfaces/World/Data/DataSyncNo
 import type { LocationData } from "@divinevoxel/core/Math/index.js";
 import type { WorldDataSync } from "../../Data/Types/DataSync.types.js";
 import type { DimensionData } from "../../Data/Types/DimensionData.types.js";
-import type { RemoteTagManagerInitData } from "@divinestar/binary/";
+import type { RemoteBinaryStructData } from "@divinestar/binary/";
 import { Chunk, Column, Region } from "../../Data/World/Classes/index.js";
 //objects
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 
-import { ChunkDataTags, InitalizeChunkTags } from "./Data/Tags/ChunkTags.js";
-import { ColumnDataTags, InitalizeColumnTags } from "./Data/Tags/ColumnTags.js";
+import { ChunkStatStruct, InitalizeChunkTags } from "./Data/Structs/ChunkStruct.js";
+import { ColumnStateStruct, InitalizeColumnTags } from "./Data/Structs/ColumnStruct.js";
 import {
   InitalizeRegionTags,
-  RegionDataTags,
+  RegionStateStruct,
   RegionHeaderTagManager,
-} from "./Data/Tags/RegionTags.js";
+} from "./Data/Structs/RegionStruct.js";
 import { RegionHeaderRegister } from "../../Data/RegionHeaderRegister.js";
 import { DimensionsRegister } from "../../Data/World/DimensionsRegister.js";
 import { DVEFDataSyncIds } from "../../Data/Constants/DVEFDataSyncIds.js";
 
 export class DVEFDataSync extends DataSync {
+  static  instance: DVEFDataSync; 
   constructor() {
     super();
+    DVEFDataSync.instance = this;
     this.pipelines.init.regiser("FoundationDataSyncNode", (dataSync) => {
       InitalizeChunkTags();
       InitalizeColumnTags();
@@ -36,21 +38,21 @@ export class DVEFDataSync extends DataSync {
     });
   }
   worldDataTags = {
-    chunk: new DataSyncNode<void, RemoteTagManagerInitData, void, false>(
+    chunk: new DataSyncNode<void, RemoteBinaryStructData, void, false>(
       {
         dataSyncType: DVEFDataSyncIds.ChunkTags,
         commCheck: (options) => options.worldDataTags,
-        getSyncData: () => ChunkDataTags.initData,
+        getSyncData: () => ChunkStatStruct.initData,
         getUnSyncData: () => false,
       },
       this
     ),
 
-    column: new DataSyncNode<void, RemoteTagManagerInitData, void, false>(
+    column: new DataSyncNode<void, RemoteBinaryStructData, void, false>(
       {
         dataSyncType: DVEFDataSyncIds.ColumnTags,
         commCheck: (options) => options.worldDataTags,
-        getSyncData: () => ColumnDataTags.initData,
+        getSyncData: () => ColumnStateStruct.initData,
         getUnSyncData: () => false,
       },
       this
@@ -58,7 +60,7 @@ export class DVEFDataSync extends DataSync {
 
     region: new DataSyncNode<
       void,
-      [RemoteTagManagerInitData, RemoteTagManagerInitData],
+      [RemoteBinaryStructData, RemoteBinaryStructData],
       void,
       false
     >(
@@ -66,7 +68,7 @@ export class DVEFDataSync extends DataSync {
         dataSyncType: DVEFDataSyncIds.RegionTags,
         commCheck: (options) => options.worldDataTags,
         getSyncData: () => [
-          RegionDataTags.initData,
+          RegionStateStruct.initData,
           RegionHeaderTagManager.initData,
         ],
         getUnSyncData: () => false,

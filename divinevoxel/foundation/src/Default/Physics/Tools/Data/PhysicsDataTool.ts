@@ -8,6 +8,6 @@ export class PhysicsDataTool extends DataTool {
     return DVP.colliders.getCollider(collider != "none" ? collider : "Box");
   }
   isSolid() {
-    return !this.isAir() && this.getSubstance() != "#dve_liquid";
+    return !this.isAir() && this.getSubstanceStringId() != "#dve_liquid";
   }
 }

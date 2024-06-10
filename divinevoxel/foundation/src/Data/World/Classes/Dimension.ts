@@ -1,6 +1,6 @@
 import { Region } from "./Region";
 
-interface DimensionData {
+export interface DimensionData {
   id: string;
   regions: Map<string, Region>;
 }

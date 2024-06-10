@@ -1,6 +1,6 @@
 import { Vector3 } from "@divinevoxel/core/Math/Classes/Vector3.js";
 import { PhysicsDataTool } from "../Tools/Data/PhysicsDataTool.js";
-import { Position3Matrix } from "@divinevoxel/core/Math/index.js";
+import { Vector3Like } from "@divinevoxel/core/Math/index.js";
 import { LocationData } from "@divinevoxel/core/Math/";
 import { BoundingBox } from "../Classes/BoundingBox.js";
 import type { Collider } from "../Classes/Collider.js";
@@ -46,7 +46,7 @@ export class PhysicsNode {
   setPosition(x: number, y: number, z: number) {
     this.position.set(x, y, z);
   }
-  syncPosition(position: Position3Matrix) {
+  syncPosition(position: Vector3Like) {
     position.x = this.position.x;
     position.y = this.position.y;
     position.z = this.position.z;

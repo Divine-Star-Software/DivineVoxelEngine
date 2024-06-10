@@ -1,9 +1,6 @@
-import type {
-  DBOPrimitive,
-  TypedArrays,
-} from "@divinestar/binary/DBO/Types/DBO.types";
+import { BinaryNumberTypes, TypedArrays,TypedArrayClassMap } from "@divinestar/binary/";
 import type { MeshAttributes } from "../MeshData.types.js";
-import { TypedArrayMap } from "@divinestar/binary/DBO/Constants/ByteData.js";
+
 import { QuadVertexData } from "../Classes/VertexData.js";
 
 export class MesherDataTool {
@@ -16,12 +13,15 @@ export class MesherDataTool {
     [
       value: number[],
       stride: number,
-      dataType: Exclude<DBOPrimitive, "bigui" | "bigi">
+      dataType: Exclude<
+        BinaryNumberTypes,
+        BinaryNumberTypes.BigInt | BinaryNumberTypes.BigUint
+      >
     ]
   >([
-    ["position", [[], 3, "32f"]],
-    ["normal", [[], 3, "32f"]],
-    ["indices", [[], 1, "16ui"]],
+    ["position", [[], 3, BinaryNumberTypes.Float32]],
+    ["normal", [[], 3, BinaryNumberTypes.Float32]],
+    ["indices", [[], 1, BinaryNumberTypes.Uint16]],
   ]);
   addPositions(...positions: number[]) {
     this.attributes.get("position")![0].push(...positions);
@@ -92,7 +92,7 @@ export class MesherDataTool {
     const trasnfers: any[] = [];
     for (const [key, [value, stride, type]] of this.attributes) {
       //@ts-ignore
-      const newArray: Uint8Array = TypedArrayMap[type].from(value);
+      const newArray: Uint8Array = TypedArrayClassMap[type].from(value);
       arrays.push(newArray);
       strides.push(stride);
       trasnfers.push(newArray.buffer);
@@ -110,7 +110,7 @@ export class MesherDataTool {
     const trasnfers: ArrayBuffer[] = [];
     for (const [key, [value, stride, type]] of this.attributes) {
       //@ts-ignore
-      const newArray: Uint8Array = TypedArrayMap[type].from(value);
+      const newArray: Uint8Array = TypedArrayClassMap[type].from(value);
       trasnfers.push(newArray.buffer);
       data.push([key, newArray, stride]);
     }

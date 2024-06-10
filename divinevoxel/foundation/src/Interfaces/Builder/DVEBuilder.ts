@@ -7,5 +7,5 @@ export abstract class DVEBuilder {
     texturesRegistered: new Observable<typeof TextureRegister>(),
   };
   abstract init(): void;
-  abstract buildChunk(location: LocationData, LOD: number): void;
+  abstract buildChunk(location: LocationData, LOD: number,priority:number): void;
 }

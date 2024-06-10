@@ -1,4 +1,4 @@
-import { DBO } from "@divinestar/binary/";
+import { BinaryObject } from "@divinestar/binary/";
 import { RichColumn } from "../../../Data/Types/RichWorldData.types.js";
 import { RichDataSegmentTool } from "../../../Default/Tools/Classes/RichDataToolBase.js";
 import { DivineVoxelEngineRichWorld as DVERW } from "../DivineStarVoxelEngineRichWorld.js";
@@ -16,6 +16,6 @@ export class RichColumnDataTool extends RichDataSegmentTool {
   }
 
   toBuffer() {
-    return DBO.objectToBuffer(this.sceham);
+    return BinaryObject.objectToBuffer(this.sceham);
   }
 }

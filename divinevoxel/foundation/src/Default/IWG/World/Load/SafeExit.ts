@@ -1,4 +1,6 @@
 import type { Generator } from "../Classes/Generator";
+import { IWGTaskBase } from "../Classes/Tasks/IWGTaskBase";
+import { IWGTasksTypes } from "../Types/IWG.types";
 import { IWGLoadBase } from "./LoaderBase.js";
 
 export class IWGSafeExit extends IWGLoadBase {
@@ -8,9 +10,9 @@ export class IWGSafeExit extends IWGLoadBase {
     this.gen.__build = false;
     this.settings.doSearchUpdate = false;
     this.settings.timeout = 20;
-    await this._waitTillAllTasksAreDone(["world-gen"], onCheck);
+    await this._waitTillAllTasksAreDone([IWGTasksTypes.WorldGen], onCheck);
     this.gen.unLoadAllColumns();
-    await this._waitTillAllTasksAreDone(["saving"], onCheck);
+    await this._waitTillAllTasksAreDone([IWGTasksTypes.Saving], onCheck);
     await this.gen.richData.releaeAllData();
     this.settings.doSearchUpdate = true;
   }

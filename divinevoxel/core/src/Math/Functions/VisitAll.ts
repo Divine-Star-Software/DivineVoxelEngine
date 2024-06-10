@@ -1,4 +1,4 @@
-import { Position3Matrix } from "Math/Types/Math.types";
+import { Vector3Like } from "Math/Types/Math.types";
 
  /** # Visit All
   * ---
@@ -9,8 +9,8 @@ import { Position3Matrix } from "Math/Types/Math.types";
   * @returns an array of numbers with a stride of 3 for positions
   */
 export const VisitAll = (
- startPoint: Position3Matrix,
- endPoint: Position3Matrix,
+ startPoint: Vector3Like,
+ endPoint: Vector3Like,
  visitor = (x: number, y: number, z: number) => {
   return true;
  }
@@ -57,6 +57,10 @@ export const VisitAll = (
  const derrx = sx * vyvz;
  const derry = sy * vxvz;
  const derrz = sz * vxvy;
+
+
+
+
 
  do {
   if (!visitor(gx, gy, gz)) break;

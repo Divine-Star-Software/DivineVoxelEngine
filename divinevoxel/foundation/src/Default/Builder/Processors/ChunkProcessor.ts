@@ -15,6 +15,7 @@ import { WorldRegister } from "../../../Data//World/WorldRegister.js";
 import { HeightMapTool } from "../../Tools/Data/WorldData/HeightMapTool.js";
 import { BuilderDataTool } from "../Tools/BuilderDataTool.js";
 import { ShapeTool } from "../Shapes/ShapeTool.js";
+import { WorldBounds } from "@divinevoxel/core/Data/World/WorldBounds.js";
 
 export class ChunkProcessor {
   mDataTool = new BuilderDataTool();
@@ -28,6 +29,7 @@ export class ChunkProcessor {
     if (!this.mDataTool.loadInAtLocation(this.nLocation)) return;
     if (!this.mDataTool.isRenderable()) return;
 
+    this.mDataTool.setSecondary(doSecondCheck);
     this._states.foundVoxel = true;
     if (!doSecondCheck) {
       if (this.mDataTool.hasSecondaryVoxel()) {
@@ -56,15 +58,31 @@ export class ChunkProcessor {
     mesher.resetVars();
   }
 
-  build(location: LocationData) {
+  build(location: LocationData, priority = 0) {
     WorldRegister.instance.cache.enable();
     this.heightMapTool.chunk.loadInAtLocation(location);
     this.mDataTool.setDimension(location[0]);
     const [dimension, cx, cy, cz] = location;
     this.nLocation[0] = dimension;
     let index = 0;
+
     let lastY = -Infinity;
-    const maxIndex = WorldSpaces.chunk.getVolume();
+    const maxIndex = WorldSpaces.chunk.getVolume(); 
+
+    for (let x = 0; x < WorldSpaces.chunk._bounds.x; x++) {
+      for (let z = 0; z < WorldSpaces.chunk._bounds.z; z++) {
+        for (let y = 0; y < WorldSpaces.chunk._bounds.y; y++) {
+
+          this.nLocation[1] = x + cx;
+          this.nLocation[2] = y + cy;
+          this.nLocation[3] = z + cz;
+          this._process();
+        }
+      }
+    }
+
+
+/* 
     while (index < maxIndex) {
       const { x, y, z } = WorldSpaces.voxel.getIndexToXYZ(index);
 
@@ -94,11 +112,12 @@ export class ChunkProcessor {
       }
       lastY = y;
       index++;
-    }
+    } */
 
+ 
     WorldRegister.instance.cache.disable();
 
-    const chunks = <SetChunkMeshTask>[location, []];
+    const chunks = <SetChunkMeshTask>[location, [], priority];
     const trasnfers: any[] = [];
     for (const [substance, mesher] of RenderedSubstances.meshers._map) {
       if (mesher.getAttribute("position").length == 0) {
@@ -114,11 +133,11 @@ export class ChunkProcessor {
       mesher.resetAll();
     }
 
-
     DivineVoxelEngineConstructor.instance.core.threads.parent.runTasks<SetChunkMeshTask>(
       "set-chunk",
       chunks,
       trasnfers
     );
+
   }
 }

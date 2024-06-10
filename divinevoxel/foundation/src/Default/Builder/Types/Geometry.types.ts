@@ -1,4 +1,4 @@
-import { Position3Matrix } from "@divinevoxel/core/Math";
+import { Vector3Like } from "@divinevoxel/core/Math";
 import { DirectionNames } from "@divinevoxel/core/Types/Util.types";
 
 export type GeometryBuildData = {
@@ -12,7 +12,7 @@ export type GeometryBuildData = {
  uvs: number[];
  overlayUVs: number[];
  indicieIndex: number;
- position: Position3Matrix;
+ position: Vector3Like;
 };
 export type UVCords = { start: number; end: number };
 export type AddQuadUVsData = {
@@ -28,9 +28,9 @@ export type AddQuadUVsData = {
 export type TextureRotations = 0 | 90 | 180 | 270 | 360 | 45 | 315;
 export type QuadDimensions = { width: number; height: number };
 export type QuadVertexes = 1 | 2 | 3 | 4;
-export type QuadTransforms = Record<QuadVertexes, Position3Matrix>;
+export type QuadTransforms = Record<QuadVertexes, Vector3Like>;
 export type TriangleVertexes = 1 | 2 | 3;
-export type TriangleTransforms = Record<TriangleVertexes, Position3Matrix>;
+export type TriangleTransforms = Record<TriangleVertexes, Vector3Like>;
 export type CustomVertexData = [number, number, number, number] | [number];
 export type AdvancedUVs = {
  hs1: number;

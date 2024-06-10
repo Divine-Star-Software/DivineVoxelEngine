@@ -9,7 +9,7 @@ import { WorldBounds } from "@divinevoxel/core/Data/World/WorldBounds.js";
 import { LocationBoundTool } from "../../../Tools/Classes/LocationBoundTool.js";
 import { ChunkDataTool } from "./ChunkDataTool.js";
 //constants
-import { ChunkTagIDs } from "../../../../Data/Constants/Tags/ChunkTagIds.js";
+import { ChunkStructProperties } from "../../../../Data/Constants/Structs/ChunkStructProperties.js";
 import { $2dMooreNeighborhood } from "@divinevoxel/core/Math/Constants/CardinalNeighbors.js";
 
 export class HeightMapTool extends LocationBoundTool {
@@ -56,7 +56,7 @@ export class HeightMapTool extends LocationBoundTool {
       HeightMapTool._chunkTool._c = this._c;
       return (
         HeightMapTool._chunkTool.getArrayTagValue(
-          ChunkTagIDs.heightMap,
+          ChunkStructProperties.heightMap,
           this._y
         ) == 1
       );
@@ -65,7 +65,7 @@ export class HeightMapTool extends LocationBoundTool {
       HeightMapTool._chunkTool._c = this._c;
       return (
         HeightMapTool._chunkTool.getArrayTagValue(
-          ChunkTagIDs.dirtyMap,
+          ChunkStructProperties.dirtyMap,
           this._y
         ) == 1
       );
@@ -73,7 +73,7 @@ export class HeightMapTool extends LocationBoundTool {
     setHasVoxels(hasVoxels: boolean) {
       HeightMapTool._chunkTool._c = this._c;
       return HeightMapTool._chunkTool.setArrayTagValue(
-        ChunkTagIDs.heightMap,
+        ChunkStructProperties.heightMap,
         this._y,
         hasVoxels ? 1 : 0
       );
@@ -81,7 +81,7 @@ export class HeightMapTool extends LocationBoundTool {
     setDirty(isDirty: boolean) {
       HeightMapTool._chunkTool._c = this._c;
       return HeightMapTool._chunkTool.setArrayTagValue(
-        ChunkTagIDs.dirtyMap,
+        ChunkStructProperties.dirtyMap,
         this._y,
         isDirty ? 1 : 0
       );

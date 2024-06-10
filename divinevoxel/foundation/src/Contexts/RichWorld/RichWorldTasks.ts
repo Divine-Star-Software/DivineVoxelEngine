@@ -1,4 +1,4 @@
-import { DBO } from "@divinestar/binary/";
+import { BinaryObject } from "@divinestar/binary/";
 import {
   GetRichDataTasks,
   SetRichColumnTasks,
@@ -29,7 +29,7 @@ export default function (DVERW: DivineVoxelEngineRichWorld) {
         return onDone(false);
       }
 
-      const buffer = DBO.objectToBuffer(richTool.getData());
+      const buffer = BinaryObject.objectToBuffer(richTool.getData());
       onDone(buffer, buffer);
     },
     "deferred"
@@ -40,7 +40,9 @@ export default function (DVERW: DivineVoxelEngineRichWorld) {
       richColumnTool.setLocation(location).loadIn();
       richTool.setSegment(segment).setLocation(location).loadIn();
       if (onDone)
-        onDone(richTool.setData(DBO.bufferToObject(objectBuffer)).commit());
+        onDone(
+          richTool.setData(BinaryObject.bufferToObject(objectBuffer)).commit()
+        );
     },
     "deferred"
   );
@@ -67,7 +69,7 @@ export default function (DVERW: DivineVoxelEngineRichWorld) {
     (location, onDone) => {
       const column = RichDataRegister.column.get(location);
       if (!column) return onDone!(false);
-      const buf = DBO.objectToBuffer(column.data);
+      const buf = BinaryObject.objectToBuffer(column.data);
       onDone!(buf, buf);
     },
     "deferred"
@@ -78,7 +80,7 @@ export default function (DVERW: DivineVoxelEngineRichWorld) {
       if (!onDone) return false;
 
       const column = RichDataRegister.column.add(location);
-      column.data = DBO.bufferToObject(buffer);
+      column.data = BinaryObject.bufferToObject(buffer);
       return onDone(true);
     },
     "deferred"

@@ -1,5 +1,5 @@
-import { BoundsObject, DimensionsVector3 } from "Math/Types/Math.types";
-import { Position3Matrix } from "Math/Types/Math.types";
+import { BoundsObject, VolumeDimensions  } from "Math/Types/Math.types";
+import { Vector3Like } from "Math/Types/Math.types";
 import { Vector3 } from "./Vector3.js";
 
 export class SimpleBoundingBox {
@@ -27,7 +27,7 @@ export class SimpleBoundingBox {
  _voxelBottomCheckPoints: number[][] = [];
  _voxelOriginPoints: number[][] = [];
 
- constructor(public origin: Vector3, public dimensions: DimensionsVector3) {
+ constructor(public origin: Vector3, public dimensions: VolumeDimensions ) {
   const ov = origin;
   this.checkOrigin.set(ov.x, ov.y, ov.z);
   this._updateBounds();
@@ -149,7 +149,7 @@ export class SimpleBoundingBox {
   return `${x}-${y}-${z}`;
  }
 
- isPointInsideBox(point: Position3Matrix) {
+ isPointInsideBox(point: Vector3Like) {
   const box = this.bounds;
   return (
    point.x >= box.minX &&

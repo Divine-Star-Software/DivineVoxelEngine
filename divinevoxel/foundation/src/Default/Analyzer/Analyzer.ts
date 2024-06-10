@@ -25,54 +25,72 @@ export class Analyzer extends DVEAnaylzer {
     [0, 0, -1],
   ];
   async runPropagation(data: AnaylzerTask) {
-    const options = {
-      light: EngineSettings.doLight(),
-      flow: EngineSettings.doFlow(),
-    };
-    mainDT.setDimension(data[0][0]);
-    secondaryDT.setDimension(data[0][0]);
-    const tasks = TasksRequest.getVoxelUpdateRequests(data[0], "none", "self");
-    tasks.start();
-    this.processor.goThroughColumn(data[0], (x, y, z) => {
-      if (!mainDT.loadInAt(x, y, z)) return;
+    let t: any = {};
+    try {
+      const options = {
+        light: EngineSettings.doLight(),
+        flow: EngineSettings.doFlow(),
+      };
+      mainDT.setDimension(data[0][0]);
+      secondaryDT.setDimension(data[0][0]);
+      const tasks = TasksRequest.getVoxelUpdateRequests(
+        data[0],
+        "none",
+        "self"
+      );
+      tasks.start();
+      this.processor.goThroughColumn(data[0], (x, y, z) => {
+        if (!mainDT.loadInAt(x, y, z) || mainDT.isAir()) return;
 
-      if (options.light) {
-        if (mainDT.isLightSource()) {
-          tasks.queues.rgb.update.push(x, y, z);
+        if (options.light) {
+          if (mainDT.isLightSource()) {
+            tasks.queues.rgb.update.push(x, y, z);
+          }
         }
-      }
-      if (options.flow) {
-        if (mainDT.getSubstnaceData().isLiquid()) {
-          let add = false;
-          for (const check of this._flowChecks) {
-            if (
-              secondaryDT.loadInAt(x + check[0], y + check[1], z + check[2])
-            ) {
-              if (secondaryDT.isAir()) {
-                add = true;
-                break;
+        if (options.flow) {
+          t = {
+            id: mainDT.getStringId(),
+            sustance: mainDT.getSubstance(),
+            substanceStringId: mainDT.getSubstanceStringId(),
+          };
+          if (mainDT.getSubstnaceData().isLiquid()) {
+            let add = false;
+            for (const check of this._flowChecks) {
+              if (
+                secondaryDT.loadInAt(x + check[0], y + check[1], z + check[2])
+              ) {
+                if (secondaryDT.isAir()) {
+                  add = true;
+                  break;
+                }
               }
             }
-          }
-          if (add) {
-            tasks.queues.flow.update.queue.push([x, y, z]);
+            if (add) {
+              tasks.queues.flow.update.queue.push([x, y, z]);
+            }
           }
         }
+      });
+
+      DVEFConstrucotrCore.instance.propagation.rgbUpdate(tasks);
+      const dimension = data[0][0];
+      for (const flowUpdate of tasks.queues.flow.update.queue) {
+        const [x, y, z] = flowUpdate;
+        if (!mainDT.loadInAt(x, y, z)) continue;
+        await DVEFConstrucotrCore.instance.propagation.flowUpdate(
+          TasksRequest.getFlowUpdateRequest(
+            [dimension, x, y, z],
+            "none",
+            "self"
+          ),
+          false
+        );
       }
-    });
-
-    DVEFConstrucotrCore.instance.propagation.rgbUpdate(tasks);
-    const dimension = data[0][0];
-    for (const flowUpdate of tasks.queues.flow.update.queue) {
-      const [x, y, z] = flowUpdate;
-      if (!mainDT.loadInAt(x, y, z)) continue;
-     await DVEFConstrucotrCore.instance.propagation.flowUpdate(
-        TasksRequest.getFlowUpdateRequest([dimension, x, y, z], "none", "self"),
-        false
-      )
-
+      tasks.stop();
+    } catch (error) {
+      console.warn(error);
+      console.info(t);
     }
-    tasks.stop();
   }
 
   async runUpdate(data: AnaylzerTask) {

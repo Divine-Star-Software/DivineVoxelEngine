@@ -1,39 +1,45 @@
-import { RemoteTagManager } from "@divinestar/binary/";
+import { RemoteBinaryStruct } from "@divinestar/binary/";
 import {
   DVEMessageHeader,
   WorldDataHeaders,
 } from "../../Constants/DataHeaders.js";
-import { Chunk } from "./Chunk.js";
-interface ColumnData {
+import { Chunk, ChunkData } from "./Chunk.js";
+export interface ColumnData {
   stateBuffer: ArrayBuffer;
-  chunks: Chunk[]
+  chunks: ChunkData[];
 }
 export interface Column extends ColumnData {}
 
 export class Column {
-  static Tags = new RemoteTagManager("column-tags");
-  static CreateNew(data: Partial<ColumnData>) {
-    const stateBuffer = new SharedArrayBuffer(Column.Tags.tagSize);
-    Column.Tags.setBuffer(stateBuffer);
-    Column.Tags.setTag("#dve_header", DVEMessageHeader);
-    Column.Tags.setTag("#dve_data_type", WorldDataHeaders.column);
-    return new Column({
+  static StateStruct = new RemoteBinaryStruct("column-tags");
+  static CreateNew(data: Partial<ColumnData>): ColumnData {
+    const stateBuffer = new SharedArrayBuffer(Column.StateStruct.structSize);
+    Column.StateStruct.setBuffer(stateBuffer);
+    Column.StateStruct.setProperty("#dve_header", DVEMessageHeader);
+    Column.StateStruct.setProperty("#dve_data_type", WorldDataHeaders.column);
+  Column.StateStruct.setProperty("#dve_is_stored", 0);
+    return {
       stateBuffer,
       chunks: [],
       ...data,
-    });
+    };
   }
-  static AddNew(data: ColumnData) {
-    return new Column(
-      {
-        ...data
-      }
-    )
+  static toObject(data: ColumnData) {
+    return new Column(data);
   }
+  chunks: Chunk[];
   columnState: DataView;
 
   constructor(data: ColumnData) {
     this.columnState = new DataView(data.stateBuffer);
-    return Object.assign(this, data);
+    this.stateBuffer = data.stateBuffer;
+    this.chunks = data.chunks.map((_) => _ && new Chunk(_));
+  }
+
+  toJSON(): ColumnData {
+    return {
+      stateBuffer: this.stateBuffer,
+      chunks: this.chunks.map((_) => _.serialize()),
+    };
   }
 }

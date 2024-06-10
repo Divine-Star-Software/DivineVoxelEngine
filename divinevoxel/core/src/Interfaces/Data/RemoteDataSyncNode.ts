@@ -8,14 +8,14 @@ import type {
 //objects
 import { ThreadComm } from "@divinestar/threads/";
 
-import { RemoteTagManagerInitData } from "@divinestar/binary/";
+import { RemoteBinaryStructData } from "@divinestar/binary/";
 
-import { SubstanceTags } from "../../Data/Substance/SubstanceTags.js";
+import { SubstanceStruct } from "../../Data/Substance/SubstanceStruct.js";
 import { DataSyncIds } from "../Common/DataSyncIds.js";
 import { MappedDataRegister } from "../../Data/Register/MappedDataRegister.js";
 import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
 import { SubstancePaletteReader } from "../../Data/Substance/SubstancePalette.js";
-import { VoxelTags } from "../../Data/Voxel/VoxelTags.js";
+import { VoxelStruct } from "../../Data/Voxel/VoxelStruct.js";
 
 export abstract class RemoteDataSyncNode
  {
@@ -54,14 +54,14 @@ export abstract class RemoteDataSyncNode
     voxel: ThreadComm.onDataSync<VoxelDataSync, any>(
       DataSyncIds.VoxelTags,
       (data) => {
-        VoxelTags.$INIT(data[0]);
-        VoxelTags.sync(new Uint16Array(data[1]));
+        VoxelStruct.init(data[0]);
+        VoxelStruct.sync(new Uint16Array(data[1]));
       }
     ),
-    substance: ThreadComm.onDataSync<RemoteTagManagerInitData, any>(
+    substance: ThreadComm.onDataSync<RemoteBinaryStructData, any>(
       DataSyncIds.SubstanceTags,
       (data) => {
-        SubstanceTags.$INIT(data);
+        SubstanceStruct.init(data);
       }
     ),
   };

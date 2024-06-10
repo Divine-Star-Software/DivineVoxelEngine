@@ -5,28 +5,31 @@ import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { VoxelPaletteReader } from "@divinevoxel/core/Data/Voxel/VoxelPalette.js";
 import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
 import { AddVoxelData } from "../../../Data/Types/WorldData.types.js";
+const air = "dve_air"
+
 export class BrushTool extends LocationBoundTool {
   data: AddVoxelData = {
-    id: "dve_air",
+    id: air,
     state: 0,
     shapeState: 0,
     secondaryState: 0,
-    secondaryVoxelId: "dve_air",
+    secondaryVoxelId: air,
     level: 0,
     levelState: 0,
   };
 
-  _update = true;
   _worldPainter = new WorldPainter();
 
   _dt = new DataTool();
 
   setData(data: Partial<AddVoxelData>) {
-    for (const key in data) {
-      if (typeof (data as any)[key] !== undefined) {
-        (this as any).data[key] = (data as any)[key];
-      }
-    }
+    this.data.id = data.id ? data.id : air;
+    this.data.state = data.state ? data.state : 0;
+    this.data.shapeState = data.shapeState ? data.shapeState : 0;
+    this.data.secondaryState = data.secondaryState ? data.secondaryState : 0;
+    this.data.secondaryVoxelId = data.secondaryVoxelId ? data.secondaryVoxelId : air;
+    this.data.level = data.level ? data.level : 0;
+    this.data.levelState = data.levelState ? data.levelState : 0;
     return this;
   }
 
@@ -121,7 +124,7 @@ export class BrushTool extends LocationBoundTool {
   }
 
   paint() {
-    this._worldPainter.paintVoxel(this.location, this.data, this._update);
+    this._worldPainter.paintVoxel(this.location, this.data);
     return this;
   }
 

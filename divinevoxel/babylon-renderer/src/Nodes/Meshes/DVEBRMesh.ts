@@ -1,7 +1,13 @@
 import { URIMesh } from "@divinestar/uri/Meshes/URIMesh";
 import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import { DVEBRScene } from "../../Scene/DVEBRScene";
+import { Observable } from "@divinestar/utils/Observers/Observable";
+class DVEBRMeshObservers {
+  updated = new Observable();
+}
+
 export class DVEBRMesh extends URIMesh<DVEBRScene, Mesh> {
+  observers = new DVEBRMeshObservers();
   dispose(): void {
     this._mesh.dispose();
   }

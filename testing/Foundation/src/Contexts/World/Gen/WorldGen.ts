@@ -183,8 +183,14 @@ export const WorldGen = {
       for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
         for (let y = 0; y < this.minY + 10; y++) {
           brush.setXYZ(x, y, z);
+     
+
           if (y < this.minY - 3) {
-            brush.setId("dve_liquid_dream_ether").paint();
+            if(x  == chunkX + 8 && z == chunkZ + 8 && y < this.minY - 5) {
+              brush.setSecondaryId("dve_dream_grass").setId("dve_liquid_dream_ether").paint();
+              continue;
+            }
+            brush.setSecondaryId("").setId("dve_liquid_dream_ether").paint();
           }
         }
       }

@@ -16,6 +16,7 @@ import { MesherDataTool } from "@divinevoxel/core/Meshing/Tools/MesherDataTools"
 import { FaceNormals } from "@divinevoxel/core/Math/Constants/Faces.js";
 import { QuadVertexData } from "@divinevoxel/core/Meshing/";
 import { VoxelTemplateDataTool } from "./VoxelTemplateDataTool.js";
+import { BinaryNumberTypes } from "@divinestar/binary";
 
 export class VoxelMesherDataTool extends MesherDataTool {
   template = new VoxelTemplateDataTool();
@@ -34,11 +35,10 @@ export class VoxelMesherDataTool extends MesherDataTool {
 
     (
       [
-        ["voxelData", [[], 1, "32f"]],
-        ["cuv3", [[], 3, "32f"]],
-        ["ocuv3", [[], 4, "32f"]],
-        ["emssiveTextureIndex", [[], 1, "16ui"]],
-        ["colors", [[], 3, "32f"]],
+        ["voxelData", [[], 1, BinaryNumberTypes.Float32]],
+        ["cuv3", [[], 3, BinaryNumberTypes.Float32]],
+        ["ocuv3", [[], 4, BinaryNumberTypes.Float32]],
+        ["colors", [[], 3, BinaryNumberTypes.Float32]],
       ] as const
     ).forEach(([key, data]) => this.attributes.set(key, data as any));
     (
@@ -61,7 +61,6 @@ export class VoxelMesherDataTool extends MesherDataTool {
       [
         ["face-flipped", 0],
         ["texture-index", 0],
-        ["emssive-texture-index", 0],
       ] as const
     ).forEach(([key, data]) => this.vars.set(key, data as any));
   }
@@ -138,8 +137,8 @@ export class VoxelMesherDataTool extends MesherDataTool {
     if (!voxelExists || !this.nVoxel.isRenderable()) return true;
     let finalResult = false;
     let substanceRuleResult = SubstanceRules.exposedCheck(
-      this.voxel.getSubstance(),
-      this.nVoxel.getSubstance()
+      this.voxel.getSubstanceStringId(),
+      this.nVoxel.getSubstanceStringId()
     );
     this.faceDataOverride.face = face;
     this.faceDataOverride.default = substanceRuleResult;

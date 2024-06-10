@@ -9,6 +9,7 @@
  "scripts": {
   "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ../../LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
   "compile": "cd src && npx tsc --watch"
+
  },
  "keywords": [],
  "author": "Divine Star Software",

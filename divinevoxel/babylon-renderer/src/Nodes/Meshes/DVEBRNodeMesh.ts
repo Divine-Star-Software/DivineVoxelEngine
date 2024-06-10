@@ -63,7 +63,7 @@ export class DVEBRNodeMesh extends DVENodeMesh {
     mesh.isPickable = this.pickable;
 
     (mesh as any).type = !Boolean(this.data.type) ? "node" : this.data.type;
-  
+
     if (!mesh.geometry) {
       const geo = new Geometry(
         Geometry.RandomId(),
@@ -150,6 +150,7 @@ export class DVEBRNodeMesh extends DVENodeMesh {
 
     mesh.freezeWorldMatrix();
     this._clearCached(dveMesh);
+    dveMesh.observers.updated.notify();
   }
 
   syncSettings(settings: EngineSettingsData) {

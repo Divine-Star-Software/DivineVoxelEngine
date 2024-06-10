@@ -243,7 +243,7 @@ const BoxCullFunctions: Record<
 > = {
   top: (data) => {
     if (
-      data.currentVoxel.getSubstance() == "#dve_flora" &&
+      data.currentVoxel.getSubstanceStringId() == "#dve_flora" &&
       data.currentVoxel.isSameVoxel(
         data.currentVoxel.location[1],
         data.currentVoxel.location[2] + 1,
@@ -261,7 +261,7 @@ const BoxCullFunctions: Record<
   },
   bottom: (data) => {
     if (
-      data.currentVoxel.getSubstance() == "#dve_flora" &&
+      data.currentVoxel.getSubstanceStringId() == "#dve_flora" &&
       data.currentVoxel.isSameVoxel(
         data.currentVoxel.location[1],
         data.currentVoxel.location[2] - 1,
@@ -279,7 +279,7 @@ const BoxCullFunctions: Record<
   },
   east: (data) => {
     if (
-      data.currentVoxel.getSubstance() == "#dve_flora" &&
+      data.currentVoxel.getSubstanceStringId() == "#dve_flora" &&
       data.currentVoxel.isSameVoxel(
         data.currentVoxel.location[1] + 1,
         data.currentVoxel.location[2],
@@ -297,7 +297,7 @@ const BoxCullFunctions: Record<
   },
   west: (data) => {
     if (
-      data.currentVoxel.getSubstance() == "#dve_flora" &&
+      data.currentVoxel.getSubstanceStringId() == "#dve_flora" &&
       data.currentVoxel.isSameVoxel(
         data.currentVoxel.location[1] - 1,
         data.currentVoxel.location[2],
@@ -315,7 +315,7 @@ const BoxCullFunctions: Record<
   },
   north: (data) => {
     if (
-      data.currentVoxel.getSubstance() == "#dve_flora" &&
+      data.currentVoxel.getSubstanceStringId() == "#dve_flora" &&
       data.currentVoxel.isSameVoxel(
         data.currentVoxel.location[1],
         data.currentVoxel.location[2],
@@ -333,7 +333,7 @@ const BoxCullFunctions: Record<
   },
   south: (data) => {
     if (
-      data.currentVoxel.getSubstance() == "#dve_flora" &&
+      data.currentVoxel.getSubstanceStringId() == "#dve_flora" &&
       data.currentVoxel.isSameVoxel(
         data.currentVoxel.location[1],
         data.currentVoxel.location[2],

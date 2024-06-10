@@ -1,4 +1,4 @@
-import type { Position3Matrix, Vec3Array } from"@divinevoxel/core/Math";
+import type { Vector3Like, Vec3Array } from"@divinevoxel/core/Math";
 
 export class Flat3DIndex {
  _position = {
@@ -16,7 +16,7 @@ export class Flat3DIndex {
   return x + y * this.bounds.x + z * this.bounds.z * this.bounds.y;
  }
 
- getXYZ(index: number): Position3Matrix {
+ getXYZ(index: number): Vector3Like {
   this._position.x = index % this.bounds.x >> 0;
   this._position.y = (index / this.bounds.x) % this.bounds.y >> 0;
   this._position.z = (index / (this.bounds.x * this.bounds.y)) >> 0;
@@ -32,13 +32,13 @@ export class Flat3DArray extends Flat3DIndex {
  array: number[] | Uint8Array = [];
  volumne = 0;
 
- constructor(public bounds: Position3Matrix) {
+ constructor(public bounds: Vector3Like) {
   super();
   this.volumne = bounds.x * bounds.y * bounds.z;
   this.fillArray();
  }
 
- updateBounds(bounds: Position3Matrix) {
+ updateBounds(bounds: Vector3Like) {
   this.bounds.x = bounds.x;
   this.bounds.y = bounds.y;
   this.bounds.z = bounds.z;
@@ -59,7 +59,7 @@ export class Flat3DArray extends Flat3DIndex {
  getValue(x: number, y: number, z: number) {
   return this.array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];
  }
- getValueUseObj(position: Position3Matrix) {
+ getValueUseObj(position: Vector3Like) {
   return this.array[
    position.x +
     position.y * this.bounds.x +
@@ -70,7 +70,7 @@ export class Flat3DArray extends Flat3DIndex {
  setValue(x: number, y: number, z: number, value: number) {
   this.array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] = value;
  }
- setValueUseObj(position: Position3Matrix, value: number) {
+ setValueUseObj(position: Vector3Like, value: number) {
   this.array[
    position.x +
     position.y * this.bounds.x +
@@ -83,7 +83,7 @@ export class Flat3DArray extends Flat3DIndex {
   this.array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] =
    undefined;
  }
- deleteUseObj(position: Position3Matrix) {
+ deleteUseObj(position: Vector3Like) {
   //@ts-ignore
   this.array[
    position.x +
@@ -114,7 +114,7 @@ export class Flat3DAnyArray<T> extends Flat3DIndex {
   this.volumne = this.bounds.x * this.bounds.y * this.bounds.z;
  }
 
- updateBounds(bounds: Position3Matrix) {
+ updateBounds(bounds: Vector3Like) {
   this.bounds.x = bounds.x;
   this.bounds.y = bounds.y;
   this.bounds.z = bounds.z;

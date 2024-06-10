@@ -55,7 +55,7 @@ export const CrossedPanels = {
   build() {
     let topANIM = 0;
     let bottomANIM = 0;
-    if (ShapeTool.data.voxel.getSubstance() == "#dve_flora") {
+    if (ShapeTool.data.voxel.getSubstanceStringId() == "#dve_flora") {
       if (
         ShapeTool.data.voxel.isSameVoxel(
           ShapeTool.data.voxel.x,

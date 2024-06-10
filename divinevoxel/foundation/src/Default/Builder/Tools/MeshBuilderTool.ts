@@ -1,4 +1,4 @@
-import type { Dimension2Matrix, Position3Matrix } from "@divinevoxel/core/Math";
+import type { Size2D, Vector3Like } from "@divinevoxel/core/Math";
 import type { DirectionNames } from "@divinevoxel/core/Types";
 
 import { QuadBuilder } from "../Geometry/QuadBuilder.js";
@@ -35,9 +35,9 @@ export class QuadBuilderTool {
   }
   _fliped = false;
   _direction: DirectionNames = "top";
-  _position: Position3Matrix = { x: 0, y: 0, z: 0 };
-  _cachedPosition: Position3Matrix = { x: 0, y: 0, z: 0 };
-  _dimension: Dimension2Matrix = { height: 0, width: 0 };
+  _position: Vector3Like = { x: 0, y: 0, z: 0 };
+  _cachedPosition: Vector3Like = { x: 0, y: 0, z: 0 };
+  _dimension: Size2D = { height: 0, width: 0 };
   _transform: QuadTransforms = {
     1: { x: 0, y: 0, z: 0 },
     2: { x: 0, y: 0, z: 0 },

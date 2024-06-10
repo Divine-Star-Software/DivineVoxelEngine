@@ -6,15 +6,15 @@ import type {
   RegisterObjectMapSync,
   RegisterStringMapSync,
 } from "Types/DataSync.types.js";
-import type { RemoteTagManagerInitData } from "@divinestar/binary/";
+import type { RemoteBinaryStructData } from "@divinestar/binary/";
 //objects
 
-import { VoxelTags } from "../../../Data/Voxel/VoxelTags.js";
+import { VoxelStruct } from "../../../Data/Voxel/VoxelStruct.js";
 
-import { VoxelTagBuilder } from "./TagBuilders/VoxelTagBuilder.js";
+import { VoxelTagBuilder } from "./StructBuilders/VoxelStructBuilder.js";
 import { SubstanceDataGenerator } from "./Generators/SubstanceDataGenerator.js";
-import { SubstanceTags } from "../../../Data/Substance/SubstanceTags.js";
-import { SubstanceTagBuilder } from "./TagBuilders/SubstanceTagBuilder.js";
+import { SubstanceStruct } from "../../../Data/Substance/SubstanceStruct.js";
+import { SubstanceTagBuilder } from "./StructBuilders/SubstanceStructBuilder.js";
 
 import { CommSyncOptions } from "./DataSyncNode.js";
 import { DataSyncNode } from "./DataSyncNode.js";
@@ -43,18 +43,21 @@ export abstract class DataSync {
 
   async init(world: DVEWorldCore) {
     for (const comm of world.threads.comms) {
-      if(!comm.isReady())continue;
+      if (!comm.isReady()) continue;
 
       this.registerComm(comm);
     }
     this.loopThroughComms((comm) => {
       this.commMap.set(comm.name, comm);
     });
-    VoxelDataGenerator.generate();
-    VoxelTagBuilder.sync();
     
     SubstanceDataGenerator.$generate();
     SubstanceTagBuilder.sync();
+
+    VoxelDataGenerator.generate();
+    VoxelTagBuilder.sync();
+
+
     this.palettes.voxel.sync();
     this.palettes.substance.sync();
     this.tags.voxel.sync();
@@ -96,7 +99,7 @@ export abstract class DataSync {
   tags = {
     voxel: new DataSyncNode<
       void,
-      [RemoteTagManagerInitData, SharedArrayBuffer],
+      [RemoteBinaryStructData, SharedArrayBuffer],
       void,
       false
     >(
@@ -104,18 +107,18 @@ export abstract class DataSync {
         dataSyncType: DataSyncIds.VoxelTags,
         commCheck: (options) => options.voxelTags,
         getSyncData: () => [
-          VoxelTags.initData,
-          <SharedArrayBuffer>VoxelTags.voxelIndex.buffer,
+          VoxelStruct.initData,
+          <SharedArrayBuffer>VoxelStruct.voxelIndex.buffer,
         ],
         getUnSyncData: () => false,
       },
       this
     ),
-    substance: new DataSyncNode<void, RemoteTagManagerInitData, void, false>(
+    substance: new DataSyncNode<void, RemoteBinaryStructData, void, false>(
       {
         dataSyncType: DataSyncIds.SubstanceTags,
         commCheck: (options) => options.voxelTags,
-        getSyncData: () => SubstanceTags.initData,
+        getSyncData: () => SubstanceStruct.initData,
 
         getUnSyncData: () => false,
       },

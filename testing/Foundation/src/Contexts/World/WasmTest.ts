@@ -1,4 +1,4 @@
-import { DBO } from "@divinestar/binary";
+import { BinaryObject } from "@divinestar/binary";
 import {
   DVEKernel,
   DVEKernelFunctions,
@@ -7,7 +7,7 @@ import {
 export async function WasmTest() {
   console.log("TRY INIT");
   await DVEKernel.init();
-  const buffer = DBO.objectToBuffer({
+  const buffer = BinaryObject.objectToBuffer({
     SUP: 1,
     SUP1: 2,
     SUP2: new Uint32Array(20).fill(Math.random() * 100),
@@ -16,7 +16,7 @@ export async function WasmTest() {
     ],
   });
   console.log(new Uint8Array(buffer));
-  console.log(DBO.bufferToObject(buffer));
+  console.log(BinaryObject.bufferToObject(buffer));
 
   const testBuffer = new SharedArrayBuffer(20 * 2);
   const testArray = new Uint16Array(testBuffer);

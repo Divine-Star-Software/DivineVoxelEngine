@@ -46,7 +46,7 @@ export const PanelVoxelShape = {
  build() {
   animationState.setAll(0);
 
-  if (ShapeTool.data.voxel.getSubstance() == "#dve_flora") {
+  if (ShapeTool.data.voxel.getSubstanceStringId() == "#dve_flora") {
    animationState.setAll(2);
   }
 
@@ -54,14 +54,14 @@ export const PanelVoxelShape = {
  },
 };
 OverrideManager.registerOverride("CullFace", "Panel", "Any", (data) => {
- if (data.currentVoxel.getSubstance() == "#dve_flora") {
+ if (data.currentVoxel.getSubstanceStringId() == "#dve_flora") {
   return false;
  }
  return data.default;
 });
 
 OverrideManager.registerOverride("CullFace", "Panel", "Any", (data) => {
- if (data.currentVoxel.getSubstance() == "#dve_flora") {
+ if (data.currentVoxel.getSubstanceStringId() == "#dve_flora") {
   return false;
  }
  return data.default;

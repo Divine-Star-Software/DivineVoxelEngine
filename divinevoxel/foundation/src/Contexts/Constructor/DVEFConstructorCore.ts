@@ -4,7 +4,6 @@ import { DVEFDataCore } from "../../Data/DVEFDataCore.js";
 import { DVEFConstructorThreads } from "./DVEFConstructorThreads";
 import { DVEPropagation } from "Interfaces/Propagation/DVEPropagation";
 import { DVEAnaylzer } from "Interfaces/Anaylzer/DVEAnaylzer";
-import { WorldGeneration } from "./WorldGeneration/WorldGeneration";
 import ConstructorTasks from "./ConstructorTasks";
 
 export type DVEFConstrucotrCoreInitData = {
@@ -18,7 +17,6 @@ export class DVEFConstrucotrCore extends DVEConstructorCore {
 
   threads = new DVEFConstructorThreads();
   data = new DVEFDataCore();
-  worldGen = WorldGeneration;
   builder: DVEBuilder;
   propagation: DVEPropagation;
   analyzer: DVEAnaylzer;

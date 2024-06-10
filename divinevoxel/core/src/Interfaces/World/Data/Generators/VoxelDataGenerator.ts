@@ -1,13 +1,14 @@
 //types
 import type { VoxelData, VoxelPalette } from "../../../../Types/Voxel.types.js";
-
+import { VoxelTagIDs } from "../../../../Data/Constants/VoxelTagIds.js";
 //objects
-import { VoxelTagBuilder } from "../TagBuilders/VoxelTagBuilder.js";
+import { VoxelTagBuilder } from "../StructBuilders/VoxelStructBuilder.js";
 import { VoxelPaletteReader } from "../../../../Data/Voxel/VoxelPalette.js";
-import { VoxelTags } from "../.././../../Data/Voxel/VoxelTags.js";
-import { DivineVoxelEngineWorld } from "../../../../Contexts/World/DivineVoxelEngineWorld.js";
+import { VoxelStruct } from "../../../../Data/Voxel/VoxelStruct.js";
 import { VoxelManager } from "../Managers/DataManagers.js";
 import { Pipeline } from "@divinestar/utils/Pipelines/Pipeline.js";
+import { BinaryStruct } from "@divinestar/binary";
+import { SubstanceDataGenerator } from "./SubstanceDataGenerator.js";
 class GenVoxelPalette {
   _count = 2;
   _palette: VoxelPalette = ["dve_air", "dve_barrier"];
@@ -37,15 +38,12 @@ class GenVoxelPalette {
 }
 
 export class VoxelDataGenerator {
-  static pipelines = {
-    onSet: new Pipeline<{
-      tags: typeof VoxelTags;
-      value: unknown;
-      id: string;
-    }>(),
-  };
+  static overrides = new Map<
+    string,
+    (tags: BinaryStruct, value: unknown, id: string) => void
+  >();
+
   static generate() {
-    const DVEW = DivineVoxelEngineWorld.instance;
     //build palette
     for (const [key, voxel] of VoxelManager.data) {
       this.palette.registerVoxel(voxel);
@@ -70,38 +68,50 @@ export class VoxelDataGenerator {
     }
 
     //create data bufferv
-    const initData = VoxelTagBuilder.build(this.palette._count);
-    const buffer = new SharedArrayBuffer(initData.bufferSize);
-    initData.buffer = buffer;
-    VoxelTags.$INIT(initData);
-    VoxelTags.setBuffer(buffer);
+    const tags = VoxelTagBuilder.build(this.palette._count);
+    const buffer = new SharedArrayBuffer(tags.initData.bufferSize);
+    tags.initData.buffer = buffer;
+    tags.setBuffer(buffer);
+    //  VoxelStruct.init(initData);
+    //  VoxelStruct.setBuffer(buffer);
     //build data
     for (const [key, voxel] of VoxelManager.data) {
       const baseID = VoxelPaletteReader.id.numberFromString(key);
       if (!baseID) continue;
 
-      VoxelTags.setTagIndex(voxelIndex[baseID]);
-      VoxelTagBuilder.setDefaults(VoxelTags);
+      tags.setStructArrayIndex(voxelIndex[baseID]);
+      VoxelTagBuilder.setDefaults(tags);
       for (const tag of voxel.tags) {
         const [id, value] = tag;
 
         if (!VoxelTagBuilder.hasNode(id)) continue;
 
-        if (this.pipelines.onSet.isRegistered(id)) {
-          this.pipelines.onSet.pipe({
-            tags: VoxelTags,
-            value,
-            id,
-          });
+        if (this.overrides.has(id)) {
+          this.overrides.get(id)!(tags, value, id);
+
           continue;
         }
-        VoxelTagBuilder.setNode(id, value, VoxelTags);
+        VoxelTagBuilder.setNode(id, value, tags);
       }
     }
 
-    VoxelTags.sync(voxelIndex);
-    VoxelTags.$INIT(initData);
+    VoxelStruct.sync(voxelIndex);
+    VoxelStruct.init(tags.initData);
+    VoxelStruct.instance.setBuffer(buffer);
   }
 
   static palette = new GenVoxelPalette();
 }
+
+VoxelDataGenerator.overrides.set(VoxelTagIDs.substance, (tags, value, id) => {
+  console.log("setting substance id", [
+    id,
+    value,
+    SubstanceDataGenerator.palette.get().findIndex((_) => _ == value),
+    SubstanceDataGenerator.palette.get(),
+  ]);
+  tags.setProperty(
+    id,
+    SubstanceDataGenerator.palette.get().findIndex((_) => _ == value)
+  );
+});

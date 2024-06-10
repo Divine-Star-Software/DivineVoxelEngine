@@ -3,7 +3,7 @@ import { AsyncPipeline, Pipeline } from "@divinestar/utils/Pipelines/";
 import type { LocationData } from "@divinevoxel/core/Math/index.js";
 import { DimensionData } from "./Types/DimensionData.types";
 import { EngineSettingsData } from "@divinevoxel/core/Types/EngineSettings.types";
-import { Chunk, Column, Region } from "./World/Classes/index.js";
+import { Chunk, ChunkData, Column, ColumnData, Region, RegionData } from "./World/Classes/index.js";
 
 export const DataHooks = {
   dimension: {
@@ -12,20 +12,20 @@ export const DataHooks = {
   chunk: {
     onGetAsync: new AsyncPipeline<{
       location: LocationData;
-      chunk: Chunk | null;
+      chunk: ChunkData | null;
     }>(),
-    onGetSync: new Pipeline<{ location: LocationData; chunk: Chunk | null }>(),
+    onGetSync: new Pipeline<{ location: LocationData; chunk: ChunkData | null }>(),
     onNew: new Observable<LocationData>(),
     onRemove: new Observable<LocationData>(),
   },
   column: {
     onGetAsync: new AsyncPipeline<{
       location: LocationData;
-      column: Column | null;
+      column: ColumnData | null;
     }>(),
     onGetSync: new Pipeline<{
       location: LocationData;
-      column: Column | null;
+      column: ColumnData | null;
     }>(),
     onNew: new Observable<LocationData>(),
     onRemove: new Observable<LocationData>(),
@@ -33,17 +33,16 @@ export const DataHooks = {
   region: {
     onGetAsync: new AsyncPipeline<{
       location: LocationData;
-      region: Region | null;
+      region: RegionData | null;
     }>(),
     onGetSync: new Pipeline<{
       location: LocationData;
-      region: Region | null;
+      region: RegionData | null;
     }>(),
     onNew: new Observable<LocationData>(),
     onRemove: new Observable<LocationData>(),
   },
   paint: {
-    onAddToRGBUpdate: new Observable<LocationData>(),
     onRichVoxelPaint: new Observable<[id: string, location: LocationData]>(),
   },
   settingsSynced: new Observable<EngineSettingsData>(),

@@ -1,4 +1,4 @@
-import type { RemoteTagManagerInitData } from "@divinestar/binary/";
+import type { RemoteBinaryStructData } from "@divinestar/binary/";
 import { LocationData } from "Math/index.js";
 
 export type DataSyncTypes = "chunk" | "voxel-data" | "iten-data" | "shape-map";
@@ -11,7 +11,7 @@ export type PaletteSyncData = [
 ];
 
 export type VoxelDataSync = [
- initData: RemoteTagManagerInitData,
+ initData: RemoteBinaryStructData,
  voxelMapData: SharedArrayBuffer
 ];
 

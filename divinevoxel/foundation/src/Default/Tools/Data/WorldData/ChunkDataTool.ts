@@ -6,7 +6,7 @@ import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces.js";
 import { Chunk } from "../../../../Data/World/Classes/Chunk.js";
 
 export class ChunkDataTool extends EncodedPositionDataTool {
-  tags = Chunk.Tags;
+  struct = Chunk.StateStruct;
 
   constructor() {
     super();
@@ -19,14 +19,14 @@ export class ChunkDataTool extends EncodedPositionDataTool {
     const chunk = WorldRegister.instance.chunk.get(this.location);
     if (!chunk) return false;
 
-    this.tags.setBuffer(chunk.chunkState);
+    this.struct.setBuffer(chunk.chunkState);
     this._c = chunk.chunkState;
     this._chunk = chunk;
     return true;
   }
 
   setChunk(chunk: Chunk) {
-    this.tags.setBuffer(chunk.chunkState);
+    this.struct.setBuffer(chunk.chunkState);
     this._c = chunk.chunkState;
     this._chunk = chunk;
     return this;

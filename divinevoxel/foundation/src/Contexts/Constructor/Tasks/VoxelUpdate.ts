@@ -11,7 +11,6 @@ import { DVEFConstrucotrCore } from "../../../Contexts/Constructor/DVEFConstruct
 const dataTool = new DataTool();
 const nDataTool = new DataTool();
 const brushTool = new BrushTool();
-brushTool._update = false;
 
 const updateLightTask = (tasks: LightTaskRequest) => {
   let doRGB = ES.doRGBPropagation();

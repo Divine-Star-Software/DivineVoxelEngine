@@ -53,7 +53,7 @@ export function SunUpdate(tasks: LightTaskRequest) {
       .setLight(IM.lightData.getSunLightForUnderVoxel(sl, nl))
       .commit();
     } else {
-     const substance = IM._nDataTool.getSubstance();
+     const substance = IM._nDataTool.getSubstanceStringId();
      if (substance != "#dve_magma" && substance != "#dve_solid") {
       update.push(x, y - 1, z);
       IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();

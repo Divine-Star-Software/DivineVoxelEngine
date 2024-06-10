@@ -19,7 +19,7 @@ export class VoxelIDMatrix extends DataMatrix<string | number> {
   toFlatArray() {
     const voxels: number[] = [];
     for (const [location, vox] of this.getAll()) {
-      const i = this.index.getIndex(location);
+      const i = this.index.getIndexVec3Array(location);
       if (typeof vox !== "string") {
         voxels[i] = 0;
         continue;
@@ -32,7 +32,7 @@ export class VoxelIDMatrix extends DataMatrix<string | number> {
     const length = this.sizeX * this.sizeY * this.sizeZ;
     const voxels = new Uint16Array(length);
     for (const [location, vox] of this.getAll()) {
-      const i = this.index.getIndex(location);
+      const i = this.index.getIndexVec3Array(location);
       if (typeof vox !== "string") {
         voxels[i] = 0;
         continue;
@@ -43,7 +43,7 @@ export class VoxelIDMatrix extends DataMatrix<string | number> {
   }
   fromFlatArray(voxels: ArrayLike<number>) {
     for (const [location, nodeId] of this.getAll()) {
-      const rawValue = voxels[this.index.getIndex(location)];
+      const rawValue = voxels[this.index.getIndexVec3Array(location)];
       if (!rawValue) {
         this.setVec3(location, 0);
         continue;

@@ -4,7 +4,7 @@ import { ChunkProcessor } from "./Processors/ChunkProcessor.js";
 import { OverrideManager } from "./Rules/Overrides/OverridesManager.js";
 import { RenderedSubstances } from "./Rules/RenderedSubstances.js";
 import { TextureRegister } from "../../Textures/TextureRegister.js";
-import { NodeBuilderManager } from "./Nodes/NodeBuilderManager.js";
+import { MesherManager } from "./Meshers/MesherManager.js";
 import { DivineVoxelEngineConstructor } from "@divinevoxel/core/Contexts/Constructor/DivineVoxelEngineConstructor.js";
 import { DVEBuilder } from "../../Interfaces/Builder/DVEBuilder.js";
 import { BuildNodeMesh } from "./Tasks/BuidlerTasks.types.js";
@@ -22,7 +22,7 @@ export class DVEDefaultBuilder extends DVEBuilder {
   constructors = VoxelConstructors;
   textureManager = TextureRegister;
   chunkProcessor = new ChunkProcessor();
-  nodes = NodeBuilderManager;
+  nodes = MesherManager;
   overrides = OverrideManager;
   renderedSubstances = RenderedSubstances;
 
@@ -60,7 +60,7 @@ export class DVEDefaultBuilder extends DVEBuilder {
       "deferred"
     );
   }
-  buildChunk(location: LocationData, LOD = 1) {
+  buildChunk(location: LocationData, LOD = 1,priority = 0) {
     this.chunkProcessor.build(location);
     return true;
   }

@@ -1,5 +1,6 @@
 import type { LocationData, Vec3Array } from "@divinevoxel/core/Math/index.js";
 import type { RawVoxelData } from "@divinevoxel/core/Types/Voxel.types";
+import { ChunkData, ColumnData, RegionData } from "Data/World/Classes";
 
 export type Priorities = 0 | 1 | 2 | 3;
 export type PriorityTask<T> = {
@@ -52,10 +53,11 @@ export type ExplosionTasks = [
   originThread: string
 ];
 
-export type LoadWorldDataTasks = [
-  location: LocationData,
-  data: SharedArrayBuffer
-];
+export type LoadChunkDataTasks = [location: LocationData, chunk: ChunkData];
+
+export type LoadColumnDataTasks = [location: LocationData, column: ColumnData];
+
+export type LoadRegionDataTasks = [location: LocationData, region: RegionData];
 
 export type LoadRegionHeadertasks = [
   location: LocationData,

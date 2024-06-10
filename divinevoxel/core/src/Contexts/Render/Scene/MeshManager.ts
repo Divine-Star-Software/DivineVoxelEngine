@@ -1,4 +1,3 @@
-
 import {
   RemoveChunkMeshTasks,
   SetChunkMeshTask,
@@ -23,7 +22,7 @@ export const MeshManager = {
         const location = column.location;
         const distnace = Distance3D(location[1], 0, location[3], x, 0, z);
         if (distnace > radius) {
-          this.chunks.removeColumn(location);
+          setTimeout(() => this.chunks.removeColumn(location), 100);
         }
       });
     });
@@ -88,7 +87,10 @@ export const MeshManager = {
         if (!chunk) {
           mesh = DivineVoxelEngineRender.instance.renderer.nodes.meshes
             .get(substance)!
-            .createMesh([location[1], location[2], location[3]], chunkData[1][1]);
+            .createMesh(
+              [location[1], location[2], location[3]],
+              chunkData[1][1]
+            );
           (mesh as any).type = "chunk";
           MeshRegister.chunk.add(location, mesh, substance);
         } else {

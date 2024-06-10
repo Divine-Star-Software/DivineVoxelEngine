@@ -3,7 +3,8 @@ import type { LocationData } from "Math/index.js";
 import type { VoxelTemplateSubstanceType } from "Types/Voxel.types";
 export type SetChunkMeshTask = [
  location: LocationData,
- meshes: (ChunkMeshData | RemoveChunkTasks)[]
+ meshes: (ChunkMeshData | RemoveChunkTasks)[],
+priority:number
 ];
 
 export type ChunkMeshData = [

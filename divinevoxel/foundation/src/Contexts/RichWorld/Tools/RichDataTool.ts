@@ -1,4 +1,4 @@
-import { DBO } from "@divinestar/binary/";
+import { BinaryObject } from "@divinestar/binary/";
 import { RichColumnDataTool } from "./RichColumnDataTool.js";
 import { ColumnDataTool } from "../../../Default/Tools/Data/WorldData/ColumnDataTool.js";
 import { RichDataSegmentTool } from "../../../Default/Tools/Classes/RichDataToolBase.js";
@@ -67,6 +67,6 @@ export class RichDataTool extends RichDataSegmentTool {
 
   toBuffer() {
     if (!this.data) return false;
-    return DBO.objectToBuffer(this.data);
+    return BinaryObject.objectToBuffer(this.data);
   }
 }

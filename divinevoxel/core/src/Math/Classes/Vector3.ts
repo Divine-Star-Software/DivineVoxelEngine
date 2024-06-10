@@ -1,4 +1,4 @@
-import { Position3Matrix, Vec3Array } from "Math/Types/Math.types";
+import { Vector3Like, Vec3Array } from "Math/Types/Math.types";
 
 class V3 {
  _data: Vec3Array = [0, 0, 0];
@@ -33,7 +33,7 @@ export class Vector3 extends V3 {
 
  _tv3 = new V3();
 
- static NaNRestore(vec3: Position3Matrix) {
+ static NaNRestore(vec3: Vector3Like) {
   if (Number.isNaN(vec3.x)) vec3.x = 0;
   if (Number.isNaN(vec3.y)) vec3.y = 0;
   if (Number.isNaN(vec3.z)) vec3.z = 0;

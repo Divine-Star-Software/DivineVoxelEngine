@@ -3,8 +3,10 @@ import type { EngineSettingsData } from "Types/EngineSettings.types.js";
 import { URIMesh } from "@divinestar/uri/Meshes/URIMesh.js";
 import { NodeMeshData, DVENodeMeshAttributes } from "../DVERenderNode.types";
 import { Vec3Array } from "Math";
+import { Observable } from "@divinestar/utils/Observers/Observable";
 
 export abstract class DVENodeMesh {
+
   constructor(public data: NodeMeshData) {}
 
   abstract createMesh(

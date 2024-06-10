@@ -11,38 +11,28 @@ export class WorldPainter {
     if (WorldPainter.instance) return WorldPainter.instance;
     WorldPainter.instance = this;
   }
-  _currentionDimension = "main";
 
-  _dt = new DataTool();
-  paintVoxel(location: LocationData, data: AddVoxelData, update = true) {
-    if (!location[0]) {
-      location[0] = this._currentionDimension;
-    }
-
+  dataTool = new DataTool();
+  paintVoxel(location: LocationData, data: AddVoxelData) {
     let chunk = WorldRegister.instance.chunk.get(location);
     if (!chunk) {
       let buffer = DataHooks.chunk.onGetSync.pipe({ location, chunk: null });
       if (!buffer.chunk) return;
       chunk = WorldRegister.instance.chunk.add(location, buffer.chunk);
     }
-    this.__paint(location, data, update);
-  }
 
-  private __paint(location: LocationData, data: AddVoxelData, update = true) {
-    this._dt.setLocation(location);
-
-    if (!this._dt.setLocation(location).loadIn()) return;
+    if (!this.dataTool.setLocation(location).loadIn()) return;
     const id = VoxelPaletteReader.id.getPaletteId(
       data.id,
       data.state ? data.state : 0
     );
     if (id < 0) return false;
-    this._dt.setId(id);
+    this.dataTool.setId(id);
 
-    this._dt.setShapeState(data.shapeState ? data.shapeState : 0);
+    this.dataTool.setShapeState(data.shapeState ? data.shapeState : 0);
 
-    if (this._dt.getSubstnaceData().isLiquid()) {
-      this._dt.setLevel(15);
+    if (this.dataTool.getSubstnaceData().isLiquid()) {
+      this.dataTool.setLevel(15);
     }
 
     if (data.secondaryVoxelId && data.secondaryVoxelId != "dve_air") {
@@ -52,34 +42,31 @@ export class WorldPainter {
       );
 
       if (vid > 0) {
-        this._dt.setSecondary(true);
-        this._dt.setId(vid);
-        this._dt.setSecondary(false);
+        this.dataTool.setSecondary(true);
+        this.dataTool.setId(vid);
+        this.dataTool.setSecondary(false);
       }
     }
 
-    if (this._dt.isLightSource() && this._dt.getLightSourceValue()) {
-      this._dt.setLight(this._dt.getLightSourceValue());
-      if (update) {
-        DataHooks.paint.onAddToRGBUpdate.notify(location);
-      }
+    if (this.dataTool.isLightSource() && this.dataTool.getLightSourceValue()) {
+      this.dataTool.setLight(this.dataTool.getLightSourceValue());
     }
 
-    if (this._dt.isRich()) {
+    if (this.dataTool.isRich()) {
       DataHooks.paint.onRichVoxelPaint.notify([
-        this._dt.getStringId(),
+        this.dataTool.getStringId(),
         location,
       ]);
     }
 
-    this._dt.commit(1);
+    this.dataTool.commit(1);
   }
 
   eraseVoxel(location: LocationData) {
-    this._dt.setLocation(location);
-    if (!this._dt.loadIn()) return;
-    if (!this._dt.isRenderable()) return;
-    this._dt
+    this.dataTool.setLocation(location);
+    if (!this.dataTool.loadIn()) return;
+    if (!this.dataTool.isRenderable()) return;
+    this.dataTool
       .setLight(0)
       .setLevel(0)
       .setLevelState(0)

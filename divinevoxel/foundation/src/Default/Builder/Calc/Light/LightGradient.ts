@@ -80,7 +80,7 @@ const shouldAOFlip = (face: DirectionNames) => {
   const v3 = AOValue.vertices[QuadVerticies.BottomRight];
   const v4 = AOValue.vertices[QuadVerticies.TopRight];
 
-  if (v2 > v3 && v2 > v1) return true;
+if (v2 > v3 && v2 > v1) return true;
   if (v4 > v3 && v4 > v1) return true;
   if (v2 < v3 || v2 < v1) return false;
   if (v4 < v3 || v4 < v1) return false;
@@ -201,7 +201,7 @@ export const LightGradient = {
     tool.getWorldAO().set(1, 1, 1, 1);
     this.tool = tool;
     const voxelSubstance = SubstanceRules.getSubstanceParent(
-      tool.voxel.getSubstance()
+      tool.voxel.getSubstanceStringId()
     );
     const isLightSource = tool.voxel.isLightSource();
 
@@ -326,7 +326,7 @@ export const LightGradient = {
 
           if (!tool.nVoxel.isRenderable()) break doAO;
           const neighborVoxelSubstance = SubstanceRules.getSubstanceParent(
-            tool.nVoxel.getSubstance()
+            tool.nVoxel.getSubstanceStringId()
           );
           const neightLightSource = tool.nVoxel.isLightSource();
 

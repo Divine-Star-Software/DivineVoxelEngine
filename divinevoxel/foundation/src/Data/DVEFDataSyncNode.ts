@@ -7,8 +7,8 @@ import {
   RegionHeaderRegister,
   RegionHeaderTags,
 } from "./RegionHeaderRegister.js";
-import { RemoteTagManagerInitData } from "@divinestar/binary/";
-import { Column, Chunk, Region } from "./World/Classes/index.js";
+import { RemoteBinaryStructData } from "@divinestar/binary/";
+import { Column, Chunk, Region, RegionData, ColumnData, ChunkData } from "./World/Classes/index.js";
 import { WorldDataSync } from "./Types/DataSync.types.js";
 import { DVEFDataSyncIds } from "./Constants/DVEFDataSyncIds.js";
 import { DimensionData } from "./Types/DimensionData.types.js";
@@ -21,7 +21,7 @@ export class DVEFDataSyncNode extends RemoteDataSyncNode {
         DimensionsRegister.instance.registerDimension(data.id, data.options);
       }
     ),
-    chunk: ThreadComm.onDataSync<[LocationData, Chunk], LocationData>(
+    chunk: ThreadComm.onDataSync<[LocationData, ChunkData], LocationData>(
       DVEFDataSyncIds.Chunk,
       (data) => {
         WorldRegister.instance.chunk.add(data[0], data[1]);
@@ -30,7 +30,7 @@ export class DVEFDataSyncNode extends RemoteDataSyncNode {
         WorldRegister.instance.chunk.remove(data);
       }
     ),
-    column: ThreadComm.onDataSync<[LocationData, Column], LocationData>(
+    column: ThreadComm.onDataSync<[LocationData, ColumnData], LocationData>(
       DVEFDataSyncIds.Column,
       (data) => {
         WorldRegister.instance.column.add(data[0], data[1]);
@@ -39,7 +39,7 @@ export class DVEFDataSyncNode extends RemoteDataSyncNode {
         WorldRegister.instance.column.remove(data);
       }
     ),
-    region: ThreadComm.onDataSync<[LocationData, Region], LocationData>(
+    region: ThreadComm.onDataSync<[LocationData, RegionData], LocationData>(
       DVEFDataSyncIds.Region,
       (data) => {
         WorldRegister.instance.region.add(data[0], data[1]);
@@ -59,23 +59,23 @@ export class DVEFDataSyncNode extends RemoteDataSyncNode {
     ),
   };
   worldDataTags = {
-    chunk: ThreadComm.onDataSync<RemoteTagManagerInitData, void>(
+    chunk: ThreadComm.onDataSync<RemoteBinaryStructData, void>(
       DVEFDataSyncIds.ChunkTags,
       (data) => {
-        Chunk.Tags.$INIT(data);
+        Chunk.StateStruct.init(data);
       }
     ),
-    column: ThreadComm.onDataSync<RemoteTagManagerInitData, void>(
+    column: ThreadComm.onDataSync<RemoteBinaryStructData, void>(
       DVEFDataSyncIds.ColumnTags,
       (data) => {
-        Column.Tags.$INIT(data);
+        Column.StateStruct.init(data);
       }
     ),
-    region: ThreadComm.onDataSync<RemoteTagManagerInitData[], void>(
+    region: ThreadComm.onDataSync<RemoteBinaryStructData[], void>(
       DVEFDataSyncIds.RegionTags,
       (data) => {
-        Region.Tags.$INIT(data[0]);
-        RegionHeaderTags.$INIT(data[1]);
+        Region.StateStruct.init(data[0]);
+        RegionHeaderTags.init(data[1]);
       }
     ),
   };

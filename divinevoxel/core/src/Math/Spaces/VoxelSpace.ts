@@ -1,35 +1,17 @@
+import { Vector3Like } from "../../Math/Types/Math.types.js";
 import { Flat3DIndex } from "../Flat3DIndex.js";
-import { LocationData, LocationNode } from "./VoxelSpaces.types";
+import { LocationData } from "./VoxelSpaces.types";
 
-type Vector3 = { x: number; y: number; z: number };
-
-class VSVec3 {
-  constructor(public x: number, public y: number, public z: number) {}
-  copy() {
-    return new VSVec3(this.x, this.y, this.z);
-  }
-  copyTo(vec3: Vector3) {
-    vec3.x = this.x;
-    vec3.y = this.y;
-    vec3.z = this.z;
-  }
-  toString() {
-    return `${this.x}_${this.y}_${this.z}`;
-  }
-  multiply(vec3: Vector3) {
-    this.x *= vec3.x;
-    this.y *= vec3.y;
-    this.z *= vec3.z;
-    return this;
-  }
-  toArray(): [number, number, number] {
-    return [this.x, this.y, this.z];
-  }
-}
 const alignToPowerOf2 = (value: number, powerOf2: number) => {
   const mask = (1 << powerOf2) - 1;
   return value & ~mask;
 };
+
+export interface VoxelSpaceData {
+  getPosition: (space: VoxelSpace) => Vector3Like;
+  getIndex: (space: VoxelSpace) => number;
+  getPostionFromIndex: (space: VoxelSpace, index: number) => Vector3Like;
+}
 
 //Objects
 export class VoxelSpace {
@@ -51,29 +33,29 @@ export class VoxelSpace {
   }
 
   static getPositionFromIndex(
-    position: VSVec3,
-    bounds: VSVec3 | Vector3,
+    position: Vector3Like,
+    bounds: Vector3Like,
     index: number
   ) {
     this.index.setBounds(bounds.x, bounds.y, bounds.z);
     const newPosition = this.index.getXYZ(index);
-    position.x = newPosition.x;
-    position.y = newPosition.y;
-    position.z = newPosition.z;
+    position.x = newPosition[0];
+    position.y = newPosition[1];
+    position.z = newPosition[2];
 
     return position;
   }
 
-  static getIndex(position: Vector3, bounds: Vector3) {
+  static getIndex(position: Vector3Like, bounds: Vector3Like) {
     this.index.setBounds(bounds.x, bounds.y, bounds.z);
-    return this.index.getIndex([position.x, position.y, position.z]);
+    return this.index.getIndexVec3(position);
   }
 
-  static WholeVec3 = new VSVec3(1, 1, 1);
+  static WholeVec3 = Vector3Like.Create(1, 1, 1);
   static spatialHash(
     space: VoxelSpace,
     parentSpace: VoxelSpace,
-    divisor: Vector3 = VoxelSpace.WholeVec3
+    divisor: Vector3Like = VoxelSpace.WholeVec3
   ) {
     const parentPosition = parentSpace.getPositionXYZ(
       space._position.x,
@@ -86,26 +68,20 @@ export class VoxelSpace {
     return space._hashedPosition;
   }
 
-  static mapLocationToVec3(location: LocationData, vector: Vector3) {
+  static mapLocationToVec3(location: LocationData, vector: Vector3Like) {
     location[1] = vector.x;
     location[2] = vector.y;
     location[3] = vector.z;
   }
 
   _location: LocationData = ["main", 0, 0, 0];
-  _position = new VSVec3(0, 0, 0);
-  _hashedPosition = new VSVec3(0, 0, 0);
-  _bounds = new VSVec3(0, 0, 0);
-  _boundsPower2 = new VSVec3(0, 0, 0);
+  _position = Vector3Like.Create();
+  _hashedPosition = Vector3Like.Create();
+  _bounds = Vector3Like.Create();
+  _boundsPower2 = Vector3Like.Create();
   _boundsSet = false;
 
-  constructor(
-    public data: {
-      getPosition: (space: VoxelSpace) => VSVec3;
-      getIndex: (space: VoxelSpace) => number;
-      getPostionFromIndex: (space: VoxelSpace, index: number) => VSVec3;
-    }
-  ) {}
+  constructor(public data: VoxelSpaceData) {}
 
   getVolume() {
     return this._bounds.x * this._bounds.y * this._bounds.z;
@@ -169,7 +145,7 @@ export class VoxelSpace {
     return this;
   }
 
-  setCubeBounds(bounds: Vector3) {
+  setCubeBounds(bounds: Vector3Like) {
     if (this._boundsSet) return;
     this._boundsPower2.x = bounds.x;
     this._boundsPower2.y = bounds.y;
@@ -181,7 +157,7 @@ export class VoxelSpace {
     return this;
   }
 
-  setBounds(bounds: Vector3) {
+  setBounds(bounds: Vector3Like) {
     if (this._boundsSet) return;
     this._bounds.x = bounds.x;
     this._bounds.y = bounds.y;

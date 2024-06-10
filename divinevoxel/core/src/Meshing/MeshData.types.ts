@@ -1,4 +1,4 @@
-import type { TypedArrays } from "@divinestar/binary/DBO/Types/DBO.types";
+import type { TypedArrays } from "@divinestar/binary";
 
 export type MeshAttributes = [
   id: string,

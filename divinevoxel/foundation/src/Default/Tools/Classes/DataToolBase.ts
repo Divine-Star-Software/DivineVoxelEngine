@@ -1,12 +1,12 @@
-import type { RemoteTagManager } from "@divinestar/binary/";
+import type { RemoteBinaryStruct } from "@divinestar/binary/";
 import type { LocationData } from "@divinevoxel/core/Math";
 import { DimensionsRegister } from "../../../Data/World/DimensionsRegister.js";
 import { LocationBoundTool } from "./LocationBoundTool.js";
-import { WorldDataTagIDs } from "../../../Data/Constants/Tags/WorldDataTagIds.js";
-import { Position3Matrix, Vec3Array } from "@divinevoxel/core/Math";
+import { WorldDataStructProperties } from "../../../Data/Constants/Structs/WorldDataStructProperties.js";
+import { Vector3Like, Vec3Array } from "@divinevoxel/core/Math";
 import { arrayBufferToSharedArrayBuffer } from "@divinestar/utils/Buffers/arrayBufferToSharedArrayBuffer.js";
 export abstract class DataToolBase extends LocationBoundTool {
-  tags: RemoteTagManager;
+  struct: RemoteBinaryStruct;
   _c: ArrayBuffer | SharedArrayBuffer | DataView;
   _dimensionRegister = new DimensionsRegister();
 
@@ -14,27 +14,27 @@ export abstract class DataToolBase extends LocationBoundTool {
     super();
   }
 
-  getTagValue(id: string) {
-    this.tags.setBuffer(this._c);
-    return this.tags.getTag(id);
+  getStructValue(id: string) {
+    this.struct.setBuffer(this._c);
+    return this.struct.getProperty(id);
   }
   setTagValue(id: string, value: number) {
-    this.tags.setBuffer(this._c);
-    return this.tags.setTag(id, value);
+    this.struct.setBuffer(this._c);
+    return this.struct.setProperty(id, value);
   }
 
   getArrayTagValue(id: string, index: number) {
-    this.tags.setBuffer(this._c);
-    return this.tags.getArrayTagValue(id, index);
+    this.struct.setBuffer(this._c);
+    return this.struct.getArrayPropertyValue(id, index);
   }
   setArrayTagValue(id: string, index: number, value: number) {
-    this.tags.setBuffer(this._c);
-    return this.tags.setArrayTagValue(id, index, value);
+    this.struct.setBuffer(this._c);
+    return this.struct.setArrayPropertyValue(id, index, value);
   }
 
   setBuffer(buffer: ArrayBuffer | DataView | SharedArrayBuffer) {
     this._c = buffer;
-    this.tags.setBuffer(this._c);
+    this.struct.setBuffer(this._c);
   }
 
   getBuffer() {
@@ -50,7 +50,7 @@ export abstract class DataToolBase extends LocationBoundTool {
   }
 
   getBufferSize() {
-    return this.tags.tagSize;
+    return this.struct.getBuffer().byteLength;
   }
 
   abstract loadIn(): boolean;
@@ -63,7 +63,7 @@ export abstract class DataToolBase extends LocationBoundTool {
     this.setXYZ(vec3[0], vec3[1], vec3[2]);
     return this.loadIn();
   }
-  loadInVec3(vec3: Position3Matrix) {
+  loadInVec3(vec3: Vector3Like) {
     this.setXYZ(vec3.x, vec3.y, vec3.z);
     return this.loadIn();
   }
@@ -81,29 +81,29 @@ export abstract class EncodedPositionDataTool extends DataToolBase {
   }
 
   getPositionData() {
-    this.position.x = this.getTagValue(WorldDataTagIDs.positionX);
-    this.position.y = this.getTagValue(WorldDataTagIDs.positionY);
-    this.position.z = this.getTagValue(WorldDataTagIDs.positionZ);
+    this.position.x = this.getStructValue(WorldDataStructProperties.positionX);
+    this.position.y = this.getStructValue(WorldDataStructProperties.positionY);
+    this.position.z = this.getStructValue(WorldDataStructProperties.positionZ);
     return this.position;
   }
 
   setPositionData(x: number, y: number, z: number) {
-    this.setTagValue(WorldDataTagIDs.positionX, x);
-    this.setTagValue(WorldDataTagIDs.positionY, y);
-    this.setTagValue(WorldDataTagIDs.positionZ, z);
+    this.setTagValue(WorldDataStructProperties.positionX, x);
+    this.setTagValue(WorldDataStructProperties.positionY, y);
+    this.setTagValue(WorldDataStructProperties.positionZ, z);
     return this.position;
   }
 
   setDimensionId(dimensionId: string) {
     this.setTagValue(
-      WorldDataTagIDs.dimensionId,
+      WorldDataStructProperties.dimensionId,
       this._dimensionRegister.getDimensionNumericId(dimensionId)
     );
   }
 
   getDimensionId() {
     return this._dimensionRegister.getDimensionStringId(
-      this.getTagValue(WorldDataTagIDs.dimensionId)
+      this.getStructValue(WorldDataStructProperties.dimensionId)
     );
   }
 

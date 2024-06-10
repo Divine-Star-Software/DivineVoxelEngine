@@ -1,2 +1,1 @@
-export * from "./DivineVoxelEngineDataClient.js";
-export * from "./WorldData.js";
+export * from "./DataHandler";

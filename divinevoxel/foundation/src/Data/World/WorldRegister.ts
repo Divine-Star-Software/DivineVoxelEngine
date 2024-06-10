@@ -1,13 +1,22 @@
 import { DataHooks } from "../../Data/DataHooks.js";
-import { Chunk, Column, Dimension, Region } from "./Classes/";
+import {
+  Chunk,
+  ChunkData,
+  Column,
+  ColumnData,
+  Dimension,
+  Region,
+  RegionData,
+} from "./Classes/";
 import { WorldBounds } from "@divinevoxel/core/Data/World/WorldBounds.js";
 import { DimensionsRegister } from "./DimensionsRegister.js";
 
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces.js";
-import type { LocationData } from "@divinevoxel/core/Math";
+import { Distance3D, type LocationData } from "@divinevoxel/core/Math";
 import { ChunkDataTool } from "../../Default/Tools/Data/WorldData/ChunkDataTool.js";
 import { ColumnDataTool } from "../../Default/Tools/Data/WorldData/ColumnDataTool.js";
 import { RegionDataTool } from "../../Default/Tools/Data/WorldData/RegionDataTool.js";
+import { WorldRegisterCache } from "./WorldRegisterCache.js";
 
 export class WorldRegister {
   static instance: WorldRegister;
@@ -24,30 +33,9 @@ export class WorldRegister {
     if (WorldRegister.instance) return WorldRegister.instance;
     WorldRegister.instance = this;
   }
-  cache = {
-    enable: () => {
-      this._cacheOn = true;
-      this._chunkCache.clear();
-      this._columnCache.clear();
-    },
-    disable: () => {
-      this._cacheOn = false;
-      this._chunkCache.clear();
-      this._columnCache.clear();
-    },
-    _addChunk: (key: string, data: Chunk) => {
-      this._chunkCache.set(key, data);
-    },
-    _addColumn: (key: string, data: Column) => {
-      this._columnCache.set(key, data);
-    },
-    _getChunk: (key: string) => {
-      return this._chunkCache.get(key);
-    },
-    _getColumn: (key: string) => {
-      return this._columnCache.get(key);
-    },
-  };
+
+  cache = new WorldRegisterCache();
+
   dimensions = {
     add: (id: number | string) => {
       id = this._dimensionRegister.getDimensionStringId(id);
@@ -68,12 +56,12 @@ export class WorldRegister {
   }
 
   region = {
-    add: (location: LocationData, region: Region) => {
+    add: (location: LocationData, region: RegionData) => {
       let dimension = this.dimensions.get(location[0]);
       if (!dimension) {
         dimension = this.dimensions.add(location[0]);
       }
-      const newRegion = Region.AddNew(region);
+      const newRegion = Region.toObject(region);
       const regionPOS = WorldSpaces.region.getPositionLocation(location);
       this.regionTool.setRegion(newRegion);
       this.regionTool.setPositionData(regionPOS.x, regionPOS.y, regionPOS.z);
@@ -99,7 +87,7 @@ export class WorldRegister {
     },
   };
   column = {
-    add: (location: LocationData, column: Column) => {
+    add: (location: LocationData, column: ColumnData) => {
       let region = this.region.get(location);
       if (!region) {
         let newRegion = DataHooks.region.onGetSync.pipe({
@@ -110,7 +98,7 @@ export class WorldRegister {
         region = this.region.add(location, newRegion.region);
         DataHooks.region.onNew.notify(location);
       }
-      const newColumn = Column.AddNew(column);
+      const newColumn = Column.toObject(column);
       const columnPOS = WorldSpaces.column.getPositionLocation(location);
       this.columnTool.setColumn(newColumn);
       this.columnTool.setPositionData(columnPOS.x, columnPOS.y, columnPOS.z);
@@ -119,10 +107,10 @@ export class WorldRegister {
       return newColumn;
     },
     get: (location: LocationData): false | Column => {
-      const columnKey = WorldSpaces.column.getKeyLocation(location);
+      const columnKey = this.cache.getColumnIndex(location);
       let addColumn = false;
       if (this._cacheOn) {
-        const column = this.cache._getColumn(columnKey);
+        const column = this.cache.getColumn(columnKey);
         if (column) return column;
         addColumn = true;
       }
@@ -133,7 +121,7 @@ export class WorldRegister {
       );
       if (!column) return false;
       if (addColumn) {
-        this.cache._addColumn(columnKey, column);
+        this.cache.addColumn(columnKey, column);
       }
       return column;
     },
@@ -155,18 +143,18 @@ export class WorldRegister {
         location[2] = cy;
         if (!this.chunk.get(location)) {
           const newChunk = DataHooks.chunk.onGetSync.pipe({
-            location,
+            location: [...location],
             chunk: null,
           });
           if (!newChunk.chunk) continue;
-          this.chunk.add(location, newChunk.chunk);
+          this.chunk.add([...location], newChunk.chunk);
         }
       }
     },
   };
 
   chunk = {
-    add: (location: LocationData, chunk: Chunk) => {
+    add: (location: LocationData, chunk: ChunkData) => {
       let column = this.column.get(location);
       if (!column) {
         let newColumn = DataHooks.column.onGetSync.pipe({
@@ -178,7 +166,7 @@ export class WorldRegister {
         DataHooks.column.onNew.notify(location);
       }
       if (!column) return;
-      const newChunk = Chunk.AddNew(chunk);
+      const newChunk = Chunk.toObject(chunk);
       this.chunkTool.setChunk(newChunk);
 
       const chunkPOS = WorldSpaces.chunk.getPositionLocation(location);
@@ -189,7 +177,23 @@ export class WorldRegister {
       return newChunk;
     },
     get: (location: LocationData) => {
-      const chunkKey = WorldSpaces.chunk.getKeyLocation(location);
+      const chunkKey = this.cache.getChunkIndex(location);
+      let addChunk = false;
+      if (this._cacheOn) {
+        const chunk = this.cache.getChunk(chunkKey);
+        if (chunk) return chunk;
+        addChunk = true;
+      }
+      const column = this.column.get(location);
+      if (!column) return false;
+      const chunk = column.chunks[WorldSpaces.chunk.getIndexLocation(location)];
+      if (!chunk) return;
+      if (addChunk) {
+        this.cache.addChunk(chunkKey, chunk);
+      }
+      return chunk;
+
+      /*       const chunkKey = WorldSpaces.chunk.getKeyLocation(location);
       let addChunk = false;
       if (this._cacheOn) {
         const chunk = this.cache._getChunk(chunkKey);
@@ -203,7 +207,7 @@ export class WorldRegister {
       if (addChunk) {
         this.cache._addChunk(chunkKey, chunk);
       }
-      return chunk;
+      return chunk;  */
     },
     remove: (location: LocationData) => {
       const column = this.column.get(location);

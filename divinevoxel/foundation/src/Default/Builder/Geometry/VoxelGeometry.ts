@@ -1,4 +1,4 @@
-import { Position3Matrix, Vec2Array, Vec3Array } from "@divinevoxel/core/Math";
+import { Vector3Like, Vec2Array, Vec3Array } from "@divinevoxel/core/Math";
 import { VoxelShaderDataTool } from "../../Tools/Shaders/VoxelShaderData";
 import { VoxelMesherDataTool } from "../Tools/VoxelMesherDataTool";
 import {
@@ -15,7 +15,7 @@ const faceData = new VoxelShaderDataTool();
 export class VoxelGeometry {
   static addTriangle(
     tool: VoxelMesherDataTool,
-    origin: Position3Matrix,
+    origin: Vector3Like,
     points: [Vec3Array, Vec3Array, Vec3Array],
     [[u1, v1], [u2, v2], [u3, v3]]: [Vec2Array, Vec2Array, Vec2Array]
   ) {
@@ -89,7 +89,7 @@ export class VoxelGeometry {
 
   static addQuad(
     tool: VoxelMesherDataTool,
-    origin: Position3Matrix,
+    origin: Vector3Like,
     doubleSided: boolean,
     points: QuadVertexVec3Data,
     [[u1, v1], [u2, v2], [u3, v3], [u4, v4]]: QuadUVData,
@@ -201,7 +201,7 @@ export class VoxelGeometry {
 
   static addSimpleQuad(
     tool: VoxelMesherDataTool,
-    origin: Position3Matrix,
+    origin: Vector3Like,
     orientation: 0 | 1,
     flip: boolean,
     points: [Vec3Array, Vec3Array],
