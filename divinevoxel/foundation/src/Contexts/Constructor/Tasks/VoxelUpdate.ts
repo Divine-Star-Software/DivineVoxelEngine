@@ -1,4 +1,3 @@
-
 import { EngineSettings as ES } from "@divinevoxel/core/Data/Settings/EngineSettings.js";
 import { $3dCardinalNeighbors } from "@divinevoxel/core/Math/Constants/CardinalNeighbors.js";
 
@@ -41,7 +40,7 @@ export async function EreaseAndUpdate(data: UpdateTasks) {
   const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[1], data[2]);
   tasks.setPriority(0).start().setBuldMode("sync").addToRebuildQueue(x, y, z);
   tasks.setBuldMode("async").addNeighborsToRebuildQueue(x, y, z);
-  if (ES.doFlow()) {
+  if (ES.doFlow() && dataTool.isRenderable()) {
     if (dataTool.getSubstnaceData().isLiquid()) {
       await DVEFConstrucotrCore.instance.propagation.flowRemove(tasks);
       tasks.stop();
@@ -151,7 +150,6 @@ export async function VoxelUpdate(data: VoxelUpdateTasks) {
       DVEFConstrucotrCore.instance.propagation.rgbUpdate(tasks);
     }
     if (doSun) {
-
       DVEFConstrucotrCore.instance.propagation.sunUpdate(tasks);
     }
   }

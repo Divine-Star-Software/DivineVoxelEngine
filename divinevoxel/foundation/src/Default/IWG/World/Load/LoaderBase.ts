@@ -2,7 +2,6 @@ import type { Generator } from "../Classes/Generator";
 import type { IWGTasksTypes } from "../Types/IWG.types";
 export abstract class IWGLoadBase {
   settings = {
-    doSearchUpdate: true,
     doWorldGenUpdate: true,
     doSaveUpate: true,
     doBuildUpdate: false,
@@ -36,10 +35,9 @@ export abstract class IWGLoadBase {
   ) {
     return new Promise((resolve) => {
       const searchInte = setInterval(() => {
-        if (this.settings.doSearchUpdate) this.gen.generateUpdate();
         if (this.settings.doWorldGenUpdate) {
           this.gen.worldGenUpdate(Infinity);
-          this.gen.propagationUpdate();
+          this.gen.generateUpdate();
         }
         if (this.settings.doBuildUpdate) {
           this.gen.renderTaskUpdate(Infinity);

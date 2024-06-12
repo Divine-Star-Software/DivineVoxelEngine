@@ -4,12 +4,11 @@ import {
   IWGTasksTypes,
 } from "../Types/IWG.types";
 
-import { Vector3Like, Vec3Array } from "@divinevoxel/core/Math";
+import { Vector3Like, Vec3Array, Vector2Like } from "@divinevoxel/core/Math";
 import { ColumnDataTool } from "../../../Tools/Data/WorldData/ColumnDataTool.js";
 import { $2dMooreNeighborhood } from "@divinevoxel/core/Math/Constants/CardinalNeighbors.js";
 import { BuilderTool } from "../../../Tools/Build/BuilderTool.js";
 import { TaskTool } from "../../../Tools/Tasks/TasksTool.js";
-import { Distance3D } from "@divinevoxel/core/Math/Functions/Distance3d.js";
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces.js";
 import { DataLoaderTool } from "../../../DataLoader/World/Tools/DataLoaderTool.js";
 import { AnaylzerTool } from "../../../Tools/Anaylzer/AnaylzerTool.js";
@@ -19,9 +18,10 @@ import { IWG } from "../IWG.js";
 import { RichDataTool } from "../../../Tools/Data/RichDataTool.js";
 import { LocationBoundTool } from "../../../Tools/Classes/LocationBoundTool.js";
 import { ColumnState } from "../../Constants/ColumnState";
-import { DebouncedTasks } from "./DebouncedTasks";
 import { WorldRegister } from "../../../../Data/World/WorldRegister";
 import { IWGTaskRegister } from "./Tasks/IWGTaskRegister";
+
+import { Square, Circle } from "@divinevoxel/core/Math/Shapes";
 
 /**# Infinite World Generator
  *
@@ -37,13 +37,14 @@ export class Generator extends LocationBoundTool {
   dveTasks = new TaskTool();
 
   _cachedPosition: Vec3Array = [-Infinity, -Infinity, -Infinity];
-  _cachedLeadPosition: Vec3Array = [-Infinity, -Infinity, -Infinity];
   _cachedVelocity: Vec3Array = [-Infinity, -Infinity, -Infinity];
   __build = true;
-  _sectionVisitedMap: Map<string, boolean> = new Map();
   _visitedMap: Map<string, boolean> = new Map();
   _builtColumns: Map<string, number[]> = new Map();
-
+  private columnSquare = new Square(Vector2Like.Create(0, 0), 0);
+  private genCircle = new Circle(Vector2Like.Create(0, 0), 0);
+  private renderCircle = new Circle(Vector2Like.Create(0, 0), 0);
+  private maxCircle = new Circle(Vector2Like.Create(0.1, 1), 10);
   tasks: Record<IWGTasksTypes, Map<string, IWGTaskBase>> = {
     [IWGTasksTypes.WorldGen]: new Map(),
     [IWGTasksTypes.Rendering]: new Map(),
@@ -71,6 +72,10 @@ export class Generator extends LocationBoundTool {
     for (const [id, taskClass] of IWGTaskRegister.tasks) {
       this.tasks[taskClass.Data.type].set(id, new taskClass(this));
     }
+    this.columnSquare.sideLength = WorldSpaces.column._bounds.x;
+    this.genCircle.radius = this.data.generateDistance;
+    this.renderCircle.radius = this.data.renderDistance;
+    this.maxCircle.radius = this.data.maxDistance!;
   }
 
   setDimension(dimensionId: string) {
@@ -163,7 +168,7 @@ export class Generator extends LocationBoundTool {
 
   renderTaskUpdate(max = Infinity) {
     for (const [key, tasks] of this.tasks[IWGTasksTypes.Rendering]) {
-      tasks.runTasks(max, this._cachedLeadPosition);
+      tasks.runTasks(max, this._cachedPosition);
     }
   }
 
@@ -198,16 +203,21 @@ export class Generator extends LocationBoundTool {
     timeOut: 100,
   });
  */
-  private debounedUnload = new DebouncedTasks({
+  /*   private debounedUnload = new DebouncedTasks({
     run: (location) => {
       if (!this.dataLoader) return;
       this.dataLoader.unLoadColumn(location);
     },
     timeOut: 5_000,
-  });
+  }); */
   private cullColumns(position: Vec3Array) {
     const [x, y, z] = position;
-
+    this.renderCircle.center.x = position[0];
+    this.renderCircle.center.y = position[2];
+    this.genCircle.center.x = position[0];
+    this.genCircle.center.y = position[2];
+    this.maxCircle.center.x = position[0];
+    this.maxCircle.center.y = position[2];
     this.builder
       .setXYZ(x, y, z)
       .removeColumnsOutsideRadius(this.data.renderDistance);
@@ -217,45 +227,65 @@ export class Generator extends LocationBoundTool {
       region.columns.forEach((column) => {
         WorldRegister.instance.columnTool.setColumn(column);
         const location = WorldRegister.instance.columnTool.getLocationData();
-
-        const distance = Distance3D(x, 0, z, location[1], 0, location[3]);
+        this.columnSquare.center.x = location[1];
+        this.columnSquare.center.y = location[3];
         const columnKey = WorldSpaces.column.getKeyXYZ(
           location[1],
           0,
           location[3]
         );
         if (this._builtColumns.has(columnKey)) {
-          if (distance > this.data.renderDistance) {
+          if (
+            !Circle.IsSquareInsideOrTouchingCircle(
+              this.columnSquare,
+              this.renderCircle
+            )
+          ) {
             this._builtColumns.delete(columnKey);
           }
         }
 
         if (WorldLock.isLocked(location)) return;
         if (IWG.inProgressMap.has(location[1], 0, location[3])) return;
-        if (
-          distance >
-          (this.data.maxDistance! + (this.data.velocityScale || 0)) * 2
-        ) {
-          this.debounedUnload.runTasksNow(location);
-          return;
-        }
-        if (distance > this.data.maxDistance! * 1.3) {
-          this.debounedUnload.runTasks(location);
-          return;
-        } else {
-          this.debounedUnload.clearTasks(location);
-          return;
+        if (this.dataLoader) {
+          if (
+            !Circle.IsSquareInsideOrTouchingCircle(
+              this.columnSquare,
+              this.maxCircle
+            )
+          ) {
+            this.dataLoader.unLoadColumn(location);
+            return;
+          }
         }
       });
     });
   }
 
   private getColumnState([cx, cy, cz]: Vec3Array, queue: Vec3Array[]) {
+    let genAlldone = true;
+    let allLoaded = true;
     let nWorldGenAllDone = true;
     let nDecorAllDone = true;
     let nSunAllDone = true;
     let nPropagtionAllDone = true;
-    if (!this.columnTool.getStructValue(ColumnState.SunDone)) {
+
+    if (!this.nColumnTool.loadInAt(cx, cy, cz)) {
+      allLoaded = false;
+      this.tasks["world-gen"].get("#dve_iwg_load")!.add(cx, cy, cz);
+      return {
+        nWorldGenAllDone: false,
+        nDecorAllDone: false,
+        nSunAllDone: false,
+        nPropagtionAllDone: false,
+        genAlldone,
+        allLoaded,
+      };
+    }
+    if (!this.nColumnTool.getStructValue(ColumnState.GenDone)) {
+      genAlldone = false;
+    }
+    if (!this.nColumnTool.getStructValue(ColumnState.SunDone)) {
       nSunAllDone = false;
     }
 
@@ -291,45 +321,11 @@ export class Generator extends LocationBoundTool {
       nDecorAllDone,
       nSunAllDone,
       nPropagtionAllDone,
-    };
-  }
-  private getColumnSectionState([cx, cy, cz]: Vec3Array, queue: Vec3Array[]) {
-    let genAlldone = true;
-    let allLoaded = true;
-    for (let x = cx; x < cx + 32; x += 16) {
-      for (let z = cz; z < cz + 32; z += 16) {
-        const columnPOS = WorldSpaces.column.getPositionXYZ(x, cy, z);
-
-        if (!this.nColumnTool.loadInAt(columnPOS.x, cy, columnPOS.z)) {
-          allLoaded = false;
-          this.tasks["world-gen"]
-            .get("#dve_iwg_load")!
-            .add(columnPOS.x, cy, columnPOS.z);
-          continue;
-        }
-        if (!this.nColumnTool.getStructValue(ColumnState.GenDone)) {
-          genAlldone = false;
-        }
-      }
-    }
-    for (const n of $2dMooreNeighborhood) {
-      const nx = Math.floor((cx + n[0] * 32) / 32) * 32;
-      const nz = Math.floor((cz + n[1] * 32) / 32) * 32;
-      const columnPOS = {
-          x: nx,
-          y: 0,
-          z: nz,
-        },
-        key = `${nx}-0-${nz}`;
-      if (!this._sectionVisitedMap.has(key)) {
-        queue.push([columnPOS.x, cy, columnPOS.z]);
-      }
-    }
-    return {
       genAlldone,
       allLoaded,
     };
   }
+  /* 
   private getColumnGenState([cx, cy, cz]: Vec3Array, queue: Vec3Array[]) {
     let genAlldone = true;
     let allLoaded = true;
@@ -359,7 +355,7 @@ export class Generator extends LocationBoundTool {
           z: nz,
         },
         key = `${nx}-0-${nz}`;
-      if (!this._sectionVisitedMap.has(key)) {
+      if (!this._visitedMap.has(key)) {
         queue.push([columnPOS.x, cy, columnPOS.z]);
       }
     }
@@ -367,38 +363,22 @@ export class Generator extends LocationBoundTool {
       genAlldone,
       allLoaded,
     };
-  }
-  generateUpdate() {
+  } */
+
+  /*   generateUpdate() {
     const queue: Vec3Array[] = [];
 
     const position = this.data.positionWatch;
-    const velocityWatch = this.data.velocityWatch
-      ? this.data.velocityWatch
-      : [0, 0, 0];
 
     const columnPosition = Vector3Like.Clone(
       WorldSpaces.column.getPositionXYZ(position[0], 0, position[2])
     );
 
-    this._cachedLeadPosition = Vector3Like.ToArray(columnPosition);
+    this._cachedPosition = Vector3Like.ToArray(columnPosition);
     queue.push([columnPosition.x, columnPosition.y, columnPosition.z]);
 
-    let velocityChanged = false;
-
-    if (
-      (velocityWatch[0] != this._cachedVelocity[0] ||
-        velocityWatch[2] != this._cachedVelocity[2]) &&
-      this.__build
-    )
-      velocityChanged = true;
-    if (velocityChanged) {
-      this.cancelWorldGenTasks();
-      this._cachedVelocity[0] = velocityWatch[0];
-      this._cachedVelocity[1] = velocityWatch[1];
-      this._cachedVelocity[2] = velocityWatch[2];
-      this.cullColumns(this._cachedPosition);
-    }
-
+    this.genCircle.center.x = columnPosition.x;
+    this.genCircle.center.y = columnPosition.z;
     while (queue.length) {
       const node = queue.shift();
 
@@ -408,19 +388,19 @@ export class Generator extends LocationBoundTool {
       const cz = node[2];
       const sectionKey = `${cx}-0-${cz}`;
       //   if (WorldLock.isLocked(this.location)) continue;
-      if (this._sectionVisitedMap.has(sectionKey)) continue;
-      this._sectionVisitedMap.set(sectionKey, true);
+      if (this._visitedMap.has(sectionKey)) continue;
+      this._visitedMap.set(sectionKey, true);
 
-      const genDistance = Distance3D(
-        columnPosition.x,
-        0,
-        columnPosition.z,
-        cx,
-        0,
-        cz
-      );
-      if (genDistance > this.data.generateDistance!) continue;
+      this.columnSquare.center.x = cx;
+      this.columnSquare.center.y = cz;
 
+      if (
+        !Circle.IsSquareInsideOrTouchingCircle(
+          this.columnSquare,
+          this.genCircle
+        )
+      )
+        continue;
 
       const { genAlldone, allLoaded } = this.getColumnGenState(
         [cx, cy, cz],
@@ -431,168 +411,10 @@ export class Generator extends LocationBoundTool {
         this.tasks["world-gen"].get("#dve_iwg_generate")!.add(cx, cy, cz);
       }
     }
-    this._sectionVisitedMap.clear();
+    this._visitedMap.clear();
   }
-
-/*   generateUpdateO() {
-    const queue: Vec3Array[] = [];
-
-    const position = this.data.positionWatch;
-    const velocityWatch = this.data.velocityWatch
-      ? this.data.velocityWatch
-      : [0, 0, 0];
-
-    const generationColumnPos = {
-      x: Math.floor(position[0] / 32) * 32,
-      y: 0,
-      z: Math.floor(position[2] / 32) * 32,
-    };
-    const columnPosition = Vector3Like.Clone(
-      WorldSpaces.column.getPositionXYZ(position[0], 0, position[2])
-    );
-
-    this._cachedLeadPosition = Vector3Like.ToArray(generationColumnPos);
-    queue.push([
-      generationColumnPos.x,
-      generationColumnPos.y,
-      generationColumnPos.z,
-    ]);
-
-    let velocityChanged = false;
-
-    if (
-      (velocityWatch[0] != this._cachedVelocity[0] ||
-        velocityWatch[2] != this._cachedVelocity[2]) &&
-      this.__build
-    )
-      velocityChanged = true;
-    if (velocityChanged) {
-      this.cancelWorldGenTasks();
-      this._cachedVelocity[0] = velocityWatch[0];
-      this._cachedVelocity[1] = velocityWatch[1];
-      this._cachedVelocity[2] = velocityWatch[2];
-      this.cullColumns(this._cachedPosition);
-    }
-
-    while (queue.length) {
-      const node = queue.shift();
-
-      if (!node) break;
-      const cx = node[0];
-      const cy = 0;
-      const cz = node[2];
-      const sectionKey = `${cx}-0-${cz}`;
-      //   if (WorldLock.isLocked(this.location)) continue;
-      if (this._sectionVisitedMap.has(sectionKey)) continue;
-      this._sectionVisitedMap.set(sectionKey, true);
-
-      const genDistance = Distance3D(
-        generationColumnPos.x,
-        0,
-        columnPosition.z,
-        cx,
-        0,
-        cz
-      );
-      if (genDistance > this.data.generateDistance!) continue;
-
-      const { genAlldone, allLoaded } = this.getColumnSectionState(
-        [cx, cy, cz],
-        queue
-      );
-
-      if (!genAlldone && allLoaded) {
-        this.tasks["world-gen"]
-          .get("#dve_iwg_generate_section")!
-          .add(cx, cy, cz);
-      }
-    }
-    this._sectionVisitedMap.clear();
-  }
+ */
   generateUpdate() {
-    for (let velocityFactor = 0; velocityFactor < 2; velocityFactor++) {
-      const queue: Vec3Array[] = [];
-      const velocityScale =
-        (this.data.velocityScale ? this.data.velocityScale : 6400) *
-        velocityFactor;
-      const position = this.data.positionWatch;
-      const velocityWatch = this.data.velocityWatch
-        ? this.data.velocityWatch
-        : [0, 0, 0];
-
-      const generationColumnPos = {
-        x: Math.floor(position[0] / 32) * 32 + velocityWatch[0] * velocityScale,
-        y: 0,
-        z: Math.floor(position[2] / 32) * 32 + velocityWatch[2] * velocityScale,
-      };
-
-      this._cachedLeadPosition = Vector3Like.ToArray(generationColumnPos);
-      queue.push([
-        generationColumnPos.x,
-        generationColumnPos.y,
-        generationColumnPos.z,
-      ]);
-
-      let velocityChanged = false;
-
-      if (
-        (velocityWatch[0] != this._cachedVelocity[0] ||
-          velocityWatch[2] != this._cachedVelocity[2]) &&
-        this.__build
-      )
-        velocityChanged = true;
-      if (velocityChanged) {
-        this.cancelWorldGenTasks();
-        this._cachedVelocity[0] = velocityWatch[0];
-        this._cachedVelocity[1] = velocityWatch[1];
-        this._cachedVelocity[2] = velocityWatch[2];
-        this.cullColumns(this._cachedPosition);
-      }
-
-      while (queue.length) {
-        const node = queue.shift();
-
-        if (!node) break;
-        const cx = node[0];
-        const cy = 0;
-        const cz = node[2];
-        const sectionKey = `${cx}-0-${cz}`;
-        //   if (WorldLock.isLocked(this.location)) continue;
-        if (this._sectionVisitedMap.has(sectionKey)) continue;
-        this._sectionVisitedMap.set(sectionKey, true);
-
-        const genDistance = Distance3D(
-          generationColumnPos.x,
-          0,
-          generationColumnPos.z,
-          cx,
-          0,
-          cz
-        );
-        if (
-          genDistance >
-          (velocityFactor == 0
-            ? this.data.generateDistance!
-            : this.data.generateLeadDistance || this.data.generateDistance)
-        )
-          continue;
-
-        const { genAlldone, allLoaded } = this.getColumnSectionState(
-          [cx, cy, cz],
-          queue
-        );
-
-        if (!genAlldone && allLoaded) {
-          this.tasks["world-gen"]
-            .get("#dve_iwg_generate_section")!
-            .add(cx, cy, cz);
-        }
-      }
-      this._sectionVisitedMap.clear();
-    }
-  } */
-
-  propagationUpdateO() {
     const queue: Vec3Array[] = [];
 
     const position = this.data.positionWatch;
@@ -600,18 +422,10 @@ export class Generator extends LocationBoundTool {
     const columnPosition = Vector3Like.Clone(
       WorldSpaces.column.getPositionXYZ(position[0], 0, position[2])
     );
+    queue.push([columnPosition.x, columnPosition.y, columnPosition.z]);
 
-    const generationColumnPos = {
-      x: columnPosition.x,
-      y: columnPosition.y,
-      z: columnPosition.z,
-    };
-
-    queue.push([
-      generationColumnPos.x,
-      generationColumnPos.y,
-      generationColumnPos.z,
-    ]);
+    this.genCircle.center.x = columnPosition.x;
+    this.genCircle.center.y = columnPosition.z;
 
     while (queue.length) {
       const node = queue.shift();
@@ -631,25 +445,36 @@ export class Generator extends LocationBoundTool {
         continue;
       this._visitedMap.set(columnKey, true);
 
-      const genDistance = Distance3D(
-        generationColumnPos.x,
-        0,
-        generationColumnPos.z,
-        cx,
-        0,
-        cz
-      );
-      if (genDistance > this.data.generateDistance!) continue;
-      if (!this.columnTool.loadInAt(cx, cy, cz)) {
+      this.columnSquare.center.x = cx;
+      this.columnSquare.center.y = cz;
+
+      if (
+        !Circle.IsSquareInsideOrTouchingCircle(
+          this.columnSquare,
+          this.genCircle
+        )
+      )
         continue;
-      }
+
+
 
       const {
         nWorldGenAllDone,
         nSunAllDone,
         nPropagtionAllDone,
         nDecorAllDone,
+        genAlldone,
+        allLoaded,
       } = this.getColumnState([cx, 0, cz], queue);
+
+      if (!genAlldone && allLoaded) {
+        this.tasks["world-gen"].get("#dve_iwg_generate")!.add(cx, cy, cz);
+        continue;
+      }
+
+      if(!this.columnTool.loadInAt(cx,0,cz)) {
+        continue;
+      }
 
       if (
         nWorldGenAllDone &&
@@ -679,105 +504,7 @@ export class Generator extends LocationBoundTool {
 
     this._visitedMap.clear();
   }
-  propagationUpdate() {
-    for (let velocityFactor = 0; velocityFactor < 2; velocityFactor++) {
-      const queue: Vec3Array[] = [];
-      const velocityScale =
-        (this.data.velocityScale ? this.data.velocityScale : 6400) *
-        velocityFactor;
-      const position = this.data.positionWatch;
-      const velocityWatch = this.data.velocityWatch
-        ? this.data.velocityWatch
-        : [0, 0, 0];
-      const columnPosition = Vector3Like.Clone(
-        WorldSpaces.column.getPositionXYZ(position[0], 0, position[2])
-      );
 
-      const generationColumnPos = {
-        x: columnPosition.x + velocityWatch[0] * velocityScale,
-        y: columnPosition.y,
-        z: columnPosition.z + velocityWatch[2] * velocityScale,
-      };
-
-      queue.push([
-        generationColumnPos.x,
-        generationColumnPos.y,
-        generationColumnPos.z,
-      ]);
-
-      while (queue.length) {
-        const node = queue.shift();
-
-        if (!node) break;
-        const cx = node[0];
-        const cy = 0;
-        const cz = node[2];
-        const columnKey = WorldSpaces.column.getKeyXYZ(cx, 0, cz);
-        this.setXYZ(
-          WorldSpaces.column._position.x,
-          WorldSpaces.column._position.y,
-          WorldSpaces.column._position.z
-        );
-        if (WorldLock.isLocked(this.location)) continue;
-        if (this._visitedMap.has(columnKey) || IWG.inProgressMap.has(cx, 0, cz))
-          continue;
-        this._visitedMap.set(columnKey, true);
-
-        const genDistance = Distance3D(
-          generationColumnPos.x,
-          0,
-          generationColumnPos.z,
-          cx,
-          0,
-          cz
-        );
-        if (
-          genDistance >
-          (velocityFactor == 0
-            ? this.data.generateDistance!
-            : this.data.generateLeadDistance || this.data.generateDistance)
-        )
-          continue;
-        if (!this.columnTool.loadInAt(cx, cy, cz)) {
-          continue;
-        }
-
-        const {
-          nWorldGenAllDone,
-          nSunAllDone,
-          nPropagtionAllDone,
-          nDecorAllDone,
-        } = this.getColumnState([cx, 0, cz], queue);
-
-        if (
-          nWorldGenAllDone &&
-          !this.columnTool.getStructValue(ColumnState.DecorDone)
-        ) {
-          this.tasks["world-gen"].get("#dve_iwg_decorate")!.add(cx, cy, cz);
-          continue;
-        }
-
-        if (
-          nDecorAllDone &&
-          !this.columnTool.getStructValue(ColumnState.SunDone)
-        ) {
-          this.tasks["world-gen"].get("#dve_iwg_world_sun")!.add(cx, cy, cz);
-
-          continue;
-        }
-
-        if (
-          nSunAllDone &&
-          !this.columnTool.getStructValue(ColumnState.PropagationDone)
-        ) {
-          this.tasks["world-gen"].get("#dve_iwg_propagation")!.add(cx, cy, cz);
-          continue;
-        }
-      }
-
-      this._visitedMap.clear();
-    }
-  }
   renderUpdate() {
     const position = this.data.positionWatch;
     const queue: Vec3Array[] = [];
@@ -806,6 +533,9 @@ export class Generator extends LocationBoundTool {
     }
     queue.push([columnPosition.x, columnPosition.y, columnPosition.z]);
 
+    this.renderCircle.center.x = columnPosition.x;
+    this.renderCircle.center.y = columnPosition.z;
+
     while (queue.length) {
       const node = queue.shift();
 
@@ -817,15 +547,16 @@ export class Generator extends LocationBoundTool {
       if (this._visitedMap.has(columnKey)) continue;
       this._visitedMap.set(columnKey, true);
 
-      const renderDistance = Distance3D(
-        columnPosition.x,
-        0,
-        columnPosition.z,
-        cx,
-        0,
-        cz
-      );
-      if (renderDistance > this.data.renderDistance!) continue;
+      this.columnSquare.center.x = cx;
+      this.columnSquare.center.y = cz;
+
+      if (
+        !Circle.IsSquareInsideOrTouchingCircle(
+          this.columnSquare,
+          this.renderCircle
+        )
+      )
+        continue;
 
       if (!this.columnTool.loadInAt(cx, cy, cz)) continue;
 

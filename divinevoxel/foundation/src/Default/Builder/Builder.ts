@@ -10,6 +10,7 @@ import { DVEBuilder } from "../../Interfaces/Builder/DVEBuilder.js";
 import { BuildNodeMesh } from "./Tasks/BuidlerTasks.types.js";
 import { SubstanceRules } from "./Rules/SubstanceRules.js";
 import { VoxelConstructor } from "./Constructors/Voxel/Classes/VoxelConstructor.js";
+import { VoxelShapeManager } from "./Shapes/VoxelShapeManager.js";
 
 export type DVEDefaultBuilderInitData = {
   constructors: VoxelConstructor[];
@@ -26,6 +27,8 @@ export class DVEDefaultBuilder extends DVEBuilder {
   overrides = OverrideManager;
   renderedSubstances = RenderedSubstances;
 
+  shapes = VoxelShapeManager;
+
   observers = DVEBuilder.observers;
 
   constructor(data: DVEDefaultBuilderInitData) {
@@ -38,6 +41,7 @@ export class DVEDefaultBuilder extends DVEBuilder {
   }
 
   init() {
+    this.shapes.init();
     DivineVoxelEngineConstructor.instance.TC.registerTasks(
       "sync-texuture-index",
       (data: any) => {
@@ -60,7 +64,7 @@ export class DVEDefaultBuilder extends DVEBuilder {
       "deferred"
     );
   }
-  buildChunk(location: LocationData, LOD = 1,priority = 0) {
+  buildChunk(location: LocationData, LOD = 1, priority = 0) {
     this.chunkProcessor.build(location);
     return true;
   }

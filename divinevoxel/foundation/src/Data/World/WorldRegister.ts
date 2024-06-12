@@ -192,22 +192,6 @@ export class WorldRegister {
         this.cache.addChunk(chunkKey, chunk);
       }
       return chunk;
-
-      /*       const chunkKey = WorldSpaces.chunk.getKeyLocation(location);
-      let addChunk = false;
-      if (this._cacheOn) {
-        const chunk = this.cache._getChunk(chunkKey);
-        if (chunk) return chunk;
-        addChunk = true;
-      }
-      const column = this.column.get(location);
-      if (!column) return false;
-      const chunk = column.chunks[WorldSpaces.chunk.getIndex()];
-      if (!chunk) return;
-      if (addChunk) {
-        this.cache._addChunk(chunkKey, chunk);
-      }
-      return chunk;  */
     },
     remove: (location: LocationData) => {
       const column = this.column.get(location);

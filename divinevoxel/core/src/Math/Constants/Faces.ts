@@ -1,5 +1,5 @@
 import type { DirectionNames } from "Types/Util.types";
-import type { CompassDirectionNames } from "Math/Types/Math.types";
+import type { CompassDirectionNames } from "Math/Math.types";
 export const FaceMap: DirectionNames[] = [
  "top",
  "bottom",

@@ -43,7 +43,6 @@ export const TemplateProcessor = {
       .clear()
       .setPosition(voxelPOS.x, voxelPOS.y, voxelPOS.z);
     constructor.process(mesher);
-    mesher.resetSegments();
     mesher.resetVars();
     mesher.template.setActive(false);
   },
@@ -76,7 +75,7 @@ export const TemplateProcessor = {
           curosr[0] = ix;
           curosr[1] = iy;
           curosr[2] = iz;
-          this._process(templateIndex.getIndex(curosr) * 17, template);
+       //   this._process(templateIndex.getIndex(curosr) * 17, template);
           iy++;
         }
         iz++;

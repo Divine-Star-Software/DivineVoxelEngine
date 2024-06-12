@@ -59,7 +59,7 @@ export function CreateDefaultRenderer(
 
   renderer.init = async (dver) => {
     const substances = [...DefaultSubstances, ...initData.substances];
-    console.log("START BUILDING TEXTURES", [...TextureManager.textureTypes]);
+
     TextureManager.getOrAddTextureType("#dve_node_texture");
     for (const data of substances) {
       TextureManager.getOrAddTextureType(data.textureType);
@@ -70,15 +70,12 @@ export function CreateDefaultRenderer(
         "#dve_node_texture"
       ),
     ]);
-    console.log("BEFORE BUILDING TEXTURES", [...TextureManager.textureTypes]);
 
     await TextureBuilder.setUpImageCreation();
     TextureManager.registerTexture(initData.textureData);
-    console.log("AFTER NEW REGISER TEXTURES", [...TextureManager.textureTypes]);
 
     await TextureManager.$INIT();
-    console.log("AFTER BUILDING TEXTURES", [...TextureManager.textureTypes]);
-
+ 
     const uvMap = TextureManager.generateTextureUVMap();
     for (const constructor of dver.core.threads.construcotrs.__comms) {
       await constructor.runAsyncTasks("sync-texuture-index", uvMap);

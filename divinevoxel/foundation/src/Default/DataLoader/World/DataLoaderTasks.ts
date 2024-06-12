@@ -79,14 +79,12 @@ export default function (DVEDL: DivineVoxelEngineDataLoaderWorld) {
         if (onDone) {
           onDone();
         }
-        console.log("COLUMN EXISTS", performance.now() - start);
         return false;
       }
       const exists = await DataHanlderWrapper.columnExists(data);
       if (onDone) {
         onDone(exists);
       }
-      console.log("COLUMN EXISTS", performance.now() - start);
       return false;
     },
     "deferred"

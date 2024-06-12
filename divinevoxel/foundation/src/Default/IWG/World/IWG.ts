@@ -65,7 +65,7 @@ export class IWG {
 
   static async initalLoad(
     dimension: string,
-    position: Vec3Array,
+    position: number[] | Float32Array | Float64Array | Int32Array | Int16Array,
     settings: IWGSettignsData = {
       renderDistance: 100,
       generateDistance: 150,

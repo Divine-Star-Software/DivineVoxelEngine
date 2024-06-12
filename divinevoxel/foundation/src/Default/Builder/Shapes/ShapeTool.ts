@@ -1,15 +1,18 @@
+import { Vector3Like } from "@divinevoxel/core/Math/Vectors.js";
 import { VoxelMesherDataTool } from "../Tools/VoxelMesherDataTool.js";
 import { VoxelShapeTool } from "../Tools/VoxelShapeTool.js";
 
-export class ShapeToolType {
- data = <VoxelMesherDataTool>{};
- builder = new VoxelShapeTool();
+export class ShapeToolclass {
+  data: VoxelMesherDataTool;
+  builder = new VoxelShapeTool();
 
- setMesher(dataTool: VoxelMesherDataTool) {
-  this.data = dataTool;
-  
-  this.builder.quad.setMesherTool(dataTool);
- }
+  origin = Vector3Like.Create();
+
+  setMesher(dataTool: VoxelMesherDataTool) {
+    this.data = dataTool;
+
+    this.builder.quad.setMesherTool(dataTool);
+  }
 }
 
-export const ShapeTool = new ShapeToolType();
+export const ShapeTool = new ShapeToolclass();

@@ -1,4 +1,4 @@
-import { Vector3Like } from "Math/Types/Math.types";
+import { Vector3Like } from "Math/Math.types";
 
  /** # Visit All
   * ---

@@ -1,4 +1,4 @@
-import { Vector3Like, Vec3Array } from "./Types/Math.types";
+import { Vector3Like, Vec3Array } from "./Math.types";
 
 export class Flat3DIndex {
   private position: Vec3Array;

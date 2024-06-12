@@ -19,13 +19,16 @@ export interface VoxelStruct {
 
 const remote = new RemoteBinaryStruct("voxel-data");
 
-export class VoxelStruct extends InstantiatedStruct {
+export class VoxelStruct extends InstantiatedStruct<VoxelStruct> {
   static instance: VoxelStruct;
   static init(data: RemoteBinaryStructData) {
     remote.init(data);
     const instance = remote.instantiate<VoxelStruct>();
     this.initData = data;
     VoxelStruct.instance = instance;
+  }
+  static clone() {
+    return this.instance.clone();
   }
   static sync(voxelMap: Uint16Array) {
     this.voxelIndex = voxelMap;
@@ -36,4 +39,6 @@ export class VoxelStruct extends InstantiatedStruct {
   }
   static voxelIndex = new Uint16Array();
   static initData: RemoteBinaryStructData;
+
+
 }

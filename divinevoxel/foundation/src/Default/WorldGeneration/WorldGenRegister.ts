@@ -43,7 +43,6 @@ export class WorldGenRegister {
       location[2] >= WorldBounds.bounds.MaxY
     )
       return false;
-    console.log("add to requets", registerId, location, rawData);
     const requests = this._requests.get(registerId);
     if (!requests) return;
     const chunkPOS = WorldSpaces.chunk.getPositionLocation(location);

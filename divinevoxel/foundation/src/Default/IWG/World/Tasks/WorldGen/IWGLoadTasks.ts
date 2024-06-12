@@ -29,20 +29,16 @@ export class IWGLoadTask extends IWGSingleTask {
     onDone: Function
   ) {
     const gen = this.gen;
-    const start = performance.now();
-    const end = () => {
-      console.log("DONE LOADING WORLD COLUMN", performance.now() - start);
-      onDone();
-    };
+
     if (!gen.dataLoader) {
       if (gen.columnTool.loadInAt(x, y, z)) {
-        return end();
+        return onDone();
       }
       gen.builder.setXYZ(x, y, z).fillColumn();
-      return end();
+      return onDone();
     }
     if (gen.columnTool.loadInAt(x, y, z)) {
-      return end();
+      return onDone();
     }
     let tries = 0;
     let ran = false;
@@ -58,7 +54,7 @@ export class IWGLoadTask extends IWGSingleTask {
 
       if (!gen.columnTool.loadInAt(x, y, z) && tries >= 120 && !ran) {
         inte.stop();
-        end();
+        onDone();
         console.error(
           "force quit loading column",
           ran,
@@ -74,7 +70,7 @@ export class IWGLoadTask extends IWGSingleTask {
     ran = true;
     if (cleared) return;
 
-    end();
+    onDone();
     if (!exists) {
       gen.builder.setXYZ(x, y, z).fillColumn();
       return;

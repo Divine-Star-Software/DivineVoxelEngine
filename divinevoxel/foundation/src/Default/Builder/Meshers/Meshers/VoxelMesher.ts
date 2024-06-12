@@ -32,7 +32,6 @@ class VoxelBuilderBase extends Mesher {
     ShapeTool.setMesher(mesher);
     ShapeTool.builder.quad.clear().setPosition(0, 0, 0);
     constructor.process(mesher);
-    mesher.resetSegments();
     mesher.resetVars();
 
     const [attributes, buffers] = mesher.getAllAttributes();

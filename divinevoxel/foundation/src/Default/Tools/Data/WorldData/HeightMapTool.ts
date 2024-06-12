@@ -45,7 +45,7 @@ export class HeightMapTool extends LocationBoundTool {
       let max = -Infinity;
       let i = WorldSpaces.chunk.getHeight();
       while (i--) {
-        if (this.setY(i).hasVoxels()) {
+        if (this.setY(i).hasVoxels() || this.setY(i).isDirty()) {
           if (i < min) min = i;
           if (i > max) max = i;
         }

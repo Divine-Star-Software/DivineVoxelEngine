@@ -4,6 +4,7 @@ import { VoxelMesherDataTool } from "../../../../Tools/VoxelMesherDataTool.js";
 import { BoxVoxelShape } from "../../../../Shapes/default/Box/Box.voxel.shape.js";
 import { VoxelConstructor } from "../VoxelConstructor.js";
 import { TextureRegister } from "../../../../../../Textures/TextureRegister.js";
+import { VoxelFaces } from "@divinevoxel/core/Math";
 
 export type PillarBoxVoxelConstructorData = {
   top: ConstructorTextureData;
@@ -61,28 +62,28 @@ export class PillarBoxVoxelConstructor extends VoxelConstructor {
       side = 0;
     }
     tool.getOverlayTextures().setAll(0);
-    if (tool.isFaceExposed("top")) {
-      tool.setTexture(this.textures[0]).calculateLight("top");
+    if (tool.isFaceExposed(VoxelFaces.Top)) {
+      tool.setTexture(this.textures[0]).calculateLight(VoxelFaces.Top);
       BoxVoxelShape.add.top();
     }
-    if (tool.isFaceExposed("bottom")) {
-      tool.setTexture(this.textures[1]).calculateLight("bottom");
+    if (tool.isFaceExposed(VoxelFaces.Bottom)) {
+      tool.setTexture(this.textures[1]).calculateLight(VoxelFaces.Bottom);
       BoxVoxelShape.add.bottom();
     }
-    if (tool.isFaceExposed("east")) {
-      tool.setTexture(side).calculateLight("east");
+    if (tool.isFaceExposed(VoxelFaces.East)) {
+      tool.setTexture(side).calculateLight(VoxelFaces.East);
       BoxVoxelShape.add.east();
     }
-    if (tool.isFaceExposed("west")) {
-      tool.setTexture(side).calculateLight("west");
+    if (tool.isFaceExposed(VoxelFaces.West)) {
+      tool.setTexture(side).calculateLight(VoxelFaces.West);
       BoxVoxelShape.add.west();
     }
-    if (tool.isFaceExposed("south")) {
-      tool.setTexture(side).calculateLight("south");
+    if (tool.isFaceExposed(VoxelFaces.South)) {
+      tool.setTexture(side).calculateLight(VoxelFaces.South);
       BoxVoxelShape.add.south();
     }
-    if (tool.isFaceExposed("north")) {
-      tool.setTexture(side).calculateLight("north");
+    if (tool.isFaceExposed(VoxelFaces.North)) {
+      tool.setTexture(side).calculateLight(VoxelFaces.North);
       BoxVoxelShape.add.north();
     }
   }

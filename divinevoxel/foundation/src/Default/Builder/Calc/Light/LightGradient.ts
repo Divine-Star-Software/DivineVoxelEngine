@@ -1,22 +1,19 @@
 import type { VoxelMesherDataTool } from "../../Tools/VoxelMesherDataTool";
-import type { DirectionNames } from "@divinevoxel/core/Types";
 
 import { OverrideManager } from "../../Rules/Overrides/OverridesManager.js";
 import { LightData } from "../../../../Data/LightData";
 
-import { QuadVertexData } from "@divinevoxel/core/Meshing/";
+import { QuadScalarVertexData } from "@divinevoxel/core/Meshing/";
 import { SubstanceRules } from "../../Rules/SubstanceRules.js";
-import { FaceNormals } from "@divinevoxel/core/Math/Constants/Faces.js";
 import { QuadVerticies } from "../../Geometry/Geometry.types";
+import { VoxelFaces, VoxelFaceDirections } from "@divinevoxel/core/Math";
 
 const LD = LightData;
-const LightValue = new QuadVertexData();
-const RGBState = new QuadVertexData();
-const SunState = new QuadVertexData();
-const AOValue = new QuadVertexData();
-const AOState = new QuadVertexData();
+const LightValue = new QuadScalarVertexData();
 
-const shouldSunFlip = (face: DirectionNames) => {
+const AOValue = new QuadScalarVertexData();
+
+const shouldSunFlip = (face: VoxelFaces) => {
   const v1 = LD.getS(LightValue.vertices[QuadVerticies.TopRight]);
   const v2 = LD.getS(LightValue.vertices[QuadVerticies.TopLeft]);
   const v3 = LD.getS(LightValue.vertices[QuadVerticies.BottomLeft]);
@@ -26,18 +23,12 @@ const shouldSunFlip = (face: DirectionNames) => {
   if (v4 > v3 && v4 > v1) return true;
   if (v2 < v3 || v2 < v1) return false;
   if (v4 < v3 || v4 < v1) return false;
-  if (
-    v3 + v1 > v2 + v4 ||
-    SunState.isEqualTo(0, 1, 1, 1) ||
-    SunState.isEqualTo(1, 1, 0, 1) ||
-    SunState.isEqualTo(0, 1, 0, 1)
-  )
-    return false;
+  if (v3 + v1 > v2 + v4) return false;
 
   return false;
 };
 
-const shouldRGBFlip = (face: DirectionNames) => {
+const shouldRGBFlip = (face: VoxelFaces) => {
   // Retrieve RGB values for each vertex based on their positions
   const v1 = LD.getRGB(LightValue.vertices[QuadVerticies.TopLeft]); // TopLeft
   const v2 = LD.getRGB(LightValue.vertices[QuadVerticies.BottomLeft]); // BottomLeft
@@ -48,28 +39,21 @@ const shouldRGBFlip = (face: DirectionNames) => {
   if (v4 > v3 && v4 > v1) return true;
   if (v2 < v3 || v2 < v1) return false;
   if (v4 < v3 || v4 < v1) return false;
-  if (
-    v3 + v1 > v2 + v4 ||
-    RGBState.isEqualTo(0, 1, 1, 1) ||
-    RGBState.isEqualTo(1, 1, 0, 1) ||
-    RGBState.isEqualTo(0, 1, 0, 1)
-  )
-    return false;
+  if (v3 + v1 > v2 + v4) return false;
 
   return false;
 };
 
-const shouldAOFlip = (face: DirectionNames) => {
+const shouldAOFlip = (face: VoxelFaces) => {
   if (states.ignoreAO) return false;
   if (states.ignoreAO) return false;
   LightGradient.tool.faceDataOverride.face = face;
   LightGradient.tool.faceDataOverride.default = false;
 
   if (
-    OverrideManager.runOverride(
-      "AOFlipFace",
+    OverrideManager.AOFlipFace.run(
       LightGradient.tool.voxel.getShapeId(),
-      "Any",
+      OverrideManager.ANY,
       LightGradient.tool.faceDataOverride
     )
   ) {
@@ -80,21 +64,15 @@ const shouldAOFlip = (face: DirectionNames) => {
   const v3 = AOValue.vertices[QuadVerticies.BottomRight];
   const v4 = AOValue.vertices[QuadVerticies.TopRight];
 
-if (v2 > v3 && v2 > v1) return true;
+  if (v2 > v3 && v2 > v1) return true;
   if (v4 > v3 && v4 > v1) return true;
   if (v2 < v3 || v2 < v1) return false;
   if (v4 < v3 || v4 < v1) return false;
-  if (
-    v3 + v1 > v2 + v4 ||
-    AOState.isEqualTo(0, 1, 1, 1) ||
-    AOState.isEqualTo(1, 1, 0, 1) ||
-    AOState.isEqualTo(0, 1, 0, 1)
-  )
-    return false;
+  if (v3 + v1 > v2 + v4) return false;
   return false;
 };
 
-const flipCheck = (face: DirectionNames) => {
+const flipCheck = (face: VoxelFaces) => {
   const rgbFlip = shouldRGBFlip(face);
   const sunFlip = shouldSunFlip(face);
   const aoFlip = shouldAOFlip(face);
@@ -138,38 +116,38 @@ flipped
 2 Bottom-left corner
 3 Bottom-right corner
  */
-const checkSets: Record<DirectionNames, Record<QuadVerticies, number[]>> = {
-  top: {
+const checkSets: Record<VoxelFaces, Record<QuadVerticies, number[]>> = {
+  [VoxelFaces.Top]: {
     [QuadVerticies.BottomLeft]: [-1, 1, 0, 0, 1, -1, -1, 1, -1],
     [QuadVerticies.TopLeft]: [-1, 1, 0, 0, 1, 1, -1, 1, 1],
     [QuadVerticies.TopRight]: [1, 1, 0, 0, 1, 1, 1, 1, 1],
     [QuadVerticies.BottomRight]: [1, 1, 0, 0, 1, -1, 1, 1, -1],
   },
-  bottom: {
+  [VoxelFaces.Bottom]: {
     [QuadVerticies.BottomLeft]: [-1, -1, 0, 0, -1, -1, -1, -1, -1],
     [QuadVerticies.TopLeft]: [-1, -1, 0, 0, -1, 1, -1, -1, 1],
     [QuadVerticies.TopRight]: [1, -1, 0, 0, -1, 1, 1, -1, 1],
     [QuadVerticies.BottomRight]: [1, -1, 0, 0, -1, -1, 1, -1, -1],
   },
-  east: {
+  [VoxelFaces.East]: {
     [QuadVerticies.TopLeft]: [1, 0, -1, 1, 1, 0, 1, 1, -1],
     [QuadVerticies.TopRight]: [1, 0, 1, 1, 1, 0, 1, 1, 1],
     [QuadVerticies.BottomRight]: [1, 0, 1, 1, -1, 0, 1, -1, 1],
     [QuadVerticies.BottomLeft]: [1, 0, -1, 1, -1, 0, 1, -1, -1],
   },
-  west: {
+  [VoxelFaces.West]: {
     [QuadVerticies.TopRight]: [-1, 0, 1, -1, 1, 0, -1, 1, 1],
     [QuadVerticies.TopLeft]: [-1, 0, -1, -1, 1, 0, -1, 1, -1],
     [QuadVerticies.BottomLeft]: [-1, 0, -1, -1, -1, 0, -1, -1, -1],
     [QuadVerticies.BottomRight]: [-1, 0, 1, -1, -1, 0, -1, -1, 1],
   },
-  south: {
+  [VoxelFaces.South]: {
     [QuadVerticies.TopLeft]: [-1, 0, -1, 0, 1, -1, -1, 1, -1],
     [QuadVerticies.TopRight]: [1, 0, -1, 0, 1, -1, 1, 1, -1],
     [QuadVerticies.BottomRight]: [1, 0, -1, 0, -1, -1, 1, -1, -1],
     [QuadVerticies.BottomLeft]: [-1, 0, -1, 0, -1, -1, -1, -1, -1],
   },
-  north: {
+  [VoxelFaces.North]: {
     [QuadVerticies.TopRight]: [1, 0, 1, 0, 1, 1, 1, 1, 1],
     [QuadVerticies.TopLeft]: [-1, 0, 1, 0, 1, 1, -1, 1, 1],
     [QuadVerticies.BottomLeft]: [-1, 0, 1, 0, -1, 1, -1, -1, 1],
@@ -178,7 +156,6 @@ const checkSets: Record<DirectionNames, Record<QuadVerticies, number[]>> = {
 };
 const states = { ignoreAO: false };
 const newRGBValues: number[] = [];
-const zeroCheck = { s: 0, r: 0, g: 0, b: 0 };
 const RGBValues = { r: 0, g: 0, b: 0 };
 const sunValues = { s: 0 };
 const nlValues = { s: 0, r: 0, g: 0, b: 0 };
@@ -191,31 +168,27 @@ export const LightGradient = {
     doRGB: true,
     doSun: true,
   },
-  calculate(
-    face: DirectionNames,
-    tool: VoxelMesherDataTool,
-    ignoreAO?: boolean
-  ) {
+  calculate(face: VoxelFaces, tool: VoxelMesherDataTool, ignoreAO?: boolean) {
     tool.setFaceFlipped(false).getWorldLight().set(0, 0, 0, 0);
 
     tool.getWorldAO().set(1, 1, 1, 1);
     this.tool = tool;
     const voxelSubstance = SubstanceRules.getSubstanceParent(
-      tool.voxel.getSubstanceStringId()
+      tool.voxel.getSubstance()
     );
     const isLightSource = tool.voxel.isLightSource();
 
     let light = tool.voxel.getLight();
     let aoOverRide = -1;
     AOValue.setAll(1);
-    AOState.setAll(1);
+
     if (this.settings.doAO && !ignoreAO) {
       states.ignoreAO = false;
     } else {
       states.ignoreAO = true;
     }
 
-    const faceNormal = FaceNormals[face];
+    const faceNormal = VoxelFaceDirections[face];
     tool.nVoxel.loadInAt(
       tool.voxel.x + faceNormal[0],
       tool.voxel.y + faceNormal[1],
@@ -235,10 +208,9 @@ export const LightGradient = {
       tool.faceDataOverride.face = face;
       tool.faceDataOverride.default = false;
       if (
-        OverrideManager.runOverride(
-          "DarkenFaceUnderneath",
+        OverrideManager.DarkenFaceUnderneath.run(
           tool.nVoxel.getShapeId(),
-          "All",
+          OverrideManager.ANY,
           tool.faceDataOverride
         )
       ) {
@@ -253,15 +225,11 @@ export const LightGradient = {
         const values = LD.getLightValues(light);
         if (this.settings.doSun) {
           sunValues.s = values[0];
-          if (sunValues.s == 0) zeroCheck.s++;
         }
         if (this.settings.doRGB) {
           RGBValues.r = values[1];
-          if (RGBValues.r == 0) zeroCheck.r++;
           RGBValues.g = values[2];
-          if (RGBValues.g == 0) zeroCheck.g++;
           RGBValues.b = values[3];
-          if (RGBValues.b == 0) zeroCheck.b++;
         }
       }
 
@@ -289,9 +257,6 @@ export const LightGradient = {
             nlValues.b = values[3];
 
             doRGB: if (this.settings.doRGB) {
-              if (nlValues.r == 0) zeroCheck.r++;
-              if (nlValues.g == 0) zeroCheck.g++;
-              if (nlValues.b == 0) zeroCheck.b++;
               if (!LD.removeS(nl)) break doRGB;
               if (nlValues.r > RGBValues.r && RGBValues.r < 15) {
                 RGBValues.r = nlValues.r;
@@ -306,7 +271,6 @@ export const LightGradient = {
               }
             }
             doSun: if (this.settings.doSun) {
-              if (nlValues.s == 0) zeroCheck.s++;
               if (!LD.getS(nl)) break doSun;
               if (sunValues.s < nlValues.s && sunValues.s < 15) {
                 sunValues.s = nlValues.s;
@@ -319,14 +283,13 @@ export const LightGradient = {
     */
         doAO: if (!states.ignoreAO) {
           if (aoOverRide > 0) {
-            AOState.setVertex(vertex, 0);
             AOValues.a = aoOverRide;
             break doAO;
           }
 
           if (!tool.nVoxel.isRenderable()) break doAO;
           const neighborVoxelSubstance = SubstanceRules.getSubstanceParent(
-            tool.nVoxel.getSubstanceStringId()
+            tool.nVoxel.getSubstance()
           );
           const neightLightSource = tool.nVoxel.isLightSource();
 
@@ -343,15 +306,13 @@ export const LightGradient = {
           tool.faceDataOverride.face = face;
           tool.faceDataOverride.default = finalResult;
 
-          finalResult = OverrideManager.runOverride(
-            "AO",
+          finalResult = OverrideManager.AO.run(
             tool.voxel.getShapeId(),
             tool.nVoxel.getShapeId(),
             tool.faceDataOverride
           );
 
           if (!finalResult) break doAO;
-          AOState.setVertex(vertex, 0);
           AOValues.a++;
         }
       }
@@ -360,40 +321,11 @@ export const LightGradient = {
    Light End
    */
       if (this.settings.doSun || this.settings.doRGB) {
-        let zeroTolerance = 2;
-        let totalZero = true;
-        if (zeroCheck.s >= zeroTolerance) {
-          SunState.setVertex(vertex, 1);
-
-          newRGBValues[0] = 0;
-        } else {
-          SunState.setVertex(vertex, 0);
-          newRGBValues[0] = sunValues.s;
-        }
-        if (zeroCheck.r >= zeroTolerance) {
-          newRGBValues[1] = 0;
-        } else {
-          totalZero = false;
-          newRGBValues[1] = RGBValues.r;
-        }
-        if (zeroCheck.g >= zeroTolerance) {
-          newRGBValues[2] = 0;
-        } else {
-          totalZero = false;
-          newRGBValues[2] = RGBValues.g;
-        }
-        if (zeroCheck.b >= zeroTolerance) {
-          newRGBValues[3] = 0;
-        } else {
-          totalZero = false;
-          newRGBValues[3] = RGBValues.b;
-        }
-        RGBState.setVertex(vertex, totalZero ? 0 : 1);
+        newRGBValues[0] = sunValues.s;
+        newRGBValues[1] = RGBValues.r;
+        newRGBValues[2] = RGBValues.g;
+        newRGBValues[3] = RGBValues.b;
         LightValue.setVertex(vertex, LD.setLightValues(newRGBValues));
-        zeroCheck.s = 0;
-        zeroCheck.r = 0;
-        zeroCheck.b = 0;
-        zeroCheck.g = 0;
       }
       /*
    AO End

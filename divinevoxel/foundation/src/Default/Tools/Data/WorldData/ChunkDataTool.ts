@@ -4,6 +4,7 @@ import { WorldRegister } from "../../../../Data/World/WorldRegister.js";
 
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces.js";
 import { Chunk } from "../../../../Data/World/Classes/Chunk.js";
+import { RawVoxelData } from "@divinevoxel/core";
 
 export class ChunkDataTool extends EncodedPositionDataTool {
   struct = Chunk.StateStruct;
@@ -32,38 +33,16 @@ export class ChunkDataTool extends EncodedPositionDataTool {
     return this;
   }
 
-  segments = {
-    id: {
-      get: (index: number) => {
-        return this._chunk.ids[index];
-      },
-      set: (index: number, value: number) => {
-        return (this._chunk.ids[index] = value);
-      },
-    },
-    light: {
-      get: (index: number) => {
-        return this._chunk.light[index];
-      },
-      set: (index: number, value: number) => {
-        return (this._chunk.light[index] = value);
-      },
-    },
-    state: {
-      get: (index: number) => {
-        return this._chunk.state[index];
-      },
-      set: (index: number, value: number) => {
-        return (this._chunk.state[index] = value);
-      },
-    },
-    secondaryId: {
-      get: (index: number) => {
-        return this._chunk.secondaryIds[index];
-      },
-      set: (index: number, value: number) => {
-        return (this._chunk.secondaryIds[index] = value);
-      },
-    },
-  };
+  loadInRaw(index: number, raw: RawVoxelData) {
+    raw[0] = this._chunk.ids[index];
+    raw[1] = this._chunk.light[index];
+    raw[2] = this._chunk.state[index];
+    raw[3] = this._chunk.secondaryIds[index];
+  }
+  setRaw(index: number, raw: RawVoxelData) {
+    this._chunk.ids[index] = raw[0];
+    this._chunk.light[index] = raw[1];
+    this._chunk.state[index] = raw[2];
+    this._chunk.secondaryIds[index] = raw[3];
+  }
 }

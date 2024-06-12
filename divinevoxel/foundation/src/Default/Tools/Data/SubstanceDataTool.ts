@@ -23,7 +23,6 @@ export class SubstanceDataTool {
   }
 
   isTransparent() {
-  
     return SubstanceStruct.instance[SubstanceTagIds.isTransparent] == 1;
   }
 
@@ -34,7 +33,7 @@ export class SubstanceDataTool {
     return SubstanceStruct.instance[SubstanceTagIds.isLiquid] == 1;
   }
   isOpaque() {
-    return this.isSolid() && !this.isTransparent()
+    return this.isSolid() && !this.isTransparent();
   }
 
   allowLight() {
@@ -46,21 +45,21 @@ export class SubstanceDataTool {
       "substance",
       SubstanceStructProperties.parent,
       SubstanceStruct.instance[SubstanceTagIds.parent]
-    );
+    )!;
   }
   getRendered() {
     return MappedDataRegister.stringMaps.get(
       "substance",
       SubstanceStructProperties.rendered,
       SubstanceStruct.instance[SubstanceTagIds.rendered]
-    );
+    )!;
   }
   getCulled(): string[] {
     return MappedDataRegister.objectMaps.get(
       "substance",
       SubstanceStructProperties.culledSubstnaces,
       SubstanceStruct.instance[SubstanceTagIds.culledSubstnaces]
-    );
+    )!;
   }
   getFlowRate() {
     return SubstanceStruct.instance[SubstanceTagIds.flowRate];

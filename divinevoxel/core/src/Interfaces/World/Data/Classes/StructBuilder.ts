@@ -30,7 +30,7 @@ export class StructBuilder {
     {
       count: number;
       found: Record<string, number>;
-      map: Record<number, any>;
+      map: any[];
       allowedComms: string[];
     }
   >();
@@ -155,7 +155,7 @@ export class StructBuilder {
         this._objectMaps.set(node.id, {
           count: 0,
           found: {},
-          map: {},
+          map: [],
           allowedComms: node.allowedComms,
         });
       }
@@ -172,7 +172,7 @@ export class StructBuilder {
     for (const [key, map] of this._stringMaps) {
       const data: RegisterStringMapSync = [this.dataSegment, key, map.map];
       if (map.allowedComms.includes("world")) {
-        MappedDataRegister.stringMaps.sync(data);
+        MappedDataRegister.stringMaps.sync(data[0], data[1], data[2]);
       }
       DivineVoxelEngineWorld.instance.core.dataSync.loopThroughComms((comm) => {
         if (comm.name == "world") return;
@@ -187,7 +187,7 @@ export class StructBuilder {
     for (const [key, map] of this._objectMaps) {
       const data: RegisterObjectMapSync = [this.dataSegment, key, map.map];
       if (map.allowedComms.includes("world")) {
-        MappedDataRegister.objectMaps.sync(data);
+        MappedDataRegister.objectMaps.sync(data[0], data[1], data[2]);
       }
       DivineVoxelEngineWorld.instance.core.dataSync.loopThroughComms((comm) => {
         if (comm.name == "world") return;

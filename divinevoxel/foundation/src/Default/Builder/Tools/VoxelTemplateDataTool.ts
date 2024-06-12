@@ -1,6 +1,6 @@
 import type { DirectionNames } from "@divinevoxel/core/Types/Util.types.js";
 //data
-import { QuadVertexData } from "@divinevoxel/core/Meshing/";
+import { QuadScalarVertexData } from "@divinevoxel/core/Meshing/";
 
 export class VoxelTemplateDataTool {
   _active = false;
@@ -12,25 +12,25 @@ export class VoxelTemplateDataTool {
     north: 0,
     south: 0,
   };
-  _lights: Record<DirectionNames, QuadVertexData> = {
-    top: new QuadVertexData(),
-    bottom: new QuadVertexData(),
-    west: new QuadVertexData(),
-    east: new QuadVertexData(),
-    north: new QuadVertexData(),
-    south: new QuadVertexData(),
+  _lights: Record<DirectionNames, QuadScalarVertexData> = {
+    top: new QuadScalarVertexData(),
+    bottom: new QuadScalarVertexData(),
+    west: new QuadScalarVertexData(),
+    east: new QuadScalarVertexData(),
+    north: new QuadScalarVertexData(),
+    south: new QuadScalarVertexData(),
   };
-  _aos: Record<DirectionNames, QuadVertexData> = {
-    top: new QuadVertexData(),
-    bottom: new QuadVertexData(),
-    west: new QuadVertexData(),
-    east: new QuadVertexData(),
-    north: new QuadVertexData(),
-    south: new QuadVertexData(),
+  _aos: Record<DirectionNames, QuadScalarVertexData> = {
+    top: new QuadScalarVertexData(),
+    bottom: new QuadScalarVertexData(),
+    west: new QuadScalarVertexData(),
+    east: new QuadScalarVertexData(),
+    north: new QuadScalarVertexData(),
+    south: new QuadScalarVertexData(),
   };
-  _light = new QuadVertexData();
-  _level = new QuadVertexData();
-  _ao = new QuadVertexData();
+  _light = new QuadScalarVertexData();
+  _level = new QuadScalarVertexData();
+  _ao = new QuadScalarVertexData();
   isAcive() {
     return this._active;
   }

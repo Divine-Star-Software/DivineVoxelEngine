@@ -1,4 +1,4 @@
-import { Vector3Like } from "../../Math/Types/Math.types.js";
+import { Vector3Like } from "../Math.types.js";
 import { Flat3DIndex } from "../Flat3DIndex.js";
 import { LocationData } from "./VoxelSpaces.types";
 

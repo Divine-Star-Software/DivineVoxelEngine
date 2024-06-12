@@ -19,6 +19,56 @@ const inColumnBounds = (cx: number, cz: number, x: number, z: number) => {
   return false;
 };
 
+class QueueNode {
+  public next: QueueNode | null = null;
+  constructor(public x: number, public y: number, public z: number) {}
+}
+
+class ReusableQueue {
+  private head: QueueNode | null = null;
+  private tail: QueueNode | null = null;
+  private freeList: QueueNode[] = [];
+
+  enqueue(x: number, y: number, z: number) {
+    let node: QueueNode;
+    if (this.freeList.length) {
+      node = this.freeList.shift()!;
+      node.x = x;
+      node.y = y;
+      node.z = z;
+      node.next = null;
+    } else {
+      node = new QueueNode(x, y, z);
+    }
+
+    if (this.tail) {
+      this.tail.next = node;
+    } else {
+      this.head = node;
+    }
+    this.tail = node;
+  }
+
+  dequeue(): QueueNode | null {
+    if (!this.head) return null;
+    const node = this.head;
+    this.head = this.head.next;
+    if (!this.head) this.tail = null;
+
+    return node;
+  }
+
+  returnNode(node: QueueNode) {
+    this.freeList.push(node);
+  }
+
+  isEmpty(): boolean {
+    return this.head === null;
+  }
+}
+
+const queue = new ReusableQueue();
+
 const heightMapTool = new HeightMapTool();
 
 export function RunWorldSun(tasks: WorldSunTaskRequest) {
@@ -27,7 +77,6 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
   if (!WorldRegister.instance.column.get(tasks.origin)) return false;
   const [dimension, cx, cy, cz] = tasks.origin;
 
-  const queue = tasks.queues.sun;
   IM._sDataTool.setDimension(dimension);
   const RmaxY = heightMapTool.column.getRelative(tasks.origin);
   const AmaxY = heightMapTool.column.getAbsolute(tasks.origin);
@@ -65,67 +114,66 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
           }
         }
         if (add) {
-          queue.push(ix, iy, iz);
+          queue.enqueue(ix, iy, iz);
         }
       }
     }
   }
 
   //flood
-  while (queue.length) {
-    const x = queue.shift()!;
-    const y = queue.shift()!;
-    const z = queue.shift()!;
-    if (!IM._sDataTool.loadInAt(x, y, z)) continue;
+  while (!queue.isEmpty()) {
+    const node = queue.dequeue();
+    if (!node) break;
+    if (!IM._sDataTool.loadInAt(node.x, node.y, node.z)) continue;
     const sl = IM._sDataTool.getLight();
     if (sl <= 0) continue;
     const sunL = IM.lightData.getS(sl);
-    if (sunL >= 0xf && !inColumnBounds(cx, cz, x, z)) continue;
+    if (sunL >= 0xf && !inColumnBounds(cx, cz, node.x, node.z)) continue;
 
-    if (IM._nDataTool.loadInAt(x - 1, y, z)) {
+    if (IM._nDataTool.loadInAt(node.x - 1, node.y, node.z)) {
       const nl = IM._nDataTool.getLight();
       if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-        queue.push(x - 1, y, z);
+        queue.enqueue(node.x - 1, node.y, node.z);
         IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();
       }
     }
 
-    if (IM._nDataTool.loadInAt(x + 1, y, z)) {
+    if (IM._nDataTool.loadInAt(node.x + 1, node.y, node.z)) {
       const nl = IM._nDataTool.getLight();
       if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-        queue.push(x + 1, y, z);
+        queue.enqueue(node.x + 1, node.y, node.z);
         IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();
       }
     }
 
-    if (IM._nDataTool.loadInAt(x, y, z - 1)) {
+    if (IM._nDataTool.loadInAt(node.x, node.y, node.z - 1)) {
       const nl = IM._nDataTool.getLight();
       if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-        queue.push(x, y, z - 1);
+        queue.enqueue(node.x, node.y, node.z - 1);
         IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();
       }
     }
 
-    if (IM._nDataTool.loadInAt(x, y, z + 1)) {
+    if (IM._nDataTool.loadInAt(node.x, node.y, node.z + 1)) {
       const nl = IM._nDataTool.getLight();
       if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-        queue.push(x, y, z + 1);
+        queue.enqueue(node.x, node.y, node.z + 1);
         IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();
       }
     }
 
-    if (IM._nDataTool.loadInAt(x, y - 1, z)) {
+    if (IM._nDataTool.loadInAt(node.x, node.y - 1, node.z)) {
       const nl = IM._nDataTool.getLight();
 
       if (nl > -1 && IM.lightData.isLessThanForSunAddDown(nl, sl)) {
         if (IM._nDataTool.isAir()) {
-          queue.push(x, y - 1, z);
+          queue.enqueue(node.x, node.y - 1, node.z);
           IM._nDataTool
             .setLight(IM.lightData.getSunLightForUnderVoxel(sl, nl))
             .commit();
         } else {
           if (IM._nDataTool.getSubstnaceData().allowLight()) {
-            queue.push(x, y - 1, z);
+            queue.enqueue(node.x, node.y - 1, node.z);
             IM._nDataTool
               .setLight(IM.lightData.getMinusOneForSun(sl, nl))
               .commit();
@@ -134,13 +182,15 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
       }
     }
 
-    if (IM._nDataTool.loadInAt(x, y + 1, z)) {
+    if (IM._nDataTool.loadInAt(node.x, node.y + 1, node.z)) {
       const nl = IM._nDataTool.getLight();
       if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-        queue.push(x, y + 1, z);
+        queue.enqueue(node.x, node.y + 1, node.z);
         IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();
       }
     }
+
+    queue.returnNode(node);
   }
 
   tasks.stop();

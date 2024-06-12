@@ -3,7 +3,7 @@ import type { ConstructorTextureData } from "../../../../../../Textures/Construc
 import { VoxelMesherDataTool } from "../../../../Tools/VoxelMesherDataTool.js";
 import { VoxelConstructor } from "../VoxelConstructor.js";
 import { TextureRegister } from "../../../../../../Textures/TextureRegister.js";
-import { CrossedPanels } from "../../../../Shapes/default/Panel/CrossedPanels.voxel.shape.js";
+import { CrossedPanelsVoxelShape } from "../../../../Shapes/default/Panel/CrossedPanels.voxel.shape.js";
 
 export class SimpleCrossedPanelVoxelConstructor extends VoxelConstructor {
  texture = 0;
@@ -15,7 +15,7 @@ export class SimpleCrossedPanelVoxelConstructor extends VoxelConstructor {
   tool.getOverlayTextures().setAll(0);
   tool.getWorldAO().setAll(1);
   tool.getWorldLight().setAll(tool.voxel.getLight());
-  CrossedPanels.build();
+  CrossedPanelsVoxelShape.build();
  }
 
  onTexturesRegistered(textureManager: typeof TextureRegister): void {

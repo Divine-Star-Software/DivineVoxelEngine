@@ -1,5 +1,5 @@
 import type { VoxelMesherDataTool } from "../../Tools/VoxelMesherDataTool";
-import { QuadVertexData } from "@divinevoxel/core/Meshing/";
+import { QuadScalarVertexData } from "@divinevoxel/core/Meshing/";
 import { QuadVertexes } from "../../Types";
 
 const checkSets = {
@@ -28,7 +28,7 @@ const checkSets = {
  ],
 };
 
-const flowStates = new QuadVertexData();
+const flowStates = new QuadScalarVertexData();
 
 export const FlowGradient = {
  getLevel(tool: VoxelMesherDataTool) {

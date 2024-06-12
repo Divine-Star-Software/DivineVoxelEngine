@@ -22,17 +22,17 @@ export class WorldDataTool {
 
   async columnExistsBatch(locations: LocationData[]) {
 
-    console.log("LOADING COLUMN EXISTS BATCH")
+
     await this.worldDataBase.setDimension(locations[0][0]);
 
-    console.log("1")
+  
     const existsRecord: Record<string, boolean> = {};
 
     const transication = await this.worldDataBase.database.getTransaction(
       "readonly",
       this.worldDataBase.typeStores["world-data"].id
     );
-    console.log("2")
+   
     const proms: Promise<number>[] = [];
     const keys: string[] = [];
     for (const location of locations) {
@@ -47,14 +47,14 @@ export class WorldDataTool {
         )
       );
     }
-    console.log("3")
+
     const resolved = await Promise.all(proms);
 
     for (let i = 0; i < keys.length; i++) {
 
       existsRecord[keys[i]] = resolved[i] !== undefined
     }
-    console.log("4")
+
     return existsRecord;
   }
 

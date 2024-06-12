@@ -11,14 +11,14 @@ export interface SubstanceStruct {
   [SubstanceTagIds.rendered]: number;
   [SubstanceTagIds.isSolid]: number;
   [SubstanceTagIds.isTransparent]: number;
-[SubstanceTagIds.isLiquid]: number;
+  [SubstanceTagIds.isLiquid]: number;
   [SubstanceTagIds.flowRate]: number;
   [SubstanceTagIds.culledSubstnaces]: number;
 }
 
 const remote = new RemoteBinaryStruct("voxel-data");
 
-export class SubstanceStruct extends InstantiatedStruct {
+export class SubstanceStruct extends InstantiatedStruct<SubstanceStruct> {
   static instance: SubstanceStruct;
   static init(data: RemoteBinaryStructData) {
     remote.init(data);

@@ -1,4 +1,4 @@
-import { CompassDirectionNames } from "Math/Types/Math.types";
+import { CompassDirectionNames } from "Math/Math.types";
 
 /**# Compass Directions
  * ---

@@ -23,6 +23,6 @@ export type RegisterStringMapSync = [
 export type RegisterObjectMapSync = [
  segment: string,
  id: string,
- map: Record<number,any>
+ map: any[]
 ];
 export type VoxelMapSyncData = string[];

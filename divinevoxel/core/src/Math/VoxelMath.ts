@@ -3,7 +3,7 @@ import { Plane } from "./Classes/Plane.js";
 import { SimpleBoundingBox } from "./Classes/SimpleBoundingBox.js";
 import { Vector3 } from "./Classes/Vector3.js";
 import { VisitAll } from "./Functions/VisitAll.js";
-import { VolumeDimensions  } from "./Types/Math.types.js";
+import { VolumeDimensions  } from "./Math.types.js";
 /**# Voxel Math
  * ---
  * Can be used in any thread that needs it.

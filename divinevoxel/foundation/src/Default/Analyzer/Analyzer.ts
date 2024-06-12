@@ -26,7 +26,7 @@ export class Analyzer extends DVEAnaylzer {
   ];
   async runPropagation(data: AnaylzerTask) {
     let t: any = {};
-    try {
+
       const options = {
         light: EngineSettings.doLight(),
         flow: EngineSettings.doFlow(),
@@ -87,10 +87,7 @@ export class Analyzer extends DVEAnaylzer {
         );
       }
       tasks.stop();
-    } catch (error) {
-      console.warn(error);
-      console.info(t);
-    }
+  
   }
 
   async runUpdate(data: AnaylzerTask) {

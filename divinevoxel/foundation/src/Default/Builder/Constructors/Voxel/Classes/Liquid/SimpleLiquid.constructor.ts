@@ -4,6 +4,7 @@ import { VoxelMesherDataTool } from "../../../../Tools/VoxelMesherDataTool.js";
 import { VoxelConstructor } from "../VoxelConstructor.js";
 import { TextureRegister } from "../../../../../../Textures/TextureRegister.js";
 import { LiquidVoxelShape } from "../../../../Shapes/default/Liquid/Liquid.voxel.shape.js";
+import { VoxelFaces } from "@divinevoxel/core/Math";
 
 export class SimpleLiquidConstructor extends VoxelConstructor {
  textures: number[] = [];
@@ -16,28 +17,28 @@ export class SimpleLiquidConstructor extends VoxelConstructor {
  process(tool: VoxelMesherDataTool) {
   LiquidVoxelShape.start();
   tool.getOverlayTextures().setAll(0);
-  if (tool.isFaceExposed("top")) {
-   tool.setTexture(this.textures[0]).calculateLight("top",true);
+  if (tool.isFaceExposed(VoxelFaces.Top)) {
+   tool.setTexture(this.textures[0]).calculateLight(VoxelFaces.Top,true);
    LiquidVoxelShape.add.top();
   }
-  if (tool.isFaceExposed("bottom")) {
-   tool.setTexture(this.textures[0]).calculateLight("bottom",true);
+  if (tool.isFaceExposed(VoxelFaces.Bottom)) {
+   tool.setTexture(this.textures[0]).calculateLight(VoxelFaces.Bottom,true);
    LiquidVoxelShape.add.bottom();
   }
-  if (tool.isFaceExposed("east")) {
-   tool.setTexture(this.textures[0]).calculateLight("east",true);
+  if (tool.isFaceExposed(VoxelFaces.East)) {
+   tool.setTexture(this.textures[0]).calculateLight(VoxelFaces.East,true);
    LiquidVoxelShape.add.east();
   }
-  if (tool.isFaceExposed("west")) {
-   tool.setTexture(this.textures[0]).calculateLight("west",true);
+  if (tool.isFaceExposed(VoxelFaces.West)) {
+   tool.setTexture(this.textures[0]).calculateLight(VoxelFaces.West,true);
    LiquidVoxelShape.add.west();
   }
-  if (tool.isFaceExposed("south")) {
-   tool.setTexture(this.textures[0]).calculateLight("south",true);
+  if (tool.isFaceExposed(VoxelFaces.South)) {
+   tool.setTexture(this.textures[0]).calculateLight(VoxelFaces.South,true);
    LiquidVoxelShape.add.south();
   }
-  if (tool.isFaceExposed("north")) {
-   tool.setTexture(this.textures[0]).calculateLight("north",true);
+  if (tool.isFaceExposed(VoxelFaces.North)) {
+   tool.setTexture(this.textures[0]).calculateLight(VoxelFaces.North,true);
    LiquidVoxelShape.add.north();
   }
  }

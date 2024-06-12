@@ -1,5 +1,5 @@
 import { LocationData } from "Math/index.js";
-import type { Vec3Array } from "../Types/Math.types.js";
+import type { Vec3Array } from "../Math.types.js";
 import { Distance3D } from "./Distance3d.js";
 export function Vec3ArrayDistanceSort(origin: Vec3Array, array: Vec3Array[]) {
   return array.sort((a, b) => {

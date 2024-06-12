@@ -98,7 +98,7 @@ export class DataTool extends DataToolBase {
    */
   __secondary = false;
 
-  _struct = VoxelStruct.instance;
+  private _loadedId = 0;
 
   setMode(mode: DataToolModes) {
     this._mode = mode;
@@ -127,10 +127,11 @@ export class DataTool extends DataToolBase {
   setSecondary(enable: boolean) {
     this.__secondary = enable;
     if (enable) {
-      VoxelStruct.setVoxel(this.data.secondaryBaseId);
+      this.__struct.setIndex(VoxelStruct.voxelIndex[this.data.secondaryBaseId]);
     } else {
-      VoxelStruct.setVoxel(this.data.baseId);
+      this.__struct.setIndex(VoxelStruct.voxelIndex[this.data.baseId]);
     }
+    this._loadedId = this.getId(true);
     return this;
   }
   _getBaseId(id: number) {
@@ -178,7 +179,9 @@ export class DataTool extends DataToolBase {
     this.loadInRaw(DataTool.VoxelDataToRaw(data, light));
   }
 
-  __process() {
+  __struct: VoxelStruct;
+  private __process() {
+    if (!this.__struct) this.__struct = VoxelStruct.clone();
     this.data.id = this.data.raw[0];
     this.data.secondaryId = this.data.raw[3];
     this.data.baseId = this._getBaseId(this.data.id);
@@ -187,7 +190,8 @@ export class DataTool extends DataToolBase {
     } else {
       this.data.secondaryBaseId = 0;
     }
-    VoxelStruct.setVoxel(this.data.baseId);
+    this.__struct.setIndex(VoxelStruct.voxelIndex[this.data.baseId]);
+    this._loadedId = this.getId(true);
   }
 
   loadIn() {
@@ -195,10 +199,7 @@ export class DataTool extends DataToolBase {
       if (!this._chunkTool.setLocation(this.location).loadIn()) return false;
 
       const index = WorldSpaces.voxel.getIndexLocation(this.location);
-      this.data.raw[0] = this._chunkTool.segments.id.get(index);
-      this.data.raw[1] = this._chunkTool.segments.light.get(index);
-      this.data.raw[2] = this._chunkTool.segments.state.get(index);
-      this.data.raw[3] = this._chunkTool.segments.secondaryId.get(index);
+      this._chunkTool.loadInRaw(index, this.data.raw);
       this.__process();
       this._loadedIn = true;
       return true;
@@ -220,11 +221,7 @@ export class DataTool extends DataToolBase {
     if (!this._loadedIn) return false;
     if (this._mode == DataTool.Modes.WORLD) {
       const index = WorldSpaces.voxel.getIndexLocation(this.location);
-
-      this._chunkTool.segments.id.set(index, this.data.raw[0]);
-      this._chunkTool.segments.light.set(index, this.data.raw[1]);
-      this._chunkTool.segments.state.set(index, this.data.raw[2]);
-      this._chunkTool.segments.secondaryId.set(index, this.data.raw[3]);
+      this._chunkTool.setRaw(index, this.data.raw);
       if (DataTool._columntool.loadInAtLocation(this.location)) {
         DataTool._columntool.markAsNotStored();
       }
@@ -266,19 +263,18 @@ export class DataTool extends DataToolBase {
   }
   getLight() {
     if (this._mode == DataTool.Modes.VOXEL_DATA) return 0xf;
-    const vID = this.getId(true);
-    VoxelStruct.setVoxel(vID);
+    const vID = this._loadedId;
     if (vID == 0) return this.data.raw[1];
     if (vID < 2) return -1;
-    const lightValue = VoxelStruct.instance[VoxelTagIDs.lightValue];
+    const lightValue = this.__struct[VoxelTagIDs.lightValue];
     if (this.isOpaque()) {
-      if (VoxelStruct.instance[VoxelTagIDs.isLightSource] && lightValue) {
+      if (this.__struct[VoxelTagIDs.isLightSource] && lightValue) {
         return lightValue;
       } else {
         return -1;
       }
     }
-    if (VoxelStruct.instance[VoxelTagIDs.isLightSource] && lightValue) {
+    if (this.__struct[VoxelTagIDs.isLightSource] && lightValue) {
       return LightData.mixLight(this.data.raw[1], lightValue);
     }
     return this.data.raw[1];
@@ -319,70 +315,66 @@ export class DataTool extends DataToolBase {
 
   //voxel data
   getShapeId() {
-    const vID = this.getId(true);
+    const vID = this._loadedId;
+    if (vID < 2) return -1;
+    return this.__struct[VoxelTagIDs.shapeID];
+  }
+  getShapeStringId() {
+    const vID = this._loadedId;
     if (vID < 2) return "";
-    VoxelStruct.setVoxel(vID);
     return MappedDataRegister.stringMaps.get(
       "voxel",
       VoxelStructProperties.shapeID,
-      VoxelStruct.instance[VoxelTagIDs.shapeID]
+      this.__struct[VoxelTagIDs.shapeID]
     );
   }
   isLightSource() {
-    const vID = this.getId(true);
+    const vID = this._loadedId;
     if (vID < 2) return false;
-    VoxelStruct.setVoxel(vID);
-    return VoxelStruct.instance[VoxelTagIDs.isLightSource] == 1;
+    return this.__struct[VoxelTagIDs.isLightSource] == 1;
   }
   getLightSourceValue() {
-    const vID = this.getId(true);
+    const vID = this._loadedId;
     if (vID < 2) return 0;
-    VoxelStruct.setVoxel(vID);
-    return VoxelStruct.instance[VoxelTagIDs.lightValue];
+    return this.__struct[VoxelTagIDs.lightValue];
   }
   getSubstanceStringId() {
-    const vID = this.getId(true);
+    const vID = this._loadedId;
     if (vID < 2) return "#dve_transparent";
     return SubstancePaletteReader.id.stringFromNumber(this.getSubstance());
   }
   getSubstance() {
-    const vID = this.getId(true);
+    const vID = this._loadedId;
     if (vID < 2) return -1;
-    VoxelStruct.setVoxel(vID);
-    return VoxelStruct.instance[VoxelTagIDs.substance];
+    return this.__struct[VoxelTagIDs.substance];
   }
   getMaterial() {
-    const vID = this.getId(true);
+    const vID = this._loadedId;
     if (vID < 2) return "none";
-    VoxelStruct.setVoxel(vID);
     return MappedDataRegister.stringMaps.get(
       "voxel",
       VoxelStructProperties.material,
-      VoxelStruct.instance[VoxelTagIDs.material]
+      this.__struct[VoxelTagIDs.material]
     );
   }
   getHardness() {
-    const vID = this.getId(true);
+    const vID = this._loadedId;
     if (vID < 2) return 0;
-    VoxelStruct.setVoxel(vID);
-    return VoxelStruct.instance[VoxelTagIDs.hardness];
+    return this.__struct[VoxelTagIDs.hardness];
   }
   getCollider() {
-    const vID = this.getId(true);
-    if (vID < 2) return "none";
-    VoxelStruct.setVoxel(vID);
+    const vID = this._loadedId;
     return MappedDataRegister.stringMaps.get(
       "voxel",
       VoxelStructProperties.colliderID,
-      VoxelStruct.instance[VoxelTagIDs.colliderID]
+      this.__struct[VoxelTagIDs.colliderID]
     );
   }
   checkCollisions() {
-    const vID = this.getId(true);
+    const vID = this._loadedId;
     if (vID == 0) return false;
     if (vID == 1) return true;
-    VoxelStruct.setVoxel(vID);
-    return VoxelStruct.instance[VoxelTagIDs.checkCollisions] == 1;
+    return this.__struct[VoxelTagIDs.checkCollisions] == 1;
   }
 
   getState() {
@@ -392,10 +384,9 @@ export class DataTool extends DataToolBase {
     return this.data.id - this.data.baseId;
   }
   isRich() {
-    const vID = this.getId(true);
+    const vID = this._loadedId;
     if (vID < 2) return 0;
-    VoxelStruct.setVoxel(vID);
-    return VoxelStruct.instance[VoxelTagIDs.isRich] == 1;
+    return this.__struct[VoxelTagIDs.isRich] == 1;
   }
 
   //util
@@ -427,13 +418,11 @@ export class DataTool extends DataToolBase {
   setId(id: number) {
     if (this.__secondary) {
       this.data.raw[3] = id;
-      this.data.secondaryId = id;
-      this.data.secondaryBaseId = this._getBaseId(id);
+      this.__process();
       return this;
     }
     this.data.raw[0] = id;
-    this.data.id = id;
-    this.data.baseId = this._getBaseId(id);
+    this.__process();
     return this;
   }
   setStringId(id: string) {

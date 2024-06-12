@@ -1,11 +1,11 @@
 import type { QuadData } from "../../Types/ShapeBuilder.types";
-import { QuadVertexData } from "@divinevoxel/core/Meshing/";
+import { QuadScalarVertexData } from "@divinevoxel/core/Meshing/";
 import { LightData } from "../../../../Data/LightData.js"
 import { ShapeTool } from "../ShapeTool.js";
 import { QuadVertexes } from "../../Types/Geometry.types.js";
 
-const LightValue = new QuadVertexData();
-const AOValue = new QuadVertexData();
+const LightValue = new QuadScalarVertexData();
+const AOValue = new QuadScalarVertexData();
 
 const getIndex = (v: number) => {
  return <QuadVertexes>Math.abs(v);
@@ -56,7 +56,7 @@ export const ShapeBuilder = {
   }
  },
 
- _getBrightestLight(data: QuadVertexData) {
+ _getBrightestLight(data: QuadScalarVertexData) {
   let s = 0;
   let r = 0;
   let g = 0;

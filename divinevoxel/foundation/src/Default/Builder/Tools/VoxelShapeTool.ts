@@ -1,7 +1,7 @@
 import type { QuadVertexes } from "../Types/Geometry.types";
 
 import { QuadBuilderTool, QuadUVTool } from "./MeshBuilderTool.js";
-import { QuadVertexData } from "@divinevoxel/core/Meshing/";
+import { QuadScalarVertexData } from "@divinevoxel/core/Meshing/";
 import { VoxelShaderDataTool } from "../../Tools/Shaders/VoxelShaderData.js";
 
 const faceData = new VoxelShaderDataTool();
@@ -14,9 +14,9 @@ class VoxelQuadBulder extends QuadBuilderTool {
     this.animationState._s = this;
   }
 
-  _lightData = new QuadVertexData();
-  _AOData = new QuadVertexData();
-  _animationData = new QuadVertexData();
+  _lightData = new QuadScalarVertexData();
+  _AOData = new QuadScalarVertexData();
+  _animationData = new QuadScalarVertexData();
 
   clear() {
     this._cachedPosition.x = 0;
@@ -79,21 +79,21 @@ class VoxelQuadBulder extends QuadBuilderTool {
   }
   animationState = {
     _s: <VoxelQuadBulder>{},
-    add(data: QuadVertexData) {
+    add(data: QuadScalarVertexData) {
       this._s._animationData.setFromQuadData(data);
       return this._s;
     },
   };
   light = {
     _s: <VoxelQuadBulder>{},
-    add(data: QuadVertexData) {
+    add(data: QuadScalarVertexData) {
       this._s._lightData.setFromQuadData(data);
       return this._s;
     },
   };
   AO = {
     _s: <VoxelQuadBulder>{},
-    add(data: QuadVertexData) {
+    add(data: QuadScalarVertexData) {
       this._s._AOData.setFromQuadData(data);
       return this._s;
     },
@@ -101,7 +101,7 @@ class VoxelQuadBulder extends QuadBuilderTool {
   textures = new QuadUVTool(this, "cuv3");
   overlayTexture = {
     _s: <VoxelQuadBulder>{},
-    add(data: QuadVertexData) {
+    add(data: QuadScalarVertexData) {
       let i = 4;
       const attribute = this._s.tool.getAttribute("ocuv3")!;
       while (i--) {

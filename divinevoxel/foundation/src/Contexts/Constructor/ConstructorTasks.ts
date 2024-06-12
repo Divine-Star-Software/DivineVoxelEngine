@@ -32,15 +32,17 @@ export default function (DVEC: DVEFConstrucotrCore) {
   ThreadComm.registerTasks<PriorityTask<BuildTasks>>(
     ConstructorTasksIds.BuildChunk,
     async (buildData, onDone) => {
+      WorldRegister.instance.cache.enable();
       const location = buildData.data[0];
       await DVEC.builder.buildChunk(location, buildData.data[1],0);
       if (onDone) onDone();
+      WorldRegister.instance.cache.disable();
     }
   );
   ThreadComm.registerTasks<BuildTasks>(
     ConstructorTasksIds.BuildColumn,
     async (data, onDone) => {
-      const t1 = performance.now();
+      WorldRegister.instance.cache.enable();
       const column = WorldRegister.instance.column.get(data[0]);
       if (!column) {
         console.warn("Tried building a column that does not exists.", data);
@@ -56,8 +58,8 @@ export default function (DVEC: DVEFConstrucotrCore) {
         location[3] = chunkPOS.z;
         DVEC.builder.buildChunk([...location], 1,100);
       }
-      console.log("done building",data,performance.now() - t1)
       if (onDone) onDone();
+      WorldRegister.instance.cache.disable();
     },
     "deferred"
   );

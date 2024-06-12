@@ -10,12 +10,9 @@ import { Pipeline } from "@divinestar/utils/Pipelines/Pipeline.js";
 import { BinaryStruct } from "@divinestar/binary";
 import { SubstanceDataGenerator } from "./SubstanceDataGenerator.js";
 class GenVoxelPalette {
-  _count = 2;
-  _palette: VoxelPalette = ["dve_air", "dve_barrier"];
-  _map: Record<string, number> = {
-    dve_air: 0,
-    dve_barrier: 1,
-  };
+  _count = 0;
+  _palette: VoxelPalette = [];
+  _map: Record<string, number> = {};
 
   registerVoxel(voxel: VoxelData) {
     this._palette[this._count] = voxel.id;
@@ -104,12 +101,7 @@ export class VoxelDataGenerator {
 }
 
 VoxelDataGenerator.overrides.set(VoxelTagIDs.substance, (tags, value, id) => {
-  console.log("setting substance id", [
-    id,
-    value,
-    SubstanceDataGenerator.palette.get().findIndex((_) => _ == value),
-    SubstanceDataGenerator.palette.get(),
-  ]);
+
   tags.setProperty(
     id,
     SubstanceDataGenerator.palette.get().findIndex((_) => _ == value)

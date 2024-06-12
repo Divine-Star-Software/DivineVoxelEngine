@@ -17,20 +17,18 @@ import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
 import { SubstancePaletteReader } from "../../Data/Substance/SubstancePalette.js";
 import { VoxelStruct } from "../../Data/Voxel/VoxelStruct.js";
 
-export abstract class RemoteDataSyncNode
- {
+export abstract class RemoteDataSyncNode {
   maps = {
     strings: ThreadComm.onDataSync<RegisterStringMapSync, void>(
       DataSyncIds.RegisterStringMap,
       (data) => {
-   
-        MappedDataRegister.stringMaps.sync(data);
+        MappedDataRegister.stringMaps.sync(data[0], data[1], data[2]);
       }
     ),
     objects: ThreadComm.onDataSync<RegisterStringMapSync, void>(
       DataSyncIds.RegisterObjectMap,
       (data) => {
-        MappedDataRegister.objectMaps.sync(data);
+        MappedDataRegister.objectMaps.sync(data[0], data[1], data[2]);
       }
     ),
   };

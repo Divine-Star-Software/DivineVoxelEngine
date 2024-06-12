@@ -14,6 +14,7 @@ function vector3Hash(x: number, y: number, z: number) {
   const zHash = Math.abs(z * 83492791) | 0;
   return xHash ^ yHash ^ zHash;
 }
+
 export class WorldRegisterCache {
   _cacheOn = false;
   _chunkCache = new Map<number, Chunk>();
@@ -73,7 +74,7 @@ export class WorldRegisterCache {
     this._chunkCache.clear();
     this._columnCache.clear();
   }
-  
+
   disable() {
     this._cacheOn = false;
     this._chunkCache.clear();
@@ -83,7 +84,7 @@ export class WorldRegisterCache {
   addChunk(key: number, data: Chunk) {
     this._chunkCache.set(key, data);
   }
-  
+
   addColumn(key: number, data: Column) {
     this._columnCache.set(key, data);
   }

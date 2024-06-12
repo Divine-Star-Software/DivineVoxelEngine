@@ -5,7 +5,36 @@ import { SubstanceData } from "../../../../Types/Substances.types.js";
 export const VoxelManager = new RegisterDataManager<VoxelData>();
 export const SubstanceManager = new RegisterDataManager<SubstanceData>();
 
+VoxelManager.registerData([
+  {
+    id: "dve_air",
+    tags: [
+      ["#dve_substance", "#dve_air"],
+      ["#dve_shape_id", "#dve_box"],
+    ],
+  },
+  {
+    id: "dve_barrier",
+    tags: [
+      ["#dve_substance", "#dve_air"],
+      ["#dve_shape_id", "#dve_box"],
+    ],
+  },
+]);
+
 SubstanceManager.registerData([
+  {
+    id: "#dve_air",
+    tags: [
+      ["#dve_parent_substance", "#dve_air"],
+      ["#dve_rendered_substance", "#dve_air"],
+      ["#dve_is_solid", false],
+      ["#dve_is_liquid", false],
+      ["#dve_is_transparent", true],
+      ["#dve_flow_rate", 0],
+      ["#dve_culled_substances", []],
+    ],
+  },
   {
     id: "#dve_solid",
     tags: [

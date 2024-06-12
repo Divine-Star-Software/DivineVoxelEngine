@@ -14,16 +14,17 @@ import { MesherDataTool } from "@divinevoxel/core/Meshing/Tools/MesherDataTools"
 
 //data
 import { FaceNormals } from "@divinevoxel/core/Math/Constants/Faces.js";
-import { QuadVertexData } from "@divinevoxel/core/Meshing/";
+import { QuadScalarVertexData } from "@divinevoxel/core/Meshing/";
 import { VoxelTemplateDataTool } from "./VoxelTemplateDataTool.js";
 import { BinaryNumberTypes } from "@divinestar/binary";
+import { VoxelFaces, VoxelFaceDirections } from "@divinevoxel/core/Math";
 
 export class VoxelMesherDataTool extends MesherDataTool {
   template = new VoxelTemplateDataTool();
   voxel = new BuilderDataTool();
   nVoxel = new BuilderDataTool();
   faceDataOverride = <FaceDataOverride>{
-    face: "south",
+    face: VoxelFaces.South,
     default: false,
     currentVoxel: <BuilderDataTool>{},
     neighborVoxel: <BuilderDataTool>{},
@@ -50,10 +51,10 @@ export class VoxelMesherDataTool extends MesherDataTool {
     ).forEach(([key, data]) => this.segments.set(key, data as any));
     (
       [
-        ["light", new QuadVertexData()],
-        ["ao", new QuadVertexData()],
-        ["level", new QuadVertexData()],
-        ["overlay-uvs", new QuadVertexData()],
+        ["light", new QuadScalarVertexData()],
+        ["ao", new QuadScalarVertexData()],
+        ["level", new QuadScalarVertexData()],
+        ["overlay-uvs", new QuadScalarVertexData()],
       ] as const
     ).forEach(([key, data]) => this.quadVertexData.set(key, data as any));
 
@@ -65,12 +66,12 @@ export class VoxelMesherDataTool extends MesherDataTool {
     ).forEach(([key, data]) => this.vars.set(key, data as any));
   }
 
-  calculateLight(direction: DirectionNames, ignoreAO = false) {
-    if (this.template.isAcive()) {
+  calculateLight(direction: VoxelFaces, ignoreAO = false) {
+    /*     if (this.template.isAcive()) {
       this.template._light = this.template._lights[direction];
       this.template._ao = this.template._aos[direction];
       return;
-    }
+    } */
     LightGradient.calculate(direction, this, ignoreAO);
   }
 
@@ -124,43 +125,40 @@ export class VoxelMesherDataTool extends MesherDataTool {
     return this.vars.get("face-flipped")! == 1;
   }
 
-  isFaceExposed(face: DirectionNames) {
-    if (this.template.isAcive()) {
+  isFaceExposed(face: VoxelFaces) {
+    /*     if (this.template.isAcive()) {
       return this.template.isFaceExposed(face);
-    }
+    } */
     const voxelExists = this.nVoxel.loadInAt(
-      FaceNormals[face][0] + this.voxel.x,
-      FaceNormals[face][1] + this.voxel.y,
-      FaceNormals[face][2] + this.voxel.z
+      VoxelFaceDirections[face][0] + this.voxel.x,
+      VoxelFaceDirections[face][1] + this.voxel.y,
+      VoxelFaceDirections[face][2] + this.voxel.z
     );
 
     if (!voxelExists || !this.nVoxel.isRenderable()) return true;
     let finalResult = false;
     let substanceRuleResult = SubstanceRules.exposedCheck(
-      this.voxel.getSubstanceStringId(),
-      this.nVoxel.getSubstanceStringId()
+      this.voxel.getSubstance(),
+      this.nVoxel.getSubstance()
     );
     this.faceDataOverride.face = face;
     this.faceDataOverride.default = substanceRuleResult;
     finalResult = substanceRuleResult;
     this.faceDataOverride.default = finalResult;
-    finalResult = OverrideManager.runOverride(
-      "CullFace",
+    finalResult = OverrideManager.CullFace.run(
       this.voxel.getShapeId(),
-      "Any",
+      OverrideManager.ANY,
       this.faceDataOverride
     );
     this.faceDataOverride.default = finalResult;
-    finalResult = OverrideManager.runOverride(
-      "CullFace",
+    finalResult = OverrideManager.CullFace.run(
       this.voxel.getShapeId(),
       this.nVoxel.getShapeId(),
       this.faceDataOverride
     );
     this.faceDataOverride.default = finalResult;
-    finalResult = OverrideManager.runOverride(
-      "CullFace",
-      this.voxel.getStringId(),
+    finalResult = OverrideManager.CullFace.run(
+      this.voxel.getId(true),
       this.nVoxel.getShapeId(),
       this.faceDataOverride
     );
