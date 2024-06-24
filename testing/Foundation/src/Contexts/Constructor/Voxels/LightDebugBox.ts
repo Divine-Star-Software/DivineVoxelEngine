@@ -1,3 +1,5 @@
+import { VoxelFaces } from "@divinevoxel/core/Math";
+
 import { VoxelConstructor } from "@divinevoxel/foundation/Default/Builder/Constructors/Voxel/Classes/VoxelConstructor";
 import { BoxVoxelShape } from "@divinevoxel/foundation/Default/Builder/Shapes/default/Box/Box.voxel.shape";
 
@@ -29,40 +31,40 @@ export function GetLightDebugBox(): VoxelConstructor {
       const [dimension, x, y, z] = tool.voxel.getLocation();
       const dt = tool.nVoxel;
 
-      if (tool.isFaceExposed("top")) {
+      if (tool.isFaceExposed(VoxelFaces.Top)) {
         tool
           .setTexture(textures[getData(dt, x, y + 1, z) || 0])
-          .calculateLight("top");
+          .calculateLight(VoxelFaces.Top);
         BoxVoxelShape.add.top();
       }
-      if (tool.isFaceExposed("bottom")) {
+      if (tool.isFaceExposed(VoxelFaces.Bottom)) {
         tool
           .setTexture(textures[getData(dt, x, y - 1, z) || 0])
-          .calculateLight("bottom");
+          .calculateLight(VoxelFaces.Bottom);
         BoxVoxelShape.add.bottom();
       }
-      if (tool.isFaceExposed("east")) {
+      if (tool.isFaceExposed(VoxelFaces.East)) {
         tool
           .setTexture(textures[getData(dt, x + 1, y, z) || 0])
-          .calculateLight("east");
+          .calculateLight(VoxelFaces.East);
         BoxVoxelShape.add.east();
       }
-      if (tool.isFaceExposed("west")) {
+      if (tool.isFaceExposed(VoxelFaces.West)) {
         tool
           .setTexture(textures[getData(dt, x - 1, y, z) || 0])
-          .calculateLight("west");
+          .calculateLight(VoxelFaces.West);
         BoxVoxelShape.add.west();
       }
-      if (tool.isFaceExposed("south")) {
+      if (tool.isFaceExposed(VoxelFaces.South)) {
         tool
           .setTexture(textures[getData(dt, x, y, z - 1) || 0])
-          .calculateLight("south");
+          .calculateLight(VoxelFaces.South);
         BoxVoxelShape.add.south();
       }
-      if (tool.isFaceExposed("north")) {
+      if (tool.isFaceExposed(VoxelFaces.North)) {
         tool
           .setTexture(textures[getData(dt, x, y, z + 1) || 0])
-          .calculateLight("north");
+          .calculateLight(VoxelFaces.North);
         BoxVoxelShape.add.north();
       }
     },

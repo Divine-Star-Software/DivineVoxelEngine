@@ -12,18 +12,12 @@ import { DVEFBRCore } from "@divinevoxel/babylon-renderer/Defaults/Foundation/DV
 //import "@babylonjs/core/Debug/debugLayer"; // Import the debug layer
 //import "@babylonjs/inspector"; // Import the inspector
 import InitDVER from "@divinevoxel/babylon-renderer/Defaults/Foundation/PBR/InitDVEBRPBR";
-import { SetUpControls } from "./SetUpControls";
 import { NodeMeshTool } from "@divinevoxel/babylon-renderer/Defaults/Foundation/Tools/NodeMeshTool";
 import { DataTool } from "@divinevoxel/foundation/Default/Tools/Data/DataTool";
 const worldWorker = new Worker(new URL("./Contexts/World/", import.meta.url), {
   type: "module",
 });
-const dataLoaderWorker = new Worker(
-  new URL("./Contexts/DataLoader", import.meta.url),
-  {
-    type: "module",
-  }
-);
+
 const nexusWorker = new Worker(new URL("./Contexts/Nexus", import.meta.url), {
   type: "module",
 });
@@ -42,7 +36,6 @@ for (let i = 0; i < navigator.hardwareConcurrency - 1; i++) {
     })
   );
 }
-SetUpControls();
 
 export function App() {
   const [ready, setReady] = useState(false);
@@ -243,10 +236,10 @@ export function App() {
 
         const core = new DVEFBRCore({
           renderer,
-          dataLoaderWorker,
           richWorldWorker,
           nexusWorker,
         });
+        console.log("start the initilzation");
         nodes.core = core;
         await DVER.init({
           core: nodes.core,
@@ -254,6 +247,7 @@ export function App() {
           worldWorker,
           constructorWorkers,
         });
+        console.log("end initilization");
 
         setReady(true);
         /*    nodes.sceneTool.levels
@@ -268,15 +262,14 @@ export function App() {
 
         const dataTool = new DataTool();
         const nodeMeshTool = new NodeMeshTool();
-        const voxelEntityTool = await nodeMeshTool
-          .setXYZ(0, 0, 0)
-          .voxel.buildAsync(
-            nodeMeshTool.voxel.dataTool
-              .setStringId("dve_dream_grass")
-              .setLevelState(1)
-              .setLevel(15)
-              .getRaw()
-          );
+        const voxelEntityTool = await nodeMeshTool.voxel.buildEntityToolAsync(
+          [0, 0, 0],
+          nodeMeshTool.voxel.dataTool
+            .setStringId("dve_dream_grass")
+            .setLevelState(1)
+            .setLevel(15)
+            .getRaw()
+        );
         console.log("got voxel entity tool", voxelEntityTool);
 
         if (voxelEntityTool) {
@@ -301,11 +294,11 @@ export function App() {
           box.thinInstanceAdd(Matrix.Translation(-5, 60, 0));
           box.thinInstanceAdd(Matrix.Translation(-10, 60, 0));
 
-          voxelEntityTool._instances[0].position.set(0,60,0);
-          voxelEntityTool._instances[0].scale.set(1,1,1);
+          voxelEntityTool._instances[0].position.set(0, 60, 0);
+          voxelEntityTool._instances[0].scale.set(1, 1, 1);
           voxelEntityTool.update();
-        
-     /*      console.log(voxelEntityTool._matrixArray.matricies.slice())
+
+          /*      console.log(voxelEntityTool._matrixArray.matricies.slice())
           voxelEntityTool.mesh.thinInstanceSetBuffer(
             "matrix",
             voxelEntityTool._matrixArray.matricies,

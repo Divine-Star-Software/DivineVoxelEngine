@@ -2,7 +2,7 @@ import { StartContrusctor } from "@divinevoxel/foundation/Default/Init/StartCons
 import { GetLightDebugBox } from "./Voxels/LightDebugBox";
 import { GetMarkerBox } from "./Voxels/MarkerBox";
 import { GetDreamEther } from "./Voxels/LiquidDreamEther";
-import { Flat3DIndex, Vec3Array } from "@divinevoxel/core/Math";
+import { Flat3DIndex, Vec3Array } from "@amodx/math";
 import { BrushTool } from "@divinevoxel/foundation/Default/Tools/Brush/Brush";
 import { LocationData } from "@divinevoxel/core/Math";
 import { DVEDefaultBuilder } from "@divinevoxel/foundation/Default/Builder/Builder";
@@ -109,7 +109,7 @@ const loadInFlatIndex = Flat3DIndex.GetXZYOrder();
 loadInFlatIndex.setBounds(256, 128, 256);
 const dataTool = new DataTool();
 const brushTool = new BrushTool();
-brushTool._update = false;
+
 /* DivineVoxelEngineConstructor.instance.TC.registerTasks<
   [
     dimension: string,

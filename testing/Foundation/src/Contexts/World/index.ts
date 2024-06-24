@@ -5,7 +5,6 @@ import { StartWorld } from "@divinevoxel/foundation/Default/Init/StartWorld";
 import { CPUGenerate } from "./Gen/CPUGenerate";
 
 await StartWorld({
-  dataLoaderEnabled: true,
   nexusEnabled: true,
   richWorldEnabled: true,
   voxels: [
@@ -102,7 +101,7 @@ await StartWorld({
       id: "dve_dream_stone_slab",
       tags: [
         ["#dve_substance", "#dve_solid"],
-        ["#dve_shape_id", "#dve_halfbox"],
+        ["#dve_shape_id", "#dve_half_box"],
         ["#dve_collider_id", "#dve_box"],
         ["#dve_check_collisions", true],
         ["#dve_material", "grassy-stone"],
@@ -239,10 +238,13 @@ await StartWorld({
 
 let doComputeGen = false;
 
+console.log("world start");
 DivineVoxelEngineWorld.instance.TC.registerTasks("start-world", async () => {
   if (doComputeGen) {
     await ComputeShaderGenerate();
   } else {
+    console.log("cpu gen start")
     await CPUGenerate();
+    console.log("cpu gen end")
   }
 });

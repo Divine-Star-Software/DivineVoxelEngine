@@ -1,10 +1,12 @@
 import { DVEFWorldCore } from "@divinevoxel/foundation/Contexts/World/DVEFWorldCore";
 import { WorldLock } from "@divinevoxel/foundation/Contexts/World/Lock/WorldLock";
-import { Vec3Array, Flat3DIndex } from "@divinevoxel/core/Math";
+import { Vec3Array, Flat3DIndex } from "@amodx/math";
 //import { NoiseShaders, PaerlinNoise } from "./NoiseShader";
 import { SeededGPUPerlin } from "./SeededGPUPerlin";
 import { ComputeEngine } from "./ComputeEngine";
 import { ComputeVoxelWorld, Constants } from "./ComputerVoxelWorld";
+
+import { BrushTool } from "@divinevoxel/foundation/Default/Tools/Brush/Brush";
 
 class TemplateConstats {
   static get TEMPLATE_VOXEL_BYTE_SIZE() {
@@ -900,7 +902,7 @@ export class GPUWorldGen {
     await this.engine.init();
   }
 
-  brushTool = DVEFWorldCore.instance.getBrush();
+  brushTool = new BrushTool();
   async loadIntoWorld(start: Vec3Array, worldData: SharedArrayBuffer) {
     const segmentSize = 16;
     const sx = start[0];

@@ -1,3 +1,5 @@
+import { VoxelFaces } from "@divinevoxel/core/Math";
+
 import { VoxelConstructor } from "@divinevoxel/foundation/Default/Builder/Constructors/Voxel/Classes/VoxelConstructor";
 import { BoxVoxelShape } from "@divinevoxel/foundation/Default/Builder/Shapes/default/Box/Box.voxel.shape";
 
@@ -21,28 +23,28 @@ export function GetMarkerBox(): VoxelConstructor {
       const uv = textures[tool.voxel.getState()];
 
       tool.getOverlayTextures().setAll(0);
-      if (tool.isFaceExposed("top")) {
-        tool.setTexture(uv).calculateLight("top");
+      if (tool.isFaceExposed(VoxelFaces.Top)) {
+        tool.setTexture(uv).calculateLight(VoxelFaces.Top);
         BoxVoxelShape.add.top();
       }
-      if (tool.isFaceExposed("bottom")) {
-        tool.setTexture(uv).calculateLight("bottom");
+      if (tool.isFaceExposed(VoxelFaces.Bottom)) {
+        tool.setTexture(uv).calculateLight(VoxelFaces.Bottom);
         BoxVoxelShape.add.bottom();
       }
-      if (tool.isFaceExposed("east")) {
-        tool.setTexture(uv).calculateLight("east");
+      if (tool.isFaceExposed(VoxelFaces.East)) {
+        tool.setTexture(uv).calculateLight(VoxelFaces.East);
         BoxVoxelShape.add.east();
       }
-      if (tool.isFaceExposed("west")) {
-        tool.setTexture(uv).calculateLight("west");
+      if (tool.isFaceExposed(VoxelFaces.West)) {
+        tool.setTexture(uv).calculateLight(VoxelFaces.West);
         BoxVoxelShape.add.west();
       }
-      if (tool.isFaceExposed("south")) {
-        tool.setTexture(uv).calculateLight("south");
+      if (tool.isFaceExposed(VoxelFaces.South)) {
+        tool.setTexture(uv).calculateLight(VoxelFaces.South);
         BoxVoxelShape.add.south();
       }
-      if (tool.isFaceExposed("north")) {
-        tool.setTexture(uv).calculateLight("north");
+      if (tool.isFaceExposed(VoxelFaces.North)) {
+        tool.setTexture(uv).calculateLight(VoxelFaces.North);
         BoxVoxelShape.add.north();
       }
     },

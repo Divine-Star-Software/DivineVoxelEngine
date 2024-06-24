@@ -97,7 +97,7 @@ await StartWorld({
       id: "dve_dream_stone_slab",
       tags: [
         ["#dve_substance", "#dve_solid"],
-        ["#dve_shape_id", "#dve_halfbox"],
+        ["#dve_shape_id", "#dve_half_box"],
         ["#dve_collider_id", "#dve_box"],
         ["#dve_check_collisions", true],
         ["#dve_material", "grassy-stone"],

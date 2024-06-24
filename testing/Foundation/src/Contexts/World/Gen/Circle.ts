@@ -1,5 +1,5 @@
 
-import { Distance2D } from "@divinevoxel/core/Math";
+import { Distance2D } from "@amodx/math";
 import { BrushTool } from "@divinevoxel/foundation/Default/Tools/Brush/Brush";
 export function GenerateCircle(
   brush:BrushTool,

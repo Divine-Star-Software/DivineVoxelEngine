@@ -859,7 +859,7 @@ class RichDataTool extends _Classes_LocationBoundTool_js__WEBPACK_IMPORTED_MODUL
     _enabled = false;
     constructor() {
         super();
-        this.comm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.getComm("rich-world");
+        this.comm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.getComm("rich-world");
         if (!this.comm || !this.comm.isPortSet()) {
             this._enabled = false;
             if (this.comm) {

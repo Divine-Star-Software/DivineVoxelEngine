@@ -1,4 +1,4 @@
-import { BinaryObject } from "@divinestar/binary";
+import { BinaryObject } from "@amodx/binary";
 import {
   DVEKernel,
   DVEKernelFunctions,

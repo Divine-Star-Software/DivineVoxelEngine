@@ -3,7 +3,7 @@ import { GetLightDebugBox } from "./Voxels/LightDebugBox";
 import { GetMarkerBox } from "./Voxels/MarkerBox";
 import { GetDreamEther } from "./Voxels/LiquidDreamEther";
 import { DivineVoxelEngineConstructor } from "@divinevoxel/core/Constructor";
-import { Flat3DIndex, Vec3Array } from "@divinevoxel/core/Math";
+import { Flat3DIndex, Vec3Array } from "@amodx/math";
 import { BrushTool } from "@divinevoxel/core/Tools/Brush/Brush";
 import { LocationData } from "@divinevoxel/core/Math";
 import { DVEDefaultBuilder } from "@divinevoxel/foundation/Builder/Builder";

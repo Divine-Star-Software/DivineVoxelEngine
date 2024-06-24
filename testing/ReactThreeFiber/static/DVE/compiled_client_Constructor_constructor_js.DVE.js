@@ -6355,7 +6355,7 @@ const DVEC = {
     dataSyncNode: _Data_DataSyncNode_js__WEBPACK_IMPORTED_MODULE_7__.DataSyncNode,
     data: _Data_DataManager_js__WEBPACK_IMPORTED_MODULE_6__.DataManager,
     voxelManager: _Builder_Constructors_Voxel_VoxelConstructors_js__WEBPACK_IMPORTED_MODULE_8__.VoxelConstructors,
-    TC: threadcomm__WEBPACK_IMPORTED_MODULE_9__.ThreadComm,
+    TC: threadcomm__WEBPACK_IMPORTED_MODULE_9__.Threads,
     parentComm: _Threads_ConstrcutorTheads_js__WEBPACK_IMPORTED_MODULE_10__.ParentComm,
     worldComm: _Threads_ConstrcutorTheads_js__WEBPACK_IMPORTED_MODULE_10__.WorldComm,
     tasks: _Tasks_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_11__.Tasks,
@@ -6420,9 +6420,9 @@ async function InitWorker(DVEC) {
     if (DVEC.environment == "node") {
         parent = "server";
     }
-    await threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.$INIT("constructor", parent);
+    await threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.$INIT("constructor", parent);
     DVEC.builder.$INIT();
-    threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.registerTasks("sync-settings", (settings) => {
+    threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.registerTasks("sync-settings", (settings) => {
         _Data_Settings_EngineSettings_js__WEBPACK_IMPORTED_MODULE_0__.EngineSettings.syncSettings(settings);
         _Threads_ConstructorThreadState_js__WEBPACK_IMPORTED_MODULE_1__.ConstructorThreadState._settingsSynced = true;
         _Data_DataHooks_js__WEBPACK_IMPORTED_MODULE_3__.DataHooks.settingsSynced.run(settings);
@@ -6434,7 +6434,7 @@ async function InitWorker(DVEC) {
         onReady() { },
         checkInterval: 1,
     });
-    threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.registerTasks("ready", () => {
+    threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.registerTasks("ready", () => {
         _Builder_Rules_SubstanceRules_js__WEBPACK_IMPORTED_MODULE_4__.SubstanceRules.$BuildRules();
     });
 }
@@ -7708,27 +7708,27 @@ __webpack_require__.r(__webpack_exports__);
 const chunkTool = new _Tools_Data_WorldData_ChunkDataTool_js__WEBPACK_IMPORTED_MODULE_5__.ChunkDataTool();
 const Tasks = {
     data: {
-        syncTextures: threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.registerTasks("sync-texuture-index", (data) => {
+        syncTextures: threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.registerTasks("sync-texuture-index", (data) => {
             _DivineVoxelEngineConstructor_js__WEBPACK_IMPORTED_MODULE_1__.DVEC.builder.textureManager.setTextureIndex(data);
             _DivineVoxelEngineConstructor_js__WEBPACK_IMPORTED_MODULE_1__.DVEC.hooks.texturesRegistered.run(_DivineVoxelEngineConstructor_js__WEBPACK_IMPORTED_MODULE_1__.DVEC.builder.textureManager);
         }),
     },
     build: {
-        nodeMesh: threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.registerTasks("build-node-mesh", (data, onDone) => {
+        nodeMesh: threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.registerTasks("build-node-mesh", (data, onDone) => {
             const nodeData = _DivineVoxelEngineConstructor_js__WEBPACK_IMPORTED_MODULE_1__.DVEC.builder.nodes.buildNode(data);
             if (!nodeData)
                 return onDone ? onDone(false) : 0;
             onDone ? onDone(nodeData[0], nodeData[1]) : 0;
         }, "deferred"),
         chunk: {
-            tasks: threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.buildChunk, async (buildData, onDone) => {
+            tasks: threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.buildChunk, async (buildData, onDone) => {
                 const location = buildData.data[0];
                 await _DivineVoxelEngineConstructor_js__WEBPACK_IMPORTED_MODULE_1__.DVEC.builder.buildChunk(location, buildData.data[1]);
                 if (onDone)
                     onDone();
             }),
         },
-        column: threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.buildColumn, async (data, onDone) => {
+        column: threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.buildColumn, async (data, onDone) => {
             const column = _Data_World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_4__.WorldRegister.column.get(data[0]);
             if (!column)
                 return false;
@@ -7750,49 +7750,49 @@ const Tasks = {
         }, "deferred"),
     },
     voxelUpdate: {
-        update: threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.voxelUpdate, async (data, onDone) => {
+        update: threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.voxelUpdate, async (data, onDone) => {
             await (0,_Functions_VoxelUpdate_js__WEBPACK_IMPORTED_MODULE_3__.VoxelUpdate)(data);
             if (onDone)
                 onDone();
         }, "deferred"),
-        erase: threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.voxelErease, async (data, onDone) => {
+        erase: threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.voxelErease, async (data, onDone) => {
             await (0,_Functions_VoxelUpdate_js__WEBPACK_IMPORTED_MODULE_3__.EreaseAndUpdate)(data);
             if (onDone)
                 onDone();
         }, "deferred"),
-        paint: threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.voxelPaint, async (data, onDone) => {
+        paint: threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.voxelPaint, async (data, onDone) => {
             await (0,_Functions_VoxelUpdate_js__WEBPACK_IMPORTED_MODULE_3__.PaintAndUpdate)(data);
             if (onDone)
                 onDone();
         }, "deferred"),
     },
-    explosion: threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.explosion, async (data) => {
+    explosion: threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.explosion, async (data) => {
         await _DivineVoxelEngineConstructor_js__WEBPACK_IMPORTED_MODULE_1__.DVEC.propagation.expolosion.run(_TasksRequest_js__WEBPACK_IMPORTED_MODULE_6__.TasksRequest.getExplosionRequests(data[0], data[1], data[2], data[3]));
     }),
-    worldSun: threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.worldSun, (data, onDone) => {
+    worldSun: threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.worldSun, (data, onDone) => {
         _DivineVoxelEngineConstructor_js__WEBPACK_IMPORTED_MODULE_1__.DVEC.propagation.worldSun.run(_TasksRequest_js__WEBPACK_IMPORTED_MODULE_6__.TasksRequest.getWorldSunRequests(data[0], data[1]));
         if (onDone)
             onDone();
     }, "deferred"),
     worldGen: {
-        generate: threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.generate, (data, onDone) => {
+        generate: threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.generate, (data, onDone) => {
             if (!onDone)
                 return;
             _DivineVoxelEngineConstructor_js__WEBPACK_IMPORTED_MODULE_1__.DVEC.worldGen.generate(data, "generate", onDone);
         }, "deferred"),
-        decorate: threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.decorate, (data, onDone) => {
+        decorate: threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.decorate, (data, onDone) => {
             if (!onDone)
                 return;
             _DivineVoxelEngineConstructor_js__WEBPACK_IMPORTED_MODULE_1__.DVEC.worldGen.generate(data, "decorate", onDone);
         }, "deferred"),
     },
     anaylzer: {
-        propagation: threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.analyzerPropagation, async (data, onDone) => {
+        propagation: threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.analyzerPropagation, async (data, onDone) => {
             await _DivineVoxelEngineConstructor_js__WEBPACK_IMPORTED_MODULE_1__.DVEC.analyzer.runPropagation(data);
             if (onDone)
                 onDone();
         }, "deferred"),
-        update: threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.analyzerUpdate, async (data, onDone) => {
+        update: threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.registerTasks(_Common_Threads_Contracts_ConstructorTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorTasks.analyzerUpdate, async (data, onDone) => {
             await _DivineVoxelEngineConstructor_js__WEBPACK_IMPORTED_MODULE_1__.DVEC.analyzer.runUpdate(data);
             if (onDone)
                 onDone();
@@ -8033,7 +8033,7 @@ class Request {
         this.originThread = originThread;
         this.queues = queues;
         if (originThread != "self") {
-            this.comm = threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.getComm(originThread);
+            this.comm = threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.getComm(originThread);
         }
         this.rebuildTasks = [this.origin, this.buildQueue, this.priority];
         return this;
@@ -8211,9 +8211,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var threadcomm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! threadcomm */ "../../DSLIBS/threadComm/dist/index.js");
 
-const ParentComm = threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.parent;
-const RichWorldComm = threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.createComm("rich-world");
-const WorldComm = threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.createComm("world");
+const ParentComm = threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.parent;
+const RichWorldComm = threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.createComm("rich-world");
+const WorldComm = threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.createComm("world");
 
 
 /***/ }),
@@ -8581,61 +8581,61 @@ __webpack_require__.r(__webpack_exports__);
 
 const DataSyncNode = {
     maps: {
-        strings: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.registerStringMap, (data) => {
+        strings: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.registerStringMap, (data) => {
             _Register_MappedDataRegister_js__WEBPACK_IMPORTED_MODULE_9__.MappedDataRegister.stringMaps.sync(data);
         }),
-        objects: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.registerObjectMap, (data) => {
+        objects: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.registerObjectMap, (data) => {
             _Register_MappedDataRegister_js__WEBPACK_IMPORTED_MODULE_9__.MappedDataRegister.objectMaps.sync(data);
         }),
     },
     palettes: {
-        voxel: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.voxelPalette, ([palette, map]) => {
+        voxel: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.voxelPalette, ([palette, map]) => {
             _Voxel_VoxelPalette_js__WEBPACK_IMPORTED_MODULE_3__.VoxelPaletteReader.setVoxelPalette(palette, map);
         }),
-        substance: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.substancePalette, ([palette, map]) => {
+        substance: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.substancePalette, ([palette, map]) => {
             _Substance_SubstancePalette_js__WEBPACK_IMPORTED_MODULE_11__.SubstancePaletteReader.setPalette(palette, map);
         }),
     },
     worldData: {
-        dimension: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.dimesnion, (data) => {
+        dimension: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.dimesnion, (data) => {
             _World_Dimensions_DimensionsRegister_js__WEBPACK_IMPORTED_MODULE_4__.DimensionsRegister.registerDimension(data.id, data.options);
         }),
-        chunk: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.chunk, (data) => {
+        chunk: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.chunk, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.chunk.add(data[0], data[1]);
         }, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.chunk.remove(data);
         }),
-        column: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.column, (data) => {
+        column: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.column, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.column.add(data[0], data[1]);
         }, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.column.remove(data);
         }),
-        region: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.region, (data) => {
+        region: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.region, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.region.add(data[0], data[1]);
         }, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.region.remove(data);
         }),
-        regionHeader: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.regionHeader, (data) => {
+        regionHeader: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.regionHeader, (data) => {
             _World_Region_RegionHeaderRegister_js__WEBPACK_IMPORTED_MODULE_10__.RegionHeaderRegister.add(data[0], data[1]);
         }, (data) => {
             _World_Region_RegionHeaderRegister_js__WEBPACK_IMPORTED_MODULE_10__.RegionHeaderRegister.remove(data);
         }),
     },
     tags: {
-        voxel: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.voxelTags, (data) => {
+        voxel: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.voxelTags, (data) => {
             _Voxel_VoxelTags_js__WEBPACK_IMPORTED_MODULE_8__.VoxelTags.$INIT(data[0]);
             _Voxel_VoxelTags_js__WEBPACK_IMPORTED_MODULE_8__.VoxelTags.sync(new Uint16Array(data[1]));
         }),
-        substance: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.substanceTags, (data) => {
+        substance: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.substanceTags, (data) => {
             _Substance_SubstanceTags_js__WEBPACK_IMPORTED_MODULE_12__.SubstanceTags.$INIT(data);
         }),
-        chunk: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.chunkTags, (data) => {
+        chunk: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.chunkTags, (data) => {
             _World_Chunk_ChunkTags_js__WEBPACK_IMPORTED_MODULE_5__.ChunkTags.$INIT(data);
         }),
-        column: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.columnTags, (data) => {
+        column: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.columnTags, (data) => {
             _World_Column_ColumnTags_js__WEBPACK_IMPORTED_MODULE_7__.ColumnTags.$INIT(data);
         }),
-        region: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.regionTags, (data) => {
+        region: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.regionTags, (data) => {
             _World_Region_RegionTags_js__WEBPACK_IMPORTED_MODULE_6__.RegionTags.$INIT(data[0]);
             _World_Region_RegionTags_js__WEBPACK_IMPORTED_MODULE_6__.RegionHeaderTags.$INIT(data[1]);
         }),
