@@ -1,7 +1,7 @@
 import type { QuadVertexes } from "../Types/Geometry.types";
 
 import { QuadBuilderTool, QuadUVTool } from "./MeshBuilderTool.js";
-import { QuadScalarVertexData } from "@divinevoxel/core/Meshing/";
+import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
 import { VoxelShaderDataTool } from "../../Tools/Shaders/VoxelShaderData.js";
 
 const faceData = new VoxelShaderDataTool();

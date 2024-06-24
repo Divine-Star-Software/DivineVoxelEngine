@@ -1,12 +1,12 @@
 //types
-import type { CommBase, CommManager } from "@divinestar/threads/";
+import type { Thread, ThreadPool } from "@amodx/threads/";
 
 import type {
   PaletteSyncData,
   RegisterObjectMapSync,
   RegisterStringMapSync,
 } from "Types/DataSync.types.js";
-import type { RemoteBinaryStructData } from "@divinestar/binary/";
+import type { RemoteBinaryStructData } from "@amodx/binary/";
 //objects
 
 import { VoxelStruct } from "../../../Data/Voxel/VoxelStruct.js";
@@ -19,15 +19,15 @@ import { SubstanceTagBuilder } from "./StructBuilders/SubstanceStructBuilder.js"
 import { CommSyncOptions } from "./DataSyncNode.js";
 import { DataSyncNode } from "./DataSyncNode.js";
 import { VoxelDataGenerator } from "./Generators/VoxelDataGenerator.js";
-import { Pipeline, AsyncPipeline } from "@divinestar/utils/Pipelines/";
+import { Pipeline, AsyncPipeline } from "@amodx/core/Pipelines/";
 import { DataSyncIds } from "../../Common/DataSyncIds.js";
 import { DVEWorldCore } from "../DVEWorldCore.js";
 
 export abstract class DataSync {
   static instance: DataSync;
   static constructorPipeLine = new Pipeline<DataSync>();
-  commMap = new Map<string, CommBase | CommManager>();
-  comms: (CommBase | CommManager)[] = [];
+  commMap = new Map<string, Thread | ThreadPool>();
+  comms: (Thread | ThreadPool)[] = [];
   commOptions = new WeakMap<any, CommSyncOptions>();
   _ready = false;
 
@@ -71,7 +71,7 @@ export abstract class DataSync {
   }
 
   registerComm(
-    comm: CommBase | CommManager,
+    comm: Thread | ThreadPool,
     data: Partial<CommSyncOptions> = {}
   ) {
     this.comms.push(comm);
@@ -87,7 +87,7 @@ export abstract class DataSync {
   }
 
   loopThroughComms(
-    func: (comm: CommBase | CommManager, options: CommSyncOptions) => void
+    func: (comm: Thread | ThreadPool, options: CommSyncOptions) => void
   ) {
     for (const comm of this.comms) {
       const options = this.commOptions.get(comm)!;

@@ -2,7 +2,7 @@ import type * as FileSystem from "fs";
 import { NodeRegionTool } from "./Tools/NodeRegionTool.js";
 import { RegionData, RegionTagIds, SecotrData } from "./Util/DVED.util.js";
 import { VoxelSpaces } from "@divinevoxel/core/Math/Spaces/VoxelSpaces.js";
-import { BinaryNumberTypes, BinaryStruct } from "@divinestar/binary/";
+import { BinaryNumberTypes, BinaryStruct } from "@amodx/binary/";
 import { System } from "./System/System.js";
 import { SystemPath } from "./System/SystemPath.js";
 

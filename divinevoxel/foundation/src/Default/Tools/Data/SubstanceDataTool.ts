@@ -32,6 +32,9 @@ export class SubstanceDataTool {
   isLiquid() {
     return SubstanceStruct.instance[SubstanceTagIds.isLiquid] == 1;
   }
+  cullDense() {
+    return SubstanceStruct.instance[SubstanceTagIds.cullDense] == 1;
+  }
   isOpaque() {
     return this.isSolid() && !this.isTransparent();
   }

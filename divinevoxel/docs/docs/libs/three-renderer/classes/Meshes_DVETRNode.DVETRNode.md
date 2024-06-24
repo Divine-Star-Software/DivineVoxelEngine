@@ -39,4 +39,4 @@ URINode.\_node
 
 #### Defined in
 
-node_modules/@divinestar/uri/Meshes/URINode.d.ts:2
+node_modules/@amodx/uri/Meshes/URINode.d.ts:2

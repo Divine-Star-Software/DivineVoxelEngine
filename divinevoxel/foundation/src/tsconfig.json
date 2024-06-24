@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "../dist",
     "baseUrl": "./",
-    "types": ["@types/node","@divinestar/threads"],
+    "types": ["@types/node","@amodx/threads"],
     "allowJs": true,
     "checkJs": false,
 

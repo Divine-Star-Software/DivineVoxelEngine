@@ -30,16 +30,13 @@ export class PillarBoxVoxelConstructor extends VoxelConstructor {
     super();
   }
   process(tool: VoxelMesherDataTool) {
-    const topCheck = tool.voxel.isSameVoxel(
-      tool.voxel.x,
-      tool.voxel.y + 1,
-      tool.voxel.z
-    );
-    const bottomCheck = tool.voxel.isSameVoxel(
-      tool.voxel.x,
-      tool.voxel.y - 1,
-      tool.voxel.z
-    );
+    const topCheck =
+      tool.nVoxel.loadInAt(tool.voxel.x, tool.voxel.y + 1, tool.voxel.z) &&
+      tool.voxel.isSameVoxel(tool.nVoxel);
+
+    const bottomCheck =
+      tool.nVoxel.loadInAt(tool.voxel.x, tool.voxel.y - 1, tool.voxel.z) &&
+      tool.voxel.isSameVoxel(tool.nVoxel);
 
     let side = -1;
     determineText: if (side) {

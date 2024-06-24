@@ -1,6 +1,6 @@
-import type { LocationData } from "@divinevoxel/core/Math";
+import type { LocationData } from "@divinevoxel/core/Math";;
 
-import { RemoteBinaryStruct } from "@divinestar/binary/";
+import { RemoteBinaryStruct } from "@amodx/binary/";
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces";
 export const RegionHeaderTags = new RemoteBinaryStruct("region-header-tags");
 

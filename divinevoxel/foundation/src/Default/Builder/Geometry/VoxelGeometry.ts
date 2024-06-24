@@ -1,10 +1,10 @@
-import { Vector3Like, Vec2Array, Vec3Array } from "@divinevoxel/core/Math";
+import { Vector3Like, Vec2Array, Vec3Array } from "@amodx/math";
 import { VoxelShaderDataTool } from "../../Tools/Shaders/VoxelShaderData";
 import { VoxelMesherDataTool } from "../Tools/VoxelMesherDataTool";
 
-import { GeometryBuilder } from "@divinevoxel/core/Meshing/Geometry/";
-import { Quad } from "@divinevoxel/core/Meshing/Classes/Quad";
-import { QuadVerticies } from "@divinevoxel/core/Meshing/Geometry.types";
+import { GeometryBuilder } from "@amodx/meshing/Geometry/GeometryBuilder";
+import { Quad } from "@amodx/meshing/Classes/Quad";
+import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 
 const faceData = new VoxelShaderDataTool();
 
@@ -89,6 +89,7 @@ export class VoxelGeometry {
     const worldLight = tool.getWorldLight();
     const worldAO = tool.getWorldAO();
     const texture = tool.getTexture();
+    const overlayTextures = tool.getOverlayTextures();
     const attribute = tool.getAttribute("voxelData");
     const uvs = tool.getAttribute("cuv3");
     const oUVs = tool.getAttribute("ocuv3");
@@ -136,6 +137,27 @@ export class VoxelGeometry {
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.BottomRight].x;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.BottomRight].y;
         uvs[uvIndex++] = texture;
+
+        //1
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopRight];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopLeft];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
+        //2
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopRight];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopLeft];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
+        //3
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopRight];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopLeft];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
+        //4
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopRight];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopLeft];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
       } else {
         attribute[attrIndex++] = faceData
           .setLight(worldLight.getVertex(QuadVerticies.TopLeft))
@@ -170,14 +192,29 @@ export class VoxelGeometry {
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.BottomLeft].x;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.BottomLeft].y;
         uvs[uvIndex++] = texture;
+
+        //1
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopLeft];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopRight];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
+        //2
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopLeft];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopRight];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
+        //3
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopLeft];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopRight];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
+        //4
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopLeft];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopRight];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
+        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
       }
 
-      for (let i = 0; i < 4; i++) {
-        oUVs[oUVIndex++] = 0;
-        oUVs[oUVIndex++] = 0;
-        oUVs[oUVIndex++] = 0;
-        oUVs[oUVIndex++] = 0;
-      }
 
       for (let i = 0; i < 4; i++) {
         colors[colorIndex++] = 0;

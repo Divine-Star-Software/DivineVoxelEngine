@@ -1,6 +1,5 @@
 import { DVENodeMeshAttributes } from "Interfaces/Render/Nodes/DVERenderNode.types";
 import type { LocationData } from "Math/index.js";
-import type { VoxelTemplateSubstanceType } from "Types/Voxel.types";
 export type SetChunkMeshTask = [
  location: LocationData,
  meshes: (ChunkMeshData | RemoveChunkTasks)[],
@@ -8,7 +7,7 @@ priority:number
 ];
 
 export type ChunkMeshData = [
- substanceType: VoxelTemplateSubstanceType,
+ substanceType: string,
  meshData : [
   location: LocationData,
    attributes: DVENodeMeshAttributes
@@ -17,13 +16,13 @@ export type ChunkMeshData = [
 
 
 type RemoveChunkTasks = [
- substanceType: VoxelTemplateSubstanceType,
+ substanceType: string,
  removeFlag: false
 ];
 
 export type RemoveChunkMeshTasks = [
  location: LocationData,
- substanceType: VoxelTemplateSubstanceType
+ substanceType: string
 ];
 
 export type RemoveChunksOutsideDistance = [

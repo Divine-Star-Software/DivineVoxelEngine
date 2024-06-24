@@ -758,7 +758,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const DVEDL = {
     environment: "browser",
-    TC: threadcomm__WEBPACK_IMPORTED_MODULE_9__.ThreadComm,
+    TC: threadcomm__WEBPACK_IMPORTED_MODULE_9__.Threads,
     UTIL: _Global_Util_helper_js__WEBPACK_IMPORTED_MODULE_1__.Util,
     settings: _Data_Settings_EngineSettings_js__WEBPACK_IMPORTED_MODULE_0__.EngineSettings,
     dataSyncNode: _Data_DataSyncNode_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncNode,
@@ -802,7 +802,7 @@ async function InitWorker(DVED) {
     if (DVED.environment == "node") {
         parent = "server";
     }
-    await threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.$INIT("data-loader", parent);
+    await threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.$INIT("data-loader", parent);
     await DVED.UTIL.createPromiseCheck({
         check: () => {
             return _Threads_DataLoaderThreadState_js__WEBPACK_IMPORTED_MODULE_0__.DataLoaderThreadState.isReady();
@@ -932,15 +932,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const DataLoaderTasks = {
-    loadRegionHeader: threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.registerTasks("load-region-header", async (data, onDone) => {
+    loadRegionHeader: threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.registerTasks("load-region-header", async (data, onDone) => {
         const success = await _DataLoader_DataHandler_DataHandlerWrapper_js__WEBPACK_IMPORTED_MODULE_2__.DataHanlderWrapper.loadRegionHeader(data);
         return onDone ? onDone(success) : false;
     }, "deferred"),
-    saveColumn: threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.registerTasks("save-column", async (data, onDone) => {
+    saveColumn: threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.registerTasks("save-column", async (data, onDone) => {
         await _DataLoader_DataHandler_DataHandlerWrapper_js__WEBPACK_IMPORTED_MODULE_2__.DataHanlderWrapper.saveColumn(data);
         return onDone ? onDone() : false;
     }, "deferred"),
-    loadColumn: threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.registerTasks("load-column", async (data, onDone) => {
+    loadColumn: threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.registerTasks("load-column", async (data, onDone) => {
         if (_Data_World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_3__.WorldRegister.column.get(data)) {
             if (onDone) {
                 onDone();
@@ -956,7 +956,7 @@ const DataLoaderTasks = {
         });
         inte.stop();
     }, "deferred"),
-    unLoadColumn: threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.registerTasks("unload-column", async (data, onDone) => {
+    unLoadColumn: threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.registerTasks("unload-column", async (data, onDone) => {
         if (!_Data_World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_3__.WorldRegister.column.get(data)) {
             if (onDone)
                 onDone();
@@ -968,11 +968,11 @@ const DataLoaderTasks = {
                 onDone();
         });
     }, "deferred"),
-    setPath: threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.registerTasks("set-path", async (data, onDone) => {
+    setPath: threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.registerTasks("set-path", async (data, onDone) => {
         await _DataLoader_DataHandler_DataHandlerWrapper_js__WEBPACK_IMPORTED_MODULE_2__.DataHanlderWrapper.setPath(data[0]);
         return onDone ? onDone() : false;
     }, "deferred"),
-    columnExists: threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.registerTasks("column-exists", async (data, onDone) => {
+    columnExists: threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.registerTasks("column-exists", async (data, onDone) => {
         if (_Data_World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_3__.WorldRegister.column.get(data)) {
             if (onDone) {
                 onDone();
@@ -985,7 +985,7 @@ const DataLoaderTasks = {
         }
         return false;
     }, "deferred"),
-    columnTimestamp: threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.registerTasks("column-timestamp", async (data, onDone) => {
+    columnTimestamp: threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.registerTasks("column-timestamp", async (data, onDone) => {
         const time = await _DataLoader_DataHandler_DataHandlerWrapper_js__WEBPACK_IMPORTED_MODULE_2__.DataHanlderWrapper.columnTimestamp(data);
         if (onDone) {
             onDone(time);
@@ -1039,10 +1039,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const ParentComm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.parent;
-const RichWorldComm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.createComm("rich-world");
-const WorldComm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.createComm("world");
-threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.registerTasks("sync-settings", (settings) => {
+const ParentComm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.parent;
+const RichWorldComm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.createComm("rich-world");
+const WorldComm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.createComm("world");
+threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.registerTasks("sync-settings", (settings) => {
     _DataLoaderThreadState_js__WEBPACK_IMPORTED_MODULE_2__.DataLoaderThreadState._settingsSynced = true;
     _Data_Settings_EngineSettings_js__WEBPACK_IMPORTED_MODULE_0__.EngineSettings.syncSettings(settings);
     _Data_DataHooks_js__WEBPACK_IMPORTED_MODULE_3__.DataHooks.settingsSynced.run(settings);
@@ -1127,61 +1127,61 @@ __webpack_require__.r(__webpack_exports__);
 
 const DataSyncNode = {
     maps: {
-        strings: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.registerStringMap, (data) => {
+        strings: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.registerStringMap, (data) => {
             _Register_MappedDataRegister_js__WEBPACK_IMPORTED_MODULE_9__.MappedDataRegister.stringMaps.sync(data);
         }),
-        objects: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.registerObjectMap, (data) => {
+        objects: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.registerObjectMap, (data) => {
             _Register_MappedDataRegister_js__WEBPACK_IMPORTED_MODULE_9__.MappedDataRegister.objectMaps.sync(data);
         }),
     },
     palettes: {
-        voxel: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.voxelPalette, ([palette, map]) => {
+        voxel: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.voxelPalette, ([palette, map]) => {
             _Voxel_VoxelPalette_js__WEBPACK_IMPORTED_MODULE_3__.VoxelPaletteReader.setVoxelPalette(palette, map);
         }),
-        substance: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.substancePalette, ([palette, map]) => {
+        substance: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.substancePalette, ([palette, map]) => {
             _Substance_SubstancePalette_js__WEBPACK_IMPORTED_MODULE_11__.SubstancePaletteReader.setPalette(palette, map);
         }),
     },
     worldData: {
-        dimension: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.dimesnion, (data) => {
+        dimension: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.dimesnion, (data) => {
             _World_Dimensions_DimensionsRegister_js__WEBPACK_IMPORTED_MODULE_4__.DimensionsRegister.registerDimension(data.id, data.options);
         }),
-        chunk: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.chunk, (data) => {
+        chunk: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.chunk, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.chunk.add(data[0], data[1]);
         }, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.chunk.remove(data);
         }),
-        column: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.column, (data) => {
+        column: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.column, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.column.add(data[0], data[1]);
         }, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.column.remove(data);
         }),
-        region: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.region, (data) => {
+        region: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.region, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.region.add(data[0], data[1]);
         }, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.region.remove(data);
         }),
-        regionHeader: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.regionHeader, (data) => {
+        regionHeader: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.regionHeader, (data) => {
             _World_Region_RegionHeaderRegister_js__WEBPACK_IMPORTED_MODULE_10__.RegionHeaderRegister.add(data[0], data[1]);
         }, (data) => {
             _World_Region_RegionHeaderRegister_js__WEBPACK_IMPORTED_MODULE_10__.RegionHeaderRegister.remove(data);
         }),
     },
     tags: {
-        voxel: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.voxelTags, (data) => {
+        voxel: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.voxelTags, (data) => {
             _Voxel_VoxelTags_js__WEBPACK_IMPORTED_MODULE_8__.VoxelTags.$INIT(data[0]);
             _Voxel_VoxelTags_js__WEBPACK_IMPORTED_MODULE_8__.VoxelTags.sync(new Uint16Array(data[1]));
         }),
-        substance: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.substanceTags, (data) => {
+        substance: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.substanceTags, (data) => {
             _Substance_SubstanceTags_js__WEBPACK_IMPORTED_MODULE_12__.SubstanceTags.$INIT(data);
         }),
-        chunk: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.chunkTags, (data) => {
+        chunk: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.chunkTags, (data) => {
             _World_Chunk_ChunkTags_js__WEBPACK_IMPORTED_MODULE_5__.ChunkTags.$INIT(data);
         }),
-        column: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.columnTags, (data) => {
+        column: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.columnTags, (data) => {
             _World_Column_ColumnTags_js__WEBPACK_IMPORTED_MODULE_7__.ColumnTags.$INIT(data);
         }),
-        region: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.regionTags, (data) => {
+        region: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.regionTags, (data) => {
             _World_Region_RegionTags_js__WEBPACK_IMPORTED_MODULE_6__.RegionTags.$INIT(data[0]);
             _World_Region_RegionTags_js__WEBPACK_IMPORTED_MODULE_6__.RegionHeaderTags.$INIT(data[1]);
         }),
@@ -1213,7 +1213,7 @@ class RichDataTool extends _Classes_LocationBoundTool_js__WEBPACK_IMPORTED_MODUL
     _enabled = false;
     constructor() {
         super();
-        this.comm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.getComm("rich-world");
+        this.comm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.getComm("rich-world");
         if (!this.comm || !this.comm.isPortSet()) {
             this._enabled = false;
             if (this.comm) {
@@ -1513,7 +1513,7 @@ class ZeneithError extends Error {
         super();
         console.group();
         console.error(`[ZDB ERROR: ${new Date().toLocaleTimeString()}]
-   [THREAD: name: ${threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.threadName} number: ${threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.threadName} parent : ${threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.parent.name}]
+   [THREAD: name: ${threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.threadName} number: ${threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.threadName} parent : ${threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.parent.name}]
    ${message}`, data);
         console.table(_ZeneithDB_js__WEBPACK_IMPORTED_MODULE_0__.ZeneithDB.core.loadedDatabases);
         console.groupEnd();
@@ -1561,9 +1561,9 @@ class SecureIDBWrap {
             time: new Date().toLocaleTimeString(),
             dataBaseId: id,
             thread: {
-                name: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.threadName,
-                number: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.threadNumber,
-                parent: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.parent.name,
+                name: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.threadName,
+                number: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.threadNumber,
+                parent: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.parent.name,
             },
         });
     }
@@ -1690,13 +1690,13 @@ const ZeneithDBCore = {
     tasks: {
         close(comm, id) {
             return new Promise(async (resolve, reject) => {
-                console.log("closing ", id, comm instanceof threadcomm__WEBPACK_IMPORTED_MODULE_3__.CommBase);
-                if (comm instanceof threadcomm__WEBPACK_IMPORTED_MODULE_3__.CommBase) {
+                console.log("closing ", id, comm instanceof threadcomm__WEBPACK_IMPORTED_MODULE_3__.Thread);
+                if (comm instanceof threadcomm__WEBPACK_IMPORTED_MODULE_3__.Thread) {
                     return comm.runPromiseTasks("zdb-close-database", id, [], () => {
                         resolve(true);
                     });
                 }
-                if (comm instanceof threadcomm__WEBPACK_IMPORTED_MODULE_3__.CommManager) {
+                if (comm instanceof threadcomm__WEBPACK_IMPORTED_MODULE_3__.ThreadPool) {
                     await Promise.all(comm.__comms.map((_) => new Promise((r) => {
                         _.runPromiseTasks("zdb-close-database", id, [], () => {
                             r(true);
@@ -1710,12 +1710,12 @@ const ZeneithDBCore = {
         },
         open(comm, id) {
             return new Promise(async (resolve, reject) => {
-                if (comm instanceof threadcomm__WEBPACK_IMPORTED_MODULE_3__.CommBase) {
+                if (comm instanceof threadcomm__WEBPACK_IMPORTED_MODULE_3__.Thread) {
                     return comm.runPromiseTasks("zdb-open-database", id, [], () => {
                         resolve(true);
                     });
                 }
-                if (comm instanceof threadcomm__WEBPACK_IMPORTED_MODULE_3__.CommManager) {
+                if (comm instanceof threadcomm__WEBPACK_IMPORTED_MODULE_3__.ThreadPool) {
                     await Promise.all(comm.__comms.map((_) => new Promise((r) => {
                         _.runPromiseTasks("zdb-open-database", id, [], () => {
                             r(true);
@@ -1747,7 +1747,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function RegisterZeneithTasks() {
-    threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.registerTasks("zdb-close-database", async (dbId, onDone) => {
+    threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.registerTasks("zdb-close-database", async (dbId, onDone) => {
         const db = _ZeneithDBCore_js__WEBPACK_IMPORTED_MODULE_1__.ZeneithDBCore.loadedDatabases[dbId];
         if (!db)
             return;
@@ -1756,7 +1756,7 @@ function RegisterZeneithTasks() {
         if (onDone)
             onDone();
     }, "deferred");
-    threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.registerTasks("zdb-open-database", async (dbId, onDone) => {
+    threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.registerTasks("zdb-open-database", async (dbId, onDone) => {
         const db = _ZeneithDBCore_js__WEBPACK_IMPORTED_MODULE_1__.ZeneithDBCore.loadedDatabases[dbId];
         if (!db)
             return;

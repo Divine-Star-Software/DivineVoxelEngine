@@ -1,6 +1,6 @@
 import { DivineVoxelEngineWorld } from "./index.js";
-import { ThreadComm } from "@divinestar/threads/";
-import { CreatePromiseCheck } from "@divinestar/utils/Intervals/CreatePromiseCheck.js";
+import { Threads } from "@amodx/threads/";
+import { CreatePromiseCheck } from "@amodx/core/Intervals/CreatePromiseCheck.js";
 
 export default function (DVEW: DivineVoxelEngineWorld): Promise<any> {
   return new Promise(async (resolve) => {
@@ -8,7 +8,7 @@ export default function (DVEW: DivineVoxelEngineWorld): Promise<any> {
     if (DivineVoxelEngineWorld.environment == "node") {
       parent = "server";
     }
-    await ThreadComm.$INIT("world", parent);
+    await Threads.init("world", parent);
     await DVEW.core.init();
     await CreatePromiseCheck({
       check: () => {
@@ -17,15 +17,15 @@ export default function (DVEW: DivineVoxelEngineWorld): Promise<any> {
       checkInterval: 1,
     });
 
-    ThreadComm.registerTasks("sync-all-data", async () => {
+    Threads.registerTasks("sync-all-data", async () => {
       await DVEW.core.dataSync.init(DVEW.core);
 
-      await DVEW.core.threads.constructors.__comms.map((comm) =>
+      await DVEW.core.threads.constructors.getThreads().map((comm) =>
         comm.waitTillTasksExist("ready")
       );
 
       await Promise.all(
-        DVEW.core.threads.constructors.__comms.map(
+        DVEW.core.threads.constructors.getThreads().map(
           (comm) =>
             new Promise((resolve) => {
               comm.runPromiseTasks("ready", [], [], () => {

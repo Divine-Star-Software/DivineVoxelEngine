@@ -2,7 +2,7 @@ import { WorldDataBase } from "./WorldDataBase";
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces";
 import { LocationData } from "@divinevoxel/core/Math";
 import { DataLoaderSegments } from "Interfaces/DataLoader/DVEDataHandler";
-import { Compressor } from "@divinestar/utils/Compression/Compression";
+import { Compressor } from "@amodx/core/Compression/Compression";
 export class WorldDataTool {
   async setPath(id: string) {
     return true;

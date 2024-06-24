@@ -1,4 +1,4 @@
-import { BinaryNumberTypes, BinaryStruct } from "@divinestar/binary/";
+import { BinaryNumberTypes, BinaryStruct } from "@amodx/binary/";
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces.js";
 import { WorldDataStructProperties } from "../../../../Data/Constants/Structs/WorldDataStructProperties.js";
 import { ChunkStructProperties } from "../../../../Data/Constants/Structs/ChunkStructProperties.js";

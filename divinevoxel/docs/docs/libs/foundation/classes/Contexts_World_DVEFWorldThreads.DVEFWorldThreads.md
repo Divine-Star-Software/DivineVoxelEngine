@@ -41,7 +41,7 @@ WorldThreadManager.constructor
 
 ### commMap
 
-• **commMap**: `Map`\<`string`, `CommBase` \| `CommManager`\>
+• **commMap**: `Map`\<`string`, `Thread` \| `ThreadPool`\>
 
 #### Inherited from
 
@@ -55,7 +55,7 @@ ___
 
 ### comms
 
-• **comms**: (`CommBase` \| `CommManager`)[]
+• **comms**: (`Thread` \| `ThreadPool`)[]
 
 #### Inherited from
 
@@ -69,7 +69,7 @@ ___
 
 ### constructors
 
-• **constructors**: `CommManager`
+• **constructors**: `ThreadPool`
 
 #### Inherited from
 
@@ -93,7 +93,7 @@ ___
 
 ### dataLoader
 
-• **dataLoader**: `CommBase`
+• **dataLoader**: `Thread`
 
 #### Defined in
 
@@ -103,7 +103,7 @@ ___
 
 ### nexus
 
-• **nexus**: `CommBase`
+• **nexus**: `Thread`
 
 #### Defined in
 
@@ -113,7 +113,7 @@ ___
 
 ### parent
 
-• **parent**: `CommBase`
+• **parent**: `Thread`
 
 #### Inherited from
 
@@ -148,7 +148,7 @@ ___
 
 ### richWorld
 
-• **richWorld**: `CommBase`
+• **richWorld**: `Thread`
 
 #### Defined in
 
@@ -178,7 +178,7 @@ WorldThreadManager.state
 
 | Name | Type |
 | :------ | :------ |
-| `comm` | `CommBase` \| `CommManager` |
+| `comm` | `Thread` \| `ThreadPool` |
 
 #### Returns
 
@@ -196,7 +196,7 @@ ___
 
 ### getComm
 
-▸ **getComm**(`id`): `CommBase` \| `CommManager`
+▸ **getComm**(`id`): `Thread` \| `ThreadPool`
 
 #### Parameters
 
@@ -206,7 +206,7 @@ ___
 
 #### Returns
 
-`CommBase` \| `CommManager`
+`Thread` \| `ThreadPool`
 
 #### Inherited from
 

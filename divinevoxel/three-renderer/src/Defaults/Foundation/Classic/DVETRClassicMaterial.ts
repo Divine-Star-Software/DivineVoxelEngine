@@ -13,14 +13,14 @@ import {
   BackSide,
 } from "three";
 import { TextureManager } from "@divinevoxel/foundation/Textures/TextureManager.js";
-import { URIShader } from "@divinestar/uri/Shaders/Classes/URIShader.js";
+import { URIShader } from "@amodx/uri/Shaders/Classes/URIShader.js";
 import {
   URIMaterial,
   URIMaterialData,
-} from "@divinestar/uri/Materials/URIMaterial.js";
+} from "@amodx/uri/Materials/URIMaterial.js";
 import { DVETRScene } from "../../../Scene/DVETRScene.js";
-import { URIScene } from "@divinestar/uri/Scenes/URIScene.js";
-import { URITexture } from "@divinestar/uri/Textures/URITexture.js";
+import { URIScene } from "@amodx/uri/Scenes/URIScene.js";
+import { URITexture } from "@amodx/uri/Textures/URITexture.js";
 import { DefaultMaterialManager } from "../DefaultMaterialManager";
 
 type DVETRClassicMaterialBaseData = {

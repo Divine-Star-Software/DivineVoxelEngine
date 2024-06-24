@@ -1,4 +1,4 @@
-import { Vec3Array } from "@divinevoxel/core/Math";
+import { Vec3Array } from "@amodx/math";
 
 export class GeometryNormals {
   static subtract = (v1: Vec3Array, v2: Vec3Array): Vec3Array => {

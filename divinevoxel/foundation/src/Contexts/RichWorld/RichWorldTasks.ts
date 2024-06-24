@@ -1,4 +1,4 @@
-import { BinaryObject } from "@divinestar/binary/";
+import { BinaryObject } from "@amodx/binary/";
 import {
   GetRichDataTasks,
   SetRichColumnTasks,
@@ -6,7 +6,7 @@ import {
 } from "../../Types/Tasks.types.js";
 import { RichColumnDataTool } from "./Tools/RichColumnDataTool.js";
 import { RichDataTool } from "./Tools/RichDataTool.js";
-import { ThreadComm } from "@divinestar/threads/";
+import { Threads } from "@amodx/threads/";
 import { LocationData } from "@divinevoxel/core/Math";
 import { DivineVoxelEngineRichWorld } from "./DivineStarVoxelEngineRichWorld.js";
 
@@ -14,14 +14,14 @@ export default function (DVERW: DivineVoxelEngineRichWorld) {
   const richTool = new RichDataTool();
   const richColumnTool = new RichColumnDataTool();
   const RichDataRegister = DVERW.register;
-  ThreadComm.registerTasks<LocationData>(
+  Threads.registerTasks<LocationData>(
     "has-data",
     (location, onDone) => {
       if (onDone) onDone(Boolean(RichDataRegister.column.get(location)));
     },
     "deferred"
   );
-  ThreadComm.registerTasks<GetRichDataTasks>(
+  Threads.registerTasks<GetRichDataTasks>(
     "get-data",
     ([location, segment], onDone) => {
       if (!onDone) return false;
@@ -34,7 +34,7 @@ export default function (DVERW: DivineVoxelEngineRichWorld) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks<SetRichDataTasks>(
+  Threads.registerTasks<SetRichDataTasks>(
     "set-data",
     ([location, segment, objectBuffer], onDone) => {
       richColumnTool.setLocation(location).loadIn();
@@ -46,7 +46,7 @@ export default function (DVERW: DivineVoxelEngineRichWorld) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks<GetRichDataTasks>(
+  Threads.registerTasks<GetRichDataTasks>(
     "remove-data",
     ([location, segment], onDone) => {
       if (onDone)
@@ -54,7 +54,7 @@ export default function (DVERW: DivineVoxelEngineRichWorld) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks<LocationData>(
+  Threads.registerTasks<LocationData>(
     "remove-column",
     (location, onDone) => {
       const column = RichDataRegister.column.get(location);
@@ -64,7 +64,7 @@ export default function (DVERW: DivineVoxelEngineRichWorld) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks<LocationData>(
+  Threads.registerTasks<LocationData>(
     "get-column",
     (location, onDone) => {
       const column = RichDataRegister.column.get(location);
@@ -74,7 +74,7 @@ export default function (DVERW: DivineVoxelEngineRichWorld) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks<SetRichColumnTasks>(
+  Threads.registerTasks<SetRichColumnTasks>(
     "set-column",
     ([location, buffer], onDone) => {
       if (!onDone) return false;
@@ -85,7 +85,7 @@ export default function (DVERW: DivineVoxelEngineRichWorld) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks(
+  Threads.registerTasks(
     "release-all-data",
     (data, onDone) => {
       RichDataRegister.releaeeAll();

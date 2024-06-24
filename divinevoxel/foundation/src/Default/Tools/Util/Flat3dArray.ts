@@ -1,27 +1,27 @@
-import type { Vector3Like, Vec3Array } from"@divinevoxel/core/Math";
+import type { Vector3Like, Vec3Array } from "@amodx/math";
 
 export class Flat3DIndex {
- _position = {
-  x: 0,
-  y: 0,
-  z: 0,
- };
- bounds = {
-  x: 0,
-  y: 0,
-  z: 0,
- };
+  _position = {
+    x: 0,
+    y: 0,
+    z: 0,
+  };
+  bounds = {
+    x: 0,
+    y: 0,
+    z: 0,
+  };
 
- getIndex(x: number, y: number, z: number) {
-  return x + y * this.bounds.x + z * this.bounds.z * this.bounds.y;
- }
+  getIndex(x: number, y: number, z: number) {
+    return x + y * this.bounds.x + z * this.bounds.z * this.bounds.y;
+  }
 
- getXYZ(index: number): Vector3Like {
-  this._position.x = index % this.bounds.x >> 0;
-  this._position.y = (index / this.bounds.x) % this.bounds.y >> 0;
-  this._position.z = (index / (this.bounds.x * this.bounds.y)) >> 0;
-  return this._position;
- }
+  getXYZ(index: number): Vector3Like {
+    this._position.x = index % this.bounds.x >> 0;
+    this._position.y = (index / this.bounds.x) % this.bounds.y >> 0;
+    this._position.z = (index / (this.bounds.x * this.bounds.y)) >> 0;
+    return this._position;
+  }
 }
 
 /**# Flat 3D Array
@@ -29,68 +29,71 @@ export class Flat3DIndex {
  * Used to treat a number or typed array 1d array as a 3d array.
  */
 export class Flat3DArray extends Flat3DIndex {
- array: number[] | Uint8Array = [];
- volumne = 0;
+  array: number[] | Uint8Array = [];
+  volumne = 0;
 
- constructor(public bounds: Vector3Like) {
-  super();
-  this.volumne = bounds.x * bounds.y * bounds.z;
-  this.fillArray();
- }
-
- updateBounds(bounds: Vector3Like) {
-  this.bounds.x = bounds.x;
-  this.bounds.y = bounds.y;
-  this.bounds.z = bounds.z;
-  this.array = [];
-  this.fillArray();
- }
-
- setArray(array: number[] | Uint8Array) {
-  this.array = array;
- }
-
- fillArray(value = 0) {
-  for (let i = 0; i < this.volumne; i++) {
-   this.array[i] = value;
+  constructor(public bounds: Vector3Like) {
+    super();
+    this.volumne = bounds.x * bounds.y * bounds.z;
+    this.fillArray();
   }
- }
 
- getValue(x: number, y: number, z: number) {
-  return this.array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];
- }
- getValueUseObj(position: Vector3Like) {
-  return this.array[
-   position.x +
-    position.y * this.bounds.x +
-    position.z * this.bounds.z * this.bounds.y
-  ];
- }
+  updateBounds(bounds: Vector3Like) {
+    this.bounds.x = bounds.x;
+    this.bounds.y = bounds.y;
+    this.bounds.z = bounds.z;
+    this.array = [];
+    this.fillArray();
+  }
 
- setValue(x: number, y: number, z: number, value: number) {
-  this.array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] = value;
- }
- setValueUseObj(position: Vector3Like, value: number) {
-  this.array[
-   position.x +
-    position.y * this.bounds.x +
-    position.z * this.bounds.z * this.bounds.y
-  ] = value;
- }
+  setArray(array: number[] | Uint8Array) {
+    this.array = array;
+  }
 
- deleteValue(x: number, y: number, z: number) {
-  //@ts-ignore
-  this.array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] =
-   undefined;
- }
- deleteUseObj(position: Vector3Like) {
-  //@ts-ignore
-  this.array[
-   position.x +
-    position.y * this.bounds.x +
-    position.z * this.bounds.z * this.bounds.y
-  ] = undefined;
- }
+  fillArray(value = 0) {
+    for (let i = 0; i < this.volumne; i++) {
+      this.array[i] = value;
+    }
+  }
+
+  getValue(x: number, y: number, z: number) {
+    return this.array[
+      x + y * this.bounds.x + z * this.bounds.z * this.bounds.y
+    ];
+  }
+  getValueUseObj(position: Vector3Like) {
+    return this.array[
+      position.x +
+        position.y * this.bounds.x +
+        position.z * this.bounds.z * this.bounds.y
+    ];
+  }
+
+  setValue(x: number, y: number, z: number, value: number) {
+    this.array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] =
+      value;
+  }
+  setValueUseObj(position: Vector3Like, value: number) {
+    this.array[
+      position.x +
+        position.y * this.bounds.x +
+        position.z * this.bounds.z * this.bounds.y
+    ] = value;
+  }
+
+  deleteValue(x: number, y: number, z: number) {
+    //@ts-ignore
+    this.array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] =
+      undefined;
+  }
+  deleteUseObj(position: Vector3Like) {
+    //@ts-ignore
+    this.array[
+      position.x +
+        position.y * this.bounds.x +
+        position.z * this.bounds.z * this.bounds.y
+    ] = undefined;
+  }
 }
 
 /**# Flat 3D Any Array
@@ -98,43 +101,46 @@ export class Flat3DArray extends Flat3DIndex {
  * Used to treat a 1d array as a 3d array.
  */
 export class Flat3DAnyArray<T> extends Flat3DIndex {
- _position = {
-  x: 0,
-  y: 0,
-  z: 0,
- };
+  _position = {
+    x: 0,
+    y: 0,
+    z: 0,
+  };
 
- volumne = 0;
- constructor(bounds: Vec3Array, public array: T[]) {
-  super();
-  this.bounds.x = bounds[0];
-  this.bounds.y = bounds[1];
-  this.bounds.z = bounds[2];
+  volumne = 0;
+  constructor(bounds: Vec3Array, public array: T[]) {
+    super();
+    this.bounds.x = bounds[0];
+    this.bounds.y = bounds[1];
+    this.bounds.z = bounds[2];
 
-  this.volumne = this.bounds.x * this.bounds.y * this.bounds.z;
- }
+    this.volumne = this.bounds.x * this.bounds.y * this.bounds.z;
+  }
 
- updateBounds(bounds: Vector3Like) {
-  this.bounds.x = bounds.x;
-  this.bounds.y = bounds.y;
-  this.bounds.z = bounds.z;
- }
+  updateBounds(bounds: Vector3Like) {
+    this.bounds.x = bounds.x;
+    this.bounds.y = bounds.y;
+    this.bounds.z = bounds.z;
+  }
 
- setArray(array: T[]) {
-  this.array = array;
- }
+  setArray(array: T[]) {
+    this.array = array;
+  }
 
- getValue(x: number, y: number, z: number) {
-  return this.array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];
- }
+  getValue(x: number, y: number, z: number) {
+    return this.array[
+      x + y * this.bounds.x + z * this.bounds.z * this.bounds.y
+    ];
+  }
 
- setValue(x: number, y: number, z: number, value: T) {
-  this.array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] = value;
- }
+  setValue(x: number, y: number, z: number, value: T) {
+    this.array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] =
+      value;
+  }
 
- deleteValue(x: number, y: number, z: number) {
-  //@ts-ignore
-  this.array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] =
-   undefined;
- }
+  deleteValue(x: number, y: number, z: number) {
+    //@ts-ignore
+    this.array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] =
+      undefined;
+  }
 }

@@ -1,5 +1,5 @@
 import type { DVEDDataTypes } from "../../Types/DVED.types";
-import type { LocationData } from "@divinevoxel/core/Math";
+import type { LocationData } from "@divinevoxel/core/Math";;
 import { DVED } from "../DivineVoxelEngineData.js";
 import { System } from "../System/System.js";
 import { RegionSystem } from "../System/RegionSystem.js";

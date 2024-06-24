@@ -4,7 +4,7 @@ import {
   IWGTasksTypes,
 } from "../Types/IWG.types";
 
-import { Vector3Like, Vec3Array, Vector2Like } from "@divinevoxel/core/Math";
+import { Vector3Like, Vec3Array, Vector2Like } from "@amodx/math";
 import { ColumnDataTool } from "../../../Tools/Data/WorldData/ColumnDataTool.js";
 import { $2dMooreNeighborhood } from "@divinevoxel/core/Math/Constants/CardinalNeighbors.js";
 import { BuilderTool } from "../../../Tools/Build/BuilderTool.js";
@@ -21,7 +21,7 @@ import { ColumnState } from "../../Constants/ColumnState";
 import { WorldRegister } from "../../../../Data/World/WorldRegister";
 import { IWGTaskRegister } from "./Tasks/IWGTaskRegister";
 
-import { Square, Circle } from "@divinevoxel/core/Math/Shapes";
+import { Square, Circle } from "@amodx/math/Shapes";
 
 /**# Infinite World Generator
  *

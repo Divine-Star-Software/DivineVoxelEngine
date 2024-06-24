@@ -1,11 +1,11 @@
 import type { TextureData } from "./Texture.types";
-import { URIShader } from "@divinestar/uri/Shaders/Classes/URIShader";
+import { URIShader } from "@amodx/uri/Shaders/Classes/URIShader";
 import { TextureManager } from "./TextureManager.js";
 import { TextureAnimationCreator } from "./TextureAnimations.js";
 import { TextureBuilder } from "./TextureBuilder.js";
 //import { DVENodeMaterial } from "../Materials/NodeMaterial.js";
-import { URIMaterial } from "@divinestar/uri/Materials/URIMaterial";
-import { URITexture } from "@divinestar/uri/Textures/URITexture";
+import { URIMaterial } from "@amodx/uri/Materials/URIMaterial";
+import { URITexture } from "@amodx/uri/Textures/URITexture";
 class TextureSegment {
   totalTextures = 0;
   textureMap = new Map<string, TextureData>();

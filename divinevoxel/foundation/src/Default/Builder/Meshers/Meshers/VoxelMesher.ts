@@ -22,6 +22,9 @@ class VoxelBuilderBase extends Mesher {
     );
 
     if (!mesher || !constructor) return false;
+    ShapeTool.origin.x = 0;
+    ShapeTool.origin.y = 0;
+    ShapeTool.origin.z = 0;
     mesher.resetAll();
     mesher.voxel
       .loadInRaw(rawVoxelData)
@@ -36,8 +39,18 @@ class VoxelBuilderBase extends Mesher {
 
     const [attributes, buffers] = mesher.getAllAttributes();
 
+    for (const [type, data] of attributes) {
+      if (type == "position") {
+        for (let i = 0; i < data.length; i++) {
+          (data as any as number[])[i] -= 0.5;
+        }
+      }
+    }
+
     mesher.voxel.setMode(BuilderDataTool.Modes.WORLD);
     mesher.nVoxel.setMode(BuilderDataTool.Modes.WORLD);
+
+    mesher.resetAttributes();
     return [[location, attributes], buffers];
   }
 }

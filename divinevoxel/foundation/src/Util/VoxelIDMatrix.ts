@@ -1,6 +1,6 @@
-import type { Vec3Array } from "@divinevoxel/core/Math";
+import type { Vec3Array } from "@amodx/math";
 import { DataMatrix } from "./DataMatrix.js";
-import { Flat3DIndex } from "@divinevoxel/core/Math/Flat3DIndex";
+import { Flat3DIndex } from "@amodx/math/Volumes/Indexing/Flat3DIndex.js";
 import { DataTool } from "../Default/Tools/Data/DataTool";
 
 export class VoxelIDMatrix extends DataMatrix<string | number> {

@@ -3,8 +3,8 @@ import {
   RemoteBinaryStructData,
   BinraryStructBase,
   BinaryNumberTypes,
-} from "@divinestar/binary/";
-import { BinaryStruct } from "@divinestar/binary/";
+} from "@amodx/binary/";
+import { BinaryStruct } from "@amodx/binary/";
 import { DataSync } from "../DataSync.js";
 import { MappedDataRegister } from "../../../../Data/Register/MappedDataRegister.js";
 import {

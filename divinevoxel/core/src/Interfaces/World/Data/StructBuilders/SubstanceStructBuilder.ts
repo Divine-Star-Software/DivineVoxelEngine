@@ -1,4 +1,4 @@
-import { BinaryNumberTypes } from "@divinestar/binary";
+import { BinaryNumberTypes } from "@amodx/binary";
 import { SubstanceTagIds } from "../../../../Data/Constants/SubstanceTagIds.js";
 import { StructBuilder } from "../Classes/StructBuilder.js";
 
@@ -42,5 +42,10 @@ SubstanceTagBuilder.addNode([
     type: "number",
     numberType: BinaryNumberTypes.Float32,
     default: 1,
+  },
+  {
+    id: SubstanceTagIds.cullDense,
+    type: "boolean",
+    default: false,
   },
 ]);

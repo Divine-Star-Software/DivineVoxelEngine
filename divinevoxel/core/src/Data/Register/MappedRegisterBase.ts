@@ -26,6 +26,7 @@ export class MappedRegisterBase<Data> {
   segments = new Map<string, MappedRegisterSegment<Data>>();
 
   addSegment(id: string) {
+    if(this.segments.has(id)) return this.segments.get(id)!;
     const newSegment = new MappedRegisterSegment<Data>();
     this.segments.set(id, newSegment);
     return newSegment;
@@ -37,11 +38,7 @@ export class MappedRegisterBase<Data> {
   }
 
   sync(segment: string, id: string, value: Data[]) {
-    let segmentMap = this.segments.get(segment);
-    if (!segmentMap) {
-      segmentMap = new MappedRegisterSegment();
-      this.segments.set(segment, segmentMap);
-    }
+    const segmentMap = this.addSegment(segment);
     segmentMap.add(id, value);
     return;
   }

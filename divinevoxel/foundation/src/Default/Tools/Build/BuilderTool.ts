@@ -1,12 +1,12 @@
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { ChunkDataTool } from "../Data/WorldData/ChunkDataTool.js";
-import { ThreadComm } from "@divinestar/threads/";
-import type { LocationData } from "@divinevoxel/core/Math";
+import { Threads } from "@amodx/threads/";
+import type { LocationData } from "@divinevoxel/core/Math";;
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
 import { TaskTool } from "../../Tools/Tasks/TasksTool.js";
 import type { RemoveChunksOutsideDistance } from "@divinevoxel/core/Contexts/Render/Tasks/RenderTasks.types.js";
 
-const parentComm = ThreadComm.parent;
+const parentComm = Threads.parent;
 export class BuilderTool extends LocationBoundTool {
   static _chunkTool = new ChunkDataTool();
   tasks = new TaskTool();

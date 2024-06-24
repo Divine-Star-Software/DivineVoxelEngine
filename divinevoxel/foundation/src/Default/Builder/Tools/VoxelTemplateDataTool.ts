@@ -1,6 +1,6 @@
 import type { DirectionNames } from "@divinevoxel/core/Types/Util.types.js";
 //data
-import { QuadScalarVertexData } from "@divinevoxel/core/Meshing/";
+import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
 
 export class VoxelTemplateDataTool {
   _active = false;

@@ -1,4 +1,4 @@
-import { BinaryNumberTypes } from "@divinestar/binary";
+import { BinaryNumberTypes } from "@amodx/binary";
 import { VoxelTagIDs } from "../../../../Data/Constants/VoxelTagIds.js";
 import { StructBuilder } from "../Classes/StructBuilder.js";
 

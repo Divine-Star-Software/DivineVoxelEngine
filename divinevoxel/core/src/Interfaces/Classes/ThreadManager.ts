@@ -1,5 +1,5 @@
-import { CommBase, CommManager, CommPortTypes } from "@divinestar/threads";
-import { AsyncPipeline } from "@divinestar/utils/Pipelines";
+import { Thread, ThreadPool, CommPortTypes, Threads } from "@amodx/threads";
+import { AsyncPipeline } from "@amodx/core/Pipelines";
 import { ThreadState } from "./ThreadState";
 
 export abstract class ThreadManager {
@@ -7,24 +7,24 @@ export abstract class ThreadManager {
     setPorts: new AsyncPipeline<ThreadManager>(),
     init: new AsyncPipeline<ThreadManager>(),
   };
-  commMap = new Map<string, CommBase | CommManager>();
-  comms: (CommBase | CommManager)[] = [];
+  commMap = new Map<string, Thread | ThreadPool>();
+  comms: (Thread | ThreadPool)[] = [];
 
   abstract state: ThreadState;
   async init() {
     await this.pipelines.init.pipe(this);
   }
 
-  setCommPort(id: string, ports: CommPortTypes | CommPortTypes[]) {
-    const comm = this.getComm(id);
+  setThreadPort(id: string, ports: CommPortTypes | CommPortTypes[]) {
+    const comm = this.getThread(id);
     let error;
-    if (Array.isArray(ports) && comm instanceof CommManager) {
+    if (Array.isArray(ports) && comm instanceof ThreadPool) {
       comm.addPorts(ports);
       return;
     } else
       error =
         "Comm is an instance of comm manager and the passed in ports was not an array.";
-    if (!Array.isArray(ports) && comm instanceof CommBase) {
+    if (!Array.isArray(ports) && comm instanceof Thread) {
       comm.setPort(ports);
       return;
     } else
@@ -32,11 +32,11 @@ export abstract class ThreadManager {
         "Comm is an instance of comm base and the passed in ports was an array.";
     throw new Error(error);
   }
-  addComm(comm: CommBase | CommManager) {
+  addThread(comm: Thread | ThreadPool) {
     this.commMap.set(comm.name, comm);
     this.comms.push(comm);
   }
-  getComm(id: string): CommBase | CommManager {
+  getThread(id: string): Thread | ThreadPool {
     const comm = this.commMap.get(id);
     if (!comm) throw new Error(`Comm with id ${id} does not exists`);
     return comm;

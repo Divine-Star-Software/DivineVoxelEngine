@@ -8,25 +8,25 @@ enum StateMasks {
  * ---
  * Used to decode voxel state data.
  */
-export const VoxelStateReader = {
-  getLevel(stateData: number) {
+export class VoxelStateReader {
+  static getLevel(stateData: number) {
     return stateData & StateMasks.Level;
-  },
-  setLevel(stateData: number, level: number) {
+  }
+  static setLevel(stateData: number, level: number) {
     return (stateData & ~StateMasks.Level) | level;
-  },
+  }
 
-  getLevelState(stateData: number) {
+  static getLevelState(stateData: number) {
     return (stateData & StateMasks.LevelState) >> 4;
-  },
-  setLevelState(stateData: number, levelState: number) {
+  }
+  static setLevelState(stateData: number, levelState: number) {
     return (stateData & ~StateMasks.LevelState) | (levelState << 4);
-  },
+  }
 
-  getShapeState(voxelData: number) {
+  static getShapeState(voxelData: number) {
     return (voxelData & StateMasks.ShapeState) >> 6;
-  },
-  setShapeState(voxelData: number, shapeState: number) {
+  }
+  static setShapeState(voxelData: number, shapeState: number) {
     return (voxelData & ~StateMasks.ShapeState) | (shapeState << 6);
-  },
-};
+  }
+}

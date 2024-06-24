@@ -2,7 +2,7 @@ import {
   RemoteBinaryStruct,
   RemoteBinaryStructData,
   InstantiatedStruct,
-} from "@divinestar/binary/";
+} from "@amodx/binary/";
 import { VoxelTagIDs } from "../../Data/Constants/VoxelTagIds";
 
 export interface VoxelStruct {

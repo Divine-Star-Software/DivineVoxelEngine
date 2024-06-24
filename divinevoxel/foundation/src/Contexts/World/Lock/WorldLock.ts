@@ -4,7 +4,7 @@ import type { LocationData } from "@divinevoxel/core/Math";
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces.js";
 import { DataLoaderTool } from "../../../Default/DataLoader/World/Tools/DataLoaderTool.js";
-import { SafeInterval } from "@divinestar/utils/Intervals/SafeInterval.js";
+import { SafeInterval } from "@amodx/core/Intervals/SafeInterval.js";
 import { UtilMap } from "../../../Util/UtilMap.js";
 
 export const WorldLock = {
@@ -40,12 +40,14 @@ export const WorldLock = {
               const key = location.toString();
               if (this._loadMap.has(key)) continue;
               this._loadMap.set(key, true);
+              let success = false;
               if (!this.dataLoader.isEnabled()) {
-                if (!WorldRegister.instance.column.get(location)) {
-                  WorldRegister.instance.column.fill(location);
+                if (WorldRegister.instance.column.get(location)) {
+                  success = true;
                 }
+              } else {
+                success = await this.dataLoader.loadIfExists(location);
               }
-              const success = await this.dataLoader.loadIfExists(location);
 
               this._loadMap.remove(key);
               if (WorldRegister.instance.column.get(location)) return;

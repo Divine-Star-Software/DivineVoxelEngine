@@ -1,51 +1,92 @@
-import { QuadScalarVertexData } from "@divinevoxel/core/Meshing/";
+import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
 import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 
 import { ShapeTool } from "../../ShapeTool.js";
 import { VoxelShapeBase } from "../../VoxelShapeBase.js";
-
+import { QuadUVData } from "../../../Geometry/Geometry.types.js";
+import { Quad } from "@amodx/meshing/Classes/Quad.js";
+import { DirectionNames } from "@divinevoxel/core";
+import { VoxelGeometry } from "../../../Geometry/VoxelGeometry.js";
 const animationState = new QuadScalarVertexData();
-const addData = () => {
-  return ShapeTool.builder.quad
-    .setDimensions(1, 1)
-    .animationState.add(animationState)
-    .light.add(ShapeTool.data.getWorldLight())
-    .AO.add(ShapeTool.data.getWorldAO())
-    .textures.add(ShapeTool.data.getTexture())
-    .overlayTexture.add(ShapeTool.data.getOverlayTextures());
-};
 
-const shapeStates: Record<number, () => void> = {
-  0: () => {
-    addData().updatePosition(0.5, 0.5, 0.05).setDirection("south").create();
-    addData().setDirection("north").create().clear();
-  },
-  1: () => {
-    addData().updatePosition(0.5, 0.5, 0.95).setDirection("north").create();
-    addData().setDirection("south").create().clear();
-  },
-  2: () => {
-    addData().updatePosition(0.95, 0.5, 0.5).setDirection("east").create();
-    addData().setDirection("west").create().clear();
-  },
-  3: () => {
-    addData().updatePosition(0.05, 0.5, 0.5).setDirection("west").create();
-    addData().setDirection("east").create().clear();
-  },
-  4: () => {
-    addData().updatePosition(0.5, 0.05, 0.5).setDirection("top").create();
-    addData().setDirection("bottom").create().clear();
-  },
-  5: () => {
-    addData().updatePosition(0.5, 0.95, 0.5).setDirection("top").create();
-    addData().setDirection("bottom").create().clear();
-  },
+const uvs: QuadUVData = [
+  [1, 1],
+  [0, 1],
+  [0, 0],
+  [1, 0],
+];
+
+enum PanelStates {
+  South,
+  North,
+  East,
+  West,
+  Bottom,
+  Top,
+}
+const near = 0.05;
+const far = 0.95;
+const QuadsPanel: Record<number, Quad> = {
+  [PanelStates.South]: Quad.Create(
+    [
+      [0, 0, near],
+      [1, 1, near],
+    ],
+    uvs,
+    true,
+    0
+  ),
+  [PanelStates.North]: Quad.Create(
+    [
+      [0, 0, far],
+      [1, 1, far],
+    ],
+    uvs,
+    true,
+    1
+  ),
+  [PanelStates.East]: Quad.Create(
+    [
+      [far, 0, 0],
+      [far, 1, 1],
+    ],
+    uvs,
+    true,
+    0
+  ),
+  [PanelStates.West]: Quad.Create(
+    [
+      [near, 0, 0],
+      [near, 1, 1],
+    ],
+    uvs,
+    false,
+    1
+  ),
+  [PanelStates.Bottom]: Quad.Create(
+    [
+      [0, near, 0],
+      [1, near, 1],
+    ],
+    uvs,
+    false,
+    1
+  ),
+  [PanelStates.Top]: Quad.Create(
+    [
+      [0, far, 0],
+      [1, far, 1],
+    ],
+    uvs,
+    false,
+    0
+  ),
 };
 
 class PanelVoxelShapeClass extends VoxelShapeBase {
   id = "#dve_panel";
   init() {
-    OverrideManager.CullFace.register(
+    OverrideManager.FaceExposedShapeCheck.register(
       this.numberId,
       OverrideManager.ANY,
       (data) => {
@@ -63,7 +104,9 @@ class PanelVoxelShapeClass extends VoxelShapeBase {
       animationState.setAll(2);
     }
 
-    shapeStates[ShapeTool.data.voxel.getShapeState()]();
+    const quad = QuadsPanel[ShapeTool.data.voxel.getShapeState()];
+    quad.flip = ShapeTool.data.isFaceFlipped();
+    VoxelGeometry.addQuad(ShapeTool.data, ShapeTool.origin, quad);
   }
 }
 

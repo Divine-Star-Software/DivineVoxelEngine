@@ -1,4 +1,4 @@
-import { Vector3Like } from "@divinevoxel/core/Math/Vectors.js";
+import { Vector3Like } from "@amodx/math/Vectors/Vector3.js";
 import { VoxelMesherDataTool } from "../Tools/VoxelMesherDataTool.js";
 import { VoxelShapeTool } from "../Tools/VoxelShapeTool.js";
 

@@ -1,23 +1,23 @@
 import { DVERenderer } from "@divinevoxel/core/Interfaces/Render/DVERenderer";
-import { URIScene } from "@divinestar/uri/Scenes/URIScene";
+import { URIScene } from "@amodx/uri/Scenes/URIScene";
 import {
   URITextureData,
   URITexture,
-} from "@divinestar/uri/Textures/URITexture";
+} from "@amodx/uri/Textures/URITexture";
 import { Camera, Scene } from "three";
 import { DVETRMeshCuller } from "./DVETRMeshCuller";
 import { DVETRFOManager } from "./DVETRFOManger";
 import { DVETRScene } from "./Scene/DVETRScene";
-import { URIMaterial } from "@divinestar/uri/Materials/URIMaterial";
+import { URIMaterial } from "@amodx/uri/Materials/URIMaterial";
 import {
   URIInstanceMesh,
   URIInstanceMeshEntity,
-} from "@divinestar/uri/Meshes/URIInstanceMesh";
-import { URIMesh } from "@divinestar/uri/Meshes/URIMesh";
+} from "@amodx/uri/Meshes/URIInstanceMesh";
+import { URIMesh } from "@amodx/uri/Meshes/URIMesh";
 import { DVETRNodeManager } from "./Nodes/DVEBRNodeManager";
 import { DVETRTexture } from "./Textures/DVETRTexture";
 import { DivineVoxelEngineRender } from "@divinevoxel/core/Contexts/Render/DivineVoxelEngineRender";
-import { URIEngine } from "@divinestar/uri/Engine/URIEngine";
+import { URIEngine } from "@amodx/uri/Engine/URIEngine";
 export interface DVEThreeRendererInitData {
   scene: Scene;
   camera: Camera;

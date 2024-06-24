@@ -1,4 +1,4 @@
-import type { Vec3Array } from "@divinevoxel/core/Math";
+import type { Vec3Array } from "@amodx/math";
 
 import { WorldGenRegister } from "./WorldGenRegister.js";
 
@@ -10,7 +10,7 @@ import { LightData } from "../../Data/LightData.js";
 import { DVEFConstrucotrCore } from "../../Contexts/Constructor/DVEFConstructorCore.js";
 import { TasksRequest } from "../../Contexts/Constructor/Tasks/TasksRequest.js";
 import { WorldGeneration } from "./WorldGeneration.js";
-import { SafePromise } from "@divinestar/utils/Promises/SafePromise.js";
+import { SafePromise } from "@amodx/core/Promises/SafePromise.js";
 
 export class WorldGenBrush extends BrushTool {
   constructor() {

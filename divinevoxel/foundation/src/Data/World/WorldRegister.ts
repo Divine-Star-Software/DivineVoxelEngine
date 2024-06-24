@@ -12,7 +12,7 @@ import { WorldBounds } from "@divinevoxel/core/Data/World/WorldBounds.js";
 import { DimensionsRegister } from "./DimensionsRegister.js";
 
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces.js";
-import { Distance3D, type LocationData } from "@divinevoxel/core/Math";
+import { type LocationData } from "@divinevoxel/core/Math";
 import { ChunkDataTool } from "../../Default/Tools/Data/WorldData/ChunkDataTool.js";
 import { ColumnDataTool } from "../../Default/Tools/Data/WorldData/ColumnDataTool.js";
 import { RegionDataTool } from "../../Default/Tools/Data/WorldData/RegionDataTool.js";

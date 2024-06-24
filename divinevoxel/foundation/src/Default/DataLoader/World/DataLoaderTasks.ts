@@ -1,13 +1,13 @@
 import { DivineVoxelEngineDataLoaderWorld } from "./DivineVoxelEngineDataLoaderWorld"
-import type { LocationData } from "@divinevoxel/core/Math";
-import { ThreadComm } from "@divinestar/threads/";
+import type { LocationData } from "@divinevoxel/core/Math";;
+import { Threads } from "@amodx/threads/";
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
-import { SafeInterval } from "@divinestar/utils/Intervals/SafeInterval.js";
+import { SafeInterval } from "@amodx/core/Intervals/SafeInterval.js";
 import { DivineVoxelEngineConstructor } from "@divinevoxel/core/Contexts/Constructor/DivineVoxelEngineConstructor.js";
 
 export default function (DVEDL: DivineVoxelEngineDataLoaderWorld) {
   const DataHanlderWrapper = DVEDL.dataHandler;
-  ThreadComm.registerTasks<LocationData>(
+  Threads.registerTasks<LocationData>(
     "load-region-header",
     async (data, onDone) => {
       const success = await DataHanlderWrapper.loadRegionHeader(data);
@@ -15,7 +15,7 @@ export default function (DVEDL: DivineVoxelEngineDataLoaderWorld) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks<LocationData>(
+  Threads.registerTasks<LocationData>(
     "save-column",
     async (data, onDone) => {
       await DataHanlderWrapper.saveColumn(data);
@@ -23,7 +23,7 @@ export default function (DVEDL: DivineVoxelEngineDataLoaderWorld) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks<LocationData>(
+  Threads.registerTasks<LocationData>(
     "load-column",
     async (data, onDone) => {
       if (WorldRegister.instance.column.get(data)) {
@@ -44,7 +44,7 @@ export default function (DVEDL: DivineVoxelEngineDataLoaderWorld) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks<LocationData>(
+  Threads.registerTasks<LocationData>(
     "unload-column",
     async (data, onDone) => {
       if (!WorldRegister.instance.column.get(data)) {
@@ -63,7 +63,7 @@ export default function (DVEDL: DivineVoxelEngineDataLoaderWorld) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks<[id: string]>(
+  Threads.registerTasks<[id: string]>(
     "set-path",
     async (data, onDone) => {
       await DataHanlderWrapper.setPath(data[0]);
@@ -71,7 +71,7 @@ export default function (DVEDL: DivineVoxelEngineDataLoaderWorld) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks<LocationData>(
+  Threads.registerTasks<LocationData>(
     "column-exists",
     async (data, onDone) => {
       const start = performance.now();
@@ -89,7 +89,7 @@ export default function (DVEDL: DivineVoxelEngineDataLoaderWorld) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks<LocationData>(
+  Threads.registerTasks<LocationData>(
     "column-timestamp",
     async (data, onDone) => {
       const time = await DataHanlderWrapper.columnTimestamp(data);

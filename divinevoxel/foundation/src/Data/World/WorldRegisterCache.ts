@@ -4,9 +4,11 @@ import {
   Flat3DIndex,
   Vec3Array,
   Vector3Like,
+} from "@amodx/math";
+import {
+
   type LocationData,
 } from "@divinevoxel/core/Math";
-
 import { EngineSettings } from "@divinevoxel/core/Data/Settings/EngineSettings.js";
 function vector3Hash(x: number, y: number, z: number) {
   const xHash = Math.abs(x * 73856093) | 0;

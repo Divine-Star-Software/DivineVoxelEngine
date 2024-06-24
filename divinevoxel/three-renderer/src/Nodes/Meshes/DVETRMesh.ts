@@ -1,4 +1,4 @@
-import { URIMesh } from "@divinestar/uri/Meshes/URIMesh";
+import { URIMesh } from "@amodx/uri/Meshes/URIMesh";
 import { Mesh } from "three";
 import { DVETRScene } from "../../Scene/DVETRScene";
 export class DVETRMesh extends URIMesh<DVETRScene, Mesh> {

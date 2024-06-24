@@ -1,5 +1,5 @@
 import { ConstructorTasksIds } from "../Common/ConstructorTasksIds.js";
-import { ThreadComm } from "@divinestar/threads/";
+import { Threads } from "@amodx/threads/";
 
 import type {
   BuildTasks,
@@ -25,11 +25,11 @@ import { DVEFConstrucotrCore } from "./DVEFConstructorCore.js";
 export default function (DVEC: DVEFConstrucotrCore) {
   const chunkTool = new ChunkDataTool();
 
-  ThreadComm.registerTasks("clear-all", () => {
+  Threads.registerTasks("clear-all", () => {
     WorldRegister.instance.clearAll();
   });
 
-  ThreadComm.registerTasks<PriorityTask<BuildTasks>>(
+  Threads.registerTasks<PriorityTask<BuildTasks>>(
     ConstructorTasksIds.BuildChunk,
     async (buildData, onDone) => {
       WorldRegister.instance.cache.enable();
@@ -39,7 +39,7 @@ export default function (DVEC: DVEFConstrucotrCore) {
       WorldRegister.instance.cache.disable();
     }
   );
-  ThreadComm.registerTasks<BuildTasks>(
+  Threads.registerTasks<BuildTasks>(
     ConstructorTasksIds.BuildColumn,
     async (data, onDone) => {
       WorldRegister.instance.cache.enable();
@@ -64,7 +64,7 @@ export default function (DVEC: DVEFConstrucotrCore) {
     "deferred"
   );
 
-  ThreadComm.registerTasks<VoxelUpdateTasks>(
+  Threads.registerTasks<VoxelUpdateTasks>(
     ConstructorTasksIds.VoxelUpdate,
     async (data, onDone) => {
       await VoxelUpdate(data);
@@ -72,7 +72,7 @@ export default function (DVEC: DVEFConstrucotrCore) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks<AnaylzerTask>(
+  Threads.registerTasks<AnaylzerTask>(
     ConstructorTasksIds.VoxelErease,
     async (data, onDone) => {
       await EreaseAndUpdate(data);
@@ -81,7 +81,7 @@ export default function (DVEC: DVEFConstrucotrCore) {
     "deferred"
   );
 
-  ThreadComm.registerTasks<VoxelUpdateTasks>(
+  Threads.registerTasks<VoxelUpdateTasks>(
     ConstructorTasksIds.VoxelPaint,
     async (data, onDone) => {
       await PaintAndUpdate(data);
@@ -90,7 +90,7 @@ export default function (DVEC: DVEFConstrucotrCore) {
     "deferred"
   );
 
-  ThreadComm.registerTasks<ExplosionTasks>(
+  Threads.registerTasks<ExplosionTasks>(
     ConstructorTasksIds.Explosion,
     async (data) => {
       await DVEC.propagation.explosion(
@@ -99,7 +99,7 @@ export default function (DVEC: DVEFConstrucotrCore) {
     }
   );
 
-  ThreadComm.registerTasks<WorldSunTask>(
+  Threads.registerTasks<WorldSunTask>(
     ConstructorTasksIds.WorldSun,
     (data, onDone) => {
       DVEC.propagation.worldSun(
@@ -111,7 +111,7 @@ export default function (DVEC: DVEFConstrucotrCore) {
   );
 
 
-  ThreadComm.registerTasks<AnaylzerTask>(
+  Threads.registerTasks<AnaylzerTask>(
     ConstructorTasksIds.AnalyzerPropagation,
     async (data, onDone) => {
       await DVEC.analyzer.runPropagation(data);
@@ -119,7 +119,7 @@ export default function (DVEC: DVEFConstrucotrCore) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks<AnaylzerTask>(
+  Threads.registerTasks<AnaylzerTask>(
     ConstructorTasksIds.AnalyzerUpdate,
     async (data, onDone) => {
       await DVEC.analyzer.runUpdate(data);

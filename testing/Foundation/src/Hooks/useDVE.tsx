@@ -4,7 +4,7 @@ import { Scene } from "@babylonjs/core/";
 import { Engine } from "@babylonjs/core/Engines/engine.js";
 import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera.js";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
-import { Observable } from "@divinestar/utils/Observers/Observable";
+import { Observable } from "@amodx/core/Observers/Observable";
 import { RenderNodes } from "../Classes/RednerNodes";
 
 const DVEObservers = {

@@ -1,6 +1,6 @@
 import { Vector3 } from "@divinevoxel/core/Math/Classes/Vector3.js";
 import { PhysicsDataTool } from "../Tools/Data/PhysicsDataTool.js";
-import { Vector3Like } from "@divinevoxel/core/Math/index.js";
+import { Vector3Like } from "@amodx/math";
 import { LocationData } from "@divinevoxel/core/Math/";
 import { BoundingBox } from "../Classes/BoundingBox.js";
 import type { Collider } from "../Classes/Collider.js";

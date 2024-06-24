@@ -1,4 +1,4 @@
-import { Observable } from "@divinestar/utils/Observers";
+import { Observable } from "@amodx/core/Observers";
 import { LocationData } from "@divinevoxel/core/Math";
 import { TextureRegister } from "../../Textures/TextureRegister";
 

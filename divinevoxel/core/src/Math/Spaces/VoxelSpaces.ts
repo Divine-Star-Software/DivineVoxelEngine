@@ -1,4 +1,4 @@
-import { Vector3Like } from "../Math.types.js";
+import { Vector3Like } from "@amodx/math";
 import { VoxelSpace, VoxelSpaceData } from "./VoxelSpace.js";
 
 class RegionSpace extends VoxelSpace {

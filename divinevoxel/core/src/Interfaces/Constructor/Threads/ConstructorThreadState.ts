@@ -1,4 +1,4 @@
-import { Environment } from "@divinestar/utils/Environment/Environment.js";
+import { Environment } from "@amodx/core/Environment/Environment.js";
 import { ConstructorThreadManager } from "./ConstrcutorTheads";
 import { ThreadState } from "../../Classes/ThreadState";
 export class ConstructorThreadState extends ThreadState {

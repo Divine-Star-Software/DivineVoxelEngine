@@ -1,41 +1,41 @@
 {
- "name": "@divinevoxel/core",
- "version": "0.0.55",
- "module": "index.js",
- "types": "index.d.ts",
- "type": "module",
- "description": "TypeScript Voxel Engine - Uses Babylon.js",
- "keywords": [
-  "voxel",
-  "voxel engine",
-  "babylon.js"
- ],
- "scripts": {
-  "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ../../LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
-  "compile": "cd ./src && npx tsc --watch",
-  "publish": "npm run build && cd ./dist && npm publish",
-  "copy-js": "cd src && for file in $(find ./ -name '*.js')  \n do \n cp ${file} ../dist/${file} \n done",
-  "sync-wasm": "cp ./kernel/kernel.wasm ../../testing/static/kernel.wasm",
-  "sync-js": "cp ./kernel/kernel.js ./src/Kernel/kernel.js && cp ./kernel/kernel.js ./dist/Kernel/kernel.js"
- },
- "repository": {
-  "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
- },
- "bugs": {
-  "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
- },
- "homepage": "https://github.com/Divine-Star-Software/DivineVoxelEngine",
- "author": "Divine Star Software",
- "license": "MIT",
- "devDependencies": {},
- "dependencies": {
-  "@divinestar/binary": "^0.0.50",
-  "@divinestar/utils": "^0.0.50",
-  "@divinestar/uri": "^0.0.15",
-  "@divinestar/threads": "^0.0.50"
- },
- "main": "index.js",
- "publishConfig": {
-  "access": "public"
- }
+  "name": "@divinevoxel/core",
+  "version": "0.0.55",
+  "module": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "description": "TypeScript Voxel Engine - Uses Babylon.js",
+  "keywords": [
+    "voxel",
+    "voxel engine",
+    "babylon.js"
+  ],
+  "scripts": {
+    "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ../../LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
+    "compile": "cd ./src && npx tsc --watch",
+    "publish": "npm run build && cd ./dist && npm publish",
+    "copy-js": "cd src && for file in $(find ./ -name '*.js')  \n do \n cp ${file} ../dist/${file} \n done",
+    "sync-wasm": "cp ./kernel/kernel.wasm ../../testing/static/kernel.wasm",
+    "sync-js": "cp ./kernel/kernel.js ./src/Kernel/kernel.js && cp ./kernel/kernel.js ./dist/Kernel/kernel.js"
+  },
+  "repository": {
+    "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
+  },
+  "homepage": "https://github.com/Divine-Star-Software/DivineVoxelEngine",
+  "author": "Divine Star Software",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "@amodx/binary": "^0.0.0",
+    "@amodx/core": "^0.0.0",
+    "@amodx/uri": "^0.0.0",
+    "@amodx/threads": "^0.0.0"
+  },
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  }
 }

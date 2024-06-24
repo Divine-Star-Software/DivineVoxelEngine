@@ -1,4 +1,4 @@
-import type { URIShaderBuilder } from "@divinestar/uri/Shaders/URIShaderBuilder";
+import type { URIShaderBuilder } from "@amodx/uri/Shaders/URIShaderBuilder";
 export function RegisterVoxelSnippets(builder: typeof URIShaderBuilder) {
  builder.snippets.create( {
   id: "#dve_solid_vertex",

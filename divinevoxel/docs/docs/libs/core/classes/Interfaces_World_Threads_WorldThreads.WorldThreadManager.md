@@ -35,7 +35,7 @@ custom_edit_url: null
 
 ### commMap
 
-• **commMap**: `Map`\<`string`, `CommBase` \| `CommManager`\>
+• **commMap**: `Map`\<`string`, `Thread` \| `ThreadPool`\>
 
 #### Inherited from
 
@@ -49,7 +49,7 @@ ___
 
 ### comms
 
-• **comms**: (`CommBase` \| `CommManager`)[] = `[]`
+• **comms**: (`Thread` \| `ThreadPool`)[] = `[]`
 
 #### Inherited from
 
@@ -63,7 +63,7 @@ ___
 
 ### constructors
 
-• **constructors**: `CommManager`
+• **constructors**: `ThreadPool`
 
 #### Defined in
 
@@ -73,7 +73,7 @@ ___
 
 ### parent
 
-• **parent**: `CommBase` = `ThreadComm.parent`
+• **parent**: `Thread` = `Threads.parent`
 
 #### Defined in
 
@@ -124,7 +124,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `comm` | `CommBase` \| `CommManager` |
+| `comm` | `Thread` \| `ThreadPool` |
 
 #### Returns
 
@@ -142,7 +142,7 @@ ___
 
 ### getComm
 
-▸ **getComm**(`id`): `CommBase` \| `CommManager`
+▸ **getComm**(`id`): `Thread` \| `ThreadPool`
 
 #### Parameters
 
@@ -152,7 +152,7 @@ ___
 
 #### Returns
 
-`CommBase` \| `CommManager`
+`Thread` \| `ThreadPool`
 
 #### Inherited from
 

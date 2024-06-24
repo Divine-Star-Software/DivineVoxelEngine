@@ -1,4 +1,4 @@
-import type { URIShaderBuilder } from "@divinestar/uri/Shaders/URIShaderBuilder";
+import type { URIShaderBuilder } from "@amodx/uri/Shaders/URIShaderBuilder";
 
 export function RegisterFogShaders(builder: typeof URIShaderBuilder) {
  builder.functions.create("ExponentialFog", {

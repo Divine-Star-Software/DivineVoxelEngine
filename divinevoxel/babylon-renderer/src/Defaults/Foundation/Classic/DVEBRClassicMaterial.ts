@@ -5,14 +5,14 @@ import { Matrix, Vector2, Vector3 } from "@babylonjs/core/Maths/";
 import { TextureManager } from "@divinevoxel/foundation/Textures/TextureManager.js";
 import { TextureBuilder } from "@divinevoxel/foundation/Textures/TextureBuilder";
 
-import { URIShader } from "@divinestar/uri/Shaders/Classes/URIShader";
+import { URIShader } from "@amodx/uri/Shaders/Classes/URIShader";
 import {
   URIMaterial,
   URIMaterialData,
-} from "@divinestar/uri/Materials/URIMaterial.js";
+} from "@amodx/uri/Materials/URIMaterial.js";
 import { DVEBRScene } from "Scene/DVEBRScene.js";
-import { URIScene } from "@divinestar/uri/Scenes/URIScene.js";
-import { URITexture } from "@divinestar/uri/Textures/URITexture.js";
+import { URIScene } from "@amodx/uri/Scenes/URIScene.js";
+import { URITexture } from "@amodx/uri/Textures/URITexture.js";
 import { DefaultMaterialManager } from "../DefaultMaterialManager";
 
 type DVEBRClassicMaterialBaseData = {

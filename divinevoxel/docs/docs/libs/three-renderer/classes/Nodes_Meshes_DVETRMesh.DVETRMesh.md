@@ -35,7 +35,7 @@ URIMesh\<DVETRScene, Mesh\>.constructor
 
 #### Defined in
 
-node_modules/@divinestar/uri/Meshes/URIMesh.d.ts:5
+node_modules/@amodx/uri/Meshes/URIMesh.d.ts:5
 
 ## Properties
 
@@ -49,7 +49,7 @@ URIMesh.\_mesh
 
 #### Defined in
 
-node_modules/@divinestar/uri/Meshes/URIMesh.d.ts:6
+node_modules/@amodx/uri/Meshes/URIMesh.d.ts:6
 
 ___
 
@@ -77,7 +77,7 @@ URIMesh.scene
 
 #### Defined in
 
-node_modules/@divinestar/uri/Meshes/URIMesh.d.ts:4
+node_modules/@amodx/uri/Meshes/URIMesh.d.ts:4
 
 ## Methods
 

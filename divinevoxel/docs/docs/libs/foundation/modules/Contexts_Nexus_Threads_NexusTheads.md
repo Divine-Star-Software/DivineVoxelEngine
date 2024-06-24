@@ -14,7 +14,7 @@ custom_edit_url: null
 
 ### Richworld
 
-• `Const` **Richworld**: `CommBase`
+• `Const` **Richworld**: `Thread`
 
 #### Defined in
 
@@ -24,7 +24,7 @@ ___
 
 ### parent
 
-• `Const` **parent**: `CommBase` = `ThreadComm.parent`
+• `Const` **parent**: `Thread` = `Threads.parent`
 
 #### Defined in
 
@@ -34,7 +34,7 @@ ___
 
 ### world
 
-• `Const` **world**: `CommBase`
+• `Const` **world**: `Thread`
 
 #### Defined in
 

@@ -1,9 +1,9 @@
 import { DirectionNames } from "@divinevoxel/core/Types";
 import { MeshBuilderTool } from "../../Tools/MeshBuilderTool.js";
-import { MesherDataTool } from "@divinevoxel/core/Meshing/Tools/MesherDataTools.js";
+import { MesherDataTool } from "@amodx/meshing/Tools/MesherDataTools.js";
 import { Mesher } from "../Classes/Mesher.js";
 import { BuildNodeMesh, SetNodeMesh } from "../../Tasks/BuidlerTasks.types.js";
-import { BinaryNumberTypes } from "@divinestar/binary";
+import { BinaryNumberTypes } from "@amodx/binary";
 
 type FaceData = {
   xStart: number;
@@ -155,13 +155,15 @@ const TextureProcessor = {
       .setPosition(0.5, 0.5, -this.depth / 2)
       .uvs.setWidth(0, 1)
       .setHeight(0, 1)
+      .setFlipped(false)
       .add(mesherData.getVar("texture")!)
       .create()
       .setDirection("north")
       .setPosition(0.5, 0.5, this.depth / 2)
       .uvs.add(mesherData.getVar("texture")!)
+      .setFlipped(true)
       .create();
-
+      mesher.quad.setFlipped(false)
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
         if (!processed[y][x]) continue;
@@ -193,8 +195,16 @@ const TextureProcessor = {
     const [attributes, transfers] = mesherData.getAllAttributes();
 
     mesher.quad.clear();
-    mesherData.resetAll();
+    mesherData.resetVars();
 
+    for (const [type, data] of attributes) {
+      if (type == "position") {
+        for (let i = 0; i < data.length; i++) {
+          (data as any as number[])[i] -= 0.5;
+        }
+      }
+    }
+    mesherData.resetAttributes();
     return [[location, attributes], transfers];
   },
 

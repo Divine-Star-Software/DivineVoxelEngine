@@ -4666,9 +4666,9 @@ class RegionDataTool extends _Classes_DataToolBase_js__WEBPACK_IMPORTED_MODULE_1
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "CommBase": () => (/* binding */ CommBase)
+/* harmony export */   "Thread": () => (/* binding */ Thread)
 /* harmony export */ });
-/* harmony import */ var _ThreadComm_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../ThreadComm.js */ "../../DSLIBS/threadComm/dist/ThreadComm.js");
+/* harmony import */ var _Threads_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Threads.js */ "../../DSLIBS/threadComm/dist/Threads.js");
 /* harmony import */ var _Internal_Messages_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Internal/Messages.js */ "../../DSLIBS/threadComm/dist/Internal/Messages.js");
 /* harmony import */ var _Tasks_PromiseTasks_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Tasks/PromiseTasks.js */ "../../DSLIBS/threadComm/dist/Tasks/PromiseTasks.js");
 /* harmony import */ var _Internal_InternalTasks_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Internal/InternalTasks.js */ "../../DSLIBS/threadComm/dist/Internal/InternalTasks.js");
@@ -4676,7 +4676,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class CommBase {
+class Thread {
     name;
     managerName;
     environment = "browser";
@@ -4702,7 +4702,7 @@ class CommBase {
     __sendReadySignal() {
         this.sendMessage(_Internal_Messages_js__WEBPACK_IMPORTED_MODULE_1__.TCMessageHeaders.internal, [
             _Internal_Messages_js__WEBPACK_IMPORTED_MODULE_1__.TCInternalMessages.IsReady,
-            _ThreadComm_js__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.threadName,
+            _Threads_js__WEBPACK_IMPORTED_MODULE_0__.Threads.threadName,
         ]);
     }
     __onSetPortRun = (port) => { };
@@ -4756,7 +4756,7 @@ class CommBase {
         this.__sendReadySignal();
     }
     __throwError(message) {
-        throw new Error(`[ThreadComm: ${this.name}] ${message}`);
+        throw new Error(`[Threads: ${this.name}] ${message}`);
     }
     sendMessage(message, data = [], transfers) {
         if (!this.port) {
@@ -4784,7 +4784,7 @@ class CommBase {
             mode = 2;
             tid = queueId;
         }
-        this.__sendInternalMessage(_Internal_Messages_js__WEBPACK_IMPORTED_MODULE_1__.TCInternalMessages.runTasks, [id, _ThreadComm_js__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.threadName, mode, tid, data], transfers);
+        this.__sendInternalMessage(_Internal_Messages_js__WEBPACK_IMPORTED_MODULE_1__.TCInternalMessages.runTasks, [id, _Threads_js__WEBPACK_IMPORTED_MODULE_0__.Threads.threadName, mode, tid, data], transfers);
     }
     waitTillTasksExist(id) {
         return new Promise((resolve) => {
@@ -4802,7 +4802,7 @@ class CommBase {
         const promiseId = `${this.name}-${id}-${Date.now()}`;
         this.__sendInternalMessage(_Internal_Messages_js__WEBPACK_IMPORTED_MODULE_1__.TCInternalMessages.checkTasks, [
             id,
-            _ThreadComm_js__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.threadName,
+            _Threads_js__WEBPACK_IMPORTED_MODULE_0__.Threads.threadName,
             promiseId,
         ]);
         _Tasks_PromiseTasks_js__WEBPACK_IMPORTED_MODULE_2__.PromiseTasks.addPromiseTakss("tasks-check", promiseId, (data) => {
@@ -4810,9 +4810,9 @@ class CommBase {
         });
     }
     runPromiseTasks(id, data, transfers = [], onDone) {
-        const requestsID = _ThreadComm_js__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.crypto.randomUUID();
+        const requestsID = _Threads_js__WEBPACK_IMPORTED_MODULE_0__.Threads.crypto.randomUUID();
         _Tasks_PromiseTasks_js__WEBPACK_IMPORTED_MODULE_2__.PromiseTasks.addPromiseTakss(id, requestsID, onDone);
-        this.__sendInternalMessage(_Internal_Messages_js__WEBPACK_IMPORTED_MODULE_1__.TCInternalMessages.runTasks, [id, _ThreadComm_js__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.threadName, 1, requestsID, data], transfers);
+        this.__sendInternalMessage(_Internal_Messages_js__WEBPACK_IMPORTED_MODULE_1__.TCInternalMessages.runTasks, [id, _Threads_js__WEBPACK_IMPORTED_MODULE_0__.Threads.threadName, 1, requestsID, data], transfers);
     }
     __sendInternalMessage(id, data = [], transfers = []) {
         this.sendMessage(_Internal_Messages_js__WEBPACK_IMPORTED_MODULE_1__.TCMessageHeaders.internal, [id, ...data], transfers);
@@ -4820,7 +4820,7 @@ class CommBase {
     __syncQueue(id, sab) {
         this.sendMessage(_Internal_Messages_js__WEBPACK_IMPORTED_MODULE_1__.TCMessageHeaders.internal, [
             _Internal_Messages_js__WEBPACK_IMPORTED_MODULE_1__.TCInternalMessages.syncQueue,
-            _ThreadComm_js__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.threadName,
+            _Threads_js__WEBPACK_IMPORTED_MODULE_0__.Threads.threadName,
             id,
             sab,
         ]);
@@ -4828,7 +4828,7 @@ class CommBase {
     __unSyqncQueue(id) {
         this.sendMessage(_Internal_Messages_js__WEBPACK_IMPORTED_MODULE_1__.TCMessageHeaders.internal, [
             _Internal_Messages_js__WEBPACK_IMPORTED_MODULE_1__.TCInternalMessages.unSyncQueue,
-            _ThreadComm_js__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.threadName,
+            _Threads_js__WEBPACK_IMPORTED_MODULE_0__.Threads.threadName,
             id,
         ]);
     }
@@ -4938,7 +4938,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "InternalTasks": () => (/* binding */ InternalTasks)
 /* harmony export */ });
 /* harmony import */ var _Messages_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Messages.js */ "../../DSLIBS/threadComm/dist/Internal/Messages.js");
-/* harmony import */ var _ThreadComm_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../ThreadComm.js */ "../../DSLIBS/threadComm/dist/ThreadComm.js");
+/* harmony import */ var _Threads_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Threads.js */ "../../DSLIBS/threadComm/dist/Threads.js");
 /* harmony import */ var _Tasks_PromiseTasks_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Tasks/PromiseTasks.js */ "../../DSLIBS/threadComm/dist/Tasks/PromiseTasks.js");
 /* harmony import */ var _Queue_SyncedQueue_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Queue/SyncedQueue.js */ "../../DSLIBS/threadComm/dist/Queue/SyncedQueue.js");
 /* harmony import */ var _Tasks_TaskManager_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Tasks/TaskManager.js */ "../../DSLIBS/threadComm/dist/Tasks/TaskManager.js");
@@ -4990,24 +4990,24 @@ InternalTasks.registerTasks(_Messages_js__WEBPACK_IMPORTED_MODULE_0__.TCMessageH
     const threadName = data[0];
     const threadManager = data[1];
     let port;
-    if (_ThreadComm_js__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.environment == "browser") {
+    if (_Threads_js__WEBPACK_IMPORTED_MODULE_1__.Threads.environment == "browser") {
         port = event.ports[0];
     }
     else {
         port = data[2];
     }
     if (threadManager == "worker") {
-        const comm = _ThreadComm_js__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.getComm(threadName);
+        const comm = _Threads_js__WEBPACK_IMPORTED_MODULE_1__.Threads.getComm(threadName);
         comm.setPort(port);
     }
     if (threadManager != "worker") {
-        const comm = _ThreadComm_js__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.getCommManager(threadManager);
+        const comm = _Threads_js__WEBPACK_IMPORTED_MODULE_1__.Threads.getThreadPool(threadManager);
         comm.addPort(port);
     }
 });
 InternalTasks.registerTasks(_Messages_js__WEBPACK_IMPORTED_MODULE_0__.TCMessageHeaders.internal, _Messages_js__WEBPACK_IMPORTED_MODULE_0__.TCInternalMessages.IsReady, (data, event) => {
     const name = data[0];
-    const comm = _ThreadComm_js__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.getComm(name);
+    const comm = _Threads_js__WEBPACK_IMPORTED_MODULE_1__.Threads.getComm(name);
     if (!comm)
         return;
     comm.__ready = true;
@@ -5015,28 +5015,28 @@ InternalTasks.registerTasks(_Messages_js__WEBPACK_IMPORTED_MODULE_0__.TCMessageH
 InternalTasks.registerTasks(_Messages_js__WEBPACK_IMPORTED_MODULE_0__.TCMessageHeaders.internal, _Messages_js__WEBPACK_IMPORTED_MODULE_0__.TCInternalMessages.nameThread, (data, event) => {
     const name = data[0];
     const number = data[1];
-    _ThreadComm_js__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.threadName = name;
-    _ThreadComm_js__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.threadNumber = number;
+    _Threads_js__WEBPACK_IMPORTED_MODULE_1__.Threads.threadName = name;
+    _Threads_js__WEBPACK_IMPORTED_MODULE_1__.Threads.threadNumber = number;
 });
 InternalTasks.registerTasks(_Messages_js__WEBPACK_IMPORTED_MODULE_0__.TCMessageHeaders.internal, _Messages_js__WEBPACK_IMPORTED_MODULE_0__.TCInternalMessages.syncQueue, (data, event) => {
     const threadName = data[0];
     const queueId = data[1];
     const queueSAB = data[2];
-    if (!_ThreadComm_js__WEBPACK_IMPORTED_MODULE_1__.ThreadComm._queues.has(threadName)) {
-        _ThreadComm_js__WEBPACK_IMPORTED_MODULE_1__.ThreadComm._queues.set(threadName, new Map());
+    if (!_Threads_js__WEBPACK_IMPORTED_MODULE_1__.Threads._queues.has(threadName)) {
+        _Threads_js__WEBPACK_IMPORTED_MODULE_1__.Threads._queues.set(threadName, new Map());
     }
     //@ts-ignore
-    _ThreadComm_js__WEBPACK_IMPORTED_MODULE_1__.ThreadComm._queues.get(threadName)
+    _Threads_js__WEBPACK_IMPORTED_MODULE_1__.Threads._queues.get(threadName)
         .set(queueId, new _Queue_SyncedQueue_js__WEBPACK_IMPORTED_MODULE_3__.SyncedQueue(queueId, queueSAB));
 });
 InternalTasks.registerTasks(_Messages_js__WEBPACK_IMPORTED_MODULE_0__.TCMessageHeaders.internal, _Messages_js__WEBPACK_IMPORTED_MODULE_0__.TCInternalMessages.unSyncQueue, (data, event) => {
     const threadName = data[0];
     const queueId = data[1];
-    if (!_ThreadComm_js__WEBPACK_IMPORTED_MODULE_1__.ThreadComm._queues.has(threadName)) {
+    if (!_Threads_js__WEBPACK_IMPORTED_MODULE_1__.Threads._queues.has(threadName)) {
         return;
     }
     //@ts-ignore
-    _ThreadComm_js__WEBPACK_IMPORTED_MODULE_1__.ThreadComm._queues.get(threadName).delete(queueId);
+    _Threads_js__WEBPACK_IMPORTED_MODULE_1__.Threads._queues.get(threadName).delete(queueId);
 });
 InternalTasks.registerTasks(_Messages_js__WEBPACK_IMPORTED_MODULE_0__.TCMessageHeaders.internal, _Messages_js__WEBPACK_IMPORTED_MODULE_0__.TCInternalMessages.completeTasks, (data, event) => {
     const tasksId = data[0];
@@ -5051,13 +5051,13 @@ InternalTasks.registerTasks(_Messages_js__WEBPACK_IMPORTED_MODULE_0__.TCMessageH
 });
 const __handleTasksDone = (tasksId, mode, threadId, tid, tasksData, transfers) => {
     if (mode == 1) {
-        const comm = _ThreadComm_js__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.getComm(threadId);
+        const comm = _Threads_js__WEBPACK_IMPORTED_MODULE_1__.Threads.getComm(threadId);
         comm.sendMessage(_Messages_js__WEBPACK_IMPORTED_MODULE_0__.TCMessageHeaders.internal, [_Messages_js__WEBPACK_IMPORTED_MODULE_0__.TCInternalMessages.completeTasks, tasksId, tid, tasksData], transfers);
     }
     if (mode == 2) {
         //complete queue
         if (tid && threadId) {
-            const queue = _ThreadComm_js__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.getSyncedQueue(threadId, tid);
+            const queue = _Threads_js__WEBPACK_IMPORTED_MODULE_1__.Threads.getSyncedQueue(threadId, tid);
             if (queue) {
                 queue.subtractFromCount();
             }
@@ -5093,7 +5093,7 @@ InternalTasks.registerTasks(_Messages_js__WEBPACK_IMPORTED_MODULE_0__.TCMessageH
     const threadId = data.shift();
     //remove promise id
     const promiseId = data.shift();
-    const thread = _ThreadComm_js__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.getComm(threadId);
+    const thread = _Threads_js__WEBPACK_IMPORTED_MODULE_1__.Threads.getComm(threadId);
     const takss = _Tasks_TaskManager_js__WEBPACK_IMPORTED_MODULE_4__.TasksManager.getTasks(tasksId);
     if (!takss)
         return;
@@ -5171,27 +5171,27 @@ for (const key in TCInternalMessages) {
 
 /***/ }),
 
-/***/ "../../DSLIBS/threadComm/dist/Manager/CommManager.js":
+/***/ "../../DSLIBS/threadComm/dist/Manager/ThreadPool.js":
 /*!***********************************************************!*\
-  !*** ../../DSLIBS/threadComm/dist/Manager/CommManager.js ***!
+  !*** ../../DSLIBS/threadComm/dist/Manager/ThreadPool.js ***!
   \***********************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "CommManager": () => (/* binding */ CommManager)
+/* harmony export */   "ThreadPool": () => (/* binding */ ThreadPool)
 /* harmony export */ });
 /* harmony import */ var _Internal_Messages_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Internal/Messages.js */ "../../DSLIBS/threadComm/dist/Internal/Messages.js");
 /* harmony import */ var _Comm_Comm_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Comm/Comm.js */ "../../DSLIBS/threadComm/dist/Comm/Comm.js");
 /* harmony import */ var _Queue_QueueManager_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Queue/QueueManager.js */ "../../DSLIBS/threadComm/dist/Queue/QueueManager.js");
-/* harmony import */ var _ThreadComm_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../ThreadComm.js */ "../../DSLIBS/threadComm/dist/ThreadComm.js");
+/* harmony import */ var _Threads_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Threads.js */ "../../DSLIBS/threadComm/dist/Threads.js");
 //constants
 
 //classes
 
 
 
-class CommManager {
+class ThreadPool {
     _totalComms = 0;
     _currentCom = 0;
     name = "";
@@ -5207,7 +5207,7 @@ class CommManager {
         this.name = data.name;
     }
     __throwError(message) {
-        throw new Error(`[ThreadCommManager : ${this.__data.name}] ${message}`);
+        throw new Error(`[ThreadsManager : ${this.__data.name}] ${message}`);
     }
     connectToCom(commToConnectTo) {
         for (const comm of this.__comms) {
@@ -5241,8 +5241,8 @@ class CommManager {
     addPort(port) {
         this._totalComms++;
         const newCommName = `${this.__data.name}-${this._totalComms}`;
-        const newComm = new _Comm_Comm_js__WEBPACK_IMPORTED_MODULE_1__.CommBase(newCommName, this.__data.name, this);
-        _ThreadComm_js__WEBPACK_IMPORTED_MODULE_3__.ThreadComm.addComm(newComm);
+        const newComm = new _Comm_Comm_js__WEBPACK_IMPORTED_MODULE_1__.Thread(newCommName, this.__data.name, this);
+        _Threads_js__WEBPACK_IMPORTED_MODULE_3__.Threads.addComm(newComm);
         newComm.setPort(port);
         this.__data.onPortSet(port, newCommName);
         this.__comms.push(newComm);
@@ -5653,17 +5653,17 @@ class Task {
 
 /***/ }),
 
-/***/ "../../DSLIBS/threadComm/dist/ThreadComm.js":
+/***/ "../../DSLIBS/threadComm/dist/Threads.js":
 /*!**************************************************!*\
-  !*** ../../DSLIBS/threadComm/dist/ThreadComm.js ***!
+  !*** ../../DSLIBS/threadComm/dist/Threads.js ***!
   \**************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ThreadComm": () => (/* binding */ ThreadComm)
+/* harmony export */   "Threads": () => (/* binding */ Threads)
 /* harmony export */ });
-/* harmony import */ var _Manager_CommManager_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Manager/CommManager.js */ "../../DSLIBS/threadComm/dist/Manager/CommManager.js");
+/* harmony import */ var _Manager_ThreadPool_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Manager/ThreadPool.js */ "../../DSLIBS/threadComm/dist/Manager/ThreadPool.js");
 /* harmony import */ var _Comm_Comm_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Comm/Comm.js */ "../../DSLIBS/threadComm/dist/Comm/Comm.js");
 /* harmony import */ var _Tasks_TaskManager_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Tasks/TaskManager.js */ "../../DSLIBS/threadComm/dist/Tasks/TaskManager.js");
 /* harmony import */ var _Data_DataSyncManager_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Data/DataSyncManager.js */ "../../DSLIBS/threadComm/dist/Data/DataSyncManager.js");
@@ -5674,14 +5674,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const ThreadComm = {
+const Threads = {
     threadNumber: 0,
     threadName: "unamed-threadcomm-thread",
     environment: "browser",
     _comms: {},
     _commManageras: {},
     _queues: new Map(),
-    parent: new _Comm_Comm_js__WEBPACK_IMPORTED_MODULE_1__.CommBase(""),
+    parent: new _Comm_Comm_js__WEBPACK_IMPORTED_MODULE_1__.Thread(""),
     internal: _Internal_InternalTasks_js__WEBPACK_IMPORTED_MODULE_4__.InternalTasks,
     __initalized: false,
     __expectedPorts: {},
@@ -5710,19 +5710,19 @@ const ThreadComm = {
         this._comms[comm.name] = comm;
     },
     createComm(name, mergeObject = {}) {
-        const newCom = Object.assign(new _Comm_Comm_js__WEBPACK_IMPORTED_MODULE_1__.CommBase(name), mergeObject);
+        const newCom = Object.assign(new _Comm_Comm_js__WEBPACK_IMPORTED_MODULE_1__.Thread(name), mergeObject);
         this._comms[name] = newCom;
         return newCom;
     },
-    createCommManager(data) {
-        const newCommManager = new _Manager_CommManager_js__WEBPACK_IMPORTED_MODULE_0__.CommManager(data);
-        this._commManageras[data.name] = newCommManager;
-        return newCommManager;
+    createThreadPool(data) {
+        const newThreadPool = new _Manager_ThreadPool_js__WEBPACK_IMPORTED_MODULE_0__.ThreadPool(data);
+        this._commManageras[data.name] = newThreadPool;
+        return newThreadPool;
     },
     getComm(id) {
         return this._comms[id];
     },
-    getCommManager(id) {
+    getThreadPool(id) {
         return this._commManageras[id];
     },
     async getWorkerPort() {
@@ -5747,7 +5747,7 @@ if (
 typeof process !== "undefined" &&
     typeof Worker === "undefined" &&
     typeof window === "undefined") {
-    ThreadComm.environment = "node";
+    Threads.environment = "node";
 }
 
 
@@ -5761,16 +5761,16 @@ typeof process !== "undefined" &&
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "CommBase": () => (/* reexport safe */ _Comm_Comm_js__WEBPACK_IMPORTED_MODULE_1__.CommBase),
-/* harmony export */   "CommManager": () => (/* reexport safe */ _Manager_CommManager_js__WEBPACK_IMPORTED_MODULE_3__.CommManager),
+/* harmony export */   "Thread": () => (/* reexport safe */ _Comm_Comm_js__WEBPACK_IMPORTED_MODULE_1__.Thread),
+/* harmony export */   "ThreadPool": () => (/* reexport safe */ _Manager_ThreadPool_js__WEBPACK_IMPORTED_MODULE_3__.ThreadPool),
 /* harmony export */   "DataSync": () => (/* reexport safe */ _Data_DataSync_js__WEBPACK_IMPORTED_MODULE_2__.DataSync),
 /* harmony export */   "Task": () => (/* reexport safe */ _Tasks_Tasks_js__WEBPACK_IMPORTED_MODULE_4__.Task),
-/* harmony export */   "ThreadComm": () => (/* reexport safe */ _ThreadComm_js__WEBPACK_IMPORTED_MODULE_0__.ThreadComm)
+/* harmony export */   "Threads": () => (/* reexport safe */ _Threads_js__WEBPACK_IMPORTED_MODULE_0__.Threads)
 /* harmony export */ });
-/* harmony import */ var _ThreadComm_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ThreadComm.js */ "../../DSLIBS/threadComm/dist/ThreadComm.js");
+/* harmony import */ var _Threads_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Threads.js */ "../../DSLIBS/threadComm/dist/Threads.js");
 /* harmony import */ var _Comm_Comm_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Comm/Comm.js */ "../../DSLIBS/threadComm/dist/Comm/Comm.js");
 /* harmony import */ var _Data_DataSync_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Data/DataSync.js */ "../../DSLIBS/threadComm/dist/Data/DataSync.js");
-/* harmony import */ var _Manager_CommManager_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Manager/CommManager.js */ "../../DSLIBS/threadComm/dist/Manager/CommManager.js");
+/* harmony import */ var _Manager_ThreadPool_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Manager/ThreadPool.js */ "../../DSLIBS/threadComm/dist/Manager/ThreadPool.js");
 /* harmony import */ var _Tasks_Tasks_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Tasks/Tasks.js */ "../../DSLIBS/threadComm/dist/Tasks/Tasks.js");
 /* harmony import */ var _Meta_Comm_Comm_types_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Meta/Comm/Comm.types.js */ "../../DSLIBS/threadComm/dist/Meta/Comm/Comm.types.js");
 

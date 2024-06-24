@@ -1,4 +1,4 @@
-import { URIMaterial } from "@divinestar/uri/Materials/URIMaterial";
+import { URIMaterial } from "@amodx/uri/Materials/URIMaterial";
 
 export abstract class DVENodeMaterialManager {
   abstract get(id: string): URIMaterial;

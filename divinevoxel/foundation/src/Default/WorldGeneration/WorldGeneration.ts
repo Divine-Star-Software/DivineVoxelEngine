@@ -4,10 +4,10 @@ import { WorldBounds } from "@divinevoxel/core/Data/World/WorldBounds.js";
 import { WorldGenRegister } from "./WorldGenRegister.js";
 //tools
 import { WorldGenBrush } from "./WorldGenBrush.js";
-import { SafeInterval } from "@divinestar/utils/Intervals/SafeInterval.js";
+import { SafeInterval } from "@amodx/core/Intervals/SafeInterval.js";
 import { WorldGenInterface } from "../../Interfaces/WorldGen/WorldGen.types.js";
 import { GenerateTasks } from "../../Types/Tasks.types.js";
-import { ThreadComm } from "@divinestar/threads";
+import { Threads } from "@amodx/threads";
 import { ConstructorTasksIds } from "../../Contexts/Common/ConstructorTasksIds.js";
 
 export class WorldGeneration {
@@ -58,7 +58,7 @@ export class WorldGeneration {
   }
 }
 
-ThreadComm.registerTasks<GenerateTasks>(
+Threads.registerTasks<GenerateTasks>(
   ConstructorTasksIds.Generate,
   (data, onDone) => {
     if (!onDone) return;
@@ -66,7 +66,7 @@ ThreadComm.registerTasks<GenerateTasks>(
   },
   "deferred"
 );
-ThreadComm.registerTasks<GenerateTasks>(
+Threads.registerTasks<GenerateTasks>(
   ConstructorTasksIds.Decorate,
   (data, onDone) => {
     if (!onDone) return;

@@ -1,4 +1,4 @@
-import { URIMesh } from "@divinestar/uri/Meshes/URIMesh";
+import { URIMesh } from "@amodx/uri/Meshes/URIMesh";
 import type { LocationData } from "Math/index.js";
 
 export type MeshRegisterChunk = {

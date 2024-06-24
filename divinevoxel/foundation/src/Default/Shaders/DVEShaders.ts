@@ -1,8 +1,8 @@
-import { URIShaderBuilder } from "@divinestar/uri/Shaders/URIShaderBuilder.js";
+import { URIShaderBuilder } from "@amodx/uri/Shaders/URIShaderBuilder.js";
 import {
   ShaderDataTypes,
   ShaderVaryingData,
-} from "@divinestar/uri/Shaders/Types/ShaderData.types.js";
+} from "@amodx/uri/Shaders/Types/ShaderData.types.js";
 
 import { RegisterFragFunctions } from "./Code/Functions/FragmentFunctions.js";
 import { RegisterVertexFunctions } from "./Code/Functions/VertexFunctions.js";
@@ -12,7 +12,7 @@ import { RegisterFogShaders } from "./Code/Functions/FogShaders.js";
 import { RegisterNoiseFunctions } from "./Code/Functions/UtilShaders.js";
 import { RegisterVoxelSnippets } from "./Code/Snippets/VoxelSnippets.js";
 import { DVEShaderRegister } from "./DVEShaderRegister.js";
-import { URIShader } from "@divinestar/uri/Shaders/Classes/URIShader.js";
+import { URIShader } from "@amodx/uri/Shaders/Classes/URIShader.js";
 export const DVEShaders = {
   register: new DVEShaderRegister(),
   builder: URIShaderBuilder,
@@ -58,9 +58,9 @@ export const DVEShaders = {
         GLSL: () => /* glsl */ `
 mat4 vData;
 uint vUID = uint(voxelData);
-uint lightMask = uint(${0xf});
-uint aoMask = uint(${0b11});
-uint animMask = uint(${0b1111_1111_1111_11});
+uint lightMask = uint(0xf);
+uint aoMask = uint(0xf);
+uint animMask = uint(0xfff);
 
 uint index = uint(0);
 float sVL = lightGradient[int(((lightMask << index) & vUID) >> index)];
@@ -79,11 +79,13 @@ float bVL = lightGradient[blueValue];
 
 index = uint(16);
 float AOVL = float(((aoMask << index) & vUID) >> index);
-if(AOVL > 1.) {
-     AOVL = pow( pow(.65, AOVL - 1. ), 2.2);
+if(AOVL > 0.) {
+     AOVL = pow( pow(.45, (AOVL)/15. ), 2.2);
+} else {
+  AOVL = 1.;
 }
 
-index = uint(18);
+index = uint(20);
 float animVL = float(((animMask << index) & vUID) >> index);
 
 

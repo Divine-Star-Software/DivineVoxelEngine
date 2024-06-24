@@ -1,9 +1,9 @@
 //threadcomm
-import { ThreadComm } from "@divinestar/threads/";
+import { Threads } from "@amodx/threads/";
 //functions
 import InitWorker from "./InitWorker.js";
 import { DVEConstructorCore } from "../../Interfaces/Constructor/DVEConstructorCore.js";
-import { Environment } from "@divinestar/utils/Environment/Environment.js";
+import { Environment } from "@amodx/core/Environment/Environment.js";
 
 export type DivineVoxelEngineConstructorInitData = {
   core: DVEConstructorCore;
@@ -14,7 +14,7 @@ export class DivineVoxelEngineConstructor {
   static environment: "node" | "browser" = "browser";
   static instance: DivineVoxelEngineConstructor;
 
-  TC = ThreadComm;
+  TC = Threads;
   core: DVEConstructorCore;
 
   constructor() {

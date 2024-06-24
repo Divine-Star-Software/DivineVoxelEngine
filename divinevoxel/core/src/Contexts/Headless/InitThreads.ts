@@ -1,6 +1,6 @@
 import { EngineSettingsData } from "Types/EngineSettings.types.js";
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
-import { CommBase, CommManager } from "@divinestar/threads/";
+import { Thread, ThreadPool } from "@amodx/threads/";
 import {
   DivineVoxelEngineHeadless,
   DVEHInitData,
@@ -12,20 +12,20 @@ export default async function (
 ) {
   DVER.settings.syncSettings(<any>initData);
 
-  await DVER.TC.$INIT("render", "global");
+  await DVER.TC.init("render", "global");
 
   if (!(initData.worldWorker instanceof Worker)) {
     throw Error(
       "Supplied data for World Worker is not correct. Must be path to worker or a worker."
     );
   }
-  DVER.threads.setCommPort(DVER.threads.world.name, initData.worldWorker);
+  DVER.threads.setThreadPort(DVER.threads.world.name, initData.worldWorker);
 
   if (
     Array.isArray(initData.constructorWorkers) &&
     initData.constructorWorkers[0] instanceof Worker
   ) {
-    DVER.threads.setCommPort(
+    DVER.threads.setThreadPort(
       DVER.threads.construcotrs.name,
       initData.constructorWorkers
     );
@@ -37,8 +37,8 @@ export default async function (
   await DVER.threads.pipelines.setPorts.pipe(DVER.threads);
 
   for (const thread of DVER.threads.comms) {
-    if (thread instanceof CommManager) {
-      for (const com of thread.__comms) {
+    if (thread instanceof ThreadPool) {
+      for (const com of thread.getThreads()) {
         await com.waitTillTasksExist("sync-settings");
         com.runTasks<EngineSettingsData>(
           "sync-settings",
@@ -46,7 +46,7 @@ export default async function (
         );
       }
     }
-    if (thread instanceof CommBase) {
+    if (thread instanceof Thread) {
       await thread.waitTillTasksExist("sync-settings");
       thread.runTasks<EngineSettingsData>(
         "sync-settings",
@@ -56,7 +56,7 @@ export default async function (
   }
 
   const proms: Promise<any>[] = [];
-  for (const com of DVER.threads.construcotrs.__comms) {
+  for (const com of DVER.threads.construcotrs.getThreads()) {
     proms.push(com.waitTillTasksExist("ready"));
   }
   await Promise.all(proms);
@@ -67,10 +67,10 @@ export default async function (
 
   window.addEventListener("beforeunload", () => {
     for (const thread of DVER.threads.comms) {
-      if (thread instanceof CommManager) {
+      if (thread instanceof ThreadPool) {
         thread.destroyAll();
       }
-      if (thread instanceof CommBase) {
+      if (thread instanceof Thread) {
         thread.destroy();
       }
     }

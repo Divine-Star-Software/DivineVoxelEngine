@@ -1,7 +1,7 @@
 //intercomms
 //functions
 import InitWorker from "./InitWorker.js";
-import { ThreadComm } from "@divinestar/threads/";
+import { Threads } from "@amodx/threads/";
 import { DataTool } from "../../Default/Tools/Data/DataTool.js";
 import { DVEDataCore } from "@divinevoxel/core/Interfaces/Data/DVEDataCore.js";
 import { RichDataTool } from "../../Default/Tools/Data/RichDataTool.js";
@@ -15,7 +15,7 @@ export class DivineVoxelEngineNexus {
   static instance: DivineVoxelEngineNexus;
   environment = <"node" | "browser">"browser";
 
-  TC = ThreadComm;
+  TC = Threads;
   data: DVEDataCore;
   threads = new NexusThreads();
 

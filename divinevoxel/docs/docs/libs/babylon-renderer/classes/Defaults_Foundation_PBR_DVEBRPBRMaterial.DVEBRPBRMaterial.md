@@ -54,7 +54,7 @@ URIMaterial.\_material
 
 #### Defined in
 
-node_modules/@divinestar/uri/Materials/URIMaterial.d.ts:17
+node_modules/@amodx/uri/Materials/URIMaterial.d.ts:17
 
 ___
 

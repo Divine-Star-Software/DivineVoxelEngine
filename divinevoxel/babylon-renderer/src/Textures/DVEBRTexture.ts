@@ -2,12 +2,12 @@ import {
   URITexture,
   URITextureData,
   URITexture2DArrayData,
-} from "@divinestar/uri/Textures/URITexture.js";
+} from "@amodx/uri/Textures/URITexture.js";
 import {
   URITextureFormat,
   URITextureSamplingMode,
   URITextureTypes,
-} from "@divinestar/uri/Constants/URITexturesConstants.js";
+} from "@amodx/uri/Constants/URITexturesConstants.js";
 import { RawTexture2DArray } from "@babylonjs/core/Materials/Textures/rawTexture2DArray.js";
 import {
   DVEBRTextureFormatMap,
@@ -49,6 +49,7 @@ export class DVEBRTexture extends URITexture<DVEBRScene,Texture> {
             URITextureSamplingMode.NearestLinearMipLinear
           ]
       );
+
       this._texture = texture;
       return texture;
     }

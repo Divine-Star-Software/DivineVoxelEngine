@@ -2,8 +2,8 @@ import {
   URITextureFormat,
   URITextureSamplingMode,
   URITextureTypes,
-} from "@divinestar/uri/Constants/URITexturesConstants";
-import { URITexture } from "@divinestar/uri/Textures/URITexture";
+} from "@amodx/uri/Constants/URITexturesConstants";
+import { URITexture } from "@amodx/uri/Textures/URITexture";
 import { DivineVoxelEngineRender } from "@divinevoxel/core/Contexts/Render/DivineVoxelEngineRender";
 
 export const TextureBuilder = {
@@ -176,22 +176,25 @@ export const TextureBuilder = {
   ): Promise<Uint8ClampedArray> {
     if (!width) width = this.imgWidth;
     if (!height) height = this.imgHeight;
-
+  
     const ctx = TextureBuilder.context;
-
+  
     if (!ctx) {
       throw new Error("Context is not set for texture creation.");
     }
-
+  
     if (typeof imgSrcData == "string") {
       const prom: Promise<Uint8ClampedArray> = new Promise((resolve) => {
         const image = new Image();
         image.src = imgSrcData;
         image.onload = async () => {
           ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
-          ctx.drawImage(image, 0, 0, image.width!, image.height!);
+          ctx.save();
+          ctx.scale(1, -1);
+          ctx.drawImage(image, 0, -image.height, image.width!, image.height!);
+          ctx.restore();
           const imgData = ctx.getImageData(0, 0, image.width!, image.height!);
-
+  
           const bitmap = await createImageBitmap(
             new ImageData(imgData.data, image.width, image.height),
             {
@@ -204,19 +207,17 @@ export const TextureBuilder = {
           ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
           ctx.drawImage(bitmap, 0, 0, width!, height!);
           const bitmapData = ctx.getImageData(0, 0, width!, height!);
-          //clear the canvas before re-rendering another image
-
           resolve(bitmapData.data);
         };
       });
-
+  
       return prom;
     }
     if (imgSrcData instanceof Uint8ClampedArray) {
       const prom: Promise<Uint8ClampedArray> = new Promise(async (resolve) => {
         ctx.fillRect(0, 0, this._canvas.width, this._canvas.height);
         ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
-
+  
         const bitmap = await createImageBitmap(
           new ImageData(
             imgSrcData,
@@ -230,15 +231,18 @@ export const TextureBuilder = {
             premultiplyAlpha: lod < 3 ? "none" : "premultiply",
           }
         );
-
-        ctx.drawImage(bitmap, 0, 0, width!, height!);
-
+  
+        ctx.save();
+        ctx.scale(1, -1);
+        ctx.drawImage(bitmap, 0, -height, width!, height!);
+        ctx.restore();
+  
         const imgData = ctx.getImageData(0, 0, width!, height!);
         resolve(imgData.data);
       });
       return prom;
     }
-
+  
     throw new Error("Context is not set for texture creation.");
   },
 

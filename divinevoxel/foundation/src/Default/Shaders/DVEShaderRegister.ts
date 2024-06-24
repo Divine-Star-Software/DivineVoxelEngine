@@ -1,5 +1,5 @@
-import { URIShaderBuilder } from "@divinestar/uri/Shaders/URIShaderBuilder.js";
-import { URIShader } from "@divinestar/uri/Shaders/Classes/URIShader.js";
+import { URIShaderBuilder } from "@amodx/uri/Shaders/URIShaderBuilder.js";
+import { URIShader } from "@amodx/uri/Shaders/Classes/URIShader.js";
 
 import { UtilMap } from "../../Util/UtilMap.js";
 

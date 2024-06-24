@@ -1,6 +1,6 @@
 //objects
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
-import { ThreadComm } from "@divinestar/threads/";
+import { Threads } from "@amodx/threads/";
 
 //functions
 import InitWorkers from "./InitThreads.js";
@@ -21,7 +21,7 @@ export interface DVEHInitData extends PartialEngineSettings {
 export class DivineVoxelEngineHeadless {
   static instance: DivineVoxelEngineHeadless;
   static initialized = false;
-  TC = ThreadComm;
+  TC = Threads;
 
   settings = EngineSettings;
 
@@ -51,7 +51,7 @@ export class DivineVoxelEngineHeadless {
     await this.threads.world.runAsyncTasks("clear-all", "", []);
 
     await Promise.all(
-      this.threads.construcotrs.__comms.map((_) =>
+      this.threads.construcotrs.getThreads().map((_) =>
         _.runAsyncTasks("clear-all", "")
       )
     );

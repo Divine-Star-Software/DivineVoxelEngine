@@ -8,7 +8,7 @@ import {
 //objects
 import { ConstructorTasksIds } from "../../Common/ConstructorTasksIds.js";
 import { DVEFWorldCore } from "../DVEFWorldCore";
-import { QueueManager } from "@divinestar/threads/Queue/QueueManager";
+import { QueueManager } from "@amodx/threads/Queue/QueueManager";
 
 export class DVEFoundationTasksQueues {
   init(dve: DVEFWorldCore) {

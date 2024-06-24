@@ -1,7 +1,7 @@
 //types
-import type { LocationData, Vec3Array } from "@divinevoxel/core/Math/index.js";
+import type { LocationData } from "@divinevoxel/core/Math/index.js";
 import type { SetChunkMeshTask } from "@divinevoxel/core/Contexts/Render/Tasks/RenderTasks.types.js";
-import { Flat3DIndex } from "@divinevoxel/core/Math/Flat3DIndex.js";
+import { Flat3DIndex } from "@amodx/math/Volumes/Indexing/Flat3DIndex.js";
 //objects
 import { RenderedSubstances } from "../Rules/RenderedSubstances.js";
 import { DivineVoxelEngineConstructor } from "@divinevoxel/core/Contexts/Constructor/DivineVoxelEngineConstructor.js";
@@ -11,6 +11,7 @@ import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces.js";
 
 import { BuilderDataTool } from "../Tools/BuilderDataTool.js";
 import { ShapeTool } from "../Shapes/ShapeTool.js";
+import { Vec3Array } from "@amodx/math";
 
 const mDataTool = new BuilderDataTool();
 

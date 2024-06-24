@@ -1,6 +1,6 @@
-import { URIScene } from "@divinestar/uri/Scenes/URIScene.js";
+import { URIScene } from "@amodx/uri/Scenes/URIScene.js";
 import { Camera, Scene } from "three";
-import { Observable } from "@divinestar/utils/Observers/Observable";
+import { Observable } from "@amodx/core/Observers/Observable";
 export class DVETRScene extends URIScene<Scene> {
   beforeRender = new Observable();
 

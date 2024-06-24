@@ -1,4 +1,4 @@
-import { Vector3Like } from "@divinevoxel/core/Math";
+import { Vector3Like } from "@amodx/math";
 import { DirectionNames } from "@divinevoxel/core/Types/Util.types";
 
 export type GeometryBuildData = {

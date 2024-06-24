@@ -1,4 +1,4 @@
-import type { Vec3Array } from "@divinevoxel/core/Math";
+import type { Vec3Array } from "@amodx/math";
 
 export class DataMatrix<T> {
   private _matrix: T[][][];

@@ -35,7 +35,7 @@ ___
 
 ### commMap
 
-• **commMap**: `Map`\<`string`, `CommBase` \| `CommManager`\>
+• **commMap**: `Map`\<`string`, `Thread` \| `ThreadPool`\>
 
 #### Defined in
 
@@ -55,7 +55,7 @@ ___
 
 ### comms
 
-• **comms**: (`CommBase` \| `CommManager`)[] = `[]`
+• **comms**: (`Thread` \| `ThreadPool`)[] = `[]`
 
 #### Defined in
 
@@ -192,7 +192,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `func` | (`comm`: `CommBase` \| `CommManager`, `options`: [`CommSyncOptions`](../modules/Interfaces_World_Data_DataSyncNode.md#commsyncoptions)) => `void` |
+| `func` | (`comm`: `Thread` \| `ThreadPool`, `options`: [`CommSyncOptions`](../modules/Interfaces_World_Data_DataSyncNode.md#commsyncoptions)) => `void` |
 
 #### Returns
 
@@ -212,7 +212,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `comm` | `CommBase` \| `CommManager` |
+| `comm` | `Thread` \| `ThreadPool` |
 | `data` | `Partial`\<[`CommSyncOptions`](../modules/Interfaces_World_Data_DataSyncNode.md#commsyncoptions)\> |
 
 #### Returns

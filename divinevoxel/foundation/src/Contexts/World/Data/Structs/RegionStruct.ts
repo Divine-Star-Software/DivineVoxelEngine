@@ -1,6 +1,6 @@
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces.js";
 
-import { BinaryNumberTypes, BinaryStruct } from "@divinestar/binary/";
+import { BinaryNumberTypes, BinaryStruct } from "@amodx/binary/";
 import { WorldDataStructProperties } from "../../../../Data/Constants/Structs/WorldDataStructProperties.js";
 import { Region } from "../../../../Data/World/Classes/Region.js";
 import { RegionHeaderTags } from "../../../../Data/RegionHeaderRegister.js";

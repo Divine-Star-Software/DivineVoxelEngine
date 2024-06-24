@@ -2,7 +2,7 @@ import {
   RemoteBinaryStruct,
   RemoteBinaryStructData,
   InstantiatedStruct,
-} from "@divinestar/binary/";
+} from "@amodx/binary/";
 import { SubstanceTagIds } from "../../Data/Constants/SubstanceTagIds.js";
 import { SubstancePaletteReader } from "./SubstancePalette.js";
 
@@ -14,6 +14,7 @@ export interface SubstanceStruct {
   [SubstanceTagIds.isLiquid]: number;
   [SubstanceTagIds.flowRate]: number;
   [SubstanceTagIds.culledSubstnaces]: number;
+  [SubstanceTagIds.cullDense]: number;
 }
 
 const remote = new RemoteBinaryStruct("voxel-data");

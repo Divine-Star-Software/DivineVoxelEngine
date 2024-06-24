@@ -1,5 +1,5 @@
-import { URIScene } from "@divinestar/uri/Scenes/URIScene";
-import { URINode } from "@divinestar/uri/Meshes/URINode";
+import { URIScene } from "@amodx/uri/Scenes/URIScene";
+import { URINode } from "@amodx/uri/Meshes/URINode";
 
 export abstract class DVEFOManager {
   constructor(public scene: URIScene) {}

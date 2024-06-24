@@ -1,4 +1,4 @@
-import type { BinaryNumberTypes } from "@divinestar/binary/";
+import type { BinaryNumberTypes } from "@amodx/binary/";
 type TagBuilderNodeBase = {
  id: string;
 };

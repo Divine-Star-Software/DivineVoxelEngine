@@ -25,7 +25,7 @@ custom_edit_url: null
 
 ### TC
 
-• **TC**: `Object` = `ThreadComm`
+• **TC**: `Object` = `Threads`
 
 #### Type declaration
 
@@ -33,8 +33,8 @@ custom_edit_url: null
 | :------ | :------ |
 | `__expectedPorts` | `Record`\<`string`, `boolean`\> |
 | `__initalized` | `boolean` |
-| `_commManageras` | `Record`\<`string`, `CommManager`\> |
-| `_comms` | `Record`\<`string`, `CommBase`\> |
+| `_commManageras` | `Record`\<`string`, `ThreadPool`\> |
+| `_comms` | `Record`\<`string`, `Thread`\> |
 | `_queues` | `Map`\<`string`, `Map`\<`string`, `SyncedQueue`\>\> |
 | `crypto` | `Crypto` |
 | `environment` | ``"node"`` \| ``"browser"`` |
@@ -43,15 +43,15 @@ custom_edit_url: null
 | `internal.isInternal` | [object Object] |
 | `internal.registerTasks` | [object Object] |
 | `internal.runInternal` | [object Object] |
-| `parent` | `CommBase` |
+| `parent` | `Thread` |
 | `threadName` | `string` |
 | `threadNumber` | `number` |
 | `$INIT` | (`threadName`: `string`, `threadParentName`: `string`) => `Promise`\<`void`\> |
-| `addComm` | (`comm`: `CommBase`) => `void` |
-| `createComm` | \<T\>(`name`: `string`, `mergeObject?`: `T`) => `T` & `CommBase` |
-| `createCommManager` | (`data`: `CommManagerData`) => `CommManager` |
-| `getComm` | (`id`: `string`) => `CommBase` |
-| `getCommManager` | (`id`: `string`) => `CommManager` |
+| `addComm` | (`comm`: `Thread`) => `void` |
+| `createComm` | \<T\>(`name`: `string`, `mergeObject?`: `T`) => `T` & `Thread` |
+| `createThreadPool` | (`data`: `ThreadPoolData`) => `ThreadPool` |
+| `getComm` | (`id`: `string`) => `Thread` |
+| `getThreadPool` | (`id`: `string`) => `ThreadPool` |
 | `getSyncedQueue` | (`threadId`: `string`, `queueId`: `string`) => `undefined` \| `SyncedQueue` |
 | `getWorkerPort` | () => `Promise`\<`any`\> |
 | `onDataSync` | \<T_2, K\>(`dataType`: `string` \| `number`, `onSync?`: (`data`: `T_2`) => `void`, `onUnSync?`: (`data`: `K`) => `void`) => `any` |

@@ -1,5 +1,5 @@
-import { Observable } from "@divinestar/utils/Observers/index.js";
-import { AsyncPipeline, Pipeline } from "@divinestar/utils/Pipelines/";
+import { Observable } from "@amodx/core/Observers/index.js";
+import { AsyncPipeline, Pipeline } from "@amodx/core/Pipelines/";
 import type { LocationData } from "@divinevoxel/core/Math/index.js";
 import { DimensionData } from "./Types/DimensionData.types";
 import { EngineSettingsData } from "@divinevoxel/core/Types/EngineSettings.types";

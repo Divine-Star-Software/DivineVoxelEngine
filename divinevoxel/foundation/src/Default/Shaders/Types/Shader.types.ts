@@ -1,4 +1,4 @@
-import { Vec3Array } from "@divinevoxel/core/Math";
+import { Vec3Array } from "@amodx/math";
 
 export type DVEFogTypes = "exponential" | "volumetric" | "animated-volumetric";
 export type RenderFogOptions = {

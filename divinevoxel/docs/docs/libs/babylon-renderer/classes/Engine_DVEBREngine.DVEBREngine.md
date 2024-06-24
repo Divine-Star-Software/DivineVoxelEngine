@@ -39,7 +39,7 @@ URIEngine.\_engine
 
 #### Defined in
 
-node_modules/@divinestar/uri/Engine/URIEngine.d.ts:3
+node_modules/@amodx/uri/Engine/URIEngine.d.ts:3
 
 ## Methods
 

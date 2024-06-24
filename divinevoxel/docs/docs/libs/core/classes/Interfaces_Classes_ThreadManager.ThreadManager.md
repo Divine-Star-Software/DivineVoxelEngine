@@ -33,7 +33,7 @@ custom_edit_url: null
 
 ### commMap
 
-• **commMap**: `Map`\<`string`, `CommBase` \| `CommManager`\>
+• **commMap**: `Map`\<`string`, `Thread` \| `ThreadPool`\>
 
 #### Defined in
 
@@ -43,7 +43,7 @@ ___
 
 ### comms
 
-• **comms**: (`CommBase` \| `CommManager`)[] = `[]`
+• **comms**: (`Thread` \| `ThreadPool`)[] = `[]`
 
 #### Defined in
 
@@ -86,7 +86,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `comm` | `CommBase` \| `CommManager` |
+| `comm` | `Thread` \| `ThreadPool` |
 
 #### Returns
 
@@ -100,7 +100,7 @@ ___
 
 ### getComm
 
-▸ **getComm**(`id`): `CommBase` \| `CommManager`
+▸ **getComm**(`id`): `Thread` \| `ThreadPool`
 
 #### Parameters
 
@@ -110,7 +110,7 @@ ___
 
 #### Returns
 
-`CommBase` \| `CommManager`
+`Thread` \| `ThreadPool`
 
 #### Defined in
 

@@ -1,5 +1,5 @@
 import { BoundsObject, VolumeDimensions  } from "Math/Math.types.js";
-import { Vector3Like } from "Math/Math.types.js";
+import { Vector3Like } from "@amodx/math";
 import { Vector3 } from "./Vector3.js";
 
 export class SimpleBoundingBox {

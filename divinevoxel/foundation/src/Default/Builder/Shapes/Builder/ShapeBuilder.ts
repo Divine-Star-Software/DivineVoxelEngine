@@ -1,5 +1,5 @@
 import type { QuadData } from "../../Types/ShapeBuilder.types";
-import { QuadScalarVertexData } from "@divinevoxel/core/Meshing/";
+import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
 import { LightData } from "../../../../Data/LightData.js"
 import { ShapeTool } from "../ShapeTool.js";
 import { QuadVertexes } from "../../Types/Geometry.types.js";

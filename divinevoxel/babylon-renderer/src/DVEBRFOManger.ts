@@ -3,7 +3,7 @@ import { TransformNode } from "@babylonjs/core/Meshes/transformNode.js";
 import { Vector3, Vector4 } from "@babylonjs/core/Maths/math.vector.js";
 import { DVEFOManager } from "@divinevoxel/core/Interfaces/Render/DVEFOManager.js";
 import { DVEBRScene } from "./Scene/DVEBRScene";
-import { URINode } from "@divinestar/uri/Meshes/URINode";
+import { URINode } from "@amodx/uri/Meshes/URINode";
 import { DVEBRNode } from "./Meshes/DVEBRNode";
 export class DVEBRFOManager extends DVEFOManager {
   activeCamera: TransformNode | null = null;

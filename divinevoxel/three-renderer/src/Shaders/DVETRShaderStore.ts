@@ -1,6 +1,6 @@
-import { URIShaderStore } from "@divinestar/uri/Shaders/URIShaderStore.js";
+import { URIShaderStore } from "@amodx/uri/Shaders/URIShaderStore.js";
 import { Effect } from "@babylonjs/core/Materials/effect.js";
-import { URIShaderTypes } from "@divinestar/uri/Constants/URIShaderTypes";
+import { URIShaderTypes } from "@amodx/uri/Constants/URIShaderTypes";
 export class DVETRShaderStore extends URIShaderStore {
   getShader(id: string, type: URIShaderTypes): string | null {
     const code =

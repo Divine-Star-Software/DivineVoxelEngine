@@ -10,13 +10,13 @@ import { SubstanceRules } from "../Rules/SubstanceRules.js";
 
 //tools
 import { BuilderDataTool } from "./BuilderDataTool.js";
-import { MesherDataTool } from "@divinevoxel/core/Meshing/Tools/MesherDataTools";
+import { MesherDataTool } from "@amodx/meshing/Tools/MesherDataTools";
 
 //data
 import { FaceNormals } from "@divinevoxel/core/Math/Constants/Faces.js";
-import { QuadScalarVertexData } from "@divinevoxel/core/Meshing/";
+import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
 import { VoxelTemplateDataTool } from "./VoxelTemplateDataTool.js";
-import { BinaryNumberTypes } from "@divinestar/binary";
+import { BinaryNumberTypes } from "@amodx/binary";
 import { VoxelFaces, VoxelFaceDirections } from "@divinevoxel/core/Math";
 
 export class VoxelMesherDataTool extends MesherDataTool {
@@ -145,21 +145,26 @@ export class VoxelMesherDataTool extends MesherDataTool {
     this.faceDataOverride.default = substanceRuleResult;
     finalResult = substanceRuleResult;
     this.faceDataOverride.default = finalResult;
-    finalResult = OverrideManager.CullFace.run(
+    finalResult = OverrideManager.FaceExposedShapeCheck.run(
       this.voxel.getShapeId(),
       OverrideManager.ANY,
       this.faceDataOverride
     );
     this.faceDataOverride.default = finalResult;
-    finalResult = OverrideManager.CullFace.run(
+    finalResult = OverrideManager.FaceExposedShapeCheck.run(
       this.voxel.getShapeId(),
       this.nVoxel.getShapeId(),
       this.faceDataOverride
     );
     this.faceDataOverride.default = finalResult;
-    finalResult = OverrideManager.CullFace.run(
+    finalResult = OverrideManager.FaceExposedVoxelCheck.run(
       this.voxel.getId(true),
-      this.nVoxel.getShapeId(),
+      OverrideManager.ANY,
+      this.faceDataOverride
+    );
+    finalResult = OverrideManager.FaceExposedVoxelCheck.run(
+      this.voxel.getId(true),
+      this.nVoxel.getId(true),
       this.faceDataOverride
     );
     return finalResult;

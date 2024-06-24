@@ -3,7 +3,7 @@ import type { VoxelMesherDataTool } from "../../Tools/VoxelMesherDataTool";
 import { OverrideManager } from "../../Rules/Overrides/OverridesManager.js";
 import { LightData } from "../../../../Data/LightData";
 
-import { QuadScalarVertexData } from "@divinevoxel/core/Meshing/";
+import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
 import { SubstanceRules } from "../../Rules/SubstanceRules.js";
 import { QuadVerticies } from "../../Geometry/Geometry.types";
 import { VoxelFaces, VoxelFaceDirections } from "@divinevoxel/core/Math";
@@ -118,22 +118,22 @@ flipped
  */
 const checkSets: Record<VoxelFaces, Record<QuadVerticies, number[]>> = {
   [VoxelFaces.Top]: {
-    [QuadVerticies.BottomLeft]: [-1, 1, 0, 0, 1, -1, -1, 1, -1],
-    [QuadVerticies.TopLeft]: [-1, 1, 0, 0, 1, 1, -1, 1, 1],
     [QuadVerticies.TopRight]: [1, 1, 0, 0, 1, 1, 1, 1, 1],
+    [QuadVerticies.TopLeft]: [-1, 1, 0, 0, 1, 1, -1, 1, 1],
+    [QuadVerticies.BottomLeft]: [-1, 1, 0, 0, 1, -1, -1, 1, -1],
     [QuadVerticies.BottomRight]: [1, 1, 0, 0, 1, -1, 1, 1, -1],
   },
   [VoxelFaces.Bottom]: {
-    [QuadVerticies.BottomLeft]: [-1, -1, 0, 0, -1, -1, -1, -1, -1],
-    [QuadVerticies.TopLeft]: [-1, -1, 0, 0, -1, 1, -1, -1, 1],
     [QuadVerticies.TopRight]: [1, -1, 0, 0, -1, 1, 1, -1, 1],
+    [QuadVerticies.TopLeft]: [-1, -1, 0, 0, -1, 1, -1, -1, 1],
+    [QuadVerticies.BottomLeft]: [-1, -1, 0, 0, -1, -1, -1, -1, -1],
     [QuadVerticies.BottomRight]: [1, -1, 0, 0, -1, -1, 1, -1, -1],
   },
   [VoxelFaces.East]: {
-    [QuadVerticies.TopLeft]: [1, 0, -1, 1, 1, 0, 1, 1, -1],
     [QuadVerticies.TopRight]: [1, 0, 1, 1, 1, 0, 1, 1, 1],
-    [QuadVerticies.BottomRight]: [1, 0, 1, 1, -1, 0, 1, -1, 1],
+    [QuadVerticies.TopLeft]: [1, 0, -1, 1, 1, 0, 1, 1, -1],
     [QuadVerticies.BottomLeft]: [1, 0, -1, 1, -1, 0, 1, -1, -1],
+    [QuadVerticies.BottomRight]: [1, 0, 1, 1, -1, 0, 1, -1, 1],
   },
   [VoxelFaces.West]: {
     [QuadVerticies.TopRight]: [-1, 0, 1, -1, 1, 0, -1, 1, 1],
@@ -142,10 +142,10 @@ const checkSets: Record<VoxelFaces, Record<QuadVerticies, number[]>> = {
     [QuadVerticies.BottomRight]: [-1, 0, 1, -1, -1, 0, -1, -1, 1],
   },
   [VoxelFaces.South]: {
-    [QuadVerticies.TopLeft]: [-1, 0, -1, 0, 1, -1, -1, 1, -1],
     [QuadVerticies.TopRight]: [1, 0, -1, 0, 1, -1, 1, 1, -1],
-    [QuadVerticies.BottomRight]: [1, 0, -1, 0, -1, -1, 1, -1, -1],
+    [QuadVerticies.TopLeft]: [-1, 0, -1, 0, 1, -1, -1, 1, -1],
     [QuadVerticies.BottomLeft]: [-1, 0, -1, 0, -1, -1, -1, -1, -1],
+    [QuadVerticies.BottomRight]: [1, 0, -1, 0, -1, -1, 1, -1, -1],
   },
   [VoxelFaces.North]: {
     [QuadVerticies.TopRight]: [1, 0, 1, 0, 1, 1, 1, 1, 1],
@@ -169,9 +169,9 @@ export const LightGradient = {
     doSun: true,
   },
   calculate(face: VoxelFaces, tool: VoxelMesherDataTool, ignoreAO?: boolean) {
-    tool.setFaceFlipped(false).getWorldLight().set(0, 0, 0, 0);
+    tool.setFaceFlipped(false).getWorldLight().setAll(0);
 
-    tool.getWorldAO().set(1, 1, 1, 1);
+    tool.getWorldAO().setAll(0);
     this.tool = tool;
     const voxelSubstance = SubstanceRules.getSubstanceParent(
       tool.voxel.getSubstance()
@@ -233,9 +233,7 @@ export const LightGradient = {
         }
       }
 
-      if (!states.ignoreAO) {
-        AOValues.a = 1;
-      }
+      AOValues.a = 0;
 
       for (let i = 0; i < 9; i += 3) {
         if (this.settings.doRGB || this.settings.doSun) {
@@ -349,11 +347,12 @@ export const LightGradient = {
       tool
         .getWorldAO()
         .set(
-          AOValue.vertices[QuadVerticies.TopRight],
-          AOValue.vertices[QuadVerticies.TopLeft],
-          AOValue.vertices[QuadVerticies.BottomLeft],
-          AOValue.vertices[QuadVerticies.BottomRight]
+          Math.ceil((AOValue.vertices[QuadVerticies.TopRight] / 3) * 15),
+          Math.ceil((AOValue.vertices[QuadVerticies.TopLeft] / 3) * 15),
+          Math.ceil((AOValue.vertices[QuadVerticies.BottomLeft] / 3) * 15),
+          Math.ceil((AOValue.vertices[QuadVerticies.BottomRight] / 3) * 15)
         );
+
     }
   },
 };

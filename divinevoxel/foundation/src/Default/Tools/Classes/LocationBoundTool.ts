@@ -1,4 +1,5 @@
-import type { LocationData, Vec3Array } from "@divinevoxel/core/Math";
+import type { LocationData } from "@divinevoxel/core/Math";
+import type { Vec3Array } from "@amodx/math";
 
 export class LocationBoundTool {
   location: LocationData = ["main", 0, 0, 0];

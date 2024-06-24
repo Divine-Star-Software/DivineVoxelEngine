@@ -2,7 +2,7 @@ import { BoundingBox, BoundingBoxData } from "./Classes/BoundingBox.js";
 import { Plane } from "./Classes/Plane.js";
 import { SimpleBoundingBox } from "./Classes/SimpleBoundingBox.js";
 import { Vector3 } from "./Classes/Vector3.js";
-import { VisitAll } from "./Functions/VisitAll.js";
+import { VisitAll } from "./VisitAll.js";
 import { VolumeDimensions  } from "./Math.types.js";
 /**# Voxel Math
  * ---

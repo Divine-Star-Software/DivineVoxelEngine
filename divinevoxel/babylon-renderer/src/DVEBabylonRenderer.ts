@@ -5,7 +5,7 @@ import { DVEBRFOManager } from "./DVEBRFOManger";
 import { DVEBRScene } from "./Scene/DVEBRScene";
 import { DVEBRNodeManager } from "./Nodes/DVEBRNodeManager.js";
 import { DivineVoxelEngineRender } from "@divinevoxel/core/Contexts/Render/DivineVoxelEngineRender.js";
-import { Observable } from "@divinestar/utils/Observers/Observable.js";
+import { Observable } from "@amodx/core/Observers/Observable.js";
 import { DVEBRMesh } from "./Nodes/Meshes/DVEBRMesh.js";
 import { DVEBREngine } from "./Engine/DVEBREngine.js";
 import { SceneTool } from "./Defaults/Foundation/Tools/SceneTool.js";

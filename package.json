@@ -11,7 +11,7 @@
     "init:dve:babylon-renderer": "cd ./divinevoxel/babylon-renderer ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/babylon-renderer/dist",
     "init:dve:three-renderer": "cd ./divinevoxel/three-renderer ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/three-renderer/dist",
     "init:dve:react-three": "cd ./divinevoxel/react-three ; npm run build ; cd ../../ ; npm init -y --scope @divinevoxel -w ./divinevoxel/react-three/dist",
-    "init:dve:all": "npm run init:dve:core ; npm run init:dve:iwg ; npm run init:dve:ecs ; npm run init:dve:react"
+    "init:dve:all": "npm run init:dve:core ; npm run init:dve:foundation ; npm run init:dve:babylon-renderer"
   },
   "author": "Divine Star Software",
   "license": "MIT",
@@ -25,39 +25,10 @@
     "divinevoxel\\quantum-renderer\\dist"
   ],
   "devDependencies": {
-    "@types/react": "^18.2.17",
-    "@types/react-dom": "^18.2.7",
-    "@types/three": "^0.163.0",
-    "@webgpu/types": "^0.1.40",
-    "css-loader": "^6.8.1",
-    "file-loader": "^6.2.0",
-    "html-loader": "^4.2.0",
-    "html-webpack-plugin": "^5.5.3",
-    "jest": "^29.7.0",
-    "postcss-loader": "^7.3.3",
-    "raw-loader": "^4.0.2",
-    "style-loader": "^3.3.3",
-    "ts-loader": "^9.4.3",
-    "tsconfig-paths-webpack-plugin": "^4.0.1",
-    "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1"
+   
   },
   "description": "",
   "dependencies": {
-    "@babylonjs/core": "^7.1.0",
-    "@babylonjs/gui": "^7.1.0",
-    "@babylonjs/loaders": "^7.1.0",
-    "@divinestar/audio": "^0.0.20",
-    "@divinestar/binary": "^0.0.50",
-    "@divinestar/controls": "^0.0.20",
-    "@divinestar/indexdb": "^0.0.50",
-    "@divinestar/rng": "^0.0.20",
-    "@divinestar/threads": "^0.0.50",
-    "@divinestar/uri": "^0.0.15",
-    "@divinestar/utils": "^0.0.50",
-    "@react-three/drei": "^9.105.1",
-    "@react-three/fiber": "^8.16.1",
-    "three": "^0.163.0"
+
   }
 }

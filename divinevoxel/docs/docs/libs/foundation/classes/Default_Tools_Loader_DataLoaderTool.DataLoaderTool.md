@@ -45,7 +45,7 @@ ___
 
 ### dataComm
 
-• **dataComm**: `CommBase`
+• **dataComm**: `Thread`
 
 #### Defined in
 

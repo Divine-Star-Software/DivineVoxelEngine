@@ -2,25 +2,15 @@
 import { TextureRotations } from "../../../Types/Geometry.types.js";
 import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 import { ShapeTool } from "../../ShapeTool.js";
-import { QuadScalarVertexData } from "@divinevoxel/core/Meshing/";
+import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
 
 import { DirectionNames } from "@divinevoxel/core/Types/Util.types.js";
 import { BoxVoxelShape } from "../Box/Box.voxel.shape.js";
 import { VoxelFaces } from "@divinevoxel/core/Math/index.js";
 import { VoxelShapeBase } from "../../VoxelShapeBase.js";
-import { Quad } from "@divinevoxel/core/Meshing/Classes/Quad.js";
-import { QuadUVData } from "@divinevoxel/core/Meshing/Geometry.types.js";
+import { Quad } from "@amodx/meshing/Classes/Quad.js";
+import { QuadUVData } from "@amodx/meshing/Geometry.types.js";
 import { VoxelGeometry } from "../../../Geometry/VoxelGeometry.js";
-//objects
-const addData = (face: DirectionNames) => {
-  return ShapeTool.builder.quad
-    .setDirection(face)
-    .setFlipped(ShapeTool.data.isFaceFlipped())
-    .light.add(ShapeTool.data.getWorldLight())
-    .textures.add(ShapeTool.data.getTexture())
-    .overlayTexture.add(ShapeTool.data.getOverlayTextures())
-    .animationState.add(flowAnimationState);
-};
 
 const flowAnimationState = new QuadScalarVertexData();
 const vertexValue = new QuadScalarVertexData();
@@ -30,10 +20,10 @@ let topFaceExposed = false;
 let level = 0;
 
 const uvs: QuadUVData = [
-  [0, 0],
-  [1, 0],
   [1, 1],
   [0, 1],
+  [0, 0],
+  [1, 0],
 ];
 const Quads: Record<DirectionNames, Quad> = {
   top: Quad.Create(
@@ -95,7 +85,7 @@ const Quads: Record<DirectionNames, Quad> = {
 class LiquidVoxelShapeClass extends VoxelShapeBase {
   id = "#dve_liquid";
   init() {
-    OverrideManager.CullFace.register(
+    OverrideManager.FaceExposedShapeCheck.register(
       this.numberId,
       OverrideManager.ANY,
       (data) => {
@@ -127,16 +117,17 @@ class LiquidVoxelShapeClass extends VoxelShapeBase {
       vertexLevel.setFromQuadData(ShapeTool.data.getWorldLevel());
 
       vertexValue.set(
-        vertexLevel.vertices[1] / 15 - 1,
-        vertexLevel.vertices[2] / 15 - 1,
-        vertexLevel.vertices[3] / 15 - 1,
-        vertexLevel.vertices[4] / 15 - 1
+        vertexLevel.vertices[1] / 15,
+        vertexLevel.vertices[2] / 15,
+        vertexLevel.vertices[3] / 15,
+        vertexLevel.vertices[4] / 15
       );
 
-      Quads.top.positions.vertices[1].y = vertexLevel.vertices[1] / 15 - 1;
-      Quads.top.positions.vertices[2].y = vertexLevel.vertices[2] / 15 - 1;
-      Quads.top.positions.vertices[3].y = vertexLevel.vertices[3] / 15 - 1;
-      Quads.top.positions.vertices[4].y = vertexLevel.vertices[4] / 15 - 1;
+      Quads.top.positions.vertices[1].y = vertexValue.vertices[1];
+      Quads.top.positions.vertices[2].y = vertexValue.vertices[2];
+      Quads.top.positions.vertices[3].y = vertexValue.vertices[3];
+      Quads.top.positions.vertices[4].y = vertexValue.vertices[4];
+
       const uvAngle = getAngle();
       Quads.top.flip = ShapeTool.data.isFaceFlipped();
       VoxelGeometry.addQuad(ShapeTool.data, ShapeTool.origin, Quads.top);
@@ -151,10 +142,10 @@ class LiquidVoxelShapeClass extends VoxelShapeBase {
       flowAnimationState.setAll(1);
       Quads.north.flip = ShapeTool.data.isFaceFlipped();
       if (topFaceExposed) {
-        Quads.north.positions.vertices[1].y = 1 + vertexValue.vertices[1];
-        Quads.north.positions.vertices[2].y = 1 + vertexValue.vertices[2];
-        Quads.north.uvs.vertices[1].y = Math.abs(vertexValue.vertices[1]);
-        Quads.north.uvs.vertices[2].y = Math.abs(vertexValue.vertices[2]);
+        Quads.north.positions.vertices[1].y = vertexValue.vertices[1];
+        Quads.north.positions.vertices[2].y = vertexValue.vertices[2];
+        Quads.north.uvs.vertices[1].y = vertexValue.vertices[1];
+        Quads.north.uvs.vertices[2].y = vertexValue.vertices[2];
       } else {
         Quads.north.positions.vertices[1].y = 1;
         Quads.north.positions.vertices[2].y = 1;
@@ -167,10 +158,10 @@ class LiquidVoxelShapeClass extends VoxelShapeBase {
       flowAnimationState.setAll(1);
       Quads.south.flip = ShapeTool.data.isFaceFlipped();
       if (topFaceExposed) {
-        Quads.south.positions.vertices[1].y = 1 + vertexValue.vertices[3];
-        Quads.south.positions.vertices[2].y = 1 + vertexValue.vertices[4];
-        Quads.south.uvs.vertices[1].y = Math.abs(vertexValue.vertices[3]);
-        Quads.south.uvs.vertices[2].y = Math.abs(vertexValue.vertices[4]);
+        Quads.south.positions.vertices[1].y = vertexValue.vertices[3];
+        Quads.south.positions.vertices[2].y = vertexValue.vertices[4];
+        Quads.south.uvs.vertices[1].y = vertexValue.vertices[3];
+        Quads.south.uvs.vertices[2].y = vertexValue.vertices[4];
       } else {
         Quads.south.positions.vertices[1].y = 1;
         Quads.south.positions.vertices[2].y = 1;
@@ -183,10 +174,10 @@ class LiquidVoxelShapeClass extends VoxelShapeBase {
       flowAnimationState.setAll(1);
       Quads.east.flip = ShapeTool.data.isFaceFlipped();
       if (topFaceExposed) {
-        Quads.east.positions.vertices[1].y = 1 + vertexValue.vertices[2];
-        Quads.east.positions.vertices[2].y = 1 + vertexValue.vertices[3];
-        Quads.east.uvs.vertices[1].y = Math.abs(vertexValue.vertices[2]);
-        Quads.east.uvs.vertices[2].y = Math.abs(vertexValue.vertices[3]);
+        Quads.east.positions.vertices[1].y = vertexValue.vertices[2];
+        Quads.east.positions.vertices[2].y = vertexValue.vertices[3];
+        Quads.east.uvs.vertices[1].y = vertexValue.vertices[2];
+        Quads.east.uvs.vertices[2].y = vertexValue.vertices[3];
       } else {
         Quads.east.positions.vertices[1].y = 1;
         Quads.east.positions.vertices[2].y = 1;
@@ -199,180 +190,16 @@ class LiquidVoxelShapeClass extends VoxelShapeBase {
       flowAnimationState.setAll(1);
       Quads.east.flip = ShapeTool.data.isFaceFlipped();
       if (topFaceExposed) {
-        Quads.east.positions.vertices[1].y = 1 + vertexValue.vertices[1];
-        Quads.east.positions.vertices[2].y = 1 + vertexValue.vertices[4];
-        Quads.east.uvs.vertices[1].y = Math.abs(vertexValue.vertices[1]);
-        Quads.east.uvs.vertices[2].y = Math.abs(vertexValue.vertices[4]);
+        Quads.east.positions.vertices[1].y = vertexValue.vertices[1];
+        Quads.east.positions.vertices[2].y = vertexValue.vertices[4];
+        Quads.east.uvs.vertices[1].y = vertexValue.vertices[1];
+        Quads.east.uvs.vertices[2].y = vertexValue.vertices[4];
       } else {
         Quads.east.positions.vertices[1].y = 1;
         Quads.east.positions.vertices[2].y = 1;
         Quads.east.setUVs(uvs);
       }
       VoxelGeometry.addQuad(ShapeTool.data, ShapeTool.origin, Quads.east);
-    },
-  };
-  addO = {
-    top() {
-      topFaceExposed = true;
-      const level = ShapeTool.data.voxel.getLevel();
-      if (level == 15) {
-        BoxVoxelShape.add.top();
-      } else {
-        ShapeTool.data.calculateFlow();
-        vertexLevel.setFromQuadData(ShapeTool.data.getWorldLevel());
-
-        vertexValue.set(
-          vertexLevel.vertices[1] / 15 - 1,
-          vertexLevel.vertices[2] / 15 - 1,
-          vertexLevel.vertices[3] / 15 - 1,
-          vertexLevel.vertices[4] / 15 - 1
-        );
-
-        ShapeTool.builder.quad
-          .setTransform(1, 0, vertexValue.vertices[1], 0)
-          .setTransform(2, 0, vertexValue.vertices[2], 0)
-          .setTransform(3, 0, vertexValue.vertices[3], 0)
-          .setTransform(4, 0, vertexValue.vertices[4], 0)
-          .textures.setRoation(getAngle());
-        addData("top")
-          .updatePosition(0.5, 1, 0.5)
-          .create()
-          .clearTransform()
-          .textures.clear();
-      }
-    },
-
-    bottom() {
-      if (level == 15) {
-        BoxVoxelShape.add.bottom();
-      } else {
-        flowAnimationState.setAll(0);
-        addData("bottom")
-          .updatePosition(0.5, 0, 0.5)
-          .create()
-          .clearTransform()
-          .textures.clear();
-      }
-    },
-
-    north() {
-      if (level == 15) {
-        BoxVoxelShape.add.north();
-      } else {
-        flowAnimationState.setAll(1);
-        ShapeTool.builder.quad
-          .setDirection("north")
-          .updatePosition(0.5, 0.5, 1)
-          .setTransform(1, 0, vertexValue.vertices[3], 0)
-          .setTransform(2, 0, vertexValue.vertices[2], 0)
-          .light.add(ShapeTool.data.getWorldLight())
-          .overlayTexture.add(ShapeTool.data.getOverlayTextures())
-          .animationState.add(flowAnimationState);
-        if (topFaceExposed) {
-          ShapeTool.builder.quad.textures.advancedUVs.hs1 = Math.abs(
-            vertexValue.vertices[3]
-          );
-          ShapeTool.builder.quad.textures.advancedUVs.hs2 = Math.abs(
-            vertexValue.vertices[2]
-          );
-          ShapeTool.builder.quad.textures.addAdvancedUVs(
-            ShapeTool.data.getTexture()
-          );
-        } else {
-          ShapeTool.builder.quad.textures.add(ShapeTool.data.getTexture());
-        }
-        ShapeTool.builder.quad.create().clearTransform().textures.clear();
-      }
-    },
-
-    south() {
-      if (level == 15) {
-        BoxVoxelShape.add.south();
-      } else {
-        flowAnimationState.setAll(1);
-        ShapeTool.builder.quad
-          .setDirection("south")
-          .updatePosition(0.5, 0.5, 0)
-          .setTransform(1, 0, vertexValue.vertices[1], 0)
-          .setTransform(2, 0, vertexValue.vertices[4], 0)
-          .light.add(ShapeTool.data.getWorldLight())
-          .overlayTexture.add(ShapeTool.data.getOverlayTextures())
-          .animationState.add(flowAnimationState);
-        if (topFaceExposed) {
-          ShapeTool.builder.quad.textures.advancedUVs.hs1 = Math.abs(
-            vertexValue.vertices[1]
-          );
-          ShapeTool.builder.quad.textures.advancedUVs.hs2 = Math.abs(
-            vertexValue.vertices[4]
-          );
-          ShapeTool.builder.quad.textures.addAdvancedUVs(
-            ShapeTool.data.getTexture()
-          );
-        } else {
-          ShapeTool.builder.quad.textures.add(ShapeTool.data.getTexture());
-        }
-        ShapeTool.builder.quad.create().clearTransform().textures.clear();
-      }
-    },
-
-    east() {
-      if (level == 15) {
-        BoxVoxelShape.add.east();
-      } else {
-        flowAnimationState.setAll(1);
-        ShapeTool.builder.quad
-          .setDirection("east")
-          .updatePosition(1, 0.5, 0.5)
-          .setTransform(1, 0, vertexValue.vertices[4], 0)
-          .setTransform(2, 0, vertexValue.vertices[3], 0)
-          .light.add(ShapeTool.data.getWorldLight())
-          .overlayTexture.add(ShapeTool.data.getOverlayTextures())
-          .animationState.add(flowAnimationState);
-        if (topFaceExposed) {
-          ShapeTool.builder.quad.textures.advancedUVs.hs1 = Math.abs(
-            vertexValue.vertices[4]
-          );
-          ShapeTool.builder.quad.textures.advancedUVs.hs2 = Math.abs(
-            vertexValue.vertices[3]
-          );
-          ShapeTool.builder.quad.textures.addAdvancedUVs(
-            ShapeTool.data.getTexture()
-          );
-        } else {
-          ShapeTool.builder.quad.textures.add(ShapeTool.data.getTexture());
-        }
-        ShapeTool.builder.quad.create().clearTransform().textures.clear();
-      }
-    },
-
-    west() {
-      if (level == 15) {
-        BoxVoxelShape.add.west();
-      } else {
-        flowAnimationState.setAll(1);
-        ShapeTool.builder.quad
-          .setDirection("west")
-          .updatePosition(0, 0.5, 0.5)
-          .setTransform(1, 0, vertexValue.vertices[2], 0)
-          .setTransform(2, 0, vertexValue.vertices[1], 0)
-          .light.add(ShapeTool.data.getWorldLight())
-          .overlayTexture.add(ShapeTool.data.getOverlayTextures())
-          .animationState.add(flowAnimationState);
-        if (topFaceExposed) {
-          ShapeTool.builder.quad.textures.advancedUVs.hs1 = Math.abs(
-            vertexValue.vertices[2]
-          );
-          ShapeTool.builder.quad.textures.advancedUVs.hs2 = Math.abs(
-            vertexValue.vertices[1]
-          );
-          ShapeTool.builder.quad.textures.addAdvancedUVs(
-            ShapeTool.data.getTexture()
-          );
-        } else {
-          ShapeTool.builder.quad.textures.add(ShapeTool.data.getTexture());
-        }
-        ShapeTool.builder.quad.create().clearTransform().textures.clear();
-      }
     },
   };
 }

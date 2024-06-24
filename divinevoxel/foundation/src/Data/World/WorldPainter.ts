@@ -1,7 +1,7 @@
 import { WorldRegister } from "./WorldRegister.js";
 import { DataHooks } from "../DataHooks.js";
 
-import type { LocationData } from "@divinevoxel/core/Math";
+import type { LocationData } from "@divinevoxel/core/Math";;
 import { DataTool } from "../../Default/Tools/Data/DataTool.js";
 import { AddVoxelData } from "Data/Types/WorldData.types.js";
 import { VoxelPaletteReader } from "@divinevoxel/core/Data/Voxel/VoxelPalette.js";

@@ -3,13 +3,13 @@ import {
   SetChunkMeshTask,
 } from "../Tasks/RenderTasks.types.js";
 import { MeshRegister } from "./MeshRegister.js";
-import { LocationData, Vector2Like } from "../../../Math/index.js";
-import { Distance3D } from "../../../Math/Functions/Distance3d.js";
+import { LocationData } from "../../../Math/index.js";
 
 import { DivineVoxelEngineRender } from "../../Render/DivineVoxelEngineRender.js";
-import { URIMesh } from "@divinestar/uri/Meshes/URIMesh.js";
+import { URIMesh } from "@amodx/uri/Meshes/URIMesh.js";
 import { DVENodeMeshAttributes } from "../../../Interfaces/Render/Nodes/DVERenderNode.types.js";
-import { Square, Circle } from "../../../Math/Shapes.js";
+import { Square, Circle } from "@amodx/math/Shapes";
+import { Vector2Like } from "@amodx/math";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 
 export class MeshManager {

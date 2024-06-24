@@ -1,4 +1,4 @@
-import { BinaryObject } from "@divinestar/binary/";
+import { BinaryObject } from "@amodx/binary/";
 import { RichColumn } from "../../../Data/Types/RichWorldData.types.js";
 import { RichDataSegmentTool } from "../../../Default/Tools/Classes/RichDataToolBase.js";
 import { DivineVoxelEngineRichWorld as DVERW } from "../DivineStarVoxelEngineRichWorld.js";

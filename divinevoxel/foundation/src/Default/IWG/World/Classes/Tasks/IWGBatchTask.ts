@@ -1,6 +1,7 @@
 import { Vec3ArrayDistanceSort } from "@divinevoxel/core/Math/Functions/DistnaceSort.js";
 import { IWG } from "../../IWG.js";
-import { LocationData, Vec3Array } from "@divinevoxel/core/Math";
+import { LocationData } from "@divinevoxel/core/Math";
+import {  Vec3Array } from "@amodx/math";
 import { IWGTaskBase } from "./IWGTaskBase";
 
 export abstract class IWGBatchTask extends IWGTaskBase {

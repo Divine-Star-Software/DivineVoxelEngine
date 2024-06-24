@@ -1,5 +1,5 @@
 import { Scene } from "@babylonjs/core/scene";
-import { Vec3Array } from "@divinevoxel/core/Math";
+import { Vec3Array } from "@amodx/math";
 import { TextureData } from "@divinevoxel/foundation/Textures/Texture.types";
 
 export type DVEBRDefaultMaterialBaseData = {

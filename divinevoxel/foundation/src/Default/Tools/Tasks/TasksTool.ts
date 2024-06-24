@@ -1,4 +1,4 @@
-import { ThreadComm } from "@divinestar/threads/";
+import { Threads } from "@amodx/threads/";
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import {
   BuildTasks,
@@ -30,7 +30,7 @@ export class TaskTool {
   _thread = "";
   _priority: Priorities = 0;
   constructor() {
-    this._thread = ThreadComm.threadName;
+    this._thread = Threads.threadName;
   }
 
   setPriority(priority: Priorities) {
@@ -43,7 +43,7 @@ export class TaskTool {
     const queueKey = `${dimesnion}-${WorldSpaces.region.getKeyXYZ(x, y, z)}`;
     DVEFWorldCore.instance.queues.addQueue(queueKey);
     this._data.queue = queueKey;
-    this._thread = ThreadComm.threadName;
+    this._thread = Threads.threadName;
     return this;
   }
 
@@ -300,7 +300,7 @@ export class TaskTool {
 
 const tasks = new TaskTool();
 const CommonTasks = {
-  buildChunk: ThreadComm.registerTasks<PriorityTask<BuildTasks>>(
+  buildChunk: Threads.registerTasks<PriorityTask<BuildTasks>>(
     ConstructorRemoteThreadTasks.buildChunk,
     (data) => {
       tasks.setPriority(data.priority);

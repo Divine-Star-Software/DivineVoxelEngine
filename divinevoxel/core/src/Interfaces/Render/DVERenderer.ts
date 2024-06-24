@@ -1,5 +1,5 @@
-import { URIEngine } from "@divinestar/uri/Engine/URIEngine.js";
-import { URIScene } from "@divinestar/uri/Scenes/URIScene.js";
+import { URIEngine } from "@amodx/uri/Engine/URIEngine.js";
+import { URIScene } from "@amodx/uri/Scenes/URIScene.js";
 import { DVEMeshCuller } from "./DVEMeshCuller.js";
 import { DVEFOManager } from "./DVEFOManager.js";
 import { DVENodeManager } from "./Nodes/DVENodeManager.js";

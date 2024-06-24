@@ -16,9 +16,9 @@ custom_edit_url: null
 
 | Name | Type |
 | :------ | :------ |
-| `dataComm` | `CommBase` |
+| `dataComm` | `Thread` |
 | `load` | [`UtilMap`](../classes/Util_UtilMap.UtilMap.md)\<`string`, `Function`[]\> |
-| `$INIT` | (`dataComm`: `CommBase`) => `void` |
+| `$INIT` | (`dataComm`: `Thread`) => `void` |
 | `addToLoad` | (`location`: `LocationData`, `run`: `Function`) => `undefined` \| `number` |
 | `runLoad` | (`location`: `LocationData`, `data`: `any`) => `undefined` \| ``false`` |
 

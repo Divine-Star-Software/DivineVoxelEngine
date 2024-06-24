@@ -1,7 +1,7 @@
-import { URIMesh } from "@divinestar/uri/Meshes/URIMesh";
+import { URIMesh } from "@amodx/uri/Meshes/URIMesh";
 import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import { DVEBRScene } from "../../Scene/DVEBRScene";
-import { Observable } from "@divinestar/utils/Observers/Observable";
+import { Observable } from "@amodx/core/Observers/Observable";
 class DVEBRMeshObservers {
   updated = new Observable();
 }

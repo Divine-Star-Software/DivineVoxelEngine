@@ -14,7 +14,7 @@ export class DataLoaderTool {
   dimension = "main";
 
   mode: "indexdb" | "server" | "both" = "server";
-  _enabled = true;
+  _enabled = typeof DataHanlderWrapper.instance !== "undefined";
 
   constructor() {
     this.mode = EngineSettings.settings.data.mode as any;
@@ -28,7 +28,7 @@ export class DataLoaderTool {
     this.dimension = dimension;
   }
   isEnabled() {
-    return this._enabled;
+    return !(typeof DataHanlderWrapper.instance?.columnExists === "undefined");
   }
 
   async saveColumnIfNotStored(location: LocationData) {

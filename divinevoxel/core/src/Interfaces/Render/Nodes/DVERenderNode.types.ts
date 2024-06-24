@@ -1,6 +1,6 @@
-import type { Vec3Array } from "Math";
-import type { URIShader } from "@divinestar/uri/Shaders/Classes/URIShader";
-import type { TypedArrays } from "@divinestar/binary/";
+import type { Vec3Array } from "@amodx/math";
+import type { URIShader } from "@amodx/uri/Shaders/Classes/URIShader";
+import type { TypedArrays } from "@amodx/binary/";
 
 export type DVENodeMeshAttributes = [
   id: string,

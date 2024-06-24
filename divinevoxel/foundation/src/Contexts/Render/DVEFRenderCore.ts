@@ -18,15 +18,15 @@ export abstract class DVEFRenderCore extends DVERenderCore {
     super();
     if (props.nexusWorker) {
       this.threads.nexus.setPort(props.nexusWorker);
-      this.threads.addComm(this.threads.nexus);
+      this.threads.addThread(this.threads.nexus);
     }
     if (props.richWorldWorker) {
       this.threads.richWorld.setPort(props.richWorldWorker);
-      this.threads.addComm(this.threads.richWorld);
+      this.threads.addThread(this.threads.richWorld);
     }
   /*   if (props.dataLoaderWorker) {
       this.threads.dataLoader.setPort(props.dataLoaderWorker);
-      this.threads.addComm(this.threads.dataLoader);
+      this.threads.addThread(this.threads.dataLoader);
     } */
   }
 }

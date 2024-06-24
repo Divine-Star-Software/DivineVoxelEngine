@@ -1,24 +1,24 @@
 import { VoxelFaces } from "@divinevoxel/core/Math/index.js";
 import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 import { ShapeTool } from "../../ShapeTool.js";
-import { QuadScalarVertexData } from "@divinevoxel/core/Meshing/";
+import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
 import { VoxelShapeBase } from "../../VoxelShapeBase.js";
 import { VoxelShapeManager } from "../../VoxelShapeManager.js";
 
 const animationState = new QuadScalarVertexData();
 
 class HalfBoxVoxelShapeClass extends VoxelShapeBase {
-  id = "#dve_halfbox";
+  id = "#dve_half_box";
   init(): void {
     //cullface
-    OverrideManager.CullFace.register(
+    OverrideManager.FaceExposedShapeCheck.register(
       this.numberId,
       VoxelShapeManager.getMappedId("#dve_panel"),
       (data) => {
         return false;
       }
     );
-    OverrideManager.CullFace.register(
+    OverrideManager.FaceExposedShapeCheck.register(
       this.numberId,
       VoxelShapeManager.getMappedId("#dve_box"),
       (data) => {
@@ -36,7 +36,7 @@ class HalfBoxVoxelShapeClass extends VoxelShapeBase {
         return true;
       }
     );
-    OverrideManager.CullFace.register(
+    OverrideManager.FaceExposedShapeCheck.register(
       this.numberId,
       VoxelShapeManager.getMappedId("#dve_stair"),
       (data) => {

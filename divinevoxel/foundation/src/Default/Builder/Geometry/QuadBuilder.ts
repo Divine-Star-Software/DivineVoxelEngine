@@ -1,7 +1,7 @@
-import type { MesherDataTool } from "@divinevoxel/core/Meshing/Tools/MesherDataTools.js";
+import type { MesherDataTool } from "@amodx/meshing/Tools/MesherDataTools"
 import type { QuadDimensions, QuadTransforms } from "../Types/Geometry.types";
 import type { DirectionNames } from "@divinevoxel/core/Types/Util.types";
-import type { Vector3Like } from "@divinevoxel/core/Math/index.js";
+import type { Vector3Like } from "@amodx/math";
 
 export const QuadBuilder = {
   defaultTransform: <QuadTransforms>{

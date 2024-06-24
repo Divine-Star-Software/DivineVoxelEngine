@@ -1,7 +1,7 @@
 import {
   URITextureFormat,
   URITextureSamplingMode,
-} from "@divinestar/uri/Constants/URITexturesConstants.js";
+} from "@amodx/uri/Constants/URITexturesConstants.js";
 import * as THREE from "three";
 
 export const DVETRTextureFormatMap: { [key in URITextureFormat]: number } = {

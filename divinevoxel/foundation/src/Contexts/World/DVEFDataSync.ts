@@ -3,7 +3,7 @@ import { DataSyncNode } from "@divinevoxel/core/Interfaces/World/Data/DataSyncNo
 import type { LocationData } from "@divinevoxel/core/Math/index.js";
 import type { WorldDataSync } from "../../Data/Types/DataSync.types.js";
 import type { DimensionData } from "../../Data/Types/DimensionData.types.js";
-import type { RemoteBinaryStructData } from "@divinestar/binary/";
+import type { RemoteBinaryStructData } from "@amodx/binary/";
 import { Chunk, Column, Region } from "../../Data/World/Classes/index.js";
 //objects
 import { WorldRegister } from "../../Data/World/WorldRegister.js";

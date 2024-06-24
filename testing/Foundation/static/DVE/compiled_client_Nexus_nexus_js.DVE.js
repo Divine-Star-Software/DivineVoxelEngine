@@ -82,61 +82,61 @@ __webpack_require__.r(__webpack_exports__);
 
 const DataSyncNode = {
     maps: {
-        strings: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.registerStringMap, (data) => {
+        strings: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.registerStringMap, (data) => {
             _Register_MappedDataRegister_js__WEBPACK_IMPORTED_MODULE_9__.MappedDataRegister.stringMaps.sync(data);
         }),
-        objects: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.registerObjectMap, (data) => {
+        objects: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.registerObjectMap, (data) => {
             _Register_MappedDataRegister_js__WEBPACK_IMPORTED_MODULE_9__.MappedDataRegister.objectMaps.sync(data);
         }),
     },
     palettes: {
-        voxel: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.voxelPalette, ([palette, map]) => {
+        voxel: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.voxelPalette, ([palette, map]) => {
             _Voxel_VoxelPalette_js__WEBPACK_IMPORTED_MODULE_3__.VoxelPaletteReader.setVoxelPalette(palette, map);
         }),
-        substance: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.substancePalette, ([palette, map]) => {
+        substance: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.substancePalette, ([palette, map]) => {
             _Substance_SubstancePalette_js__WEBPACK_IMPORTED_MODULE_11__.SubstancePaletteReader.setPalette(palette, map);
         }),
     },
     worldData: {
-        dimension: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.dimesnion, (data) => {
+        dimension: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.dimesnion, (data) => {
             _World_Dimensions_DimensionsRegister_js__WEBPACK_IMPORTED_MODULE_4__.DimensionsRegister.registerDimension(data.id, data.options);
         }),
-        chunk: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.chunk, (data) => {
+        chunk: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.chunk, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.chunk.add(data[0], data[1]);
         }, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.chunk.remove(data);
         }),
-        column: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.column, (data) => {
+        column: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.column, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.column.add(data[0], data[1]);
         }, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.column.remove(data);
         }),
-        region: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.region, (data) => {
+        region: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.region, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.region.add(data[0], data[1]);
         }, (data) => {
             _World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.region.remove(data);
         }),
-        regionHeader: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.regionHeader, (data) => {
+        regionHeader: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.regionHeader, (data) => {
             _World_Region_RegionHeaderRegister_js__WEBPACK_IMPORTED_MODULE_10__.RegionHeaderRegister.add(data[0], data[1]);
         }, (data) => {
             _World_Region_RegionHeaderRegister_js__WEBPACK_IMPORTED_MODULE_10__.RegionHeaderRegister.remove(data);
         }),
     },
     tags: {
-        voxel: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.voxelTags, (data) => {
+        voxel: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.voxelTags, (data) => {
             _Voxel_VoxelTags_js__WEBPACK_IMPORTED_MODULE_8__.VoxelTags.$INIT(data[0]);
             _Voxel_VoxelTags_js__WEBPACK_IMPORTED_MODULE_8__.VoxelTags.sync(new Uint16Array(data[1]));
         }),
-        substance: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.substanceTags, (data) => {
+        substance: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.substanceTags, (data) => {
             _Substance_SubstanceTags_js__WEBPACK_IMPORTED_MODULE_12__.SubstanceTags.$INIT(data);
         }),
-        chunk: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.chunkTags, (data) => {
+        chunk: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.chunkTags, (data) => {
             _World_Chunk_ChunkTags_js__WEBPACK_IMPORTED_MODULE_5__.ChunkTags.$INIT(data);
         }),
-        column: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.columnTags, (data) => {
+        column: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.columnTags, (data) => {
             _World_Column_ColumnTags_js__WEBPACK_IMPORTED_MODULE_7__.ColumnTags.$INIT(data);
         }),
-        region: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.regionTags, (data) => {
+        region: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.onDataSync(_Common_Threads_Contracts_DataSyncIds_js__WEBPACK_IMPORTED_MODULE_2__.DataSyncIds.regionTags, (data) => {
             _World_Region_RegionTags_js__WEBPACK_IMPORTED_MODULE_6__.RegionTags.$INIT(data[0]);
             _World_Region_RegionTags_js__WEBPACK_IMPORTED_MODULE_6__.RegionHeaderTags.$INIT(data[1]);
         }),
@@ -204,7 +204,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const DVEN = {
     environment: "browser",
-    TC: threadcomm__WEBPACK_IMPORTED_MODULE_7__.ThreadComm,
+    TC: threadcomm__WEBPACK_IMPORTED_MODULE_7__.Threads,
     UTIL: _Global_Util_helper_js__WEBPACK_IMPORTED_MODULE_1__.Util,
     settings: _Data_Settings_EngineSettings_js__WEBPACK_IMPORTED_MODULE_2__.EngineSettings,
     dataSyncNode: _Data_DataSyncNode_js__WEBPACK_IMPORTED_MODULE_4__.DataSyncNode,
@@ -246,7 +246,7 @@ async function InitNexusWorker(DVEN) {
     if (DVEN.environment == "node") {
         parent = "server";
     }
-    await threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.$INIT("nexus", parent);
+    await threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.$INIT("nexus", parent);
     await DVEN.UTIL.createPromiseCheck({ check: () => {
             return _Threads_NexusThreadState_js__WEBPACK_IMPORTED_MODULE_0__.NexusThreadState.isReady();
         }, checkInterval: 1 });
@@ -275,10 +275,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const ParentComm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.parent;
-const RichWorldComm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.createComm("rich-world");
-const WorldComm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.createComm("world");
-threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.registerTasks("sync-settings", (settings) => {
+const ParentComm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.parent;
+const RichWorldComm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.createComm("rich-world");
+const WorldComm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.createComm("world");
+threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.registerTasks("sync-settings", (settings) => {
     _Data_Settings_EngineSettings_js__WEBPACK_IMPORTED_MODULE_0__.EngineSettings.syncSettings(settings);
     _NexusThreadState_js__WEBPACK_IMPORTED_MODULE_2__.NexusThreadState._settingsSynced = true;
     _Data_DataHooks_js__WEBPACK_IMPORTED_MODULE_3__.DataHooks.settingsSynced.run(settings);

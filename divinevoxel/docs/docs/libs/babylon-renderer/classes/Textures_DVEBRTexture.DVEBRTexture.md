@@ -35,7 +35,7 @@ URITexture\<DVEBRScene,Texture\>.constructor
 
 #### Defined in
 
-node_modules/@divinestar/uri/Textures/URITexture.d.ts:32
+node_modules/@amodx/uri/Textures/URITexture.d.ts:32
 
 ## Properties
 
@@ -49,7 +49,7 @@ URITexture.\_texture
 
 #### Defined in
 
-node_modules/@divinestar/uri/Textures/URITexture.d.ts:31
+node_modules/@amodx/uri/Textures/URITexture.d.ts:31
 
 ## Methods
 

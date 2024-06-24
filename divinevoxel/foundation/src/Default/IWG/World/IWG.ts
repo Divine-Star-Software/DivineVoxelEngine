@@ -1,5 +1,5 @@
 import { IWGGeneratorData, IWGSettignsData } from "./Types/IWG.types";
-import type { Vec3Array } from "@divinevoxel/core/Math";
+import type { Vec3Array } from "@amodx/math";
 import { Generator } from "./Classes/Generator.js";
 import { RegisterDefaultTasks } from "./Tasks/RegisterDefaultTasks.js";
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces.js";

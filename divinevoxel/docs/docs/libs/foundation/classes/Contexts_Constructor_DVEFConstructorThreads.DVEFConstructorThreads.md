@@ -35,7 +35,7 @@ ConstructorThreadManager.constructor
 
 ### commMap
 
-• **commMap**: `Map`\<`string`, `CommBase` \| `CommManager`\>
+• **commMap**: `Map`\<`string`, `Thread` \| `ThreadPool`\>
 
 #### Inherited from
 
@@ -49,7 +49,7 @@ ___
 
 ### comms
 
-• **comms**: (`CommBase` \| `CommManager`)[]
+• **comms**: (`Thread` \| `ThreadPool`)[]
 
 #### Inherited from
 
@@ -63,7 +63,7 @@ ___
 
 ### parent
 
-• **parent**: `CommBase`
+• **parent**: `Thread`
 
 #### Inherited from
 
@@ -112,7 +112,7 @@ ___
 
 ### world
 
-• **world**: `CommBase`
+• **world**: `Thread`
 
 #### Inherited from
 
@@ -146,7 +146,7 @@ divinevoxel/core/dist/Interfaces/Constructor/Threads/ConstrcutorTheads.d.ts:4
 
 | Name | Type |
 | :------ | :------ |
-| `comm` | `CommBase` \| `CommManager` |
+| `comm` | `Thread` \| `ThreadPool` |
 
 #### Returns
 
@@ -164,7 +164,7 @@ ___
 
 ### getComm
 
-▸ **getComm**(`id`): `CommBase` \| `CommManager`
+▸ **getComm**(`id`): `Thread` \| `ThreadPool`
 
 #### Parameters
 
@@ -174,7 +174,7 @@ ___
 
 #### Returns
 
-`CommBase` \| `CommManager`
+`Thread` \| `ThreadPool`
 
 #### Inherited from
 

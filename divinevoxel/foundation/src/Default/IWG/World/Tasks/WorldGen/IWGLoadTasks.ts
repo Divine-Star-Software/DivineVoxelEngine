@@ -1,4 +1,4 @@
-import { SafeInterval } from "@divinestar/utils/Intervals/SafeInterval";
+import { SafeInterval } from "@amodx/core/Intervals/SafeInterval";
 import { IWGSingleTask } from "../../Classes/Tasks/IWGSingleTask";
 import { WorldRegister } from "../../../../../Data/World/WorldRegister";
 import {
@@ -30,7 +30,7 @@ export class IWGLoadTask extends IWGSingleTask {
   ) {
     const gen = this.gen;
 
-    if (!gen.dataLoader) {
+    if (!gen.dataLoader|| !gen.data.saveWorldData) {
       if (gen.columnTool.loadInAt(x, y, z)) {
         return onDone();
       }

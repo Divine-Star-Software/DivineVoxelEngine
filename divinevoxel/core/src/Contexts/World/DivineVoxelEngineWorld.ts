@@ -1,10 +1,10 @@
 //objects
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
-import { Environment } from "@divinestar/utils/Environment/Environment.js";
+import { Environment } from "@amodx/core/Environment/Environment.js";
 
 //functions
 import InitWorldWorker from "./InitWorker.js";
-import { ThreadComm } from "@divinestar/threads/";
+import { Threads } from "@amodx/threads/";
 import { DVEWorldCore } from "Interfaces/World/DVEWorldCore.js";
 /**# Divine Voxel Engine World
  * ---
@@ -13,7 +13,7 @@ import { DVEWorldCore } from "Interfaces/World/DVEWorldCore.js";
 export class DivineVoxelEngineWorld {
   static environment: "node" | "browser" = "browser";
   static instance: DivineVoxelEngineWorld;
-  TC = ThreadComm;
+  TC = Threads;
   settings = EngineSettings;
 
   core: DVEWorldCore;
@@ -32,4 +32,4 @@ export class DivineVoxelEngineWorld {
 DivineVoxelEngineWorld.environment = Environment.nodeJS.isNode
   ? "node"
   : "browser";
-ThreadComm.threadName = "world";
+Threads.threadName = "world";

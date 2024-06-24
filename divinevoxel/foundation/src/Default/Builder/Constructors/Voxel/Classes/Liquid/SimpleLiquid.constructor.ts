@@ -6,6 +6,7 @@ import { TextureRegister } from "../../../../../../Textures/TextureRegister.js";
 import { LiquidVoxelShape } from "../../../../Shapes/default/Liquid/Liquid.voxel.shape.js";
 import { VoxelFaces } from "@divinevoxel/core/Math";
 
+
 export class SimpleLiquidConstructor extends VoxelConstructor {
  textures: number[] = [];
  constructor(

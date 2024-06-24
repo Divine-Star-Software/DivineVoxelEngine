@@ -1,7 +1,7 @@
 //objects
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 import { RenderTasks } from "./Tasks/RenderTasks.js";
-import { ThreadComm } from "@divinestar/threads/";
+import { Threads } from "@amodx/threads/";
 
 //functions
 import InitThreads from "./InitThreads.js";
@@ -25,7 +25,7 @@ export interface DVERInitData extends PartialEngineSettings {
 export class DivineVoxelEngineRender {
   static instance: DivineVoxelEngineRender;
   static initialized = false;
-  TC = ThreadComm;
+  TC = Threads;
 
   settings = EngineSettings;
   meshManager = MeshManager;
@@ -64,7 +64,7 @@ export class DivineVoxelEngineRender {
     await this.threads.world.runAsyncTasks("clear-all", "", []);
 
     await Promise.all(
-      this.threads.construcotrs.__comms.map((_) =>
+      this.threads.construcotrs.getThreads().map((_) =>
         _.runAsyncTasks("clear-all", "")
       )
     );

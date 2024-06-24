@@ -1,4 +1,5 @@
-import type { LocationData, Vec3Array } from "../../Math/index.js";
+import type { LocationData } from "../../Math/index.js";
+import type { Vec3Array } from "@amodx/math";
 
 export abstract class LocationBoundToolBase {
   location: LocationData = ["main", 0, 0, 0];

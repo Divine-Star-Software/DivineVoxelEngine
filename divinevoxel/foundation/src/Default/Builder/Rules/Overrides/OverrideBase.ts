@@ -7,6 +7,7 @@ export class OverrideBase {
     let voxelRules = this.voxels.get(voxel);
     if (!voxelRules) {
       voxelRules = new Map();
+      this.voxels.set(voxel,voxelRules)
     }
     voxelRules.set(override, run);
   }

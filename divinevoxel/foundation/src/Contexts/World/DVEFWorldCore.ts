@@ -1,14 +1,15 @@
 import { DVEWorldCore } from "@divinevoxel/core/Interfaces/World/DVEWorldCore";
 import { DVEFWorldThreads } from "./DVEFWorldThreads";
 import { DVEFDataSync } from "./DVEFDataSync";
-import { DVEFoundationTasksQueues } from "./Tasks/DVEFoundationTasksQueues"
+import { DVEFoundationTasksQueues } from "./Tasks/DVEFoundationTasksQueues";
 import { DataLoaderTool } from "../../Default/DataLoader/World/Tools/DataLoaderTool";
 import { WorldLock } from "./Lock/WorldLock";
 import { RegisterDataHooks } from "./WorldDataHooks";
 import { DVEFDataReigster } from "./Data/DVEFDataRegister";
 import { DVEFDataStructs } from "./Data/DVEFDataStructs";
-import InitWorldTasks,{WorldTasks} from "./Tasks/WorldTasks";
-import { Distance3D, LocationData } from "@divinevoxel/core/Math";
+import InitWorldTasks, { WorldTasks } from "./Tasks/WorldTasks";
+import { Distance3D } from "@amodx/math";
+import { LocationData } from "@divinevoxel/core/Math";
 import { WorldRegister } from "../../Data/World/WorldRegister";
 export type DVEFWorldCoreProps = {
   nexusEnabled?: boolean;
@@ -59,5 +60,4 @@ export class DVEFWorldCore extends DVEWorldCore {
       });
     });
   }
-
 }

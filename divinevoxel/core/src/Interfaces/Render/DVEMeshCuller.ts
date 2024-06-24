@@ -1,4 +1,4 @@
-import { URIScene } from "@divinestar/uri/Scenes/URIScene";
+import { URIScene } from "@amodx/uri/Scenes/URIScene";
 import { DVEFOManager } from "./DVEFOManager";
 
 export abstract class DVEMeshCuller {

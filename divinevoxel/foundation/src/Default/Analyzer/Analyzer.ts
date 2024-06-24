@@ -1,5 +1,5 @@
 import type { AnaylzerTask } from "../../Types/Tasks.types.js";
-import type { LocationData } from "@divinevoxel/core/Math";
+import type { LocationData } from "@divinevoxel/core/Math";;
 //objects
 import { EngineSettings } from "@divinevoxel/core/Data/Settings/EngineSettings.js";
 import { DivineVoxelEngineConstructor } from "@divinevoxel/core/Contexts/Constructor/DivineVoxelEngineConstructor.js";

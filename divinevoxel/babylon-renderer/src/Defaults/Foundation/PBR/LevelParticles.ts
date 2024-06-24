@@ -9,7 +9,7 @@ import { Color4 } from "@babylonjs/core/Maths/math.color";
 
 import type { Mesh } from "@babylonjs/core";
 import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
-import { Vec2Array } from "@divinevoxel/core/Math";
+import { Vec2Array } from "@amodx/math";
 export class LevelParticles {
   static particle: ParticleSystem | GPUParticleSystem;
   static emitter: Mesh;

@@ -3,12 +3,12 @@ import {
   URITexture,
   URITextureData,
   URITexture2DArrayData,
-} from "@divinestar/uri/Textures/URITexture.js";
+} from "@amodx/uri/Textures/URITexture.js";
 import {
   URITextureFormat,
   URITextureSamplingMode,
   URITextureTypes,
-} from "@divinestar/uri/Constants/URITexturesConstants.js";
+} from "@amodx/uri/Constants/URITexturesConstants.js";
 import {
   DVETRTextureFormatMap,
   DVETRTextureSamplingModeMap,

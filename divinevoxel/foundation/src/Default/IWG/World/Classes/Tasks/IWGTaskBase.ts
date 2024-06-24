@@ -2,7 +2,7 @@ import type { IWGTasksTypes } from "../../Types/IWG.types";
 import { IWG } from "../../IWG.js";
 import { Generator } from "../Generator.js";
 import { VisitedMap } from "../../../../../Util/VisistedMap.js";
-import { Vec3Array } from "@divinevoxel/core/Math";
+import { Vec3Array } from "@amodx/math";
 
 export type IWGTasksData = {
   id: string;

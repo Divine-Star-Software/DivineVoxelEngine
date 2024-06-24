@@ -1,4 +1,4 @@
-export * from "./Vectors"
+
 export type BoundsObject = {
   minX: number;
   maxX: number;
@@ -14,9 +14,6 @@ export type VolumeDimensions = { w: number; h: number; d: number };
 
 export type Dimension2DArray = [width: number, height: number];
 export type Dimension3DArray = [width: number, height: number, depth: number];
-
-export type Vec2Array = [x: number, y: number];
-export type Vec3Array = [x: number, y: number, z: number];
 
 export type CompassDirectionNames =
   | "north"

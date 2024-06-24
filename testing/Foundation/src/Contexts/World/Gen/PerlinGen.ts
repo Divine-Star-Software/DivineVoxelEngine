@@ -1,4 +1,4 @@
-import { PerlinNoise3d } from "@divinestar/rng/perlin/index";
+import { PerlinNoise3d } from "@amodx/rng/perlin/index";
 const perlin = new PerlinNoise3d();
 perlin.noiseSeed(13129301280);
 

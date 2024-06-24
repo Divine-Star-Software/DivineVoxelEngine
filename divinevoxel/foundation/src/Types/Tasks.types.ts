@@ -1,4 +1,5 @@
-import type { LocationData, Vec3Array } from "@divinevoxel/core/Math/index.js";
+import type { LocationData } from "@divinevoxel/core/Math/index.js";
+import type { Vec3Array } from "@amodx/math";
 import type { RawVoxelData } from "@divinevoxel/core/Types/Voxel.types";
 import { ChunkData, ColumnData, RegionData } from "Data/World/Classes";
 

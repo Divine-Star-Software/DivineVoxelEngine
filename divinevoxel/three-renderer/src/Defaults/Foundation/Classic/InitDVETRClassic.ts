@@ -1,5 +1,5 @@
 import { Camera, Scene } from "three";
-import { Vec3Array } from "@divinevoxel/core/Math";
+import { Vec3Array } from "@amodx/math";
 import { TextureData } from "@divinevoxel/foundation/Textures/Texture.types";
 import { TextureBuilder } from "@divinevoxel/foundation/Textures/TextureBuilder";
 import { DivineVoxelEngineRender } from "@divinevoxel/core/Contexts/Render/DivineVoxelEngineRender";
@@ -93,7 +93,7 @@ export default function InitDVEBRClassic(initData: DVEBRClassicData) {
     TextureManager.registerTexture(initData.textureData);
     await TextureManager.$INIT();
     const uvMap = TextureManager.generateTextureUVMap();
-    for (const constructor of dver.threads.constructors.__comms) {
+    for (const constructor of dver.threads.constructors.getThreads()) {
       await constructor.runAsyncTasks("sync-texuture-index", uvMap);
     }
     const meshes: DVETRNodeMesh[] = [];

@@ -1,8 +1,4 @@
-import type {
-  RawVoxelData,
-  VoxelSubstanceType,
-  VoxelTemplateSubstanceType,
-} from "@divinevoxel/core/Types/Voxel.types.js";
+import type { RawVoxelData } from "@divinevoxel/core/Types/Voxel.types.js";
 import { DimensionsRegister } from "../../../Data/World/DimensionsRegister.js";
 import { VoxelStateReader } from "../../../Data/VoxelStateReader.js";
 import { VoxelStruct } from "@divinevoxel/core/Data/Voxel/VoxelStruct.js";
@@ -16,8 +12,8 @@ import { LightData } from "../../../Data/LightData.js";
 import { VoxelStructProperties } from "../../../Data/Constants/Structs/VoxelStructProperties.js";
 import { MappedDataRegister } from "@divinevoxel/core/Data/Register/MappedDataRegister.js";
 import { SubstanceDataTool } from "./SubstanceDataTool.js";
-import { SafeInterval } from "@divinestar/utils/Intervals/SafeInterval.js";
-import { SafePromise } from "@divinestar/utils/Promises/SafePromise.js";
+import { SafeInterval } from "@amodx/core/Intervals/SafeInterval.js";
+import { SafePromise } from "@amodx/core/Promises/SafePromise.js";
 import { LocationData } from "@divinevoxel/core/Math/index.js";
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { AddVoxelData } from "Data/Types/WorldData.types.js";
@@ -44,10 +40,13 @@ export enum DataToolModes {
 
 export class DataTool extends DataToolBase {
   static GetVoxelIDFromString(id: string) {
-    return DataTool._dtutil.setStringId(id).getId();
+    return VoxelPaletteReader.id.numberFromString(id);
   }
   static GetVoxelIDFromNumber(id: number) {
-    return DataTool._dtutil.setId(id).getStringId();
+    return VoxelPaletteReader.id.stringFromNumber(id);
+  }
+  static IsSameVoxel(dataTool1: DataTool, dataTool2: DataTool) {
+    return dataTool1.getId(true) == dataTool2.getId(true);
   }
 
   static VoxelDataToRaw(data: Partial<AddVoxelData>, light = 0): RawVoxelData {
@@ -70,15 +69,14 @@ export class DataTool extends DataToolBase {
     if (data.level !== undefined)
       stateData = VoxelStateReader.setLevel(stateData, data.level);
     if (data.levelState !== undefined)
-      stateData = VoxelStateReader.setLevel(stateData, data.levelState);
+      stateData = VoxelStateReader.setLevelState(stateData, data.levelState);
     if (data.shapeState !== undefined)
-      stateData = VoxelStateReader.setLevel(stateData, data.shapeState);
+      stateData = VoxelStateReader.setShapeState(stateData, data.shapeState);
 
     return [id, light, stateData, secondaryId];
   }
 
   static Modes = DataToolModes;
-  static _dtutil = new DataTool();
   static _heightMapTool = new HeightMapTool();
   static _columntool = new ColumnDataTool();
   _chunkTool = new ChunkDataTool();
@@ -100,6 +98,9 @@ export class DataTool extends DataToolBase {
 
   private _loadedId = 0;
 
+  constructor() {
+    super();
+  }
   setMode(mode: DataToolModes) {
     this._mode = mode;
     return this;
@@ -170,7 +171,10 @@ export class DataTool extends DataToolBase {
   }
 
   loadInRaw(rawData: RawVoxelData) {
-    this.data.raw = rawData;
+    this.data.raw[0] = rawData[0];
+    this.data.raw[1] = rawData[1];
+    this.data.raw[2] = rawData[2];
+    this.data.raw[3] = rawData[3];
     this.__process();
     return this;
   }
@@ -195,6 +199,7 @@ export class DataTool extends DataToolBase {
   }
 
   loadIn() {
+
     if (this._mode == DataTool.Modes.WORLD) {
       if (!this._chunkTool.setLocation(this.location).loadIn()) return false;
 
@@ -440,11 +445,8 @@ export class DataTool extends DataToolBase {
     if (this.data.id < 2 && this.data.secondaryId < 2) return false;
     return true;
   }
-  isSameVoxel(cx: number, cy: number, cz: number) {
-    DataTool._dtutil.loadInAt(cx, cy, cz);
-    if (this.__secondary) {
-      return this.data.secondaryBaseId == DataTool._dtutil.data.secondaryBaseId;
-    }
-    return this.data.baseId == DataTool._dtutil.data.baseId;
+
+  isSameVoxel(dataTool: DataTool) {
+    return DataTool.IsSameVoxel(this, dataTool);
   }
 }

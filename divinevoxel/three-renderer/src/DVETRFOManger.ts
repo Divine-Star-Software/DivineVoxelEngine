@@ -1,6 +1,6 @@
 import { DVEFOManager } from "@divinevoxel/core/Interfaces/Render/DVEFOManager.js";
 import { DVETRScene } from "./Scene/DVETRScene";
-import { URINode } from "@divinestar/uri/Meshes/URINode";
+import { URINode } from "@amodx/uri/Meshes/URINode";
 import { DVETRNode } from "./Meshes/DVETRNode";
 import { Group } from "three";
 export class DVETRFOManager extends DVEFOManager {

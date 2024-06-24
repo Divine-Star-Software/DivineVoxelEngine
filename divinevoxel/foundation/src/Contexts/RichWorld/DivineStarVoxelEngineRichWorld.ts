@@ -2,7 +2,7 @@
 import { RichWorldThreads } from "./Threads/RichWorldThreads.js";
 //functions
 import InitWorker from "./InitWorker.js";
-import { ThreadComm } from "@divinestar/threads/";
+import { Threads } from "@amodx/threads/";
 import { DataTool } from "../../Default/Tools/Data/DataTool.js";
 import { DVEDataCore } from "@divinevoxel/core/Interfaces/Data/DVEDataCore.js";
 import RichWorldTasks from "./RichWorldTasks.js";
@@ -18,7 +18,7 @@ export class DivineVoxelEngineRichWorld {
   static instance: DivineVoxelEngineRichWorld;
   environment = <"node" | "browser">"browser";
 
-  TC = ThreadComm;
+  TC = Threads;
   register = new RichDataRegister();
   data: DVEDataCore;
   threads = new RichWorldThreads();

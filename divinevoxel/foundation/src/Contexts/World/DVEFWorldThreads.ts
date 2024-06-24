@@ -1,26 +1,26 @@
 import { WorldThreadManager } from "@divinevoxel/core/Interfaces/World/Threads/WorldThreads";
 import { DVEFWorldThreadState } from "./DVEFWorldThreadState";
-import { ThreadComm } from "@divinestar/threads/";
+import { Threads } from "@amodx/threads/";
 import { DVEFWorldCore } from "./DVEFWorldCore";
 export class DVEFWorldThreads extends WorldThreadManager {
   state: DVEFWorldThreadState;
-  richWorld = ThreadComm.createComm("rich-world");
-  dataLoader = ThreadComm.createComm("data-loader");
-  nexus = ThreadComm.createComm("nexus");
+  richWorld = Threads.createThread("rich-world");
+  dataLoader = Threads.createThread("data-loader");
+  nexus = Threads.createThread("nexus");
 
   constructor(public core: DVEFWorldCore) {
     super();
 
     this.state = new DVEFWorldThreadState(this);
     if (core.props.nexusEnabled) {
-      this.addComm(this.nexus);
+      this.addThread(this.nexus);
 
     }
     if (core.props.dataLoaderEnabled) {
-      this.addComm(this.dataLoader);
+      this.addThread(this.dataLoader);
     }
     if (core.props.richWorldEnabled) {
-      this.addComm(this.richWorld);
+      this.addThread(this.richWorld);
     }
   }
 }

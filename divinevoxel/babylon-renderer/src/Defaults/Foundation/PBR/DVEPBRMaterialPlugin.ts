@@ -8,7 +8,7 @@ import type {
 import { MaterialPluginBase } from "@babylonjs/core/Materials/materialPluginBase";
 import { DVEBRPBRMaterial } from "./DVEBRPBRMaterial";
 
-import { URIShader } from "@divinestar/uri/Shaders/Classes/URIShader";
+import { URIShader } from "@amodx/uri/Shaders/Classes/URIShader";
 import { TextureType } from "@divinevoxel/foundation/Textures/TextureType";
 const shaders = new Map<string, URIShader>();
 const textures = new Map<string, TextureType>();

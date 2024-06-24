@@ -1,4 +1,4 @@
-import type { Vector3Like, Vec3Array } from "@divinevoxel/core/Math";
+import type { Vector3Like, Vec3Array } from "@amodx/math";
 import { Vector3 } from "@divinevoxel/core/Math/Classes/Vector3.js";
 export class BoundingBox {
   bounds = {

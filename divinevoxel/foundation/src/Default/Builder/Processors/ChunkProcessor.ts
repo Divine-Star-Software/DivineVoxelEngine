@@ -90,6 +90,7 @@ export class ChunkProcessor {
 
       const [attributes, buffers] = mesher.getAllAttributes();
 
+
       trasnfers.push(...buffers);
       chunks[1].push([substance, [location, attributes]]);
       mesher.resetAll();

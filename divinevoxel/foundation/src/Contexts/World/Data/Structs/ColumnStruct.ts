@@ -1,4 +1,4 @@
-import { BinaryNumberTypes, BinaryStruct } from "@divinestar/binary/";
+import { BinaryNumberTypes, BinaryStruct } from "@amodx/binary/";
 
 import { WorldDataStructProperties } from "../../../../Data/Constants/Structs/WorldDataStructProperties.js";
 import { Column } from "../../../../Data/World/Classes/Column.js";

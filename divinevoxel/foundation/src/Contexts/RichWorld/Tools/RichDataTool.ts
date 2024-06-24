@@ -1,4 +1,4 @@
-import { BinaryObject } from "@divinestar/binary/";
+import { BinaryObject } from "@amodx/binary/";
 import { RichColumnDataTool } from "./RichColumnDataTool.js";
 import { ColumnDataTool } from "../../../Default/Tools/Data/WorldData/ColumnDataTool.js";
 import { RichDataSegmentTool } from "../../../Default/Tools/Classes/RichDataToolBase.js";

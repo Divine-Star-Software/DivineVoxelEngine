@@ -1,4 +1,4 @@
-import type { URIShaderBuilder } from "@divinestar/uri/Shaders/URIShaderBuilder";
+import type { URIShaderBuilder } from "@amodx/uri/Shaders/URIShaderBuilder";
 export function RegisterNoiseFunctions(builder: typeof URIShaderBuilder) {
  //VEC2 fbm
  builder.functions.create("hash", {

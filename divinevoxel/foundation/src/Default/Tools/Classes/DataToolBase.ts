@@ -1,10 +1,10 @@
-import type { RemoteBinaryStruct } from "@divinestar/binary/";
-import type { LocationData } from "@divinevoxel/core/Math";
+import type { RemoteBinaryStruct } from "@amodx/binary/";
+import type { LocationData } from "@divinevoxel/core/Math";;
 import { DimensionsRegister } from "../../../Data/World/DimensionsRegister.js";
 import { LocationBoundTool } from "./LocationBoundTool.js";
 import { WorldDataStructProperties } from "../../../Data/Constants/Structs/WorldDataStructProperties.js";
-import { Vector3Like, Vec3Array } from "@divinevoxel/core/Math";
-import { arrayBufferToSharedArrayBuffer } from "@divinestar/utils/Buffers/arrayBufferToSharedArrayBuffer.js";
+import { Vector3Like, Vec3Array } from "@amodx/math";
+import { arrayBufferToSharedArrayBuffer } from "@amodx/core/Buffers/arrayBufferToSharedArrayBuffer.js";
 export abstract class DataToolBase extends LocationBoundTool {
   struct: RemoteBinaryStruct;
   _c: ArrayBuffer | SharedArrayBuffer | DataView;

@@ -1,9 +1,9 @@
 import { DivineVoxelEngineDataLoaderConstructor } from "./DivineVoxelEngineDataLoaderConstructor.js";
-import type { LocationData } from "@divinevoxel/core/Math";
-import { ThreadComm } from "@divinestar/threads/";
+import type { LocationData } from "@divinevoxel/core/Math";;
+import { Threads } from "@amodx/threads/";
 
 export default function (DVEDL: DivineVoxelEngineDataLoaderConstructor) {
-  ThreadComm.registerTasks<LocationData>(
+  Threads.registerTasks<LocationData>(
     "serialize-column",
     async (location, onDone) => {
       const seralized = DVEDL.serializer.serializeColumn(location);
@@ -12,7 +12,7 @@ export default function (DVEDL: DivineVoxelEngineDataLoaderConstructor) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks<ArrayBuffer>(
+  Threads.registerTasks<ArrayBuffer>(
     "deserialize-column",
     async (columnData, onDone) => {
       const deSeralized = DVEDL.serializer.deSerializeColumn(columnData);

@@ -1,4 +1,4 @@
-import { DataBase, IndexDB } from "@divinestar/indexdb/";
+import { DataBase, IndexDB } from "@amodx/indexdb/";
 import { WorldDataBase } from "./WorldDataBase";
 
 export class WorldDataBaseManager {

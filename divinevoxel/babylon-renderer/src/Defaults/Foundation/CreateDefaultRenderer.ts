@@ -4,7 +4,7 @@ import {
   DVEBRDefaultMaterialBaseData,
   NodeSubstanceData,
 } from "./Types/DVEBRDefaultMaterial.types";
-import { URIMaterial } from "@divinestar/uri/Materials/URIMaterial.js";
+import { URIMaterial } from "@amodx/uri/Materials/URIMaterial.js";
 import { DVEBRScene } from "../../Scene/DVEBRScene.js";
 import type { Material, Scene } from "@babylonjs/core";
 import { NodeMaterialData } from "@divinevoxel/core/Interfaces/Render/Nodes/DVERenderNode.types";
@@ -74,12 +74,16 @@ export function CreateDefaultRenderer(
     await TextureBuilder.setUpImageCreation();
     TextureManager.registerTexture(initData.textureData);
 
+    console.log("BUILD TEXTURES")
     await TextureManager.$INIT();
- 
+    await TextureManager.createRawDataMap();
+    
     const uvMap = TextureManager.generateTextureUVMap();
-    for (const constructor of dver.core.threads.construcotrs.__comms) {
+    for (const constructor of dver.core.threads.construcotrs.getThreads()) {
       await constructor.runAsyncTasks("sync-texuture-index", uvMap);
     }
+
+
     const meshes: DVEBRNodeMesh[] = [];
     const materials: NodeMaterialData[] = [];
     for (const substance of substances) {

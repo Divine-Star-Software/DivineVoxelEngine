@@ -4,32 +4,32 @@ import type {
  SetChunkMeshTask,
 } from "./RenderTasks.types.js";
 import type { LocationData } from "Math/index.js";
-import { ThreadComm } from "@divinestar/threads/";
+import { Threads } from "@amodx/threads/";
 import { MeshManager } from "../Scene/MeshManager.js";
 import { MeshRegister } from "../Scene/MeshRegister.js";
 
 export const RenderTasks = {
- setChunk: ThreadComm.registerTasks<SetChunkMeshTask>("set-chunk", (data) => {
+ setChunk: Threads.registerTasks<SetChunkMeshTask>("set-chunk", (data) => {
    if(data[2] == 0) return MeshManager.chunks.update(data);
    setTimeout(()=>{ MeshManager.chunks.update(data)},10)
  }),
- removeChunk: ThreadComm.registerTasks<RemoveChunkMeshTasks>(
+ removeChunk: Threads.registerTasks<RemoveChunkMeshTasks>(
   "remove-chunk",
   (data) => {
    MeshManager.chunks.remove(data);
   }
  ),
- removeColumn: ThreadComm.registerTasks<LocationData>(
+ removeColumn: Threads.registerTasks<LocationData>(
   "remove-column",
   (data) => {
    MeshManager.chunks.removeColumn(data);
   }
  ),
- clearAll: ThreadComm.registerTasks<LocationData>("clear-all", (data) => {
+ clearAll: Threads.registerTasks<LocationData>("clear-all", (data) => {
   MeshRegister.clearAll();
  }),
  removeColumnsOutsideRadius:
-  ThreadComm.registerTasks<RemoveChunksOutsideDistance>(
+  Threads.registerTasks<RemoveChunksOutsideDistance>(
    "remove-column-outside-radius",
    (data) => {
     MeshManager.removeColumnsOutsideRadius(data[0], data[1]);

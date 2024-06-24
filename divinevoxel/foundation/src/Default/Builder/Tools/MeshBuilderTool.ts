@@ -1,4 +1,5 @@
-import type { Size2D, Vector3Like } from "@divinevoxel/core/Math";
+import type {  Vector3Like } from "@amodx/math";
+import type { Size2D } from "@divinevoxel/core/Math";
 import type { DirectionNames } from "@divinevoxel/core/Types";
 
 import { QuadBuilder } from "../Geometry/QuadBuilder.js";
@@ -8,7 +9,7 @@ import {
   QuadVertexes,
   TextureRotations,
 } from "../Types/Geometry.types.js";
-import { MesherDataTool } from "@divinevoxel/core/Meshing/Tools/MesherDataTools.js";
+import { MesherDataTool } from "@amodx/meshing";
 
 export class MeshBuilderTool {
   direction: DirectionNames = "top";

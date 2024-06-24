@@ -1,6 +1,6 @@
 import type { LocationData } from "@divinevoxel/core/Math/index.js";
 
-import { ThreadComm } from "@divinestar/threads/";
+import { Threads } from "@amodx/threads/";
 //data
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { WorldDataGenerator } from "../Data/Generators/WorldDataGenerator.js";
@@ -60,7 +60,7 @@ export default function (DVEW: DVEFWorldCore) {
   const builderTool = new BuilderTool();
   const loadInMap: Map<string, boolean> = new Map();
 
-  ThreadComm.registerTasks("add-chunk", async (location: LocationData) => {
+  Threads.registerTasks("add-chunk", async (location: LocationData) => {
     const chunk = WorldRegister.instance.chunk.get(location);
 
     if (chunk) {
@@ -87,7 +87,7 @@ export default function (DVEW: DVEFWorldCore) {
       WorldRegister.instance.column.fill(location);
     }
   });
-  ThreadComm.registerTasks<WorldLockTasks>(
+  Threads.registerTasks<WorldLockTasks>(
     "world-alloc",
     async (data, onDone) => {
       await WorldLock.addLock(data);
@@ -95,7 +95,7 @@ export default function (DVEW: DVEFWorldCore) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks<WorldLockTasks>(
+  Threads.registerTasks<WorldLockTasks>(
     "world-dealloc",
     async (data, onDone) => {
       await WorldLock.removeLock(data);
@@ -103,7 +103,7 @@ export default function (DVEW: DVEFWorldCore) {
     },
     "deferred"
   );
-  ThreadComm.registerTasks<LocationData>(
+  Threads.registerTasks<LocationData>(
     "unload-column",
     (data, onDone) => {
       const resutls = DVEW.tasks.unLoadColumn(data);
@@ -112,14 +112,14 @@ export default function (DVEW: DVEFWorldCore) {
     "deferred"
   );
 
-  ThreadComm.registerTasks<LoadRegionHeadertasks>(
+  Threads.registerTasks<LoadRegionHeadertasks>(
     "load-region-header",
     ([location, data], onDone) => {
       const resutls = DVEW.tasks.loadRegionHeader(location, data);
       return onDone ? onDone(resutls) : resutls;
     }
   );
-  ThreadComm.registerTasks<LoadColumnDataTasks>(
+  Threads.registerTasks<LoadColumnDataTasks>(
     "load-column",
     ([location, column], onDone) => {
       const resutls = DVEW.tasks.loadColumn(location, column);
@@ -127,7 +127,7 @@ export default function (DVEW: DVEFWorldCore) {
     }
   );
 
-  ThreadComm.registerTasks("clear-all", () => {
+  Threads.registerTasks("clear-all", () => {
     WorldRegister.instance.clearAll();
   });
 }

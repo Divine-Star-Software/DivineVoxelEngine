@@ -1,8 +1,8 @@
 export class VoxelShaderDataTool {
  _v = 0;
  _lightMask = 0xffff;
- _aoMask = 0b11;
- _animationMask = 0b1111_1111_1111_11;
+ _aoMask = 0xf;
+ _animationMask = 0xfff;
  _setLight(index: number, value: number) {
   return (
    (this._v & ~(this._lightMask << index)) |
@@ -16,7 +16,7 @@ export class VoxelShaderDataTool {
   );
  }
  _setAnimation(value: number) {
-  const index = 18;
+  const index = 20;
   return (
    (this._v & ~(this._animationMask << index)) |
    ((value & this._animationMask) << index)

@@ -1,4 +1,4 @@
-import type { DataBase, ObjectStore } from "@divinestar/indexdb/";
+import type { DataBase, ObjectStore } from "@amodx/indexdb/";
 import type { DVEDDataTypes } from "../Types/DVED.types";
 import { WorldDataTool } from "./WorldDataTool";
 

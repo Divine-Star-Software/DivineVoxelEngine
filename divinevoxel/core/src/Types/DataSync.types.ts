@@ -1,4 +1,4 @@
-import type { RemoteBinaryStructData } from "@divinestar/binary/";
+import type { RemoteBinaryStructData } from "@amodx/binary/";
 import { LocationData } from "Math/index.js";
 
 export type DataSyncTypes = "chunk" | "voxel-data" | "iten-data" | "shape-map";

@@ -63,6 +63,8 @@ export class DVEDefaultBuilder extends DVEBuilder {
       },
       "deferred"
     );
+
+
   }
   buildChunk(location: LocationData, LOD = 1, priority = 0) {
     this.chunkProcessor.build(location);

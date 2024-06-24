@@ -1043,7 +1043,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const tasks = new _Tools_Tasks_TasksTool_js__WEBPACK_IMPORTED_MODULE_2__.TaskTool();
 const ConstructorTasks = {
-    buildChunk: threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.registerTasks(_Threads_Contracts_ConstructorRemoteThreadTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorRemoteThreadTasks.buildChunk, (data) => {
+    buildChunk: threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.registerTasks(_Threads_Contracts_ConstructorRemoteThreadTasks_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorRemoteThreadTasks.buildChunk, (data) => {
         tasks.setPriority(data.priority);
         tasks.build.chunk.deferred.run(data.data, () => { });
     }),
@@ -1416,7 +1416,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const parentComm = threadcomm__WEBPACK_IMPORTED_MODULE_2__.ThreadComm.parent;
+const parentComm = threadcomm__WEBPACK_IMPORTED_MODULE_2__.Threads.parent;
 class BuilderTool extends _Tools_Classes_LocationBoundTool_js__WEBPACK_IMPORTED_MODULE_3__.LocationBoundTool {
     static _chunkTool = new _Data_WorldData_ChunkDataTool_js__WEBPACK_IMPORTED_MODULE_1__.ChunkDataTool();
     tasks = new _Tools_Tasks_TasksTool_js__WEBPACK_IMPORTED_MODULE_4__.TaskTool();
@@ -1497,7 +1497,7 @@ __webpack_require__.r(__webpack_exports__);
 class DataLoaderTool extends _Classes_LocationBoundTool_js__WEBPACK_IMPORTED_MODULE_4__.LocationBoundTool {
     static columnDataTool = new _Data_WorldData_ColumnDataTool_js__WEBPACK_IMPORTED_MODULE_2__.ColumnDataTool();
     static isEnabled() {
-        const comm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.getComm("data-loader");
+        const comm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.getComm("data-loader");
         return Boolean(comm);
     }
     mode = "server";
@@ -1505,7 +1505,7 @@ class DataLoaderTool extends _Classes_LocationBoundTool_js__WEBPACK_IMPORTED_MOD
     dataComm;
     constructor() {
         super();
-        const comm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.getComm("data-loader");
+        const comm = threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.getComm("data-loader");
         if (!comm) {
             this._enabled = false;
             console.error("Data Loader comm must be set.");
@@ -1831,7 +1831,7 @@ class TaskTool {
     _thread = "";
     _priority = 0;
     constructor() {
-        this._thread = threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.threadName;
+        this._thread = threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.threadName;
     }
     setPriority(priority) {
         this._priority = priority;
@@ -1842,7 +1842,7 @@ class TaskTool {
         const queueKey = `${dimesnion}-${_Data_World_WorldSpaces_js__WEBPACK_IMPORTED_MODULE_5__.WorldSpaces.region.getKeyXYZ(x, y, z)}`;
         _Common_Queues_ConstructorQueues_js__WEBPACK_IMPORTED_MODULE_0__.ConstructorQueues.addQueue(queueKey);
         this._data.queue = queueKey;
-        this._thread = threadcomm__WEBPACK_IMPORTED_MODULE_1__.ThreadComm.threadName;
+        this._thread = threadcomm__WEBPACK_IMPORTED_MODULE_1__.Threads.threadName;
         return this;
     }
     voxelUpdate = {
@@ -3300,7 +3300,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 const DVEW = {
     environment: "browser",
-    TC: threadcomm__WEBPACK_IMPORTED_MODULE_20__.ThreadComm,
+    TC: threadcomm__WEBPACK_IMPORTED_MODULE_20__.Threads,
     UTIL: _Global_Util_helper_js__WEBPACK_IMPORTED_MODULE_4__.Util,
     settings: _Data_Settings_EngineSettings_js__WEBPACK_IMPORTED_MODULE_3__.EngineSettings,
     worldTasks: _Tasks_WorldTasks_js__WEBPACK_IMPORTED_MODULE_22__.WorldTasks,
@@ -3497,7 +3497,7 @@ function InitWorldWorker(DVEW) {
         if (DVEW.environment == "node") {
             parent = "server";
         }
-        await threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.$INIT("world", parent);
+        await threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.$INIT("world", parent);
         (0,_Hooks_Data_WorldDataHooks_js__WEBPACK_IMPORTED_MODULE_1__.RegisterDataHooks)();
         await DVEW.UTIL.createPromiseCheck({
             check: () => {
@@ -3505,7 +3505,7 @@ function InitWorldWorker(DVEW) {
             },
             checkInterval: 1,
         });
-        threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.registerTasks("sync-all-data", async () => {
+        threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.registerTasks("sync-all-data", async () => {
             _Data_DataSync_js__WEBPACK_IMPORTED_MODULE_3__.DataSync.$INIT();
             await DVEW.ccm.__comms.map((comm) => comm.waitTillTasksExist("ready"));
             await Promise.all(DVEW.ccm.__comms.map((comm) => new Promise((resolve) => {
@@ -3659,7 +3659,7 @@ const dataLoaderTool = new _Tools_Loader_DataLoaderTool_js__WEBPACK_IMPORTED_MOD
 const builderTool = new _Tools_Build_BuilderTool_js__WEBPACK_IMPORTED_MODULE_10__.BuilderTool();
 const loadInMap = new Map();
 const WorldTasks = {
-    addChunk: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.registerTasks("add-chunk", (location) => {
+    addChunk: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.registerTasks("add-chunk", (location) => {
         const chunk = _Data_World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.chunk.get(location);
         if (chunk) {
             _Data_DataSync_js__WEBPACK_IMPORTED_MODULE_3__.DataSync.worldData.chunk.sync(location);
@@ -3683,18 +3683,18 @@ const WorldTasks = {
             _Data_World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.chunk.add(location, _Data_Generators_WorldDataGenerator_js__WEBPACK_IMPORTED_MODULE_2__.WorldDataGenerator.chunk.create());
         }
     }),
-    worldAlloc: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.registerTasks("world-alloc", async (data, onDone) => {
+    worldAlloc: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.registerTasks("world-alloc", async (data, onDone) => {
         await _Lock_WorldLock_js__WEBPACK_IMPORTED_MODULE_11__.WorldLock.addLock(data);
         if (onDone)
             onDone();
     }, "deferred"),
-    worldDealloc: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.registerTasks("world-dealloc", async (data, onDone) => {
+    worldDealloc: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.registerTasks("world-dealloc", async (data, onDone) => {
         await _Lock_WorldLock_js__WEBPACK_IMPORTED_MODULE_11__.WorldLock.removeLock(data);
         if (onDone)
             onDone();
     }, "deferred"),
     unLoad: {
-        unLoadColumn: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.registerTasks("unload-column", (data, onDone) => {
+        unLoadColumn: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.registerTasks("unload-column", (data, onDone) => {
             if (_Lock_WorldLock_js__WEBPACK_IMPORTED_MODULE_11__.WorldLock.isLocked(data))
                 return onDone ? onDone(false) : 0;
             _Data_DataSync_js__WEBPACK_IMPORTED_MODULE_3__.DataSync.worldData.column.unSync(data);
@@ -3708,26 +3708,26 @@ const WorldTasks = {
         }, "deferred"),
     },
     load: {
-        loadRegino: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.registerTasks("load-region", ([location, sab]) => {
+        loadRegino: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.registerTasks("load-region", ([location, sab]) => {
             regionTool.setBuffer(sab);
             const sl = regionTool.getLocationData();
             sl[0] = location[0];
             _Data_World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.region.add(sl, sab);
             _Data_DataSync_js__WEBPACK_IMPORTED_MODULE_3__.DataSync.worldData.region.sync(sl);
         }),
-        loadReginoHeader: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.registerTasks("load-region-header", (data) => {
+        loadReginoHeader: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.registerTasks("load-region-header", (data) => {
             _Data_World_Region_RegionHeaderRegister_js__WEBPACK_IMPORTED_MODULE_7__.RegionHeaderRegister.add(data[0], data[1]);
             const location = data[0];
             _Data_DataSync_js__WEBPACK_IMPORTED_MODULE_3__.DataSync.worldData.regionHeader.sync(location);
         }),
-        loadColumn: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.registerTasks("load-column", ([location, sab]) => {
+        loadColumn: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.registerTasks("load-column", ([location, sab]) => {
             columnTool.setBuffer(sab);
             const sl = columnTool.getLocationData();
             sl[0] = location[0];
             _Data_World_WorldRegister_js__WEBPACK_IMPORTED_MODULE_1__.WorldRegister.column.add(sl, sab);
             _Data_DataSync_js__WEBPACK_IMPORTED_MODULE_3__.DataSync.worldData.column.sync(sl);
         }),
-        loadChunk: threadcomm__WEBPACK_IMPORTED_MODULE_0__.ThreadComm.registerTasks("load-chunk", ([location, sab]) => {
+        loadChunk: threadcomm__WEBPACK_IMPORTED_MODULE_0__.Threads.registerTasks("load-chunk", ([location, sab]) => {
             chunkTool.setBuffer(sab);
             const sl = chunkTool.getLocationData();
             sl[0] = location[0];
@@ -3785,25 +3785,25 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const CCM = threadcomm___WEBPACK_IMPORTED_MODULE_1__.ThreadComm.createCommManager({
+const CCM = threadcomm___WEBPACK_IMPORTED_MODULE_1__.Threads.createThreadPool({
     name: "constructor",
     onPortSet(port, commName) { },
 });
 _Data_DataSync_js__WEBPACK_IMPORTED_MODULE_0__.DataSync.registerComm(CCM);
-const DataComm = threadcomm___WEBPACK_IMPORTED_MODULE_1__.ThreadComm.createComm("data-loader", {});
+const DataComm = threadcomm___WEBPACK_IMPORTED_MODULE_1__.Threads.createComm("data-loader", {});
 _Data_DataSync_js__WEBPACK_IMPORTED_MODULE_0__.DataSync.registerComm(DataComm);
-const FXComm = threadcomm___WEBPACK_IMPORTED_MODULE_1__.ThreadComm.createComm("fx");
+const FXComm = threadcomm___WEBPACK_IMPORTED_MODULE_1__.Threads.createComm("fx");
 _Data_DataSync_js__WEBPACK_IMPORTED_MODULE_0__.DataSync.registerComm(FXComm);
-const NexusComm = threadcomm___WEBPACK_IMPORTED_MODULE_1__.ThreadComm.createComm("nexus");
+const NexusComm = threadcomm___WEBPACK_IMPORTED_MODULE_1__.Threads.createComm("nexus");
 _Data_DataSync_js__WEBPACK_IMPORTED_MODULE_0__.DataSync.registerComm(NexusComm, {
     materials: true,
     colliders: true,
 });
-const RichWorldComm = threadcomm___WEBPACK_IMPORTED_MODULE_1__.ThreadComm.createComm("rich-world");
+const RichWorldComm = threadcomm___WEBPACK_IMPORTED_MODULE_1__.Threads.createComm("rich-world");
 _Data_DataSync_js__WEBPACK_IMPORTED_MODULE_0__.DataSync.registerComm(RichWorldComm);
-const ParentComm = threadcomm___WEBPACK_IMPORTED_MODULE_1__.ThreadComm.parent;
+const ParentComm = threadcomm___WEBPACK_IMPORTED_MODULE_1__.Threads.parent;
 _Data_DataSync_js__WEBPACK_IMPORTED_MODULE_0__.DataSync.registerComm(ParentComm);
-threadcomm___WEBPACK_IMPORTED_MODULE_1__.ThreadComm.registerTasks("sync-settings", (settings) => {
+threadcomm___WEBPACK_IMPORTED_MODULE_1__.Threads.registerTasks("sync-settings", (settings) => {
     _Data_Settings_EngineSettings_js__WEBPACK_IMPORTED_MODULE_2__.EngineSettings.syncSettings(settings);
     _WorldThreadState_js__WEBPACK_IMPORTED_MODULE_3__.WorldThreadState._settingsSynced = true;
     _Data_DataHooks_js__WEBPACK_IMPORTED_MODULE_4__.DataHooks.settingsSynced.run(settings);

@@ -1,11 +1,11 @@
 //types
 import type { ColumnData } from "../../../Data/World/Classes/Column.js";
-import type { LocationData } from "@divinevoxel/core/Math";
+import type { LocationData } from "@divinevoxel/core/Math";;
 //objects
 import { RegionDataTool } from "../../Tools/Data/WorldData/RegionDataTool.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
-import { BinaryObject } from "@divinestar/binary";
+import { BinaryObject } from "@amodx/binary";
 
 export class WorldDataSerializer {
   regions = new RegionDataTool();

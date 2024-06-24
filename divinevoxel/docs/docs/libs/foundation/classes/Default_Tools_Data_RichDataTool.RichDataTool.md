@@ -45,7 +45,7 @@ ___
 
 ### comm
 
-• **comm**: `CommBase`
+• **comm**: `Thread`
 
 #### Defined in
 

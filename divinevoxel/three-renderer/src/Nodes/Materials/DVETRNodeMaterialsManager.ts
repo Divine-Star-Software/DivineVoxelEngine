@@ -1,5 +1,5 @@
 import type { Material } from "three";
-import { URIMaterial } from "@divinestar/uri/Materials/URIMaterial";
+import { URIMaterial } from "@amodx/uri/Materials/URIMaterial";
 import { DVENodeMaterialManager } from "@divinevoxel/core/Interfaces/Render/Nodes/Materials/DVENodeMaterialManager";
 import { DVETRScene } from "../../Scene/DVETRScene";
 

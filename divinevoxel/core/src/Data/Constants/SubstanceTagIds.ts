@@ -6,4 +6,5 @@ export enum SubstanceTagIds {
   isLiquid = "#dve_is_liquid",
   flowRate = "#dve_flow_rate",
   culledSubstnaces = "#dve_culled_substances",
+  cullDense = "#dve_cull_dense",
 }

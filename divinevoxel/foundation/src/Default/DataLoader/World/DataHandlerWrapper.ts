@@ -1,4 +1,4 @@
-import type { LocationData } from "@divinevoxel/core/Math";
+import type { LocationData } from "@divinevoxel/core/Math";;
 //objects
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import {
@@ -8,7 +8,7 @@ import {
 import { DataHooks } from "../../../Data/DataHooks.js";
 import { RichDataTool } from "../../Tools/Data/RichDataTool.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
-import { arrayBufferToSharedArrayBuffer } from "@divinestar/utils/Buffers/arrayBufferToSharedArrayBuffer.js";
+import { arrayBufferToSharedArrayBuffer } from "@amodx/core/Buffers/arrayBufferToSharedArrayBuffer.js";
 import { DataSerializerTool } from "./Tools/DataSerializerTool.js";
 import { DVEFWorldCore } from "../../../Contexts/World/DVEFWorldCore.js";
 

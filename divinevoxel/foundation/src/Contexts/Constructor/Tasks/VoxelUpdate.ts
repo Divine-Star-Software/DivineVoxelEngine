@@ -68,7 +68,6 @@ export async function EreaseAndUpdate(data: UpdateTasks) {
     }
   }
 
-  // LocationDataDistanceSort(tasks.origin, tasks.syncQueue);
   tasks.runRebuildQueue();
   tasks.stop();
   return true;

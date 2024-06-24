@@ -1,12 +1,12 @@
-import { CommBase, CommManager } from "@divinestar/threads/";
+import { Thread, ThreadPool } from "@amodx/threads/";
 import { LocationData } from "@divinevoxel/core/Math";
 import { UtilMap } from "../../../../Util/UtilMap.js";
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces.js";
 
 export const LoaderRegister = {
   load: new UtilMap<string, Function[]>(),
-  dataComm: <CommManager>{},
-  $INIT(dataComm: CommManager) {
+  dataComm: <ThreadPool>{},
+  $INIT(dataComm: ThreadPool) {
     this.dataComm = dataComm;
   },
 

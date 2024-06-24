@@ -4,10 +4,10 @@ import type {
   MushRegisterRegion,
   MeshRegisterColumn,
 } from "../Scene/MeshRegister.types.js";
-import { Vector3Like, type LocationData } from "../../../Math/index.js";
-import type { VoxelTemplateSubstanceType } from "../../../Types/Voxel.types.js";
+import {  type LocationData } from "../../../Math/index.js";
+import { Vector3Like } from "@amodx/math";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
-import { URIMesh } from "@divinestar/uri/Meshes/URIMesh.js";
+import { URIMesh } from "@amodx/uri/Meshes/URIMesh.js";
 
 export const MeshRegister = {
   _dimensions: <MeshRegisterDimensions>new Map(),
@@ -154,7 +154,7 @@ export const MeshRegister = {
     add(
       location: LocationData,
       mesh: URIMesh,
-      substance: VoxelTemplateSubstanceType
+      substance: string
     ) {
       let column = MeshRegister.column.get(location);
       if (!column) {
@@ -174,7 +174,7 @@ export const MeshRegister = {
         mesh: mesh,
       };
     },
-    remove(location: LocationData, substance: VoxelTemplateSubstanceType) {
+    remove(location: LocationData, substance: string) {
       const column = MeshRegister.column.get(location);
       if (!column) return false;
       const index = WorldSpaces.chunk.getIndexLocation(location);
@@ -188,7 +188,7 @@ export const MeshRegister = {
       }
       return chunkMesh.mesh;
     },
-    get(location: LocationData, substance: VoxelTemplateSubstanceType) {
+    get(location: LocationData, substance: string) {
       const column = MeshRegister.column.get(location);
       if (!column) return false;
       const chunk = column.chunks.get(

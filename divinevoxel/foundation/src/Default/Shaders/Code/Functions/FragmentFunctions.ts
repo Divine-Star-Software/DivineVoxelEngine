@@ -1,4 +1,4 @@
-import type { URIShaderBuilder } from "@divinestar/uri/Shaders/URIShaderBuilder";
+import type { URIShaderBuilder } from "@amodx/uri/Shaders/URIShaderBuilder";
 export function RegisterFragFunctions(builder: typeof URIShaderBuilder) {
   builder.functions.create("toLinearSpace", {
     setID: "#dve_frag",
@@ -74,13 +74,14 @@ return base * VOXEL[0]; `,
       ["tex", "sampler2DArray"],
       ["UV", "vec2"],
       ["index", "float"],
+      ["bias", "float"],
     ],
     output: "vec4",
     arguments: {},
     body: {
       GLSL: () => /* glsl */ `
 
-     return  texture(tex, vec3(UV.x,UV.y,index), mipMapBias );
+     return  texture(tex, vec3(UV.x,UV.y,index), mipMapBias + bias );
   `,
     },
   });
@@ -97,12 +98,12 @@ return base * VOXEL[0]; `,
     body: {
       GLSL: (args) => /* glsl */ `
    UV.xy += ${args.mainVarying}.xy;
-   vec4 rgb = getBase(${args.textureID},UV.xy,${args.mainVarying}.z);
+   vec4 rgb = getBase(${args.textureID},UV.xy,${args.mainVarying}.z,0.);
 
-      vec4 oRGB1 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.x);
-      vec4 oRGB2 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.y);
-      vec4 oRGB3 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.z);
-      vec4 oRGB4 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.w);
+      vec4 oRGB1 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.x,-10.);
+      vec4 oRGB2 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.y,-10.);
+      vec4 oRGB3 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.z,-10.);
+      vec4 oRGB4 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.w,-10.);
       if(oRGB1.a > 0.3) {
          rgb = oRGB1;
       }
@@ -130,7 +131,7 @@ return base * VOXEL[0]; `,
     body: {
       GLSL: (args) => /* glsl */ `
  
-    vec4 rgb = getBase(${args.textureID},${args.mainVarying}.xy,${args.mainVarying}.z);
+    vec4 rgb = getBase(${args.textureID},${args.mainVarying}.xy,${args.mainVarying}.z,0.);
     if (rgb.a < 0.85) { 
       return vec4(0.,0.,0.,0.);
    }

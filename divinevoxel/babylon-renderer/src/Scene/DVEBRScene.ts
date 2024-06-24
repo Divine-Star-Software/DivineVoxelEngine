@@ -1,4 +1,4 @@
-import { URIScene } from "@divinestar/uri/Scenes/URIScene.js";
+import { URIScene } from "@amodx/uri/Scenes/URIScene.js";
 import { Scene } from "@babylonjs/core/scene";
 export class DVEBRScene extends URIScene<Scene> {
   registerBeforeRender(run: () => void): void {

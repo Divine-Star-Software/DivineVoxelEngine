@@ -1,9 +1,9 @@
 import type { EngineSettingsData } from "Types/EngineSettings.types.js";
 
-import { URIMesh } from "@divinestar/uri/Meshes/URIMesh.js";
+import { URIMesh } from "@amodx/uri/Meshes/URIMesh.js";
 import { NodeMeshData, DVENodeMeshAttributes } from "../DVERenderNode.types";
-import { Vec3Array } from "Math";
-import { Observable } from "@divinestar/utils/Observers/Observable";
+import { Vec3Array } from "@amodx/math";
+import { Observable } from "@amodx/core/Observers/Observable";
 
 export abstract class DVENodeMesh {
 

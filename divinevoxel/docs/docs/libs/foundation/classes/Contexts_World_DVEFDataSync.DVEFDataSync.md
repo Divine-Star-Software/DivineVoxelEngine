@@ -49,7 +49,7 @@ ___
 
 ### commMap
 
-• **commMap**: `Map`\<`string`, `CommBase` \| `CommManager`\>
+• **commMap**: `Map`\<`string`, `Thread` \| `ThreadPool`\>
 
 #### Inherited from
 
@@ -77,7 +77,7 @@ ___
 
 ### comms
 
-• **comms**: (`CommBase` \| `CommManager`)[]
+• **comms**: (`Thread` \| `ThreadPool`)[]
 
 #### Inherited from
 
@@ -288,7 +288,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `func` | (`comm`: `CommBase` \| `CommManager`, `options`: `CommSyncOptions`) => `void` |
+| `func` | (`comm`: `Thread` \| `ThreadPool`, `options`: `CommSyncOptions`) => `void` |
 
 #### Returns
 
@@ -312,7 +312,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `comm` | `CommBase` \| `CommManager` |
+| `comm` | `Thread` \| `ThreadPool` |
 | `data?` | `Partial`\<`CommSyncOptions`\> |
 
 #### Returns

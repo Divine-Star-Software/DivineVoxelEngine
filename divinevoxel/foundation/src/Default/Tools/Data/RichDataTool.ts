@@ -1,22 +1,22 @@
-import { BinaryObject } from "@divinestar/binary";
+import { BinaryObject } from "@amodx/binary";
 import {
  GetRichDataTasks,
  SetRichColumnTasks,
  SetRichDataTasks,
 } from "../../../Types/Tasks.types";
-import { CommBase, ThreadComm } from "@divinestar/threads/";
+import { Thread, Threads } from "@amodx/threads/";
 import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
 import { LocationData } from "@divinevoxel/core/Math";
 
 export class RichDataTool extends LocationBoundTool {
  segment = "voxels";
 
- comm: CommBase;
+ comm: Thread;
  _enabled = false;
 
  constructor() {
   super();
-  this.comm = ThreadComm.getComm("rich-world");
+  this.comm = Threads.getThread("rich-world")!;
   if (!this.comm || !this.comm.isPortSet()) {
    this._enabled = false;
    if (this.comm) {

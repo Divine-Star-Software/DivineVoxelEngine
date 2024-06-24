@@ -1,3 +1,4 @@
+/*
 export const StairStates = {
  normal: {
   bottom: {
@@ -28,4 +29,41 @@ export const StairStates = {
   },
  },
 };
+*/
+export enum StairStates {
+  BottomNorth,
+  BottomSouth,
+  BottomEast,
+  BottomWest,
+  TopNorth,
+  TopSouth,
+  TopEast,
+  TopWest,
+  BottomNorthEast,
+  BottomNorthWest,
+  BottomSouthEast,
+  BottomSouthWest,
+  TopNorthEast,
+  TopNorthWest,
+  TopSouthEast,
+  TopSouthWest,
+}
 
+export const StairStatesArray: StairStates[] = [
+  StairStates.BottomNorth,
+  StairStates.BottomSouth,
+  StairStates.BottomEast,
+  StairStates.BottomWest,
+  StairStates.TopNorth,
+  StairStates.TopSouth,
+  StairStates.TopEast,
+  StairStates.TopWest,
+  StairStates.BottomNorthEast,
+  StairStates.BottomNorthWest,
+  StairStates.BottomSouthEast,
+  StairStates.BottomSouthWest,
+  StairStates.TopNorthEast,
+  StairStates.TopNorthWest,
+  StairStates.TopSouthEast,
+  StairStates.TopSouthWest,
+];

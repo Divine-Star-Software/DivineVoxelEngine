@@ -1,4 +1,4 @@
-import { RemoteBinaryStruct } from "@divinestar/binary/";
+import { RemoteBinaryStruct } from "@amodx/binary/";
 import { Column } from "./Column";
 import {
   DVEMessageHeader,

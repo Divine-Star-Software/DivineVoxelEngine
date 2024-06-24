@@ -1,13 +1,13 @@
-import type { LocationData } from "@divinevoxel/core/Math";
+import type { LocationData } from "@divinevoxel/core/Math";;
 //objects
-import { ThreadComm } from "@divinestar/threads/";
+import { Threads } from "@amodx/threads/";
 import { WorldRegister } from "./World/WorldRegister.js";
 import { DimensionsRegister } from "./World/DimensionsRegister.js";
 import {
   RegionHeaderRegister,
   RegionHeaderTags,
 } from "./RegionHeaderRegister.js";
-import { RemoteBinaryStructData } from "@divinestar/binary/";
+import { RemoteBinaryStructData } from "@amodx/binary/";
 import { Column, Chunk, Region, RegionData, ColumnData, ChunkData } from "./World/Classes/index.js";
 import { WorldDataSync } from "./Types/DataSync.types.js";
 import { DVEFDataSyncIds } from "./Constants/DVEFDataSyncIds.js";
@@ -15,13 +15,13 @@ import { DimensionData } from "./Types/DimensionData.types.js";
 import { RemoteDataSyncNode } from "@divinevoxel/core/Interfaces/Data/RemoteDataSyncNode.js";
 export class DVEFDataSyncNode extends RemoteDataSyncNode {
   worldData = {
-    dimension: ThreadComm.onDataSync<DimensionData, void>(
+    dimension: Threads.onDataSync<DimensionData, void>(
       DVEFDataSyncIds.Dimesnion,
       (data) => {
         DimensionsRegister.instance.registerDimension(data.id, data.options);
       }
     ),
-    chunk: ThreadComm.onDataSync<[LocationData, ChunkData], LocationData>(
+    chunk: Threads.onDataSync<[LocationData, ChunkData], LocationData>(
       DVEFDataSyncIds.Chunk,
       (data) => {
         WorldRegister.instance.chunk.add(data[0], data[1]);
@@ -30,7 +30,7 @@ export class DVEFDataSyncNode extends RemoteDataSyncNode {
         WorldRegister.instance.chunk.remove(data);
       }
     ),
-    column: ThreadComm.onDataSync<[LocationData, ColumnData], LocationData>(
+    column: Threads.onDataSync<[LocationData, ColumnData], LocationData>(
       DVEFDataSyncIds.Column,
       (data) => {
         WorldRegister.instance.column.add(data[0], data[1]);
@@ -39,7 +39,7 @@ export class DVEFDataSyncNode extends RemoteDataSyncNode {
         WorldRegister.instance.column.remove(data);
       }
     ),
-    region: ThreadComm.onDataSync<[LocationData, RegionData], LocationData>(
+    region: Threads.onDataSync<[LocationData, RegionData], LocationData>(
       DVEFDataSyncIds.Region,
       (data) => {
         WorldRegister.instance.region.add(data[0], data[1]);
@@ -48,7 +48,7 @@ export class DVEFDataSyncNode extends RemoteDataSyncNode {
         WorldRegister.instance.region.remove(data);
       }
     ),
-    regionHeader: ThreadComm.onDataSync<WorldDataSync, LocationData>(
+    regionHeader: Threads.onDataSync<WorldDataSync, LocationData>(
       DVEFDataSyncIds.RegionHeader,
       (data) => {
         RegionHeaderRegister.add(data[0], data[1]);
@@ -59,19 +59,19 @@ export class DVEFDataSyncNode extends RemoteDataSyncNode {
     ),
   };
   worldDataTags = {
-    chunk: ThreadComm.onDataSync<RemoteBinaryStructData, void>(
+    chunk: Threads.onDataSync<RemoteBinaryStructData, void>(
       DVEFDataSyncIds.ChunkTags,
       (data) => {
         Chunk.StateStruct.init(data);
       }
     ),
-    column: ThreadComm.onDataSync<RemoteBinaryStructData, void>(
+    column: Threads.onDataSync<RemoteBinaryStructData, void>(
       DVEFDataSyncIds.ColumnTags,
       (data) => {
         Column.StateStruct.init(data);
       }
     ),
-    region: ThreadComm.onDataSync<RemoteBinaryStructData[], void>(
+    region: Threads.onDataSync<RemoteBinaryStructData[], void>(
       DVEFDataSyncIds.RegionTags,
       (data) => {
         Region.StateStruct.init(data[0]);

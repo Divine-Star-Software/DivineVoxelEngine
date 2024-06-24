@@ -3,14 +3,14 @@ import { Material, Scene } from "@babylonjs/core";
 import { PBRMaterial } from "@babylonjs/core/Materials/PBR/pbrMaterial";
 import { Vector3, Vector4 } from "@babylonjs/core/Maths/";
 
-import { URIShader } from "@divinestar/uri/Shaders/Classes/URIShader";
+import { URIShader } from "@amodx/uri/Shaders/Classes/URIShader";
 import {
   URIMaterial,
   URIMaterialData,
-} from "@divinestar/uri/Materials/URIMaterial.js";
+} from "@amodx/uri/Materials/URIMaterial.js";
 import { DVEBRScene } from "Scene/DVEBRScene.js";
-import { URIScene } from "@divinestar/uri/Scenes/URIScene.js";
-import { URITexture } from "@divinestar/uri/Textures/URITexture.js";
+import { URIScene } from "@amodx/uri/Scenes/URIScene.js";
+import { URITexture } from "@amodx/uri/Textures/URITexture.js";
 import { DVEPBRMaterialPlugin } from "./DVEPBRMaterialPlugin";
 import { IMatrixLike } from "@babylonjs/core/Maths/math.like";
 import { TextureManager } from "@divinevoxel/foundation/Textures/TextureManager";

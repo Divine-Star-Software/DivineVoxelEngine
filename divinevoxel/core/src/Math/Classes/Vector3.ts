@@ -1,4 +1,4 @@
-import { Vector3Like, Vec3Array } from "Math/Math.types";
+import { Vector3Like, Vec3Array } from "@amodx/math";
 
 class V3 {
  _data: Vec3Array = [0, 0, 0];

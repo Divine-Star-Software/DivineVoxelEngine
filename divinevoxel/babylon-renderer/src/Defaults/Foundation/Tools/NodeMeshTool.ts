@@ -17,14 +17,16 @@ import { DVEBabylonRenderer } from "../../../DVEBabylonRenderer.js";
 import { AddVoxelData } from "@divinevoxel/foundation/Data/Types/WorldData.types";
 
 import type { Mesh } from "@babylonjs/core";
+import { LocationData, Vec3Array } from "@divinevoxel/core/Math/index.js";
 
-export class NodeMeshTool extends LocationBoundTool {
+export class NodeMeshTool {
+  dimension = "main";
   constructor() {
-    super();
     this.voxel.dataTool.setMode(DataTool.Modes.VOXEL_DATA);
   }
   texture = {
     buildMesh: (
+      location: LocationData,
       textureIdData: ConstructorTextureData,
       rawTextureData: Uint8ClampedArray | null | undefined,
       onDone: (mesh: Mesh | false) => void
@@ -35,29 +37,30 @@ export class NodeMeshTool extends LocationBoundTool {
       const textureData = TextureManager.getTextureData(textureIdData);
       if (!textureData) throw new Error(`${textureIdData} does not exist`);
 
-      if (!rawTextureData && textureData.rawData) {
-        rawTextureData =
-          Array.isArray(textureData.rawData!) &&
-          !(textureData.rawData instanceof Uint8ClampedArray)
-            ? textureData.rawData![0]
-            : textureData.rawData!;
-      } else {
-        throw new Error(
-          `Could not find raw texture data for texture ${textureIdData.toString()}`
-        );
+      if (!rawTextureData) {
+        if (textureData.rawData) {
+          rawTextureData =
+            Array.isArray(textureData.rawData!) &&
+            !(textureData.rawData instanceof Uint8ClampedArray)
+              ? textureData.rawData![0]
+              : textureData.rawData!;
+        } else {
+          throw new Error(
+            `Could not find raw texture data for texture ${textureIdData.toString()}`
+          );
+        }
       }
-
       DVER.instance.core.threads.construcotrs.runPromiseTasks<BuildNodeMesh>(
         "build-node-mesh",
         [
-          this.location,
+          location,
           "#dve_node_texture",
           {
             textureId: textureId,
             textureData: rawTextureData,
           },
         ],
-        [rawTextureData?.buffer],
+        [],
         (data: SetNodeMesh | false) => {
           if (!data) return onDone(false);
           const mesh = DVEBabylonRenderer.instance.nodes.meshes
@@ -76,34 +79,47 @@ export class NodeMeshTool extends LocationBoundTool {
       );
     },
 
-    buildMeshAsync(
+    buildMeshAsync: (
+      location: Vec3Array,
       textureIdData: ConstructorTextureData,
       textureData: Uint8ClampedArray | null = null
-    ) {
+    ) => {
       return new Promise<Mesh | false>((resolve) => {
-        this.buildMesh(textureIdData, textureData, (data) => {
-          resolve(data);
-        });
+        this.texture.buildMesh(
+          [this.dimension, ...location],
+          textureIdData,
+          textureData,
+          (data) => {
+            resolve(data);
+          }
+        );
       });
     },
 
     buildEntityTool: (
+      location: Vec3Array,
       textureIdData: ConstructorTextureData,
       textureData: Uint8ClampedArray,
       onDone: (mesh: EntityTool | false) => void
     ) => {
-      this.texture.buildMesh(textureIdData, textureData, (mesh) => {
-        if (!mesh) return onDone(false);
-        onDone(new EntityTool(mesh));
-      });
+      this.texture.buildMesh(
+        [this.dimension, ...location],
+        textureIdData,
+        textureData,
+        (mesh) => {
+          if (!mesh) return onDone(false);
+          onDone(new EntityTool(mesh));
+        }
+      );
     },
 
     buildEntityToolAsync(
+      location: Vec3Array,
       textureIdData: ConstructorTextureData,
       textureData: Uint8ClampedArray
     ) {
       return new Promise<EntityTool | false>((resolve) => {
-        this.buildEntityTool(textureIdData, textureData, (data) => {
+        this.buildEntityTool(location, textureIdData, textureData, (data) => {
           resolve(data);
         });
       });
@@ -113,12 +129,17 @@ export class NodeMeshTool extends LocationBoundTool {
     dataTool: new DataTool(),
 
     buildMesh: (
+      location: Vec3Array,
       voxelData: RawVoxelData | Partial<AddVoxelData>,
       onDone: (mesh: Mesh | false) => void
     ) => {
+      if (!Array.isArray(voxelData)) {
+        voxelData = DataTool.VoxelDataToRaw(AddVoxelData.Create(voxelData));
+      }
+
       DVER.instance.core.threads.construcotrs.runPromiseTasks<BuildNodeMesh>(
         "build-node-mesh",
-        [this.location, "#dve_node_voxel", voxelData],
+        [[this.dimension, ...location], "#dve_node_voxel", voxelData],
         [],
         (data: SetNodeMesh | false) => {
           if (!data) return onDone(false);
@@ -145,30 +166,33 @@ export class NodeMeshTool extends LocationBoundTool {
     },
 
     buildMeshAsync(
+      location: Vec3Array,
       voxelData: RawVoxelData | Partial<AddVoxelData>
     ): Promise<Mesh | false> {
       return new Promise((resolve) => {
-        this.buildMesh(voxelData, (data) => {
+        this.buildMesh(location, voxelData, (data) => {
           resolve(data);
         });
       });
     },
 
     buildEntityTool: (
+      location: Vec3Array,
       voxelData: RawVoxelData | Partial<AddVoxelData>,
       onDone: (mesh: EntityTool | false) => void
     ) => {
-      this.voxel.buildMesh(voxelData, (mesh) => {
+      this.voxel.buildMesh(location, voxelData, (mesh) => {
         if (!mesh) return onDone(false);
         onDone(new EntityTool(mesh));
       });
     },
 
-    buildEntityToolAsync(
+    buildEntityToolAsync: (
+      location: Vec3Array,
       voxelData: RawVoxelData | Partial<AddVoxelData>
-    ): Promise<EntityTool | false> {
+    ): Promise<EntityTool | false> => {
       return new Promise((resolve) => {
-        this.buildEntityTool(voxelData, (data) => {
+        this.voxel.buildEntityTool(location, voxelData, (data) => {
           resolve(data);
         });
       });

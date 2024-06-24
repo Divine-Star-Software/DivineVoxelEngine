@@ -2,7 +2,7 @@ import { Engine } from "@babylonjs/core/Engines/engine";
 import {
   URITextureFormat,
   URITextureSamplingMode,
-} from "@divinestar/uri/Constants/URITexturesConstants.js";
+} from "@amodx/uri/Constants/URITexturesConstants.js";
 export const DVEBRTextureFormatMap: { [key in URITextureFormat]: number } = {
   [URITextureFormat.Alpha]: Engine.TEXTUREFORMAT_ALPHA,
   [URITextureFormat.Luminance]: Engine.TEXTUREFORMAT_LUMINANCE,

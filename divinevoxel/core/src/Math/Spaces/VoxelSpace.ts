@@ -1,5 +1,5 @@
-import { Vector3Like } from "../Math.types.js";
-import { Flat3DIndex } from "../Flat3DIndex.js";
+import { Vector3Like } from "@amodx/math";
+import { Flat3DIndex } from "@amodx/math/Volumes";
 import { LocationData } from "./VoxelSpaces.types";
 
 const alignToPowerOf2 = (value: number, powerOf2: number) => {

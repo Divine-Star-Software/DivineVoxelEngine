@@ -6,8 +6,7 @@ import { VoxelTagBuilder } from "../StructBuilders/VoxelStructBuilder.js";
 import { VoxelPaletteReader } from "../../../../Data/Voxel/VoxelPalette.js";
 import { VoxelStruct } from "../../../../Data/Voxel/VoxelStruct.js";
 import { VoxelManager } from "../Managers/DataManagers.js";
-import { Pipeline } from "@divinestar/utils/Pipelines/Pipeline.js";
-import { BinaryStruct } from "@divinestar/binary";
+import { BinaryStruct } from "@amodx/binary";
 import { SubstanceDataGenerator } from "./SubstanceDataGenerator.js";
 class GenVoxelPalette {
   _count = 0;
@@ -101,7 +100,6 @@ export class VoxelDataGenerator {
 }
 
 VoxelDataGenerator.overrides.set(VoxelTagIDs.substance, (tags, value, id) => {
-
   tags.setProperty(
     id,
     SubstanceDataGenerator.palette.get().findIndex((_) => _ == value)

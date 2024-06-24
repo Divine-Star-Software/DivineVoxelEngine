@@ -39,7 +39,7 @@ URIScene.\_scene
 
 #### Defined in
 
-node_modules/@divinestar/uri/Scenes/URIScene.d.ts:2
+node_modules/@amodx/uri/Scenes/URIScene.d.ts:2
 
 ___
 

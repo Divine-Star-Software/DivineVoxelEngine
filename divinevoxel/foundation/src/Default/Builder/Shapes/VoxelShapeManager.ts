@@ -6,7 +6,6 @@ export class VoxelShapeManager {
   static shapes = new Map<string, VoxelShapeBase>();
   static mappedShapes = new Map<number, VoxelShapeBase>();
 
-
   static init() {
     RegisterDefaultShapes();
   }
@@ -31,8 +30,7 @@ export class VoxelShapeManager {
 }
 
 const shapeIdSegment = "#dve_shape_id";
-
-const segment = MappedDataRegister.stringMaps.addSegment(shapeIdSegment);
+const segment = MappedDataRegister.stringMaps.addSegment("voxel");
 
 segment.onEntryAdded(shapeIdSegment, (entry) => {
   for (let i = 0; i < entry.length; i++) {
@@ -40,6 +38,7 @@ segment.onEntryAdded(shapeIdSegment, (entry) => {
     shape.numberId = i;
     VoxelShapeManager.mappedShapes.set(i, shape);
   }
+  for (const [k, shape] of VoxelShapeManager.shapes) {
+    shape.init();
+  }
 });
-
-

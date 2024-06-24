@@ -8,7 +8,7 @@ import type {
 } from "../../../Types/Tasks.types";
 import { ConstructorRemoteThreadTasks } from "../../Common/ConstructorRemoteThreadTasks.js";
 import { EngineSettings } from "@divinevoxel/core/Data/Settings/EngineSettings.js";
-import { CommBase, ThreadComm } from "@divinestar/threads/";
+import { Thread, Threads } from "@amodx/threads/";
 import { $3dMooreNeighborhood } from "@divinevoxel/core/Math/Constants/CardinalNeighbors.js";
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces";
 
@@ -22,7 +22,7 @@ const chunkTool = new ChunkDataTool();
 type RebuildModes = "sync" | "async";
 class Request<T, Q> {
   rebuildQueMap: Map<string, boolean> = new Map();
-  comm: CommBase;
+  comm: Thread;
   priority: Priorities = 2;
   LOD = 0;
   syncQueue: LocationData[] = [];
@@ -44,7 +44,7 @@ class Request<T, Q> {
     public queues: Q
   ) {
     if (originThread != "self") {
-      this.comm = ThreadComm.getComm(originThread);
+      this.comm = Threads.getThread(originThread)!;
     }
 
     this.rebuildTasks = [this.origin, this.buildQueue, this.priority];

@@ -3,21 +3,20 @@ import type { DirectionNames } from "@divinevoxel/core/Types/Util.types.js";
 
 import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 import { ShapeTool } from "../../ShapeTool.js";
-import { QuadScalarVertexData } from "@divinevoxel/core/Meshing/";
-import { Vec3Array, VoxelFaces } from "@divinevoxel/core/Math/index.js";
+import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
+import { VoxelFaces } from "@divinevoxel/core/Math/index.js";
 import { VoxelGeometry } from "../../../Geometry/VoxelGeometry.js";
 import { QuadUVData } from "../../../Geometry/Geometry.types.js";
-import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces.js";
 import { VoxelShapeBase } from "../../VoxelShapeBase.js";
 import { VoxelShapeManager } from "../../VoxelShapeManager.js";
-import { Quad } from "@divinevoxel/core/Meshing/Classes/Quad.js";
+import { Quad } from "@amodx/meshing/Classes/Quad.js";
 
 const animationState = new QuadScalarVertexData();
 const uvs: QuadUVData = [
-  [0, 0],
-  [1, 0],
   [1, 1],
   [0, 1],
+  [0, 0],
+  [1, 0],
 ];
 const Quads: Record<DirectionNames, Quad> = {
   top: Quad.Create(
@@ -76,15 +75,23 @@ const Quads: Record<DirectionNames, Quad> = {
   ),
 };
 
+console.log("GOT BOX QUADS");
+console.log(Quads);
+
 class BoxVoxelShapeClass extends VoxelShapeBase {
   id = "#dve_box";
 
   init(): void {
+    console.log("START THE BOX", this.numberId);
     //cullface
-    OverrideManager.CullFace.register(this.numberId, this.numberId, (data) => {
-      return BoxCullFunctions[data.face](data);
-    });
-    OverrideManager.CullFace.register(
+    OverrideManager.FaceExposedShapeCheck.register(
+      this.numberId,
+      this.numberId,
+      (data) => {
+        return BoxCullFunctions[data.face](data);
+      }
+    );
+    OverrideManager.FaceExposedShapeCheck.register(
       this.numberId,
       VoxelShapeManager.getMappedId("#dve_panel"),
       (data) => {
@@ -98,9 +105,9 @@ class BoxVoxelShapeClass extends VoxelShapeBase {
         return true;
       }
     );
-    OverrideManager.CullFace.register(
+    OverrideManager.FaceExposedShapeCheck.register(
       this.numberId,
-      VoxelShapeManager.getMappedId("#dve_halfbox"),
+      VoxelShapeManager.getMappedId("#dve_half_box"),
       (data) => {
         if (data.face == VoxelFaces.Top) {
           if (data.neighborVoxel.getShapeState() == 0) {
@@ -111,7 +118,7 @@ class BoxVoxelShapeClass extends VoxelShapeBase {
         return true;
       }
     );
-    OverrideManager.CullFace.register(
+    OverrideManager.FaceExposedShapeCheck.register(
       this.numberId,
       VoxelShapeManager.getMappedId("#dve_stair"),
       (data) => {
@@ -127,7 +134,7 @@ class BoxVoxelShapeClass extends VoxelShapeBase {
         return false;
       }
     );
-    OverrideManager.CullFace.register(
+    OverrideManager.FaceExposedShapeCheck.register(
       this.numberId,
       VoxelShapeManager.getMappedId("#dve_half_box"),
       (data) => {
@@ -224,17 +231,19 @@ const BoxCullFunctions: Record<
 > = {
   [VoxelFaces.Top]: (data) => {
     if (
-      data.currentVoxel.getSubstanceStringId() == "#dve_flora" &&
-      data.currentVoxel.isSameVoxel(
-        data.currentVoxel.location[1],
-        data.currentVoxel.location[2] + 1,
-        data.currentVoxel.location[3]
+      data.currentVoxel.getSubstnaceData().cullDense() &&
+      data.neighborVoxel.loadInAt(
+        data.currentVoxel.x,
+        data.currentVoxel.y + 1,
+        data.currentVoxel.z
       ) &&
-      data.currentVoxel.isSameVoxel(
-        data.currentVoxel.location[1],
-        data.currentVoxel.location[2] + 2,
-        data.currentVoxel.location[3]
-      )
+      data.currentVoxel.isSameVoxel(data.neighborVoxel) &&
+      data.neighborVoxel.loadInAt(
+        data.currentVoxel.x,
+        data.currentVoxel.y + 2,
+        data.currentVoxel.z
+      ) &&
+      data.currentVoxel.isSameVoxel(data.neighborVoxel)
     ) {
       return false;
     }
@@ -242,17 +251,19 @@ const BoxCullFunctions: Record<
   },
   [VoxelFaces.Bottom]: (data) => {
     if (
-      data.currentVoxel.getSubstanceStringId() == "#dve_flora" &&
-      data.currentVoxel.isSameVoxel(
-        data.currentVoxel.location[1],
-        data.currentVoxel.location[2] - 1,
-        data.currentVoxel.location[3]
+      data.currentVoxel.getSubstnaceData().cullDense() &&
+      data.neighborVoxel.loadInAt(
+        data.currentVoxel.x,
+        data.currentVoxel.y - 1,
+        data.currentVoxel.z
       ) &&
-      data.currentVoxel.isSameVoxel(
-        data.currentVoxel.location[1],
-        data.currentVoxel.location[2] - 2,
-        data.currentVoxel.location[3]
-      )
+      data.currentVoxel.isSameVoxel(data.neighborVoxel) &&
+      data.neighborVoxel.loadInAt(
+        data.currentVoxel.x,
+        data.currentVoxel.y - 2,
+        data.currentVoxel.z
+      ) &&
+      data.currentVoxel.isSameVoxel(data.neighborVoxel)
     ) {
       return false;
     }
@@ -260,17 +271,19 @@ const BoxCullFunctions: Record<
   },
   [VoxelFaces.East]: (data) => {
     if (
-      data.currentVoxel.getSubstanceStringId() == "#dve_flora" &&
-      data.currentVoxel.isSameVoxel(
-        data.currentVoxel.location[1] + 1,
-        data.currentVoxel.location[2],
-        data.currentVoxel.location[3]
+      data.currentVoxel.getSubstnaceData().cullDense() &&
+      data.neighborVoxel.loadInAt(
+        data.currentVoxel.x + 1,
+        data.currentVoxel.y,
+        data.currentVoxel.z
       ) &&
-      data.currentVoxel.isSameVoxel(
-        data.currentVoxel.location[1] + 2,
-        data.currentVoxel.location[2],
-        data.currentVoxel.location[3]
-      )
+      data.currentVoxel.isSameVoxel(data.neighborVoxel) &&
+      data.neighborVoxel.loadInAt(
+        data.currentVoxel.x + 2,
+        data.currentVoxel.y,
+        data.currentVoxel.z
+      ) &&
+      data.currentVoxel.isSameVoxel(data.neighborVoxel)
     ) {
       return false;
     }
@@ -278,17 +291,19 @@ const BoxCullFunctions: Record<
   },
   [VoxelFaces.West]: (data) => {
     if (
-      data.currentVoxel.getSubstanceStringId() == "#dve_flora" &&
-      data.currentVoxel.isSameVoxel(
-        data.currentVoxel.location[1] - 1,
-        data.currentVoxel.location[2],
-        data.currentVoxel.location[3]
+      data.currentVoxel.getSubstnaceData().cullDense() &&
+      data.neighborVoxel.loadInAt(
+        data.currentVoxel.x - 1,
+        data.currentVoxel.y,
+        data.currentVoxel.z
       ) &&
-      data.currentVoxel.isSameVoxel(
-        data.currentVoxel.location[1] - 2,
-        data.currentVoxel.location[2],
-        data.currentVoxel.location[3]
-      )
+      data.currentVoxel.isSameVoxel(data.neighborVoxel) &&
+      data.neighborVoxel.loadInAt(
+        data.currentVoxel.x - 2,
+        data.currentVoxel.y,
+        data.currentVoxel.z
+      ) &&
+      data.currentVoxel.isSameVoxel(data.neighborVoxel)
     ) {
       return false;
     }
@@ -296,17 +311,19 @@ const BoxCullFunctions: Record<
   },
   [VoxelFaces.North]: (data) => {
     if (
-      data.currentVoxel.getSubstanceStringId() == "#dve_flora" &&
-      data.currentVoxel.isSameVoxel(
-        data.currentVoxel.location[1],
-        data.currentVoxel.location[2],
-        data.currentVoxel.location[3] + 1
+      data.currentVoxel.getSubstnaceData().cullDense() &&
+      data.neighborVoxel.loadInAt(
+        data.currentVoxel.x,
+        data.currentVoxel.y,
+        data.currentVoxel.z + 1
       ) &&
-      data.currentVoxel.isSameVoxel(
-        data.currentVoxel.location[1],
-        data.currentVoxel.location[2],
-        data.currentVoxel.location[3] + 2
-      )
+      data.currentVoxel.isSameVoxel(data.neighborVoxel) &&
+      data.neighborVoxel.loadInAt(
+        data.currentVoxel.x,
+        data.currentVoxel.y,
+        data.currentVoxel.z + 2
+      ) &&
+      data.currentVoxel.isSameVoxel(data.neighborVoxel)
     ) {
       return false;
     }
@@ -314,17 +331,19 @@ const BoxCullFunctions: Record<
   },
   [VoxelFaces.South]: (data) => {
     if (
-      data.currentVoxel.getSubstanceStringId() == "#dve_flora" &&
-      data.currentVoxel.isSameVoxel(
-        data.currentVoxel.location[1],
-        data.currentVoxel.location[2],
-        data.currentVoxel.location[3] - 1
+      data.currentVoxel.getSubstnaceData().cullDense() &&
+      data.neighborVoxel.loadInAt(
+        data.currentVoxel.x,
+        data.currentVoxel.y,
+        data.currentVoxel.z - 1
       ) &&
-      data.currentVoxel.isSameVoxel(
-        data.currentVoxel.location[1],
-        data.currentVoxel.location[2],
-        data.currentVoxel.location[3] - 2
-      )
+      data.currentVoxel.isSameVoxel(data.neighborVoxel) &&
+      data.neighborVoxel.loadInAt(
+        data.currentVoxel.x,
+        data.currentVoxel.y,
+        data.currentVoxel.z - 2
+      ) &&
+      data.currentVoxel.isSameVoxel(data.neighborVoxel)
     ) {
       return false;
     }
