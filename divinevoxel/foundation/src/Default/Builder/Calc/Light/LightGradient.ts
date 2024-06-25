@@ -13,39 +13,44 @@ const LightValue = new QuadScalarVertexData();
 
 const AOValue = new QuadScalarVertexData();
 
+const isMax = (num: number, v1: number, v2: number): boolean => {
+  return num >= v1 && num >= v2;
+};
+const isAllEqual = (
+  num: number,
+  v1: number,
+  v2: number,
+  v3: number
+): boolean => {
+  return num == v1 && v1 == v2 && v2 == v3;
+};
 const shouldSunFlip = (face: VoxelFaces) => {
-  const v1 = LD.getS(LightValue.vertices[QuadVerticies.TopRight]);
-  const v2 = LD.getS(LightValue.vertices[QuadVerticies.TopLeft]);
-  const v3 = LD.getS(LightValue.vertices[QuadVerticies.BottomLeft]);
-  const v4 = LD.getS(LightValue.vertices[QuadVerticies.BottomRight]);
-
-  if (v2 > v3 && v2 > v1) return true;
-  if (v4 > v3 && v4 > v1) return true;
-  if (v2 < v3 || v2 < v1) return false;
-  if (v4 < v3 || v4 < v1) return false;
-  if (v3 + v1 > v2 + v4) return false;
-
-  return false;
+  const topRight = LD.getS(LightValue.vertices[QuadVerticies.TopRight]);
+  const topLeft = LD.getS(LightValue.vertices[QuadVerticies.TopLeft]);
+  const bottomLeft = LD.getS(LightValue.vertices[QuadVerticies.BottomLeft]);
+  const bottomRight = LD.getS(LightValue.vertices[QuadVerticies.BottomRight]);
+  if(isAllEqual(topRight,topLeft,bottomLeft,bottomRight)) return false;
+  const t1 = isMax(bottomLeft, topLeft, bottomRight);
+  const t2 = isMax(topRight, topLeft, bottomRight);
+  if (t1 && !t2) return false;
+  if (t2 && !t1) return false;
+  return true;
 };
 
 const shouldRGBFlip = (face: VoxelFaces) => {
-  // Retrieve RGB values for each vertex based on their positions
-  const v1 = LD.getRGB(LightValue.vertices[QuadVerticies.TopLeft]); // TopLeft
-  const v2 = LD.getRGB(LightValue.vertices[QuadVerticies.BottomLeft]); // BottomLeft
-  const v3 = LD.getRGB(LightValue.vertices[QuadVerticies.BottomRight]); // BottomRight
-  const v4 = LD.getRGB(LightValue.vertices[QuadVerticies.TopRight]); // TopRight
-
-  if (v2 > v3 && v2 > v1) return true;
-  if (v4 > v3 && v4 > v1) return true;
-  if (v2 < v3 || v2 < v1) return false;
-  if (v4 < v3 || v4 < v1) return false;
-  if (v3 + v1 > v2 + v4) return false;
-
-  return false;
+  const topRight = LD.getRGB(LightValue.vertices[QuadVerticies.TopRight]);
+  const topLeft = LD.getRGB(LightValue.vertices[QuadVerticies.TopLeft]);
+  const bottomLeft = LD.getRGB(LightValue.vertices[QuadVerticies.BottomLeft]);
+  const bottomRight = LD.getRGB(LightValue.vertices[QuadVerticies.BottomRight]);
+  if(isAllEqual(topRight,topLeft,bottomLeft,bottomRight)) return false;
+  const t1 = isMax(bottomLeft, topLeft, bottomRight);
+  const t2 = isMax(topRight, topLeft, bottomRight);
+  if (t1 && !t2) return false;
+  if (t2 && !t1) return false;
+  return true;
 };
 
 const shouldAOFlip = (face: VoxelFaces) => {
-  if (states.ignoreAO) return false;
   if (states.ignoreAO) return false;
   LightGradient.tool.faceDataOverride.face = face;
   LightGradient.tool.faceDataOverride.default = false;
@@ -59,16 +64,15 @@ const shouldAOFlip = (face: VoxelFaces) => {
   ) {
     return false;
   }
-  const v1 = AOValue.vertices[QuadVerticies.TopLeft];
-  const v2 = AOValue.vertices[QuadVerticies.BottomLeft];
-  const v3 = AOValue.vertices[QuadVerticies.BottomRight];
-  const v4 = AOValue.vertices[QuadVerticies.TopRight];
+  const topRight = AOValue.vertices[QuadVerticies.TopRight];
+  const topLeft = AOValue.vertices[QuadVerticies.TopLeft];
+  const bottomRight = AOValue.vertices[QuadVerticies.BottomRight];
+  const bottomLeft = AOValue.vertices[QuadVerticies.BottomLeft];
 
-  if (v2 > v3 && v2 > v1) return true;
-  if (v4 > v3 && v4 > v1) return true;
-  if (v2 < v3 || v2 < v1) return false;
-  if (v4 < v3 || v4 < v1) return false;
-  if (v3 + v1 > v2 + v4) return false;
+  if(isAllEqual(topRight,topLeft,bottomLeft,bottomRight)) return false;
+  const t1 = isMax(topRight, topLeft, bottomRight);
+  const t2 = isMax(bottomLeft, topLeft, bottomRight);
+  if(t1||t2) return true;
   return false;
 };
 
@@ -76,10 +80,9 @@ const flipCheck = (face: VoxelFaces) => {
   const rgbFlip = shouldRGBFlip(face);
   const sunFlip = shouldSunFlip(face);
   const aoFlip = shouldAOFlip(face);
-
-  const shouldFlip = rgbFlip || sunFlip || aoFlip;
-
-  return shouldFlip;
+  if(rgbFlip) return true;
+  if(sunFlip) return true;
+  return aoFlip;
 };
 /**
  * 
@@ -204,21 +207,21 @@ export const LightGradient = {
       }
     }
 
-    if(face == VoxelFaces.Top) {
-    if (tool.nVoxel.isRenderable() && !tool.nVoxel.isLightSource()) {
-      tool.faceDataOverride.face = face;
-      tool.faceDataOverride.default = false;
-      if (
-        OverrideManager.DarkenFaceUnderneath.run(
-          tool.nVoxel.getShapeId(),
-          OverrideManager.ANY,
-          tool.faceDataOverride
-        )
-      ) {
-        aoOverRide = 1;
+    if (face == VoxelFaces.Top) {
+      if (tool.nVoxel.isRenderable() && !tool.nVoxel.isLightSource()) {
+        tool.faceDataOverride.face = face;
+        tool.faceDataOverride.default = false;
+        if (
+          OverrideManager.DarkenFaceUnderneath.run(
+            tool.nVoxel.getShapeId(),
+            OverrideManager.ANY,
+            tool.faceDataOverride
+          )
+        ) {
+          aoOverRide = 1;
+        }
       }
     }
-  }
     for (let vertex: QuadVerticies = <QuadVerticies>1; vertex <= 4; vertex++) {
       const checkSet = checkSets[face][vertex];
 
@@ -330,7 +333,7 @@ export const LightGradient = {
    AO End
    */
       if (this.settings.doAO) {
-        AOValue.setVertex(vertex, AOValues.a);
+        AOValue.setVertex(vertex, Math.ceil((AOValues.a / 3) * 15));
       }
     }
 
@@ -348,12 +351,11 @@ export const LightGradient = {
       tool
         .getWorldAO()
         .set(
-          Math.ceil((AOValue.vertices[QuadVerticies.TopRight] / 3) * 15),
-          Math.ceil((AOValue.vertices[QuadVerticies.TopLeft] / 3) * 15),
-          Math.ceil((AOValue.vertices[QuadVerticies.BottomLeft] / 3) * 15),
-          Math.ceil((AOValue.vertices[QuadVerticies.BottomRight] / 3) * 15)
+          AOValue.vertices[QuadVerticies.TopRight],
+          AOValue.vertices[QuadVerticies.TopLeft],
+          AOValue.vertices[QuadVerticies.BottomLeft],
+          AOValue.vertices[QuadVerticies.BottomRight]
         );
-
     }
   },
 };

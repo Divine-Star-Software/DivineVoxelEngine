@@ -93,17 +93,17 @@ const StairShapeStates: Record<StairStates, StairShapeState> = {
   [StairStates.TopEast]: createRototation(deg90, DefaultStair, true),
   [StairStates.TopWest]: createRototation(deg270, DefaultStair, true),
   [StairStates.BottomNorthEast]: createRototation(0, DefaultConnectedStair),
-  [StairStates.BottomNorthWest]: createRototation(
+  [StairStates.BottomSouthWest]: createRototation(
     deg180,
     DefaultConnectedStair
   ),
   [StairStates.BottomSouthEast]: createRototation(deg90, DefaultConnectedStair),
-  [StairStates.BottomSouthWest]: createRototation(
+  [StairStates.BottomNorthWest]: createRototation(
     deg270,
     DefaultConnectedStair
   ),
   [StairStates.TopNorthEast]: createRototation(0, DefaultConnectedStair, true),
-  [StairStates.TopNorthWest]: createRototation(
+  [StairStates.TopSouthWest]: createRototation(
     deg180,
     DefaultConnectedStair,
     true
@@ -113,12 +113,14 @@ const StairShapeStates: Record<StairStates, StairShapeState> = {
     DefaultConnectedStair,
     true
   ),
-  [StairStates.TopSouthWest]: createRototation(
+  [StairStates.TopNorthWest]: createRototation(
     deg270,
     DefaultConnectedStair,
     true
   ),
 };
+
+console.warn(StairShapeStates)
 
 export class StairOverrides {
   static FaceTypes = FaceType;
@@ -132,11 +134,12 @@ export class StairOverrides {
       StairVoxelShape.numberId,
       (data) => {
         const faceType = StairOverrides.getStairState(
-          data.neighborVoxel.getShapeState()
+          data.currentVoxel.getShapeState()
         )[data.face];
         const opositeFaceType = StairOverrides.getStairState(
           data.neighborVoxel.getShapeState()
         )[VoxelFaceOpositeDirectionMap[data.face]];
+        if (faceType == FaceType.Top) return true;
         if (faceType == FaceType.Box && opositeFaceType == FaceType.Box)
           return false;
         if (faceType == FaceType.Side && opositeFaceType == FaceType.Side)
@@ -149,8 +152,9 @@ export class StairOverrides {
       BoxVoxelShape.numberId,
       (data) => {
         const faceType = StairOverrides.getStairState(
-          data.neighborVoxel.getShapeState()
+          data.currentVoxel.getShapeState()
         )[data.face];
+        if (faceType == FaceType.Top) return true;
         if (faceType == FaceType.Box) return false;
         return true;
       }

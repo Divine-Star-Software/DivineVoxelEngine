@@ -33,6 +33,7 @@ const shapeIdSegment = "#dve_shape_id";
 const segment = MappedDataRegister.stringMaps.addSegment("voxel");
 
 segment.onEntryAdded(shapeIdSegment, (entry) => {
+  VoxelShapeManager.init();
   for (let i = 0; i < entry.length; i++) {
     const shape = VoxelShapeManager.getShape(entry[i]);
     shape.numberId = i;

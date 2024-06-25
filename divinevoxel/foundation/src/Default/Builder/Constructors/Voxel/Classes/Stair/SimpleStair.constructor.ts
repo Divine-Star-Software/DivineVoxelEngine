@@ -7,41 +7,40 @@ import { StairVoxelShape } from "../../../../Shapes/default/Stairs/Stair.voxel.s
 import { VoxelFaces } from "@divinevoxel/core/Math";
 
 export class SimpleStairVoxelConstructor extends VoxelConstructor {
- texture: number = 0;
- constructor(public id: string, public textureData: ConstructorTextureData) {
-  super();
- }
- process(tool: VoxelMesherDataTool) {
-  tool.setTexture(this.texture);
-  tool.getOverlayTextures().setAll(0);
-  if (tool.isFaceExposed(VoxelFaces.Top)) {
-   tool.calculateLight(VoxelFaces.Top);
-   StairVoxelShape.add.top();
+  texture: number = 0;
+  constructor(public id: string, public textureData: ConstructorTextureData) {
+    super();
   }
-  if (tool.isFaceExposed(VoxelFaces.Bottom)) {
-   tool.calculateLight(VoxelFaces.Bottom);
-   StairVoxelShape.add.bottom();
+  process(tool: VoxelMesherDataTool) {
+    tool.setTexture(this.texture);
+    tool.getOverlayTextures().setAll(0);
+    if (tool.isFaceExposed(VoxelFaces.Top)) {
+      tool.calculateLight(VoxelFaces.Top);
+      StairVoxelShape.add.top();
+    }
+    if (tool.isFaceExposed(VoxelFaces.Bottom)) {
+      tool.calculateLight(VoxelFaces.Bottom);
+      StairVoxelShape.add.bottom();
+    }
+    if (tool.isFaceExposed(VoxelFaces.East)) {
+      tool.calculateLight(VoxelFaces.East);
+      StairVoxelShape.add.east();
+    }
+    if (tool.isFaceExposed(VoxelFaces.West)) {
+      tool.calculateLight(VoxelFaces.West);
+      StairVoxelShape.add.west();
+    }
+    if (tool.isFaceExposed(VoxelFaces.South)) {
+      tool.calculateLight(VoxelFaces.South);
+      StairVoxelShape.add.south();
+    }
+    if (tool.isFaceExposed(VoxelFaces.North)) {
+      tool.calculateLight(VoxelFaces.North);
+      StairVoxelShape.add.north();
+    }
   }
-  if (tool.isFaceExposed(VoxelFaces.East)) {
-   tool.calculateLight(VoxelFaces.East);
-   StairVoxelShape.add.east();
+  onTexturesRegistered(textureManager: typeof TextureRegister): void {
+    this.texture = textureManager.getTextureUV(this.textureData);
+    (this as any).textuerData = null;
   }
-  if (tool.isFaceExposed(VoxelFaces.West)) {
-   tool.calculateLight(VoxelFaces.West);
-   StairVoxelShape.add.west();
-  }
-  if (tool.isFaceExposed(VoxelFaces.South)) {
-   tool.calculateLight(VoxelFaces.South);
-   StairVoxelShape.add.south();
-  }
-  if (tool.isFaceExposed(VoxelFaces.North)) {
-   tool.calculateLight(VoxelFaces.North);
-   StairVoxelShape.add.north();
-  }
- }
-
- onTexturesRegistered(textureManager: typeof TextureRegister): void {
-  this.texture = textureManager.getTextureUV(this.textureData);
-  (this as any).textuerData = null;
- }
 }

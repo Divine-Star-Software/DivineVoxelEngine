@@ -14,6 +14,7 @@ import { VoxelShapeBase } from "../../VoxelShapeBase.js";
 import { VoxelShapeManager } from "../../VoxelShapeManager.js";
 import { Quad } from "@amodx/meshing/Classes/Quad.js";
 import { StairOverrides } from "../Stairs/StairOverrides.js";
+import { PanelVoxelShape } from "../Panel/Panel.voxel.shape.js";
 
 const animationState = new QuadScalarVertexData();
 const uvs: QuadUVData = [
@@ -79,14 +80,10 @@ const Quads: Record<DirectionNames, Quad> = {
   ),
 };
 
-console.log("GOT BOX QUADS");
-console.log(Quads);
-
 class BoxVoxelShapeClass extends VoxelShapeBase {
   id = "#dve_box";
 
   init(): void {
-    console.log("START THE BOX", this.numberId);
     //cullface
     OverrideManager.FaceExposedShapeCheck.register(
       this.numberId,
@@ -95,6 +92,7 @@ class BoxVoxelShapeClass extends VoxelShapeBase {
         return BoxCullFunctions[data.face](data);
       }
     );
+
     OverrideManager.FaceExposedShapeCheck.register(
       this.numberId,
       VoxelShapeManager.getMappedId("#dve_panel"),
@@ -102,6 +100,7 @@ class BoxVoxelShapeClass extends VoxelShapeBase {
         return true;
       }
     );
+
     OverrideManager.DarkenFaceUnderneath.register(
       this.numberId,
       OverrideManager.ANY,
@@ -123,6 +122,7 @@ class BoxVoxelShapeClass extends VoxelShapeBase {
         return true;
       }
     );
+
     OverrideManager.FaceExposedShapeCheck.register(
       this.numberId,
       VoxelShapeManager.getMappedId("#dve_stair"),
@@ -134,25 +134,13 @@ class BoxVoxelShapeClass extends VoxelShapeBase {
         return true;
       }
     );
+
     //ao
     OverrideManager.AO.register(
       this.numberId,
       VoxelShapeManager.getMappedId("#dve_panel"),
       (data) => {
         return false;
-      }
-    );
-    OverrideManager.FaceExposedShapeCheck.register(
-      this.numberId,
-      VoxelShapeManager.getMappedId("#dve_half_box"),
-      (data) => {
-        if (data.face == VoxelFaces.Top) {
-          if (data.neighborVoxel.getShapeState() == 0) {
-            return true;
-          }
-          return false;
-        }
-        return true;
       }
     );
   }

@@ -141,6 +141,7 @@ export class VoxelMesherDataTool extends MesherDataTool {
       this.voxel.getSubstance(),
       this.nVoxel.getSubstance()
     );
+
     this.faceDataOverride.face = face;
     this.faceDataOverride.default = substanceRuleResult;
     finalResult = substanceRuleResult;

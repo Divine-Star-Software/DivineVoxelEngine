@@ -80,7 +80,7 @@ float bVL = lightGradient[blueValue];
 index = uint(16);
 float AOVL = float(((aoMask << index) & vUID) >> index);
 if(AOVL > 0.) {
-     AOVL = pow( pow(.45, (AOVL)/15. ), 2.2);
+    AOVL = pow( pow(.45, (AOVL)/15. ), 2.2);
 } else {
   AOVL = 1.;
 }

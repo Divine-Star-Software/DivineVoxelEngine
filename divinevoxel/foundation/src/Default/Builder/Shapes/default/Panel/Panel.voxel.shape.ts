@@ -90,6 +90,7 @@ class PanelVoxelShapeClass extends VoxelShapeBase {
       this.numberId,
       OverrideManager.ANY,
       (data) => {
+
         if (data.currentVoxel.getSubstanceStringId() == "#dve_flora") {
           return false;
         }
