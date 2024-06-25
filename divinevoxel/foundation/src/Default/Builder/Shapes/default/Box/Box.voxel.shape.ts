@@ -4,12 +4,16 @@ import type { DirectionNames } from "@divinevoxel/core/Types/Util.types.js";
 import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 import { ShapeTool } from "../../ShapeTool.js";
 import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
-import { VoxelFaces } from "@divinevoxel/core/Math/index.js";
+import {
+  VoxelFaceOpositeDirectionMap,
+  VoxelFaces,
+} from "@divinevoxel/core/Math/index.js";
 import { VoxelGeometry } from "../../../Geometry/VoxelGeometry.js";
 import { QuadUVData } from "../../../Geometry/Geometry.types.js";
 import { VoxelShapeBase } from "../../VoxelShapeBase.js";
 import { VoxelShapeManager } from "../../VoxelShapeManager.js";
 import { Quad } from "@amodx/meshing/Classes/Quad.js";
+import { StairOverrides } from "../Stairs/StairOverrides.js";
 
 const animationState = new QuadScalarVertexData();
 const uvs: QuadUVData = [
@@ -105,6 +109,7 @@ class BoxVoxelShapeClass extends VoxelShapeBase {
         return true;
       }
     );
+
     OverrideManager.FaceExposedShapeCheck.register(
       this.numberId,
       VoxelShapeManager.getMappedId("#dve_half_box"),
@@ -122,7 +127,10 @@ class BoxVoxelShapeClass extends VoxelShapeBase {
       this.numberId,
       VoxelShapeManager.getMappedId("#dve_stair"),
       (data) => {
-        StairCullFunctions[data.face](data);
+        const faceType = StairOverrides.getStairState(
+          data.neighborVoxel.getShapeState()
+        )[VoxelFaceOpositeDirectionMap[data.face]];
+        if (faceType == StairOverrides.FaceTypes.Box) return false;
         return true;
       }
     );
@@ -177,52 +185,6 @@ class BoxVoxelShapeClass extends VoxelShapeBase {
 }
 
 export const BoxVoxelShape = new BoxVoxelShapeClass();
-
-const StairCullFunctions: Record<
-  VoxelFaces,
-  (data: FaceDataOverride) => boolean
-> = {
-  [VoxelFaces.Top]: (data) => {
-    const nVoxelShapeState = data.neighborVoxel.getShapeState();
-    if (
-      (nVoxelShapeState >= 0 && nVoxelShapeState <= 3) ||
-      (nVoxelShapeState >= 8 && nVoxelShapeState <= 11)
-    ) {
-      return false;
-    }
-    return true;
-  },
-  [VoxelFaces.Bottom]: (data) => {
-    const nVoxelShapeState = data.neighborVoxel.getShapeState();
-    if (
-      (nVoxelShapeState >= 4 && nVoxelShapeState <= 7) ||
-      (nVoxelShapeState >= 12 && nVoxelShapeState <= 15)
-    ) {
-      return false;
-    }
-    return true;
-  },
-  [VoxelFaces.East]: (data) => {
-    const nVoxelShapeState = data.neighborVoxel.getShapeState();
-    if (nVoxelShapeState == 1 || nVoxelShapeState == 5) return false;
-    return true;
-  },
-  [VoxelFaces.West]: (data) => {
-    const nVoxelShapeState = data.neighborVoxel.getShapeState();
-    if (nVoxelShapeState == 3 || nVoxelShapeState == 7) return false;
-    return true;
-  },
-  [VoxelFaces.North]: (data) => {
-    const nVoxelShapeState = data.neighborVoxel.getShapeState();
-    if (nVoxelShapeState == 0 || nVoxelShapeState == 4) return false;
-    return true;
-  },
-  [VoxelFaces.South]: (data) => {
-    const nVoxelShapeState = data.neighborVoxel.getShapeState();
-    if (nVoxelShapeState == 2 || nVoxelShapeState == 6) return false;
-    return true;
-  },
-};
 
 //cull leaf faces
 const BoxCullFunctions: Record<

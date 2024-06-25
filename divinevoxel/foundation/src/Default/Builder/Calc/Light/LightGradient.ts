@@ -204,6 +204,7 @@ export const LightGradient = {
       }
     }
 
+    if(face == VoxelFaces.Top) {
     if (tool.nVoxel.isRenderable() && !tool.nVoxel.isLightSource()) {
       tool.faceDataOverride.face = face;
       tool.faceDataOverride.default = false;
@@ -214,10 +215,10 @@ export const LightGradient = {
           tool.faceDataOverride
         )
       ) {
-        aoOverRide = 2;
+        aoOverRide = 1;
       }
     }
-
+  }
     for (let vertex: QuadVerticies = <QuadVerticies>1; vertex <= 4; vertex++) {
       const checkSet = checkSets[face][vertex];
 

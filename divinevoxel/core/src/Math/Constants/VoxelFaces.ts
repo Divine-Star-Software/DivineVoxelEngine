@@ -28,6 +28,15 @@ export const VoxelFaceDirections: Readonly<Record<VoxelFaces, Vec3Array>> =
     [VoxelFaces.West]: [-1, 0, 0],
   });
 
+export const VoxelFaceOpositeDirectionMap: Record<VoxelFaces, VoxelFaces> = {
+  [VoxelFaces.Top]: VoxelFaces.Bottom,
+  [VoxelFaces.Bottom]: VoxelFaces.Top,
+  [VoxelFaces.North]: VoxelFaces.South,
+  [VoxelFaces.South]: VoxelFaces.North,
+  [VoxelFaces.East]: VoxelFaces.West,
+  [VoxelFaces.West]: VoxelFaces.East,
+};
+
 export const VoxelFaceCompassDirectionMap: Record<
   VoxelFaces,
   CompassDirections
