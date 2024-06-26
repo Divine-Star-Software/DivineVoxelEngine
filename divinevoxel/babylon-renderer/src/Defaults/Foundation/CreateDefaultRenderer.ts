@@ -46,6 +46,7 @@ export function CreateDefaultRenderer(
         alphaBlending: id == "#dve_liquid" ? true : false,
         alphaTesting: true,
         backFaceCulling: id == "#dve_liquid" ? false : true,
+        stencil: id == "#dve_liquid" ? true : undefined,
         mipMapBias: id == "#dve_flora" ? -5 : 0,
       },
       textureType: id,
@@ -74,15 +75,14 @@ export function CreateDefaultRenderer(
     await TextureBuilder.setUpImageCreation();
     TextureManager.registerTexture(initData.textureData);
 
-    console.log("BUILD TEXTURES")
+    console.log("BUILD TEXTURES");
     await TextureManager.$INIT();
     await TextureManager.createRawDataMap();
-    
+
     const uvMap = TextureManager.generateTextureUVMap();
     for (const constructor of dver.core.threads.construcotrs.getThreads()) {
       await constructor.runAsyncTasks("sync-texuture-index", uvMap);
     }
-
 
     const meshes: DVEBRNodeMesh[] = [];
     const materials: NodeMaterialData[] = [];

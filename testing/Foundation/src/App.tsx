@@ -259,7 +259,7 @@ export function App() {
         (window as any).nodes = nodes;
 
         DVER.threads.world.runTasks("start-world", []);
-
+        const viwer = new AxesViewer(scene,3);
         const dataTool = new DataTool();
         const nodeMeshTool = new NodeMeshTool();
         const voxelEntityTool = await nodeMeshTool.voxel.buildEntityToolAsync(
@@ -267,7 +267,7 @@ export function App() {
           nodeMeshTool.voxel.dataTool
             .setStringId("dve_dream_grass")
             .setLevelState(1)
-            .setLevel(15)
+            .setLevel(7)
             .getRaw()
         );
         console.log("got voxel entity tool", voxelEntityTool);
@@ -288,6 +288,9 @@ export function App() {
           }
           console.log(voxelEntityTool._matrixArray.matricies)
           voxelEntityTool.update(); */
+          setInterval(()=>{
+            console.log(nodes.camera.globalPosition.toString())
+          },2_000)
 
           const box = CreateBox("", {}, scene);
           box.position.set(0, 0, 0);

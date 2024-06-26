@@ -13,7 +13,7 @@ export async function FlowUpdate(tasks: FlowTaskRequests, rebuild = true) {
   tasks.queues.flow.update.queue.push([x, y, z, level, levelState]);
   while (tasks.queues.flow.update.queue.length != 0) {
     FM.setDimension(dimension);
-    await RunFlowPropagation(tasks, vox.getStringId());
+    RunFlowPropagation(tasks, vox.getStringId());
     RunFlowIncrease(tasks, vox.getStringId());
     if (rebuild) {
       tasks.runRebuildQueue();
@@ -22,7 +22,7 @@ export async function FlowUpdate(tasks: FlowTaskRequests, rebuild = true) {
   }
 }
 
-async function RunFlowPropagation(tasks: FlowTaskRequests, vox: string) {
+function RunFlowPropagation(tasks: FlowTaskRequests, vox: string) {
   const que = tasks.queues.flow.update.queue;
   const noRemoveMap = tasks.queues.flow.remove.noRemoveMap;
   for (let i = 0; i < que.length; i++) {
@@ -30,47 +30,46 @@ async function RunFlowPropagation(tasks: FlowTaskRequests, vox: string) {
     const x = node[0];
     const y = node[1];
     const z = node[2];
-    await FM._nDataTool.waitTillCanLoad([tasks.origin[0], x, y, z], 120_000);
     const l = FM.getLevel(vox, x, y, z);
     const s = FM.getLevelState(vox, x, y, z);
     noRemoveMap.add(x, y, z);
     if (FM.canFlowOutwardTest(vox, x, y, z)) {
       const n1 = FM.getLevel(vox, x + 1, y, z);
-      if (n1 + 2 < l && n1 >= 0) {
-        let n1l = l - 2;
+      if (n1 < l && n1 >= 0) {
+        let n1l = l - 1;
         que.push([x + 1, y, z, n1l, 0]);
       }
 
       const n2 = FM.getLevel(vox, x - 1, y, z);
 
-      if (n2 + 2 < l && n2 >= 0) {
-        let n2l = l - 2;
+      if (n2 < l && n2 >= 0) {
+        let n2l = l - 1;
         que.push([x - 1, y, z, n2l, 0]);
       }
 
       const n3 = FM.getLevel(vox, x, y, z + 1);
-      if (n3 + 2 < l && n3 >= 0) {
-        let n3l = l - 2;
+      if (n3 < l && n3 >= 0) {
+        let n3l = l - 1;
         que.push([x, y, z + 1, n3l, 0]);
       }
 
       const n4 = FM.getLevel(vox, x, y, z - 1);
-      if (n4 + 2 < l && n4 >= 0) {
-        let n4l = l - 2;
+      if (n4 < l && n4 >= 0) {
+        let n4l = l - 1;
         que.push([x, y, z - 1, n4l, 0]);
       }
     }
 
     const n5 = FM.getLevel(vox, x, y - 1, z);
-    if (n5 <= l && n5 >= 0) {
-      let state = 1;
-      let level = 15;
-      if (l <= 0 && s != 1) {
-        state = 0;
-        level = l - 2;
-      }
-      que.push([x, y - 1, z, level, state]);
+    const n6 = FM.getLevel(vox, x, y - 2, z);
+
+    if (n5 < 0) continue;
+    if (n6 < 0) {
+      que.push([x, y - 1, z, 7, 0]);
+      continue;
     }
+
+    que.push([x, y - 1, z, 7, 1]);
   }
 }
 
@@ -92,6 +91,7 @@ function RunFlowIncrease(tasks: FlowTaskRequests, vox: string) {
     map.add(x, y, z);
     if (level > -1) {
       FM.setVoxel(tasks, vox, level, levelState, x, y, z);
+
       reque.push([x, y, z, -1]);
     }
     tasks.addToRebuildQueue(x, y, z);

@@ -120,7 +120,6 @@ const StairShapeStates: Record<StairStates, StairShapeState> = {
   ),
 };
 
-console.warn(StairShapeStates)
 
 export class StairOverrides {
   static FaceTypes = FaceType;

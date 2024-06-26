@@ -52,7 +52,7 @@ export class EngineSettingsData {
   };
   flow = {
     enable: true,
-    baseFlowLimit: 100,
+    baseFlowLimit: 200,
   };
   lighting = {
     doAO: true,

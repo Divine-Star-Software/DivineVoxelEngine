@@ -80,10 +80,10 @@ gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
    GLSL: () => /* glsl */`
   vFlow = 0.;
   if(VOXEL[1].y == 1.) {
-    vFlow = 1.;
+    vFlow = -1.;
   }
   if(VOXEL[1].y == 2.) {
-    vFlow = -1.;
+    vFlow = 1.;
   }
 
 
@@ -124,7 +124,7 @@ gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   rgb = getColor(rgb);
   vec4 mixLight = getLight(rgb);
   vec3 finalColor = doFog(mixLight);
-  FragColor = vec4(finalColor.rgb , .6 );`,
+  FragColor = vec4(finalColor.rgb ,.7 );`,
   },
  });
 }

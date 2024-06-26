@@ -22,6 +22,10 @@ export class SubstanceDataTool {
     SubstanceStruct.setSubstance(this.substanceTagIndex);
   }
 
+  getSubstanceStringId() {
+    return SubstancePaletteReader.id.stringFromNumber(this.substanceTagIndex);
+  }
+
   isTransparent() {
     return SubstanceStruct.instance[SubstanceTagIds.isTransparent] == 1;
   }

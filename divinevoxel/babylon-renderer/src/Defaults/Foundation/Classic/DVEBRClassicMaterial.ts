@@ -1,4 +1,4 @@
-import { Scene, Vector4 } from "@babylonjs/core";
+import { Engine, Scene, Vector4 } from "@babylonjs/core";
 import { Effect } from "@babylonjs/core/Materials/effect.js";
 import { ShaderMaterial } from "@babylonjs/core/Materials/shaderMaterial.js";
 import { Matrix, Vector2, Vector3 } from "@babylonjs/core/Maths/";
@@ -88,11 +88,13 @@ export class DVEBRClassicMaterial extends URIMaterial<
 
     this._material.fogEnabled = true;
 
-    if (data.alphaBlending) {
-      shaderMaterial.separateCullingPass = true;
-      shaderMaterial.backFaceCulling = false;
-      shaderMaterial.forceDepthWrite = true;
-      shaderMaterial.needDepthPrePass = true;
+    if (data.stencil) {
+      shaderMaterial.stencil.enabled = true;
+      shaderMaterial.stencil.func = Engine.NOTEQUAL;
+      this.scene.setRenderingAutoClearDepthStencil(0, false, false, false);
+    }
+    if (data.backFaceCulling !== undefined) {
+      shaderMaterial.backFaceCulling = data.backFaceCulling;
     }
 
     if (type) type.addToMaterial(this);

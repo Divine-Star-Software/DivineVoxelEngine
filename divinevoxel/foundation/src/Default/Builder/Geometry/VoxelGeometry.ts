@@ -88,6 +88,7 @@ export class VoxelGeometry {
 
     const worldLight = tool.getWorldLight();
     const worldAO = tool.getWorldAO();
+    const animData = tool.getAnimationData();
     const texture = tool.getTexture();
     const overlayTextures = tool.getOverlayTextures();
     const attribute = tool.getAttribute("voxelData");
@@ -104,26 +105,26 @@ export class VoxelGeometry {
 
     while (sides--) {
       if (!quad.flip) {
-        attribute[attrIndex++] = faceData
-          .setLight(worldLight.getVertex(QuadVerticies.TopRight))
-          .setAO(worldAO.getVertex(QuadVerticies.TopRight))
-          .setAnimation(0)
-          .getValue();
-        attribute[attrIndex++] = faceData
-          .setLight(worldLight.getVertex(QuadVerticies.TopLeft))
-          .setAO(worldAO.getVertex(QuadVerticies.TopLeft))
-          .setAnimation(0)
-          .getValue();
-        attribute[attrIndex++] = faceData
-          .setLight(worldLight.getVertex(QuadVerticies.BottomLeft))
-          .setAO(worldAO.getVertex(QuadVerticies.BottomLeft))
-          .setAnimation(0)
-          .getValue();
-        attribute[attrIndex++] = faceData
-          .setLight(worldLight.getVertex(QuadVerticies.BottomRight))
-          .setAO(worldAO.getVertex(QuadVerticies.BottomRight))
-          .setAnimation(0)
-          .getValue();
+        attribute[attrIndex++] = faceData.createAttribute(
+          worldLight.vertices[QuadVerticies.TopRight],
+          worldAO.vertices[QuadVerticies.TopRight],
+          animData.vertices[QuadVerticies.TopRight]
+        );
+        attribute[attrIndex++] = faceData.createAttribute(
+          worldLight.vertices[QuadVerticies.TopLeft],
+          worldAO.vertices[QuadVerticies.TopLeft],
+          animData.vertices[QuadVerticies.TopLeft]
+        );
+        attribute[attrIndex++] = faceData.createAttribute(
+          worldLight.vertices[QuadVerticies.BottomLeft],
+          worldAO.vertices[QuadVerticies.BottomLeft],
+          animData.vertices[QuadVerticies.BottomLeft]
+        );
+        attribute[attrIndex++] = faceData.createAttribute(
+          worldLight.vertices[QuadVerticies.BottomRight],
+          worldAO.vertices[QuadVerticies.BottomRight],
+          animData.vertices[QuadVerticies.BottomRight]
+        );
 
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.TopRight].x;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.TopRight].y;
@@ -159,26 +160,26 @@ export class VoxelGeometry {
         oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
         oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
       } else {
-        attribute[attrIndex++] = faceData
-          .setLight(worldLight.getVertex(QuadVerticies.TopLeft))
-          .setAO(worldAO.getVertex(QuadVerticies.TopLeft))
-          .setAnimation(0)
-          .getValue();
-        attribute[attrIndex++] = faceData
-          .setLight(worldLight.getVertex(QuadVerticies.TopRight))
-          .setAO(worldAO.getVertex(QuadVerticies.TopRight))
-          .setAnimation(0)
-          .getValue();
-        attribute[attrIndex++] = faceData
-          .setLight(worldLight.getVertex(QuadVerticies.BottomRight))
-          .setAO(worldAO.getVertex(QuadVerticies.BottomRight))
-          .setAnimation(0)
-          .getValue();
-        attribute[attrIndex++] = faceData
-          .setLight(worldLight.getVertex(QuadVerticies.BottomLeft))
-          .setAO(worldAO.getVertex(QuadVerticies.BottomLeft))
-          .setAnimation(0)
-          .getValue();
+        attribute[attrIndex++] = faceData.createAttribute(
+          worldLight.vertices[QuadVerticies.TopLeft],
+          worldAO.vertices[QuadVerticies.TopLeft],
+          animData.vertices[QuadVerticies.TopLeft]
+        );
+        attribute[attrIndex++] = faceData.createAttribute(
+          worldLight.vertices[QuadVerticies.TopRight],
+          worldAO.vertices[QuadVerticies.TopRight],
+          animData.vertices[QuadVerticies.TopRight]
+        );
+        attribute[attrIndex++] = faceData.createAttribute(
+          worldLight.vertices[QuadVerticies.BottomRight],
+          worldAO.vertices[QuadVerticies.BottomRight],
+          animData.vertices[QuadVerticies.BottomRight]
+        );
+        attribute[attrIndex++] = faceData.createAttribute(
+          worldLight.vertices[QuadVerticies.BottomLeft],
+          worldAO.vertices[QuadVerticies.BottomLeft],
+          animData.vertices[QuadVerticies.BottomLeft]
+        );
 
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.TopLeft].x;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.TopLeft].y;
@@ -214,7 +215,6 @@ export class VoxelGeometry {
         oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
         oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
       }
-
 
       for (let i = 0; i < 4; i++) {
         colors[colorIndex++] = 0;

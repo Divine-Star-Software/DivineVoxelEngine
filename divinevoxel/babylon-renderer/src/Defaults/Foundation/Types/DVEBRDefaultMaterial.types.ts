@@ -15,6 +15,7 @@ export type NodeMaterialOptions = {
   mipMapBias?: number;
   hasEffects?: boolean;
   backFaceCulling?: boolean;
+  stencil?: boolean;
 };
 
 export type NodeMeshData = {

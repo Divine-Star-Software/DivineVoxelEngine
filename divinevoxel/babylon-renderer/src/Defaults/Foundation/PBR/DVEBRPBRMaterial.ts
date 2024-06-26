@@ -1,4 +1,4 @@
-import { Material, Scene } from "@babylonjs/core";
+import { Engine, Material, Scene } from "@babylonjs/core";
 
 import { PBRMaterial } from "@babylonjs/core/Materials/PBR/pbrMaterial";
 import { Vector3, Vector4 } from "@babylonjs/core/Maths/";
@@ -93,7 +93,7 @@ export class DVEBRPBRMaterial extends URIMaterial<
           );
         }
       }
-      
+
       if (!synced) {
         DefaultMaterialManager.sync();
         synced = true;
@@ -120,32 +120,36 @@ export class DVEBRPBRMaterial extends URIMaterial<
     if (this.data.alphaTesting) {
       material.alphaMode = Material.MATERIAL_ALPHATEST;
     }
+  /*   if (this.data.stencil) {
+      material.stencil.enabled = true;
+      material.stencil.func = Engine.NOTEQUAL;
+      this.scene.setRenderingAutoClearDepthStencil(0, false, false, false);
+    } */
+    if (this.data.backFaceCulling !== undefined) {
+      material.backFaceCulling = this.data.backFaceCulling;
+    }
     if (this.id.includes("liquid")) {
-
       material.roughness = 0.1;
-      //  material.refractionTexture = this.scene.environmentTexture;
       material.reflectionColor.set(0.1, 0.1, 0.1);
       material.metallic = 1;
-      // material.reflectivityColor.set(1,1,1);
-      material.reflectivityColor.set(1, 1, 1);
-      //  material.linkRefractionWithTransparency = true;
+      material.reflectivityColor.set(0.8, 0.8, 0.8);
+    //  material.wireframe = true;
       material.alphaMode = Material.MATERIAL_ALPHABLEND;
-      material.backFaceCulling = false;
-      //  material.refractionTexture = this.scene.environmentTexture;
-      material.alpha = 0.9;
+
+      material.alpha = 0.7;
     } else {
       material.metallic = 0.0;
       material.roughness = 0;
       material.reflectionColor.set(0, 0, 0);
     }
-  material.emissiveColor
+    material.emissiveColor;
     // material.sheen.isEnabled = false;
     // material.sheen.intensity = 0;
     //  material.emissiveColor.set(0,0,0);
     // material.ambientColor.set(0,0,0);
     material.anisotropy.dispose();
 
-  //  material.wireframe = true;
+    //  material.wireframe = true;
     //  material.refraction.set(0.1,0.1,0.1);
     return this._material;
   }
@@ -163,8 +167,7 @@ export class DVEBRPBRMaterial extends URIMaterial<
   }
 
   setNumber(uniform: string, value: number): void {
-    if (!this.plugin.uniformBuffer)
-      return// console.warn(`Material is not ready ${uniform} ${this.id}`);
+    if (!this.plugin.uniformBuffer) return; // console.warn(`Material is not ready ${uniform} ${this.id}`);
     this.plugin.uniformBuffer.updateFloat(uniform, value);
   }
   setNumberArray(uniform: string, value: ArrayLike<number>): void {

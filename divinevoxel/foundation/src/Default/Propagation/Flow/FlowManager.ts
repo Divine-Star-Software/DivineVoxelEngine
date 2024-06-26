@@ -34,6 +34,7 @@ export const FlowManager = {
    .setLevelState(levelState)
    .setLight(this.getAbsorbLight(x, y, z))
    .commit();
+
   SunUpdate(tasks);
  },
 

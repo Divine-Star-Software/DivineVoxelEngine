@@ -23,6 +23,8 @@ const uvs: QuadUVData = [
   [0, 0],
   [1, 0],
 ];
+
+
 const Quads: Record<DirectionNames, Quad> = {
   top: Quad.Create(
     [

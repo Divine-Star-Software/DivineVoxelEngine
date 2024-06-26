@@ -32,7 +32,7 @@ export class WorldPainter {
     this.dataTool.setShapeState(data.shapeState ? data.shapeState : 0);
 
     if (this.dataTool.getSubstnaceData().isLiquid()) {
-      this.dataTool.setLevel(15);
+      this.dataTool.setLevel(7);
     }
 
     if (data.secondaryVoxelId && data.secondaryVoxelId != "dve_air") {

@@ -100,8 +100,5 @@ export class VoxelDataGenerator {
 }
 
 VoxelDataGenerator.overrides.set(VoxelTagIDs.substance, (tags, value, id) => {
-  tags.setProperty(
-    id,
-    SubstanceDataGenerator.palette.get().findIndex((_) => _ == value)
-  );
+  tags.setProperty(id, SubstanceDataGenerator.palette._map[value as string]);
 });

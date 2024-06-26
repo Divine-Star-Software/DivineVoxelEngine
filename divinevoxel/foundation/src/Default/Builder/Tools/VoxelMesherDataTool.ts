@@ -1,7 +1,4 @@
 import type { FaceDataOverride } from "../Types/Override.types";
-import type { DirectionNames } from "@divinevoxel/core/Types/Util.types.js";
-import type { CustomVertexData } from "../Types/Geometry.types.js";
-
 //objects
 import { LightGradient } from "../Calc/Light/LightGradient.js";
 import { FlowGradient } from "../Calc/Flow/FlowGradient.js";
@@ -13,7 +10,6 @@ import { BuilderDataTool } from "./BuilderDataTool.js";
 import { MesherDataTool } from "@amodx/meshing/Tools/MesherDataTools";
 
 //data
-import { FaceNormals } from "@divinevoxel/core/Math/Constants/Faces.js";
 import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
 import { VoxelTemplateDataTool } from "./VoxelTemplateDataTool.js";
 import { BinaryNumberTypes } from "@amodx/binary";
@@ -53,6 +49,7 @@ export class VoxelMesherDataTool extends MesherDataTool {
       [
         ["light", new QuadScalarVertexData()],
         ["ao", new QuadScalarVertexData()],
+        ["animation", new QuadScalarVertexData()],
         ["level", new QuadScalarVertexData()],
         ["overlay-uvs", new QuadScalarVertexData()],
       ] as const
@@ -80,6 +77,11 @@ export class VoxelMesherDataTool extends MesherDataTool {
       return;
     }
     FlowGradient.calculate(this);
+  }
+
+  
+  getAnimationData() {
+    return this.quadVertexData.get("animation")!;
   }
 
   getWorldLight() {

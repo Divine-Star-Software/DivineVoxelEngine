@@ -69,7 +69,9 @@ export const TextureBuilder = {
         scene: DivineVoxelEngineRender.instance.renderer.scene,
         layers: images.size + 2,
         format: URITextureFormat.Rgba,
-        samplingMode: URITextureSamplingMode.NearestNearestMipLinear,
+        samplingMode: URITextureSamplingMode.NearestNearestMipNearest,
+        //@ts-ignore
+        images
       });
 
     // texture.anisotropicFilteringLevel = 16;
@@ -132,6 +134,10 @@ export const TextureBuilder = {
 
     return texture;
   },
+  customMipMaps() {
+
+  },
+
   async _createMipMap(
     level: number,
     images: Map<string, Uint8ClampedArray | false>,

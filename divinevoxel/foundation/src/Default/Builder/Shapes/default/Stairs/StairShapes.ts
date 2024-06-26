@@ -850,5 +850,3 @@ export const addStairQuads = (face: VoxelFaces) => {
   }
 };
 
-console.error("made stairs");
-console.log(StairShapeStates);

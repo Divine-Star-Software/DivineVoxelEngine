@@ -82,7 +82,6 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
   tasks.setBuldMode("async").addNeighborsToRebuildQueue(x, y, z);
   brushTool.setLocation(data[0]).setRaw(raw);
   nDataTool.loadInRaw(raw);
-  const substanceData = nDataTool.getSubstnaceData();
 
   const isOpaque = nDataTool.isOpaque();
   let doRGB = ES.doRGBPropagation();
@@ -119,6 +118,9 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
   }
 
   if (ES.doFlow()) {
+    nDataTool.loadInRaw(raw);
+
+    const substanceData = nDataTool.getSubstnaceData();
     if (substanceData.isLiquid()) {
       DVEFConstrucotrCore.instance.propagation.flowUpdate(tasks);
     }

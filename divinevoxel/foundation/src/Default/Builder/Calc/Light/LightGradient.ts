@@ -29,12 +29,20 @@ const shouldSunFlip = (face: VoxelFaces) => {
   const topLeft = LD.getS(LightValue.vertices[QuadVerticies.TopLeft]);
   const bottomLeft = LD.getS(LightValue.vertices[QuadVerticies.BottomLeft]);
   const bottomRight = LD.getS(LightValue.vertices[QuadVerticies.BottomRight]);
-  if(isAllEqual(topRight,topLeft,bottomLeft,bottomRight)) return false;
-  const t1 = isMax(bottomLeft, topLeft, bottomRight);
-  const t2 = isMax(topRight, topLeft, bottomRight);
-  if (t1 && !t2) return false;
-  if (t2 && !t1) return false;
-  return true;
+  if (isAllEqual(topRight, topLeft, bottomLeft, bottomRight)) return false;
+  const t1 =
+    bottomLeft > topLeft && bottomLeft > topRight && bottomLeft > bottomRight;
+  const t2 =
+    topRight > topLeft && topRight > bottomLeft && topRight > bottomRight;
+  const t3 =
+    topLeft < bottomLeft && topLeft < topRight && topLeft < bottomRight;
+  const t4 =
+    bottomRight < topLeft && bottomRight < topRight && bottomRight < topLeft;
+  if (t1 && !t2) return true;
+  if (t2 && !t1) return true;
+  if (t3) return true;
+  if (t4) return true;
+  return false;
 };
 
 const shouldRGBFlip = (face: VoxelFaces) => {
@@ -42,12 +50,20 @@ const shouldRGBFlip = (face: VoxelFaces) => {
   const topLeft = LD.getRGB(LightValue.vertices[QuadVerticies.TopLeft]);
   const bottomLeft = LD.getRGB(LightValue.vertices[QuadVerticies.BottomLeft]);
   const bottomRight = LD.getRGB(LightValue.vertices[QuadVerticies.BottomRight]);
-  if(isAllEqual(topRight,topLeft,bottomLeft,bottomRight)) return false;
-  const t1 = isMax(bottomLeft, topLeft, bottomRight);
-  const t2 = isMax(topRight, topLeft, bottomRight);
-  if (t1 && !t2) return false;
-  if (t2 && !t1) return false;
-  return true;
+  if (isAllEqual(topRight, topLeft, bottomLeft, bottomRight)) return false;
+  const t1 =
+    bottomLeft > topLeft && bottomLeft > topRight && bottomLeft > bottomRight;
+  const t2 =
+    topRight > topLeft && topRight > bottomLeft && topRight > bottomRight;
+  const t3 =
+    topLeft < bottomLeft && topLeft < topRight && topLeft < bottomRight;
+  const t4 =
+    bottomRight < topLeft && bottomRight < topRight && bottomRight < topLeft;
+  if (t1 && !t2) return true;
+  if (t2 && !t1) return true;
+  if (t3) return true;
+  if (t4) return true;
+  return false;
 };
 
 const shouldAOFlip = (face: VoxelFaces) => {
@@ -69,20 +85,17 @@ const shouldAOFlip = (face: VoxelFaces) => {
   const bottomRight = AOValue.vertices[QuadVerticies.BottomRight];
   const bottomLeft = AOValue.vertices[QuadVerticies.BottomLeft];
 
-  if(isAllEqual(topRight,topLeft,bottomLeft,bottomRight)) return false;
+  if (isAllEqual(topRight, topLeft, bottomLeft, bottomRight)) return false;
   const t1 = isMax(topRight, topLeft, bottomRight);
   const t2 = isMax(bottomLeft, topLeft, bottomRight);
-  if(t1||t2) return true;
+  if (t1 || t2) return true;
   return false;
 };
 
 const flipCheck = (face: VoxelFaces) => {
-  const rgbFlip = shouldRGBFlip(face);
-  const sunFlip = shouldSunFlip(face);
-  const aoFlip = shouldAOFlip(face);
-  if(rgbFlip) return true;
-  if(sunFlip) return true;
-  return aoFlip;
+  if (shouldRGBFlip(face)) return true;
+  if (shouldSunFlip(face)) return true;
+  return shouldAOFlip(face);
 };
 /**
  * 
@@ -93,31 +106,7 @@ const flipCheck = (face: VoxelFaces) => {
 | /     |
 3       4
 
-normal
-1      4
-| \    |
-|  \   |
-|   \  |
-|    \ |
-2      3
-1 Top-left corner
-2 Bottom-left corner
-3 Bottom-right corner
-4 Top-right corner
-And for the flipped case, you've rearranged them to:
 
-flipped
-
-2       1
-|    /  |
-|   /   |
-|  /    |
-| /     |
-3       4
-4 Top-right corner
-1 Top-left corner
-2 Bottom-left corner
-3 Bottom-right corner
  */
 const checkSets: Record<VoxelFaces, Record<QuadVerticies, number[]>> = {
   [VoxelFaces.Top]: {

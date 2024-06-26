@@ -14,9 +14,10 @@ import {
   DVEBRTextureSamplingModeMap,
 } from "../Constants/DVEBRTextureConstants";
 import { DVEBRScene } from "../Scene/DVEBRScene";
-import type { Texture } from "@babylonjs/core";
+import type { Engine, Texture } from "@babylonjs/core";
+import { TextureBuilder } from "@divinevoxel/foundation/Textures/TextureBuilder";
 
-export class DVEBRTexture extends URITexture<DVEBRScene,Texture> {
+export class DVEBRTexture extends URITexture<DVEBRScene, Texture> {
   _create(data: URITextureData<DVEBRScene>) {
     if (data.type == URITextureTypes.Texture2D) {
     }
@@ -41,7 +42,9 @@ export class DVEBRTexture extends URITexture<DVEBRScene,Texture> {
           DVEBRTextureFormatMap[textureData.format]) ||
           DVEBRTextureFormatMap[URITextureFormat.Rgba],
         textureData.scene._scene,
+        //gen mip maps
         true,
+        //invert y
         false,
         (textureData.samplingMode !== undefined &&
           DVEBRTextureSamplingModeMap[textureData.samplingMode]) ||
@@ -49,6 +52,71 @@ export class DVEBRTexture extends URITexture<DVEBRScene,Texture> {
             URITextureSamplingMode.NearestLinearMipLinear
           ]
       );
+
+      (async () => {
+        const engine = data.scene._scene.getEngine() as Engine;
+
+        const { width, height, layers } = textureData;
+        texture._noMipmap = false;
+        const iTexture = texture._texture!;
+        iTexture.generateMipMaps = true;
+        iTexture.useMipMaps = true;
+        engine._bindTextureDirectly(engine._gl.TEXTURE_2D_ARRAY, iTexture);
+
+        let w = width,
+          h = height,
+          mipMapLevel = 0;
+        while (w >= 1 && h >= 1) {
+          if (mipMapLevel < 3) {
+            TextureBuilder.context!.imageSmoothingEnabled = false;
+          } else {
+            TextureBuilder.context!.imageSmoothingEnabled = true;
+          }
+          const mip = await TextureBuilder._createMipMap(
+            mipMapLevel,
+            (data as any).images,
+            w,
+            h
+          );
+
+          const gl = engine._gl;
+          const textureType = engine._getWebGLTextureType(iTexture.type);
+          const format = engine._getInternalFormat(iTexture.format);
+          const internalFormat = engine._getRGBABufferInternalSizedFormat(
+            iTexture.type,
+            iTexture.format,
+            iTexture._useSRGBBuffer
+          );
+
+          engine._unpackFlipY(texture.invertY);
+
+          console.log(w, h);
+          let target = gl.TEXTURE_2D_ARRAY;
+
+          gl.texImage3D(
+            target,
+            mipMapLevel,
+            internalFormat,
+            w,
+            h,
+            layers + 2,
+            0,
+            format,
+            textureType,
+            mip
+          );
+          w /= 2;
+          h /= 2;
+          mipMapLevel++;
+        }
+
+        iTexture.width = width;
+        iTexture.height = height;
+        iTexture.isReady = true;
+        //  iTexture.samplingMode = Texture.NEAREST_NEAREST_MIPLINEAR;
+        engine._bindTextureDirectly(engine._gl.TEXTURE_2D_ARRAY, null);
+        texture._texture = iTexture;
+      })();
 
       this._texture = texture;
       return texture;
@@ -58,6 +126,6 @@ export class DVEBRTexture extends URITexture<DVEBRScene,Texture> {
 
   dispose(): void {
     this._texture?.dispose();
-    this._texture =  null;
+    this._texture = null;
   }
 }

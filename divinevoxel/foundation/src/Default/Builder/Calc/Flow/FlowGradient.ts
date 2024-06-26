@@ -1,27 +1,27 @@
 import type { VoxelMesherDataTool } from "../../Tools/VoxelMesherDataTool";
 import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
 import { QuadVertexes } from "../../Types";
+import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 
 const checkSets = {
-  1: [
-    -1, 0, 0, -1,
+  [QuadVerticies.TopRight]: [
+    1, 0, 0, 1,
     //corner
-    -1, -1,
+    1, 1,
   ],
-
-  2: [
+  [QuadVerticies.TopLeft]: [
     -1, 0, 0, 1,
     //corner
     -1, 1,
   ],
 
-  3: [
-    1, 0, 0, 1,
+  [QuadVerticies.BottomLeft]: [
+    -1, 0, 0, -1,
     //corner
-    1, 1,
+    -1, -1,
   ],
 
-  4: [
+  [QuadVerticies.BottomRight]: [
     1, 0, 0, -1,
     //corner
     1, -1,
@@ -31,95 +31,55 @@ const checkSets = {
 const flowStates = new QuadScalarVertexData();
 
 export const FlowGradient = {
-  getLevel(tool: VoxelMesherDataTool) {
+  getLevel(tool: VoxelMesherDataTool, x: number, y: number, z: number) {
+    if (!tool.nVoxel.loadInAt(x, y, z)) return -1;
     if (!tool.nVoxel.isRenderable()) return -1;
 
     if (!tool.voxel.isSameVoxel(tool.nVoxel)) return -1;
     const level = tool.nVoxel.getLevel();
-
+    const levelState = tool.nVoxel.getLevelState();
+    if(levelState > 0) return 7;
     return level;
   },
   calculate(tool: VoxelMesherDataTool) {
     const cl = tool.voxel.getLevel();
     const cs = tool.voxel.getLevelState();
 
-    if (cl == 15 && cs == 1) {
-      if (tool.voxel.isSameVoxel(tool.voxel)) {
-        flowStates.setAll(15);
-        return tool.getWorldLevel().setFromQuadData(flowStates);
-      }
+    let log = false;
+    if (tool.voxel.x == -1 && tool.voxel.z == -1) {
+      log = true;
     }
 
     for (let vertex = <QuadVertexes>1; vertex <= 4; vertex++) {
       const checkSet = checkSets[vertex];
 
-      if (cl == 15 && cs != 1) {
-        flowStates.vertices[vertex] = 15;
-
-        continue;
-      }
-
       let finalLevel = cl;
 
-      let voxelCount = 0;
-      let zeroCount = 0;
-      let totalZero = true;
-      let ovveride = false;
-      let totalLevel = 0;
-      for (let iy = 0; iy < 2; iy++) {
-        for (let i = 0; i < 6; i += 2) {
-          const cx = checkSet[i] + tool.voxel.x;
-          const cz = checkSet[i + 1] + tool.voxel.z;
+      let zerCount = 0;
 
-          const loadedIn = tool.nVoxel.loadInAt(cx, tool.voxel.y + iy, cz);
-          if (!loadedIn) continue;
-          const level = this.getLevel(tool);
-          const hasVoxel = tool.nVoxel.isRenderable();
-          if (hasVoxel && !tool.nVoxel.getSubstnaceData().isLiquid()) {
-            voxelCount++;
-          }
-          if (iy == 1) {
-            if (level > 0) {
-              finalLevel = 15;
-              totalZero = false;
-              ovveride = true;
-              totalLevel += level;
-            }
-          }
-          if (level <= 0 && !hasVoxel) {
-            if (iy == 0) {
-              zeroCount++;
-            }
-            continue;
-          }
+      for (let i = 0; i < 6; i += 2) {
+        const cx = checkSet[i] + tool.voxel.x;
+        const cz = checkSet[i + 1] + tool.voxel.z;
 
-          if (level == 15) {
-            finalLevel = 15;
-            totalZero = false;
-            zeroCount = 0;
-            break;
-          }
+        const aboveLevel = this.getLevel(tool, cx, tool.voxel.y + 1, cz);
 
-          if (level > 0 && !hasVoxel) {
-            totalZero = false;
-          }
-          if (finalLevel < level) {
-            finalLevel += level - finalLevel;
-          }
+        if (aboveLevel > 0) {
+          finalLevel = 9;
+          break;
+        }
+        const level = this.getLevel(tool, cx, tool.voxel.y, cz);
+
+        if (level == -1) {
+          zerCount++;
+        }
+
+        if (finalLevel < level) {
+          finalLevel = level;
         }
       }
-
-      if (ovveride && totalLevel == 1 && voxelCount == 3) {
-        finalLevel = cl;
+      if (cl !== 7 && zerCount >= 1 && finalLevel < 7 && finalLevel > 3) {
+        finalLevel = 3;
       }
-      if (zeroCount >= 1 && cs == 0 && !ovveride) {
-        finalLevel = 0;
-      }
-      if (totalZero && cs == 1 && cl == 15) {
-        finalLevel = 7;
-      }
-      if (finalLevel > 15) finalLevel = 15;
-      if (finalLevel < 1) finalLevel = 1;
 
       flowStates.vertices[vertex] = finalLevel;
     }

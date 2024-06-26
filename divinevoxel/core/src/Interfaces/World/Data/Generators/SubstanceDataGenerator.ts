@@ -34,6 +34,9 @@ export const SubstanceDataGenerator = {
     }
     SubstanceStruct.init(tags.initData);
     SubstanceStruct.instance.setBuffer(buffer);
+
+    console.error("DONE MAKING PALEETE");
+    console.log(this.palette)
   },
   palette: {
     _count: 0,
