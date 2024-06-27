@@ -263,6 +263,13 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
     shader.addUniform([...this.voxelSharedUniforms], "shared");
     shader.addVarying([
       {
+        id: "vNormal",
+        type: "vec3",
+        body: {
+          GLSL: () => "vNormal = normal;\n",
+        },
+      },
+      {
         id: "cameraPOS",
         type: "vec3",
         body: {
@@ -310,12 +317,24 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
     shader.setCodeBody("vertex", `@standard_position`);
     shader.setCodeBody(
       "frag",
-      /* glsl */ `vec4 rgb = getMainColor();
+      /* glsl */ `
+      
+/*
+//view normals 
+ vec3 color = (vNormal + 1.0) * 0.5;
+FragColor = vec4(color, 1.0);
+*/
+ 
+      vec4 rgb = getMainColor();
    if (rgb.a < 0.5) { 
-    discard;
+  discard;
   }
-   vec3 finalColor = doFog(rgb);
-   FragColor = vec4(finalColor.rgb,rgb.a);`
+  vec3 finalColor = doFog(rgb);
+  FragColor = vec4(finalColor.rgb,rgb.a);
+
+
+ `
+
     );
 
     return shader;

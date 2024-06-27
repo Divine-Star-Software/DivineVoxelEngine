@@ -33,7 +33,6 @@ class VoxelBuilderBase extends Mesher {
       .loadInRaw(rawVoxelData)
       .setMode(BuilderDataTool.Modes.VOXEL_DATA);
     ShapeTool.setMesher(mesher);
-    ShapeTool.builder.quad.clear().setPosition(0, 0, 0);
     constructor.process(mesher);
     mesher.resetVars();
 

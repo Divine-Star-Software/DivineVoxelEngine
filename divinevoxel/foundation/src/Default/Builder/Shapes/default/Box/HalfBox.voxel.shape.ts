@@ -74,92 +74,14 @@ class HalfBoxVoxelShapeClass extends VoxelShapeBase {
     );
   }
 
-  _createFace() {
-    animationState.setAll(
-      ShapeTool.data.voxel.getSubstanceStringId() == "#dve_flora" ? 3 : 0
-    );
-    ShapeTool.builder.quad
-
-      .setFlipped(ShapeTool.data.isFaceFlipped())
-      .AO.add(ShapeTool.data.getWorldAO())
-      .light.add(ShapeTool.data.getWorldLight())
-      .textures.add(ShapeTool.data.getTexture())
-      .overlayTexture.add(ShapeTool.data.getOverlayTextures())
-      .animationState.add(animationState)
-      .create()
-      .clear();
-  }
+  _createFace() {}
   add = {
-    top() {
-      ShapeTool.builder.quad
-        .setDirection("top")
-        .setDimensions(1, 1)
-        .updatePosition(
-          0.5,
-          ShapeTool.data.voxel.getState() == 0 ? 0.5 : 1,
-          0.5
-        );
-      HalfBoxVoxelShape._createFace();
-    },
-    bottom() {
-      ShapeTool.builder.quad
-        .setDirection("bottom")
-        .setDimensions(1, 1)
-        .updatePosition(
-          0.5,
-          ShapeTool.data.voxel.getState() == 0 ? 0 : 0.5,
-          0.5
-        );
-      HalfBoxVoxelShape._createFace();
-    },
-    north() {
-      ShapeTool.builder.quad
-        .setDirection("north")
-        .setDimensions(1, 0.5)
-        .textures.setHeight(0.5, 1)
-        .quad.updatePosition(
-          0.5,
-          ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75,
-          1
-        );
-      HalfBoxVoxelShape._createFace();
-    },
-    south() {
-      ShapeTool.builder.quad
-        .setDirection("south")
-        .setDimensions(1, 0.5)
-        .textures.setHeight(0.5, 1)
-        .quad.updatePosition(
-          0.5,
-          ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75,
-          0
-        );
-      HalfBoxVoxelShape._createFace();
-    },
-    east() {
-      ShapeTool.builder.quad
-        .setDirection("east")
-        .setDimensions(1, 0.5)
-        .textures.setHeight(0.5, 1)
-        .quad.updatePosition(
-          1,
-          ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75,
-          0.5
-        );
-      HalfBoxVoxelShape._createFace();
-    },
-    west() {
-      ShapeTool.builder.quad
-        .setDirection("west")
-        .setDimensions(1, 0.5)
-        .textures.setHeight(0.5, 1)
-        .quad.updatePosition(
-          0,
-          ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75,
-          0.5
-        );
-      HalfBoxVoxelShape._createFace();
-    },
+    top() {},
+    bottom() {},
+    north() {},
+    south() {},
+    east() {},
+    west() {},
   };
 }
 

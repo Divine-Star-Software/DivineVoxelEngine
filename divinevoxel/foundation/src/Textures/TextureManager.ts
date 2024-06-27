@@ -111,7 +111,6 @@ export class TextureManager {
   static getRaw([type, id, segment]: ConstructorTextureData) {}
 
   static async createRawDataMap() {
-    console.log("Start");
     const map: Map<string, Uint8ClampedArray> = new Map();
     for (const [typeKey, type] of this.textureTypes) {
       for (const [segKey, segment] of type.segments) {
@@ -124,18 +123,29 @@ export class TextureManager {
               const rawData = await TextureBuilder.loadImage(
                 data.rawData
                   ? <Uint8ClampedArray>data.rawData[i - 1]
-                  : type._getPath(data, `${key}-${i}`, type.extension)
+                  : type._getPath(data, `${key}-${i}`, type.extension),
+                TextureBuilder._textureSize,
+                TextureBuilder._textureSize
+                //  undefined,
+                //  false
               );
 
               data.rawData = rawData;
               map.set(`${key}-${i}`, rawData);
             }
           } else {
+            if (data.rawData instanceof Uint8ClampedArray) {
+              map.set(key, data.rawData);
+              continue;
+            }
             const rawData = await TextureBuilder.loadImage(
-              data.rawData
-                ? <Uint8ClampedArray>data.rawData
-                : type._getPath(data, "default", type.extension)
+              type._getPath(data, "default", type.extension),
+              TextureBuilder._textureSize,
+              TextureBuilder._textureSize
+              //  undefined,
+              //  false
             );
+
             data.rawData = rawData;
 
             map.set(key, rawData);
@@ -150,7 +160,11 @@ export class TextureManager {
                   const rawData = await TextureBuilder.loadImage(
                     data.rawData
                       ? <Uint8ClampedArray>data.rawData[i - 1]
-                      : type._getPath(data, `${key}-${i}`, type.extension)
+                      : type._getPath(data, `${key}-${i}`, type.extension),
+                    TextureBuilder._textureSize,
+                    TextureBuilder._textureSize,
+                    undefined,
+                    false
                   );
                   data.rawData = rawData;
                   map.set(`${key}-${i}`, rawData);
@@ -159,7 +173,11 @@ export class TextureManager {
                 const rawData = await TextureBuilder.loadImage(
                   data.rawData
                     ? <Uint8ClampedArray>data.rawData
-                    : type._getPath(data, varId, type.extension)
+                    : type._getPath(data, varId, type.extension),
+                  TextureBuilder._textureSize,
+                  TextureBuilder._textureSize,
+                  undefined,
+                  false
                 );
                 data.rawData = rawData;
 
@@ -170,7 +188,6 @@ export class TextureManager {
         }
       }
     }
-    console.log("end");
 
     return map;
   }

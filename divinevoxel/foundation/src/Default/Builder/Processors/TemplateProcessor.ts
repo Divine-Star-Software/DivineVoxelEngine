@@ -40,9 +40,7 @@ export const TemplateProcessor = {
     mesher.voxel.loadInAtLocation(this.nLocation);
     mesher.nVoxel.loadInAtLocation(this.nLocation);
     ShapeTool.setMesher(mesher);
-    ShapeTool.builder.quad
-      .clear()
-      .setPosition(voxelPOS.x, voxelPOS.y, voxelPOS.z);
+
     constructor.process(mesher);
     mesher.resetVars();
     mesher.template.setActive(false);
@@ -62,7 +60,7 @@ export const TemplateProcessor = {
     let ix = six,
       iy = siy,
       iz = siz;
-    
+
     const curosr = new Int32Array(3);
 
     for (let x = cx; x < cx + 16; x++) {
@@ -76,14 +74,14 @@ export const TemplateProcessor = {
           curosr[0] = ix;
           curosr[1] = iy;
           curosr[2] = iz;
-       //   this._process(templateIndex.getIndex(curosr) * 17, template);
+          //   this._process(templateIndex.getIndex(curosr) * 17, template);
           iy++;
         }
         iz++;
       }
       ix++;
     }
-    const chunks = <SetChunkMeshTask>[location, [],0];
+    const chunks = <SetChunkMeshTask>[location, [], 0];
     const trasnfers: any[] = [];
     for (const [substance, mesher] of RenderedSubstances.meshers._map) {
       if (mesher.getAttribute("position").length == 0) {

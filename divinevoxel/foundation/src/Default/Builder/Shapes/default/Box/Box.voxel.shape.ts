@@ -9,7 +9,7 @@ import {
   VoxelFaces,
 } from "@divinevoxel/core/Math/index.js";
 import { VoxelGeometry } from "../../../Geometry/VoxelGeometry.js";
-import { QuadUVData } from "../../../Geometry/Geometry.types.js";
+import { QuadUVData } from "@amodx/meshing/Geometry.types.js";
 import { VoxelShapeBase } from "../../VoxelShapeBase.js";
 import { VoxelShapeManager } from "../../VoxelShapeManager.js";
 import { Quad } from "@amodx/meshing/Classes/Quad.js";

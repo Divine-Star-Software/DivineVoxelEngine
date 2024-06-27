@@ -1,5 +1,4 @@
 //types
-import { TextureRotations } from "../../../Types/Geometry.types.js";
 import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 import { ShapeTool } from "../../ShapeTool.js";
 import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
@@ -213,7 +212,6 @@ class LiquidVoxelShapeClass extends VoxelShapeBase {
   }
   start() {
     topFaceExposed = false;
-    ShapeTool.builder.quad.setDimensions(1, 1).textures.setRoation(0);
     flowAnimationState = 0;
     vertexLevel.setAll(15);
     vertexValue.setAll(0);

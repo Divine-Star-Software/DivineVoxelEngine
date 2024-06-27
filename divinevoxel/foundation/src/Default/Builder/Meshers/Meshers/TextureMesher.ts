@@ -1,200 +1,256 @@
 import { DirectionNames } from "@divinevoxel/core/Types";
-import { MeshBuilderTool } from "../../Tools/MeshBuilderTool.js";
 import { MesherDataTool } from "@amodx/meshing/Tools/MesherDataTools.js";
 import { Mesher } from "../Classes/Mesher.js";
 import { BuildNodeMesh, SetNodeMesh } from "../../Tasks/BuidlerTasks.types.js";
 import { BinaryNumberTypes } from "@amodx/binary";
+import { Quad } from "@amodx/meshing/Classes/Quad.js";
+import { QuadUVData, QuadVerticies } from "@amodx/meshing/Geometry.types.js";
+import { GeometryBuilder } from "@amodx/meshing";
+import { Flat2DIndex, Vec2Array, Vector3Like } from "@amodx/math";
 
-type FaceData = {
-  xStart: number;
-  xEnd: number;
-  yStart: number;
-  yEnd: number;
-  type: Faces;
+const Quads = {
+  north: Quad.Create(
+    [
+      [0, 0, 0],
+      [1, 1, 0],
+    ],
+    Quad.FullUVs as any,
+    false,
+    1
+  ),
+  south: Quad.Create(
+    [
+      [0, 0, 0],
+      [1, 1, 0],
+    ],
+    Quad.FullUVs as any,
+    false,
+    0
+  ),
 };
 
-type Faces = "west" | "east" | "top" | "bottom";
-const POSFunction: Record<Faces, (face: FaceData) => [number, number, number]> =
-  {
-    top: (face) => {
-      const yStart = Math.abs(face.yEnd - (TextureProcessor.height - 1));
-      let y = (yStart + 1) / TextureProcessor.height;
-
-      let x =
-        (face.xStart + (face.xEnd - face.xStart + 1) / 2) /
-        TextureProcessor.width;
-      return [x, y, 0];
-    },
-    bottom: (face) => {
-      const yStart = Math.abs(face.yEnd - (TextureProcessor.height - 1));
-      let y = yStart / TextureProcessor.height;
-
-      let x =
-        (face.xStart + (face.xEnd - face.xStart + 1) / 2) /
-        TextureProcessor.width;
-      return [x, y, 0];
-    },
-    east: (face) => {
-      const yStart = Math.abs(face.yEnd - (TextureProcessor.height - 1));
-
-      let y =
-        (yStart + (face.yEnd - face.yStart + 1) / 2) / TextureProcessor.height;
-
-      let x = (face.xStart + 1) / TextureProcessor.width;
-      return [x, y, 0];
-    },
-    west: (face) => {
-      const yStart = Math.abs(face.yEnd - (TextureProcessor.height - 1));
-
-      let y =
-        (yStart + (face.yEnd - face.yStart + 1) / 2) / TextureProcessor.height;
-
-      let x = face.xEnd / TextureProcessor.width;
-      return [x, y, 0];
-    },
-  };
-
-const DIMFunction: Record<Faces, (face: FaceData) => [number, number]> = {
-  top: (face) => {
-    const width = (face.xEnd + 1 - face.xStart) / TextureProcessor.width;
-    return [width, TextureProcessor.depth];
-  },
-  bottom: (face) => {
-    const width = (face.xEnd + 1 - face.xStart) / TextureProcessor.width;
-    return [width, TextureProcessor.depth];
-  },
-  east: (face) => {
-    const height = (face.yEnd - face.yStart + 1) / TextureProcessor.height;
-    return [TextureProcessor.depth, height];
-  },
-  west: (face) => {
-    const height = (face.yEnd - face.yStart + 1) / TextureProcessor.height;
-    return [TextureProcessor.depth, height];
-  },
-};
-
-const mesher = new MeshBuilderTool();
 const mesherData = new MesherDataTool();
 mesherData.attributes.set("cuv3", [[], 3, BinaryNumberTypes.Float32]);
 mesherData.vars.set("texture", 0);
-mesher.setMesherTool(mesherData);
+
 const TextureProcessor = {
-  visitedMap: <Record<Faces, Record<string, boolean>>>{
-    top: {},
-    bottom: {},
-    east: {},
-    west: {},
-  },
-
-  _resetVisitedMap() {
-    this.visitedMap = {
-      top: {},
-      bottom: {},
-      east: {},
-      west: {},
-    };
-  },
-
-  faceMap: <Record<DirectionNames, number>>{
-    top: 0,
-    bottom: 1,
-    east: 2,
-    west: 3,
-    south: 4,
-    north: 5,
-  },
-
   height: 16,
   width: 16,
   depth: 1 / 16,
 
-  getPosition: POSFunction,
-  getDimensions: DIMFunction,
-
-  getTruePosition(face: FaceData) {
-    return {
-      xStart: face.xStart / (this.width - 1),
-      xEnd: face.xEnd / (this.width - 1),
-      yStart: Math.abs(face.yEnd - (this.height - 1)) / (this.height - 1),
-      yEnd: Math.abs(face.yStart - (this.height - 1)) / (this.height - 1),
-    };
-  },
-
   processTexture(buildTask: BuildNodeMesh): [SetNodeMesh, ArrayBuffer[]] {
     const [location, type, data] = buildTask;
-    const textureId = data.textureId;
+    const textureId: number = data.textureId;
     const textureData = data.textureData;
     mesherData.setVar("texture", textureId);
-
-    const processed: number[][] = [];
 
     this.width = Math.sqrt(textureData.length / 4);
     this.height = Math.sqrt(textureData.length / 4);
 
-    let x = 0;
-    let y = 0;
-    for (let i = 0; i < textureData.length; i += 4) {
-      if (!processed[y]) {
-        processed[y] = [];
-      }
-      if (textureData[i + 3]) {
-        processed[y].push(1);
-      } else {
-        processed[y].push(0);
-      }
-      x++;
-      if (x == this.width) {
-        y++;
-        x = 0;
-      }
+    const textureIndex = Flat2DIndex.GetXYOrder();
+    textureIndex.setBounds(this.width, this.height);
+
+    const origin = Vector3Like.Create();
+
+    const getData = (x: number, y: number) =>
+      textureData[textureIndex.getIndexXY(x, y) * 4 + 3] == 0 ? 0 : 1;
+    const uvs = mesherData.getAttribute("cuv3");
+    const addUvs = (sx: number, sy: number, ex: number, ey: number) => {
+      uvs.push(
+        ex * factor,
+        ey * factor,
+        textureId,
+        sx * factor,
+        ey * factor,
+        textureId,
+        sx * factor,
+        sy * factor,
+        textureId,
+        ex * factor,
+        sy * factor,
+        textureId
+      );
+    };
+
+    {
+      GeometryBuilder.addQuad(mesherData, origin, Quads.south);
+      uvs.push(
+        Quads.south.uvs.vertices[QuadVerticies.TopRight].x,
+        Quads.south.uvs.vertices[QuadVerticies.TopRight].y,
+        textureId,
+        Quads.south.uvs.vertices[QuadVerticies.TopLeft].x,
+        Quads.south.uvs.vertices[QuadVerticies.TopLeft].y,
+        textureId,
+        Quads.south.uvs.vertices[QuadVerticies.BottomLeft].x,
+        Quads.south.uvs.vertices[QuadVerticies.BottomLeft].y,
+        textureId,
+        Quads.south.uvs.vertices[QuadVerticies.BottomRight].x,
+        Quads.south.uvs.vertices[QuadVerticies.BottomRight].y,
+        textureId
+      );
     }
 
-    mesher.quad
-      .setDirection("south")
-      .setDimensions(1, 1)
-      .setPosition(0.5, 0.5, -this.depth / 2)
-      .uvs.setWidth(0, 1)
-      .setHeight(0, 1)
-      .setFlipped(false)
-      .add(mesherData.getVar("texture")!)
-      .create()
-      .setDirection("north")
-      .setPosition(0.5, 0.5, this.depth / 2)
-      .uvs.add(mesherData.getVar("texture")!)
-      .setFlipped(true)
-      .create();
-      mesher.quad.setFlipped(false)
-    for (let y = 0; y < this.height; y++) {
-      for (let x = 0; x < this.width; x++) {
-        if (!processed[y][x]) continue;
-        const result = this._process(processed, x, y);
-        if (result.t && !this.visited(x, y, "top")) {
-          this.visit(x, y, "top");
-          mesher.quad.setDirection("top");
-          this.buildFace(this.getTopFace(processed, x, y));
+    {
+      const backPositionZ = this.depth;
+      Quads.north.positions.vertices[QuadVerticies.TopRight].z = backPositionZ;
+      Quads.north.positions.vertices[QuadVerticies.TopLeft].z = backPositionZ;
+      Quads.north.positions.vertices[QuadVerticies.BottomLeft].z =
+        backPositionZ;
+      Quads.north.positions.vertices[QuadVerticies.BottomRight].z =
+        backPositionZ;
+      Quads.north.flip = true;
+      uvs.push(
+        Quads.north.uvs.vertices[QuadVerticies.TopLeft].x,
+        Quads.north.uvs.vertices[QuadVerticies.TopLeft].y,
+        textureId,
+        Quads.north.uvs.vertices[QuadVerticies.TopRight].x,
+        Quads.north.uvs.vertices[QuadVerticies.TopRight].y,
+        textureId,
+        Quads.north.uvs.vertices[QuadVerticies.BottomRight].x,
+        Quads.north.uvs.vertices[QuadVerticies.BottomRight].y,
+        textureId,
+        Quads.north.uvs.vertices[QuadVerticies.BottomLeft].x,
+        Quads.north.uvs.vertices[QuadVerticies.BottomLeft].y,
+        textureId
+      );
+      GeometryBuilder.addQuad(mesherData, origin, Quads.north);
+    }
+
+    const factor = 1 / this.width;
+
+    for (let x = 0; x < this.width; x++) {
+      let eastFace: Vec2Array | null = null;
+      let westFace: Vec2Array | null = null;
+      for (let y = 0; y < this.height; y++) {
+        let eastFaceExposed = true;
+        let westFaceExposed = true;
+
+        if (!getData(x, y)) {
+          eastFaceExposed = false;
+          westFaceExposed = false;
         }
-        if (result.b && !this.visited(x, y, "bottom")) {
-          this.visit(x, y, "bottom");
-          mesher.quad.setDirection("bottom");
-          this.buildFace(this.getBottomFace(processed, x, y));
+        if (getData(x + 1, y)) {
+          eastFaceExposed = false;
         }
-        if (result.w && !this.visited(x, y, "west")) {
-          this.visit(x, y, "west");
-          mesher.quad.setDirection("west");
-          this.buildFace(this.getWestFace(processed, x, y));
+        if (getData(x - 1, y)) {
+          westFaceExposed = false;
         }
-        if (result.e && !this.visited(x, y, "east")) {
-          this.visit(x, y, "east");
-          mesher.quad.setDirection("east");
-          this.buildFace(this.getEastFace(processed, x, y));
+
+        if (eastFace && !eastFaceExposed) {
+          const newQuad = Quad.Create(
+            [
+              [x * factor + factor, eastFace[1] * factor, 0],
+              [x * factor + factor, y * factor, factor],
+            ],
+            Quad.FullUVs as any,
+            false,
+            0
+          );
+          GeometryBuilder.addQuad(mesherData, origin, newQuad);
+
+          let [sx, sy] = eastFace;
+          let [ex, ey] = [x, y];
+          ex += 1;
+          addUvs(sx, sy, ex, ey);
+          eastFace = null;
+        }
+
+        if (westFace && !westFaceExposed) {
+          const newQuad = Quad.Create(
+            [
+              [x * factor, westFace[1]  * factor, 0],
+              [x * factor, y * factor, factor],
+            ],
+            Quad.FullUVs as any,
+            false,
+            1
+          );
+          GeometryBuilder.addQuad(mesherData, origin, newQuad);
+          let [sx, sy] = westFace;
+          let [ex, ey] = [x, y];
+          ex += 1;
+          addUvs(sx, sy, ex, ey);
+          westFace = null;
+        }
+        const isPixel = getData(x, y) == 1;
+        if (!getData(x + 1, y) && !eastFace && isPixel) {
+          eastFace = [x, y];
+        }
+        if (!getData(x - 1, y) && !westFace && isPixel) {
+          westFace = [x, y];
         }
       }
     }
-    this._resetVisitedMap();
+    for (let y = 0; y < this.height; y++) {
+      let topFace: Vec2Array | null = null;
+      let bottomFace: Vec2Array | null = null;
+
+      for (let x = 0; x < this.width; x++) {
+        let topFaceExposed = true;
+        let bottomFaceExposed = true;
+
+        if (!getData(x, y)) {
+          topFaceExposed = false;
+          bottomFaceExposed = false;
+        }
+        if (getData(x, y + 1)) {
+          topFaceExposed = false;
+        }
+        if (getData(x, y - 1)) {
+          bottomFaceExposed = false;
+        }
+
+        if (topFace && !topFaceExposed) {
+ 
+          const newQuad = Quad.Create(
+            [
+              [topFace[0] * factor, y * factor + factor, 0],
+              [x * factor, y * factor + factor, factor],
+            ],
+            Quad.FullUVs as any,
+            false,
+            0
+          );
+          GeometryBuilder.addQuad(mesherData, origin, newQuad);
+          let [sx, sy] = topFace;
+          let [ex, ey] = [x,y];
+
+          ey += 1;
+          addUvs(sx, sy, ex, ey);
+          topFace = null;
+        }
+
+        if (bottomFace && !bottomFaceExposed) {
+     
+          const newQuad = Quad.Create(
+            [
+              [bottomFace[0] * factor, y * factor, 0],
+              [x * factor, y * factor, factor],
+            ],
+            Quad.FullUVs as any,
+            false,
+            1
+          );
+          GeometryBuilder.addQuad(mesherData, origin, newQuad);
+          let [sx, sy] = bottomFace;
+          let [ex, ey] = [x,y];
+          ey += 1;
+          addUvs(sx, sy, ex, ey);
+          bottomFace = null;
+        }
+
+        const isPixel = getData(x, y) == 1;
+        if (!getData(x, y + 1) && !topFace && isPixel) {
+          topFace = [x,y];
+        }
+        if (!getData(x, y - 1) && !bottomFace && isPixel) {
+          bottomFace= [x,y];
+        }
+      }
+    }
 
     const [attributes, transfers] = mesherData.getAllAttributes();
 
-    mesher.quad.clear();
     mesherData.resetVars();
 
     for (const [type, data] of attributes) {
@@ -206,162 +262,6 @@ const TextureProcessor = {
     }
     mesherData.resetAttributes();
     return [[location, attributes], transfers];
-  },
-
-  _process(data: number[][], x: number, y: number) {
-    let addwest = false;
-    let addeast = false;
-    let addbottom = false;
-    let addtop = false;
-
-    if (!data[y - 1]) {
-      addtop = true;
-    }
-    if (data[y - 1]) {
-      if (!data[y - 1][x]) {
-        addtop = true;
-      }
-    }
-
-    if (!data[y + 1]) {
-      addbottom = true;
-    }
-    if (data[y + 1]) {
-      if (!data[y + 1][x]) {
-        addbottom = true;
-      }
-    }
-
-    if (!data[y][x - 1]) {
-      addwest = true;
-    }
-
-    if (!data[y][x + 1]) {
-      addeast = true;
-    }
-
-    return {
-      w: addwest,
-      e: addeast,
-      t: addtop,
-      b: addbottom,
-    };
-  },
-
-  getTopFace(data: number[][], sx: number, y: number) {
-    const face = this.getBlankFace(sx, y, "top");
-    let endX = sx;
-    for (let x = sx; x < this.width; x++) {
-      const result = this._process(data, x, y);
-      this.visit(x, y, "top");
-      if (!result.t || !data[y][x] || x == this.width - 1) {
-        if (x == this.width - 1) {
-          endX = x;
-        } else {
-          endX = x - 1;
-        }
-        break;
-      }
-    }
-    face.xEnd = endX;
-    return face;
-  },
-
-  getBottomFace(data: number[][], sx: number, y: number) {
-    const face = this.getBlankFace(sx, y, "bottom");
-    let endX = sx;
-    for (let x = sx; x < this.width; x++) {
-      const result = this._process(data, x, y);
-      this.visit(x, y, "bottom");
-      if (!result.b || !data[y][x] || x == this.width - 1) {
-        if (x == this.width - 1) {
-          endX = x;
-        } else {
-          endX = x - 1;
-        }
-        break;
-      }
-    }
-    face.xEnd = endX;
-    return face;
-  },
-
-  getWestFace(data: number[][], x: number, sy: number) {
-    const face = this.getBlankFace(x, sy, "west");
-    let endY = sy;
-    for (let y = sy; y < this.height; y++) {
-      const result = this._process(data, x, y);
-      this.visit(x, y, "west");
-      if (!result.w || !data[y][x] || y == this.height - 1) {
-        if (y == this.height - 1) {
-          endY = y;
-        } else {
-          endY = y - 1;
-        }
-
-        break;
-      }
-    }
-    face.yEnd = endY;
-    return face;
-  },
-
-  getEastFace(data: number[][], x: number, sy: number) {
-    const face = this.getBlankFace(x, sy, "east");
-    let endY = sy;
-    for (let y = sy; y < this.height; y++) {
-      const result = this._process(data, x, y);
-      this.visit(x, y, "east");
-      if (!result.e || !data[y][x] || y == this.height - 1) {
-        if (y == this.height - 1) {
-          endY = y;
-        } else {
-          endY = y - 1;
-        }
-        break;
-      }
-    }
-    face.yEnd = endY;
-    return face;
-  },
-
-  getBlankFace(x: number, y: number, face: Faces) {
-    return {
-      xStart: x,
-      xEnd: x,
-      yStart: y,
-      yEnd: y,
-      type: face,
-    };
-  },
-
-  visit(x: number, y: number, face: Faces) {
-    this.visitedMap[face][`${x}-${y}`] = true;
-  },
-
-  visited(x: number, y: number, face: Faces) {
-    return this.visitedMap[face][`${x}-${y}`];
-  },
-
-  calculateUV(face: FaceData): [number, number, number, number] {
-    const ws = face.xStart / this.width;
-    const we = (face.xEnd + 1) / this.width;
-    const hs = face.yStart / this.height;
-    const he = (face.yEnd + 1) / this.height;
-    return [ws, we, hs, he];
-  },
-
-  buildFace(face: FaceData) {
-    const uv = this.calculateUV(face);
-    const dim = this.getDimensions[face.type](face);
-    const pos = this.getPosition[face.type](face);
-    mesher.quad
-      .setDimensions(dim[0], dim[1])
-      .setPosition(pos[0], pos[1], pos[2])
-      .uvs.setWidth(uv[0], uv[1])
-      .setHeight(uv[2], uv[3])
-      .add(mesherData.getVar("texture")!)
-      .create();
   },
 };
 

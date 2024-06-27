@@ -6,23 +6,24 @@ import {
 import { URITexture } from "@amodx/uri/Textures/URITexture";
 import { DivineVoxelEngineRender } from "@divinevoxel/core/Contexts/Render/DivineVoxelEngineRender";
 
-export const TextureBuilder = {
-  context: <CanvasRenderingContext2D | null>null,
+export class TextureBuilder {
+  static context: CanvasRenderingContext2D | null = null;
 
-  _textureSize: 16,
-  imgWidth: 16,
-  imgHeight: 16,
-  _canvas: <HTMLCanvasElement>document.createElement("canvas"),
+  static _textureSize = 16;
+  static finalImagWidth = 16;
+  static finalImageHeight = 16;
 
-  defineTextureDimensions(textureSize: number, mipMapSizes: number[]) {
-    this.imgWidth = textureSize < 256 ? 256 : textureSize;
-    this.imgHeight = textureSize < 256 ? 256 : textureSize;
+  static _canvas: HTMLCanvasElement = document.createElement("canvas");
+
+  static defineTextureDimensions(textureSize: number, mipMapSizes: number[]) {
+    this.finalImagWidth = textureSize < 256 ? 256 : textureSize;
+    this.finalImageHeight = textureSize < 256 ? 256 : textureSize;
     this._textureSize = textureSize;
-  },
+  }
 
-  setUpImageCreation() {
-    this._canvas.width = this.imgWidth;
-    this._canvas.height = this.imgHeight;
+  static setUpImageCreation() {
+    this._canvas.width = this.finalImagWidth;
+    this._canvas.height = this.finalImageHeight;
     const context = this._canvas.getContext("2d", { willReadFrequently: true });
     if (!context) {
       throw new Error("Context did not load for texture creation.");
@@ -31,18 +32,18 @@ export const TextureBuilder = {
     context.imageSmoothingEnabled = true;
     context.imageSmoothingQuality = "high";
     this.context = context;
-  },
+  }
 
-  async createMaterialTexture(
+  static async createMaterialTexture(
     name: string,
     images: Map<string, Uint8ClampedArray | false>,
     width: number = -1,
     height: number = -1
   ): Promise<URITexture> {
-    if (width == -1) width = this.imgWidth;
-    if (height == -1) height = this.imgHeight;
-    this._canvas.width = this.imgWidth;
-    this._canvas.height = this.imgHeight;
+    if (width == -1) width = this.finalImagWidth;
+    if (height == -1) height = this.finalImageHeight;
+    this._canvas.width = this.finalImagWidth;
+    this._canvas.height = this.finalImageHeight;
 
     return (await this._create(name, images, width, height)) as any;
     /*    for (const size of this._mipMapSizes) {
@@ -50,9 +51,9 @@ export const TextureBuilder = {
       textures.push(texture);
     }
     return textures; */
-  },
+  }
 
-  async _create(
+  static async _create(
     name: string,
     images: Map<string, Uint8ClampedArray | false>,
     width: number,
@@ -71,7 +72,7 @@ export const TextureBuilder = {
         format: URITextureFormat.Rgba,
         samplingMode: URITextureSamplingMode.NearestNearestMipNearest,
         //@ts-ignore
-        images
+        images,
       });
 
     // texture.anisotropicFilteringLevel = 16;
@@ -133,12 +134,9 @@ export const TextureBuilder = {
  */
 
     return texture;
-  },
-  customMipMaps() {
+  }
 
-  },
-
-  async _createMipMap(
+  static async _createMipMap(
     level: number,
     images: Map<string, Uint8ClampedArray | false>,
     width: number,
@@ -172,16 +170,17 @@ export const TextureBuilder = {
     }
 
     return this._combineImageData(totalLength, resolvedImages);
-  },
+  }
 
-  loadImage(
+  static loadImage(
     imgSrcData: string | Uint8ClampedArray,
     width: number = 0,
     height: number = 0,
-    lod = 0
+    lod = 0,
+    flip = true
   ): Promise<Uint8ClampedArray> {
-    if (!width) width = this.imgWidth;
-    if (!height) height = this.imgHeight;
+    if (!width) width = this.finalImagWidth;
+    if (!height) height = this.finalImageHeight;
   
     const ctx = TextureBuilder.context;
   
@@ -196,8 +195,12 @@ export const TextureBuilder = {
         image.onload = async () => {
           ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
           ctx.save();
-          ctx.scale(1, -1);
-          ctx.drawImage(image, 0, -image.height, image.width!, image.height!);
+          if (flip) {
+            ctx.scale(1, -1);
+            ctx.drawImage(image, 0, -image.height, image.width!, image.height!);
+          } else {
+            ctx.drawImage(image, 0, 0, image.width!, image.height!);
+          }
           ctx.restore();
           const imgData = ctx.getImageData(0, 0, image.width!, image.height!);
   
@@ -239,8 +242,12 @@ export const TextureBuilder = {
         );
   
         ctx.save();
-        ctx.scale(1, -1);
-        ctx.drawImage(bitmap, 0, -height, width!, height!);
+        if (flip) {
+          ctx.scale(1, -1);
+          ctx.drawImage(bitmap, 0, -height, width!, height!);
+        } else {
+          ctx.drawImage(bitmap, 0, 0, width!, height!);
+        }
         ctx.restore();
   
         const imgData = ctx.getImageData(0, 0, width!, height!);
@@ -250,9 +257,9 @@ export const TextureBuilder = {
     }
   
     throw new Error("Context is not set for texture creation.");
-  },
+  }
 
-  _combineImageData(totalLength: number, arrays: Uint8ClampedArray[]) {
+  static _combineImageData(totalLength: number, arrays: Uint8ClampedArray[]) {
     const combinedImagedata = new Uint8ClampedArray(totalLength);
     const length = arrays[0].length;
     for (let i = 0; i < arrays.length; i++) {
@@ -262,5 +269,5 @@ export const TextureBuilder = {
       combinedImagedata.set(array, previousArrayIndex);
     }
     return combinedImagedata;
-  },
-};
+  }
+}

@@ -5,7 +5,7 @@ import { LightData } from "../../../../Data/LightData";
 
 import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
 import { SubstanceRules } from "../../Rules/SubstanceRules.js";
-import { QuadVerticies } from "../../Geometry/Geometry.types";
+import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 import { VoxelFaces, VoxelFaceDirections } from "@divinevoxel/core/Math";
 
 const LD = LightData;
