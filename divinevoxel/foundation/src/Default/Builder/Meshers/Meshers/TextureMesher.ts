@@ -1,13 +1,13 @@
-import { DirectionNames } from "@divinevoxel/core/Types";
 import { MesherDataTool } from "@amodx/meshing/Tools/MesherDataTools.js";
 import { Mesher } from "../Classes/Mesher.js";
 import { BuildNodeMesh, SetNodeMesh } from "../../Tasks/BuidlerTasks.types.js";
 import { BinaryNumberTypes } from "@amodx/binary";
 import { Quad } from "@amodx/meshing/Classes/Quad.js";
-import { QuadUVData, QuadVerticies } from "@amodx/meshing/Geometry.types.js";
+import { QuadVerticies } from "@amodx/meshing/Geometry.types.js";
 import { GeometryBuilder } from "@amodx/meshing";
 import { Flat2DIndex, Vec2Array, Vector3Like } from "@amodx/math";
 
+const depth = 1 / 16;
 const Quads = {
   north: Quad.Create(
     [
@@ -29,32 +29,28 @@ const Quads = {
   ),
 };
 
-const mesherData = new MesherDataTool();
-mesherData.attributes.set("cuv3", [[], 3, BinaryNumberTypes.Float32]);
-mesherData.vars.set("texture", 0);
+const tool = new MesherDataTool();
+tool.attributes.set("cuv3", [[], 3, BinaryNumberTypes.Float32]);
+tool.vars.set("texture", 0);
 
-const TextureProcessor = {
-  height: 16,
-  width: 16,
-  depth: 1 / 16,
-
-  processTexture(buildTask: BuildNodeMesh): [SetNodeMesh, ArrayBuffer[]] {
+class TXTBuilderBase extends Mesher {
+  build(buildTask: BuildNodeMesh) {
     const [location, type, data] = buildTask;
     const textureId: number = data.textureId;
     const textureData = data.textureData;
-    mesherData.setVar("texture", textureId);
+    tool.setVar("texture", textureId);
 
-    this.width = Math.sqrt(textureData.length / 4);
-    this.height = Math.sqrt(textureData.length / 4);
+    const width = Math.sqrt(textureData.length / 4);
+    const height = Math.sqrt(textureData.length / 4);
 
     const textureIndex = Flat2DIndex.GetXYOrder();
-    textureIndex.setBounds(this.width, this.height);
+    textureIndex.setBounds(width, height);
 
     const origin = Vector3Like.Create();
 
     const getData = (x: number, y: number) =>
       textureData[textureIndex.getIndexXY(x, y) * 4 + 3] == 0 ? 0 : 1;
-    const uvs = mesherData.getAttribute("cuv3");
+    const uvs = tool.getAttribute("cuv3");
     const addUvs = (sx: number, sy: number, ex: number, ey: number) => {
       uvs.push(
         ex * factor,
@@ -73,7 +69,7 @@ const TextureProcessor = {
     };
 
     {
-      GeometryBuilder.addQuad(mesherData, origin, Quads.south);
+      GeometryBuilder.addQuad(tool, origin, Quads.south);
       uvs.push(
         Quads.south.uvs.vertices[QuadVerticies.TopRight].x,
         Quads.south.uvs.vertices[QuadVerticies.TopRight].y,
@@ -91,7 +87,7 @@ const TextureProcessor = {
     }
 
     {
-      const backPositionZ = this.depth;
+      const backPositionZ = depth;
       Quads.north.positions.vertices[QuadVerticies.TopRight].z = backPositionZ;
       Quads.north.positions.vertices[QuadVerticies.TopLeft].z = backPositionZ;
       Quads.north.positions.vertices[QuadVerticies.BottomLeft].z =
@@ -113,15 +109,15 @@ const TextureProcessor = {
         Quads.north.uvs.vertices[QuadVerticies.BottomLeft].y,
         textureId
       );
-      GeometryBuilder.addQuad(mesherData, origin, Quads.north);
+      GeometryBuilder.addQuad(tool, origin, Quads.north);
     }
 
-    const factor = 1 / this.width;
+    const factor = 1 / width;
 
-    for (let x = 0; x < this.width; x++) {
+    for (let x = 0; x < width; x++) {
       let eastFace: Vec2Array | null = null;
       let westFace: Vec2Array | null = null;
-      for (let y = 0; y < this.height; y++) {
+      for (let y = 0; y < height; y++) {
         let eastFaceExposed = true;
         let westFaceExposed = true;
 
@@ -146,7 +142,7 @@ const TextureProcessor = {
             false,
             0
           );
-          GeometryBuilder.addQuad(mesherData, origin, newQuad);
+          GeometryBuilder.addQuad(tool, origin, newQuad);
 
           let [sx, sy] = eastFace;
           let [ex, ey] = [x, y];
@@ -158,14 +154,14 @@ const TextureProcessor = {
         if (westFace && !westFaceExposed) {
           const newQuad = Quad.Create(
             [
-              [x * factor, westFace[1]  * factor, 0],
+              [x * factor, westFace[1] * factor, 0],
               [x * factor, y * factor, factor],
             ],
             Quad.FullUVs as any,
             false,
             1
           );
-          GeometryBuilder.addQuad(mesherData, origin, newQuad);
+          GeometryBuilder.addQuad(tool, origin, newQuad);
           let [sx, sy] = westFace;
           let [ex, ey] = [x, y];
           ex += 1;
@@ -181,11 +177,11 @@ const TextureProcessor = {
         }
       }
     }
-    for (let y = 0; y < this.height; y++) {
+    for (let y = 0; y < height; y++) {
       let topFace: Vec2Array | null = null;
       let bottomFace: Vec2Array | null = null;
 
-      for (let x = 0; x < this.width; x++) {
+      for (let x = 0; x < width; x++) {
         let topFaceExposed = true;
         let bottomFaceExposed = true;
 
@@ -201,7 +197,6 @@ const TextureProcessor = {
         }
 
         if (topFace && !topFaceExposed) {
- 
           const newQuad = Quad.Create(
             [
               [topFace[0] * factor, y * factor + factor, 0],
@@ -211,9 +206,9 @@ const TextureProcessor = {
             false,
             0
           );
-          GeometryBuilder.addQuad(mesherData, origin, newQuad);
+          GeometryBuilder.addQuad(tool, origin, newQuad);
           let [sx, sy] = topFace;
-          let [ex, ey] = [x,y];
+          let [ex, ey] = [x, y];
 
           ey += 1;
           addUvs(sx, sy, ex, ey);
@@ -221,7 +216,6 @@ const TextureProcessor = {
         }
 
         if (bottomFace && !bottomFaceExposed) {
-     
           const newQuad = Quad.Create(
             [
               [bottomFace[0] * factor, y * factor, 0],
@@ -231,9 +225,9 @@ const TextureProcessor = {
             false,
             1
           );
-          GeometryBuilder.addQuad(mesherData, origin, newQuad);
+          GeometryBuilder.addQuad(tool, origin, newQuad);
           let [sx, sy] = bottomFace;
-          let [ex, ey] = [x,y];
+          let [ex, ey] = [x, y];
           ey += 1;
           addUvs(sx, sy, ex, ey);
           bottomFace = null;
@@ -241,17 +235,17 @@ const TextureProcessor = {
 
         const isPixel = getData(x, y) == 1;
         if (!getData(x, y + 1) && !topFace && isPixel) {
-          topFace = [x,y];
+          topFace = [x, y];
         }
         if (!getData(x, y - 1) && !bottomFace && isPixel) {
-          bottomFace= [x,y];
+          bottomFace = [x, y];
         }
       }
     }
 
-    const [attributes, transfers] = mesherData.getAllAttributes();
+    const [attributes, transfers] = tool.getAllAttributes();
 
-    mesherData.resetVars();
+    tool.resetVars();
 
     for (const [type, data] of attributes) {
       if (type == "position") {
@@ -260,14 +254,8 @@ const TextureProcessor = {
         }
       }
     }
-    mesherData.resetAttributes();
-    return [[location, attributes], transfers];
-  },
-};
-
-class TXTBuilderBase extends Mesher {
-  build(data: BuildNodeMesh) {
-    return TextureProcessor.processTexture(data);
+    tool.resetAttributes();
+    return [[location, attributes], transfers] as [SetNodeMesh, ArrayBuffer[]];
   }
 }
 
