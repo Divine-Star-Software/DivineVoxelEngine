@@ -6,6 +6,7 @@ import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera.js";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
 import { Observable } from "@amodx/core/Observers/Observable";
 import { RenderNodes } from "../Classes/RednerNodes";
+import { SceneTool } from "@divinevoxel/babylon-renderer/Defaults/Foundation/Tools/SceneTool";
 
 const DVEObservers = {
   ready: new Observable<DivineVoxelEngineRender>(),
@@ -59,7 +60,7 @@ export function useDVE(props: UseDVEProps) {
           skybox.material = bmat.getMaterial();
         }
       } */
- /* 
+
       if (props.useFloatingOrigin) {
         const oriign = new Vector3();
         nodes.scene.onBeforeActiveMeshesEvaluationObservable.add(() => {
@@ -69,19 +70,7 @@ export function useDVE(props: UseDVEProps) {
         });
       }
 
-     nodes.sceneTool = DVER.getSceneTool();
-      nodes.sceneTool.fog.setMode("animated-volumetric");
-      nodes.sceneTool.options
-        .doEffects(true)
-        .doAO(true)
-        .doRGB(true)
-        .doSun(true);
-      nodes.sceneTool.levels
-        .setSun(0.8)
-        .levels.setBase(0.1)
-        .fog.setColor(0.6)
-        .fog.setMode("volumetric")
-        .fog.setDensity(0.0005); */
+     nodes.sceneTool = new SceneTool();
 
       DVEObservers.ready.notify(DVER);
     })();

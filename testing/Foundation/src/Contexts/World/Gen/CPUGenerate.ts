@@ -5,6 +5,7 @@ import { MagicGen } from "./MagicGen";
 
 import { TaskTool } from "@divinevoxel/foundation/Default/Tools/Tasks/TasksTool";
 import { BuilderTool } from "@divinevoxel/foundation/Default/Tools/Build/BuilderTool";
+import { PanelStates } from "@divinevoxel/foundation/Default/Builder/Shapes/default/Panel/PanelStates";
 export async function CPUGenerate() {
   const numChunks = 2;
   let startX = -16 * numChunks;
@@ -20,23 +21,73 @@ export async function CPUGenerate() {
   for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
       builder.setXZ(x, z).fillColumn();
-      WorldGen.generateWorldColumn(x, z);
-      //   PerlinGen.generateWorldColumn(x, z);
+      // WorldGen.generateWorldColumn(x, z);
+      PerlinGen.generateWorldColumn(x, z);
       tasks.propagation.queued.add(["main", x, 0, z]);
       tasks.worldSun.queued.add(["main", x, 0, z]);
     }
   }
 
-  /// await MagicGen.generate();
-  WorldGen.brush.setXYZ(0, 55, 0).setId("dve_dream_lamp").paint();
+  for (let y = 55; y < 80; y++) {
+    {
+      WorldGen.brush
+        .setXYZ(0, y, 1)
+        .setId("dve_dream_vine")
+        .setShapeState(PanelStates.North)
+        .paint();
+      WorldGen.brush
+        .setXYZ(0, y, 2)
+        .setId("dve_dream_stone")
+        .setShapeState(PanelStates.North)
+        .paint();
+    }
 
-  console.log("gen time", performance.now() - t1);
+    {
+      WorldGen.brush
+        .setXYZ(0, y, -1)
+        .setId("dve_dream_vine")
+        .setShapeState(PanelStates.South)
+        .paint();
+      WorldGen.brush
+        .setXYZ(0, y, -2)
+        .setId("dve_dream_stone")
+        .setShapeState(PanelStates.South)
+        .paint();
+    }
+
+    {
+      WorldGen.brush
+        .setXYZ(1, y, 0)
+        .setId("dve_dream_vine")
+        .setShapeState(PanelStates.East)
+        .paint();
+      WorldGen.brush
+        .setXYZ(2, y, 0)
+        .setId("dve_dream_stone")
+        .setShapeState(PanelStates.East)
+        .paint();
+    }
+
+    {
+      WorldGen.brush
+        .setXYZ(-1, y, 0)
+        .setId("dve_dream_vine")
+        .setShapeState(PanelStates.West)
+        .paint();
+      WorldGen.brush
+        .setXYZ(-2, y, 0)
+        .setId("dve_dream_stone")
+        .setShapeState(PanelStates.West)
+        .paint();
+    }
+  }
+  /// await MagicGen.generate();
+
   const t2 = performance.now();
   //await ComputeTest(canvas);
 
   await tasks.worldSun.queued.runAndAwait();
   await tasks.propagation.queued.runAndAwait();
-  console.log("sun light time ", performance.now() - t2);
 
   for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {

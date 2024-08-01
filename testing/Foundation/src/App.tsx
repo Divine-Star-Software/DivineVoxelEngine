@@ -7,11 +7,13 @@ import {
   AxesViewer,
   CreateBox,
   Matrix,
+  Mesh,
 } from "@babylonjs/core";
 import { DVEFBRCore } from "@divinevoxel/babylon-renderer/Defaults/Foundation/DVEFBRCore";
 //import "@babylonjs/core/Debug/debugLayer"; // Import the debug layer
 //import "@babylonjs/inspector"; // Import the inspector
-import InitDVER from "@divinevoxel/babylon-renderer/Defaults/Foundation/PBR/InitDVEBRPBR";
+//import InitDVER from "@divinevoxel/babylon-renderer/Defaults/Foundation/PBR/InitDVEBRPBR";
+import InitDVER from "@divinevoxel/babylon-renderer/Defaults/Foundation/Classic/InitDVEBRClassic";
 import { NodeMeshTool } from "@divinevoxel/babylon-renderer/Defaults/Foundation/Tools/NodeMeshTool";
 import { DataTool } from "@divinevoxel/foundation/Default/Tools/Data/DataTool";
 const worldWorker = new Worker(new URL("./Contexts/World/", import.meta.url), {
@@ -239,7 +241,7 @@ export function App() {
           richWorldWorker,
           nexusWorker,
         });
-        console.log("start the initilzation");
+
         nodes.core = core;
         await DVER.init({
           core: nodes.core,
@@ -247,19 +249,27 @@ export function App() {
           worldWorker,
           constructorWorkers,
         });
-        console.log("end initilization");
 
         setReady(true);
-        /*    nodes.sceneTool.levels
-          .setSun(0.5)
+        nodes.sceneTool.options.doEffects(true);
+        nodes.sceneTool.levels
+      
+          .setSun(1)
           .levels.setBase(0)
           .fog.setColor(0.1)
           .fog.setMode("volumetric")
-          .fog.setDensity(0.0); */
+          .fog.setDensity(0.0);
         (window as any).nodes = nodes;
 
         DVER.threads.world.runTasks("start-world", []);
-        const viwer = new AxesViewer(scene,3);
+        const axes = new AxesViewer(scene);
+        const parent = new Mesh("", scene);
+        parent.scaling.set(20, 20, 20);
+        axes.xAxis.parent = parent;
+        axes.yAxis.parent = parent;
+        axes.zAxis.parent = parent;
+      
+        parent.renderingGroupId = -1;
         const dataTool = new DataTool();
         const nodeMeshTool = new NodeMeshTool();
         const voxelEntityTool = await nodeMeshTool.voxel.buildEntityToolAsync(
@@ -270,10 +280,9 @@ export function App() {
             .setLevel(7)
             .getRaw()
         );
-        console.log("got voxel entity tool", voxelEntityTool);
 
         if (voxelEntityTool) {
-          console.log(voxelEntityTool);
+
           voxelEntityTool.setInstanceAmount(1);
 
           /* 
@@ -288,9 +297,9 @@ export function App() {
           }
           console.log(voxelEntityTool._matrixArray.matricies)
           voxelEntityTool.update(); */
-          setInterval(()=>{
-            console.log(nodes.camera.globalPosition.toString())
-          },2_000)
+          setInterval(() => {
+            console.log(nodes.camera.globalPosition.toString());
+          }, 2_000);
 
           const box = CreateBox("", {}, scene);
           box.position.set(0, 0, 0);
