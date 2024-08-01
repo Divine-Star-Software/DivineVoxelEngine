@@ -1,41 +1,41 @@
 import type { URIShaderBuilder } from "@amodx/uri/Shaders/URIShaderBuilder";
 export function RegisterVoxelSnippets(builder: typeof URIShaderBuilder) {
- builder.snippets.create( {
-  id: "#dve_solid_vertex",
-  body: {
-   GLSL: () => `@standard_position`,
-  },
- });
- builder.snippets.create( {
-  id: "#dve_solid_frag",
-  body: {
-   GLSL: () => `@standard_color`,
-  },
- });
+  builder.snippets.create({
+    id: "#dve_solid_vertex",
+    body: {
+      GLSL: () => `@standard_position`,
+    },
+  });
+  builder.snippets.create({
+    id: "#dve_solid_frag",
+    body: {
+      GLSL: () => `@standard_color`,
+    },
+  });
 
- builder.snippets.create( {
-  id: "#dve_glow_vertex",
-  body: {
-   GLSL: () => `@standard_position`,
-  },
- });
- builder.snippets.create( {
-  id: "#dve_glow_frag",
-  body: {
-   GLSL: () => `@standard_color`,
-  },
- });
+  builder.snippets.create({
+    id: "#dve_glow_vertex",
+    body: {
+      GLSL: () => `@standard_position`,
+    },
+  });
+  builder.snippets.create({
+    id: "#dve_glow_frag",
+    body: {
+      GLSL: () => `@standard_color`,
+    },
+  });
 
- builder.snippets.create( {
-  id: "#dve_flora_vertex",
-  body: {
-   GLSL: () => /* glsl */`vec3 p = position;
+  builder.snippets.create({
+    id: "#dve_flora_vertex",
+    body: {
+      GLSL: () => /* glsl */ `vec3 p = position;
 
 #ifdef INSTANCES
       mat4 finalWorld = mat4(world0,world1,world2,world3); 
 
       vDistance = 0.;
-      mipMapLevel = 0.;
+
 
       finalWorld[3].xyz += worldOrigin.xyz;
       gl_Position = viewProjection *   finalWorld * vec4(position, 1.0);  
@@ -44,7 +44,7 @@ export function RegisterVoxelSnippets(builder: typeof URIShaderBuilder) {
     vec4 worldPosition = world * vec4(p , 1.0);
 
     if(doEffects == 1.){
-      if(vDistance < 50.) {
+
         if(VOXEL[1].y == 1.) {
           p.xz = dve_crossed_panel_wind_anim(worldPosition, p).xz;
         }
@@ -55,7 +55,7 @@ export function RegisterVoxelSnippets(builder: typeof URIShaderBuilder) {
           p.xz = dve_box_wind_anim(worldPosition, p).xz;
         }
       }
-    }
+   
     gl_Position = viewProjection * world * vec4(p, 1.0); 
 #endif
 
@@ -64,20 +64,18 @@ gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 #endif
 
   `,
-
-  
-  },
- });
- builder.snippets.create({
-  id: "#dve_flora_frag",
-  body: {
-   GLSL: () => `@standard_color`,
-  },
- });
- builder.snippets.create( {
-  id: "#dve_liquid_vertex",
-  body: {
-   GLSL: () => /* glsl */`
+    },
+  });
+  builder.snippets.create({
+    id: "#dve_flora_frag",
+    body: {
+      GLSL: () => `@standard_color`,
+    },
+  });
+  builder.snippets.create({
+    id: "#dve_liquid_vertex",
+    body: {
+      GLSL: () => /* glsl */ `
   vFlow = 0.;
   if(VOXEL[1].y == 1.) {
     vFlow = -1.;
@@ -91,7 +89,7 @@ gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   mat4 finalWorld = mat4(world0,world1,world2,world3); 
 
   vDistance = 0.;
-  mipMapLevel = 0.;
+
 
   finalWorld[3].xyz += worldOrigin.xyz;
   gl_Position = viewProjection *   finalWorld * vec4(position, 1.0);  
@@ -114,17 +112,17 @@ gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 #endif
 
   `,
-  },
- });
- builder.snippets.create( {
-  id: "#dve_liquid_frag", 
-  body: {
-   GLSL: () => /* glsl */`
+    },
+  });
+  builder.snippets.create({
+    id: "#dve_liquid_frag",
+    body: {
+      GLSL: () => /* glsl */ `
   vec4 rgb = getBaseColor(vec2(0.,time * .01 * -4. * vFlow));
   rgb = getColor(rgb);
   vec4 mixLight = getLight(rgb);
   vec3 finalColor = doFog(mixLight);
   FragColor = vec4(finalColor.rgb ,.7 );`,
-  },
- });
+    },
+  });
 }

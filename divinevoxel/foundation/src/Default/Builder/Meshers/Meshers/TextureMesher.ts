@@ -7,7 +7,6 @@ import { QuadVerticies } from "@amodx/meshing/Geometry.types.js";
 import { GeometryBuilder } from "@amodx/meshing";
 import { Flat2DIndex, Vec2Array, Vector3Like } from "@amodx/math";
 
-const depth = 1 / 16;
 const Quads = {
   north: Quad.Create(
     [
@@ -30,9 +29,14 @@ const Quads = {
 };
 
 const tool = new MesherDataTool();
-tool.attributes.set("cuv3", [[], 3, BinaryNumberTypes.Float32]);
-tool.vars.set("texture", 0);
-
+tool.attributes.set("uv", [[], 2, BinaryNumberTypes.Float32]);
+tool.attributes.set("textureIndex", [[], 3, BinaryNumberTypes.Float32]);
+/**
+ * @todo
+ * For 32x32 textures the uvs and pixels are not correct.
+ * Some pixels seem to be missing and the uvs are off slightly.
+ * Added the uv offset for now to make it look a little better but pixels are still missing.
+ */
 class TXTBuilderBase extends Mesher {
   build(buildTask: BuildNodeMesh) {
     const [location, type, data] = buildTask;
@@ -42,29 +46,50 @@ class TXTBuilderBase extends Mesher {
 
     const width = Math.sqrt(textureData.length / 4);
     const height = Math.sqrt(textureData.length / 4);
+    const factor = 1 / width;
 
-    const textureIndex = Flat2DIndex.GetXYOrder();
-    textureIndex.setBounds(width, height);
+    const textureDataIndex = Flat2DIndex.GetXYOrder();
+    textureDataIndex.setBounds(width, height);
 
-    const origin = Vector3Like.Create();
+    const origin = Vector3Like.Create(-0.5, -0.5, -0.5);
 
-    const getData = (x: number, y: number) =>
-      textureData[textureIndex.getIndexXY(x, y) * 4 + 3] == 0 ? 0 : 1;
-    const uvs = tool.getAttribute("cuv3");
+    const isSolid = (x: number, y: number) =>
+      x >= 0 &&
+      x < width &&
+      y >= 0 &&
+      y < height &&
+      textureData[textureDataIndex.getIndexXY(x, y) * 4 + 3] > 0.01
+        ? true
+        : false;
+
+    const uvs = tool.getAttribute("uv");
+    const textureIndex = tool.getAttribute("textureIndex");
+    const uvOffset = width > 16 ? -(2 / Math.max(width, height)) : 0;
+
     const addUvs = (sx: number, sy: number, ex: number, ey: number) => {
       uvs.push(
-        ex * factor,
-        ey * factor,
+        (ex + uvOffset) * factor,
+        (ey + uvOffset) * factor,
+        (sx - uvOffset) * factor,
+        (ey + uvOffset) * factor,
+        (sx - uvOffset) * factor,
+        (sy - uvOffset) * factor,
+        (ex + uvOffset) * factor,
+        (sy - uvOffset) * factor
+      );
+      textureIndex.push(
         textureId,
-        sx * factor,
-        ey * factor,
+        0,
+        0,
         textureId,
-        sx * factor,
-        sy * factor,
+        0,
+        0,
         textureId,
-        ex * factor,
-        sy * factor,
-        textureId
+        0,
+        0,
+        textureId,
+        0,
+        0
       );
     };
 
@@ -73,21 +98,32 @@ class TXTBuilderBase extends Mesher {
       uvs.push(
         Quads.south.uvs.vertices[QuadVerticies.TopRight].x,
         Quads.south.uvs.vertices[QuadVerticies.TopRight].y,
-        textureId,
         Quads.south.uvs.vertices[QuadVerticies.TopLeft].x,
         Quads.south.uvs.vertices[QuadVerticies.TopLeft].y,
-        textureId,
         Quads.south.uvs.vertices[QuadVerticies.BottomLeft].x,
         Quads.south.uvs.vertices[QuadVerticies.BottomLeft].y,
-        textureId,
         Quads.south.uvs.vertices[QuadVerticies.BottomRight].x,
-        Quads.south.uvs.vertices[QuadVerticies.BottomRight].y,
-        textureId
+        Quads.south.uvs.vertices[QuadVerticies.BottomRight].y
+      );
+
+      textureIndex.push(
+        textureId,
+        0,
+        0,
+        textureId,
+        0,
+        0,
+        textureId,
+        0,
+        0,
+        textureId,
+        0,
+        0
       );
     }
 
     {
-      const backPositionZ = depth;
+      const backPositionZ = factor;
       Quads.north.positions.vertices[QuadVerticies.TopRight].z = backPositionZ;
       Quads.north.positions.vertices[QuadVerticies.TopLeft].z = backPositionZ;
       Quads.north.positions.vertices[QuadVerticies.BottomLeft].z =
@@ -98,21 +134,29 @@ class TXTBuilderBase extends Mesher {
       uvs.push(
         Quads.north.uvs.vertices[QuadVerticies.TopLeft].x,
         Quads.north.uvs.vertices[QuadVerticies.TopLeft].y,
-        textureId,
         Quads.north.uvs.vertices[QuadVerticies.TopRight].x,
         Quads.north.uvs.vertices[QuadVerticies.TopRight].y,
-        textureId,
         Quads.north.uvs.vertices[QuadVerticies.BottomRight].x,
         Quads.north.uvs.vertices[QuadVerticies.BottomRight].y,
-        textureId,
         Quads.north.uvs.vertices[QuadVerticies.BottomLeft].x,
-        Quads.north.uvs.vertices[QuadVerticies.BottomLeft].y,
-        textureId
+        Quads.north.uvs.vertices[QuadVerticies.BottomLeft].y
       );
       GeometryBuilder.addQuad(tool, origin, Quads.north);
+      textureIndex.push(
+        textureId,
+        0,
+        0,
+        textureId,
+        0,
+        0,
+        textureId,
+        0,
+        0,
+        textureId,
+        0,
+        0
+      );
     }
-
-    const factor = 1 / width;
 
     for (let x = 0; x < width; x++) {
       let eastFace: Vec2Array | null = null;
@@ -121,14 +165,14 @@ class TXTBuilderBase extends Mesher {
         let eastFaceExposed = true;
         let westFaceExposed = true;
 
-        if (!getData(x, y)) {
+        if (!isSolid(x, y)) {
           eastFaceExposed = false;
           westFaceExposed = false;
         }
-        if (getData(x + 1, y)) {
+        if (isSolid(x + 1, y)) {
           eastFaceExposed = false;
         }
-        if (getData(x - 1, y)) {
+        if (isSolid(x - 1, y)) {
           westFaceExposed = false;
         }
 
@@ -145,7 +189,8 @@ class TXTBuilderBase extends Mesher {
           GeometryBuilder.addQuad(tool, origin, newQuad);
 
           let [sx, sy] = eastFace;
-          let [ex, ey] = [x, y];
+          let ex = x;
+          let ey = y;
           ex += 1;
           addUvs(sx, sy, ex, ey);
           eastFace = null;
@@ -163,16 +208,17 @@ class TXTBuilderBase extends Mesher {
           );
           GeometryBuilder.addQuad(tool, origin, newQuad);
           let [sx, sy] = westFace;
-          let [ex, ey] = [x, y];
+          let ex = x;
+          let ey = y;
           ex += 1;
           addUvs(sx, sy, ex, ey);
           westFace = null;
         }
-        const isPixel = getData(x, y) == 1;
-        if (!getData(x + 1, y) && !eastFace && isPixel) {
+        const isPixel = isSolid(x, y);
+        if (!isSolid(x + 1, y) && !eastFace && isPixel) {
           eastFace = [x, y];
         }
-        if (!getData(x - 1, y) && !westFace && isPixel) {
+        if (!isSolid(x - 1, y) && !westFace && isPixel) {
           westFace = [x, y];
         }
       }
@@ -185,14 +231,14 @@ class TXTBuilderBase extends Mesher {
         let topFaceExposed = true;
         let bottomFaceExposed = true;
 
-        if (!getData(x, y)) {
+        if (!isSolid(x, y)) {
           topFaceExposed = false;
           bottomFaceExposed = false;
         }
-        if (getData(x, y + 1)) {
+        if (isSolid(x, y + 1)) {
           topFaceExposed = false;
         }
-        if (getData(x, y - 1)) {
+        if (isSolid(x, y - 1)) {
           bottomFaceExposed = false;
         }
 
@@ -233,27 +279,29 @@ class TXTBuilderBase extends Mesher {
           bottomFace = null;
         }
 
-        const isPixel = getData(x, y) == 1;
-        if (!getData(x, y + 1) && !topFace && isPixel) {
+        const isPixel = isSolid(x, y);
+        if (!isSolid(x, y + 1) && !topFace && isPixel) {
           topFace = [x, y];
         }
-        if (!getData(x, y - 1) && !bottomFace && isPixel) {
+        if (!isSolid(x, y - 1) && !bottomFace && isPixel) {
           bottomFace = [x, y];
         }
       }
     }
 
     const [attributes, transfers] = tool.getAllAttributes();
-
-    tool.resetVars();
-
     for (const [type, data] of attributes) {
       if (type == "position") {
-        for (let i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i += 3) {
           (data as any as number[])[i] -= 0.5;
+          (data as any as number[])[i + 1] -= 0.5;
+          (data as any as number[])[i + 2];
         }
       }
     }
+
+    tool.resetVars();
+
     tool.resetAttributes();
     return [[location, attributes], transfers] as [SetNodeMesh, ArrayBuffer[]];
   }

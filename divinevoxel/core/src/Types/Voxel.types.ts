@@ -7,7 +7,8 @@ export type VoxelPaletteMap = Record<string, number>;
  */
 export interface VoxelData {
   id: string;
-  states?: number;
+  name?: string;
+  title?: string;
   tags: (
     | [id: string, value: any]
     | [id: "#dve_substance", value: string]

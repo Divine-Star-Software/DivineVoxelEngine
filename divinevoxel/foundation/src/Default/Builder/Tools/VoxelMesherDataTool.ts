@@ -33,18 +33,12 @@ export class VoxelMesherDataTool extends MesherDataTool {
     (
       [
         ["voxelData", [[], 1, BinaryNumberTypes.Float32]],
-        ["cuv3", [[], 3, BinaryNumberTypes.Float32]],
-        ["ocuv3", [[], 4, BinaryNumberTypes.Float32]],
+        ["uv", [[], 2, BinaryNumberTypes.Float32]],
+        ["textureIndex", [[], 3, BinaryNumberTypes.Float32]],
         ["colors", [[], 3, BinaryNumberTypes.Float32]],
       ] as const
     ).forEach(([key, data]) => this.attributes.set(key, data as any));
-    (
-      [
-        ["uvs", []],
-        ["overlay-uvs", []],
-        ["emssive-uvs", []],
-      ] as const
-    ).forEach(([key, data]) => this.segments.set(key, data as any));
+
     (
       [
         ["light", new QuadScalarVertexData()],

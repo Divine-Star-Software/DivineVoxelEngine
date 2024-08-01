@@ -51,18 +51,11 @@ export class DataTool extends DataToolBase {
 
   static VoxelDataToRaw(data: Partial<AddVoxelData>, light = 0): RawVoxelData {
     const id =
-      (data.id !== undefined &&
-        VoxelPaletteReader.id.getPaletteId(
-          data.id,
-          data.state ? data.state : 0
-        )) ||
+      (data.id !== undefined && VoxelPaletteReader.id.getPaletteId(data.id)) ||
       0;
     const secondaryId =
       (data.secondaryVoxelId !== undefined &&
-        VoxelPaletteReader.id.getPaletteId(
-          data.secondaryVoxelId,
-          data.secondaryState ? data.secondaryState : 0
-        )) ||
+        VoxelPaletteReader.id.getPaletteId(data.secondaryVoxelId)) ||
       0;
     let stateData = 0;
 
@@ -87,9 +80,7 @@ export class DataTool extends DataToolBase {
   data = {
     raw: <RawVoxelData>[0, 0, 0, 0],
     id: 0,
-    baseId: 0,
     secondaryId: 0,
-    secondaryBaseId: 0,
   };
   /**## secondary
    * If the data tool is processing secondary voxoels
@@ -113,9 +104,7 @@ export class DataTool extends DataToolBase {
       this.data.raw[i] = 0;
     }
     this.data.id = 0;
-    this.data.baseId = 0;
     this.data.secondaryId = 0;
-    this.data.secondaryBaseId = 0;
     return this;
   }
 
@@ -128,9 +117,9 @@ export class DataTool extends DataToolBase {
   setSecondary(enable: boolean) {
     this.__secondary = enable;
     if (enable) {
-      this.__struct.setIndex(VoxelStruct.voxelIndex[this.data.secondaryBaseId]);
+      this.__struct.setIndex(VoxelStruct.voxelIndex[this.data.secondaryId]);
     } else {
-      this.__struct.setIndex(VoxelStruct.voxelIndex[this.data.baseId]);
+      this.__struct.setIndex(VoxelStruct.voxelIndex[this.data.id]);
     }
     this._loadedId = this.getId(true);
     return this;
@@ -188,18 +177,17 @@ export class DataTool extends DataToolBase {
     if (!this.__struct) this.__struct = VoxelStruct.clone();
     this.data.id = this.data.raw[0];
     this.data.secondaryId = this.data.raw[3];
-    this.data.baseId = this._getBaseId(this.data.id);
+
     if (this.data.secondaryId > 1) {
-      this.data.secondaryBaseId = this._getBaseId(this.data.secondaryId);
+      this.data.id = this._getBaseId(this.data.secondaryId);
     } else {
-      this.data.secondaryBaseId = 0;
+      this.data.secondaryId = 0;
     }
-    this.__struct.setIndex(VoxelStruct.voxelIndex[this.data.baseId]);
+    this.__struct.setIndex(VoxelStruct.voxelIndex[this.data.id]);
     this._loadedId = this.getId(true);
   }
 
   loadIn() {
-
     if (this._mode == DataTool.Modes.WORLD) {
       if (!this._chunkTool.setLocation(this.location).loadIn()) return false;
 
@@ -315,7 +303,7 @@ export class DataTool extends DataToolBase {
     return this;
   }
   hasSecondaryVoxel() {
-    return this.data.secondaryBaseId > 1;
+    return this.data.secondaryId > 1;
   }
 
   //voxel data
@@ -382,12 +370,6 @@ export class DataTool extends DataToolBase {
     return this.__struct[VoxelTagIDs.checkCollisions] == 1;
   }
 
-  getState() {
-    if (this.__secondary) {
-      return this.data.secondaryId - this.data.secondaryBaseId;
-    }
-    return this.data.id - this.data.baseId;
-  }
   isRich() {
     const vID = this._loadedId;
     if (vID < 2) return 0;
@@ -415,10 +397,10 @@ export class DataTool extends DataToolBase {
   getId(base: boolean = false) {
     if (this.__secondary) {
       if (!base) return this.data.secondaryId;
-      return this.data.secondaryBaseId;
+      return this.data.secondaryId;
     }
     if (!base) return this.data.id;
-    return this.data.baseId;
+    return this.data.id;
   }
   setId(id: number) {
     if (this.__secondary) {
@@ -435,11 +417,18 @@ export class DataTool extends DataToolBase {
   }
   getStringId() {
     if (this.__secondary) {
-      return VoxelPaletteReader.id.stringFromNumber(this.data.secondaryBaseId);
+      return VoxelPaletteReader.id.stringFromNumber(this.data.secondaryId);
     }
-    return VoxelPaletteReader.id.stringFromNumber(this.data.baseId);
+    return VoxelPaletteReader.id.stringFromNumber(this.data.id);
   }
 
+  setName(name: string) {
+    this.setStringId(VoxelPaletteReader.name.getId(name));
+  }
+
+  getName() {
+    return this.getStringId();
+  }
   //util
   isRenderable() {
     if (this.data.id < 2 && this.data.secondaryId < 2) return false;

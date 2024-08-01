@@ -1,12 +1,10 @@
 import { Vector3Like, Vec2Array, Vec3Array } from "@amodx/math";
-import { VoxelShaderDataTool } from "../../Tools/Shaders/VoxelShaderData";
+import { VoxelShaderData } from "../../../Data/VoxelShaderData";
 import { VoxelMesherDataTool } from "../Tools/VoxelMesherDataTool";
 
 import { GeometryBuilder } from "@amodx/meshing/Geometry/GeometryBuilder";
 import { Quad } from "@amodx/meshing/Classes/Quad";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types";
-
-const faceData = new VoxelShaderDataTool();
 
 export class VoxelGeometry {
   static addTriangle(
@@ -23,29 +21,30 @@ export class VoxelGeometry {
       const attribute = tool.getAttribute("voxelData");
 
       attribute.push(
-        faceData
-          .setLight(worldLight.getVertex(1))
-          .setAO(worldAO.getVertex(1))
-          .setAnimation(0)
-          .getValue(),
-        faceData
-          .setLight(worldLight.getVertex(1))
-          .setAO(worldAO.getVertex(1))
-          .setAnimation(0)
-          .getValue(),
-        faceData
-          .setLight(worldLight.getVertex(1))
-          .setAO(worldAO.getVertex(1))
-          .setAnimation(0)
-          .getValue()
+        VoxelShaderData.createAttribute(
+          worldLight.vertices[1],
+          worldAO.vertices[1],
+          0
+        ),
+        VoxelShaderData.createAttribute(
+          worldLight.vertices[2],
+          worldAO.vertices[2],
+          0
+        ),
+        VoxelShaderData.createAttribute(
+          worldLight.vertices[3],
+          worldAO.vertices[3],
+          9
+        )
       );
     }
     {
-      const uvs = tool.getAttribute("cuv3");
+      const uvs = tool.getAttribute("uv");
       uvs.push(u1, v1, texture, u2, v2, texture, u3, v3, texture);
     }
     {
-      const uvs = tool.getAttribute("ocuv3");
+      const uvs = tool.getAttribute("textureIndex");
+
       uvs.push(
         //v1
         0,
@@ -92,35 +91,35 @@ export class VoxelGeometry {
     const texture = tool.getTexture();
     const overlayTextures = tool.getOverlayTextures();
     const attribute = tool.getAttribute("voxelData");
-    const uvs = tool.getAttribute("cuv3");
-    const oUVs = tool.getAttribute("ocuv3");
+    const uvs = tool.getAttribute("uv");
+    const textureIndex = tool.getAttribute("textureIndex");
     const colors = tool.getAttribute("colors");
 
     let sides = quad.doubleSided ? 2 : 1;
 
     let attrIndex = attribute.length;
     let uvIndex = uvs.length;
-    let oUVIndex = oUVs.length;
+    let textureIndexIndex = textureIndex.length;
     let colorIndex = colors.length;
 
     while (sides--) {
       if (!quad.flip) {
-        attribute[attrIndex++] = faceData.createAttribute(
+        attribute[attrIndex++] = VoxelShaderData.createAttribute(
           worldLight.vertices[QuadVerticies.TopRight],
           worldAO.vertices[QuadVerticies.TopRight],
           animData.vertices[QuadVerticies.TopRight]
         );
-        attribute[attrIndex++] = faceData.createAttribute(
+        attribute[attrIndex++] = VoxelShaderData.createAttribute(
           worldLight.vertices[QuadVerticies.TopLeft],
           worldAO.vertices[QuadVerticies.TopLeft],
           animData.vertices[QuadVerticies.TopLeft]
         );
-        attribute[attrIndex++] = faceData.createAttribute(
+        attribute[attrIndex++] = VoxelShaderData.createAttribute(
           worldLight.vertices[QuadVerticies.BottomLeft],
           worldAO.vertices[QuadVerticies.BottomLeft],
           animData.vertices[QuadVerticies.BottomLeft]
         );
-        attribute[attrIndex++] = faceData.createAttribute(
+        attribute[attrIndex++] = VoxelShaderData.createAttribute(
           worldLight.vertices[QuadVerticies.BottomRight],
           worldAO.vertices[QuadVerticies.BottomRight],
           animData.vertices[QuadVerticies.BottomRight]
@@ -128,54 +127,29 @@ export class VoxelGeometry {
 
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.TopRight].x;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.TopRight].y;
-        uvs[uvIndex++] = texture;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.TopLeft].x;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.TopLeft].y;
-        uvs[uvIndex++] = texture;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.BottomLeft].x;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.BottomLeft].y;
-        uvs[uvIndex++] = texture;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.BottomRight].x;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.BottomRight].y;
-        uvs[uvIndex++] = texture;
-
-        //1
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopRight];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopLeft];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
-        //2
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopRight];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopLeft];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
-        //3
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopRight];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopLeft];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
-        //4
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopRight];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopLeft];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
       } else {
-        attribute[attrIndex++] = faceData.createAttribute(
+        attribute[attrIndex++] = VoxelShaderData.createAttribute(
           worldLight.vertices[QuadVerticies.TopLeft],
           worldAO.vertices[QuadVerticies.TopLeft],
           animData.vertices[QuadVerticies.TopLeft]
         );
-        attribute[attrIndex++] = faceData.createAttribute(
+        attribute[attrIndex++] = VoxelShaderData.createAttribute(
           worldLight.vertices[QuadVerticies.TopRight],
           worldAO.vertices[QuadVerticies.TopRight],
           animData.vertices[QuadVerticies.TopRight]
         );
-        attribute[attrIndex++] = faceData.createAttribute(
+        attribute[attrIndex++] = VoxelShaderData.createAttribute(
           worldLight.vertices[QuadVerticies.BottomRight],
           worldAO.vertices[QuadVerticies.BottomRight],
           animData.vertices[QuadVerticies.BottomRight]
         );
-        attribute[attrIndex++] = faceData.createAttribute(
+        attribute[attrIndex++] = VoxelShaderData.createAttribute(
           worldLight.vertices[QuadVerticies.BottomLeft],
           worldAO.vertices[QuadVerticies.BottomLeft],
           animData.vertices[QuadVerticies.BottomLeft]
@@ -183,38 +157,66 @@ export class VoxelGeometry {
 
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.TopLeft].x;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.TopLeft].y;
-        uvs[uvIndex++] = texture;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.TopRight].x;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.TopRight].y;
-        uvs[uvIndex++] = texture;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.BottomRight].x;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.BottomRight].y;
-        uvs[uvIndex++] = texture;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.BottomLeft].x;
         uvs[uvIndex++] = quad.uvs.vertices[QuadVerticies.BottomLeft].y;
-        uvs[uvIndex++] = texture;
-
-        //1
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopLeft];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopRight];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
-        //2
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopLeft];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopRight];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
-        //3
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopLeft];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopRight];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
-        //4
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopLeft];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.TopRight];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomRight];
-        oUVs[oUVIndex++] = overlayTextures.vertices[QuadVerticies.BottomLeft];
       }
+
+      //1
+      textureIndex[textureIndexIndex++] = VoxelShaderData.createTextureIndex(
+        texture,
+        overlayTextures.vertices[QuadVerticies.TopRight]
+      );
+      textureIndex[textureIndexIndex++] = VoxelShaderData.createTextureIndex(
+        overlayTextures.vertices[QuadVerticies.TopLeft],
+        overlayTextures.vertices[QuadVerticies.BottomLeft]
+      );
+      textureIndex[textureIndexIndex++] = VoxelShaderData.createTextureIndex(
+        overlayTextures.vertices[QuadVerticies.BottomRight],
+        0
+      );
+      //2
+      textureIndex[textureIndexIndex++] = VoxelShaderData.createTextureIndex(
+        texture,
+        overlayTextures.vertices[QuadVerticies.TopRight]
+      );
+      textureIndex[textureIndexIndex++] = VoxelShaderData.createTextureIndex(
+        overlayTextures.vertices[QuadVerticies.TopLeft],
+        overlayTextures.vertices[QuadVerticies.BottomLeft]
+      );
+      textureIndex[textureIndexIndex++] = VoxelShaderData.createTextureIndex(
+        overlayTextures.vertices[QuadVerticies.BottomRight],
+        0
+      );
+      //3
+      textureIndex[textureIndexIndex++] = VoxelShaderData.createTextureIndex(
+        texture,
+        overlayTextures.vertices[QuadVerticies.TopRight]
+      );
+      textureIndex[textureIndexIndex++] = VoxelShaderData.createTextureIndex(
+        overlayTextures.vertices[QuadVerticies.TopLeft],
+        overlayTextures.vertices[QuadVerticies.BottomLeft]
+      );
+      textureIndex[textureIndexIndex++] = VoxelShaderData.createTextureIndex(
+        overlayTextures.vertices[QuadVerticies.BottomRight],
+        0
+      );
+      //4
+      textureIndex[textureIndexIndex++] = VoxelShaderData.createTextureIndex(
+        texture,
+        overlayTextures.vertices[QuadVerticies.TopRight]
+      );
+      textureIndex[textureIndexIndex++] = VoxelShaderData.createTextureIndex(
+        overlayTextures.vertices[QuadVerticies.TopLeft],
+        overlayTextures.vertices[QuadVerticies.BottomLeft]
+      );
+      textureIndex[textureIndexIndex++] = VoxelShaderData.createTextureIndex(
+        overlayTextures.vertices[QuadVerticies.BottomRight],
+        0
+      );
 
       for (let i = 0; i < 4; i++) {
         colors[colorIndex++] = 0;
@@ -225,7 +227,7 @@ export class VoxelGeometry {
 
     attribute.length = attrIndex;
     uvs.length = uvIndex;
-    oUVs.length = oUVIndex;
+    textureIndex.length = textureIndexIndex;
     colors.length = colorIndex;
   }
 }

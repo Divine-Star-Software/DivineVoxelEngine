@@ -17,7 +17,8 @@ import { DVEBabylonRenderer } from "../../../DVEBabylonRenderer.js";
 import { AddVoxelData } from "@divinevoxel/foundation/Data/Types/WorldData.types";
 
 import type { Mesh } from "@babylonjs/core";
-import { LocationData, Vec3Array } from "@divinevoxel/core/Math/index.js";
+import { LocationData } from "@divinevoxel/core/Math/index.js";
+import {  Vec3Array } from "@amodx/math";
 
 export class NodeMeshTool {
   dimension = "main";
@@ -86,7 +87,7 @@ export class NodeMeshTool {
     ) => {
       return new Promise<Mesh | false>((resolve) => {
         this.texture.buildMesh(
-          [this.dimension, ...location],
+          [this.dimension, ...location] as LocationData,
           textureIdData,
           textureData,
           (data) => {
@@ -103,7 +104,7 @@ export class NodeMeshTool {
       onDone: (mesh: EntityTool | false) => void
     ) => {
       this.texture.buildMesh(
-        [this.dimension, ...location],
+        [this.dimension, ...location] as LocationData,
         textureIdData,
         textureData,
         (mesh) => {
@@ -139,7 +140,7 @@ export class NodeMeshTool {
 
       DVER.instance.core.threads.construcotrs.runPromiseTasks<BuildNodeMesh>(
         "build-node-mesh",
-        [[this.dimension, ...location], "#dve_node_voxel", voxelData],
+        [[this.dimension, ...location] as LocationData, "#dve_node_voxel", voxelData],
         [],
         (data: SetNodeMesh | false) => {
           if (!data) return onDone(false);

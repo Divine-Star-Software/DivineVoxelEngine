@@ -5,7 +5,8 @@ export function RegisterFragmentSnippets(builder: typeof URIShaderBuilder) {
   body: {
    GLSL: () => /* glsl */`
   vec4 rgb = getBaseColor(vec2(0.,0.));
- // rgb = vec4(1.,1.,1.,1.);
+
+
   rgb = getColor(rgb);
   rgb = getAO(rgb);
   vec4 mixLight = getLight(rgb);
@@ -13,14 +14,11 @@ export function RegisterFragmentSnippets(builder: typeof URIShaderBuilder) {
 
   FragColor = vec4(finalColor.rgb , rgb.a );
 
-
-
-  if (FragColor.a < 0.05) { 
+  if (FragColor.a < 0.5) { 
     discard;
   }
-  #ifdef INSTANCES
-  FragColor = vec4(1.,1.,1.,1.);
-  #endif     
+
+
   `,
   },
  });

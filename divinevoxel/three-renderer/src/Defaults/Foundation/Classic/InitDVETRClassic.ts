@@ -64,7 +64,7 @@ export default function InitDVEBRClassic(initData: DVEBRClassicData) {
         alphaBlending: id == "#dve_liquid" ? true : false,
         alphaTesting: true,
         backFaceCulling: id == "#dve_liquid" ? false : true,
-        mipMapBias: id == "#dve_flora" ? -5 : 0,
+        mipMapBias:  0,
       },
       textureType: id,
       shaderId: createVoxelShader(id),

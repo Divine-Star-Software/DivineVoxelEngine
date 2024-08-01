@@ -15,6 +15,7 @@ import { VoxelShapeManager } from "../../VoxelShapeManager.js";
 import { Quad } from "@amodx/meshing/Classes/Quad.js";
 import { StairOverrides } from "../Stairs/StairOverrides.js";
 import { PanelVoxelShape } from "../Panel/Panel.voxel.shape.js";
+import { VoxelShaderData } from "../../../../../Data/VoxelShaderData.js";
 
 const animationState = new QuadScalarVertexData();
 const uvs: QuadUVData = [
@@ -23,7 +24,6 @@ const uvs: QuadUVData = [
   [0, 0],
   [1, 0],
 ];
-
 
 const Quads: Record<DirectionNames, Quad> = {
   top: Quad.Create(
@@ -149,26 +149,56 @@ class BoxVoxelShapeClass extends VoxelShapeBase {
   add = {
     top() {
       Quads.top.flip = ShapeTool.data.isFaceFlipped();
+      if (ShapeTool.data.voxel.getSubstnaceData().isWindAffected()) {
+        ShapeTool.data
+          .getAnimationData()
+          .setAll(VoxelShaderData.AnimationStates.WindAffected.Box);
+      }
       VoxelGeometry.addQuad(ShapeTool.data, ShapeTool.origin, Quads.top);
     },
     bottom() {
       Quads.bottom.flip = ShapeTool.data.isFaceFlipped();
+      if (ShapeTool.data.voxel.getSubstnaceData().isWindAffected()) {
+        ShapeTool.data
+          .getAnimationData()
+          .setAll(VoxelShaderData.AnimationStates.WindAffected.Box);
+      }
       VoxelGeometry.addQuad(ShapeTool.data, ShapeTool.origin, Quads.bottom);
     },
     north() {
       Quads.north.flip = ShapeTool.data.isFaceFlipped();
+      if (ShapeTool.data.voxel.getSubstnaceData().isWindAffected()) {
+        ShapeTool.data
+          .getAnimationData()
+          .setAll(VoxelShaderData.AnimationStates.WindAffected.Box);
+      }
       VoxelGeometry.addQuad(ShapeTool.data, ShapeTool.origin, Quads.north);
     },
     south() {
       Quads.south.flip = ShapeTool.data.isFaceFlipped();
+      if (ShapeTool.data.voxel.getSubstnaceData().isWindAffected()) {
+        ShapeTool.data
+          .getAnimationData()
+          .setAll(VoxelShaderData.AnimationStates.WindAffected.Box);
+      }
       VoxelGeometry.addQuad(ShapeTool.data, ShapeTool.origin, Quads.south);
     },
     east() {
       Quads.east.flip = ShapeTool.data.isFaceFlipped();
+      if (ShapeTool.data.voxel.getSubstnaceData().isWindAffected()) {
+        ShapeTool.data
+          .getAnimationData()
+          .setAll(VoxelShaderData.AnimationStates.WindAffected.Box);
+      }
       VoxelGeometry.addQuad(ShapeTool.data, ShapeTool.origin, Quads.east);
     },
     west() {
       Quads.west.flip = ShapeTool.data.isFaceFlipped();
+      if (ShapeTool.data.voxel.getSubstnaceData().isWindAffected()) {
+        ShapeTool.data
+          .getAnimationData()
+          .setAll(VoxelShaderData.AnimationStates.WindAffected.Box);
+      }
       VoxelGeometry.addQuad(ShapeTool.data, ShapeTool.origin, Quads.west);
     },
   };

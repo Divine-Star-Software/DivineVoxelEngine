@@ -1,4 +1,4 @@
-import type { LocationData } from "@divinevoxel/core/Math";;
+import type { LocationData } from "@divinevoxel/core/Math";
 
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces.js";
 import { BrushTool } from "../Tools/Brush/Brush";

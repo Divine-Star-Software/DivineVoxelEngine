@@ -26,7 +26,13 @@ import { Column, ColumnData } from "../../../Data/World/Classes/Column.js";
 import { Chunk } from "../../../Data/World/Classes/Chunk.js";
 
 export class WorldTasks {
+  private columnTool = new ColumnDataTool();
   constructor(public DVEW: DVEFWorldCore) {}
+
+  getLocation(column: ColumnData) {
+    return this.columnTool.setColumn(new Column(column)).getLocationData();
+  }
+
   loadColumn(location: LocationData, column: ColumnData) {
     WorldRegister.instance.column.add(location, column);
     DVEFDataSync.instance.worldData.column.sync(location);

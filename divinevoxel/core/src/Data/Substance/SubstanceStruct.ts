@@ -15,6 +15,8 @@ export interface SubstanceStruct {
   [SubstanceTagIds.flowRate]: number;
   [SubstanceTagIds.culledSubstnaces]: number;
   [SubstanceTagIds.cullDense]: number;
+  [SubstanceTagIds.isWindAffected]: number;
+  [SubstanceTagIds.isBackFaceCulled]: number;
 }
 
 const remote = new RemoteBinaryStruct("voxel-data");

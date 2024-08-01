@@ -4,6 +4,7 @@ import { EngineSettings } from "@divinevoxel/core/Data/Settings/EngineSettings.j
 
 export async function FlowUpdate(tasks: FlowTaskRequests, rebuild = true) {
   const [dimension, x, y, z] = tasks.origin;
+  FM.setDimension(dimension);
   const vox = FM.getVoxel(x, y, z);
   if (!vox) return;
   const flowRate = vox.getSubstnaceData().getFlowRate();
@@ -21,7 +22,6 @@ export async function FlowUpdate(tasks: FlowTaskRequests, rebuild = true) {
     }
   }
 }
-
 function RunFlowPropagation(tasks: FlowTaskRequests, vox: string) {
   const que = tasks.queues.flow.update.queue;
   const noRemoveMap = tasks.queues.flow.remove.noRemoveMap;
@@ -35,41 +35,41 @@ function RunFlowPropagation(tasks: FlowTaskRequests, vox: string) {
     noRemoveMap.add(x, y, z);
     if (FM.canFlowOutwardTest(vox, x, y, z)) {
       const n1 = FM.getLevel(vox, x + 1, y, z);
-      if (n1 < l && n1 >= 0) {
+      if (n1 + 1 < l && n1 >= 0) {
         let n1l = l - 1;
         que.push([x + 1, y, z, n1l, 0]);
       }
 
       const n2 = FM.getLevel(vox, x - 1, y, z);
 
-      if (n2 < l && n2 >= 0) {
+      if (n2 + 1 < l && n2 >= 0) {
         let n2l = l - 1;
         que.push([x - 1, y, z, n2l, 0]);
       }
 
       const n3 = FM.getLevel(vox, x, y, z + 1);
-      if (n3 < l && n3 >= 0) {
+      if (n3 + 1 < l && n3 >= 0) {
         let n3l = l - 1;
         que.push([x, y, z + 1, n3l, 0]);
       }
 
       const n4 = FM.getLevel(vox, x, y, z - 1);
-      if (n4 < l && n4 >= 0) {
+      if (n4 + 1 < l && n4 >= 0) {
         let n4l = l - 1;
         que.push([x, y, z - 1, n4l, 0]);
       }
     }
 
     const n5 = FM.getLevel(vox, x, y - 1, z);
-    const n6 = FM.getLevel(vox, x, y - 2, z);
-
-    if (n5 < 0) continue;
-    if (n6 < 0) {
-      que.push([x, y - 1, z, 7, 0]);
-      continue;
+    if (n5 <= l && n5 >= 0) {
+      let state = 1;
+      let level = 7;
+      if (l <= 0 && s != 1) {
+        state = 0;
+        level = l - 2;
+      }
+      que.push([x, y - 1, z, level, state]);
     }
-
-    que.push([x, y - 1, z, 7, 1]);
   }
 }
 

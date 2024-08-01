@@ -1,6 +1,6 @@
 {
  "name": "@divinevoxel/foundation",
- "version": "0.0.52",
+ "version": "0.0.53",
  "description": "Default shaders for DVE.",
  "main": "index.js",
  "types": "index.d.ts",
@@ -22,7 +22,7 @@
  },
  "dependencies": {
   "@amodx/uri": "^0.0.0",
-  "@divinevoxel/core": "^0.0.55"
+  "@divinevoxel/core": "^0.0.56"
  },
  "publishConfig": {
   "access": "public"

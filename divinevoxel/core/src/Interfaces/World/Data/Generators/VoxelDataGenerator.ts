@@ -8,43 +8,25 @@ import { VoxelStruct } from "../../../../Data/Voxel/VoxelStruct.js";
 import { VoxelManager } from "../Managers/DataManagers.js";
 import { BinaryStruct } from "@amodx/binary";
 import { SubstanceDataGenerator } from "./SubstanceDataGenerator.js";
-class GenVoxelPalette {
-  _count = 0;
-  _palette: VoxelPalette = [];
-  _map: Record<string, number> = {};
-
-  registerVoxel(voxel: VoxelData) {
-    this._palette[this._count] = voxel.id;
-    this._map[voxel.id] = this._count;
-    if (voxel.states) {
-      for (let i = this._count; i <= this._count + voxel.states; i++) {
-        this._palette[i] = voxel.id;
-      }
-      this._count += voxel.states;
-    }
-    this._count++;
-  }
-
-  get() {
-    return this._palette;
-  }
-  getMap() {
-    return this._map;
-  }
-}
+import { StringPalette } from "../../../../Interfaces/Data/StringPalette.js";
 
 export class VoxelDataGenerator {
   static overrides = new Map<
     string,
     (tags: BinaryStruct, value: unknown, id: string) => void
   >();
-
+  static nameToIdMap: Record<string, string> = {};
+  static idToNameMap: Record<string, string> = {};
   static generate() {
+    this.nameToIdMap = {};
+    this.idToNameMap = {};
     //build palette
     for (const [key, voxel] of VoxelManager.data) {
-      this.palette.registerVoxel(voxel);
+      this.palette.register(voxel.id);
+      this.nameToIdMap[voxel.name || voxel.id] = voxel.id;
+      this.idToNameMap[voxel.id] = voxel.name || voxel.id;
     }
-    VoxelPaletteReader.setVoxelPalette(
+    VoxelPaletteReader.setVoxelIdPalette(
       this.palette._palette,
       this.palette._map
     );
@@ -96,7 +78,7 @@ export class VoxelDataGenerator {
     VoxelStruct.instance.setBuffer(buffer);
   }
 
-  static palette = new GenVoxelPalette();
+  static palette = new StringPalette();
 }
 
 VoxelDataGenerator.overrides.set(VoxelTagIDs.substance, (tags, value, id) => {

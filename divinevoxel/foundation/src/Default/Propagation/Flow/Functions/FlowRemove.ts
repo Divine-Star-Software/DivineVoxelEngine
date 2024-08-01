@@ -32,6 +32,7 @@ function RunRemoveCheck(tasks: FlowTaskRequests, vox: string) {
 
 export async function FlowRemove(tasks: FlowTaskRequests) {
   const [dimension, x, y, z] = tasks.origin;
+  FM.setDimension(dimension);
   const vox = FM.getVoxel(x, y, z);
   if (!vox) return;
   const voxId = vox.getStringId();
@@ -55,73 +56,82 @@ function RunRemovePropagation(tasks: FlowTaskRequests, vox: string) {
   const map = tasks.queues.flow.update.map;
   const noRemoveMap = tasks.queues.flow.remove.noRemoveMap;
   for (let i = 0; i < removeQ.length; i++) {
-    const node = removeQ[i];
-    const x = node[0];
-    const y = node[1];
-    const z = node[2];
-    const l = FM.getLevel(vox, x, y, z);
-    const s = FM.getLevelState(vox, x, y, z);
-    map.add(x, y, z);
-    if (noRemoveMap.inMap(x, y, z)) continue;
-
-    n1t: if (!map.inMap(x + 1, y, z)) {
-      const n1 = FM.getLevel(vox, x + 1, y, z);
-      const n1s = FM.getLevelState(vox, x + 1, y, z);
-
-      if (n1 > -1 && n1 < l) {
-        removeQ.push([x + 1, y, z]);
-      }
-      if (n1 > l) {
-        updateQ.push([x + 1, y, z]);
-      }
+   const node = removeQ[i];
+   const x = node[0];
+   const y = node[1];
+   const z = node[2];
+   const l = FM.getLevel(vox, x, y, z);
+   const s = FM.getLevelState(vox, x, y, z);
+   map.add(x, y, z);
+   if (noRemoveMap.inMap(x, y, z)) continue;
+ 
+   n1t: if (!map.inMap(x + 1, y, z)) {
+    const n1 = FM.getLevel(vox, x + 1, y, z);
+    const n1s = FM.getLevelState(vox, x + 1, y, z);
+    if (n1 <= 0 || n1s == 1) break n1t;
+    if (n1 < l && l > 0 && n1 > 0) {
+     removeQ.push([x + 1, y, z]);
     }
-    n2t: if (!map.inMap(x - 1, y, z)) {
-      const n2 = FM.getLevel(vox, x - 1, y, z);
-      const n2s = FM.getLevelState(vox, x - 1, y, z);
-
-      if (n2 > -1 && n2 < l) {
-        removeQ.push([x - 1, y, z]);
-      }
-      if (n2 > l) {
-        updateQ.push([x - 1, y, z]);
-      }
+    if (n1 > l) {
+     updateQ.push([x + 1, y, z]);
     }
-    n3t: if (!map.inMap(x, y, z + 1)) {
-      const n3 = FM.getLevel(vox, x, y, z + 1);
-      const n3s = FM.getLevelState(vox, x, y, z + 1);
-
-      if (n3 > -1 && n3 < l) {
-        removeQ.push([x, y, z + 1]);
-      }
-      if (n3 > l) {
-        updateQ.push([x, y, z + 1]);
-      }
+   }
+   n2t: if (!map.inMap(x - 1, y, z)) {
+    const n2 = FM.getLevel(vox, x - 1, y, z);
+    const n2s = FM.getLevelState(vox, x - 1, y, z);
+    if (n2 <= 0 || n2s == 1) break n2t;
+    if (n2 < l && l > 0 && n2 > 0) {
+     removeQ.push([x - 1, y, z]);
     }
-
-    n4t: if (!map.inMap(x, y, z - 1)) {
-      const n4 = FM.getLevel(vox, x, y, z - 1);
-      const n4s = FM.getLevelState(vox, x, y, z - 1);
-
-      if (n4 > -1 && n4 < l) {
-        removeQ.push([x, y, z - 1]);
-      }
-      if (n4 > l) {
-        updateQ.push([x, y, z - 1]);
-      }
+    if (n2 > l) {
+     updateQ.push([x - 1, y, z]);
     }
-
-    if (!map.inMap(x, y - 1, z)) {
-      const n5 = FM.getLevel(vox, x, y - 1, z);
-      const n5s = FM.getLevelState(vox, x, y - 1, z);
-
-      if (n5s == 1 && l <= 0) {
-        removeQ.push([x, y - 1, z]);
-      }
+   }
+   n3t: if (!map.inMap(x, y, z + 1)) {
+    const n3 = FM.getLevel(vox, x, y, z + 1);
+    const n3s = FM.getLevelState(vox, x, y, z + 1);
+    if (n3 <= 0 || n3s == 1) break n3t;
+    if (n3 < l && l > 0 && n3 > 0) {
+     removeQ.push([x, y, z + 1]);
     }
+    if (n3 > l) {
+     updateQ.push([x, y, z + 1]);
+    }
+   }
+ 
+   n4t: if (!map.inMap(x, y, z - 1)) {
+    const n4 = FM.getLevel(vox, x, y, z - 1);
+    const n4s = FM.getLevelState(vox, x, y, z - 1);
+    if (n4 <= 0 || n4s == 1) break n4t;
+    if (n4 < l && l > 0 && n4 > 0) {
+     removeQ.push([x, y, z - 1]);
+    }
+    if (n4 > l) {
+     updateQ.push([x, y, z - 1]);
+    }
+   }
+ 
+   
+   if (!map.inMap(x, y - 1, z)) {
+    const n5 = FM.getLevel(vox, x, y - 1, z);
+    if (n5 < 0) continue;
+    const n5s = FM.getLevelState(vox, x, y - 1, z);
+    let add = false;
+    if (s == 1 && n5s == 1) {
+     if (l <= 1) {
+      add = true;
+     }
+    }
+    if (s == 0 && l <= 1) {
+     add = true;
+    }
+    if (add) {
+     removeQ.push([x, y - 1, z]);
+    }
+   }
   }
   map.clear();
-}
-
+ }
 function RunFlowReduce(tasks: FlowTaskRequests, vox: string) {
   const queue = tasks.queues.flow.remove.queue;
   const map = tasks.queues.flow.remove.map;

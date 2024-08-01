@@ -24,8 +24,8 @@ class TextureSegment {
   varyingID = "";
   animationUniforID = "";
   animationUniform: Float32Array = new Float32Array();
-  paths: Map<string, false | Uint8ClampedArray> = new Map();
-  shaderTexture: URITexture<any, any>|null = null;
+  paths: Map<string, Uint8ClampedArray | string | false> = new Map();
+  shaderTexture: URITexture<any, any> | null = null;
   textureID = "";
   constructor(
     public parentID: string,
@@ -56,7 +56,7 @@ class TextureSegment {
   flush() {
     this.clearData();
     this.shaderTexture?.dispose();
-    this.shaderTexture =  null;
+    this.shaderTexture = null;
     this.animations = [];
     this.animationTimes = [];
     this.animationsMap = [];
@@ -71,9 +71,14 @@ export class TextureType {
   materials: Map<string, URIMaterial> = new Map();
   shader: URIShader;
   constructor(public id: string) {
-    const main = new TextureSegment(id, "main", "sampler", "cuv3");
-    const overlay = new TextureSegment(id, "overlay", "overlay", "ocuv3");
-    
+    const main = new TextureSegment(id, "main", "sampler", "textureIndex");
+    const overlay = new TextureSegment(
+      id,
+      "overlay",
+      "overlay",
+      "textureIndex"
+    );
+
     this.segments = new Map([
       ["main", main],
       ["overlay", overlay],
@@ -159,7 +164,7 @@ export class TextureType {
 
   addToMaterial(material: URIMaterial) {
     for (const [key, segment] of this.segments) {
-      if(!segment.shaderTexture) continue;
+      if (!segment.shaderTexture) continue;
       material.setTexture(segment.textureID, segment.shaderTexture);
       material.setNumberArray(
         segment.animationUniforID,
@@ -207,7 +212,7 @@ export class TextureType {
 
   _processVariations(
     textureData: TextureData,
-    paths: Map<string, Uint8ClampedArray | false>,
+    paths: Map<string, Uint8ClampedArray | string | false>,
     map: Record<string, number>,
     animations: number[][],
     textureAnimatioTimes: number[][],
@@ -221,9 +226,12 @@ export class TextureType {
         map[`${textureData.id}:${varation}`] = count;
 
         const assetPath = this._getPath(textureData, varation, extension);
-        let raw: Uint8ClampedArray | false = false;
-        if (data.rawData && !Array.isArray(raw)) {
+        let raw: Uint8ClampedArray | string | false = false;
+        if (data.rawData && !Array.isArray(data.rawData)) {
           raw = <Uint8ClampedArray>data.rawData;
+        }
+        if (data.base64 && !Array.isArray(data.base64)) {
+          raw = data.base64;
         }
         paths.set(assetPath, raw);
         count++;
@@ -232,7 +240,7 @@ export class TextureType {
           throw new Error(
             "Texture Varation must have supplied animKeys if frames are greater than 0."
           );
-        const rawData = data.rawData;
+
         for (let i = 1; i <= data.frames; i++) {
           map[`${textureData.id}:${varation}-${i}`] = count;
           const assetPath = this._getPath(
@@ -240,9 +248,12 @@ export class TextureType {
             `${varation}-${i}`,
             extension
           );
-          let raw: Uint8ClampedArray | false = false;
-          if (rawData) {
-            raw = <Uint8ClampedArray>rawData[i - 1];
+          let raw: Uint8ClampedArray | string | false = false;
+          if (data.rawData) {
+            raw = <Uint8ClampedArray>data.rawData[i - 1];
+          }
+          if (data.base64) {
+            raw = data.base64[i - 1];
           }
           paths.set(assetPath, raw);
           count++;
@@ -291,9 +302,12 @@ export class TextureType {
         if (textureData.frames == 0) {
           segment.textureIndex[`${textureData.id}`] = count;
           const assetPath = this._getPath(textureData, "default", extension);
-          let raw: Uint8ClampedArray | false = false;
+          let raw: Uint8ClampedArray | string | false = false;
           if (textureData.rawData && !Array.isArray(raw)) {
             raw = <Uint8ClampedArray>textureData.rawData;
+          }
+          if (textureData.base64 && !Array.isArray(textureData.base64)) {
+            raw = textureData.base64;
           }
           paths.set(assetPath, raw);
           count++;
@@ -319,9 +333,12 @@ export class TextureType {
               `default-${i}`,
               extension
             );
-            let raw: Uint8ClampedArray | false = false;
+            let raw: Uint8ClampedArray | string | false = false;
             if (rawData) {
               raw = <Uint8ClampedArray>rawData[i - 1];
+            }
+            if (textureData.base64) {
+              raw = textureData.base64[i - 1];
             }
             paths.set(assetPath, raw);
             count++;

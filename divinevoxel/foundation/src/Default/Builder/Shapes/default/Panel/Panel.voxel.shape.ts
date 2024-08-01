@@ -1,13 +1,11 @@
-import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
 import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
-
 import { ShapeTool } from "../../ShapeTool.js";
 import { VoxelShapeBase } from "../../VoxelShapeBase.js";
 import { QuadUVData } from "@amodx/meshing/Geometry.types.js";
 import { Quad } from "@amodx/meshing/Classes/Quad.js";
-import { DirectionNames } from "@divinevoxel/core";
 import { VoxelGeometry } from "../../../Geometry/VoxelGeometry.js";
-const animationState = new QuadScalarVertexData();
+import { VoxelShaderData } from "../../../../../Data/VoxelShaderData.js";
+import { PanelStates } from "./PanelStates.js";
 
 const uvs: QuadUVData = [
   [1, 1],
@@ -16,16 +14,8 @@ const uvs: QuadUVData = [
   [1, 0],
 ];
 
-enum PanelStates {
-  South,
-  North,
-  East,
-  West,
-  Bottom,
-  Top,
-}
 const near = 0.05;
-const far = 0.95;
+const far = 0.85;
 const QuadsPanel: Record<number, Quad> = {
   [PanelStates.South]: Quad.Create(
     [
@@ -86,11 +76,11 @@ const QuadsPanel: Record<number, Quad> = {
 class PanelVoxelShapeClass extends VoxelShapeBase {
   id = "#dve_panel";
   init() {
+
     OverrideManager.FaceExposedShapeCheck.register(
       this.numberId,
       OverrideManager.ANY,
       (data) => {
-
         if (data.currentVoxel.getSubstanceStringId() == "#dve_flora") {
           return false;
         }
@@ -99,14 +89,19 @@ class PanelVoxelShapeClass extends VoxelShapeBase {
     );
   }
   build() {
-    animationState.setAll(0);
-
-    if (ShapeTool.data.voxel.getSubstanceStringId() == "#dve_flora") {
-      animationState.setAll(2);
+    let doubleSided = true;
+    if (ShapeTool.data.voxel.getSubstnaceData().isWindAffected()) {
+      ShapeTool.data
+        .getAnimationData()
+        .setAll(VoxelShaderData.AnimationStates.WindAffected.Panel);
     }
 
+    if (ShapeTool.data.voxel.getSubstnaceData().isBackFaceCulled()) {
+      doubleSided = false;
+    }
     const quad = QuadsPanel[ShapeTool.data.voxel.getShapeState()];
     quad.flip = ShapeTool.data.isFaceFlipped();
+    quad.doubleSided = doubleSided;
     VoxelGeometry.addQuad(ShapeTool.data, ShapeTool.origin, quad);
   }
 }

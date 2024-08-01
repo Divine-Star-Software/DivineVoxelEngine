@@ -42,7 +42,7 @@ export function RegisterFogShaders(builder: typeof URIShaderBuilder) {
   body: {
    GLSL: () => /* glsl */`
    float fogDensity = fogOptions.y;
-   float fogTime = time * .5;
+   float fogTime = time * .01;
    vec3 fogOrigin = cameraPOS;
    vec3 fogDirection = normalize(worldPOS - fogOrigin);
    float fogDepth = vDistance;

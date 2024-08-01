@@ -46,7 +46,10 @@ export function RegisterFragFunctions(builder: typeof URIShaderBuilder) {
     arguments: {},
     body: {
       GLSL: () => /* glsl */ `
-return base * VOXEL[0]; `,
+//vec4 newBase = vec4(pow(base.r, 2.2),pow(base.g, 2.2),pow(base.b, 2.2),base.a) *  VOXEL[0];
+//return vec4(pow(newBase.r, 1.0/2.2 ),pow(newBase.g, 1.0/2.2 ),pow(newBase.b, 1.0/2.2),base.a); 
+return base *  VOXEL[0];
+`,
     },
   });
   builder.functions.create("doFog", {
@@ -81,7 +84,7 @@ return base * VOXEL[0]; `,
     body: {
       GLSL: () => /* glsl */ `
 
-     return  texture(tex, vec3(UV.x,UV.y,index), mipMapBias + bias );
+     return  texture(tex, vec3(UV.x,UV.y,index),mipMapBias + bias);
   `,
     },
   });
@@ -104,16 +107,16 @@ return base * VOXEL[0]; `,
       vec4 oRGB2 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.y,-10.);
       vec4 oRGB3 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.z,-10.);
       vec4 oRGB4 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.w,-10.);
-      if(oRGB1.a > 0.3) {
+      if(oRGB1.a > 0.5) {
          rgb = oRGB1;
       }
-      if(oRGB2.a > 0.3) {
+      if(oRGB2.a > 0.5) {
          rgb = oRGB2;
       }
-      if(oRGB3.a > 0.3) {
+      if(oRGB3.a > 0.5) {
          rgb = oRGB3;
       }
-      if(oRGB4.a > 0.3) {
+      if(oRGB4.a > 0.5) {
          rgb = oRGB4;
       }
    
@@ -122,7 +125,9 @@ return base * VOXEL[0]; `,
     },
   });
   builder.functions.create("getMainColor", {
-    inputs: [],
+    inputs: [
+      ["bias", "float"],
+    ],
     output: "vec4",
     arguments: {
       textureID: "voxelTexture",
@@ -131,7 +136,7 @@ return base * VOXEL[0]; `,
     body: {
       GLSL: (args) => /* glsl */ `
  
-    vec4 rgb = getBase(${args.textureID},${args.mainVarying}.xy,${args.mainVarying}.z,0.);
+    vec4 rgb = getBase(${args.textureID},${args.mainVarying}.xy,${args.mainVarying}.z,bias);
     if (rgb.a < 0.85) { 
       return vec4(0.,0.,0.,0.);
    }

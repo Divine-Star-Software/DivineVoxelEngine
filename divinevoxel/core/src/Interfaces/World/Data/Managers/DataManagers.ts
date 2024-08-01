@@ -95,6 +95,8 @@ SubstanceManager.registerData([
       [SubstanceTagIds.flowRate, 0],
       [SubstanceTagIds.culledSubstnaces, []],
       [SubstanceTagIds.cullDense, true],
+      [SubstanceTagIds.isWindAffected, true],
+      [SubstanceTagIds.isBackFaceCulled, false],
     ],
   },
   {
@@ -110,6 +112,7 @@ SubstanceManager.registerData([
         SubstanceTagIds.culledSubstnaces,
         ["#dve_liquid", "#dve_solid", "#dve_glow"],
       ],
+      [SubstanceTagIds.isBackFaceCulled, false],
     ],
   },
   {
@@ -122,6 +125,7 @@ SubstanceManager.registerData([
       [SubstanceTagIds.isTransparent, false],
       [SubstanceTagIds.flowRate, 3],
       [SubstanceTagIds.culledSubstnaces, ["#dve_liquid", "#dve_solid"]],
+      [SubstanceTagIds.isBackFaceCulled, false],
     ],
   },
 ]);

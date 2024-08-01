@@ -47,7 +47,7 @@ export function CreateDefaultRenderer(
         alphaTesting: true,
         backFaceCulling: id == "#dve_liquid" ? false : true,
         stencil: id == "#dve_liquid" ? true : undefined,
-        mipMapBias: id == "#dve_flora" ? -5 : 0,
+        mipMapBias: -0.6,
       },
       textureType: id,
       shaderId: createVoxelShader(id),
@@ -72,14 +72,16 @@ export function CreateDefaultRenderer(
       ),
     ]);
 
+
     await TextureBuilder.setUpImageCreation();
     TextureManager.registerTexture(initData.textureData);
 
-    console.log("BUILD TEXTURES");
+
     await TextureManager.$INIT();
     await TextureManager.createRawDataMap();
-
+ 
     const uvMap = TextureManager.generateTextureUVMap();
+
     for (const constructor of dver.core.threads.construcotrs.getThreads()) {
       await constructor.runAsyncTasks("sync-texuture-index", uvMap);
     }
@@ -110,7 +112,7 @@ export function CreateDefaultRenderer(
         id: "#dve_node_texture",
         shaderId: "#dve_node_texture",
         textureTypeId: "#dve_node_texture",
-        alphaBlending: true,
+        alphaBlending: false,
         alphaTesting: true,
       },
       {

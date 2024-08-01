@@ -7,7 +7,9 @@ export type WorldDataSync = [location: LocationData, buffer: SharedArrayBuffer];
 
 export type PaletteSyncData = [
  voxelPalette: string[],
- voxelPaletteMap: Record<string, number>
+ voxelPaletteMap: Record<string, number>,
+ nameToIdMap: Record<string, string>,
+ idToNameMap: Record<string, string>
 ];
 
 export type VoxelDataSync = [

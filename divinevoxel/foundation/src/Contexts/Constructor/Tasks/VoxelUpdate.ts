@@ -104,7 +104,12 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
     }
   }
 
+  const test = new DataTool();
+
+
+
   brushTool.paint();
+
 
   if (ES.doLight()) {
     updateLightTask(tasks);

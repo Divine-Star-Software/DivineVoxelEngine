@@ -29,17 +29,18 @@ export class TextureBuilder {
       throw new Error("Context did not load for texture creation.");
     }
 
-    context.imageSmoothingEnabled = true;
+    context.imageSmoothingEnabled = false;
     context.imageSmoothingQuality = "high";
     this.context = context;
   }
 
   static async createMaterialTexture(
     name: string,
-    images: Map<string, Uint8ClampedArray | false>,
+    images: Map<string, Uint8ClampedArray | string | false>,
     width: number = -1,
     height: number = -1
   ): Promise<URITexture> {
+
     if (width == -1) width = this.finalImagWidth;
     if (height == -1) height = this.finalImageHeight;
     this._canvas.width = this.finalImagWidth;
@@ -55,7 +56,7 @@ export class TextureBuilder {
 
   static async _create(
     name: string,
-    images: Map<string, Uint8ClampedArray | false>,
+    images: Map<string, Uint8ClampedArray | string | false>,
     width: number,
     height: number
   ) {
@@ -70,10 +71,11 @@ export class TextureBuilder {
         scene: DivineVoxelEngineRender.instance.renderer.scene,
         layers: images.size + 2,
         format: URITextureFormat.Rgba,
-        samplingMode: URITextureSamplingMode.NearestNearestMipNearest,
+        samplingMode: URITextureSamplingMode.TrilinearSamplingMode,
         //@ts-ignore
         images,
       });
+    await texture._create();
 
     // texture.anisotropicFilteringLevel = 16;
 
@@ -138,7 +140,7 @@ export class TextureBuilder {
 
   static async _createMipMap(
     level: number,
-    images: Map<string, Uint8ClampedArray | false>,
+    images: Map<string, Uint8ClampedArray | string | false>,
     width: number,
     height: number
   ) {
@@ -172,22 +174,31 @@ export class TextureBuilder {
     return this._combineImageData(totalLength, resolvedImages);
   }
 
-  static loadImage(
+  static async loadImage(
     imgSrcData: string | Uint8ClampedArray,
     width: number = 0,
     height: number = 0,
     lod = 0,
     flip = true
   ): Promise<Uint8ClampedArray> {
+    let testing = false;
     if (!width) width = this.finalImagWidth;
     if (!height) height = this.finalImageHeight;
-  
+
     const ctx = TextureBuilder.context;
-  
+
     if (!ctx) {
       throw new Error("Context is not set for texture creation.");
     }
-  
+
+    const turnRed = (data: Uint8ClampedArray) => {
+      for (let i = 0; i < data.length; i += 4) {
+        data[i] = 255; // Red
+        data[i + 1] = 0; // Green
+        data[i + 2] = 0; // Blue
+      }
+    };
+
     if (typeof imgSrcData == "string") {
       const prom: Promise<Uint8ClampedArray> = new Promise((resolve) => {
         const image = new Image();
@@ -203,30 +214,35 @@ export class TextureBuilder {
           }
           ctx.restore();
           const imgData = ctx.getImageData(0, 0, image.width!, image.height!);
-  
+
           const bitmap = await createImageBitmap(
             new ImageData(imgData.data, image.width, image.height),
             {
               resizeWidth: width,
               resizeHeight: height,
-              resizeQuality: lod < 3 ? "pixelated" : "high",
-              premultiplyAlpha: lod < 3 ? "none" : "premultiply",
+              resizeQuality: "pixelated",
+              premultiplyAlpha: lod != 0 ? "premultiply" : undefined,
             }
           );
           ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
           ctx.drawImage(bitmap, 0, 0, width!, height!);
           const bitmapData = ctx.getImageData(0, 0, width!, height!);
+          if (testing && lod > 0) {
+       
+            turnRed(bitmapData.data);
+          }
           resolve(bitmapData.data);
         };
       });
-  
+
       return prom;
     }
+
     if (imgSrcData instanceof Uint8ClampedArray) {
       const prom: Promise<Uint8ClampedArray> = new Promise(async (resolve) => {
         ctx.fillRect(0, 0, this._canvas.width, this._canvas.height);
         ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
-  
+
         const bitmap = await createImageBitmap(
           new ImageData(
             imgSrcData,
@@ -236,11 +252,11 @@ export class TextureBuilder {
           {
             resizeWidth: width,
             resizeHeight: height,
-            resizeQuality: lod < 3 ? "pixelated" : "high",
-            premultiplyAlpha: lod < 3 ? "none" : "premultiply",
+            resizeQuality: "pixelated",
+            premultiplyAlpha: lod != 0 ? "premultiply" : undefined,
           }
         );
-  
+
         ctx.save();
         if (flip) {
           ctx.scale(1, -1);
@@ -249,13 +265,17 @@ export class TextureBuilder {
           ctx.drawImage(bitmap, 0, 0, width!, height!);
         }
         ctx.restore();
-  
+
         const imgData = ctx.getImageData(0, 0, width!, height!);
+        if (testing && lod > 0) {
+
+          turnRed(imgData.data);
+        }
         resolve(imgData.data);
       });
       return prom;
     }
-  
+
     throw new Error("Context is not set for texture creation.");
   }
 

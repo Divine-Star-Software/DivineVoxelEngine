@@ -1,5 +1,6 @@
 import { URIShaderBuilder } from "@amodx/uri/Shaders/URIShaderBuilder.js";
 import {
+  ShaderConstantData,
   ShaderDataTypes,
   ShaderVaryingData,
 } from "@amodx/uri/Shaders/Types/ShaderData.types.js";
@@ -22,9 +23,9 @@ export const DVEShaders = {
     ["indices", "float"],
     ["faceData", "float"],
     ["voxelData", "float"],
-    ["ocuv3", "vec4"],
-    ["cuv3", "vec3"],
-    ["colors", "vec4"],
+    ["textureIndex", "vec3"],
+    ["uv", "vec2"],
+    ["colors", "vec3"],
   ],
   voxelSharedUniforms: <[id: string, type: ShaderDataTypes][]>[
     ["time", "float"],
@@ -37,7 +38,6 @@ export const DVEShaders = {
     ["doRGB", "float"],
     ["doColor", "float"],
     ["doEffects", "float"],
-    ["mipMapLevels", "float", 4],
     ["mipMapBias", "float"],
   ],
   voxelVertexUniforms: <[id: string, type: ShaderDataTypes][]>[
@@ -50,6 +50,25 @@ export const DVEShaders = {
     ["lightGradient", "float", 16],
   ],
 
+  voxelConstants: <ShaderConstantData[]>[
+    {
+      id:"voxelConstants",
+      body:{ 
+        GLSL:  /* glsl */ `
+const uint lightMask = uint(0xf);
+const uint aoMask = uint(0xf);
+const uint animMask = uint(0xfff);
+const uint sVLIndex = uint(0);
+const uint rVLIndex = uint(4);
+const uint gVLIndex = uint(8);
+const uint bVLIndex = uint(12);
+const uint aoIndex = uint(16);
+const uint animIndex = uint(20);
+        `
+      }
+    }
+  ],
+
   voxelVarying: <ShaderVaryingData<any>[]>[
     {
       id: "VOXEL",
@@ -58,46 +77,47 @@ export const DVEShaders = {
         GLSL: () => /* glsl */ `
 mat4 vData;
 uint vUID = uint(voxelData);
-uint lightMask = uint(0xf);
-uint aoMask = uint(0xf);
-uint animMask = uint(0xfff);
+float sVL = lightGradient[int(((lightMask << sVLIndex) & vUID) >> sVLIndex)];
 
-uint index = uint(0);
-float sVL = lightGradient[int(((lightMask << index) & vUID) >> index)];
+int redValue = int(((lightMask << rVLIndex) & vUID) >> rVLIndex);
 
-index = uint(4);
-int redValue = int(((lightMask << index) & vUID) >> index);
-float rVL = lightGradient[redValue];
+int greenValue = int(((lightMask << gVLIndex) & vUID) >> gVLIndex);
 
-index = uint(8);
-int greenValue = int(((lightMask << index) & vUID) >> index);
-float gVL = lightGradient[greenValue];
+int blueValue = int(((lightMask << bVLIndex) & vUID) >> bVLIndex);
 
-index = uint(12);
-int blueValue = int(((lightMask << index) & vUID) >> index);
-float bVL = lightGradient[blueValue];
 
-index = uint(16);
-float AOVL = float(((aoMask << index) & vUID) >> index);
+float AOVL = float(((aoMask << aoIndex) & vUID) >> aoIndex);
 if(AOVL > 0.) {
     AOVL = pow( pow(.45, (AOVL)/15. ), 2.2);
 } else {
   AOVL = 1.;
 }
 
-index = uint(20);
-float animVL = float(((animMask << index) & vUID) >> index);
+float animVL = float(((animMask << animIndex) & vUID) >> animIndex);
 
 
 vData[0] = vec4(
-     ( (
-(vec3(rVL,gVL,bVL) * doRGB) 
-+  ((sVL * doSun  * sunLightLevel))  ) 
-+ baseLevel).rgb,
-1.) ;
+    max(
+        ( ( vec3(lightGradient[redValue], lightGradient[greenValue], lightGradient[blueValue]) * doRGB) 
+        +  (sVL * doSun * sunLightLevel) ), 
+        baseLevel
+    ),
+    1.0
+);
 
-vData[1] = vec4(AOVL,animVL,0.,0.);     
-vData[2] = vec4(float(redValue),float(greenValue),float(blueValue),0.);    
+/*
+vData[0] = vec4(
+      lightGradient[redValue] * doRGB, 
+      lightGradient[greenValue] * doRGB, 
+      lightGradient[blueValue] * doRGB,
+      (sVL * doSun * sunLightLevel) 
+);
+   
+*/
+
+vData[1] = vec4(AOVL,animVL,baseLevel,0.);     
+
+
 VOXEL = vData;
 `,
       },
@@ -135,27 +155,6 @@ a[2] = world[2];
 a[3] = vec4(world[3].xyz - worldOrigin.xyz, 1.);
 vec4 temp =  a * vec4(position , 1.0);
 worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
-      },
-    },
-    {
-      id: "mipMapLevel",
-      type: "float",
-      body: {
-        GLSL: () => /* glsl */ `
-    mipMapLevel = 0.;
-    if(vDistance <= 30.) {
-     mipMapLevel = 0.;
-    }
-    if(vDistance > 50. &&  vDistance <= 70.) {
-     mipMapLevel = 1.;
-    }
-    if(vDistance > 70. && vDistance < 90.) {
-      mipMapLevel = 2.;
-    }
-    if(vDistance >= 90.) {
-     mipMapLevel = 3.;
-     }
-    `,
       },
     },
     {
@@ -212,7 +211,7 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
     shader.addVarying(this.voxelVarying);
     shader.loadInFunctions(this.voxelFragFunctions, "frag");
     shader.loadInFunctions(this.voxelVertexFunctions, "vertex");
-
+    shader.addConstants(this.voxelConstants,"vertex")
     shader.setCodeBody("vertex", `@standard_position`);
     shader.setCodeBody("frag", `@standard_color`);
 
@@ -245,8 +244,8 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
       ["position", "vec3"],
       ["normal", "vec3"],
       ["indices", "float"],
-      ["cuv3", "vec3"],
-      ["ocuv3", "vec4"],
+      ["uv", "vec3"],
+      ["textureIndex", "vec4"],
     ]);
     shader.loadInFunctions(
       [
@@ -292,24 +291,15 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
         },
       },
       {
-        id: "mipMapLevel",
+        id: "vBrightness",
         type: "float",
         body: {
-          GLSL: () => /* glsl */ `
-      mipMapLevel = 0.;
-      if(vDistance <= 30.) {
-       mipMapLevel = 0.;
-      }
-      if(vDistance > 50. &&  vDistance <= 70.) {
-       mipMapLevel = 1.;
-      }
-      if(vDistance > 70. && vDistance < 90.) {
-        mipMapLevel = 2.;
-      }
-      if(vDistance >= 90.) {
-       mipMapLevel = 3.;
-       }
-      `,
+          GLSL: () => /* glsl */ `vBrightness = 1.0;
+if (normal.y > 0.0) {
+  vBrightness += .5; 
+} else if (normal.y < 0.0) {
+  vBrightness -= .5; 
+}`,
         },
       },
     ]);
@@ -318,23 +308,32 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
     shader.setCodeBody(
       "frag",
       /* glsl */ `
-      
-/*
+  
+/*  
 //view normals 
  vec3 color = (vNormal + 1.0) * 0.5;
 FragColor = vec4(color, 1.0);
 */
- 
-      vec4 rgb = getMainColor();
-   if (rgb.a < 0.5) { 
-  discard;
-  }
-  vec3 finalColor = doFog(rgb);
-  FragColor = vec4(finalColor.rgb,rgb.a);
+/* 
+vec4 rgb = getMainColor(-100.);
+  if (rgb.a < 0.5) { 
+    rgb.a = 1.;
+    rgb.r = 1.;
+}
+vec3 finalColor = doFog(rgb);
+FragColor = vec4(finalColor.rgb * vBrightness,rgb.a);
+*/
+
+
+vec4 rgb = getMainColor(-100.);
+  if (rgb.a < 0.5) { 
+discard;
+}
+vec3 finalColor = doFog(rgb);
+FragColor = vec4(finalColor.rgb * vBrightness,rgb.a);
 
 
  `
-
     );
 
     return shader;

@@ -48,4 +48,14 @@ SubstanceTagBuilder.addNode([
     type: "boolean",
     default: false,
   },
+  {
+    id: SubstanceTagIds.isWindAffected,
+    type: "boolean",
+    default: false,
+  },
+  {
+    id: SubstanceTagIds.isBackFaceCulled,
+    type: "boolean",
+    default: true,
+  },
 ]);

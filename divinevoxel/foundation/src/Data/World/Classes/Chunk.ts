@@ -4,12 +4,15 @@ import {
   WorldDataHeaders,
 } from "../../Constants/DataHeaders.js";
 import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces.js";
-export interface ChunkData {
-  stateBuffer: ArrayBuffer;
+export interface VoxelDataArrays {
   ids: Uint16Array;
   light: Uint16Array;
   state: Uint16Array;
   secondaryIds: Uint16Array;
+}
+
+export interface ChunkData extends VoxelDataArrays {
+  stateBuffer: ArrayBuffer;
 }
 
 export interface Chunk extends ChunkData {}

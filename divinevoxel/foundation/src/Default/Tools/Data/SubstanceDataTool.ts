@@ -36,6 +36,16 @@ export class SubstanceDataTool {
   isLiquid() {
     return SubstanceStruct.instance[SubstanceTagIds.isLiquid] == 1;
   }
+
+  isWindAffected() {
+    return SubstanceStruct.instance[SubstanceTagIds.isWindAffected] == 1;
+  }
+
+  
+  isBackFaceCulled() {
+    return SubstanceStruct.instance[SubstanceTagIds.isBackFaceCulled] == 1;
+  }
+
   cullDense() {
     return SubstanceStruct.instance[SubstanceTagIds.cullDense] == 1;
   }

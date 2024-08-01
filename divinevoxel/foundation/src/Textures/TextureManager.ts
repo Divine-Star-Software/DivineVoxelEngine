@@ -126,24 +126,18 @@ export class TextureManager {
                   : type._getPath(data, `${key}-${i}`, type.extension),
                 TextureBuilder._textureSize,
                 TextureBuilder._textureSize
-                //  undefined,
-                //  false
               );
 
               data.rawData = rawData;
               map.set(`${key}-${i}`, rawData);
             }
           } else {
-            if (data.rawData instanceof Uint8ClampedArray) {
-              map.set(key, data.rawData);
-              continue;
-            }
             const rawData = await TextureBuilder.loadImage(
-              type._getPath(data, "default", type.extension),
+              data.rawData
+                ? data.rawData as any
+                : type._getPath(data, "default", type.extension),
               TextureBuilder._textureSize,
               TextureBuilder._textureSize
-              //  undefined,
-              //  false
             );
 
             data.rawData = rawData;
@@ -162,9 +156,7 @@ export class TextureManager {
                       ? <Uint8ClampedArray>data.rawData[i - 1]
                       : type._getPath(data, `${key}-${i}`, type.extension),
                     TextureBuilder._textureSize,
-                    TextureBuilder._textureSize,
-                    undefined,
-                    false
+                    TextureBuilder._textureSize
                   );
                   data.rawData = rawData;
                   map.set(`${key}-${i}`, rawData);
@@ -176,8 +168,6 @@ export class TextureManager {
                     : type._getPath(data, varId, type.extension),
                   TextureBuilder._textureSize,
                   TextureBuilder._textureSize,
-                  undefined,
-                  false
                 );
                 data.rawData = rawData;
 

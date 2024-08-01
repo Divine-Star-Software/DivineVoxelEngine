@@ -201,7 +201,6 @@ class LiquidVoxelShapeClass extends VoxelShapeBase {
       (data) => {
         if (
           data.face == VoxelFaces.Top &&
-          data.neighborVoxel.getSubstnaceData().isLiquid() &&
           data.currentVoxel.getStringId() != data.neighborVoxel.getStringId()
         ) {
           return true;

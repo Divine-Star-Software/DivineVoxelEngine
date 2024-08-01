@@ -50,13 +50,12 @@ export abstract class DataSync {
     this.loopThroughComms((comm) => {
       this.commMap.set(comm.name, comm);
     });
-    
+
     SubstanceDataGenerator.$generate();
     SubstanceTagBuilder.sync();
 
     VoxelDataGenerator.generate();
     VoxelTagBuilder.sync();
-
 
     this.palettes.voxel.sync();
     this.palettes.substance.sync();
@@ -70,10 +69,7 @@ export abstract class DataSync {
     return this._ready;
   }
 
-  registerComm(
-    comm: Thread | ThreadPool,
-    data: Partial<CommSyncOptions> = {}
-  ) {
+  registerComm(comm: Thread | ThreadPool, data: Partial<CommSyncOptions> = {}) {
     this.comms.push(comm);
     this.commOptions.set(comm, {
       worldData: data.worldData !== undefined ? data.worldData : true,
@@ -134,6 +130,8 @@ export abstract class DataSync {
         getSyncData: () => [
           VoxelDataGenerator.palette._palette,
           VoxelDataGenerator.palette._map,
+          VoxelDataGenerator.nameToIdMap,
+          VoxelDataGenerator.idToNameMap,
         ],
         getUnSyncData: () => false,
       },
@@ -146,6 +144,8 @@ export abstract class DataSync {
         getSyncData: () => [
           SubstanceDataGenerator.palette._palette,
           SubstanceDataGenerator.palette._map,
+          {},
+          {},
         ],
         getUnSyncData: () => false,
       },

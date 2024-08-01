@@ -36,8 +36,9 @@ export abstract class RemoteDataSyncNode {
   palettes = {
     voxel: Threads.onDataSync<PaletteSyncData, any>(
       DataSyncIds.VoxelPalette,
-      ([palette, map]) => {
-        VoxelPaletteReader.setVoxelPalette(palette, map);
+      ([palette, map, nameToId, idToName]) => {
+        VoxelPaletteReader.setVoxelIdPalette(palette, map);
+        VoxelPaletteReader.setVoxelNamePalette(nameToId, idToName);
       }
     ),
     substance: Threads.onDataSync<PaletteSyncData, any>(

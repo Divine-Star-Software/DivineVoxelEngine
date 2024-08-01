@@ -3,12 +3,13 @@ import { SubstanceTagBuilder } from "../StructBuilders/SubstanceStructBuilder.js
 import { SubstanceStruct } from "../../../../Data/Substance/SubstanceStruct.js";
 import { SubstancePaletteReader } from "../../../../Data/Substance/SubstancePalette.js";
 import { SubstanceManager } from "../Managers/DataManagers.js";
+import { StringPalette } from "../../../../Interfaces/Data/StringPalette.js";
 
 export const SubstanceDataGenerator = {
   $generate() {
     //build palette
-    for (const [key, voxel] of SubstanceManager.data) {
-      this.palette.register(voxel);
+    for (const [key, substance] of SubstanceManager.data) {
+      this.palette.register(substance.id);
     }
     SubstancePaletteReader.setPalette(this.palette._palette, this.palette._map);
 
@@ -34,26 +35,6 @@ export const SubstanceDataGenerator = {
     }
     SubstanceStruct.init(tags.initData);
     SubstanceStruct.instance.setBuffer(buffer);
-
-    console.error("DONE MAKING PALEETE");
-    console.log(this.palette)
   },
-  palette: {
-    _count: 0,
-    _palette: <string[]>[],
-    _map: <Record<string, number>>{},
-
-    register(sustance: SubstanceData) {
-      this._palette[this._count] = sustance.id;
-      this._map[sustance.id] = this._count;
-      this._count++;
-    },
-
-    get() {
-      return this._palette;
-    },
-    getMap() {
-      return this._map;
-    },
-  },
+  palette: new StringPalette(),
 };

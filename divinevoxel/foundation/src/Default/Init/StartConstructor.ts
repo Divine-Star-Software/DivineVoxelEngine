@@ -12,14 +12,17 @@ export async function StartContrusctor(props: {
   builder: DVEDefaultBuilderInitData;
 }) {
   const DVEC = new DivineVoxelEngineConstructor();
+
   const core = new DVEFConstrucotrCore({
     analyzer: new Analyzer(),
     builder: new DVEDefaultBuilder(props.builder),
     propagation: new Propagation(),
   });
+
   await DVEC.init({
     core,
   });
+
   return {
     DVEC,
     core,

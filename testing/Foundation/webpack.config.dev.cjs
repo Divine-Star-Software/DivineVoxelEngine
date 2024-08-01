@@ -83,14 +83,6 @@ module.exports = {
       directory: path.join(__dirname, "static"),
       publicPath: "/",
     },
-    /*     proxy: {
-      "/api": {
-        target: "http://localhost:3000",
-      },
-      "/files": {
-        target: "http://localhost:3000",
-      },
-    }, */
     liveReload: true,
     open: true,
     hot: true,

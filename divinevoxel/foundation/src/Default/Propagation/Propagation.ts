@@ -12,14 +12,19 @@ import { FlowUpdate } from "./Flow/Functions/FlowUpdate.js";
 import { FlowRemove } from "./Flow/Functions/FlowRemove.js";
 import { ExplosionManager } from "./Explosion/ExplosionManager.js";
 import { DVEPropagation } from "../../Interfaces/Propagation/DVEPropagation.js";
+import { FlowManager } from "./Flow/FlowManager.js";
 
 export class Propagation extends DVEPropagation {
+
+
   explosion(tasks: ExplosionTaskRequests) {
     ExplosionManager.runExplosion(tasks);
   }
 
-  async flowUpdate(tasks: FlowTaskRequests,rebuild = true) {
-    await FlowUpdate(tasks,rebuild);
+
+
+  async flowUpdate(tasks: FlowTaskRequests, rebuild = true) {
+    await FlowUpdate(tasks, rebuild);
   }
   async flowRemove(tasks: FlowTaskRequests, rebuild = true) {
     await FlowRemove(tasks);
@@ -40,7 +45,7 @@ export class Propagation extends DVEPropagation {
     SunUpdate(tasks);
   }
 
-  sunRemove(tasks: LightTaskRequest,clearUpdateMap = false) {
-    SunRemove(tasks,clearUpdateMap);
+  sunRemove(tasks: LightTaskRequest, clearUpdateMap = false) {
+    SunRemove(tasks, clearUpdateMap);
   }
 }

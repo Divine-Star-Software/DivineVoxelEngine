@@ -6,6 +6,5 @@ const DVEN = new DivineVoxelEngineNexus({
   data,
 });
 await DVEN.init();
-console.log("DVE Nexus Loaded");
 
 (self as any).DVEN = DVEN;

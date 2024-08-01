@@ -79,6 +79,8 @@ export class ChunkProcessor {
       this.heightMapTool.chunk.setY(y).setDirty(false);
     }
 
+
+
     const chunks = <SetChunkMeshTask>[location, [], priority];
     const trasnfers: any[] = [];
     for (const [substance, mesher] of RenderedSubstances.meshers._map) {
@@ -88,6 +90,7 @@ export class ChunkProcessor {
         continue;
       }
 
+   
       const [attributes, buffers] = mesher.getAllAttributes();
 
 
