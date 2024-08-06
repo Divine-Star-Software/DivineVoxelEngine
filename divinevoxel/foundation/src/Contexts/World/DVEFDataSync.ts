@@ -3,7 +3,7 @@ import { DataSyncNode } from "@divinevoxel/core/Interfaces/World/Data/DataSyncNo
 import type { LocationData } from "@divinevoxel/core/Math/index.js";
 import type { WorldDataSync } from "../../Data/Types/DataSync.types.js";
 import type { DimensionData } from "../../Data/Types/DimensionData.types.js";
-import type { RemoteBinaryStructData } from "@amodx/binary/";
+import type { BinaryStructData } from "@amodx/binary/";
 import { Chunk, Column, Region } from "../../Data/World/Classes/index.js";
 //objects
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
@@ -38,21 +38,21 @@ export class DVEFDataSync extends DataSync {
     });
   }
   worldDataTags = {
-    chunk: new DataSyncNode<void, RemoteBinaryStructData, void, false>(
+    chunk: new DataSyncNode<void, BinaryStructData, void, false>(
       {
         dataSyncType: DVEFDataSyncIds.ChunkTags,
         commCheck: (options) => options.worldDataTags,
-        getSyncData: () => ChunkStatStruct.initData,
+        getSyncData: () => ChunkStatStruct.structData,
         getUnSyncData: () => false,
       },
       this
     ),
 
-    column: new DataSyncNode<void, RemoteBinaryStructData, void, false>(
+    column: new DataSyncNode<void, BinaryStructData, void, false>(
       {
         dataSyncType: DVEFDataSyncIds.ColumnTags,
         commCheck: (options) => options.worldDataTags,
-        getSyncData: () => ColumnStateStruct.initData,
+        getSyncData: () => ColumnStateStruct.structData,
         getUnSyncData: () => false,
       },
       this
@@ -60,7 +60,7 @@ export class DVEFDataSync extends DataSync {
 
     region: new DataSyncNode<
       void,
-      [RemoteBinaryStructData, RemoteBinaryStructData],
+      [BinaryStructData, BinaryStructData],
       void,
       false
     >(
@@ -68,8 +68,8 @@ export class DVEFDataSync extends DataSync {
         dataSyncType: DVEFDataSyncIds.RegionTags,
         commCheck: (options) => options.worldDataTags,
         getSyncData: () => [
-          RegionStateStruct.initData,
-          RegionHeaderTagManager.initData,
+          RegionStateStruct.structData,
+          RegionHeaderTagManager.structData,
         ],
         getUnSyncData: () => false,
       },

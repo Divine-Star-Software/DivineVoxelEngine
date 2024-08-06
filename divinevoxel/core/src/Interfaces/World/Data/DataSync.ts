@@ -6,7 +6,7 @@ import type {
   RegisterObjectMapSync,
   RegisterStringMapSync,
 } from "Types/DataSync.types.js";
-import type { RemoteBinaryStructData } from "@amodx/binary/";
+import type { BinaryStructData } from "@amodx/binary/";
 //objects
 
 import { VoxelStruct } from "../../../Data/Voxel/VoxelStruct.js";
@@ -95,7 +95,7 @@ export abstract class DataSync {
   tags = {
     voxel: new DataSyncNode<
       void,
-      [RemoteBinaryStructData, SharedArrayBuffer],
+      [BinaryStructData, SharedArrayBuffer],
       void,
       false
     >(
@@ -110,7 +110,7 @@ export abstract class DataSync {
       },
       this
     ),
-    substance: new DataSyncNode<void, RemoteBinaryStructData, void, false>(
+    substance: new DataSyncNode<void, BinaryStructData, void, false>(
       {
         dataSyncType: DataSyncIds.SubstanceTags,
         commCheck: (options) => options.voxelTags,

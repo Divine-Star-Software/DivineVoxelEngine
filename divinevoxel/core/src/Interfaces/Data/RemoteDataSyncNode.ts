@@ -8,7 +8,7 @@ import type {
 //objects
 import { Threads } from "@amodx/threads/";
 
-import { RemoteBinaryStructData } from "@amodx/binary/";
+import { BinaryStructData } from "@amodx/binary/";
 
 import { SubstanceStruct } from "../../Data/Substance/SubstanceStruct.js";
 import { DataSyncIds } from "../Common/DataSyncIds.js";
@@ -57,7 +57,7 @@ export abstract class RemoteDataSyncNode {
         VoxelStruct.sync(new Uint16Array(data[1]));
       }
     ),
-    substance: Threads.onDataSync<RemoteBinaryStructData, any>(
+    substance: Threads.onDataSync<BinaryStructData, any>(
       DataSyncIds.SubstanceTags,
       (data) => {
         SubstanceStruct.init(data);

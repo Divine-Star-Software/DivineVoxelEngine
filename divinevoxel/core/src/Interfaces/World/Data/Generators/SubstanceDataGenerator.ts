@@ -15,8 +15,8 @@ export const SubstanceDataGenerator = {
 
     //create data buffer
     const tags = SubstanceTagBuilder.build(this.palette._count);
-    const buffer = new SharedArrayBuffer(tags.initData.bufferSize);
-    tags.initData.buffer = buffer;
+    const buffer = new SharedArrayBuffer(tags.structData.bufferSize);
+    tags.structData.buffer = buffer;
     tags.setBuffer(buffer);
 
     //build data
@@ -33,7 +33,7 @@ export const SubstanceDataGenerator = {
         SubstanceTagBuilder.setNode(id, value, tags);
       }
     }
-    SubstanceStruct.init(tags.initData);
+    SubstanceStruct.init(tags.structData);
     SubstanceStruct.instance.setBuffer(buffer);
   },
   palette: new StringPalette(),

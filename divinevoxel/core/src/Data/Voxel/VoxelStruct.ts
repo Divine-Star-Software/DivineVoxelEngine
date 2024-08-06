@@ -1,6 +1,6 @@
 import {
   RemoteBinaryStruct,
-  RemoteBinaryStructData,
+  BinaryStructData,
   InstantiatedStruct,
 } from "@amodx/binary/";
 import { VoxelTagIDs } from "../../Data/Constants/VoxelTagIds";
@@ -21,7 +21,7 @@ const remote = new RemoteBinaryStruct("voxel-data");
 
 export class VoxelStruct extends InstantiatedStruct<VoxelStruct> {
   static instance: VoxelStruct;
-  static init(data: RemoteBinaryStructData) {
+  static init(data: BinaryStructData) {
     remote.init(data);
     const instance = remote.instantiate<VoxelStruct>();
     this.initData = data;
@@ -38,7 +38,7 @@ export class VoxelStruct extends InstantiatedStruct<VoxelStruct> {
     this.instance.setIndex(index);
   }
   static voxelIndex = new Uint16Array();
-  static initData: RemoteBinaryStructData;
+  static initData: BinaryStructData;
 
 
 }

@@ -18,7 +18,8 @@ import { AddVoxelData } from "@divinevoxel/foundation/Data/Types/WorldData.types
 
 import type { Mesh } from "@babylonjs/core";
 import { LocationData } from "@divinevoxel/core/Math/index.js";
-import {  Vec3Array } from "@amodx/math";
+import { Vec3Array } from "@amodx/math";
+import { TextureBuilder } from "@divinevoxel/foundation/Textures/TextureBuilder.js";
 
 export class NodeMeshTool {
   dimension = "main";
@@ -26,7 +27,7 @@ export class NodeMeshTool {
     this.voxel.dataTool.setMode(DataTool.Modes.VOXEL_DATA);
   }
   texture = {
-    buildMesh: (
+    buildMesh: async (
       location: LocationData,
       textureIdData: ConstructorTextureData,
       rawTextureData: Uint8ClampedArray | null | undefined,
@@ -39,18 +40,21 @@ export class NodeMeshTool {
       if (!textureData) throw new Error(`${textureIdData} does not exist`);
 
       if (!rawTextureData) {
-        if (textureData.rawData) {
-          rawTextureData =
-            Array.isArray(textureData.rawData!) &&
-            !(textureData.rawData instanceof Uint8ClampedArray)
-              ? textureData.rawData![0]
-              : textureData.rawData!;
-        } else {
-          throw new Error(
-            `Could not find raw texture data for texture ${textureIdData.toString()}`
-          );
-        }
+        rawTextureData = await TextureBuilder.getRawData(
+          TextureManager.getTexturePath(
+            textureIdData[0],
+            textureIdData[1],
+            textureIdData[2] || "default"
+          )
+        );
       }
+
+      if (!rawTextureData) {
+        throw new Error(
+          `Could not find raw texture data for texture ${textureIdData.toString()}`
+        );
+      }
+
       DVER.instance.core.threads.construcotrs.runPromiseTasks<BuildNodeMesh>(
         "build-node-mesh",
         [
@@ -140,7 +144,11 @@ export class NodeMeshTool {
 
       DVER.instance.core.threads.construcotrs.runPromiseTasks<BuildNodeMesh>(
         "build-node-mesh",
-        [[this.dimension, ...location] as LocationData, "#dve_node_voxel", voxelData],
+        [
+          [this.dimension, ...location] as LocationData,
+          "#dve_node_voxel",
+          voxelData,
+        ],
         [],
         (data: SetNodeMesh | false) => {
           if (!data) return onDone(false);

@@ -7,7 +7,7 @@ import {
   RegionHeaderRegister,
   RegionHeaderTags,
 } from "./RegionHeaderRegister.js";
-import { RemoteBinaryStructData } from "@amodx/binary/";
+import { BinaryStructData } from "@amodx/binary/";
 import { Column, Chunk, Region, RegionData, ColumnData, ChunkData } from "./World/Classes/index.js";
 import { WorldDataSync } from "./Types/DataSync.types.js";
 import { DVEFDataSyncIds } from "./Constants/DVEFDataSyncIds.js";
@@ -59,19 +59,19 @@ export class DVEFDataSyncNode extends RemoteDataSyncNode {
     ),
   };
   worldDataTags = {
-    chunk: Threads.onDataSync<RemoteBinaryStructData, void>(
+    chunk: Threads.onDataSync<BinaryStructData, void>(
       DVEFDataSyncIds.ChunkTags,
       (data) => {
         Chunk.StateStruct.init(data);
       }
     ),
-    column: Threads.onDataSync<RemoteBinaryStructData, void>(
+    column: Threads.onDataSync<BinaryStructData, void>(
       DVEFDataSyncIds.ColumnTags,
       (data) => {
         Column.StateStruct.init(data);
       }
     ),
-    region: Threads.onDataSync<RemoteBinaryStructData[], void>(
+    region: Threads.onDataSync<BinaryStructData[], void>(
       DVEFDataSyncIds.RegionTags,
       (data) => {
         Region.StateStruct.init(data[0]);

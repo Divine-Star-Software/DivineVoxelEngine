@@ -1,6 +1,6 @@
 import type { TagBuilderNodes } from "Types/StructBuilder.types.js";
 import {
-  RemoteBinaryStructData,
+  BinaryStructData,
   BinraryStructBase,
   BinaryNumberTypes,
 } from "@amodx/binary/";
@@ -35,7 +35,7 @@ export class StructBuilder {
     }
   >();
   _defaults = new Map<string, number>();
-  _initData: RemoteBinaryStructData;
+  _initData: BinaryStructData;
 
   constructor(public id: string, public dataSegment: string) {}
 

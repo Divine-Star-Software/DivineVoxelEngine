@@ -108,8 +108,27 @@ export class TextureManager {
     type.addTexture(textureData);
   }
 
-  static getRaw([type, id, segment]: ConstructorTextureData) {}
+  static getTexturePath(
+    textureType: string,
+    id: string,
+    varation: string,
+    segment = "main",
+    frames?: number
+  ) {
+    const data = this.getTextureData([textureType, id, segment])!;
+    if (!data)
+      throw new Error(
+        `Could not find data for ${textureType} ${id} ${varation}`
+      );
+    let path =
+      data.base64 &&
+      (Array.isArray(data.base64) ? data.base64[0] : data.base64);
+    if (path) return path;
 
+    const type = this.textureTypes.get(textureType)!;
+
+    return type._getPath(data, varation, type.extension);
+  }
   static async createRawDataMap() {
     const map: Map<string, Uint8ClampedArray> = new Map();
     for (const [typeKey, type] of this.textureTypes) {
@@ -134,7 +153,7 @@ export class TextureManager {
           } else {
             const rawData = await TextureBuilder.loadImage(
               data.rawData
-                ? data.rawData as any
+                ? (data.rawData as any)
                 : type._getPath(data, "default", type.extension),
               TextureBuilder._textureSize,
               TextureBuilder._textureSize
@@ -167,7 +186,7 @@ export class TextureManager {
                     ? <Uint8ClampedArray>data.rawData
                     : type._getPath(data, varId, type.extension),
                   TextureBuilder._textureSize,
-                  TextureBuilder._textureSize,
+                  TextureBuilder._textureSize
                 );
                 data.rawData = rawData;
 

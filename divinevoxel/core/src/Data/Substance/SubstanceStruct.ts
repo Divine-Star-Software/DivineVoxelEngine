@@ -1,6 +1,6 @@
 import {
   RemoteBinaryStruct,
-  RemoteBinaryStructData,
+  BinaryStructData,
   InstantiatedStruct,
 } from "@amodx/binary/";
 import { SubstanceTagIds } from "../../Data/Constants/SubstanceTagIds.js";
@@ -23,7 +23,7 @@ const remote = new RemoteBinaryStruct("voxel-data");
 
 export class SubstanceStruct extends InstantiatedStruct<SubstanceStruct> {
   static instance: SubstanceStruct;
-  static init(data: RemoteBinaryStructData) {
+  static init(data: BinaryStructData) {
     remote.init(data);
     const instance = remote.instantiate<SubstanceStruct>();
     this.initData = data;
@@ -37,5 +37,5 @@ export class SubstanceStruct extends InstantiatedStruct<SubstanceStruct> {
         : id
     );
   }
-  static initData: RemoteBinaryStructData;
+  static initData: BinaryStructData;
 }

@@ -14,6 +14,7 @@ export class VoxelTemplate {
   constructor(public data: VoxelTemplateData) {
     this.index.setBounds(...this.data.size);
     data.palette.forEach((_) => this.palette.register(_));
+    data.statePalette.forEach((_) => this.statePalette.register(_));
   }
 
   *traverse(): Generator<TemplateCursor> {

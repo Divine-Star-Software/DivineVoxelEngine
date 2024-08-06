@@ -1,4 +1,4 @@
-import type { RemoteBinaryStructData } from "@amodx/binary/";
+import type { BinaryStructData } from "@amodx/binary/";
 import { LocationData } from "Math/index.js";
 
 export type DataSyncTypes = "chunk" | "voxel-data" | "iten-data" | "shape-map";
@@ -13,7 +13,7 @@ export type PaletteSyncData = [
 ];
 
 export type VoxelDataSync = [
- initData: RemoteBinaryStructData,
+ initData: BinaryStructData,
  voxelMapData: SharedArrayBuffer
 ];
 

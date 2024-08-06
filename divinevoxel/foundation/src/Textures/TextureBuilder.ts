@@ -40,7 +40,6 @@ export class TextureBuilder {
     width: number = -1,
     height: number = -1
   ): Promise<URITexture> {
-
     if (width == -1) width = this.finalImagWidth;
     if (height == -1) height = this.finalImageHeight;
     this._canvas.width = this.finalImagWidth;
@@ -174,6 +173,33 @@ export class TextureBuilder {
     return this._combineImageData(totalLength, resolvedImages);
   }
 
+  static async getRawData(imageSrc: string): Promise<Uint8ClampedArray> {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.crossOrigin = "Anonymous";
+      image.src = imageSrc;
+      image.onload = () => {
+        if (!this.context) {
+          return reject(new Error("Context is not set for texture creation."));
+        }
+        this._canvas.width = image.width;
+        this._canvas.height = image.height;
+        this.context.clearRect(0, 0, image.width, image.height);
+        this.context.drawImage(image, 0, 0, image.width, image.height);
+        const imgData = this.context.getImageData(
+          0,
+          0,
+          image.width,
+          image.height
+        );
+        resolve(imgData.data);
+        this._canvas.width = this.finalImagWidth;
+        this._canvas.height = this.finalImageHeight;
+      };
+      image.onerror = (err) => reject(err);
+    });
+  }
+
   static async loadImage(
     imgSrcData: string | Uint8ClampedArray,
     width: number = 0,
@@ -228,7 +254,6 @@ export class TextureBuilder {
           ctx.drawImage(bitmap, 0, 0, width!, height!);
           const bitmapData = ctx.getImageData(0, 0, width!, height!);
           if (testing && lod > 0) {
-       
             turnRed(bitmapData.data);
           }
           resolve(bitmapData.data);
@@ -268,7 +293,6 @@ export class TextureBuilder {
 
         const imgData = ctx.getImageData(0, 0, width!, height!);
         if (testing && lod > 0) {
-
           turnRed(imgData.data);
         }
         resolve(imgData.data);

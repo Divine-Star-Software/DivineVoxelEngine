@@ -47,8 +47,8 @@ export class VoxelDataGenerator {
 
     //create data bufferv
     const tags = VoxelTagBuilder.build(this.palette._count);
-    const buffer = new SharedArrayBuffer(tags.initData.bufferSize);
-    tags.initData.buffer = buffer;
+    const buffer = new SharedArrayBuffer(tags.structData.bufferSize);
+    tags.structData.buffer = buffer;
     tags.setBuffer(buffer);
     //  VoxelStruct.init(initData);
     //  VoxelStruct.setBuffer(buffer);
@@ -74,7 +74,7 @@ export class VoxelDataGenerator {
     }
 
     VoxelStruct.sync(voxelIndex);
-    VoxelStruct.init(tags.initData);
+    VoxelStruct.init(tags.structData);
     VoxelStruct.instance.setBuffer(buffer);
   }
 
