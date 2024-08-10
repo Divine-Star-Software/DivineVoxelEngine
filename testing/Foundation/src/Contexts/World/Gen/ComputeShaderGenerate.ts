@@ -1,5 +1,5 @@
 import { DivineVoxelEngineWorld } from "@divinevoxel/core/Contexts/World";
-import { VoxelPaletteReader } from "@divinevoxel/core/Data/Voxel/VoxelPalette";
+import { VoxelPalette } from "@divinevoxel/core/Data/Voxel/VoxelPalette";
 import { GPUWorldGen } from "./Compute/DVEWorldCompute";
 export async function ComputeShaderGenerate() {
   const DVEW = DivineVoxelEngineWorld.instance;
@@ -51,7 +51,7 @@ for (var x = column_position.x; x < column_position.x + voxel_world.column_size.
           set_voxel(
               vec3(x,y,z),
               Voxel(
-                ${VoxelPaletteReader.id.numberFromString("dve_dream_stone")},
+                ${VoxelPalette.id.numberFromString("dve_dream_stone")},
                 0,
                 Light(0,0,0,0),
                 State(0,0,0)
@@ -63,7 +63,7 @@ for (var x = column_position.x; x < column_position.x + voxel_world.column_size.
           set_voxel(
               vec3(x,y,z),
               Voxel(
-                ${VoxelPaletteReader.id.numberFromString("dve_dream_stone")},
+                ${VoxelPalette.id.numberFromString("dve_dream_stone")},
                 0,
                 Light(0,0,0,0),
                 State(0,0,0)
@@ -73,7 +73,7 @@ for (var x = column_position.x; x < column_position.x + voxel_world.column_size.
             set_voxel(
               vec3(x,y,z),
               Voxel(
-                ${VoxelPaletteReader.id.numberFromString("dve_dream_lamp")},
+                ${VoxelPalette.id.numberFromString("dve_dream_lamp")},
                 0,
                 Light(0,15,0,15),
                 State(0,0,0)
@@ -85,7 +85,7 @@ for (var x = column_position.x; x < column_position.x + voxel_world.column_size.
           set_voxel(
               vec3(x,y,z),
               Voxel(
-                ${VoxelPaletteReader.id.numberFromString(
+                ${VoxelPalette.id.numberFromString(
                   "dve_liquid_dream_ether"
                 )},
                 0,
