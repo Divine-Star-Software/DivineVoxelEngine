@@ -136,7 +136,7 @@ await StartWorld({
       id: "dve_dream_vine",
       tags: [
         ["#dve_substance", "#dve_flora"],
-        ["#dve_shape_id", "#dve_panel"],
+        ["#dve_shape_id", "#dve_flat_panel"],
         ["#dve_check_collisions", false],
         ["#dve_material", "grass"],
       ],

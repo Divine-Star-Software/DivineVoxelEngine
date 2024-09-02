@@ -51,7 +51,7 @@ for (var x = column_position.x; x < column_position.x + voxel_world.column_size.
           set_voxel(
               vec3(x,y,z),
               Voxel(
-                ${VoxelPalette.id.numberFromString("dve_dream_stone")},
+                ${VoxelPalette.ids.getNumberId("dve_dream_stone")},
                 0,
                 Light(0,0,0,0),
                 State(0,0,0)
@@ -63,7 +63,7 @@ for (var x = column_position.x; x < column_position.x + voxel_world.column_size.
           set_voxel(
               vec3(x,y,z),
               Voxel(
-                ${VoxelPalette.id.numberFromString("dve_dream_stone")},
+                ${VoxelPalette.ids.getNumberId("dve_dream_stone")},
                 0,
                 Light(0,0,0,0),
                 State(0,0,0)
@@ -73,7 +73,7 @@ for (var x = column_position.x; x < column_position.x + voxel_world.column_size.
             set_voxel(
               vec3(x,y,z),
               Voxel(
-                ${VoxelPalette.id.numberFromString("dve_dream_lamp")},
+                ${VoxelPalette.ids.getNumberId("dve_dream_lamp")},
                 0,
                 Light(0,15,0,15),
                 State(0,0,0)
@@ -85,7 +85,7 @@ for (var x = column_position.x; x < column_position.x + voxel_world.column_size.
           set_voxel(
               vec3(x,y,z),
               Voxel(
-                ${VoxelPalette.id.numberFromString(
+                ${VoxelPalette.ids.getNumberId(
                   "dve_liquid_dream_ether"
                 )},
                 0,

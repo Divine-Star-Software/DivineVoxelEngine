@@ -1,4 +1,3 @@
-
 import { ComputeShaderGenerate } from "./Gen/ComputeShaderGenerate";
 import { DivineVoxelEngineWorld } from "@divinevoxel/core/Contexts/World";
 import { StartWorld } from "@divinevoxel/foundation/Default/Init/StartWorld";
@@ -44,7 +43,7 @@ await StartWorld({
     },
     {
       id: "dve_marker_box",
-      states: 15,
+
       tags: [
         ["#dve_substance", "#dve_solid"],
         ["#dve_shape_id", "#dve_cube"],
@@ -56,7 +55,7 @@ await StartWorld({
     //dream
     {
       id: "dve_dream_stone",
-      states: 1,
+
       tags: [
         ["#dve_substance", "#dve_solid"],
         ["#dve_shape_id", "#dve_cube"],
@@ -140,7 +139,7 @@ await StartWorld({
       id: "dve_dream_vine",
       tags: [
         ["#dve_substance", "#dve_flora"],
-        ["#dve_shape_id", "#dve_panel"],
+        ["#dve_shape_id", "#dve_flat_panel"],
         ["#dve_check_collisions", false],
         ["#dve_material", "grass"],
       ],
@@ -168,7 +167,7 @@ await StartWorld({
     //dread
     {
       id: "dve_dread_stone",
-      states: 1,
+
       tags: [
         ["#dve_substance", "#dve_solid"],
         ["#dve_shape_id", "#dve_cube"],
@@ -243,8 +242,8 @@ DivineVoxelEngineWorld.instance.TC.registerTasks("start-world", async () => {
   if (doComputeGen) {
     await ComputeShaderGenerate();
   } else {
-    console.log("cpu gen start")
+    console.log("cpu gen start");
     await CPUGenerate();
-    console.log("cpu gen end")
+    console.log("cpu gen end");
   }
 });

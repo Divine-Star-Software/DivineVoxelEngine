@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { DivineVoxelEngineRender } from "@divinevoxel/core/Contexts/Render";
-import { Scene } from "@babylonjs/core/";
+import { CreateBox, Scene } from "@babylonjs/core/";
 import { Engine } from "@babylonjs/core/Engines/engine.js";
 import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera.js";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
@@ -117,7 +117,9 @@ function InitScene(canvas: HTMLCanvasElement, nodes: RenderNodes) {
 
   const camera = new FreeCamera("", new Vector3(0, 10, 0));
 
-  camera.position.y = 70;
+  camera.position.y = 0;
+  const cube = CreateBox("",{},scene);
+  cube.position.z = 10;
   //  camera.speed = 1;
   camera.maxZ = 1000;
   camera.fov = 1.8;
@@ -135,6 +137,7 @@ function InitScene(canvas: HTMLCanvasElement, nodes: RenderNodes) {
   nodes.scene = scene;
 
   engine.runRenderLoop(() => {
+
     scene.render();
   });
   //scene.clearColor.set(1, 1, 1, 1);

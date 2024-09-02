@@ -253,7 +253,7 @@ export function App() {
         setReady(true);
         nodes.sceneTool.options.doEffects(true);
         nodes.sceneTool.levels
-      
+
           .setSun(1)
           .levels.setBase(0)
           .fog.setColor(0.1)
@@ -268,56 +268,12 @@ export function App() {
         axes.xAxis.parent = parent;
         axes.yAxis.parent = parent;
         axes.zAxis.parent = parent;
-      
+
         parent.renderingGroupId = -1;
         const dataTool = new DataTool();
         const nodeMeshTool = new NodeMeshTool();
-        const voxelEntityTool = await nodeMeshTool.voxel.buildEntityToolAsync(
-          [0, 0, 0],
-          nodeMeshTool.voxel.dataTool
-            .setStringId("dve_dream_grass")
-            .setLevelState(1)
-            .setLevel(7)
-            .getRaw()
-        );
 
-        if (voxelEntityTool) {
-
-          voxelEntityTool.setInstanceAmount(1);
-
-          /* 
-          let i = 1;
-          while(i--) {
-            const inst = voxelEntityTool.getInstance();
-            console.log("got voxel entity instance", inst);
-
-            if (inst)  {
-              inst.position.y = 60 + Math.abs(i);
-            }
-          }
-          console.log(voxelEntityTool._matrixArray.matricies)
-          voxelEntityTool.update(); */
-          setInterval(() => {
-            console.log(nodes.camera.globalPosition.toString());
-          }, 2_000);
-
-          const box = CreateBox("", {}, scene);
-          box.position.set(0, 0, 0);
-          box.thinInstanceAdd(Matrix.Translation(-5, 60, 0));
-          box.thinInstanceAdd(Matrix.Translation(-10, 60, 0));
-
-          voxelEntityTool._instances[0].position.set(0, 60, 0);
-          voxelEntityTool._instances[0].scale.set(1, 1, 1);
-          voxelEntityTool.update();
-
-          /*      console.log(voxelEntityTool._matrixArray.matricies.slice())
-          voxelEntityTool.mesh.thinInstanceSetBuffer(
-            "matrix",
-            voxelEntityTool._matrixArray.matricies,
-            16
-          );
-          console.log(Matrix.Translation(0, 60, 0).toArray()); */
-        }
+        console.log("all done ")
       });
     },
     useSkyBox: true,

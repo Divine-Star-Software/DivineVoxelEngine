@@ -2,21 +2,18 @@ import { StartContrusctor } from "@divinevoxel/foundation/Default/Init/StartCons
 import { GetLightDebugBox } from "./Voxels/LightDebugBox";
 import { GetMarkerBox } from "./Voxels/MarkerBox";
 import { GetDreamEther } from "./Voxels/LiquidDreamEther";
-import { Flat3DIndex, Vec3Array } from "@amodx/math";
+import { Flat3DIndex } from "@amodx/math";
 import { BrushTool } from "@divinevoxel/foundation/Default/Tools/Brush/Brush";
-import { LocationData } from "@divinevoxel/core/Math";
-import { DVEDefaultBuilder } from "@divinevoxel/foundation/Default/Builder/Builder";
-import { DivineVoxelEngineConstructor } from "@divinevoxel/core/Contexts/Constructor/DivineVoxelEngineConstructor";
-import { WorldSpaces } from "@divinevoxel/core/Data/World/WorldSpaces";
+import { DVEDefaultMesher } from "@divinevoxel/foundation/Default/Mesher/Mesher";
 import { DataTool } from "@divinevoxel/foundation/Default/Tools/Data/DataTool";
-const defaults = DVEDefaultBuilder.defaults;
+const defaults = DVEDefaultMesher.defaults;
 await StartContrusctor({
-  builder: {
+  mesher: {
     constructors: [
       GetLightDebugBox(),
       GetMarkerBox(),
       GetDreamEther(),
-      defaults.box.simple("dve_debug_box", {
+      defaults.cube.simple("dve_debug_box", {
         top: ["#dve_solid", "dve_debug_box", "top"],
         bottom: ["#dve_solid", "dve_debug_box", "bottom"],
         north: ["#dve_solid", "dve_debug_box", "north"],
@@ -24,18 +21,18 @@ await StartContrusctor({
         east: ["#dve_solid", "dve_debug_box", "east"],
         west: ["#dve_solid", "dve_debug_box", "west"],
       }),
-      defaults.box.simple("dve_data_holder", [
+      defaults.cube.simple("dve_data_holder", [
         "#dve_solid",
         "dve_data_holder",
         "front",
       ]),
       //dream
-      defaults.box.simple("dve_dream_grass_block", [
+      defaults.cube.simple("dve_dream_grass_block", [
         "#dve_flora",
         "dve_dream_grass_block",
         "grassy-top",
       ]),
-      defaults.box.pillar("dve_dream_stone_pillar", {
+      defaults.cube.pillar("dve_dream_stone_pillar", {
         top: ["#dve_solid", "dve_dream_stone_pillar", "top"],
         bottom: ["#dve_solid", "dve_dream_stone_pillar", "top"],
         sideBottom: ["#dve_solid", "dve_dream_stone_pillar", "side-bottom"],
@@ -43,7 +40,7 @@ await StartContrusctor({
         sideTop: ["#dve_solid", "dve_dream_stone_pillar", "side-top"],
         sideFloat: ["#dve_solid", "dve_dream_stone_pillar", "top"],
       }),
-      defaults.box.pillar("dve_dream_stone", {
+      defaults.cube.pillar("dve_dream_stone", {
         top: ["#dve_solid", "dve_dream_stone", "grassy-top"],
         bottom: ["#dve_solid", "dve_dream_stone"],
         sideBottom: ["#dve_solid", "dve_dream_stone"],
@@ -51,8 +48,8 @@ await StartContrusctor({
         sideTop: ["#dve_solid", "dve_dream_stone", "grassy-side"],
         sideFloat: ["#dve_solid", "dve_dream_stone", "grassy-side"],
       }),
-      defaults.box.simple("dve_dream_lamp", ["#dve_glow", "dve_dream_lamp"]),
-      defaults.box.pillar("dve_dream_stone_slab", {
+      defaults.cube.simple("dve_dream_lamp", ["#dve_glow", "dve_dream_lamp"]),
+      defaults.cube.pillar("dve_dream_stone_slab", {
         top: ["#dve_solid", "dve_dream_stone", "grassy-top"],
         bottom: ["#dve_solid", "dve_dream_stone"],
         sideBottom: ["#dve_solid", "dve_dream_stone"],
@@ -60,8 +57,8 @@ await StartContrusctor({
         sideTop: ["#dve_solid", "dve_dream_stone", "grassy-side"],
         sideFloat: ["#dve_solid", "dve_dream_stone", "grassy-side"],
       }),
-      defaults.box.simple("dve_dream_log", ["#dve_solid", "dve_dream_log"]),
-      defaults.box.simple("dve_dream_stone_stair", [
+      defaults.cube.simple("dve_dream_log", ["#dve_solid", "dve_dream_log"]),
+      defaults.cube.simple("dve_dream_stone_stair", [
         "#dve_solid",
         "dve_dream_stone",
       ]),
@@ -70,12 +67,12 @@ await StartContrusctor({
         "dve_dream_grass",
       ]),
       defaults.panel.simple("dve_dream_vine", ["#dve_flora", "dve_dream_vine"]),
-      defaults.box.simple("dve_dream_leaves", [
+      defaults.cube.simple("dve_dream_leaves", [
         "#dve_flora",
         "dve_dream_leaves",
       ]),
       //dread
-      defaults.box.pillar("dve_dread_stone_pillar", {
+      defaults.cube.pillar("dve_dread_stone_pillar", {
         top: ["#dve_solid", "dve_dread_stone_pillar", "top"],
         bottom: ["#dve_solid", "dve_dread_stone_pillar", "top"],
         sideBottom: ["#dve_solid", "dve_dread_stone_pillar", "side-bottom"],
@@ -83,7 +80,7 @@ await StartContrusctor({
         sideTop: ["#dve_solid", "dve_dread_stone_pillar", "side-top"],
         sideFloat: ["#dve_solid", "dve_dread_stone_pillar", "top"],
       }),
-      defaults.box.pillar("dve_dread_stone", {
+      defaults.cube.pillar("dve_dread_stone", {
         top: ["#dve_solid", "dve_dread_stone", "grassy-top"],
         bottom: ["#dve_solid", "dve_dread_stone"],
         sideBottom: ["#dve_solid", "dve_dread_stone"],
@@ -91,7 +88,7 @@ await StartContrusctor({
         sideTop: ["#dve_solid", "dve_dread_stone", "grassy-side"],
         sideFloat: ["#dve_solid", "dve_dread_stone", "grassy-side"],
       }),
-      defaults.box.simple("dve_dread_lamp", ["#dve_glow", "dve_dread_lamp"]),
+      defaults.cube.simple("dve_dread_lamp", ["#dve_glow", "dve_dread_lamp"]),
       defaults.liquid.simple("dve_liquid_dread_ether", [
         ["#dve_liquid", "dve_liquid_dread_ether", "still-1"],
         ["#dve_liquid", "dve_liquid_dread_ether", "still-1"],

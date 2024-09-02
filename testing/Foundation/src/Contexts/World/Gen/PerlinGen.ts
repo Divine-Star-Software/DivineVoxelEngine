@@ -4,6 +4,7 @@ perlin.noiseSeed(13129301280);
 
 import { AdvancedBrush } from "@divinevoxel/foundation/Default/Tools/Brush/AdvancedBrushTool";
 import { GenerateTree } from "./Tree";
+import { VoxelPalette } from "@divinevoxel/core/Data/Voxel/VoxelPalette";
 
 const brush = new AdvancedBrush();
 
@@ -39,6 +40,9 @@ export const PerlinGen = {
 
   generateTree() {},
   generateWorldColumn(chunkX: number, chunkZ: number) {
+    brush.setDimension("main");
+    brush.setId("dve_dream_stone")
+    console.log(structuredClone(brush.data),VoxelPalette.ids.getNumberId("dve_dream_stone"),structuredClone(brush.getRaw()))
     brush.start();
     //  return this.generateBlankChunk(chunkX, chunkZ);
     let totalTrees = 0;
