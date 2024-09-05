@@ -4,6 +4,8 @@ import { WorldGen } from "./WorldGen";
 import { TaskTool } from "@divinevoxel/foundation/Default/Tools/Tasks/TasksTool";
 import { MesherTool } from "@divinevoxel/foundation/Default/Tools/Mesher/MesherTool";
 import { PanelStates } from "@divinevoxel/foundation/Default/Mesher/Shapes/default/Panel/PanelStates";
+import { DataTool } from "@divinevoxel/foundation/Default/Tools/Data/DataTool";
+import { BrushTool } from "@divinevoxel/foundation/Default/Tools/Brush/Brush";
 export async function CPUGenerate() {
   const numChunks = 2;
   let startX = -16 * numChunks;
@@ -18,67 +20,20 @@ export async function CPUGenerate() {
   const t1 = performance.now();
   for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
-      builder.setXZ(x, z).fillColumn();
-      // WorldGen.generateWorldColumn(x, z);
-      PerlinGen.generateWorldColumn(x, z);
+      builder.setXYZ(x, 0, z).fillColumn();
+      WorldGen.flatColumn(x, z);
+      // PerlinGen.generateWorldColumn(x, z);
       tasks.propagation.queued.add(["main", x, 0, z]);
       tasks.worldSun.queued.add(["main", x, 0, z]);
     }
   }
 
-  for (let y = 55; y < 80; y++) {
-    {
-      WorldGen.brush
-        .setXYZ(0, y, 1)
-        .setId("dve_dream_vine")
-        .setShapeState(PanelStates.North)
-        .paint();
-      WorldGen.brush
-        .setXYZ(0, y, 2)
-        .setId("dve_dream_stone")
-        .setShapeState(PanelStates.North)
-        .paint();
-    }
-
-    {
-      WorldGen.brush
-        .setXYZ(0, y, -1)
-        .setId("dve_dream_vine")
-        .setShapeState(PanelStates.South)
-        .paint();
-      WorldGen.brush
-        .setXYZ(0, y, -2)
-        .setId("dve_dream_stone")
-        .setShapeState(PanelStates.South)
-        .paint();
-    }
-
-    {
-      WorldGen.brush
-        .setXYZ(1, y, 0)
-        .setId("dve_dream_vine")
-        .setShapeState(PanelStates.East)
-        .paint();
-      WorldGen.brush
-        .setXYZ(2, y, 0)
-        .setId("dve_dream_stone")
-        .setShapeState(PanelStates.East)
-        .paint();
-    }
-
-    {
-      WorldGen.brush
-        .setXYZ(-1, y, 0)
-        .setId("dve_dream_vine")
-        .setShapeState(PanelStates.West)
-        .paint();
-      WorldGen.brush
-        .setXYZ(-2, y, 0)
-        .setId("dve_dream_stone")
-        .setShapeState(PanelStates.West)
-        .paint();
-    }
+  const brush = new BrushTool();
+  brush.setId("dve_dread_stone_stair");
+  for (let x = 0; x < 16; x += 2) {
+    brush.setXYZ(x, 1, 0).paint();
   }
+
   /// await MagicGen.generate();
 
   const t2 = performance.now();

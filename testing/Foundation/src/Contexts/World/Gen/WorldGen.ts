@@ -183,18 +183,21 @@ export const WorldGen = {
       for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
         for (let y = 0; y < this.minY + 10; y++) {
           brush.setXYZ(x, y, z);
-     
+
           if (y <= 2) {
             brush
               .setId("dve_dream_stone")
               .setXYZ(x, y, z)
               .setId("dve_dream_stone")
               .paint();
-              continue;
+            continue;
           }
           if (y < this.minY - 3) {
-            if(x  == chunkX + 8 && z == chunkZ + 8 && y < this.minY - 5) {
-              brush.setSecondaryId("dve_dream_grass").setId("dve_liquid_dream_ether").paint();
+            if (x == chunkX + 8 && z == chunkZ + 8 && y < this.minY - 5) {
+              brush
+                .setSecondaryId("dve_dream_grass")
+                .setId("dve_liquid_dream_ether")
+                .paint();
               continue;
             }
             brush.setSecondaryId("").setId("dve_liquid_dream_ether").paint();
@@ -248,9 +251,21 @@ export const WorldGen = {
     }
   },
 
+  flatColumn(chunkX: number, chunkZ: number) {
+    for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
+      for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
+        for (let y = 0; y < 1; y++) {
+          brush.setXYZ(x, y, z);
+
+          brush.setId("dve_dream_stone").paint();
+        }
+      }
+    }
+  },
+
   generateWorldColumn(chunkX: number, chunkZ: number) {
     brush.start();
-      return this.generateBlankChunk(chunkX, chunkZ);
+    return this.generateBlankChunk(chunkX, chunkZ);
     let toss = Math.random();
 
     if (
