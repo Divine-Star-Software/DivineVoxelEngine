@@ -15,7 +15,7 @@ export function GetDreamEther(): VoxelConstructor {
         "still-1",
       ]);
       OutlinedVoxelTool.getOutlineUVs(
-        ["#dve_liquid", "foam", "top"],
+        ["#dve_liquid", "foam", "up"],
         (textures) => {
           overlayTextures = textures;
         }
@@ -25,17 +25,17 @@ export function GetDreamEther(): VoxelConstructor {
       OutlinedVoxelTool.setCurrentTextures(overlayTextures);
       LiquidVoxelShape.start();
       tool.getOverlayTextures().setAll(0);
-      if (tool.isFaceExposed("top")) {
-        tool.setTexture(uv).calculateLight("top");
+      if (tool.isFaceExposed("up")) {
+        tool.setTexture(uv).calculateLight("up");
         if (tool.voxel.getLevel() == 15 && tool.voxel.getLevelState() != 1) {
-          OutlinedVoxelTool.addTo.top(tool);
+          OutlinedVoxelTool.addTo.up(tool);
         }
-        LiquidVoxelShape.add.top();
+        LiquidVoxelShape.add.up();
       }
       tool.getOverlayTextures().setAll(0);
-      if (tool.isFaceExposed("bottom")) {
-        tool.setTexture(uv).calculateLight("bottom");
-        LiquidVoxelShape.add.bottom();
+      if (tool.isFaceExposed("down")) {
+        tool.setTexture(uv).calculateLight("down");
+        LiquidVoxelShape.add.down();
       }
       if (tool.isFaceExposed("east")) {
         tool.setTexture(uv).calculateLight("east");

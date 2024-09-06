@@ -103,6 +103,6 @@ export const PerlinGen = {
         }
       }
     }
-    brush.stop();
+    brush.sup();
   },
 };

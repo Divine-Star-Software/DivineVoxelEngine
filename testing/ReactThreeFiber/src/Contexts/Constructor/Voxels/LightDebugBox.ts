@@ -29,17 +29,17 @@ export function GetLightDebugBox(): VoxelConstructor {
       const [dimension, x, y, z] = tool.voxel.getLocation();
       const dt = tool.nVoxel;
 
-      if (tool.isFaceExposed("top")) {
+      if (tool.isFaceExposed("up")) {
         tool
           .setTexture(textures[getData(dt, x, y + 1, z) || 0])
-          .calculateLight("top");
-        BoxVoxelShape.add.top();
+          .calculateLight("up");
+        BoxVoxelShape.add.up();
       }
-      if (tool.isFaceExposed("bottom")) {
+      if (tool.isFaceExposed("down")) {
         tool
           .setTexture(textures[getData(dt, x, y - 1, z) || 0])
-          .calculateLight("bottom");
-        BoxVoxelShape.add.bottom();
+          .calculateLight("down");
+        BoxVoxelShape.add.down();
       }
       if (tool.isFaceExposed("east")) {
         tool

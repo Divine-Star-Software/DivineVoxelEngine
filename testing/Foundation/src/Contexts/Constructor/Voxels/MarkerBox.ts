@@ -23,13 +23,13 @@ export function GetMarkerBox(): VoxelConstructor {
       const uv = textures[tool.voxel.getShapeState()];
 
       tool.getOverlayTextures().setAll(0);
-      if (tool.isFaceExposed(VoxelFaces.Top)) {
-        tool.setTexture(uv).calculateLight(VoxelFaces.Top);
-        CubeVoxelShape.add.top();
+      if (tool.isFaceExposed(VoxelFaces.Up)) {
+        tool.setTexture(uv).calculateLight(VoxelFaces.Up);
+        CubeVoxelShape.add.up();
       }
-      if (tool.isFaceExposed(VoxelFaces.Bottom)) {
-        tool.setTexture(uv).calculateLight(VoxelFaces.Bottom);
-        CubeVoxelShape.add.bottom();
+      if (tool.isFaceExposed(VoxelFaces.Down)) {
+        tool.setTexture(uv).calculateLight(VoxelFaces.Down);
+        CubeVoxelShape.add.down();
       }
       if (tool.isFaceExposed(VoxelFaces.East)) {
         tool.setTexture(uv).calculateLight(VoxelFaces.East);

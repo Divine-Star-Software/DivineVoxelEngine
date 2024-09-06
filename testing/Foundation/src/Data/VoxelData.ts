@@ -191,8 +191,8 @@ export const DVEVoxelData: VoxelData[] = [
         {
           id: "dve_stair",
           inputs: {
-            "@topTex": ["#dve_solid", "dve_dread_stone"],
-            "@bottomTex": ["#dve_solid", "dve_dread_stone"],
+            "@upTex": ["#dve_solid", "dve_dread_stone"],
+            "@downTex": ["#dve_solid", "dve_dread_stone"],
             "@northTex": ["#dve_solid", "dve_dread_stone"],
             "@southTex": ["#dve_solid", "dve_dread_stone"],
             "@eastTex": ["#dve_solid", "dve_dread_stone"],

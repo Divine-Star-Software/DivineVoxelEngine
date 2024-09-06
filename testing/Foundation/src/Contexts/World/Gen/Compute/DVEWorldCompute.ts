@@ -219,8 +219,8 @@ export class GPUWorldGen {
   }
 
   struct GradientCheckSets { 
-    top: CheckSetQuad,
-    bottom: CheckSetQuad,
+    up: CheckSetQuad,
+    down: CheckSetQuad,
     west: CheckSetQuad,
     east: CheckSetQuad,
     north: CheckSetQuad,
@@ -230,14 +230,14 @@ export class GPUWorldGen {
 
   const GradientCheckSet = 
   GradientCheckSets(
-    //top
+    //up
     CheckSetQuad(
       array<f32,9>(-1, 1, 0, 0, 1, -1, -1, 1, -1),
       array<f32,9>(-1, 1, 0, 0, 1, 1, -1, 1, 1),
       array<f32,9>(1, 1, 0, 0, 1, 1, 1, 1, 1),
       array<f32,9>(1, 1, 0, 0, 1, -1, 1, 1, -1)
     ),
-    //bottom
+    //down
     CheckSetQuad(
       array<f32,9>(0, -1, -1, -1, -1, 0, -1, -1, -1),
       array<f32,9>(0, -1, -1, 1, -1, 0, 1, -1, -1),
@@ -312,10 +312,10 @@ export class GPUWorldGen {
     (raw_template.segment_1 & ~(two_byte_mask << 16)) | (voxel_template.secondary_id  << 16);
 
     var face_byte: u32 = 0;
-    if(voxel_template.faces.top) {
+    if(voxel_template.faces.up) {
       face_byte |= 1 << 0;
     }
-    if(voxel_template.faces.bottom) {
+    if(voxel_template.faces.down) {
       face_byte |= 1 << 1;
     }
     if(voxel_template.faces.west) {
@@ -334,32 +334,32 @@ export class GPUWorldGen {
     (raw_template.segment_2 & ~(byte_mask << 0)) | (face_byte  << 0);
 
     //encode light
-    //top
+    //up
     { 
-      raw_template.segment_3[0] = encode_light(voxel_template.light.top.p1);
+      raw_template.segment_3[0] = encode_light(voxel_template.light.up.p1);
       raw_template.segment_3[0] = 
       (raw_template.segment_3[0] & ~(two_byte_mask << 16)) 
-      | (encode_light(voxel_template.light.top.p2)  << 16);
+      | (encode_light(voxel_template.light.up.p2)  << 16);
     }
     {    
-      raw_template.segment_3[1] = encode_light(voxel_template.light.top.p3);
+      raw_template.segment_3[1] = encode_light(voxel_template.light.up.p3);
       raw_template.segment_3[1] = 
       (raw_template.segment_3[1] & ~(two_byte_mask << 16)) 
-      | (encode_light(voxel_template.light.top.p4)  << 16);
+      | (encode_light(voxel_template.light.up.p4)  << 16);
     }
 
-    //bottom
+    //down
     { 
-      raw_template.segment_3[2] = encode_light(voxel_template.light.bottom.p1);
+      raw_template.segment_3[2] = encode_light(voxel_template.light.down.p1);
       raw_template.segment_3[2] = 
       (raw_template.segment_3[2] & ~(two_byte_mask << 16)) 
-      | (encode_light(voxel_template.light.bottom.p2)  << 16);
+      | (encode_light(voxel_template.light.down.p2)  << 16);
     }
     {    
-      raw_template.segment_3[3] = encode_light(voxel_template.light.bottom.p3);
+      raw_template.segment_3[3] = encode_light(voxel_template.light.down.p3);
       raw_template.segment_3[3] = 
       (raw_template.segment_3[3] & ~(two_byte_mask << 16)) 
-      | (encode_light(voxel_template.light.bottom.p4)  << 16);
+      | (encode_light(voxel_template.light.down.p4)  << 16);
     }
 
     //west
@@ -420,10 +420,10 @@ export class GPUWorldGen {
 
     //encode AO
     { 
-      raw_template.segment_4[0] = encode_ao(voxel_template.ao.top);
+      raw_template.segment_4[0] = encode_ao(voxel_template.ao.up);
       raw_template.segment_4[0] = 
       (raw_template.segment_4[0] & ~(two_byte_mask << 16)) 
-      | (encode_ao(voxel_template.ao.bottom) << 16);
+      | (encode_ao(voxel_template.ao.down) << 16);
     }
     { 
       raw_template.segment_4[1] = encode_ao(voxel_template.ao.west);
@@ -486,8 +486,8 @@ export class GPUWorldGen {
 
   //voxel template
   struct VoxelAOTemplate {
-    top: AOQuad,
-    bottom: AOQuad,
+    up: AOQuad,
+    down: AOQuad,
     west: AOQuad,
     east: AOQuad,
     north: AOQuad,
@@ -495,8 +495,8 @@ export class GPUWorldGen {
   }
 
   struct VoxelLightTemplate {
-    top: LightQuad,
-    bottom: LightQuad,
+    up: LightQuad,
+    down: LightQuad,
     west: LightQuad,
     east: LightQuad,
     north: LightQuad,
@@ -504,8 +504,8 @@ export class GPUWorldGen {
   }
 
   struct VoxelExposedFacesTemplate {
-    top: bool,
-    bottom: bool,
+    up: bool,
+    down: bool,
     west: bool,
     east: bool,
     north: bool,
@@ -729,33 +729,33 @@ export class GPUWorldGen {
     voxel_template.id = voxel.id;
     voxel_template.secondary_id = voxel.secondary_id;
 
-    //top
+    //up
     if(
       is_voxel_face_exposed(vec3(0,1,0),position)
     ) {
-      voxel_template.faces.top = true;
+      voxel_template.faces.up = true;
       let results = process_voxel_light_gradient(
         position,
         vec3(0,1,0),
         voxel,
-        GradientCheckSet.top
+        GradientCheckSet.up
       );
-      voxel_template.light.top = results.light;
-      voxel_template.ao.top = results.ao;
+      voxel_template.light.up = results.light;
+      voxel_template.ao.up = results.ao;
     }
-    //bottom
+    //down
     if(
       is_voxel_face_exposed(vec3(0,-1,0),position)
     ) {
-      voxel_template.faces.bottom = true;
+      voxel_template.faces.down = true;
       let results = process_voxel_light_gradient(
         position,
         vec3(0,-1,0),
         voxel,
-        GradientCheckSet.bottom
+        GradientCheckSet.down
       );
-      voxel_template.light.bottom = results.light;
-      voxel_template.ao.bottom = results.ao;
+      voxel_template.light.down = results.light;
+      voxel_template.ao.down = results.ao;
     }
     //west
     if(

@@ -31,8 +31,8 @@ export function App() {
             id: "dve_debug_box",
             frames: 0,
             variations: {
-              top: { frames: 0 },
-              bottom: { frames: 0 },
+              up: { frames: 0 },
+              down: { frames: 0 },
               north: { frames: 0 },
               south: { frames: 0 },
               east: { frames: 0 },
@@ -67,7 +67,7 @@ export function App() {
             id: "dve_dream_stone",
             frames: 0,
             variations: {
-              "grassy-top": { frames: 0 },
+              "grassy-up": { frames: 0 },
               "grassy-side": { frames: 0 },
             },
           },
@@ -76,7 +76,7 @@ export function App() {
             id: "dve_dread_stone",
             frames: 0,
             variations: {
-              "grassy-top": { frames: 0 },
+              "grassy-up": { frames: 0 },
               "grassy-side": { frames: 0 },
             },
           },
@@ -93,7 +93,7 @@ export function App() {
             id: "dve_dream_grass_block",
             frames: 0,
             variations: {
-              "grassy-top": { frames: 0 },
+              "grassy-up": { frames: 0 },
             },
           },
           {
@@ -101,9 +101,9 @@ export function App() {
             id: "dve_dream_stone_pillar",
             frames: 0,
             variations: {
-              "side-bottom": { frames: 0 },
-              "side-top": { frames: 0 },
-              top: { frames: 0 },
+              "side-down": { frames: 0 },
+              "side-up": { frames: 0 },
+              up: { frames: 0 },
             },
           },
           {
@@ -111,9 +111,9 @@ export function App() {
             id: "dve_dread_stone_pillar",
             frames: 0,
             variations: {
-              "side-bottom": { frames: 0 },
-              "side-top": { frames: 0 },
-              top: { frames: 0 },
+              "side-down": { frames: 0 },
+              "side-up": { frames: 0 },
+              up: { frames: 0 },
             },
           },
           {
@@ -180,14 +180,14 @@ export function App() {
             id: "foam",
             frames: 0,
             variations: {
-              top: { frames: 0 },
-              "corner-top-right": { frames: 0 },
-              "corner-top-left": { frames: 0 },
-              "corner-top-left-top-right": { frames: 0 },
-              bottom: { frames: 0 },
-              "corner-bottom-right": { frames: 0 },
-              "corner-bottom-left": { frames: 0 },
-              "corner-bottom-left-bottom-right": { frames: 0 },
+              up: { frames: 0 },
+              "corner-up-right": { frames: 0 },
+              "corner-up-left": { frames: 0 },
+              "corner-up-left-up-right": { frames: 0 },
+              down: { frames: 0 },
+              "corner-down-right": { frames: 0 },
+              "corner-down-left": { frames: 0 },
+              "corner-down-left-down-right": { frames: 0 },
               right: { frames: 0 },
               left: { frames: 0 },
             },
