@@ -80,14 +80,6 @@ await StartContrusctor({
         sideTop: ["#dve_solid", "dve_dread_stone_pillar", "side-top"],
         sideFloat: ["#dve_solid", "dve_dread_stone_pillar", "top"],
       }),
-      defaults.cube.pillar("dve_dread_stone", {
-        top: ["#dve_solid", "dve_dread_stone", "grassy-top"],
-        bottom: ["#dve_solid", "dve_dread_stone"],
-        sideBottom: ["#dve_solid", "dve_dread_stone"],
-        sideMiddle: ["#dve_solid", "dve_dread_stone"],
-        sideTop: ["#dve_solid", "dve_dread_stone", "grassy-side"],
-        sideFloat: ["#dve_solid", "dve_dread_stone", "grassy-side"],
-      }),
       defaults.cube.simple("dve_dread_lamp", ["#dve_glow", "dve_dread_lamp"]),
       defaults.liquid.simple("dve_liquid_dread_ether", [
         ["#dve_liquid", "dve_liquid_dread_ether", "still-1"],

@@ -8,6 +8,7 @@ import {
   Scene,
   Vector3,
   FreeCamera,
+  AxesViewer
 } from "@babylonjs/core";
 import { DivineVoxelEngineRender } from "@divinevoxel/core/Contexts/Render";
 import { Textures } from "Data/TextureData";
@@ -63,6 +64,7 @@ export function App() {
       });
       canvasResized.observe(canvas);
       const scene = new Scene(engine);
+      scene.clearColor.setAll(0);
       const light = new HemisphericLight("", new Vector3(0, 0, 0), scene);
 
       light.specular.set(0, 0, 0);
@@ -86,21 +88,23 @@ export function App() {
         constructorWorkers,
       });
 
-      const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
+/*       const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
       skybox.infiniteDistance = true;
       const skyboxMat = renderer.nodes.materials.get("#dve_skybox");
       if (skyboxMat) {
         skybox.material = skyboxMat._material;
         skybox.material!.backFaceCulling = false;
-      }
+      } */
       const sceneTool = new SceneTool();
       sceneTool.fog.setDensity(0.00001);
       sceneTool.fog.setColor(1, 1, 1);
       sceneTool.options.doSun(true);
       sceneTool.options.doAO(true);
       sceneTool.options.doRGB(true);
-      sceneTool.levels.setSun(1);
-      sceneTool.levels.setBase(0.01);
+      sceneTool.levels.setSun(0);
+      sceneTool.levels.setBase(0.9);
+
+      const viwer = new AxesViewer(scene)
 
       const camera = new FreeCamera("", new Vector3(0, 10, 0));
 

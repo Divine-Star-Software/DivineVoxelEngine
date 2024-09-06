@@ -257,7 +257,7 @@ export const WorldGen = {
         for (let y = 0; y < 1; y++) {
           brush.setXYZ(x, y, z);
 
-          brush.setId("dve_dream_stone").paint();
+          brush.setId("dve_dread_stone").paint();
         }
       }
     }

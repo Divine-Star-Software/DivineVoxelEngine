@@ -167,9 +167,18 @@ export const DVEVoxelData: VoxelData[] = [
       ["#dve_collider_id", "#dve_cube"],
       ["#dve_check_collisions", true],
       ["#dve_material", "grassy-stone"],
+      [
+        "#dve_model_data",
+        {
+          id: "dve_simple_cube",
+          inputs: {
+            "@texture": ["#dve_solid", "dve_dread_stone"],
+          },
+        },
+      ],
     ],
   },
-  {
+/*   {
     id: "dve_dread_stone_stair",
     tags: [
       ["#dve_substance", "#dve_solid"],
@@ -179,7 +188,6 @@ export const DVEVoxelData: VoxelData[] = [
       ["#dve_material", "grassy-stone"],
       [
         "#dve_model_data",
-
         {
           id: "dve_stair",
           inputs: {
@@ -193,7 +201,7 @@ export const DVEVoxelData: VoxelData[] = [
         },
       ],
     ],
-  },
+  }, */
 
   {
     id: "dve_dread_grass_block",
