@@ -252,14 +252,22 @@ export const WorldGen = {
   },
 
   flatColumn(chunkX: number, chunkZ: number) {
-    for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
-      for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
-        for (let y = 0; y < 1; y++) {
-          brush.setXYZ(x, y, z);
+    let minus = 0;
+    const height = (10 + Math.random() * 10) >> 0;
+    for (let y = 1; y < height; y++) {
+      if (y % 3 == 0) continue;
+      for (let x = chunkX + minus; x < this.chunkWidth + chunkX - minus; x++) {
+        for (
+          let z = chunkZ + minus;
+          z < this.chunkDepth + chunkZ - minus;
+          z++
+        ) {
 
-          brush.setId("dve_dread_stone").paint();
+          //   if (Math.random() > 0.85) continue;
+          brush.setId("dve_dread_stone").setXYZ(x, y, z).paint();
         }
       }
+      minus++;
     }
   },
 

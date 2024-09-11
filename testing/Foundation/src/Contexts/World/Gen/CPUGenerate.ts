@@ -19,26 +19,45 @@ export async function CPUGenerate() {
   const tasks = new TaskTool();
   tasks.setFocalPoint(["main", 0, 0, 0]);
   const t1 = performance.now();
-
+  /* 
   builder.setXYZ(0, 0, 0).fillColumn();
   WorldGen.flatColumn(0, 0);
-  // PerlinGen.generateWorldColumn(x, z);
-  tasks.propagation.queued.add(["main", 0, 0, 0]);
-  tasks.worldSun.queued.add(["main", 0, 0, 0]);
 
-  /*   for (let x = startX; x < endX; x += 16) {
-    for (let z = startZ; z < endZ; z += 16) {
+ tasks.propagation.queued.add(["main", 0, 0, 0]);
+ tasks.worldSun.queued.add(["main", 0, 0, 0]);
+ */
+  for (let x = startX - 32; x < endX + 32; x += 16) {
+    for (let z = startZ - 32; z < endZ + 32; z += 16) {
       builder.setXYZ(x, 0, z).fillColumn();
-      WorldGen.flatColumn(x, z);
-      // PerlinGen.generateWorldColumn(x, z);
       tasks.propagation.queued.add(["main", x, 0, z]);
       tasks.worldSun.queued.add(["main", x, 0, z]);
     }
-  } */
+  }
+  for (let x = startX; x < endX; x += 16) {
+    for (let z = startZ; z < endZ; z += 16) {
+      if ((x > -10 && x < 10) && (z > -10 && z < 10)) continue;
 
-  const brush = new BrushTool();
+      WorldGen.flatColumn(x, z);
+    }
+  }
+  /*   for (let x = 0; x < 16; x += 16) {
+    for (let z = 0; z < 16; z += 16) {
+      WorldGen.flatColumn(x, z);
+    }
+  } */
+  /*   const brush = new BrushTool();
   brush.setId("dve_dread_stone");
-  brush.setXYZ(0, 1, 0).paint();
+  for (let y = 0; y < 12; y++) {
+    if (y % 2 == 0) continue;
+    for (let x = 0; x < 16; x++) {
+      for (let z = 0; z < 16; z++) {
+        if (Math.random() > 0.85) continue;
+        brush.setXYZ(x, y, z).paint();
+      }
+    }
+  }
+ */
+  // brush.setXYZ(5, 1, 5).paint();
   /*
   for (let x = 0; x < 16; x += 2) {
     brush.setXYZ(x, 1, 0).paint();
@@ -46,24 +65,18 @@ export async function CPUGenerate() {
  */
   /// await MagicGen.g enerate();
 
-  const t2 = performance.now();
   //await ComputeTest(canvas);
 
   await tasks.worldSun.queued.runAndAwait();
   await tasks.propagation.queued.runAndAwait();
 
-  builder.setXYZ(0, 0, 0).buildColumn();
-
-  /*   for (let x = startX; x < endX; x += 16) {
-    for (let z = startZ; z < endZ; z += 16) {
+  for (let x = startX - 16; x < endX + 16; x += 16) {
+    for (let z = startZ - 16; z < endZ + 16; z += 16) {
       builder.setXYZ(x, 0, z).buildColumn();
     }
-  } */
-    WorldRegister.instance.cache.enable();
-    WorldRegister.instance.chunk.get(["main", 0, 0, 0])
-  console.warn(
-    WorldRegister.instance._dimensions,
-    WorldRegister.instance.chunk.get(["main", -1, 0, 0])
-  );
-  WorldRegister.instance.cache.disable();
+  }
+
+  const t2 = performance.now();
+
+  console.log("ALL DONE! total time = ", t2 - t1);
 }

@@ -101,8 +101,8 @@ export function App() {
       sceneTool.options.doSun(true);
       sceneTool.options.doAO(true);
       sceneTool.options.doRGB(true);
-      sceneTool.levels.setSun(0);
-      sceneTool.levels.setBase(0.9);
+      sceneTool.levels.setSun(0.9);
+      sceneTool.levels.setBase(0.01);
 
       const viwer = new AxesViewer(scene)
 
