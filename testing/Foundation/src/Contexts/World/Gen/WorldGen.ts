@@ -141,6 +141,8 @@ export const WorldGen = {
       }
     }
   },
+
+  
   generateNormalChunk(chunkX: number, chunkZ: number) {
     for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
       for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
@@ -158,6 +160,8 @@ export const WorldGen = {
       }
     }
   },
+
+
   //1376271
   generateRoofChunk(chunkX: number, chunkZ: number) {
     for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
@@ -178,6 +182,8 @@ export const WorldGen = {
       }
     }
   },
+
+
   generateBlankChunk(chunkX: number, chunkZ: number) {
     for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
       for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
@@ -206,6 +212,8 @@ export const WorldGen = {
       }
     }
   },
+
+
   generateBoxChunk(chunkX: number, chunkZ: number) {
     for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
       for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
@@ -252,6 +260,17 @@ export const WorldGen = {
   },
 
   flatColumn(chunkX: number, chunkZ: number) {
+    for (let y = 1; y < 2; y++) {
+      for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
+        for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
+          //   if (Math.random() > 0.85) continue;
+        brush.setId("dve_dread_stone").setXYZ(x, y, z).paint();
+        }
+      }
+    }
+  },
+
+  pyramidColumn(chunkX: number, chunkZ: number) {
     let minus = 0;
     const height = (10 + Math.random() * 10) >> 0;
     for (let y = 1; y < height; y++) {
@@ -262,7 +281,6 @@ export const WorldGen = {
           z < this.chunkDepth + chunkZ - minus;
           z++
         ) {
-
           //   if (Math.random() > 0.85) continue;
           brush.setId("dve_dread_stone").setXYZ(x, y, z).paint();
         }
@@ -301,6 +319,6 @@ export const WorldGen = {
     let toss2 = Math.random() > 0.5;
     if (toss2) this.generateNormalChunk(chunkX, chunkZ);
     if (!toss2) this.generatePondChunk(chunkX, chunkZ);
-    brush.sup();
+    brush.stop();
   },
 };

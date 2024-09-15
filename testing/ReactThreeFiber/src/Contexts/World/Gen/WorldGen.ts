@@ -230,6 +230,6 @@ export const WorldGen = {
     let toss2 = Math.random() > 0.5;
     if (toss2) this.generateNormalChunk(chunkX, chunkZ);
     if (!toss2) this.generatePondChunk(chunkX, chunkZ);
-    brush.sup();
+    brush.stop();
   },
 };

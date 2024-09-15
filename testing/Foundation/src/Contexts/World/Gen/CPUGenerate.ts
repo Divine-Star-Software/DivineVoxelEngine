@@ -1,12 +1,7 @@
-import { PerlinGen } from "./PerlinGen";
 import { WorldGen } from "./WorldGen";
-
 import { TaskTool } from "@divinevoxel/foundation/Default/Tools/Tasks/TasksTool";
 import { MesherTool } from "@divinevoxel/foundation/Default/Tools/Mesher/MesherTool";
-import { PanelStates } from "@divinevoxel/foundation/Default/Mesher/Shapes/default/Panel/PanelStates";
-import { DataTool } from "@divinevoxel/foundation/Default/Tools/Data/DataTool";
 import { BrushTool } from "@divinevoxel/foundation/Default/Tools/Brush/Brush";
-import { WorldRegister } from "@divinevoxel/foundation/Data/World/WorldRegister";
 export async function CPUGenerate() {
   const numChunks = 2;
   let startX = -16 * numChunks;
@@ -33,10 +28,10 @@ export async function CPUGenerate() {
       tasks.worldSun.queued.add(["main", x, 0, z]);
     }
   }
+
   for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
-      if ((x > -10 && x < 10) && (z > -10 && z < 10)) continue;
-
+      // if ((x > -10 && x < 10) && (z > -10 && z < 10)) continue;
       WorldGen.flatColumn(x, z);
     }
   }
@@ -66,6 +61,22 @@ export async function CPUGenerate() {
   /// await MagicGen.g enerate();
 
   //await ComputeTest(canvas);
+
+  const brush = new BrushTool();
+  //  brush.setId("dve_dread_stone").setXYZ(0, 1, 0).paint();
+  brush.setId("dve_dream_log_fence");
+
+  for(let y = 0; y < 5; y++) {
+    for (let z = 0; z <= 5; z++) {
+      brush.setXYZ(0, 2 + y, z).paint();
+      brush.setXYZ(5, 2 + y, z).paint();
+    }
+    for (let x = 0; x <= 5; x++) {
+      brush.setXYZ(x, 2 + y, 0).paint();
+      brush.setXYZ(x, 2 + y, 5).paint();
+    }
+  }
+
 
   await tasks.worldSun.queued.runAndAwait();
   await tasks.propagation.queued.runAndAwait();

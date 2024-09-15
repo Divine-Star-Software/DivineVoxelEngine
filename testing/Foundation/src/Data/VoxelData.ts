@@ -111,6 +111,31 @@ export const DVEVoxelData: VoxelData[] = [
     ],
   },
   {
+    id: "dve_dream_log_fence",
+    tags: [
+      ["#dve_is_transparent", true],
+      ["#dve_substance", "#dve_solid"],
+      ["#dve_shape_id", "#dve_cube"],
+      ["#dve_collider_id", "#dve_cube"],
+      ["#dve_check_collisions", true],
+      ["#dve_material", "wood"],
+      [
+        "#dve_model_data",
+        {
+          id: "dve_fence",
+          inputs: {
+            "@upTex": ["#dve_solid", "dve_dream_log"],
+            "@downTex": ["#dve_solid", "dve_dream_log"],
+            "@northTex": ["#dve_solid", "dve_dream_log"],
+            "@southTex": ["#dve_solid", "dve_dream_log"],
+            "@eastTex": ["#dve_solid", "dve_dream_log"],
+            "@westTex": ["#dve_solid", "dve_dream_log"],
+          },
+        },
+      ],
+    ],
+  },
+  {
     id: "dve_dream_stone_stair",
     tags: [
       ["#dve_substance", "#dve_transparent"],
@@ -178,7 +203,7 @@ export const DVEVoxelData: VoxelData[] = [
       ],
     ],
   },
-/*   {
+  /*   {
     id: "dve_dread_stone_stair",
     tags: [
       ["#dve_substance", "#dve_solid"],
