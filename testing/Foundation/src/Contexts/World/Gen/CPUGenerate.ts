@@ -63,10 +63,14 @@ export async function CPUGenerate() {
   //await ComputeTest(canvas);
 
   const brush = new BrushTool();
+  brush.setId("dve_dream_stone_pillar");
+  for (let y = 0; y < 5; y++) {
+    brush.setXYZ(-4, 2 + y, -4).paint();
+  }
   //  brush.setId("dve_dread_stone").setXYZ(0, 1, 0).paint();
   brush.setId("dve_dream_log_fence");
 
-  for(let y = 0; y < 5; y++) {
+  for (let y = 0; y < 5; y++) {
     for (let z = 0; z <= 5; z++) {
       brush.setXYZ(0, 2 + y, z).paint();
       brush.setXYZ(5, 2 + y, z).paint();
@@ -76,7 +80,6 @@ export async function CPUGenerate() {
       brush.setXYZ(x, 2 + y, 5).paint();
     }
   }
-
 
   await tasks.worldSun.queued.runAndAwait();
   await tasks.propagation.queued.runAndAwait();

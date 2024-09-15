@@ -66,6 +66,28 @@ export const DVEVoxelData: VoxelData[] = [
       ["#dve_collider_id", "#dve_cube"],
       ["#dve_check_collisions", true],
       ["#dve_material", "stone"],
+      [
+        "#dve_model_data",
+        {
+          id: "dve_pillar_cube",
+          inputs: {
+            "@sideConnectedTex": ["#dve_solid", "dve_dream_stone_pillar"],
+            "@sideDisconnectedTex": [
+              "#dve_solid",
+              "dve_dream_stone_pillar",
+              "top",
+            ],
+            "@sideUpTex": ["#dve_solid", "dve_dream_stone_pillar", "side-top"],
+            "@sideDownTex": [
+              "#dve_solid",
+              "dve_dream_stone_pillar",
+              "side-bottom",
+            ],
+            "@upTex": ["#dve_solid", "dve_dream_stone_pillar", "top"],
+            "@downTex": ["#dve_solid", "dve_dream_stone_pillar", "top"],
+          },
+        },
+      ],
     ],
   },
   {
