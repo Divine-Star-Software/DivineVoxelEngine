@@ -71,20 +71,26 @@ export const DVEVoxelData: VoxelData[] = [
         {
           id: "dve_pillar_cube",
           inputs: {
-            "@sideConnectedTex": ["#dve_solid", "dve_dream_stone_pillar"],
-            "@sideDisconnectedTex": [
-              "#dve_solid",
-              "dve_dream_stone_pillar",
-              "top",
-            ],
-            "@sideUpTex": ["#dve_solid", "dve_dream_stone_pillar", "side-top"],
-            "@sideDownTex": [
-              "#dve_solid",
-              "dve_dream_stone_pillar",
-              "side-bottom",
-            ],
-            "@upTex": ["#dve_solid", "dve_dream_stone_pillar", "top"],
-            "@downTex": ["#dve_solid", "dve_dream_stone_pillar", "top"],
+            "*": {
+              "@sideConnectedTex": ["#dve_solid", "dve_dream_stone_pillar"],
+              "@sideDisconnectedTex": [
+                "#dve_solid",
+                "dve_dream_stone_pillar",
+                "top",
+              ],
+              "@sideUpTex": [
+                "#dve_solid",
+                "dve_dream_stone_pillar",
+                "side-top",
+              ],
+              "@sideDownTex": [
+                "#dve_solid",
+                "dve_dream_stone_pillar",
+                "side-bottom",
+              ],
+              "@upTex": ["#dve_solid", "dve_dream_stone_pillar", "top"],
+              "@downTex": ["#dve_solid", "dve_dream_stone_pillar", "top"],
+            },
           },
         },
       ],
@@ -146,12 +152,14 @@ export const DVEVoxelData: VoxelData[] = [
         {
           id: "dve_fence",
           inputs: {
-            "@upTex": ["#dve_solid", "dve_dream_log"],
-            "@downTex": ["#dve_solid", "dve_dream_log"],
-            "@northTex": ["#dve_solid", "dve_dream_log"],
-            "@southTex": ["#dve_solid", "dve_dream_log"],
-            "@eastTex": ["#dve_solid", "dve_dream_log"],
-            "@westTex": ["#dve_solid", "dve_dream_log"],
+            "*": {
+              "@upTex": ["#dve_solid", "dve_dream_log"],
+              "@downTex": ["#dve_solid", "dve_dream_log"],
+              "@northTex": ["#dve_solid", "dve_dream_log"],
+              "@southTex": ["#dve_solid", "dve_dream_log"],
+              "@eastTex": ["#dve_solid", "dve_dream_log"],
+              "@westTex": ["#dve_solid", "dve_dream_log"],
+            },
           },
         },
       ],
@@ -218,8 +226,21 @@ export const DVEVoxelData: VoxelData[] = [
         "#dve_model_data",
         {
           id: "dve_simple_cube",
+          modSchema: [
+            {
+              name: "grassy",
+              values: {
+                0: "false",
+                1: "true",
+              },
+            },
+          ],
+          modRelationSchema: [],
           inputs: {
-            "@texture": ["#dve_solid", "dve_dread_stone"],
+            "grassy=false": { "@texture": ["#dve_solid", "dve_dread_stone"] },
+            "grassy=true": {
+              "@texture": ["#dve_solid", "dve_dread_stone", "grassy-top"],
+            },
           },
         },
       ],

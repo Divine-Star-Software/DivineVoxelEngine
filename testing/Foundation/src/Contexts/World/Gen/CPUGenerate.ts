@@ -81,6 +81,14 @@ export async function CPUGenerate() {
     }
   }
 
+  brush.setId("dve_dread_stone").setXYZ(0, 2, -5).paint();
+
+  brush.setId("dve_dread_stone").setMod(1).setXYZ(2, 2,  -5).paint();
+
+
+
+
+
   await tasks.worldSun.queued.runAndAwait();
   await tasks.propagation.queued.runAndAwait();
 
