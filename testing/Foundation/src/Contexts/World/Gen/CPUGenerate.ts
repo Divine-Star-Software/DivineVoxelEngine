@@ -2,6 +2,7 @@ import { WorldGen } from "./WorldGen";
 import { TaskTool } from "@divinevoxel/foundation/Default/Tools/Tasks/TasksTool";
 import { MesherTool } from "@divinevoxel/foundation/Default/Tools/Mesher/MesherTool";
 import { BrushTool } from "@divinevoxel/foundation/Default/Tools/Brush/Brush";
+import { SchemaRegister } from "@divinevoxel/foundation/Default/VoxelModels/State/SchemaRegister";
 export async function CPUGenerate() {
   const numChunks = 2;
   let startX = -16 * numChunks;
@@ -9,7 +10,7 @@ export async function CPUGenerate() {
   let endX = 16 * numChunks;
   let endZ = 16 * numChunks;
 
-  const builder = new MesherTool();
+  const mesher = new MesherTool();
 
   const tasks = new TaskTool();
   tasks.setFocalPoint(["main", 0, 0, 0]);
@@ -23,7 +24,7 @@ export async function CPUGenerate() {
  */
   for (let x = startX - 32; x < endX + 32; x += 16) {
     for (let z = startZ - 32; z < endZ + 32; z += 16) {
-      builder.setXYZ(x, 0, z).fillColumn();
+      mesher.setXYZ(x, 0, z).fillColumn();
       tasks.propagation.queued.add(["main", x, 0, z]);
       tasks.worldSun.queued.add(["main", x, 0, z]);
     }
@@ -32,7 +33,7 @@ export async function CPUGenerate() {
   for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
       // if ((x > -10 && x < 10) && (z > -10 && z < 10)) continue;
-      WorldGen.flatColumn(x, z);
+      // WorldGen.flatColumn(x, z);
     }
   }
   /*   for (let x = 0; x < 16; x += 16) {
@@ -61,9 +62,41 @@ export async function CPUGenerate() {
   /// await MagicGen.g enerate();
 
   //await ComputeTest(canvas);
-
   const brush = new BrushTool();
-  brush.setId("dve_dream_stone_pillar");
+  const { modelSchema, voxelSchema } = SchemaRegister.getVoxelSchemas(
+    "dve_dread_stone_stair"
+  );
+
+  const connected = ["true", "false"];
+  const placemnts = ["up", "down", "north", "south", "west", "east"];
+  const directions = ["north", "south", "east", "west"];
+
+  let x = -10;
+  let z = -10;
+  for (const isConnected of connected) {
+    for (const placement of placemnts) {
+      x = -10;
+      for (const direction of directions) {
+        const value = modelSchema
+          .startEncoding()
+          .setValue("connected", isConnected)
+          .setValue("placement", placement)
+          .setValue("direction", direction)
+          .getEncoded();
+        brush
+          .setId("dve_dread_stone_stair")
+          .setXYZ(z, 2, x)
+          .setShapeState(
+            value
+          )
+          .paint();
+        x += 2;
+      }
+      z += 2;
+    }
+  }
+
+  /*   brush.setId("dve_dream_stone_pillar");
   for (let y = 0; y < 5; y++) {
     brush.setXYZ(-4, 2 + y, -4).paint();
   }
@@ -79,22 +112,54 @@ export async function CPUGenerate() {
       brush.setXYZ(x, 2 + y, 0).paint();
       brush.setXYZ(x, 2 + y, 5).paint();
     }
-  }
+  } */
+  /*  
+  const { modelSchema, voxelSchema } = SchemaRegister.getVoxelSchemas(
+    "dve_dread_stone_stair"
+  );
 
-  brush.setId("dve_dread_stone").setXYZ(0, 2, -5).paint();
+brush
+    .setId("dve_dread_stone_slab")
+    .setXYZ(0, 2, -10)
+    .paint()
+    .setMod(1)
+    .setXYZ(2, 2, -10)
+    .paint()
+    .clear(); */
 
-  brush.setId("dve_dread_stone").setMod(1).setXYZ(2, 2,  -5).paint();
-
-
-
-
-
+  /*   brush
+    .setId("dve_dread_stone")
+    .setXYZ(0, 1, -12)
+    .paint()
+    .setXYZ(2, 1, -12)
+    .paint()
+    .setId("dve_dread_stone_stair")
+    .setXYZ(0, 2, -12)
+    .setShapeState(
+      modelSchema
+        .startEncoding()
+        .setValue("direction", "south")
+        .setValue("upsidedown", "false")
+        .getEncoded()
+    )
+    .paint()
+    .setShapeState(
+      modelSchema
+        .startEncoding()
+        .setValue("direction", "south")
+        .setValue("upsidedown", "true")
+        .getEncoded()
+    )
+    .setXYZ(2, 2, -12)
+    .paint()
+    .clear();
+ */
   await tasks.worldSun.queued.runAndAwait();
   await tasks.propagation.queued.runAndAwait();
 
   for (let x = startX - 16; x < endX + 16; x += 16) {
     for (let z = startZ - 16; z < endZ + 16; z += 16) {
-      builder.setXYZ(x, 0, z).buildColumn();
+      mesher.setXYZ(x, 0, z).buildColumn();
     }
   }
 

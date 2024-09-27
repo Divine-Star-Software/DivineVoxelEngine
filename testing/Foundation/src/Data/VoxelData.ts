@@ -1,7 +1,127 @@
 import { VoxelData } from "@divinevoxel/core";
 
 export const DVEVoxelData: VoxelData[] = [
+  {
+    id: "dve_dread_stone_thin_panel",
+    tags: [
+      ["#dve_substance", "#dve_solid"],
+      ["#dve_shape_id", "#dve_cube"],
+      ["#dve_collider_id", "#dve_cube"],
+      ["#dve_check_collisions", true],
+      ["#dve_material", "grassy-stone"],
+      [
+        "#dve_model_data",
+        {
+          id: "dve_simple_thin_panel",
+          inputs: {
+            "*": {
+              "@upDownTextures": ["#dve_solid", "dve_dread_stone"],
+              "@sideTextures": ["#dve_solid", "dve_dread_stone"],
+            },
+          },
+        },
+      ],
+    ],
+  },
+  {
+    id: "dve_dread_stone",
+    tags: [
+      ["#dve_substance", "#dve_solid"],
+      ["#dve_shape_id", "#dve_cube"],
+      ["#dve_collider_id", "#dve_cube"],
+      ["#dve_check_collisions", true],
+      ["#dve_material", "grassy-stone"],
+      [
+        "#dve_model_data",
+        {
+          id: "dve_simple_cube",
+          modSchema: [
+            {
+              name: "grassy",
+              type: "string",
+              values: {
+                0: "false",
+                1: "true",
+              },
+            },
+          ],
+          modRelationSchema: [],
+          inputs: {
+            "grassy=false": { "@texture": ["#dve_solid", "dve_dread_stone"] },
+            "grassy=true": {
+              "@texture": ["#dve_solid", "dve_dread_stone", "grassy-top"],
+            },
+          },
+        },
+      ],
+    ],
+  },
+
+  {
+    id: "dve_dread_stone_slab",
+    tags: [
+      ["#dve_is_transparent", true],
+      ["#dve_substance", "#dve_solid"],
+      ["#dve_shape_id", "#dve_cube"],
+      ["#dve_collider_id", "#dve_cube"],
+      ["#dve_check_collisions", true],
+      ["#dve_material", "grassy-stone"],
+      [
+        "#dve_model_data",
+        {
+          id: "dve_simple_half_cube",
+          modSchema: [
+            {
+              name: "grassy",
+              type: "string",
+              values: {
+                0: "false",
+                1: "true",
+              },
+            },
+          ],
+          modRelationSchema: [],
+          inputs: {
+            "grassy=false": {
+              "@upDownTextures": ["#dve_solid", "dve_dread_stone"],
+              "@sideTextures": ["#dve_solid", "dve_dread_stone"],
+            },
+            "grassy=true": {
+              "@upDownTextures": [
+                "#dve_solid",
+                "dve_dread_stone",
+                "grassy-top",
+              ],
+              "@sideTextures": ["#dve_solid", "dve_dread_stone", "grassy-top"],
+            },
+          },
+        },
+      ],
+    ],
+  },
+  {
+    id: "dve_dread_stone_stair",
+    tags: [
+      ["#dve_substance", "#dve_solid"],
+      ["#dve_shape_id", "#dve_cube"],
+      ["#dve_collider_id", "#dve_cube"],
+      ["#dve_check_collisions", true],
+      ["#dve_material", "grassy-stone"],
+      [
+        "#dve_model_data",
+        {
+          id: "dve_simple_stair",
+          inputs: {
+            "*": {
+              "@texture": ["#dve_solid", "dve_dread_stone"],
+            },
+          },
+        },
+      ],
+    ],
+  },
   //util
+  /* 
   {
     id: "dve_debug_box",
     tags: [
@@ -61,6 +181,7 @@ export const DVEVoxelData: VoxelData[] = [
   {
     id: "dve_dream_stone_pillar",
     tags: [
+      ["#dve_is_transparent", true],
       ["#dve_substance", "#dve_solid"],
       ["#dve_shape_id", "#dve_cube"],
       ["#dve_collider_id", "#dve_cube"],
@@ -214,62 +335,7 @@ export const DVEVoxelData: VoxelData[] = [
     ],
   },
   //dread
-  {
-    id: "dve_dread_stone",
-    tags: [
-      ["#dve_substance", "#dve_solid"],
-      ["#dve_shape_id", "#dve_cube"],
-      ["#dve_collider_id", "#dve_cube"],
-      ["#dve_check_collisions", true],
-      ["#dve_material", "grassy-stone"],
-      [
-        "#dve_model_data",
-        {
-          id: "dve_simple_cube",
-          modSchema: [
-            {
-              name: "grassy",
-              values: {
-                0: "false",
-                1: "true",
-              },
-            },
-          ],
-          modRelationSchema: [],
-          inputs: {
-            "grassy=false": { "@texture": ["#dve_solid", "dve_dread_stone"] },
-            "grassy=true": {
-              "@texture": ["#dve_solid", "dve_dread_stone", "grassy-top"],
-            },
-          },
-        },
-      ],
-    ],
-  },
-  /*   {
-    id: "dve_dread_stone_stair",
-    tags: [
-      ["#dve_substance", "#dve_solid"],
-      ["#dve_shape_id", "#dve_cube"],
-      ["#dve_collider_id", "#dve_cube"],
-      ["#dve_check_collisions", true],
-      ["#dve_material", "grassy-stone"],
-      [
-        "#dve_model_data",
-        {
-          id: "dve_stair",
-          inputs: {
-            "@upTex": ["#dve_solid", "dve_dread_stone"],
-            "@downTex": ["#dve_solid", "dve_dread_stone"],
-            "@northTex": ["#dve_solid", "dve_dread_stone"],
-            "@southTex": ["#dve_solid", "dve_dread_stone"],
-            "@eastTex": ["#dve_solid", "dve_dread_stone"],
-            "@westTex": ["#dve_solid", "dve_dread_stone"],
-          },
-        },
-      ],
-    ],
-  }, */
+
 
   {
     id: "dve_dread_grass_block",
@@ -327,4 +393,5 @@ export const DVEVoxelData: VoxelData[] = [
       ["#dve_is_light_source", true],
     ],
   },
+  */
 ];

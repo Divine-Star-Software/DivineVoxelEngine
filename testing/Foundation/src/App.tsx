@@ -8,7 +8,11 @@ import {
   Scene,
   Vector3,
   FreeCamera,
-  AxesViewer
+  AxesViewer,
+  CreateGreasedLine,
+  Color3,
+  StandardMaterial,
+  Color4,
 } from "@babylonjs/core";
 import { DivineVoxelEngineRender } from "@divinevoxel/core/Contexts/Render";
 import { Textures } from "Data/TextureData";
@@ -16,7 +20,130 @@ import { SceneTool } from "@divinevoxel/babylon-renderer/Defaults/Foundation/Too
 import { RenderNodes } from "Classes";
 import { InitVoxelModels } from "@divinevoxel/foundation/Default/VoxelModels/InitVoxelModels";
 import { DVEVoxelData } from "Data/VoxelData";
+
+import { GradientCheckSets } from "@divinevoxel/foundation/Default/Mesher/Calc/CalcConstants";
+import { Vec3Array, Vector3Like } from "@amodx/math";
+import { QuadVec3ArrayVertexData } from "@amodx/meshing/Classes/QuadVertexData";
+import {
+  VoxelFaceDirections,
+  VoxelFaces,
+  VoxelFacesArray,
+} from "@divinevoxel/core/Math";
+import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 let ran = false;
+
+const quads = ((): [Vec3Array, Vec3Array, Vec3Array, Vec3Array][] => {
+  const start = Vector3Like.Create();
+  const end = Vector3Like.Create(1, 1, 1);
+
+  return [
+    //up
+    [
+      [end.x, end.y, end.z],
+      [start.x, end.y, end.z],
+      [start.x, end.y, start.z],
+      [end.x, end.y, start.z],
+    ],
+    //down
+    [
+      [start.x, start.y, end.z],
+      [end.x, start.y, end.z],
+      [end.x, start.y, start.z],
+      [start.x, start.y, start.z],
+    ],
+    //north
+    [
+      [start.x, end.y, end.z],
+      [end.x, end.y, end.z],
+      [end.x, start.y, end.z],
+      [start.x, start.y, end.z],
+    ],
+    //south
+    [
+      [end.x, end.y, start.z],
+      [start.x, end.y, start.z],
+      [start.x, start.y, start.z],
+      [end.x, start.y, start.z],
+    ],
+    //east
+    [
+      [end.x, end.y, end.z],
+      [end.x, end.y, start.z],
+      [end.x, start.y, start.z],
+      [end.x, start.y, end.z],
+    ],
+    //east
+    [
+      [start.x, end.y, start.z],
+      [start.x, end.y, end.z],
+      [start.x, start.y, end.z],
+      [start.x, start.y, start.z],
+    ],
+  ];
+})();
+const faceColors: Record<VoxelFaces, Color3> = {
+  [VoxelFaces.Up]: new Color3(1, 0, 0),
+  [VoxelFaces.Down]: new Color3(0, 1, 0),
+  [VoxelFaces.North]: new Color3(0, 0, 1),
+  [VoxelFaces.South]: new Color3(1, 0, 1),
+  [VoxelFaces.East]: new Color3(1, 1, 0),
+  [VoxelFaces.West]: new Color3(0, 1, 1),
+};
+
+const vertexColors: Record<QuadVerticies, Color3> = {
+  [QuadVerticies.TopRight]: new Color3(1, 0, 0),
+  [QuadVerticies.TopLeft]: new Color3(0, 1, 0),
+  [QuadVerticies.BottomLeft]: new Color3(0, 0, 1),
+  [QuadVerticies.BottomRight]: new Color3(1, 0, 1),
+};
+
+const getLines = (face: VoxelFaces) => {
+  const normal = VoxelFaceDirections[face];
+  CreateGreasedLine(
+    "",
+    {
+      points: quads[face].map(
+        (_) => new Vector3(...Vector3Like.AddArray(_, normal))
+      ),
+    },
+    { color: faceColors[face] }
+  );
+
+  const set = GradientCheckSets[face];
+  for (let v = 0 as QuadVerticies; v < 4; v++) {
+    const sphere = CreateSphere("", { diameter: 0.1 });
+    const mat = new StandardMaterial("");
+    mat.diffuseColor = vertexColors[v];
+    sphere.material = mat;
+
+    const point = Vector3Like.AddArray(quads[face][v], normal);
+    sphere.position.set(
+      ...Vector3Like.AddArray(
+        quads[face][v],
+        Vector3Like.MultiplyScalarArray(normal, 0.1)
+      )
+    );
+    for (let i = 0; i < 9; i += 3) {
+      const x = set[v][i] + point[0] + normal[0];
+      const y = set[v][i + 1] + point[1] + normal[1];
+      const z = set[v][i + 2] + point[2] + normal[2];
+
+      CreateGreasedLine(
+        "",
+        {
+          points: [new Vector3(...point), new Vector3(x, y, z)],
+        },
+        { color: faceColors[face] }
+      );
+    }
+  }
+};
+
+const gradientTest = () => {
+  for (const face of VoxelFacesArray) {
+    getLines(face);
+  }
+};
 
 export function App() {
   const [gameReady, setGameReady] = useState(false);
@@ -77,6 +204,7 @@ export function App() {
         textureData: Textures,
       });
 
+    //  gradientTest();
       const core = new DVEFBRCore({
         renderer,
       });
@@ -88,7 +216,7 @@ export function App() {
         constructorWorkers,
       });
 
-/*       const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
+      /*       const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
       skybox.infiniteDistance = true;
       const skyboxMat = renderer.nodes.materials.get("#dve_skybox");
       if (skyboxMat) {
@@ -104,12 +232,17 @@ export function App() {
       sceneTool.levels.setSun(0.9);
       sceneTool.levels.setBase(0.01);
 
-      const viwer = new AxesViewer(scene)
+      const viwer = new AxesViewer(scene);
+      viwer.xAxis.position.z -= 2;
+      viwer.yAxis.position.z -= 2;
+      viwer.zAxis.position.z -= 2;
+
 
       const camera = new FreeCamera("", new Vector3(0, 10, 0));
 
       camera.setTarget(new Vector3(0, 0, 0));
       InitVoxelModels({
+        world: DVER.threads.world,
         constructors: DVER.threads.construcotrs,
         voxels: DVEVoxelData,
       });
@@ -142,7 +275,6 @@ export function App() {
       //  await InitRenderPlayer(DVER, nodes);
 
       DVER.threads.world.runTasks("start-world", []);
-      console.error("GOOD TO GO ");
     })();
   }, []);
 
