@@ -246,8 +246,9 @@ export function App() {
         constructors: DVER.threads.construcotrs,
         voxels: DVEVoxelData,
       });
-      camera.speed = 10;
+      camera.speed = 1;
       camera.maxZ = 1000;
+      camera.minZ = .0001;
       camera.fov = 1.8;
       camera.attachControl(canvas, true);
 

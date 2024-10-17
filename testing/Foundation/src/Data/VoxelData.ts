@@ -2,6 +2,50 @@ import { VoxelData } from "@divinevoxel/core";
 
 export const DVEVoxelData: VoxelData[] = [
   {
+    id: "dve_dream_candle",
+    tags: [
+      ["#dve_substance", "#dve_solid"],
+      ["#dve_shape_id", "#dve_crossed_panels"],
+      ["#dve_material", "wax"],
+      ["#dve_collider_id", "#dve_box"],
+      ["#dve_check_collisions", true],
+      [
+        "#dve_model_data",
+        {
+          id: "dve_candle",
+          inputs: {
+            "*": {
+              "@candleTexture": ["#dve_solid", "dve_dream_stone"],
+              "@wickTexture": ["#dve_solid", "dve_dream_stone"],
+            },
+          },
+        },
+      ],
+    ],
+  },
+  {
+    id: "dve_dread_grass",
+    tags: [
+      ["#dve_substance", "#dve_flora"],
+      ["#dve_shape_id", "#dve_crossed_panels"],
+      ["#dve_material", "grass"],
+      ["#dve_collider_id", "#dve_climable_box"],
+      ["#dve_check_collisions", true],
+      [
+        "#dve_model_data",
+        {
+          id: "dve_simple_crossed_panels",
+          inputs: {
+            "*": {
+              "@texture": ["#dve_flora", "dve_dread_grass"],
+            },
+          },
+        },
+      ],
+    ],
+  },
+
+  {
     id: "dve_dread_stone_thin_panel",
     tags: [
       ["#dve_substance", "#dve_solid"],

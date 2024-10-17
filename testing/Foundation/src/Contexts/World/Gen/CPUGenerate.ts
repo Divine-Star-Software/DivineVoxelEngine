@@ -63,7 +63,7 @@ export async function CPUGenerate() {
 
   //await ComputeTest(canvas);
   const brush = new BrushTool();
-  const { modelSchema, voxelSchema } = SchemaRegister.getVoxelSchemas(
+  /*   const { modelSchema, voxelSchema } = SchemaRegister.getVoxelSchemas(
     "dve_dread_stone_stair"
   );
 
@@ -93,6 +93,54 @@ export async function CPUGenerate() {
         x += 2;
       }
       z += 2;
+    }
+  }
+ */
+
+  /*   const { modelSchema, voxelSchema } =
+    SchemaRegister.getVoxelSchemas("dve_dread_grass");
+
+    const placemnts = ["up", "down", "north", "south", "west", "east"];
+    const directions = ["north", "south", "east", "west"];
+
+  let x = 0;
+  let z = 0;
+
+  for (const placement of placemnts) {
+    x = 0;
+    for (const direction of directions) {
+      const value = modelSchema
+        .startEncoding()
+
+        .setValue("placement", placement)
+        .setValue("direction", direction)
+        .getEncoded();
+      brush
+        .setId("dve_dread_grass")
+        .setXYZ(z, 2, x)
+        .setShapeState(value)
+        .paint();
+      x += 2;
+    }
+    z += 2;
+  } */
+
+  const { modelSchema, voxelSchema } =
+    SchemaRegister.getVoxelSchemas("dve_dream_candle");
+
+  let count = 0;
+  for (let x = 0; x < 2; x++) {
+    for (let z = 0; z < 2; z++) {
+      const value = modelSchema
+        .startEncoding()
+        .setNumber("num_candles", count % 4)
+        .getEncoded();
+      brush
+        .setId("dve_dream_candle")
+        .setXYZ(x, 2, z)
+        .setShapeState(value)
+        .paint();
+      count++;
     }
   }
 

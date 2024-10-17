@@ -113,7 +113,7 @@ export const Textures: TextureData[ ]= [
         frames: 0,
       },
       {
-        type: "#dve_solid",
+        type: "#dve_flora",
         id: "dve_dread_grass",
         frames: 0,
       },

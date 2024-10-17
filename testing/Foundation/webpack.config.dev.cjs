@@ -78,7 +78,7 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     port: 9001,
-    https: true,
+   // https: true,
     static: {
       directory: path.join(__dirname, "static"),
       publicPath: "/",

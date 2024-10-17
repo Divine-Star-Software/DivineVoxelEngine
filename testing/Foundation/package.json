@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npx webpack  serve --mode development --env development --https  --config webpack.config.dev.cjs  "
+    "start": "npx webpack  serve --mode development --env development  --config webpack.config.dev.cjs  "
   },
   "author": "",
   "license": "ISC",
