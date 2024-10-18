@@ -2,6 +2,29 @@ import { VoxelData } from "@divinevoxel/core";
 
 export const DVEVoxelData: VoxelData[] = [
   {
+    id: "dve_dream_lever",
+    tags: [
+      ["#dve_substance", "#dve_solid"],
+      ["#dve_shape_id", "#dve_cube"],
+      ["#dve_is_transparent", true],
+      ["#dve_material", "wax"],
+      ["#dve_collider_id", "#dve_box"],
+      ["#dve_check_collisions", true],
+      [
+        "#dve_model_data",
+        {
+          id: "dve_lever",
+          inputs: {
+            "*": {
+              "@baseTexture": ["#dve_solid", "dve_dream_stone"],
+              "@leverTexture": ["#dve_solid", "dve_lever"],
+            },
+          },
+        },
+      ],
+    ],
+  },
+  {
     id: "dve_dream_candle",
     tags: [
       ["#dve_substance", "#dve_solid"],

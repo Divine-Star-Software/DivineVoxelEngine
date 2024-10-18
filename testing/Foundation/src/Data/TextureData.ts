@@ -49,6 +49,11 @@ export const Textures: TextureData[ ]= [
       },
       {
         type: "#dve_solid",
+        id: "dve_lever",
+        frames: 0,
+      },
+      {
+        type: "#dve_solid",
         id: "dve_dread_stone",
         frames: 0,
         variations: {

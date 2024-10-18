@@ -3,6 +3,10 @@ import { TaskTool } from "@divinevoxel/foundation/Default/Tools/Tasks/TasksTool"
 import { MesherTool } from "@divinevoxel/foundation/Default/Tools/Mesher/MesherTool";
 import { BrushTool } from "@divinevoxel/foundation/Default/Tools/Brush/Brush";
 import { SchemaRegister } from "@divinevoxel/foundation/Default/VoxelModels/State/SchemaRegister";
+import {
+  VoxelFaceNameDirectionsRecord,
+  VoxelFaceNames,
+} from "@divinevoxel/core/Math/Constants/VoxelFaces";
 export async function CPUGenerate() {
   const numChunks = 2;
   let startX = -16 * numChunks;
@@ -126,24 +130,63 @@ export async function CPUGenerate() {
   } */
 
   const { modelSchema, voxelSchema } =
-    SchemaRegister.getVoxelSchemas("dve_dream_candle");
+    SchemaRegister.getVoxelSchemas("dve_dream_lever");
 
-  let count = 0;
+  brush.setId("dve_dread_stone").setXYZ(0, 1, 0).paint();
+
+  const states = ["off", "on"];
+  const placemnts = ["up", "down", "north", "south", "west", "east"];
+  const directions = ["north", "south", "east", "west"];
+
+  let x = -10;
+  let z = -10;
+
+  for (const placement of placemnts) {
+    x = -10;
+    const [dx, dy, dz] =
+      VoxelFaceNameDirectionsRecord[placement as VoxelFaceNames];
+    console.warn(dx, dy, dz);
+    for (const direction of directions) {
+      for (const state of states) {
+/*         brush
+          .setId("dve_dread_stone")
+          .setXYZ(z + dx, 2 + dy, x + dz)
+          .paint(); */
+        const value = modelSchema
+          .startEncoding()
+          .setValue("state", state)
+          .setValue("placement", placement)
+          .setValue("direction", direction)
+          .getEncoded();
+
+        brush
+          .setId("dve_dream_lever")
+          .setXYZ(z, 2, x)
+          .setShapeState(value)
+          .paint();
+        x++;
+      }
+    }
+    z++;
+  }
+  /*   let count = 0;
   for (let x = 0; x < 2; x++) {
     for (let z = 0; z < 2; z++) {
       const value = modelSchema
         .startEncoding()
-        .setNumber("num_candles", count % 4)
+        .setValue("placement", "down")
+        .setValue("direction", "north")
+        .setValue("state", "off")
         .getEncoded();
       brush
-        .setId("dve_dream_candle")
+        .setId("dve_dream_lever")
         .setXYZ(x, 2, z)
         .setShapeState(value)
         .paint();
       count++;
     }
   }
-
+ */
   /*   brush.setId("dve_dream_stone_pillar");
   for (let y = 0; y < 5; y++) {
     brush.setXYZ(-4, 2 + y, -4).paint();
