@@ -40,9 +40,9 @@ Need help or want to share your creations? Join the [discord](https://discord.gg
   - World Data API - Easy tools to build worlds.
   - Easy to use auto-update world on voxel add/remove
     - Will auto update light sources for you.
-- **@divinevoxel/vlox-babylon-renderer**
+- **@divinevoxel/vlox-babylon**
   - Renderer for DVE Vlox using babylon.js including Classic and PBR shaders.
-- **@divinevoxel/vlox-three-renderer**
+- **@divinevoxel/vlox-three**
   - Renderer for DVE Vlox using three.js including Classic and PBR shaders.
 - **@divinevoxel/magic**
   -  Magic voxel parser and integration.
