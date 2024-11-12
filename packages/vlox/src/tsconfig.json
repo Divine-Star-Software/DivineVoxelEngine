@@ -1,0 +1,11 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../dist",
+    "baseUrl": "./",
+    "types": ["@types/node","@amodx/threads"],
+    "allowJs": true,
+    "checkJs": false,
+
+  }
+}

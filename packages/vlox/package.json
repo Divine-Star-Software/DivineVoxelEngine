@@ -1,0 +1,32 @@
+{
+  "name": "@divinevoxel/vlox",
+  "version": "0.0.01",
+  "description": "Vlox a block style voxel engine.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "devDependencies": {},
+  "scripts": {
+    "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ../../LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
+    "compile": "cd src && npx tsc --watch"
+  },
+  "keywords": [],
+  "author": "Divine Star Software",
+  "license": "MIT",
+  "repository": {
+    "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
+  },
+  "dependencies": {
+    "@amodx/uri": "^0.0.11",
+    "@amodx/meshing": "^0.0.01",
+    "@amodx/math": "^0.0.01",
+    "@amodx/binary": "^0.0.11",
+    "@amodx/threads": "^0.0.01"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
