@@ -1,6 +1,6 @@
 {
   "name": "@divinevoxel/vlox",
-  "version": "0.0.01",
+  "version": "0.0.02",
   "description": "Vlox a block style voxel engine.",
   "main": "index.js",
   "types": "index.d.ts",
@@ -24,7 +24,8 @@
     "@amodx/meshing": "^0.0.01",
     "@amodx/math": "^0.0.01",
     "@amodx/binary": "^0.0.11",
-    "@amodx/threads": "^0.0.01"
+    "@amodx/threads": "^0.0.01",
+    "@amodx/indexdb": "^0.0.11"
   },
   "publishConfig": {
     "access": "public"

@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-<img src="assets/Screenshots/logo-small.png">
+<img src="assets/logo-small.png">
 </p>
 
 ---
@@ -23,9 +23,7 @@ Need help or want to share your creations? Join the [discord](https://discord.gg
 
 
 ## Packages 
-- **@divinevoxel/core**
-  - Abstract interfaces and utilities.
-- **@divinevoxel/foundation**
+- **@divinevoxel/vlox**
   - The original set up for DVE.
   - Different voxel types and shapes.
   - Chunk-based rendering and meshing.
@@ -42,18 +40,12 @@ Need help or want to share your creations? Join the [discord](https://discord.gg
   - World Data API - Easy tools to build worlds.
   - Easy to use auto-update world on voxel add/remove
     - Will auto update light sources for you.
+- **@divinevoxel/vlox-babylon-renderer**
+  - Renderer for DVE Vlox using babylon.js including Classic and PBR shaders.
+- **@divinevoxel/vlox-three-renderer**
+  - Renderer for DVE Vlox using three.js including Classic and PBR shaders.
 - **@divinevoxel/magic**
   -  Magic voxel parser and integration.
-- **@divinevoxel/babylon-renderer**
-  - Renderer for DVE using babylonjs.
-  - Different rendering types for plugins.
-    - @divinevoxel/foundation has Classic and PBR
-- **@divinevoxel/three-renderer**
-  -  Renderer for DVE using threejs.
-  - Different rendering types for plugins same as the babylon renderer.
-    - @divinevoxel/foundation has Classic and PBR
-- **@divinevoxel/react-three**
-  - DVE integration for React Three Fiber.
 - **@divinevoxel/quantum-renderer**
   - Custom experimental renderer using Web GPU.
   - @divinevoxel/magic has suppourt for rendering a scene with ray marching.
@@ -62,15 +54,7 @@ More packages are on the way.
 
 # Screenshots 
 
-## Magic
-
-### Quantum
-
-![DVE 1](assets/Screenshots/Magic/Quantum/1.PNG)
-![DVE 1](assets/Screenshots/Magic/Quantum/2.PNG)
-![DVE 1](assets/Screenshots/Magic/Quantum/3.PNG)
-
-## Foundation
+## Vlox
 
 ### PBR
 
@@ -85,6 +69,15 @@ More packages are on the way.
 ![DVE 1](assets/Screenshots/Foundation/Classic/DVE-RM2.PNG)
 ![DVE 1](assets/Screenshots/Foundation/Classic/DVE-RM4.PNG)
 ![DVE 1](assets/Screenshots/Foundation/Classic/DVE-RM5.PNG)
+
+## Magic
+
+### Quantum
+
+![DVE 1](assets/Screenshots/Magic/Quantum/1.PNG)
+![DVE 1](assets/Screenshots/Magic/Quantum/2.PNG)
+![DVE 1](assets/Screenshots/Magic/Quantum/3.PNG)
+
 
 
 
