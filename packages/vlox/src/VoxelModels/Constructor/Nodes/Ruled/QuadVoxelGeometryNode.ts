@@ -29,7 +29,7 @@ import {
   QuadVoxelGometryArgs,
   QuadVoxelGometryInputs,
 } from "../../../Input/QuadVoxelGometryInputs";
-import { VoxelGeometryTransform } from "../../../VoxelModelRules.types";
+import { VoxelGeometryTransform } from "../../../../VoxelData/VoxelSyncData";
 import { TransformQuad } from "../../../Shared/Transform";
 
 const ArgIndexes = QuadVoxelGometryInputs.ArgIndexes;

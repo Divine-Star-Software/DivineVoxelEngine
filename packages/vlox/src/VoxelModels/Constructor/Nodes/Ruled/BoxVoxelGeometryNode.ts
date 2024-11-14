@@ -28,7 +28,7 @@ import {
 import { LightData } from "../../../../Data/LightData";
 
 import { VoxelRelativeCubeIndexPositionMap } from "../../../Indexing/VoxelRelativeCubeIndex";
-import { VoxelGeometryTransform } from "../../../VoxelModelRules.types";
+import { VoxelGeometryTransform } from "../../../../VoxelData/VoxelSyncData";
 import { TransformBox } from "../../../Shared/Transform";
 
 const ArgIndexes = BoxVoxelGometryInputs.ArgIndexes;

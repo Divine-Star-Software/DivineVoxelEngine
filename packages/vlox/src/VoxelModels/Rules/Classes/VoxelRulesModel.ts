@@ -2,7 +2,7 @@ import {
   VoxelModelConstructorData,
   VoxelModelData,
 } from "../../VoxelModel.types";
-import { BuildStateData } from "../Functions/BuildStateData";
+import { BuildStateData } from "../../../VoxelData/Functions/BuildStateData";
 
 export class VoxelRulesModoel {
   shapeStates = new Map<string, string[]>();

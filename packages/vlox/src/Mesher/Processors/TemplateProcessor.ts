@@ -6,8 +6,6 @@ import { Flat3DIndex } from "@amodx/math/Volumes/Indexing/Flat3DIndex.js";
 import { RenderedSubstances } from "../Rules/RenderedSubstances.js";
 import { DivineVoxelEngineConstructor } from "../../Contexts/Constructor/DivineVoxelEngineConstructor.js";
 
-
-
 //tools
 
 import { BuilderDataTool } from "../Tools/BuilderDataTool.js";
@@ -79,7 +77,7 @@ export const TemplateProcessor = {
       }
       ix++;
     }
-    const chunks = <SetChunkMeshTask>[location, [], 0];
+    const chunks = <SetChunkMeshTask>[location, [], [], 0];
     const trasnfers: any[] = [];
     for (const [substance, mesher] of RenderedSubstances.meshers) {
       if (mesher.getAttribute("position").length == 0) {

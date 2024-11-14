@@ -1,4 +1,4 @@
-import { VoxelGeometryRulelessSyncData } from "../../VoxelModelRules.types";
+import { VoxelGeometryRulelessSyncData } from "../../../VoxelData/VoxelSyncData";
 import { RulelessBoxVoxelGeometryNode } from "../Nodes/Ruleless/RulelessBoxVoxelGeometryNode";
 import { RulelessQuadVoxelGeometryNode } from "../Nodes//Ruleless/RulelessQuadVoxelGeometryNode";
 

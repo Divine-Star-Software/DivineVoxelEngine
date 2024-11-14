@@ -4,6 +4,7 @@ import { VoxelMesherDataTool } from "../Tools/VoxelMesherDataTool.js";
 export class ShapeToolclass {
   data: VoxelMesherDataTool;
 
+  effects: Record<string,number[]> = {};
   origin = Vector3Like.Create();
 
   setMesher(dataTool: VoxelMesherDataTool) {

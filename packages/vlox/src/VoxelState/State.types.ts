@@ -1,5 +1,33 @@
-import { VoxelModelRelationsConditionData } from "../VoxelModel.types";
+import { Vec3Array } from "@amodx/math";
+export interface VoxelStateStringSchemaData {
+  name: string;
+  type: "string";
+  values: Record<number, string>;
+}
+export interface VoxelStateNumberSchemaData {
+  name: string;
+  type: "number";
+  maxValue: number;
+}
 
+export interface SameVoxelRelationsConditionData {
+  type: "same-voxel";
+  direction: Vec3Array;
+}
+
+export interface AnyVoxelRelationsConditionData {
+  type: "any-voxel";
+  direction: Vec3Array;
+}
+
+export type VoxelStateRelationsConditionData =
+  | SameVoxelRelationsConditionData
+  | AnyVoxelRelationsConditionData;
+
+export interface VoxelModelRelationsSchemaData {
+  name: string;
+  conditions: VoxelStateRelationsConditionData[];
+}
 export type BinarySchemaNodeData = {
   id: string;
   type: "binary";
@@ -10,7 +38,7 @@ export type BinarySchemaNodeData = {
 export type VoxelRelationsScehmaNodeData = {
   id: string;
   type: "relation";
-  conditions: VoxelModelRelationsConditionData[];
+  conditions: VoxelStateRelationsConditionData[];
 };
 
 export type VoxelModelStateSchemaData =

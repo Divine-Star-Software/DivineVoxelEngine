@@ -1,6 +1,6 @@
 import { VoxelFaceCullResultsIndex } from "../../Indexing/VoxelFaceCullResultsIndex";
 import { VoxelAOResultsIndex } from "../../Indexing/VoxelAOResultsIndex";
-import { VoxelGeometrySyncData } from "../../VoxelModelRules.types";
+import { VoxelGeometrySyncData } from "../../../VoxelData/VoxelSyncData";
 import { BoxVoxelGometryNode } from "../Nodes/Ruled/BoxVoxelGeometryNode";
 import { QuadVoxelGometryNode } from "../Nodes/Ruled/QuadVoxelGeometryNode";
 

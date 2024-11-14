@@ -3,8 +3,8 @@ import { VoxelGeometryData } from "../../VoxelModel.types";
 import { GetOcclusionFaces } from "../Functions/GetOcclusionFaces";
 import { OcclusionFaceContainer } from "./OcclusionFace";
 import { BuildGeomtryInputs } from "../Functions/BuildGeomtryInputs";
-import { BuildStateData } from "../Functions/BuildStateData";
-import { PrcoessedVoxelGeometryData } from "../../VoxelModelRules.types";
+import { BuildStateData } from "../../../VoxelData/Functions/BuildStateData";
+import { PrcoessedVoxelGeometryData } from "../../../VoxelData/VoxelSyncData";
 
 export class VoxelRuleGeometry {
   occlusionPlane: OcclusionFaceContainer;

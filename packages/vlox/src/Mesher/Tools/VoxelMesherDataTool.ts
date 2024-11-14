@@ -13,11 +13,7 @@ import { MesherDataTool } from "@amodx/meshing/Tools/MesherDataTools";
 import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
 import { VoxelTemplateDataTool } from "./VoxelTemplateDataTool.js";
 import { BinaryNumberTypes } from "@amodx/binary";
-import {
-  VoxelFaces,
-  VoxelFaceDirections,
-  VoxelFacesArray,
-} from "../../Math";
+import { VoxelFaces, VoxelFaceDirections, VoxelFacesArray } from "../../Math";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 import { FaceDataCalc } from "../Calc/Light/FaceDataCalc";
 

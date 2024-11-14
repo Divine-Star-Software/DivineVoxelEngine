@@ -81,18 +81,30 @@ export class ChunkProcessor {
       this.heightMapTool.chunk.setY(y).setDirty(false);
     }
     VoxelGeometryLookUp.stop();
-
-    const chunks = <SetChunkMeshTask>[location, [], priority];
     const trasnfers: any[] = [];
+    const chunkEffects: SetChunkMeshTask[2] = [];
+
+    for (const e in ShapeTool.effects) {
+
+   
+      const float = Float32Array.from(ShapeTool.effects[e]);
+      trasnfers.push(float.buffer);
+      chunkEffects.push([e, float]);
+    }
+    ShapeTool.effects = {};
+    const chunkMeshes: SetChunkMeshTask[1] = [];
+    const chunks = <SetChunkMeshTask>[location, chunkMeshes, chunkEffects, priority];
+
     for (const [substance, mesher] of RenderedSubstances.meshers) {
+ 
       if (mesher.positions.length == 0) {
-        chunks[1].push([substance, false]);
+        chunkMeshes.push([substance, false]);
         mesher.resetAll();
         continue;
       }
       const [attributes, buffers] = mesher.getAllAttributes();
       trasnfers.push(...buffers);
-      chunks[1].push([substance, [location, attributes]]);
+      chunkMeshes.push([substance, [location, attributes]]);
       mesher.resetAll();
     }
 

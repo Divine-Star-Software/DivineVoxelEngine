@@ -1,4 +1,4 @@
-import { SameVoxelRelationsConditionData } from "../../../VoxelModel.types";
+import { SameVoxelRelationsConditionData } from "../../State.types";
 import { ShapeStateSchemaRelationsCondition } from "./ShapeStateSchemaRelationsCondition";
 import { StateSchema } from "../StateSchema";
 

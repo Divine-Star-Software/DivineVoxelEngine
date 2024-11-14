@@ -4,15 +4,19 @@ import {
   StateLogicStatement,
   StateCompareOperationsMap,
   StateLogicOperationsMap,
-} from "../../State/State.types";
-import { VoxelRulesModoel } from "../Classes/VoxelRulesModel";
-import { StringPalette } from "../../../Interfaces/Data/StringPalette";
-import { VoxelModelManager } from "../VoxelModelManager";
+} from "../../VoxelState/State.types";
+import { VoxelRulesModoel } from "../../VoxelModels/Rules/Classes/VoxelRulesModel";
+import { StringPalette } from "../../Interfaces/Data/StringPalette";
+import { VoxelModelManager } from "../../VoxelModels/Rules/VoxelModelManager";
 import {
-  VoxelBinaryNumberSchemaData,
-  VoxelBinaryStringSchemaData,
+  VoxelStateStringSchemaData,
+  VoxelStateNumberSchemaData,
   VoxelModelRelationsSchemaData,
-} from "../../VoxelModel.types";
+} from "../../VoxelState/State.types";
+import { VoxelEffectSyncData } from "VoxelEffects/VoxelEffects.types";
+import { VoxelTagStates } from "../../VoxelState/VoxelTagStates";
+import { VoxelPalette } from "../../Data/Voxel/VoxelPalette";
+import { StateSchema } from "../../VoxelState/Schema/StateSchema";
 function bitsNeeded(n: number): number {
   if (n < 0) throw new Error("Input must be a non-negative integer.");
 
@@ -135,6 +139,7 @@ function reMapTree(
       : Number(key);
 
     if (propertyIndex === undefined) {
+      console.error(baseObj);
       throw new Error(
         `Unkown variable in state string ${key} | ${modelOrVodelId}`
       );
@@ -147,7 +152,7 @@ function reMapTree(
         typeof value === "string" && typeof schemaValueIndex == "object"
           ? schemaValueIndex.getNumberId(value)
           : Number(value);
-      if (typeof propertyValue == "object") {
+      if (typeof propertyValue == "object" && !Array.isArray(propertyValue)) {
         reMapedChildren[valueIndex] = reMapTree(
           schemaIdPalette,
           schemaValuePalette,
@@ -167,7 +172,7 @@ function reMapTree(
 }
 
 function buildSchemas(
-  binaryNodes: (VoxelBinaryStringSchemaData | VoxelBinaryNumberSchemaData)[],
+  binaryNodes: (VoxelStateStringSchemaData | VoxelStateNumberSchemaData)[],
   relationNodes: VoxelModelRelationsSchemaData[]
 ) {
   const baseSchema: (BinarySchemaNodeData | VoxelRelationsScehmaNodeData)[] =
@@ -432,10 +437,75 @@ export function BuildStateData(
     model.data.id
   );
 
+  const modelEffects: VoxelEffectSyncData[] = [];
+  const tagEffects: VoxelEffectSyncData[] = [];
+
+  if (model.data.effects) {
+    for (const effect of model.data.effects) {
+      const tagStateTree = new StateTreeNode("root");
+      const treePalette: any[] = [];
+      for (const key in effect.values) {
+        const nodeData = effect.values[key];
+        treePalette.push(nodeData);
+        addPathToTree(
+          tagStateTree,
+          key
+            .split(",")
+            .map((pair) => pair.split("="))
+            .flat(),
+          treePalette.length - 1
+        );
+      }
+      const tagStateTreeData = tagStateTree.toJSON();
+      const newTagStateTree: any[] = [];
+
+      reMapTree(
+        schemaIdPalette,
+        schemaValuePalette,
+        tagStateTreeData,
+        newTagStateTree,
+        model.data.id
+      );
+      if (effect.type == "tag") {
+        console.warn(
+          tagStateTreeData,
+          newTagStateTree,
+          treePalette,
+        )
+        tagEffects.push({
+          type: "tag",
+          tagId: effect.tagId,
+          tree: newTagStateTree,
+          treePalette,
+        });
+      }
+      if (effect.type == "fx-points") {
+        modelEffects.push({
+          type: "fx-points",
+          effectId: effect.effectId,
+          tree: newTagStateTree,
+          treePalette,
+        });
+      }
+    }
+  }
+
+  const schema = new StateSchema(baseSchema);
+
   for (const [voxelId, voxelData] of model.voxels) {
     const modeStateTree = new StateTreeNode("root");
     const modStatePalette: any[] = [];
     const modStateRecord: Record<string, number> = {};
+
+    for (const tag of tagEffects) {
+      VoxelTagStates.register(
+        VoxelPalette.ids.getNumberId(voxelId),
+        (tag as any).tagId,
+        schema,
+        tag.tree,
+        tag.treePalette
+      );
+    }
 
     const { baseSchema, schemaIdPalette, schemaValuePalette } = buildSchemas(
       voxelData.modSchema || [],
@@ -474,7 +544,7 @@ export function BuildStateData(
 
   const finalData = {
     schema: baseSchema,
-
+    effects: modelEffects,
     shapeStateGeometryPalette,
     condiotnalShapeStateGeometryPalette,
     shapeStateTree: newShapeStateTree,

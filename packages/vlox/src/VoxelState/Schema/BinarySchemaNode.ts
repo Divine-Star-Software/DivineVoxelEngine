@@ -1,4 +1,4 @@
-import { StringPalette } from "../../../Interfaces/Data/StringPalette";
+import { StringPalette } from "../../Interfaces/Data/StringPalette";
 import { BinarySchemaNodeData } from "../State.types";
 
 export class BinarySchemaNode {

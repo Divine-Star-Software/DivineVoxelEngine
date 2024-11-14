@@ -11,7 +11,8 @@ import { DVENodeMeshAttributes } from "../../../Interfaces/Render/Nodes/DVERende
 import { Square, Circle } from "@amodx/math/Shapes";
 import { Vector2Like } from "@amodx/math";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
-
+import { VoxelEffectRegister } from "../../../VoxelEffects/VoxelEffectRegister.js";
+const added = new Set<string>();
 export class MeshManager {
   static runningUpdate = false;
   private static columnSquare = new Square(Vector2Like.Create(1, 1), 16);
@@ -38,103 +39,96 @@ export class MeshManager {
             this.renderCircle
           )
         ) {
-          setTimeout(() => this.chunks.removeColumn(location), 100);
+          this.removeColumn(location);
         }
       });
     });
   }
 
-  static chunks = {
-    remove(data: RemoveChunkMeshTasks) {
-      const [location, substance] = data;
-      const mesh = MeshRegister.chunk.remove(location, substance);
-      if (!mesh) return false;
+  static remove(data: RemoveChunkMeshTasks) {
+    const [location, substance] = data;
+    const mesh = MeshRegister.chunk.removeMesh(location, substance);
+    if (!mesh) return false;
 
-      DivineVoxelEngineRender.instance.renderer.nodes.meshes
-        .get(substance)!
-        .returnMesh(mesh);
-    },
-    add(
-      location: LocationData,
-      substance: string,
-      meshData: DVENodeMeshAttributes
-    ) {
-      let chunk = MeshRegister.chunk.get(location, substance);
-      let mesh: URIMesh<any, any>;
+    DivineVoxelEngineRender.instance.renderer.nodes.meshes
+      .get(substance)!
+      .returnMesh(mesh);
+  }
 
-      if (!chunk) {
+  static update(data: SetChunkMeshTask) {
+    const [location, chunks, effects] = data;
+    let i = chunks.length;
+
+    while (i--) {
+      const chunkData = chunks[i];
+      const substance = chunkData[0];
+      const remove = !chunkData[1];
+
+      if (remove) {
+        const mesh = MeshRegister.chunk.removeMesh(location, substance);
+        if (mesh) {
+          DivineVoxelEngineRender.instance.renderer.nodes.meshes
+            .get(substance)!
+            .returnMesh(mesh);
+        }
+        continue;
+      }
+      let chunkMesh = MeshRegister.chunk.getMesh(location, substance);
+
+      let mesh: URIMesh;
+      if (!chunkMesh) {
         mesh = DivineVoxelEngineRender.instance.renderer.nodes.meshes
           .get(substance)!
-          .createMesh([location[1], location[2], location[3]], meshData);
-
+          .createMesh([location[1], location[2], location[3]], chunkData[1][1]);
         (mesh as any).type = "chunk";
-        MeshRegister.chunk.add(location, mesh, substance);
-        mesh.setEnabled(true);
-        mesh.isVisible = true;
+        MeshRegister.chunk.addMesh(location, mesh, substance);
       } else {
-        mesh = chunk.mesh;
+        mesh = chunkMesh;
         DivineVoxelEngineRender.instance.renderer.nodes.meshes
           .get(substance)!
           .updateVertexData(
             [location[1], location[2], location[3]],
-            meshData,
+            chunkData[1][1],
             mesh
           );
       }
-    },
-    update(data: SetChunkMeshTask) {
-      const [location, chunks] = data;
-      let i = chunks.length;
-      
+    }
 
-      while (i--) {
-        const chunkData = chunks[i];
-        const substance = chunkData[0];
-        const remove = !chunkData[1];
+    const chunk = MeshRegister.chunk.get(location);
+    if (chunk) {
+      added.clear();
+      for (const [id, points] of effects) {
+        added.add(id);
+        if (!chunk.effects.has(points)) {
+          const EffectClass = VoxelEffectRegister.get(id);
+          const newEffect = new EffectClass(chunk);
+          newEffect.init();
+          newEffect.setPoints(points);
 
-        if (remove) {
-          const mesh = MeshRegister.chunk.remove(location, substance);
-          if (mesh) {
-            DivineVoxelEngineRender.instance.renderer.nodes.meshes
-              .get(substance)!
-              .returnMesh(mesh);
-          }
-          continue;
-        }
-        let chunk = MeshRegister.chunk.get(location, substance);
-
-        let mesh: URIMesh;
-        if (!chunk) {
-          mesh = DivineVoxelEngineRender.instance.renderer.nodes.meshes
-            .get(substance)!
-            .createMesh(
-              [location[1], location[2], location[3]],
-              chunkData[1][1]
-            );
-          (mesh as any).type = "chunk";
-          MeshRegister.chunk.add(location, mesh, substance);
+          chunk.effects.set(id, newEffect);
         } else {
-          mesh = chunk.mesh;
-          DivineVoxelEngineRender.instance.renderer.nodes.meshes
-            .get(substance)!
-            .updateVertexData(
-              [location[1], location[2], location[3]],
-              chunkData[1][1],
-              mesh
-            );
+          const effect = chunk.effects.get(id)!;
+          effect.setPoints(points);
         }
       }
-    },
-    removeColumn(data: LocationData) {
-      const column = MeshRegister.column.remove(data);
-      if (!column) return false;
-      for (const [key, chunk] of column.chunks) {
-        for (const [substance, mesh] of chunk) {
-          DivineVoxelEngineRender.instance.renderer.nodes.meshes
-            .get(substance)!
-            .returnMesh(mesh.mesh);
+      for (const [key, effect] of chunk.effects) {
+        if (!added.has(key)) {
+          effect.dispose();
+          chunk.effects.delete(key);
         }
       }
-    },
-  };
+    }
+  }
+  static removeColumn(data: LocationData) {
+    const column = MeshRegister.column.remove(data);
+    if (!column) return false;
+    for (const [key, chunk] of column.chunks) {
+      for (const [substance, mesh] of chunk.meshes) {
+        DivineVoxelEngineRender.instance.renderer.nodes.meshes
+          .get(substance)!
+          .returnMesh(mesh);
+      }
+      chunk.dispose();
+    }
+  }
 }

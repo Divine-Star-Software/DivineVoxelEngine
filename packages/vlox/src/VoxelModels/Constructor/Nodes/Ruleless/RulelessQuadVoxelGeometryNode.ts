@@ -24,7 +24,7 @@ import {
   QuadVoxelGometryInputs,
 } from "../../../Input/QuadVoxelGometryInputs";
 import { RulelessGeoemtryNode } from "../RulelessGeometryNode";
-import { VoxelGeometryTransform } from "../../../../VoxelModels/VoxelModelRules.types";
+import { VoxelGeometryTransform } from "../../../../VoxelData/VoxelSyncData";
 import { TransformQuad } from "../../../Shared/Transform";
 
 const ArgIndexes = QuadVoxelGometryInputs.ArgIndexes;

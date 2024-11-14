@@ -21,6 +21,10 @@ export class StateTreeReader {
       if (typeof curretNode == "number") {
         return curretNode;
       }
+      if (curretNode === undefined) {
+        return -1;
+      }
+
       for (let i = 0; i < curretNode.length; i++) {
         if (curretNode[i]) {
           index = i;

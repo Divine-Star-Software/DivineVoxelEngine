@@ -2,7 +2,7 @@ import { WorldGen } from "./WorldGen";
 import { TaskTool } from "@divinevoxel/vlox/Tools/Tasks/TasksTool";
 import { MesherTool } from "@divinevoxel/vlox/Tools/Mesher/MesherTool";
 import { BrushTool } from "@divinevoxel/vlox/Tools/Brush/Brush";
-import { SchemaRegister } from "@divinevoxel/vlox/VoxelModels/State/SchemaRegister";
+import { SchemaRegister } from "@divinevoxel/vlox/VoxelState/SchemaRegister";
 import {
   VoxelFaceNameDirectionsRecord,
   VoxelFaceNames,
@@ -130,45 +130,30 @@ export async function CPUGenerate() {
   } */
 
   const { modelSchema, voxelSchema } =
-    SchemaRegister.getVoxelSchemas("dve_dream_lever");
+    SchemaRegister.getVoxelSchemas("dve_dream_candle");
 
-  brush.setId("dve_dread_stone").setXYZ(0, 1, 0).paint();
-
-  const states = ["off", "on"];
-  const placemnts = ["up", "down", "north", "south", "west", "east"];
-  const directions = ["north", "south", "east", "west"];
-
-  let x = -10;
-  let z = -10;
-
-  for (const placement of placemnts) {
-    x = -10;
-    const [dx, dy, dz] =
-      VoxelFaceNameDirectionsRecord[placement as VoxelFaceNames];
-    console.warn(dx, dy, dz);
-    for (const direction of directions) {
-      for (const state of states) {
-/*         brush
-          .setId("dve_dread_stone")
-          .setXYZ(z + dx, 2 + dy, x + dz)
-          .paint(); */
-        const value = modelSchema
-          .startEncoding()
-          .setValue("state", state)
-          .setValue("placement", placement)
-          .setValue("direction", direction)
-          .getEncoded();
-
+  for (let x = -10; x < 10; x++) {
+    for (let z = -10; z < 10; z++) {
+      if (Math.random() > 0.99) {
+        const value =     modelSchema
+        .startEncoding()
+        .setValue("lit", "true")
+        .setNumber("num_candles", (Math.random() * 4) >> 0)
+        .getEncoded();
+        console.log("candle value",value)
         brush
-          .setId("dve_dream_lever")
-          .setXYZ(z, 2, x)
-          .setShapeState(value)
+          .setId("dve_dream_candle")
+          .setShapeState(
+            value
+          )
+          .setXYZ(x, 1, z)
           .paint();
-        x++;
       }
+
+      brush.setId("dve_dread_stone").setXYZ(x, 0, z).paint();
     }
-    z++;
   }
+
   /*   let count = 0;
   for (let x = 0; x < 2; x++) {
     for (let z = 0; z < 2; z++) {

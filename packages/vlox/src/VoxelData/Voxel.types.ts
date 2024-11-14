@@ -1,3 +1,5 @@
+import { VoxelModelConstructorData } from "VoxelModels/VoxelModel.types";
+
 export type VoxelPalette = string[];
 export type VoxelPaletteMap = Record<string, number>;
 
@@ -22,6 +24,9 @@ export interface VoxelData {
     | [id: "#dve_material", value: string]
     | [id: "#dve_hardness", value: number]
     | [id: "#dve_is_rich", value: boolean]
+    | [id: "#dve_mod_schema", value: {}]
+    | [id: "#dve_effects", value: {}]
+    | [id: "#dve_model_data", value: VoxelModelConstructorData]
   )[];
 }
 

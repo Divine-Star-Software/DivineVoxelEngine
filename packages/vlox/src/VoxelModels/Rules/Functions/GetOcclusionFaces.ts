@@ -6,7 +6,7 @@ import {
 } from "../Classes/OcclusionFace";
 import { VoxelRuleGeometry } from "../Classes/VoxelRulesGeometry";
 import { VoxelFaces } from "../../../Math";
-import { PrcoessedVoxelGeometryNodes } from "../../VoxelModelRules.types";
+import { PrcoessedVoxelGeometryNodes } from "../../../VoxelData/VoxelSyncData";
 import { TransformBox, TransformQuad } from "../../Shared/Transform";
 import { Quad } from "@amodx/meshing/Classes/Quad";
 

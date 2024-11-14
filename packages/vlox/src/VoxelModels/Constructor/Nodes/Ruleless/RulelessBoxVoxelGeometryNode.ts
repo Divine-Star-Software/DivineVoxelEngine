@@ -25,7 +25,7 @@ import {
 import { LightData } from "../../../../Data/LightData";
 import { VoxelGeometryRulelessConstructor } from "../../Register/VoxelGeometryRulelessConstructor";
 import { RulelessGeoemtryNode } from "../RulelessGeometryNode";
-import { VoxelGeometryTransform } from "../../../VoxelModelRules.types";
+import { VoxelGeometryTransform } from "../../../../VoxelData/VoxelSyncData";
 import { TransformBox } from "../../../Shared/Transform";
 
 const ArgIndexes = BoxVoxelGometryInputs.ArgIndexes;

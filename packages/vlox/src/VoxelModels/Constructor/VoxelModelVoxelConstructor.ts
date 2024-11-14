@@ -2,12 +2,12 @@ import { VoxelConstructor } from "../../Mesher/Constructors/Voxel/Classes/VoxelC
 import { TextureRegister } from "../../Textures/TextureRegister";
 import { VoxelMesherDataTool } from "../../Mesher/Tools/VoxelMesherDataTool";
 import { VoxelModelConstructor } from "./Register/VoxelModelsConstructor";
-import { VoxelInputsSyncData } from "../VoxelModelRules.types";
+import { VoxelInputsSyncData } from "../../VoxelData/VoxelSyncData";
 import { VoxelModelConstructorRegister } from "./Register/VoxelModelConstructorRegister";
 import { ShapeTool } from "../../Mesher/Shapes/ShapeTool";
 import { VoxelGeometryLookUp } from "./VoxelGeometryLookUp";
-import { StateSchema } from "../State/Schema/StateSchema";
-import { StateTreeReader } from "../State/StateTreeReader";
+import { StateSchema } from "../../VoxelState/Schema/StateSchema";
+import { StateTreeReader } from "../../VoxelState/StateTreeReader";
 import { VoxelFaceTransparentResultsIndex } from "../Indexing/VoxelFaceTransparentResultsIndex";
 
 export class VoxelModelVoxelConstructor extends VoxelConstructor {
@@ -134,6 +134,12 @@ export class VoxelModelVoxelConstructor extends VoxelConstructor {
         }
       }
     }
+
+    this.model.effects.addEffects(
+      tool.voxel.getShapeState(),
+      ShapeTool.origin,
+      ShapeTool.effects
+    );
 
     tool.clearCalculatedData();
   }

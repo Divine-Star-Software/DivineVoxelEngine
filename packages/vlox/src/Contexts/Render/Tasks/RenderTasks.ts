@@ -10,20 +10,16 @@ import { MeshRegister } from "../Scene/MeshRegister.js";
 
 export const RenderTasks = {
   setChunk: Threads.registerTasks<SetChunkMeshTask>("set-chunk", (data) => {
-    MeshManager.chunks.update(data);
-  /*   if (data[2] == 0) return MeshManager.chunks.update(data);
-    setTimeout(() => {
-      MeshManager.chunks.update(data);
-    }, 10); */
+    MeshManager.update(data);
   }),
   removeChunk: Threads.registerTasks<RemoveChunkMeshTasks>(
     "remove-chunk",
     (data) => {
-      MeshManager.chunks.remove(data);
+      MeshManager.remove(data);
     }
   ),
   removeColumn: Threads.registerTasks<LocationData>("remove-column", (data) => {
-    MeshManager.chunks.removeColumn(data);
+    MeshManager.removeColumn(data);
   }),
   clearAll: Threads.registerTasks<LocationData>("clear-all", (data) => {
     MeshRegister.clearAll();

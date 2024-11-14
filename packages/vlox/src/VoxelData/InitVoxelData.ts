@@ -10,7 +10,7 @@ import {
   fencePost,
   leverGeometry,
   leverModel,
-} from "./Examples";
+} from "../VoxelModels/Examples";
 import {
   cube,
   halfDownCube,
@@ -20,49 +20,52 @@ import {
   quaterCubeWestEast,
   halfSouthCube,
   halfWestCube,
-} from "./Defaults/CubeVoxelGeometry";
+} from "../VoxelModels/Defaults/CubeVoxelGeometry";
 import {
   orientedCube,
   pillarCube,
   simpleCube,
   simpleHalfCube,
-} from "./Defaults/CubeVoxelModels";
+} from "../VoxelModels/Defaults/CubeVoxelModels";
 import {
   diagonalFlatPanelEastWest,
   diagonalFlatPanelWestEast,
   thinPanelDown,
   thinPanelSouth,
   thinPanelWest,
-} from "./Defaults/PanelVoxelGeometry";
-import { stair } from "./Defaults/StairVoxelModel";
+} from "../VoxelModels/Defaults/PanelVoxelGeometry";
+import { stair } from "../VoxelModels/Defaults/StairVoxelModel";
 
-import { VoxelModelManager } from "./Rules/VoxelModelManager";
+import { VoxelModelManager } from "../VoxelModels/Rules/VoxelModelManager";
 import {
   VoxelGeometryData,
   VoxelModelConstructorData,
   VoxelModelData,
-} from "./VoxelModel.types";
-import { VoxelData } from "../Types/Voxel.types";
+} from "../VoxelModels/VoxelModel.types";
+import { VoxelData } from "./Voxel.types";
 import { Thread, ThreadPool } from "@amodx/threads";
 
-import { BuildRules } from "./Rules/Functions/BuildRules";
-import { BuildStateData } from "./Rules/Functions/BuildStateData";
-import { BuildGeomtryInputs } from "./Rules/Functions/BuildGeomtryInputs";
-import { BuildFinalInputs } from "./Rules/Functions/BuildFinalInputs";
-import { ConstructorVoxelModelSyncData } from "./VoxelModelRules.types";
-import { SchemaRegister } from "./State/SchemaRegister";
+import { BuildRules } from "../VoxelModels/Rules/Functions/BuildRules";
+import { BuildStateData } from "./Functions/BuildStateData";
+import { BuildGeomtryInputs } from "../VoxelModels/Rules/Functions/BuildGeomtryInputs";
+import { BuildFinalInputs } from "../VoxelModels/Rules/Functions/BuildFinalInputs";
+import { ConstructorVoxelModelSyncData } from "./VoxelSyncData";
+import { SchemaRegister } from "../VoxelState/SchemaRegister";
 import {
   simpleCrossedPannel,
   simpleThinPannel,
-} from "./Defaults/PanelVoxelModels";
+} from "../VoxelModels/Defaults/PanelVoxelModels";
+import { VoxelTagStates } from "../VoxelState/VoxelTagStates";
 
-export function InitVoxelModels(data: {
+export type InitVoxelDataProps = {
   constructors: ThreadPool;
   world: Thread;
   geometry?: VoxelGeometryData[];
   models?: VoxelModelData[];
   voxels: VoxelData[];
-}) {
+};
+
+export function InitVoxelData(data: InitVoxelDataProps) {
   const initTime = performance.now();
 
   VoxelModelManager.registerGeometry(
@@ -114,12 +117,13 @@ export function InitVoxelModels(data: {
     geometry: [],
     models: [],
     voxels: [],
+    tagState:[]
   };
 
   for (const voxel of data.voxels) {
     const data = voxel.tags.find((_) => _[0] == "#dve_model_data") as any as [
       string,
-      VoxelModelConstructorData
+      VoxelModelConstructorData,
     ];
     if (!data) continue;
     const voxelData = data[1];
@@ -159,6 +163,7 @@ export function InitVoxelModels(data: {
     SchemaRegister.registerModel(mainKey, stateData.schema);
     syncData.models.push({
       id: mainKey,
+      effects: stateData.effects,
       schema: stateData.schema,
       geoLinkMap: stateData.geometryLinkStateMap,
       shapeStateMap: stateData.shapeStatePalette,
@@ -201,6 +206,7 @@ export function InitVoxelModels(data: {
       });
     }
   }
+  syncData.tagState = VoxelTagStates.toJSON();
   data.world.runAsyncTasks("sync-voxel-model-data", syncData);
   data.constructors.runTasksForAll("sync-voxel-model-data", syncData);
   console.log("done building inputs", performance.now() - inputStartTime);

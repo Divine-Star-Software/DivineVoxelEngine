@@ -1,7 +1,7 @@
 import { Quad } from "@amodx/meshing/Classes/Quad";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 import { Vector3Like } from "@amodx/math";
-import { VoxelGeometryTransform } from "../VoxelModelRules.types";
+import { VoxelGeometryTransform } from "../../VoxelData/VoxelSyncData";
 
 // Utility function to convert degrees to radians
 function degreesToRadians(degrees: number): number {

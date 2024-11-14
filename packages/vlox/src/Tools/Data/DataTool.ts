@@ -18,6 +18,7 @@ import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { AddVoxelData } from "../../Data/Types/WorldData.types.js";
 import { VoxelTagIDs } from "../../Data/Constants/VoxelTagIds.js";
 import { SubstancePaletteReader } from "../../Data/Substance/SubstancePalette.js";
+import { VoxelTagStates } from "../../VoxelState/VoxelTagStates";
 
 export enum DataToolModes {
   /**# World Data Mode
@@ -265,15 +266,16 @@ export class DataTool extends DataToolBase {
     const vID = this._loadedId;
     if (vID == 0) return this.data.raw[1];
     if (vID < 2) return -1;
+
     const lightValue = this.__struct[VoxelTagIDs.lightValue];
     if (this.isOpaque()) {
-      if (this.__struct[VoxelTagIDs.isLightSource] && lightValue) {
+      if (this.isLightSource() && lightValue) {
         return lightValue;
       } else {
         return -1;
       }
     }
-    if (this.__struct[VoxelTagIDs.isLightSource] && lightValue) {
+    if (this.isLightSource() && lightValue) {
       return LightData.mixLight(this.data.raw[1], lightValue);
     }
     return this.data.raw[1];
@@ -339,7 +341,16 @@ export class DataTool extends DataToolBase {
   isLightSource() {
     const vID = this._loadedId;
     if (vID < 2) return false;
-    return this.__struct[VoxelTagIDs.isLightSource] == 1;
+    return VoxelTagStates.isRegistered(
+      this._loadedId,
+      VoxelTagIDs.isLightSource
+    )
+      ? VoxelTagStates.getValue(
+          this._loadedId,
+          VoxelTagIDs.isLightSource,
+          this.getShapeState()
+        ) === true
+      : this.__struct[VoxelTagIDs.isLightSource] == 1;
   }
   noAO() {
     const vID = this._loadedId;

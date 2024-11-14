@@ -1,6 +1,7 @@
+import { VoxelTagStates } from "../../VoxelState/VoxelTagStates";
 import { DivineVoxelEngineWorld } from "../../Contexts/World";
-import { ConstructorVoxelModelSyncData } from "../VoxelModelRules.types";
-import { SchemaRegister } from "../State/SchemaRegister";
+import { ConstructorVoxelModelSyncData } from "../../VoxelData/VoxelSyncData";
+import { SchemaRegister } from "../../VoxelState/SchemaRegister";
 
 export default function (DVEW: DivineVoxelEngineWorld) {
   DVEW.TC.registerTasks<ConstructorVoxelModelSyncData>(
@@ -12,6 +13,7 @@ export default function (DVEW: DivineVoxelEngineWorld) {
       for (const voxel of data.voxels) {
         SchemaRegister.registerVoxel(voxel.id, voxel.modelId, voxel.modSchema);
       }
+      VoxelTagStates.load(data.tagState);
     }
   );
 }

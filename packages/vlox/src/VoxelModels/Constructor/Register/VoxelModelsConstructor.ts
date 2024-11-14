@@ -1,11 +1,13 @@
-import { StateSchema } from "../../State/Schema/StateSchema";
-import { CondtionalTreeReader } from "../../State/CondiotnalTreeReader";
+import { StateSchema } from "../../../VoxelState/Schema/StateSchema";
+import { CondtionalTreeReader } from "../../../VoxelState/CondiotnalTreeReader";
 
-import { StateTreeReader } from "../../State/StateTreeReader";
-import { VoxelModelSyncData } from "../../VoxelModelRules.types";
+import { StateTreeReader } from "../../../VoxelState/StateTreeReader";
+import { VoxelModelSyncData } from "../../../VoxelData/VoxelSyncData";
+import { VoxelModelEffect } from "./VoxelModelEffect";
 
 export class VoxelModelConstructor {
   schema: StateSchema;
+  effects: VoxelModelEffect;
   shapeStateTree: StateTreeReader;
 
   condtioanlShapeStateTree: CondtionalTreeReader;
@@ -21,6 +23,8 @@ export class VoxelModelConstructor {
       data.condiotnalStatements,
       data.condiotnalStateTree
     );
+
+    this.effects = new VoxelModelEffect(this);
   }
 
   getShapeStateTransaprentByteIndex(shapeState: number, geomtryId: number) {

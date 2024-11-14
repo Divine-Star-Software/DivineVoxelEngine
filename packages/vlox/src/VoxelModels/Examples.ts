@@ -679,11 +679,58 @@ export const candlesModel: VoxelModelData = {
     },
   },
   relationsSchema: [],
+
   shapeStateSchema: [
     {
       name: "num_candles",
       type: "number",
       maxValue: 3,
+    },
+    {
+      name: "lit",
+      type: "string",
+      values: {
+        0: "false",
+        1: "true",
+      },
+    },
+  ],
+  effects: [
+    {
+      type: "fx-points",
+      effectId: "candle_particles",
+      values: {
+        "num_candles=0,lit=true": [[8 / 16, 6 / 16, 8 / 16]],
+        "num_candles=1,lit=true": [
+          [8 / 16 + -2 / 16, 6 / 16, 8 / 16],
+          [8 / 16 + 2 / 16, 5 / 16, 8 / 16],
+        ],
+        "num_candles=2,lit=true": [
+          [8 / 16 + -2 / 16, 6 / 16, 8 / 16 + 2 / 16],
+          [8 / 16 + 2 / 16, 5 / 16, 8 / 16 + 2 / 16],
+          [8 / 16 + 2 / 16, 4 / 16, 8 / 16 + -2 / 16],
+        ],
+        "num_candles=3,lit=true": [
+          [8 / 16 + -2 / 16, 6 / 16, 8 / 16 + 2 / 16],
+          [8 / 16 + 2 / 16, 5 / 16, 8 / 16 + 2 / 16],
+          [8 / 16 + 2 / 16, 4 / 16, 8 / 16 + -2 / 16],
+          [8 / 16 + -2 / 16, 3 / 16, 8 / 16 + -2 / 16],
+        ],
+      },
+    },
+    {
+      type: "tag",
+      tagId: "#dve_is_light_source",
+      values: {
+        "num_candles=0,lit=false": false,
+        "num_candles=0,lit=true": true,
+        "num_candles=1,lit=false": false,
+        "num_candles=1,lit=true": true,
+        "num_candles=2,lit=false": false,
+        "num_candles=2,lit=true": true,
+        "num_candles=3,lit=false": false,
+        "num_candles=3,lit=true": true,
+      },
     },
   ],
   shapeStatesConditonalNodes: {},

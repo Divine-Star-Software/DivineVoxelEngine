@@ -3,7 +3,7 @@ import {
   VoxelGeometryRulelessSyncData,
   VoxelGeometrySyncData,
   VoxelModelSyncData,
-} from "../../VoxelModelRules.types";
+} from "../../../VoxelData/VoxelSyncData";
 import { VoxelGeometryConstructor } from "./VoxelGeometryConstructor";
 import { VoxelModelConstructor } from "./VoxelModelsConstructor";
 import { VoxelGeometryRulelessConstructor } from "./VoxelGeometryRulelessConstructor";

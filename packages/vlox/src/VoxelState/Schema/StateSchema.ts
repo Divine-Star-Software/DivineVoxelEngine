@@ -1,7 +1,7 @@
 import { ShapeStateRelationsNode } from "./ShapeStateRelationsNode";
 import { BinarySchemaNode } from "./BinarySchemaNode";
 import { VoxelModelStateSchemaData } from "../State.types";
-import { DataTool } from "../../../Tools/Data/DataTool";
+import { DataTool } from "../../Tools/Data/DataTool";
 
 export class StateSchema {
   voxel = new DataTool();

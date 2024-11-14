@@ -1,12 +1,17 @@
 import { Vec3Array } from "@amodx/math";
-import { VoxelAOResultsIndexData } from "./Indexing/VoxelAOResultsIndex";
-import { VoxelFaceCullResultsIndexData } from "./Indexing/VoxelFaceCullResultsIndex";
-import { VoxelFaceTransparentResultsIndexData } from "./Indexing/VoxelFaceTransparentResultsIndex";
+import { VoxelAOResultsIndexData } from "../VoxelModels/Indexing/VoxelAOResultsIndex";
+import { VoxelFaceCullResultsIndexData } from "../VoxelModels/Indexing/VoxelFaceCullResultsIndex";
+import { VoxelFaceTransparentResultsIndexData } from "../VoxelModels/Indexing/VoxelFaceTransparentResultsIndex";
 import {
   VoxelModelStateSchemaData,
   StateLogicStatement,
-} from "./State/State.types";
-import { VoxelGeometryData, VoxelGeometryNodes } from "./VoxelModel.types";
+} from "../VoxelState/State.types";
+import {
+  VoxelGeometryData,
+  VoxelGeometryNodes,
+} from "../VoxelModels/VoxelModel.types";
+import { VoxelEffectSyncData } from "VoxelEffects/VoxelEffects.types";
+import { VoxelTagStatesData } from "VoxelState/VoxelTagStates";
 
 export interface PrcoessedVoxelGeometryNodes {
   node: VoxelGeometryNodes;
@@ -18,7 +23,7 @@ export interface VoxelGeometryTransform {
   scale?: Vec3Array;
   rotation?: Vec3Array;
   rotationPivot?: Vec3Array;
-  lockUVs?:true;
+  lockUVs?: true;
   flip?: [flipX: 0 | 1, flipY: 0 | 1, flipZ: 0 | 1];
 }
 
@@ -46,6 +51,7 @@ export interface VoxelGeometryRulelessSyncData {
 export interface VoxelModelSyncData {
   id: string;
   schema: VoxelModelStateSchemaData[];
+  effects: VoxelEffectSyncData[];
   geoLinkMap: number[];
   shapeStateTree: any[];
   shapeStateMap: number[][];
@@ -82,4 +88,5 @@ export interface ConstructorVoxelModelSyncData {
   geometry: (VoxelGeometrySyncData | VoxelGeometryRulelessSyncData)[];
   models: VoxelModelSyncData[];
   voxels: VoxelInputsSyncData[];
+  tagState: VoxelTagStatesData;
 }

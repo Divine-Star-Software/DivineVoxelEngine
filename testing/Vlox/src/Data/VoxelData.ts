@@ -32,6 +32,9 @@ export const DVEVoxelData: VoxelData[] = [
       ["#dve_material", "wax"],
       ["#dve_collider_id", "#dve_box"],
       ["#dve_check_collisions", true],
+      ["#dve_is_light_source", false],
+      ["#dve_light_value", [15, 15, 15]],
+      
       [
         "#dve_model_data",
         {

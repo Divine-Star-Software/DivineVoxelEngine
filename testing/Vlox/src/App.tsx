@@ -20,7 +20,7 @@ import { SceneTool } from "@divinevoxel/vlox-babylon/Tools/SceneTool";
 import { RenderNodes } from "Classes";
 import { InitVoxelModels } from "@divinevoxel/vlox/VoxelModels/InitVoxelModels";
 import { DVEVoxelData } from "Data/VoxelData";
-
+import { StartRenderer } from "@divinevoxel/vlox/Init/StartRenderer";
 import { GradientCheckSets } from "@divinevoxel/vlox/Mesher/Calc/CalcConstants";
 import { Vec3Array, Vector3Like } from "@amodx/math";
 import { QuadVec3ArrayVertexData } from "@amodx/meshing/Classes/QuadVertexData";
@@ -171,7 +171,7 @@ export function App() {
       }
 
       const canvas = canvasRef.current;
-      const DVER = new DivineVoxelEngineRender();
+
       let antialias = false;
       const engine = new Engine(canvas, antialias);
       engine.doNotHandleContextLost = true;
@@ -204,10 +204,11 @@ export function App() {
         textureData: Textures,
       });
 
-      await DVER.init({
+      const DVER = await StartRenderer({
         renderer,
         worldWorker,
         constructorWorkers,
+        voxels: DVEVoxelData,
       });
 
       /*       const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
@@ -223,7 +224,7 @@ export function App() {
       sceneTool.options.doSun(true);
       sceneTool.options.doAO(true);
       sceneTool.options.doRGB(true);
-      sceneTool.levels.setSun(0.9);
+      sceneTool.levels.setSun(0.0);
       sceneTool.levels.setBase(0.01);
 
       const viwer = new AxesViewer(scene);
@@ -234,11 +235,7 @@ export function App() {
       const camera = new FreeCamera("", new Vector3(0, 10, 0));
 
       camera.setTarget(new Vector3(0, 0, 0));
-      InitVoxelModels({
-        world: DVER.threads.world,
-        constructors: DVER.threads.construcotrs,
-        voxels: DVEVoxelData,
-      });
+
       camera.speed = 1;
       camera.maxZ = 1000;
       camera.minZ = 0.0001;

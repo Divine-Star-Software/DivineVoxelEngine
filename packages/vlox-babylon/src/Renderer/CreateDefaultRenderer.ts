@@ -12,6 +12,7 @@ import { DVEBRNodeMesh } from "./Nodes/Meshes/DVEBRNodeMesh.js";
 import { TextureBuilder } from "@divinevoxel/vlox/Textures/TextureBuilder";
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
 import { SceneTool } from "../Tools/SceneTool.js";
+import InitDefaultEffects from "../Effects/InitDefaultEffects.js";
 const defaultSubstances = [
   "#dve_glow",
   "#dve_flora",
@@ -165,6 +166,7 @@ export function CreateDefaultRenderer(
       .doSun(false)
       .doRGB(true);
 
+    InitDefaultEffects();
     initData.afterCreate && (await initData.afterCreate(sceneTool));
   };
   return renderer;

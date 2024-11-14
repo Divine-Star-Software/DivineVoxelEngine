@@ -9,7 +9,7 @@ import { TextureManager } from "../../../Textures/TextureManager";
 import { Matrix2x2Like, Mat2Array, Vec4Array, AMath } from "@amodx/math";
 import { QuadUVData } from "@amodx/meshing/Geometry.types";
 import { QuadVoxelGometryInputs } from "../../Input/QuadVoxelGometryInputs";
-import { VoxelGeometryTransform } from "../../VoxelModelRules.types";
+import { VoxelGeometryTransform } from "../../../VoxelData/VoxelSyncData";
 
 const isArgString = (data: any) => {
   if (typeof data !== "string") return;

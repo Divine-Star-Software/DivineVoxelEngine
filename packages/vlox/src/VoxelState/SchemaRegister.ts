@@ -2,17 +2,19 @@ import { BinarySchema } from "./Schema/BinarySchema";
 import { BinarySchemaNodeData, VoxelModelStateSchemaData } from "./State.types";
 
 export class SchemaRegister {
-  static modelStaeSchemaData = new Map<string, BinarySchemaNodeData[]>();
+  static modelStaeBaseSchemaData = new Map<string, VoxelModelStateSchemaData[]>();
+  static modelStateSchemaData = new Map<string, BinarySchemaNodeData[]>();
   static voxelModSchemaData = new Map<string, BinarySchemaNodeData[]>();
   static modelStaeSchemas = new Map<string, BinarySchema>();
   static voxelModSchemas = new Map<string, BinarySchema>();
   static voxelModelMap = new Map<string, string>();
+
   static getVoxelSchemas(id: string) {
     const modelId = this.voxelModelMap.get(id);
     if (!modelId) throw new Error(`Voxel with ${id} is not registered`);
     let modelSchema = this.modelStaeSchemas.get(modelId);
     if (!modelSchema) {
-      const schemaData = this.modelStaeSchemaData.get(modelId);
+      const schemaData = this.modelStateSchemaData.get(modelId);
       if (!schemaData)
         throw new Error(`Model with ${modelId} is not registered`);
       modelSchema = new BinarySchema(schemaData);
@@ -34,12 +36,13 @@ export class SchemaRegister {
   static registerModel(id: string, data: VoxelModelStateSchemaData[]) {
     const binaryData: BinarySchemaNodeData[] = [];
 
+    this.modelStaeBaseSchemaData.set(id,data);
     for (const node of data) {
       if (node.type == "binary") {
         binaryData.push(node);
       }
     }
-    this.modelStaeSchemaData.set(id, binaryData);
+    this.modelStateSchemaData.set(id, binaryData);
   }
 
   static registerVoxel(

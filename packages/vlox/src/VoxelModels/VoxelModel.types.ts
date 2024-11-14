@@ -2,11 +2,17 @@ import { Vec2Array, Vec3Array } from "@amodx/math";
 import { QuadUVData } from "@amodx/meshing/Geometry.types";
 import { VoxelFaceNames } from "../Math";
 import { ConstructorTextureData } from "../Textures/Constructor.types";
+import {
+  VoxelStateStringSchemaData,
+  VoxelModelRelationsSchemaData,
+  VoxelStateNumberSchemaData,
+} from "VoxelState/State.types";
+import { VoxelEffectData } from "../VoxelEffects/VoxelEffects.types";
 
 export interface VoxelModelConstructorData {
   id: string;
   modRelationSchema?: VoxelModelRelationsSchemaData[];
-  modSchema?: VoxelBinaryStringSchemaData[];
+  modSchema?: VoxelStateStringSchemaData[];
   inputs: Record<string, Record<string, any>>;
   tagOverrides?: {
     isLightSource?: Record<string, boolean>;
@@ -111,36 +117,6 @@ export interface VoxelGeometryVector3Argument {
   max?: Vec3Array;
 }
 
-export interface VoxelBinaryStringSchemaData {
-  name: string;
-  type: "string";
-  values: Record<number, string>;
-}
-export interface VoxelBinaryNumberSchemaData {
-  name: string;
-  type: "number";
-  maxValue: number;
-}
-
-export interface SameVoxelRelationsConditionData {
-  type: "same-voxel";
-  direction: Vec3Array;
-}
-
-export interface AnyVoxelRelationsConditionData {
-  type: "any-voxel";
-  direction: Vec3Array;
-}
-
-export type VoxelModelRelationsConditionData =
-  | SameVoxelRelationsConditionData
-  | AnyVoxelRelationsConditionData;
-
-export interface VoxelModelRelationsSchemaData {
-  name: string;
-  conditions: VoxelModelRelationsConditionData[];
-}
-
 export type VoxelGeometryNodes =
   | VoxelBoxGeometryNode
   | VoxelTriangleGeometryNode
@@ -192,10 +168,8 @@ export interface VoxelModelData {
     | VoxelGeometryBooleanArgument
     | VoxelGeometryFloatArgument
   >;
-  shapeStateSchema: (
-    | VoxelBinaryStringSchemaData
-    | VoxelBinaryNumberSchemaData
-  )[];
+  shapeStateSchema: (VoxelStateStringSchemaData | VoxelStateNumberSchemaData)[];
+  effects?: VoxelEffectData[];
   relationsSchema: VoxelModelRelationsSchemaData[];
   shapeStatesNodes: Record<string, VoxelGeometryLinkData[]>;
   shapeStatesConditonalNodes: Record<string, VoxelGeometryLinkData[]>;
