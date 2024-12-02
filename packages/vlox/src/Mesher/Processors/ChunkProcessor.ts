@@ -81,14 +81,14 @@ export class ChunkProcessor {
       this.heightMapTool.chunk.setY(y).setDirty(false);
     }
     VoxelGeometryLookUp.stop();
-    const trasnfers: any[] = [];
+    const transfers: any[] = [];
     const chunkEffects: SetChunkMeshTask[2] = [];
 
     for (const e in ShapeTool.effects) {
 
    
       const float = Float32Array.from(ShapeTool.effects[e]);
-      trasnfers.push(float.buffer);
+      transfers.push(float.buffer);
       chunkEffects.push([e, float]);
     }
     ShapeTool.effects = {};
@@ -103,15 +103,15 @@ export class ChunkProcessor {
         continue;
       }
       const [attributes, buffers] = mesher.getAllAttributes();
-      trasnfers.push(...buffers);
+      transfers.push(...buffers);
       chunkMeshes.push([substance, [location, attributes]]);
       mesher.resetAll();
     }
 
     DivineVoxelEngineConstructor.instance.threads.parent.runTasks<SetChunkMeshTask>(
       "set-chunk",
-      chunks,
-      trasnfers
+      chunks, 
+      transfers
     );
   }
 }
