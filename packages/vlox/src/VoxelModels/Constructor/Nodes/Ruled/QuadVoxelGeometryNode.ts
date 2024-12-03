@@ -31,11 +31,17 @@ import {
 } from "../../../Input/QuadVoxelGometryInputs";
 import { VoxelGeometryTransform } from "../../../../VoxelData/VoxelSyncData";
 import { TransformQuad } from "../../../Shared/Transform";
+import { GetQuadGeometryData } from "../Common/QuadGeometryNode";
+import { UpdateBounds } from "../Common/BoundsFunctions";
 
 const ArgIndexes = QuadVoxelGometryInputs.ArgIndexes;
 
 export class QuadVoxelGometryNode extends GeoemtryNode<QuadVoxelGometryArgs> {
   quad: Quad;
+  quadBounds: [Vec3Array, Vec3Array] = [
+    [0, 0, 0],
+    [0, 0, 0],
+  ];
   vertexWeights: [Vec4Array, Vec4Array, Vec4Array, Vec4Array];
   worldLight: QuadScalarVertexData;
   worldAO: QuadScalarVertexData;
@@ -51,44 +57,11 @@ export class QuadVoxelGometryNode extends GeoemtryNode<QuadVoxelGometryArgs> {
     this.faceCount = 6;
     this.vertexCount = this.faceCount * 4;
 
-    this.quad = TransformQuad(Quad.Create(data.points), transform);
-    this.quad.orientation = 0;
-
-    const normals = this.quad.normals.getAsArray();
-    const averageNormal: Vec3Array = [0, 0, 0];
-
-    for (let i = 0; i < normals.length; i++) {
-      averageNormal[0] += normals[i].x;
-      averageNormal[1] += normals[i].y;
-      averageNormal[2] += normals[i].z;
-    }
-    averageNormal[0] /= normals.length;
-    averageNormal[1] /= normals.length;
-    averageNormal[2] /= normals.length;
-
-    // Normalize the average normal
-    const magnitude = Math.sqrt(
-      averageNormal[0] * averageNormal[0] +
-        averageNormal[1] * averageNormal[1] +
-        averageNormal[2] * averageNormal[2]
-    );
-    if (magnitude !== 0) {
-      averageNormal[0] /= magnitude;
-      averageNormal[1] /= magnitude;
-      averageNormal[2] /= magnitude;
-    }
-
-    const unitNormal = closestUnitNormal(averageNormal);
-    let closestFace = VoxelFaces.Up;
-    if (unitNormal[0] == 1) closestFace = VoxelFaces.East;
-    if (unitNormal[0] == -1) closestFace = VoxelFaces.West;
-    if (unitNormal[1] == 1) closestFace = VoxelFaces.Up;
-    if (unitNormal[1] == -1) closestFace = VoxelFaces.Down;
-    if (unitNormal[2] == 1) closestFace = VoxelFaces.North;
-    if (unitNormal[2] == -1) closestFace = VoxelFaces.South;
-
-    this.vertexWeights = addQuadWeights(this.quad, closestFace);
-
+    const { quad, quadBounds, closestFace, vertexWeights } =
+      GetQuadGeometryData(data, transform);
+    this.quad = quad;
+    this.quadBounds = quadBounds;
+    this.vertexWeights = vertexWeights;
     this.closestFace = closestFace;
   }
 
@@ -313,6 +286,8 @@ export class QuadVoxelGometryNode extends GeoemtryNode<QuadVoxelGometryArgs> {
       quad.uvs.vertices[3].x = uvs[3][0];
       quad.uvs.vertices[3].y = uvs[3][1];
       VoxelGeometry.addQuad(tool, origin, quad);
+
+      UpdateBounds(tool, origin, this.quadBounds);
     }
 
     this.worldLight.setAll(0);

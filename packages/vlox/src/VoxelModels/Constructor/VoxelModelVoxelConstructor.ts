@@ -42,6 +42,8 @@ export class VoxelModelVoxelConstructor extends VoxelConstructor {
       0,
       voxleData.modStateTree
     );
+
+
   }
 
   isShapeStateFaceTransparent(
@@ -86,6 +88,7 @@ export class VoxelModelVoxelConstructor extends VoxelConstructor {
 
     if (treeState !== undefined && treeState > -1) {
       const geoLinks = this.model.data.shapeStateMap[treeState];
+
       const geometries = this.model.data.shapeStateGeometryMap[treeState];
 
       const geometriesLength = geoLinks.length;
@@ -108,9 +111,12 @@ export class VoxelModelVoxelConstructor extends VoxelConstructor {
     const conditonalTreeState =
       VoxelGeometryLookUp.conditonalStateCache[hashed];
 
+
+
     if (conditonalTreeState !== undefined && conditonalTreeState > -1) {
       const condiotnalNodes =
         this.model.data.condiotnalShapeStateMap[conditonalTreeState];
+
       const condiotnalNodesLength = condiotnalNodes.length;
 
       for (let c = 0; c < condiotnalNodesLength; c++) {

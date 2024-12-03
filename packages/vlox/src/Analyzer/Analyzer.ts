@@ -70,7 +70,6 @@ export class Analyzer extends DVEAnaylzer {
             if (options.light) {
       
               if (mainDT.isLightSource()) {
-                console.warn("add to light update", x, y, z);
                 tasks.queues.rgb.update.push(x, y, z);
               }
             }

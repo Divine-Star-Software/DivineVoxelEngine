@@ -28,24 +28,19 @@ const addGeo = (
     newData.nodes = newData.nodes.map((_) => ({
       ..._,
       tranform: {
-        position: geoLinkNode.position,
-        scale: geoLinkNode.scale,
-        rotation: geoLinkNode.rotation,
-        rotationPivot: geoLinkNode.rotationPivot,
-        flip: geoLinkNode.flip,
+        ...(geoLinkNode.position ? { position: geoLinkNode.position } : {}),
+        ...(geoLinkNode.scale ? { scale: geoLinkNode.scale } : {}),
+        ...(geoLinkNode.rotation ? { rotation: geoLinkNode.rotation } : {}),
+        ...(geoLinkNode.rotationPivot
+          ? { rotationPivot: geoLinkNode.rotationPivot }
+          : {}),
+        ...(geoLinkNode.flip ? { flip: geoLinkNode.flip } : {}),
       },
     }));
 
-    
     VoxelModelManager.geometry.set(
       newId,
-      new VoxelRuleGeometry(
-        newId,
-        newData,
-        structuredClone(geoLinkNode.position),
-        structuredClone(geoLinkNode.scale),
-        structuredClone(geoLinkNode.rotation)
-      )
+      new VoxelRuleGeometry(newId, newData)
     );
     continue;
   }

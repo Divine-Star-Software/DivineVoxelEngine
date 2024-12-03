@@ -14,7 +14,7 @@ import type { ConstructorTextureData } from "@divinevoxel/vlox/Textures/Construc
 import { DataTool } from "@divinevoxel/vlox/Tools/Data/DataTool.js";
 import { EntityTool } from "./EntityTool.js";
 import { DVEBabylonRenderer } from "../Renderer/DVEBabylonRenderer.js";
-import { AddVoxelData } from "@divinevoxel/vlox/Data/Types/WorldData.types.js";
+import { PaintVoxelData } from "@divinevoxel/vlox/Data/Types/WorldData.types.js";
 
 import type { Mesh } from "@babylonjs/core";
 import { LocationData } from "@divinevoxel/vlox/Math/index.js";
@@ -135,11 +135,11 @@ export class NodeMeshTool {
 
     buildMesh: (
       location: Vec3Array,
-      voxelData: RawVoxelData | Partial<AddVoxelData>,
+      voxelData: RawVoxelData | Partial<PaintVoxelData>,
       onDone: (mesh: Mesh | false) => void
     ) => {
       if (!Array.isArray(voxelData)) {
-        voxelData = DataTool.VoxelDataToRaw(AddVoxelData.Create(voxelData));
+        voxelData = DataTool.VoxelDataToRaw(PaintVoxelData.Create(voxelData));
       }
 
       DVER.instance.threads.construcotrs.runPromiseTasks<BuildNodeMesh>(
@@ -176,7 +176,7 @@ export class NodeMeshTool {
 
     buildMeshAsync(
       location: Vec3Array,
-      voxelData: RawVoxelData | Partial<AddVoxelData>
+      voxelData: RawVoxelData | Partial<PaintVoxelData>
     ): Promise<Mesh | false> {
       return new Promise((resolve) => {
         this.buildMesh(location, voxelData, (data) => {
@@ -187,7 +187,7 @@ export class NodeMeshTool {
 
     buildEntityTool: (
       location: Vec3Array,
-      voxelData: RawVoxelData | Partial<AddVoxelData>,
+      voxelData: RawVoxelData | Partial<PaintVoxelData>,
       onDone: (mesh: EntityTool | false) => void
     ) => {
       this.voxel.buildMesh(location, voxelData, (mesh) => {
@@ -198,7 +198,7 @@ export class NodeMeshTool {
 
     buildEntityToolAsync: (
       location: Vec3Array,
-      voxelData: RawVoxelData | Partial<AddVoxelData>
+      voxelData: RawVoxelData | Partial<PaintVoxelData>
     ): Promise<EntityTool | false> => {
       return new Promise((resolve) => {
         this.voxel.buildEntityTool(location, voxelData, (data) => {

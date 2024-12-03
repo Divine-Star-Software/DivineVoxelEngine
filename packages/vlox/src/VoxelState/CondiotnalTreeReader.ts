@@ -18,7 +18,9 @@ export class CondtionalTreeReader {
     if (!this.tree.length) return -1;
     let curretNode = this.tree;
     for (let i = 0; i < this.statements.length; i++) {
-      curretNode = curretNode[this.statements[i].getValue(shapeState) ? 1 : 0];
+      const value = this.statements[i].getValue(shapeState);
+
+      curretNode = curretNode[value ? 1 : 0];
     }
 
     return curretNode as any as number;

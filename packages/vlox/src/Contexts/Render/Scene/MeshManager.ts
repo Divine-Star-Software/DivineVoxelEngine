@@ -58,6 +58,31 @@ export class MeshManager {
   static update(data: SetChunkMeshTask) {
     const [location, chunks, effects] = data;
     let i = chunks.length;
+    let chunk = MeshRegister.chunk.get(location);
+    if (!chunk) {
+      chunk = MeshRegister.chunk.add(location);
+    }
+
+    added.clear();
+    for (const [id, points] of effects) {
+      added.add(id);
+      if (!chunk.effects.has(id)) {
+        const EffectClass = VoxelEffectRegister.get(id);
+        const newEffect = new EffectClass(chunk);
+        newEffect.init();
+        newEffect.setPoints(points);
+        chunk.effects.set(id, newEffect);
+      } else {
+        const effect = chunk.effects.get(id)!;
+        effect.setPoints(points);
+      }
+    }
+    for (const [key, effect] of chunk.effects) {
+      if (!added.has(key)) {
+        effect.dispose();
+        chunk.effects.delete(key);
+      }
+    }
 
     while (i--) {
       const chunkData = chunks[i];
@@ -74,7 +99,6 @@ export class MeshManager {
         continue;
       }
       let chunkMesh = MeshRegister.chunk.getMesh(location, substance);
-
       let mesh: URIMesh;
       if (!chunkMesh) {
         mesh = DivineVoxelEngineRender.instance.renderer.nodes.meshes
@@ -91,31 +115,6 @@ export class MeshManager {
             chunkData[1][1],
             mesh
           );
-      }
-    }
-
-    const chunk = MeshRegister.chunk.get(location);
-    if (chunk) {
-      added.clear();
-      for (const [id, points] of effects) {
-        added.add(id);
-        if (!chunk.effects.has(points)) {
-          const EffectClass = VoxelEffectRegister.get(id);
-          const newEffect = new EffectClass(chunk);
-          newEffect.init();
-          newEffect.setPoints(points);
-
-          chunk.effects.set(id, newEffect);
-        } else {
-          const effect = chunk.effects.get(id)!;
-          effect.setPoints(points);
-        }
-      }
-      for (const [key, effect] of chunk.effects) {
-        if (!added.has(key)) {
-          effect.dispose();
-          chunk.effects.delete(key);
-        }
       }
     }
   }

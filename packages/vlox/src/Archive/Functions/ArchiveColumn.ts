@@ -133,22 +133,22 @@ export default function ArchiveColumn(
       const voxelState = !statePalette.isRegistered(chunk.state[i])
         ? statePalette.register(chunk.state[i])
         : statePalette.getId(chunk.state[i]);
-      if (!archivedChunk.statePalette.isRegistered(voxelState))
-        archivedChunk.statePalette.register(voxelState);
+      if (!archivedChunk.statePalette.isRegistered(chunk.state[i]))
+        archivedChunk.statePalette.register(chunk.state[i]);
       if (firstState == -1) firstState = voxelState;
 
       const voxelMod = !modPalette.isRegistered(chunk.mod[i])
         ? modPalette.register(chunk.mod[i])
         : modPalette.getId(chunk.mod[i]);
-      if (!archivedChunk.modPalette.isRegistered(voxelMod))
-        archivedChunk.modPalette.register(voxelMod);
+      if (!archivedChunk.modPalette.isRegistered(chunk.mod[i]))
+        archivedChunk.modPalette.register(chunk.mod[i]);
       if (firstMod == -1) firstMod = voxelMod;
 
       const voxelLight = !lightPalette.isRegistered(chunk.light[i])
         ? lightPalette.register(chunk.light[i])
         : lightPalette.getId(chunk.light[i]);
-      if (!archivedChunk.lightPalette.isRegistered(voxelLight))
-        archivedChunk.lightPalette.register(voxelLight);
+      if (!archivedChunk.lightPalette.isRegistered(chunk.light[i]))
+        archivedChunk.lightPalette.register(chunk.light[i]);
       if (firstLight == -1) firstLight = voxelLight;
 
       const secondaryId =
@@ -160,8 +160,8 @@ export default function ArchiveColumn(
           ? secondaryPalette.register(secondaryId)
           : secondaryPalette.getNumberId(secondaryId)
         : !secondaryStatePalette.isRegistered(chunk.secondary[i])
-        ? secondaryStatePalette.register(chunk.secondary[i])
-        : secondaryStatePalette.getId(chunk.secondary[i]);
+          ? secondaryStatePalette.register(chunk.secondary[i])
+          : secondaryStatePalette.getId(chunk.secondary[i]);
 
       secondaryId
         ? !archivedChunk.secondaryPalette.isRegistered(voxelSecondary) &&
@@ -232,9 +232,11 @@ export default function ArchiveColumn(
     for (let i = 0; i < length; i++) {
       VoxelStruct.setStringVoxel(idsPalette.getStringId(chunk.ids[i]));
       if (reMapIds) chunk.ids[i] = chunk.idPalette.getId(chunk.ids[i]);
-      if (reMapState) chunk.state[i] = chunk.statePalette.getId(chunk.state[i]);
-      if (reMapMod) chunk.mod[i] = chunk.modPalette.getId(chunk.mod[i]);
-      if (reMapLight) chunk.light[i] = chunk.lightPalette.getId(chunk.light[i]);
+      if (reMapState)
+        chunk.state[i] = chunk.statePalette.getId(chunk.chunk.state[i]);
+      if (reMapMod) chunk.mod[i] = chunk.modPalette.getId(chunk.chunk.mod[i]);
+      if (reMapLight)
+        chunk.light[i] = chunk.lightPalette.getId(chunk.chunk.light[i]);
       if (reMapSecondary)
         chunk.secondary[i] =
           VoxelStruct.instance[VoxelTagIDs.canHaveSecondary] == 1
@@ -334,46 +336,49 @@ export default function ArchiveColumn(
           light: archiveChunk.lightAllTheSame
             ? archiveChunk.light[0]
             : archiveChunk.isLightPaletted
-            ? convertToPaletteBuffer(
-                archiveChunk.rempaedLight
-                  ? archiveChunk.lightPalette.size
-                  : lightPalette.size,
-                archiveChunk.light
-              )
-            : new Uint16Array(archiveChunk.chunk.light.slice()),
+              ? convertToPaletteBuffer(
+                  archiveChunk.rempaedLight
+                    ? archiveChunk.lightPalette.size
+                    : lightPalette.size,
+                  archiveChunk.light
+                )
+              : new Uint16Array(archiveChunk.chunk.light.slice()),
           state: archiveChunk.stateAllTheSame
             ? archiveChunk.state[0]
             : archiveChunk.isStatePaletted
-            ? convertToPaletteBuffer(
-                archiveChunk.rempaedState
-                  ? archiveChunk.statePalette.size
-                  : statePalette.size,
-                archiveChunk.state
-              )
-            : new Uint16Array(archiveChunk.chunk.state.slice()),
+              ? convertToPaletteBuffer(
+                  archiveChunk.rempaedState
+                    ? archiveChunk.statePalette.size
+                    : statePalette.size,
+                  archiveChunk.state
+                )
+              : new Uint16Array(archiveChunk.chunk.state.slice()),
           mod: archiveChunk.modAllTheSame
             ? archiveChunk.mod[0]
             : archiveChunk.isModPaletted
-            ? convertToPaletteBuffer(
-                archiveChunk.rempaedMod
-                  ? archiveChunk.modPalette.size
-                  : modPalette.size,
-                archiveChunk.mod
-              )
-            : new Uint16Array(archiveChunk.chunk.mod.slice()),
+              ? convertToPaletteBuffer(
+                  archiveChunk.rempaedMod
+                    ? archiveChunk.modPalette.size
+                    : modPalette.size,
+                  archiveChunk.mod
+                )
+              : new Uint16Array(archiveChunk.chunk.mod.slice()),
           secondary: archiveChunk.secondaryAllTheSame
             ? archiveChunk.secondary[0]
             : archiveChunk.isSecondaryPaletted
-            ? convertToPaletteBuffer(
-                archiveChunk.rempaedSecondary
-                  ? Math.max(
-                      archiveChunk.secondaryStatePalette.size,
-                      archiveChunk.secondaryPalette.size
-                    )
-                  : Math.max(secondaryStatePalette.size, secondaryPalette.size),
-                archiveChunk.state
-              )
-            : new Uint16Array(archiveChunk.secondary),
+              ? convertToPaletteBuffer(
+                  archiveChunk.rempaedSecondary
+                    ? Math.max(
+                        archiveChunk.secondaryStatePalette.size,
+                        archiveChunk.secondaryPalette.size
+                      )
+                    : Math.max(
+                        secondaryStatePalette.size,
+                        secondaryPalette.size
+                      ),
+                  archiveChunk.state
+                )
+              : new Uint16Array(archiveChunk.secondary),
         },
         state: Object.entries(serializeChunkState).map((_) => _[1]),
       };

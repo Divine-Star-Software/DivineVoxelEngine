@@ -13,6 +13,7 @@ import { HeightMapTool } from "../../Tools/Data/WorldData/HeightMapTool.js";
 import { BuilderDataTool } from "../Tools/BuilderDataTool.js";
 import { ShapeTool } from "../Shapes/ShapeTool.js";
 import { VoxelGeometryLookUp } from "../../VoxelModels/Constructor/VoxelGeometryLookUp.js";
+import { CompactVoxelMesh } from "../Functions/CompactVoxelMesh.js";
 
 export class ChunkProcessor {
   mDataTool = new BuilderDataTool();
@@ -51,7 +52,9 @@ export class ChunkProcessor {
     mesher.voxel.loadInAt(x, y, z);
     mesher.nVoxel.loadInAt(x, y, z);
     ShapeTool.setMesher(mesher);
+    mesher.startConstruction();
     constructor.process(mesher);
+    mesher.endConstruction();
     mesher.resetVars();
     return true;
   }
@@ -67,7 +70,9 @@ export class ChunkProcessor {
 
     if (Math.abs(minY) == Infinity && Math.abs(maxY) == Infinity) return;
     VoxelGeometryLookUp.start(dimension, location[1], location[2], location[3]);
-
+    for (const [substance, mesher] of RenderedSubstances.meshers) {
+      mesher.bvhTool.reset();
+    }
     for (let y = minY; y <= maxY; y++) {
       let foundVoxels = false;
       for (let x = 0; x < WorldSpaces.chunk._bounds.x; x++) {
@@ -85,26 +90,40 @@ export class ChunkProcessor {
     const chunkEffects: SetChunkMeshTask[2] = [];
 
     for (const e in ShapeTool.effects) {
-
-   
       const float = Float32Array.from(ShapeTool.effects[e]);
       trasnfers.push(float.buffer);
       chunkEffects.push([e, float]);
     }
     ShapeTool.effects = {};
     const chunkMeshes: SetChunkMeshTask[1] = [];
-    const chunks = <SetChunkMeshTask>[location, chunkMeshes, chunkEffects, priority];
+    const chunks = <SetChunkMeshTask>[
+      location,
+      chunkMeshes,
+      chunkEffects,
+      priority,
+    ];
 
     for (const [substance, mesher] of RenderedSubstances.meshers) {
- 
-      if (mesher.positions.length == 0) {
+      if (mesher.mesh!.positions.length == 0) {
         chunkMeshes.push([substance, false]);
         mesher.resetAll();
         continue;
       }
-      const [attributes, buffers] = mesher.getAllAttributes();
-      trasnfers.push(...buffers);
-      chunkMeshes.push([substance, [location, attributes]]);
+
+      const compactMesh = CompactVoxelMesh(mesher);
+
+      trasnfers.push(
+        ...(compactMesh[0] == 0
+          ? [compactMesh[1]]
+          : [
+              compactMesh[1],
+              compactMesh[2].buffer,
+              compactMesh[3].buffer,
+              compactMesh[4].buffer,
+            ])
+      );
+      chunks[1].push([substance, [location, compactMesh]]);
+
       mesher.resetAll();
     }
 

@@ -1,4 +1,4 @@
-import { Engine, Material, Scene } from "@babylonjs/core";
+import { Engine, Material, PBRBaseMaterial, Scene } from "@babylonjs/core";
 
 import { PBRMaterial } from "@babylonjs/core/Materials/PBR/pbrMaterial";
 import { Vector3, Vector4 } from "@babylonjs/core/Maths/";
@@ -16,9 +16,14 @@ import { IMatrixLike } from "@babylonjs/core/Maths/math.like";
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
 import { DefaultMaterialManager } from "../DefaultMaterialManager.js";
 import { TextureType } from "@divinevoxel/vlox/Textures/TextureType";
+import { DVEBRTexture } from "Renderer/Textures/DVEBRTexture.js";
 type DVEBRPBRMaterialBaseData = {
   textureTypeId: string;
   shaderId: string;
+
+  material?: PBRBaseMaterial;
+  plugin?: DVEPBRMaterialPlugin;
+  textures?: Map<string, DVEBRTexture>;
 };
 
 export type DVEBRPBRMaterialData = URIMaterialData<
@@ -39,7 +44,10 @@ export class DVEBRPBRMaterial extends URIMaterial<
   texture: TextureType;
 
   afterCreate: ((material: PBRMaterial) => void)[] = [];
-  constructor(public id: string, public data: DVEBRPBRMaterialData) {
+  constructor(
+    public id: string,
+    public data: DVEBRPBRMaterialData
+  ) {
     super();
   }
 
@@ -120,7 +128,7 @@ export class DVEBRPBRMaterial extends URIMaterial<
     if (this.data.alphaTesting) {
       material.alphaMode = Material.MATERIAL_ALPHATEST;
     }
-  /*   if (this.data.stencil) {
+    /*   if (this.data.stencil) {
       material.stencil.enabled = true;
       material.stencil.func = Engine.NOTEQUAL;
       this.scene.setRenderingAutoClearDepthStencil(0, false, false, false);
@@ -133,7 +141,7 @@ export class DVEBRPBRMaterial extends URIMaterial<
       material.reflectionColor.set(0.1, 0.1, 0.1);
       material.metallic = 1;
       material.reflectivityColor.set(0.8, 0.8, 0.8);
-    //  material.wireframe = true;
+      //  material.wireframe = true;
       material.alphaMode = Material.MATERIAL_ALPHABLEND;
 
       material.alpha = 0.7;
@@ -160,10 +168,62 @@ export class DVEBRPBRMaterial extends URIMaterial<
   ): void {
     throw new Error(`Function not implemented`);
   }
-
-  setTexture(samplerId: string, sampler: URITexture<URIScene<any>, any>): void {
+  textures = new Map<string, DVEBRTexture>();
+  setTexture(samplerId: string, sampler: DVEBRTexture): void {
     if (!this.plugin.uniformBuffer) return;
     this.plugin.uniformBuffer.setTexture(samplerId, sampler._texture);
+    this.textures.set(samplerId, sampler);
+  }
+  clone(scene: Scene) {
+    for (const [textId, texture] of this.textures) {
+      this.plugin.uniformBuffer.setTexture(textId, null);
+    }
+    const pluginId = `${this.id.replace("#", "")}`;
+
+    const pluginBase = DVEPBRMaterialPlugin;
+    const newPlugin = new Function(
+      "extendedClass",
+      /* js */ `
+      return class ${pluginId} extends extendedClass {
+        getClassName() {
+          return ${pluginId};
+        }
+      };
+    `
+    )(pluginBase);
+    const newMat = PBRMaterial.Parse(
+      this._material.serialize(),
+      scene,
+      "/"
+    )! as PBRMaterial;
+    const plugin = new newPlugin(
+      newMat,
+      pluginId,
+      this,
+      () => {}
+    ) as DVEPBRMaterialPlugin;
+
+    const textures = new Map<string, DVEBRTexture>();
+    for (const [textId, texture] of this.textures) {
+      const newTexture = texture.clone(scene)!;
+      textures.set(textId, newTexture);
+      plugin.uniformBuffer.setTexture(textId, newTexture._texture);
+      this.plugin.uniformBuffer.setTexture(textId, texture._texture!);
+    }
+
+    const mat =  new DVEBRPBRMaterial(this.id, {
+      ...this.data,
+      data: {
+        ...this.data.data,
+        material: newMat,
+        plugin,
+        textures,
+      },
+    });
+    mat.plugin = plugin;
+    mat._material = newMat;
+    mat.textures = textures;
+    return mat;
   }
 
   setNumber(uniform: string, value: number): void {

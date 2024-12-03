@@ -27,11 +27,14 @@ import { VoxelGeometryRulelessConstructor } from "../../Register/VoxelGeometryRu
 import { RulelessGeoemtryNode } from "../RulelessGeometryNode";
 import { VoxelGeometryTransform } from "../../../../VoxelData/VoxelSyncData";
 import { TransformBox } from "../../../Shared/Transform";
+import { GetBoxGeometryNodeData } from "../Common/BoxGeometryNode";
+import { UpdateBounds } from "../Common/BoundsFunctions";
 
 const ArgIndexes = BoxVoxelGometryInputs.ArgIndexes;
 
 export class RulelessBoxVoxelGeometryNode extends RulelessGeoemtryNode<BoxVoxelGometryArgs> {
   quads: Quad[] = [];
+  quadBounds: [Vec3Array, Vec3Array][] = [];
   vertexWeights: [Vec4Array, Vec4Array, Vec4Array, Vec4Array][] = [];
   worldLight: QuadScalarVertexData;
   worldAO: QuadScalarVertexData;
@@ -43,108 +46,16 @@ export class RulelessBoxVoxelGeometryNode extends RulelessGeoemtryNode<BoxVoxelG
     transform: VoxelGeometryTransform
   ) {
     super(geometryPaletteId, geometry);
-
-    const [start, end] = data.points.map((_) => Vector3Like.Create(..._));
     this.faceCount = 6;
     this.vertexCount = this.faceCount * 4;
 
-    const quadPoints: [Vec3Array, Vec3Array, Vec3Array, Vec3Array][] = [
-      //top
-      [
-        [end.x, end.y, end.z],
-        [start.x, end.y, end.z],
-        [start.x, end.y, start.z],
-        [end.x, end.y, start.z],
-      ],
-      //bottom
-      [
-        [start.x, start.y, end.z],
-        [end.x, start.y, end.z],
-        [end.x, start.y, start.z],
-        [start.x, start.y, start.z],
-      ],
-      //north
-      [
-        [start.x, end.y, end.z],
-        [end.x, end.y, end.z],
-        [end.x, start.y, end.z],
-        [start.x, start.y, end.z],
-      ],
-      //south
-      [
-        [end.x, end.y, start.z],
-        [start.x, end.y, start.z],
-        [start.x, start.y, start.z],
-        [end.x, start.y, start.z],
-      ],
-      //east
-      [
-        [end.x, end.y, end.z],
-        [end.x, end.y, start.z],
-        [end.x, start.y, start.z],
-        [end.x, start.y, end.z],
-      ],
-      //west
-      [
-        [start.x, end.y, start.z],
-        [start.x, end.y, end.z],
-        [start.x, start.y, end.z],
-        [start.x, start.y, start.z],
-      ],
-    ];
-
-    const tranformed = TransformBox(
-      quadPoints.map((_) => Quad.Create(_)) as any,
+    const { quads, vertexWeights, quadBounds } = GetBoxGeometryNodeData(
+      data,
       transform
     );
-
-    this.quads[VoxelFaces.Up] = tranformed[VoxelFaces.Up];
-    tranformed[VoxelFaces.Up].orientation = 0;
-
-    this.vertexWeights[VoxelFaces.Up] = addQuadWeights(
-      this.quads[VoxelFaces.Up],
-      VoxelFaces.Up
-    );
-
-    this.quads[VoxelFaces.Down] = tranformed[VoxelFaces.Down];
-    tranformed[VoxelFaces.Down].orientation = 0;
-
-    this.vertexWeights[VoxelFaces.Down] = addQuadWeights(
-      this.quads[VoxelFaces.Down],
-      VoxelFaces.Down
-    );
-
-    this.quads[VoxelFaces.North] = tranformed[VoxelFaces.North];
-    tranformed[VoxelFaces.North].orientation = 0;
-
-    this.vertexWeights[VoxelFaces.North] = addQuadWeights(
-      this.quads[VoxelFaces.North],
-      VoxelFaces.North
-    );
-
-    this.quads[VoxelFaces.South] = tranformed[VoxelFaces.South];
-    tranformed[VoxelFaces.South].orientation = 0;
-
-    this.vertexWeights[VoxelFaces.South] = addQuadWeights(
-      this.quads[VoxelFaces.South],
-      VoxelFaces.South
-    );
-
-    this.quads[VoxelFaces.East] = tranformed[VoxelFaces.East];
-    tranformed[VoxelFaces.East].orientation = 0;
-
-    this.vertexWeights[VoxelFaces.East] = addQuadWeights(
-      this.quads[VoxelFaces.East],
-      VoxelFaces.East
-    );
-
-    this.quads[VoxelFaces.West] = tranformed[VoxelFaces.West];
-    tranformed[VoxelFaces.West].orientation = 0;
-
-    this.vertexWeights[VoxelFaces.West] = addQuadWeights(
-      this.quads[VoxelFaces.West],
-      VoxelFaces.West
-    );
+    this.quads = quads;
+    this.quadBounds = quadBounds;
+    this.vertexWeights = vertexWeights;
   }
 
   determineShading(face: VoxelFaces) {
@@ -227,6 +138,8 @@ export class RulelessBoxVoxelGeometryNode extends RulelessGeoemtryNode<BoxVoxelG
         quad.uvs.vertices[3].x = uvs[3][0];
         quad.uvs.vertices[3].y = uvs[3][1];
         VoxelGeometry.addQuad(tool, origin, quad);
+
+        UpdateBounds(tool, origin, this.quadBounds[face]);
       }
     }
 

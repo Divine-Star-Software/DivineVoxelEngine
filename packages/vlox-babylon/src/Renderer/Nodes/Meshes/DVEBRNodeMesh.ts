@@ -1,4 +1,7 @@
-import type { Scene, Engine } from "@babylonjs/core";
+import {
+  type Scene,
+  type Engine,
+} from "@babylonjs/core";
 import type { Vec3Array } from "@amodx/math";
 import { Geometry } from "@babylonjs/core/Meshes/geometry.js";
 import { Vector3 } from "@babylonjs/core/Maths/";
@@ -15,7 +18,43 @@ import { VertexBuffer } from "@babylonjs/core/Meshes/buffer.js";
 import { DVENodeMesh } from "@divinevoxel/vlox/Interfaces/Render/Nodes/Meshes/DVENodeMesh.js";
 import { DVEBabylonRenderer } from "../../DVEBabylonRenderer";
 import { DVEBRMesh } from "./DVEBRMesh";
+import { CompactMeshData } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
+
+
 export class DVEBRNodeMesh extends DVENodeMesh {
+  static UpdateVertexData(mesh: Mesh, engine: Engine, data: CompactMeshData) {
+    if (data[0] == 1) return;
+    for (const [
+      id,
+      array,
+      length,
+      startByte,
+      endByte,
+      stride,
+      type,
+    ] of data[2]) {
+      switch (id) {
+        case "position":
+          mesh.setVerticesBuffer(
+            new VertexBuffer(engine, array, id, false, undefined, stride)
+          );
+          break;
+        case "normal":
+          mesh.setVerticesBuffer(
+            new VertexBuffer(engine, array, id, false, undefined, stride)
+          );
+          break;
+        case "indices":
+          mesh.setIndices(array as any);
+          break;
+        default:
+          mesh.setVerticesBuffer(
+            new VertexBuffer(engine, array, id, false, undefined, stride)
+          );
+          break;
+      }
+    }
+  }
   pickable = false;
   checkCollisions = false;
   serialize = false;
@@ -23,11 +62,12 @@ export class DVEBRNodeMesh extends DVENodeMesh {
   defaultBb: BoundingInfo;
   scene: Scene;
   engine: Engine;
+
   constructor(public data: NodeMeshData) {
     super(data);
   }
 
-  createMesh(location: Vec3Array, data: DVENodeMeshAttributes) {
+  createMesh(location: Vec3Array, data: CompactMeshData) {
     if (!this.scene) {
       const scene = DVEBabylonRenderer.instance.scene._scene;
       if (!scene) {
@@ -47,6 +87,10 @@ export class DVEBRNodeMesh extends DVENodeMesh {
     const mesh = new Mesh(this.data.id, this.scene);
     dveMesh._mesh = mesh;
     mesh.hasVertexAlpha = false;
+
+
+
+    //  viewer.createBoxes(0);
 
     const mat = DVEBabylonRenderer.instance.nodes.materials.get(this.data.id);
     if (!mat) {
@@ -94,7 +138,7 @@ export class DVEBRNodeMesh extends DVENodeMesh {
   }
   updateVertexData(
     location: Vec3Array,
-    data: DVENodeMeshAttributes,
+    data: CompactMeshData,
     dveMesh: DVEBRMesh
   ) {
     const mesh = dveMesh._mesh;
@@ -103,49 +147,7 @@ export class DVEBRNodeMesh extends DVENodeMesh {
     mesh.position.y = location[1];
     mesh.position.z = location[2];
 
-    for (const [id, attribute, stride] of data) {
-      switch (id) {
-        case "position":
-          mesh.setVerticesBuffer(
-            new VertexBuffer(
-              this.engine,
-              attribute,
-              id,
-              false,
-              undefined,
-              stride
-            )
-          );
-          break;
-        case "normal":
-          mesh.setVerticesBuffer(
-            new VertexBuffer(
-              this.engine,
-              attribute,
-              id,
-              false,
-              undefined,
-              stride
-            )
-          );
-          break;
-        case "indices":
-          mesh.setIndices(attribute as any);
-          break;
-        default:
-          mesh.setVerticesBuffer(
-            new VertexBuffer(
-              this.engine,
-              attribute,
-              id,
-              false,
-              undefined,
-              stride
-            )
-          );
-          break;
-      }
-    }
+    DVEBRNodeMesh.UpdateVertexData(mesh, this.engine, data);
 
     mesh.freezeWorldMatrix();
     this._clearCached(dveMesh);

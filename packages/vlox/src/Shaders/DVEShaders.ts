@@ -22,11 +22,12 @@ export class DVEShaders {
     ["position", "vec3"],
     ["normal", "vec3"],
     ["indices", "float"],
-    ["faceData", "float"],
     ["voxelData", "float"],
     ["textureIndex", "vec3"],
     ["uv", "vec2"],
     ["colors", "vec3"],
+
+    ["faceData", "float"],
   ];
   static voxelSharedUniforms: ShaderUniformData[] = [
     ["time", "float"],

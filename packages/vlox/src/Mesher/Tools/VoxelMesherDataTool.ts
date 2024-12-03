@@ -16,11 +16,17 @@ import { BinaryNumberTypes } from "@amodx/binary";
 import { VoxelFaces, VoxelFaceDirections, VoxelFacesArray } from "../../Math";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 import { FaceDataCalc } from "../Calc/Light/FaceDataCalc";
+import { Mesh } from "@amodx/meshing/Mesh/Mesh";
+import { VoxelMeshBVHBuilder } from "./VoxelMeshBVHBuilder";
+import { Vec3Array } from "@amodx/math";
+import { WorldSpaces } from "../../Data/World/WorldSpaces";
 
 export class VoxelMesherDataTool extends MesherDataTool {
   template = new VoxelTemplateDataTool();
   voxel = new BuilderDataTool();
   nVoxel = new BuilderDataTool();
+
+  bvhTool = new VoxelMeshBVHBuilder();
 
   dataCalculated: Record<VoxelFaces, boolean>;
 
@@ -71,6 +77,8 @@ export class VoxelMesherDataTool extends MesherDataTool {
       this.lightData[face][QuadVerticies.BottomRight] = 0;
     }
 
+    this.startNewMesh(new Mesh(true));
+
     (
       [
         ["voxelData", [[], 1, BinaryNumberTypes.Float32]],
@@ -78,7 +86,7 @@ export class VoxelMesherDataTool extends MesherDataTool {
         ["textureIndex", [[], 3, BinaryNumberTypes.Float32]],
         ["colors", [[], 3, BinaryNumberTypes.Float32]],
       ] as const
-    ).forEach(([key, data]) => this.attributes.set(key, data as any));
+    ).forEach(([key, data]) => this.mesh!.attributes.set(key, data as any));
 
     (
       [
@@ -96,6 +104,49 @@ export class VoxelMesherDataTool extends MesherDataTool {
         ["texture-index", 0],
       ] as const
     ).forEach(([key, data]) => this.vars.set(key, data as any));
+  }
+
+  bounds: { min: Vec3Array; max: Vec3Array } = {
+    min: [0, 0, 0],
+    max: [0, 0, 0],
+  };
+  _indexStart = 0;
+
+  startConstruction() {
+    this._indexStart = this.mesh!.indices.length;
+    this.bounds.min[0] = Infinity;
+    this.bounds.min[1] = Infinity;
+    this.bounds.min[2] = Infinity;
+    this.bounds.max[0] = -Infinity;
+    this.bounds.max[1] = -Infinity;
+    this.bounds.max[2] = -Infinity;
+  }
+
+  endConstruction() {
+    const position = WorldSpaces.voxel.getPositionXYZ(
+      this.voxel.x,
+      this.voxel.y,
+      this.voxel.z
+    );
+    if (
+      this.bounds.min.includes(Infinity) ||
+      this.bounds.max.includes(-Infinity)
+    )
+      return false;
+    this.bvhTool.updateVoxel(
+      position.x,
+      position.y,
+      position.z,
+      this._indexStart,
+      this.mesh!.indices.length ,
+      this.bounds.min[0],
+      this.bounds.min[1],
+      this.bounds.min[2],
+      this.bounds.max[0],
+      this.bounds.max[1],
+      this.bounds.max[2]
+    );
+    return true;
   }
 
   calculateFaceData(direction: VoxelFaces) {

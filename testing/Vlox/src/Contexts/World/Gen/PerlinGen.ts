@@ -39,10 +39,9 @@ export const PerlinGen = {
   //1376271
 
   generateTree() {},
-  generateWorldColumn(chunkX: number, chunkZ: number) {
+  generateFloodedForest(chunkX: number, chunkZ: number) {
     brush.setDimension("main");
     brush.setId("dve_dream_stone")
-    console.log(structuredClone(brush.data),VoxelPalette.ids.getNumberId("dve_dream_stone"),structuredClone(brush.getRaw()))
     brush.start();
     //  return this.generateBlankChunk(chunkX, chunkZ);
     let totalTrees = 0;
@@ -98,6 +97,67 @@ export const PerlinGen = {
             if (y <= 20) {
               brush.setId("dve_liquid_dream_ether").setXYZ(x, y, z).paint();
               continue;
+            }
+          }
+        }
+      }
+    }
+    brush.stop();
+  },
+  generateForest(chunkX: number, chunkZ: number) {
+    brush.setDimension("main");
+    brush.setId("dve_dream_stone")
+    brush.start();
+    //  return this.generateBlankChunk(chunkX, chunkZ);
+    let totalTrees = 0;
+    const dataTool = brush._dt;
+    for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
+      for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
+        for (let y = 0; y < this.worldHeight; y++) {
+          if (y == 0) {
+            brush.setId("dve_dream_stone").setXYZ(x, y, z).paint();
+            continue;
+          }
+
+          if (this.inNoiseRange(x, y, z)) {
+            brush.setId("dve_dream_stone");
+            brush.setXYZ(x, y, z).paint();
+          } else {
+            if (y > 20 && this.inNoiseRange(x, y - 1, z)) {
+              if (Math.random() > 0.6) {
+                brush.setXYZ(x, y, z).setId("dve_dream_grass").paint();
+                continue;
+              }
+              if (Math.random() > 0.6) {
+                let height = (Math.random() * 10) >> 0;
+                let i = 0;
+                while (height--) {
+                  brush
+                    .setXYZ(x, y + i, z)
+                    .setId("dve_dream_stone_pillar")
+                    .paint();
+                  i++;
+                }
+                brush
+                  .setXYZ(x, y + i, z)
+                  .setId("dve_dream_lamp")
+                  .paint();
+                continue;
+              }
+              if (totalTrees < 3) {
+                if (Math.random() > 0.98) {
+                  GenerateTree(
+                    brush,
+                    x,
+                    y,
+                    z,
+                    "dve_dream_log",
+                    "dve_dream_leaves"
+                  );
+                  totalTrees++;
+                  continue;
+                }
+              }
             }
           }
         }

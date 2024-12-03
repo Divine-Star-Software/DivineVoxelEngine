@@ -1,4 +1,169 @@
 import { VoxelGeometryData, VoxelModelData } from "./VoxelModel.types";
+export const chainGeometry: VoxelGeometryData = {
+  id: "dve_chain",
+  doNotBuildRules: true,
+  arguments: {
+    texture: {
+      type: "texture",
+    },
+  },
+  nodes: [
+    {
+      type: "quad",
+      points: [
+        [5 / 16, 1, 11 / 16],
+        [11 / 16, 1, 5 / 16],
+        [11 / 16, 0, 5 / 16],
+        [5 / 16, 0, 11 / 16],
+      ],
+      uv: [0, 0, 6 / 16, 1],
+      texture: "@texture",
+      doubleSided: true,
+      
+    },
+    {
+      type: "quad",
+      points: [
+        [11 / 16, 1, 11 / 16],
+        [5 / 16, 1, 5 / 16],
+        [5 / 16, 0, 5 / 16],
+        [11 / 16, 0, 11 / 16],
+      ],
+      uv: [0, 0, 6 / 16, 1],
+      texture: "@texture",
+      doubleSided: true,
+    },
+  ],
+};
+export const chainModel: VoxelModelData = {
+  id: "dve_chain",
+  arguments: {
+    texture: {
+      type: "texture",
+    },
+  },
+  relationsSchema: [],
+  shapeStateSchema: [
+    {
+      name: "axis",
+      type: "string",
+      values: {
+        0: "y",
+        1: "x",
+        2: "z",
+      },
+    },
+  ],
+  shapeStatesConditonalNodes: {},
+  shapeStatesNodes: {
+    "axis=y": [
+      {
+        id: "main",
+        geometryId: "dve_chain",
+        inputs: {
+          "@texture": "@texture",
+        },
+      },
+    ],
+    "axis=x": [
+      {
+        id: "main",
+        geometryId: "dve_chain",
+        rotation: [Math.PI / 2, 0, 0],
+        inputs: {
+          "@texture": "@texture",
+        },
+      },
+    ],
+    "axis=z": [
+      {
+        id: "main",
+        geometryId: "dve_chain",
+        rotation: [0, 0, Math.PI / 2],
+        inputs: {
+          "@texture": "@texture",
+        },
+      },
+    ],
+  },
+};
+
+export const carpetGeometry: VoxelGeometryData = {
+  id: "dve_carpet",
+  
+  arguments: {
+    topBottomTex: {
+      type: "texture",
+    },
+    sideTex: {
+      type: "texture",
+    },
+  },
+  nodes: [
+    {
+      type: "box",
+      points: [
+        [0, 0, 0],
+        [1, 1 / 16, 1],
+      ],
+      faces: {
+        up: {
+          texture: "@topBottomTex",
+          uv: [0, 0, 1, 1],
+          
+        },
+        down: {
+          texture: "@topBottomTex",
+          uv: [0, 0, 1, 1],
+        },
+        north: {
+          texture: "@sideTex",
+          uv: [0, 0, 1, 1 / 16],
+        },
+        south: {
+          texture: "@sideTex",
+          uv: [0, 0, 1, 1 / 16],
+        },
+        east: {
+          texture: "@sideTex",
+          uv: [0, 0, 1, 1 / 16],
+        },
+        west: {
+          texture: "@sideTex",
+          uv: [0, 0, 1, 1 / 16],
+        },
+      },
+    },
+  ],
+};
+
+export const carpetModel: VoxelModelData = {
+  id: "dve_carpet",
+  arguments: {
+    topBottomTex: {
+      type: "texture",
+    },
+    sideTex: {
+      type: "texture",
+    },
+  },
+  relationsSchema: [],
+  shapeStateSchema: [],
+  shapeStatesConditonalNodes: {},
+  shapeStatesNodes: {
+    "*": [
+      {
+        id: "main",
+        geometryId: "dve_carpet",
+        
+        inputs: {
+          "@topBottomTex": "@topBottomTex",
+          "@sideTex": "@sideTex",
+        },
+      },
+    ],
+  },
+};
 
 export const fencePost: VoxelGeometryData = {
   id: "dve_fence_post",
@@ -391,66 +556,63 @@ export const candlesGeometry1: VoxelGeometryData = {
     candleTexture: {
       type: "texture",
     },
-    wickTexture: {
-      type: "texture",
-    },
   },
   nodes: [
     {
       type: "box",
       points: [
         [7 / 16, 0, 7 / 16],
-        [8 / 16, 6 / 16, 8 / 16],
+        [9 / 16, 6 / 16, 9 / 16],
       ],
       faces: {
         up: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 6 / 16],
+          uv: [10 / 16, 13 / 16, 11 / 16, 15 / 16],
         },
         down: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 6 / 16],
+          uv: [9 / 16, 12 / 16, 12 / 16, 1],
         },
         north: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 6 / 16],
+          uv: [0 / 16, 10 / 16, 2 / 16, 1],
         },
         south: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 6 / 16],
+          uv: [3 / 16, 10 / 16, 5 / 16, 1],
         },
         east: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 6 / 16],
+          uv: [6 / 16, 10 / 16, 8 / 16, 1],
         },
         west: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 6 / 16],
+          uv: [0 / 16, 10 / 16, 2 / 16, 1],
         },
       },
     },
     {
       type: "quad",
       points: [
-        [7 / 16, 7 / 16, 8 / 16],
-        [8 / 16, 7 / 16, 7 / 16],
-        [8 / 16, 6 / 16, 7 / 16],
-        [7 / 16, 6 / 16, 8 / 16],
+        [7 / 16, 8 / 16, 9 / 16],
+        [9 / 16, 8 / 16, 7 / 16],
+        [9 / 16, 6 / 16, 7 / 16],
+        [7 / 16, 6 / 16, 9 / 16],
       ],
-      uv: [0, 0, 1 / 16, 1 / 16],
-      texture: "@wickTexture",
+      uv: [14 / 16, 14 / 16, 1, 1],
+      texture: "@candleTexture",
       doubleSided: true,
     },
     {
       type: "quad",
       points: [
-        [8 / 16, 7 / 16, 8 / 16],
-        [7 / 16, 7 / 16, 7 / 16],
+        [9 / 16, 8 / 16, 9 / 16],
+        [7 / 16, 8 / 16, 7 / 16],
         [7 / 16, 6 / 16, 7 / 16],
-        [8 / 16, 6 / 16, 8 / 16],
+        [9 / 16, 6 / 16, 9 / 16],
       ],
-      uv: [0, 0, 1 / 16, 1 / 16],
-      texture: "@wickTexture",
+      uv: [14 / 16, 14 / 16, 1, 1],
+      texture: "@candleTexture",
       doubleSided: true,
     },
   ],
@@ -462,66 +624,63 @@ export const candlesGeometry2: VoxelGeometryData = {
     candleTexture: {
       type: "texture",
     },
-    wickTexture: {
-      type: "texture",
-    },
   },
   nodes: [
     {
       type: "box",
       points: [
         [7 / 16, 0, 7 / 16],
-        [8 / 16, 5 / 16, 8 / 16],
+        [9 / 16, 5 / 16, 9 / 16],
       ],
       faces: {
         up: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 5 / 16],
+          uv: [10 / 16, 13 / 16, 11 / 16, 15 / 16],
         },
         down: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 5 / 16],
+          uv: [9 / 16, 12 / 16, 12 / 16, 1],
         },
         north: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 5 / 16],
+          uv: [0 / 16, 11 / 16, 2 / 16, 1],
         },
         south: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 5 / 16],
+          uv: [3 / 16, 11 / 16, 5 / 16, 1],
         },
         east: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 5 / 16],
+          uv: [6 / 16, 11 / 16, 8 / 16, 1],
         },
         west: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 5 / 16],
+          uv: [0 / 16, 11 / 16, 2 / 16, 1],
         },
       },
     },
     {
       type: "quad",
       points: [
-        [7 / 16, 6 / 16, 8 / 16],
-        [8 / 16, 6 / 16, 7 / 16],
-        [8 / 16, 5 / 16, 7 / 16],
-        [7 / 16, 5 / 16, 8 / 16],
+        [7 / 16, 7 / 16, 9 / 16],
+        [9 / 16, 7 / 16, 7 / 16],
+        [9 / 16, 5 / 16, 7 / 16],
+        [7 / 16, 5 / 16, 9 / 16],
       ],
-      uv: [0, 0, 1 / 16, 1 / 16],
-      texture: "@wickTexture",
+      uv: [14 / 16, 14 / 16, 1, 1],
+      texture: "@candleTexture",
       doubleSided: true,
     },
     {
       type: "quad",
       points: [
-        [8 / 16, 6 / 16, 8 / 16],
-        [7 / 16, 6 / 16, 7 / 16],
+        [9 / 16, 7 / 16, 9 / 16],
+        [7 / 16, 7 / 16, 7 / 16],
         [7 / 16, 5 / 16, 7 / 16],
-        [8 / 16, 5 / 16, 8 / 16],
+        [9 / 16, 5 / 16, 9 / 16],
       ],
-      uv: [0, 0, 1 / 16, 1 / 16],
-      texture: "@wickTexture",
+      uv: [14 / 16, 14 / 16, 1, 1],
+      texture: "@candleTexture",
       doubleSided: true,
     },
   ],
@@ -533,66 +692,63 @@ export const candlesGeometry3: VoxelGeometryData = {
     candleTexture: {
       type: "texture",
     },
-    wickTexture: {
-      type: "texture",
-    },
   },
   nodes: [
     {
       type: "box",
       points: [
         [7 / 16, 0, 7 / 16],
-        [8 / 16, 4 / 16, 8 / 16],
+        [9 / 16, 4 / 16, 9 / 16],
       ],
       faces: {
         up: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 4 / 16],
+          uv: [10 / 16, 13 / 16, 11 / 16, 15 / 16],
         },
         down: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 4 / 16],
+          uv: [9 / 16, 12 / 16, 12 / 16, 1],
         },
         north: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 4 / 16],
+          uv: [0 / 16, 12 / 16, 2 / 16, 1],
         },
         south: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 4 / 16],
+          uv: [3 / 16, 12 / 16, 5 / 16, 1],
         },
         east: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 4 / 16],
+          uv: [6 / 16, 12 / 16, 8 / 16, 1],
         },
         west: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 4 / 16],
+          uv: [0 / 16, 12 / 16, 2 / 16, 1],
         },
       },
     },
     {
       type: "quad",
       points: [
-        [7 / 16, 5 / 16, 8 / 16],
-        [8 / 16, 5 / 16, 7 / 16],
-        [8 / 16, 4 / 16, 7 / 16],
-        [7 / 16, 4 / 16, 8 / 16],
+        [7 / 16, 6 / 16, 9 / 16],
+        [9 / 16, 6 / 16, 7 / 16],
+        [9 / 16, 4 / 16, 7 / 16],
+        [7 / 16, 4 / 16, 9 / 16],
       ],
-      uv: [0, 0, 1 / 16, 1 / 16],
-      texture: "@wickTexture",
+      uv: [14 / 16, 14 / 16, 1, 1],
+      texture: "@candleTexture",
       doubleSided: true,
     },
     {
       type: "quad",
       points: [
-        [8 / 16, 5 / 16, 8 / 16],
-        [7 / 16, 5 / 16, 7 / 16],
+        [9 / 16, 6 / 16, 9 / 16],
+        [7 / 16, 6 / 16, 7 / 16],
         [7 / 16, 4 / 16, 7 / 16],
-        [8 / 16, 4 / 16, 8 / 16],
+        [9 / 16, 4 / 16, 9 / 16],
       ],
-      uv: [0, 0, 1 / 16, 1 / 16],
-      texture: "@wickTexture",
+      uv: [14 / 16, 14 / 16, 1, 1],
+      texture: "@candleTexture",
       doubleSided: true,
     },
   ],
@@ -604,66 +760,63 @@ export const candlesGeometry4: VoxelGeometryData = {
     candleTexture: {
       type: "texture",
     },
-    wickTexture: {
-      type: "texture",
-    },
   },
   nodes: [
     {
       type: "box",
       points: [
         [7 / 16, 0, 7 / 16],
-        [8 / 16, 3 / 16, 8 / 16],
+        [9 / 16, 3 / 16, 9 / 16],
       ],
       faces: {
         up: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 3 / 16],
+          uv: [10 / 16, 13 / 16, 11 / 16, 15 / 16],
         },
         down: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 3 / 16],
+          uv: [9 / 16, 12 / 16, 12 / 16, 1],
         },
         north: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 3 / 16],
+          uv: [0 / 16, 13 / 16, 2 / 16, 1],
         },
         south: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 3 / 16],
+          uv: [3 / 16, 13 / 16, 5 / 16, 1],
         },
         east: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 3 / 16],
+          uv: [6 / 16, 13 / 16, 8 / 16, 1],
         },
         west: {
           texture: "@candleTexture",
-          uv: [7 / 16, 0 / 16, 9 / 16, 3 / 16],
+          uv: [0 / 16, 13 / 16, 2 / 16, 1],
         },
       },
     },
     {
       type: "quad",
       points: [
-        [7 / 16, 4 / 16, 8 / 16],
-        [8 / 16, 4 / 16, 7 / 16],
-        [8 / 16, 3 / 16, 7 / 16],
-        [7 / 16, 3 / 16, 8 / 16],
+        [7 / 16, 5 / 16, 9 / 16],
+        [9 / 16, 5 / 16, 7 / 16],
+        [9 / 16, 3 / 16, 7 / 16],
+        [7 / 16, 3 / 16, 9 / 16],
       ],
-      uv: [0, 0, 1 / 16, 1 / 16],
-      texture: "@wickTexture",
+      uv: [14 / 16, 14 / 16, 1, 1],
+      texture: "@candleTexture",
       doubleSided: true,
     },
     {
       type: "quad",
       points: [
-        [8 / 16, 4 / 16, 8 / 16],
-        [7 / 16, 4 / 16, 7 / 16],
+        [9 / 16, 5 / 16, 9 / 16],
+        [7 / 16, 5 / 16, 7 / 16],
         [7 / 16, 3 / 16, 7 / 16],
-        [8 / 16, 3 / 16, 8 / 16],
+        [9 / 16, 3 / 16, 9 / 16],
       ],
-      uv: [0, 0, 1 / 16, 1 / 16],
-      texture: "@wickTexture",
+      uv: [14 / 16, 14 / 16, 1, 1],
+      texture: "@candleTexture",
       doubleSided: true,
     },
   ],
@@ -674,7 +827,7 @@ export const candlesModel: VoxelModelData = {
     candleTexture: {
       type: "texture",
     },
-    wickTexture: {
+    candleLitTexture: {
       type: "texture",
     },
   },
@@ -700,21 +853,21 @@ export const candlesModel: VoxelModelData = {
       type: "fx-points",
       effectId: "candle_particles",
       values: {
-        "num_candles=0,lit=true": [[8 / 16, 6 / 16, 8 / 16]],
+        "num_candles=0,lit=true": [[8 / 16, 8.5 / 16, 8 / 16]],
         "num_candles=1,lit=true": [
-          [8 / 16 + -2 / 16, 6 / 16, 8 / 16],
-          [8 / 16 + 2 / 16, 5 / 16, 8 / 16],
+          [8 / 16 + -2 / 16, 8.5 / 16, 8 / 16],
+          [8 / 16 + 2 / 16, 8.5 / 16, 8 / 16],
         ],
         "num_candles=2,lit=true": [
-          [8 / 16 + -2 / 16, 6 / 16, 8 / 16 + 2 / 16],
-          [8 / 16 + 2 / 16, 5 / 16, 8 / 16 + 2 / 16],
-          [8 / 16 + 2 / 16, 4 / 16, 8 / 16 + -2 / 16],
+          [8 / 16 + -2 / 16, 8.5 / 16, 8 / 16 + 2 / 16],
+          [8 / 16 + 2 / 16, 7.5 / 16, 8 / 16 + 2 / 16],
+          [8 / 16 + 2 / 16, 6.5 / 16, 8 / 16 + -2 / 16],
         ],
         "num_candles=3,lit=true": [
-          [8 / 16 + -2 / 16, 6 / 16, 8 / 16 + 2 / 16],
-          [8 / 16 + 2 / 16, 5 / 16, 8 / 16 + 2 / 16],
-          [8 / 16 + 2 / 16, 4 / 16, 8 / 16 + -2 / 16],
-          [8 / 16 + -2 / 16, 3 / 16, 8 / 16 + -2 / 16],
+          [8 / 16 + -2 / 16, 8.5 / 16, 8 / 16 + 2 / 16],
+          [8 / 16 + 2 / 16, 7.5 / 16, 8 / 16 + 2 / 16],
+          [8 / 16 + 2 / 16, 6.5 / 16, 8 / 16 + -2 / 16],
+          [8 / 16 + -2 / 16, 5.5 / 16, 8 / 16 + -2 / 16],
         ],
       },
     },
@@ -735,24 +888,22 @@ export const candlesModel: VoxelModelData = {
   ],
   shapeStatesConditonalNodes: {},
   shapeStatesNodes: {
-    "num_candles=0": [
+    "num_candles=0,lit=false": [
       {
         id: "candel_1",
         geometryId: "dve_candle_state_1",
         inputs: {
           "@candleTexture": "@candleTexture",
-          "@wickTexture": "@wickTexture",
         },
       },
     ],
-    "num_candles=1": [
+    "num_candles=1,lit=false": [
       {
         id: "candel_1",
         geometryId: "dve_candle_state_1",
         position: [-2 / 16, 0, 0],
         inputs: {
           "@candleTexture": "@candleTexture",
-          "@wickTexture": "@wickTexture",
         },
       },
       {
@@ -761,18 +912,16 @@ export const candlesModel: VoxelModelData = {
         position: [2 / 16, 0, 0],
         inputs: {
           "@candleTexture": "@candleTexture",
-          "@wickTexture": "@wickTexture",
         },
       },
     ],
-    "num_candles=2": [
+    "num_candles=2,lit=false": [
       {
         id: "candel_1",
         geometryId: "dve_candle_state_1",
         position: [-2 / 16, 0, 2 / 16],
         inputs: {
           "@candleTexture": "@candleTexture",
-          "@wickTexture": "@wickTexture",
         },
       },
       {
@@ -781,7 +930,6 @@ export const candlesModel: VoxelModelData = {
         position: [2 / 16, 0, 2 / 16],
         inputs: {
           "@candleTexture": "@candleTexture",
-          "@wickTexture": "@wickTexture",
         },
       },
       {
@@ -790,18 +938,16 @@ export const candlesModel: VoxelModelData = {
         position: [2 / 16, 0, -2 / 16],
         inputs: {
           "@candleTexture": "@candleTexture",
-          "@wickTexture": "@wickTexture",
         },
       },
     ],
-    "num_candles=3": [
+    "num_candles=3,lit=false": [
       {
         id: "candel_1",
         geometryId: "dve_candle_state_1",
         position: [-2 / 16, 0, 2 / 16],
         inputs: {
           "@candleTexture": "@candleTexture",
-          "@wickTexture": "@wickTexture",
         },
       },
       {
@@ -810,7 +956,6 @@ export const candlesModel: VoxelModelData = {
         position: [2 / 16, 0, 2 / 16],
         inputs: {
           "@candleTexture": "@candleTexture",
-          "@wickTexture": "@wickTexture",
         },
       },
       {
@@ -819,7 +964,6 @@ export const candlesModel: VoxelModelData = {
         position: [2 / 16, 0, -2 / 16],
         inputs: {
           "@candleTexture": "@candleTexture",
-          "@wickTexture": "@wickTexture",
         },
       },
       {
@@ -828,7 +972,94 @@ export const candlesModel: VoxelModelData = {
         position: [-2 / 16, 0, -2 / 16],
         inputs: {
           "@candleTexture": "@candleTexture",
-          "@wickTexture": "@wickTexture",
+        },
+      },
+    ],
+
+    "num_candles=0,lit=true": [
+      {
+        id: "candel_1",
+        geometryId: "dve_candle_state_1",
+        inputs: {
+          "@candleTexture": "@candleLitTexture",
+        },
+      },
+    ],
+    "num_candles=1,lit=true": [
+      {
+        id: "candel_1",
+        geometryId: "dve_candle_state_1",
+        position: [-2 / 16, 0, 0],
+        inputs: {
+          "@candleTexture": "@candleLitTexture",
+        },
+      },
+      {
+        id: "candel_2",
+        geometryId: "dve_candle_state_2",
+        position: [2 / 16, 0, 0],
+        inputs: {
+          "@candleTexture": "@candleLitTexture",
+        },
+      },
+    ],
+    "num_candles=2,lit=true": [
+      {
+        id: "candel_1",
+        geometryId: "dve_candle_state_1",
+        position: [-2 / 16, 0, 2 / 16],
+        inputs: {
+          "@candleTexture": "@candleLitTexture",
+        },
+      },
+      {
+        id: "candel_2",
+        geometryId: "dve_candle_state_2",
+        position: [2 / 16, 0, 2 / 16],
+        inputs: {
+          "@candleTexture": "@candleLitTexture",
+        },
+      },
+      {
+        id: "candel_3",
+        geometryId: "dve_candle_state_3",
+        position: [2 / 16, 0, -2 / 16],
+        inputs: {
+          "@candleTexture": "@candleLitTexture",
+        },
+      },
+    ],
+    "num_candles=3,lit=true": [
+      {
+        id: "candel_1",
+        geometryId: "dve_candle_state_1",
+        position: [-2 / 16, 0, 2 / 16],
+        inputs: {
+          "@candleTexture": "@candleLitTexture",
+        },
+      },
+      {
+        id: "candel_2",
+        geometryId: "dve_candle_state_2",
+        position: [2 / 16, 0, 2 / 16],
+        inputs: {
+          "@candleTexture": "@candleLitTexture",
+        },
+      },
+      {
+        id: "candel_3",
+        geometryId: "dve_candle_state_3",
+        position: [2 / 16, 0, -2 / 16],
+        inputs: {
+          "@candleTexture": "@candleLitTexture",
+        },
+      },
+      {
+        id: "candel_4",
+        geometryId: "dve_candle_state_4",
+        position: [-2 / 16, 0, -2 / 16],
+        inputs: {
+          "@candleTexture": "@candleLitTexture",
         },
       },
     ],

@@ -21,10 +21,10 @@
   },
   "dependencies": {
     "@amodx/uri": "^0.0.11",
-    "@amodx/meshing": "^0.0.01",
-    "@amodx/math": "^0.0.01",
+    "@amodx/meshing": "^0.0.11",
+    "@amodx/math": "^0.0.11",
     "@amodx/binary": "^0.0.11",
-    "@amodx/threads": "^0.0.01",
+    "@amodx/threads": "^0.0.11",
     "@amodx/indexdb": "^0.0.11"
   },
   "publishConfig": {

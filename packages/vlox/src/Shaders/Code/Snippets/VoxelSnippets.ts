@@ -110,10 +110,12 @@ gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   vec3 p = position;
   vec4 worldPosition = world * vec4(p , 1.0);
   
+  /*
   if(doEffects == 1.){
   float height = fbm(worldPosition.xz * 0.08 + time * .01);
     p.y += (height * 0.03) - .05;
-   }
+  }
+  */
   
   gl_Position = viewProjection * world * vec4(p, 1.0); 
 #endif

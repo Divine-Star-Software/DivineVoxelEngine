@@ -14,10 +14,45 @@ import {
   DVEBRTextureSamplingModeMap,
 } from "../Constants/DVEBRTextureConstants";
 import { DVEBRScene } from "../Scene/DVEBRScene";
-import { Constants, Engine, InternalTexture, InternalTextureSource, Texture } from "@babylonjs/core";
+import { Constants, Engine, InternalTexture, InternalTextureSource, Scene, Texture } from "@babylonjs/core";
 import { TextureBuilder } from "@divinevoxel/vlox/Textures/TextureBuilder";
 
 export class DVEBRTexture extends URITexture<DVEBRScene, Texture> {
+
+   clone(scene: Scene) {
+    const dveTexture = new DVEBRTexture(this.data);
+    const data = this.data;
+    if (data.type == URITextureTypes.Texture2D) {
+    }
+    if (data.type == URITextureTypes.Texture2DArray) {
+      const textureData = data as URITexture2DArrayData;
+      let rawData: Uint8ClampedArray | null = null;
+      if (textureData.data instanceof Uint8ClampedArray) {
+        rawData = textureData.data;
+      }
+      const texture = new RawTexture2DArray(
+        rawData,
+        textureData.width,
+        textureData.height,
+        textureData.layers,
+        (textureData.format !== undefined &&
+          DVEBRTextureFormatMap[textureData.format]) ||
+          DVEBRTextureFormatMap[URITextureFormat.Rgba],
+          scene,
+        //gen mip maps
+        true,
+        //invert y
+        false,
+        (textureData.samplingMode !== undefined &&
+          DVEBRTextureSamplingModeMap[textureData.samplingMode]) ||
+          DVEBRTextureSamplingModeMap[
+            URITextureSamplingMode.NearestLinearMipLinear
+          ]
+      );
+      dveTexture._texture = texture;
+    }
+    return dveTexture;
+  }
   async _create() {
     const data = this.data;
     if (data.type == URITextureTypes.Texture2D) {

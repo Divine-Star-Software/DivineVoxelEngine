@@ -207,7 +207,6 @@ export class TextureBuilder {
     lod = 0,
     flip = true
   ): Promise<Uint8ClampedArray> {
-    let testing = false;
     if (!width) width = this.finalImagWidth;
     if (!height) height = this.finalImageHeight;
 
@@ -217,13 +216,7 @@ export class TextureBuilder {
       throw new Error("Context is not set for texture creation.");
     }
 
-    const turnRed = (data: Uint8ClampedArray) => {
-      for (let i = 0; i < data.length; i += 4) {
-        data[i] = 255; // Red
-        data[i + 1] = 0; // Green
-        data[i + 2] = 0; // Blue
-      }
-    };
+
 
     if (typeof imgSrcData == "string") {
       const prom: Promise<Uint8ClampedArray> = new Promise((resolve) => {
@@ -253,9 +246,7 @@ export class TextureBuilder {
           ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
           ctx.drawImage(bitmap, 0, 0, width!, height!);
           const bitmapData = ctx.getImageData(0, 0, width!, height!);
-          if (testing && lod > 0) {
-            turnRed(bitmapData.data);
-          }
+ 
           resolve(bitmapData.data);
         };
       });
@@ -292,9 +283,7 @@ export class TextureBuilder {
         ctx.restore();
 
         const imgData = ctx.getImageData(0, 0, width!, height!);
-        if (testing && lod > 0) {
-          turnRed(imgData.data);
-        }
+    
         resolve(imgData.data);
       });
       return prom;

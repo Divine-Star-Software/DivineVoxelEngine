@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import InitDVErenderer from "@divinevoxel/vlox-babylon/Init/Classic/InitDVEBRClassic";
+import CreateDisplayIndex from "@divinevoxel/vlox-babylon/Init/CreateDisplayIndex";
 
 import {
   CreateSphere,
@@ -13,12 +14,12 @@ import {
   Color3,
   StandardMaterial,
   Color4,
+  CreateTube,
 } from "@babylonjs/core";
 import { DivineVoxelEngineRender } from "@divinevoxel/vlox/Contexts/Render";
 import { Textures } from "Data/TextureData";
 import { SceneTool } from "@divinevoxel/vlox-babylon/Tools/SceneTool";
 import { RenderNodes } from "Classes";
-import { InitVoxelModels } from "@divinevoxel/vlox/VoxelModels/InitVoxelModels";
 import { DVEVoxelData } from "Data/VoxelData";
 import { StartRenderer } from "@divinevoxel/vlox/Init/StartRenderer";
 import { GradientCheckSets } from "@divinevoxel/vlox/Mesher/Calc/CalcConstants";
@@ -30,8 +31,9 @@ import {
   VoxelFacesArray,
 } from "@divinevoxel/vlox/Math";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types";
+import { BVHViewer } from "@divinevoxel/vlox-babylon/Renderer/Nodes/Meshes/Utility/BVHTool";
 let ran = false;
-
+import { GUI } from "dat.gui";
 const quads = ((): [Vec3Array, Vec3Array, Vec3Array, Vec3Array][] => {
   const start = Vector3Like.Create();
   const end = Vector3Like.Create(1, 1, 1);
@@ -193,7 +195,6 @@ export function App() {
       const scene = new Scene(engine);
       scene.clearColor.setAll(0);
       const light = new HemisphericLight("", new Vector3(0, 0, 0), scene);
-
       light.specular.set(0, 0, 0);
 
       console.log("1");
@@ -210,8 +211,8 @@ export function App() {
         constructorWorkers,
         voxels: DVEVoxelData,
       });
-
-      /*       const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
+      await CreateDisplayIndex(DVER, DVEVoxelData);
+      /*   const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
       skybox.infiniteDistance = true;
       const skyboxMat = renderer.nodes.materials.get("#dve_skybox");
       if (skyboxMat) {
@@ -224,7 +225,7 @@ export function App() {
       sceneTool.options.doSun(true);
       sceneTool.options.doAO(true);
       sceneTool.options.doRGB(true);
-      sceneTool.levels.setSun(0.0);
+      sceneTool.levels.setSun(0.8);
       sceneTool.levels.setBase(0.01);
 
       const viwer = new AxesViewer(scene);
@@ -232,7 +233,7 @@ export function App() {
       viwer.yAxis.position.z -= 2;
       viwer.zAxis.position.z -= 2;
 
-      const camera = new FreeCamera("", new Vector3(0, 10, 0));
+      const camera = new FreeCamera("", new Vector3(-10, 10, -10), scene);
 
       camera.setTarget(new Vector3(0, 0, 0));
 
@@ -258,6 +259,103 @@ export function App() {
       });
 
       setGameReady(true);
+
+      const gui = new GUI();
+
+      const rayOrigin = CreateSphere("", {}, scene);
+      const rayTarget = CreateSphere("", {}, scene);
+      rayOrigin.position.set(8.1, 10, -4);
+      rayTarget.position.set(8, 0, 8);
+      const ray = CreateTube(
+        "",
+        {
+          path: [rayOrigin.position, rayTarget.position],
+          radius: 0.05,
+        },
+        scene
+      );
+
+      const sun = CreateSphere(
+        "sun",
+        {
+          diameter: 1,
+        },
+        scene
+      );
+      sun.position.set(-64, 128, -64);
+      const hitPosition = CreateSphere(
+        "hit-position",
+        {
+          diameter: 0.6,
+        },
+        scene
+      );
+
+      const Debug = {
+        _bvhLevel: 0,
+        get bvhLevel() {
+          return this._bvhLevel;
+        },
+        set bvhLevel(level: number) {
+          this._bvhLevel = level;
+          const ro = rayOrigin.position.clone();
+          const rd = rayTarget.position
+            .subtract(rayOrigin.position)
+            .normalize();
+          for (const instance of BVHViewer.instances) {
+            instance.createBoxes(level, ro, rd);
+          }
+        },
+      };
+      const actions = {
+        runIntersectTest: () => {
+          const ro = rayOrigin.position.clone();
+          const rd = rayTarget.position
+            .subtract(rayOrigin.position)
+            .normalize();
+          for (const instance of BVHViewer.instances) {
+            const tested = instance.testIntersection(ro, rd);
+
+            if (tested.found) {
+              if (tested.triangle.hit) {
+                hitPosition.position.copyFrom(tested.triangle.position);
+
+                console.log(
+                  "hit sun",
+                  hitPosition.position.subtract(sun.position).normalize()
+                );
+                const sunRay = CreateTube(
+                  "",
+                  {
+                    path: [sun.position, hitPosition.position],
+                    radius: 0.05,
+                  },
+                  scene
+                );
+              }
+            }
+            console.warn(ro, rd, tested);
+          }
+        },
+        toggleChunkMeshes: () => {
+          for (const instance of BVHViewer.instances) {
+            instance.mesh.setEnabled(!instance.mesh.isEnabled());
+          }
+        },
+        clearBVHMesh: () => {
+          for (const instance of BVHViewer.instances) {
+            instance._boxes.forEach((_) => _.dispose());
+          }
+        },
+      };
+      const cameraSettings = gui.addFolder("Debug");
+      cameraSettings.add(Debug, "bvhLevel", 0, 12, 1);
+      cameraSettings.add(actions, "runIntersectTest").name("Run Test");
+      cameraSettings.add(actions, "clearBVHMesh").name("Clear");
+      cameraSettings
+        .add(actions, "toggleChunkMeshes")
+        .name("Toggle Chunk Meshes");
+      cameraSettings.open();
 
       /*    setTimeout(() => {
         Inspector.Show(scene, {});

@@ -177,7 +177,7 @@ export function BuildRules(main: VoxelRuleGeometry, geoPalette: StringPalette) {
     let other = VoxelModelManager.geometry.get(
       geoPalette._palette[otherNumberId]
     )!;
-    if(other.data.ogData.doNotBuildRules !== undefined) continue;
+    if (other.data.ogData.doNotBuildRules !== undefined) continue;
     if (other.id == main.id) other = main.clone();
 
     for (let y = -1; y < 2; y++) {
@@ -204,16 +204,18 @@ export function BuildRules(main: VoxelRuleGeometry, geoPalette: StringPalette) {
               if (otherPlane.doesCoverFace(currentPlane)) {
                 occuledFaceIndex = otherPlane.faceCount;
               }
-
+  
               if (
                 Vector3Like.EqualsArray(otherPlane.normal, currentPlane.normal)
               )
                 continue;
+       
               for (let v = 0; v < points.length; v++) {
                 updateOcculsionBox(points[v], normal);
                 const trueVertexIndex = currentPlane.vertexCount + v;
 
                 if (doesBoxIntersectFace(otherPlane)) {
+           
                   aoIndex.setValue(
                     otherNumberId,
                     directionIndex,

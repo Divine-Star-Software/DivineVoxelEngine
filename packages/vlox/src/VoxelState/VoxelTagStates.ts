@@ -15,10 +15,7 @@ export class VoxelTagStates {
 
   static toJSON(): VoxelTagStatesData {
     const data: VoxelTagStatesData = [];
-    console.log("TO JSON");
-    console.log(this.voxelTags)
     this.voxelTags.forEach((v, index) => {
-      console.log(v);
       data[index] = Object.fromEntries(
         Object.keys(v).map((k) => [
           k,
@@ -28,6 +25,7 @@ export class VoxelTagStates {
     });
     return data;
   }
+
   static load(data: VoxelTagStatesData) {
     data.forEach((v, index) => {
       const stateSceham = new StateSchema(
@@ -37,11 +35,9 @@ export class VoxelTagStates {
       );
 
       for (const tag in v) {
-
         this.register(index, tag, stateSceham, v[tag].tree, v[tag].treePalette);
       }
     });
-
   }
 
   static register(
@@ -63,13 +59,13 @@ export class VoxelTagStates {
   static isRegistered(voxel: number, id: string) {
     return this.voxelTags[voxel] && this.voxelTags[voxel][id] !== undefined;
   }
+
   static getData(voxel: number, id: string) {
-    return   this.voxelTags[voxel][id];
-
+    return this.voxelTags[voxel][id];
   }
-  static getState(voxel: number, id: string, state: number) {
-    return   this.voxelTags[voxel][id].tree.getState(state);
 
+  static getState(voxel: number, id: string, state: number) {
+    return this.voxelTags[voxel][id].tree.getState(state);
   }
 
   static getValue(voxel: number, id: string, state: number) {

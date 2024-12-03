@@ -80,17 +80,17 @@ export const TemplateProcessor = {
     const chunks = <SetChunkMeshTask>[location, [], [], 0];
     const trasnfers: any[] = [];
     for (const [substance, mesher] of RenderedSubstances.meshers) {
-      if (mesher.getAttribute("position").length == 0) {
+      if (mesher.mesh!.getAttribute("position").length == 0) {
         chunks[1].push([substance, false]);
         mesher.resetAll();
         continue;
       }
 
-      const [attributes, buffers] = mesher.getAllAttributes();
+      /*       const [attributes, buffers] = mesher.getAllAttributes();
 
       trasnfers.push(...buffers);
       chunks[1].push([substance, [location, attributes]]);
-      mesher.resetAll();
+      mesher.resetAll(); */
     }
 
     DivineVoxelEngineConstructor.instance.threads.parent.runTasks<SetChunkMeshTask>(

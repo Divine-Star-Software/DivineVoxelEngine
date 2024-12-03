@@ -15,7 +15,7 @@ import { SubstanceDataTool } from "./SubstanceDataTool.js";
 import { SafeInterval } from "@amodx/core/Intervals/SafeInterval.js";
 import { SafePromise } from "@amodx/core/Promises/SafePromise.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
-import { AddVoxelData } from "../../Data/Types/WorldData.types.js";
+import { PaintVoxelData } from "../../Data/Types/WorldData.types.js";
 import { VoxelTagIDs } from "../../Data/Constants/VoxelTagIds.js";
 import { SubstancePaletteReader } from "../../Data/Substance/SubstancePalette.js";
 import { VoxelTagStates } from "../../VoxelState/VoxelTagStates";
@@ -49,7 +49,7 @@ export class DataTool extends DataToolBase {
     return dataTool1.getId(true) == dataTool2.getId(true);
   }
 
-  static VoxelDataToRaw(data: Partial<AddVoxelData>, light = 0): RawVoxelData {
+  static VoxelDataToRaw(data: Partial<PaintVoxelData>, light = 0): RawVoxelData {
     const id =
       (data.id !== undefined && VoxelPalette.ids.getNumberId(data.id)) || 0;
     const secondaryId =
@@ -164,7 +164,7 @@ export class DataTool extends DataToolBase {
     return this;
   }
 
-  loadInData(data: Partial<AddVoxelData>, light = 0) {
+  loadInData(data: Partial<PaintVoxelData>, light = 0) {
     this.loadInRaw(DataTool.VoxelDataToRaw(data, light));
   }
 
@@ -203,6 +203,7 @@ export class DataTool extends DataToolBase {
       return false;
     }
     if (this._mode == DataTool.Modes.VOXEL_DATA) {
+      if(this.x == 0 && this.y == 0 && this.z == 0) return true; 
       this.data.raw[0] = 0;
       this.data.raw[1] = LightData.getS(0xff);
       this.data.raw[2] = 0;

@@ -1,3 +1,4 @@
+import { CompactMeshData } from "../../../Mesher/Types/Mesher.types";
 import { DVENodeMeshAttributes } from "../../../Interfaces/Render/Nodes/DVERenderNode.types";
 import type { LocationData } from "../../../Math/index.js";
 export type SetChunkMeshTask = [
@@ -11,7 +12,7 @@ export type ChunkEffectData = [id: string, data: any];
 
 export type ChunkMeshData = [
   substanceType: string,
-  meshData: [location: LocationData, attributes: DVENodeMeshAttributes],
+  meshData: [location: LocationData, mesh: CompactMeshData],
 ];
 
 type RemoveChunkTasks = [substanceType: string, removeFlag: false];

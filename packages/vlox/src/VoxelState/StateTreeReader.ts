@@ -17,7 +17,6 @@ export class StateTreeReader {
     while (found == -1) {
       curretNode =
         curretNode[index][this.schema.nodes[index].getValue(shapeState)];
-
       if (typeof curretNode == "number") {
         return curretNode;
       }

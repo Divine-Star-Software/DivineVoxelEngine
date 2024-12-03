@@ -16,9 +16,6 @@ export class VoxelRuleGeometry {
   constructor(
     public id: string,
     public data: PrcoessedVoxelGeometryData,
-    public position?: Vec3Array,
-    public scale?: Vec3Array,
-    public rotation?: Vec3Array
   ) {
     if (data.ogData.doNotBuildRules !== true) {
       this.occlusionPlane = GetOcclusionFaces(this.id, this, data.nodes);
@@ -30,9 +27,6 @@ export class VoxelRuleGeometry {
     const newVoxel = new VoxelRuleGeometry(
       this.id,
       this.data,
-      this.position,
-      this.scale,
-      this.rotation
     );
     newVoxel.vertexCount = this.vertexCount;
     newVoxel.faceCount = this.faceCount;

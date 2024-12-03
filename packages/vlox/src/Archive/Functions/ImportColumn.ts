@@ -1,10 +1,5 @@
 import { VoxelPalette } from "../../Data/Voxel/VoxelPalette";
-import {
-  Chunk,
-  ChunkData,
-  Column,
-  ColumnData,
-} from "../../Data/World/Classes";
+import { Chunk, ChunkData, Column, ColumnData } from "../../Data/World/Classes";
 
 import { ArchivedChunkData, ArchivedColumnData } from "../Archive.types";
 import { VoxelStruct } from "../../Data/Voxel/VoxelStruct";
@@ -196,7 +191,6 @@ const getId = (
     importedColumn.idPalette.getStringId(value)
   );
 };
-
 const getLight = (
   value: number,
   importedColumn: ImportedColumnData,
@@ -206,16 +200,15 @@ const getLight = (
   if (typeof importedChunk.chunk.buffers.light == "number") {
     return value;
   }
-  if (importedChunk.lightPalette && importedColumn.lightPalette) {
-    return importedColumn.lightPalette.getValue(
-      importedChunk.lightPalette.getValue(value)
-    );
+  if (importedChunk.lightPalette) {
+    return importedChunk.lightPalette.getValue(value);
   }
   if (importedColumn.lightPalette) {
     return importedColumn.lightPalette.getValue(value);
   }
   return value;
 };
+
 const getState = (
   value: number,
   importedColumn: ImportedColumnData,
@@ -226,16 +219,15 @@ const getState = (
   if (typeof importedChunk.chunk.buffers.state == "number") {
     return value;
   }
-  if (importedChunk.statePalette && importedColumn.statePalette) {
-    return importedColumn.statePalette.getValue(
-      importedChunk.statePalette.getValue(value)
-    );
+  if (importedChunk.statePalette) {
+    return importedChunk.statePalette.getValue(value);
   }
   if (importedColumn.statePalette) {
     return importedColumn.statePalette.getValue(value);
   }
   return value;
 };
+
 const getMod = (
   value: number,
   importedColumn: ImportedColumnData,
@@ -246,16 +238,15 @@ const getMod = (
   if (typeof importedChunk.chunk.buffers.mod == "number") {
     return value;
   }
-  if (importedChunk.modPalette && importedColumn.modPalette) {
-    return importedColumn.modPalette.getValue(
-      importedChunk.modPalette.getValue(value)
-    );
+  if (importedChunk.modPalette) {
+    return importedChunk.modPalette.getValue(value);
   }
   if (importedColumn.modPalette) {
     return importedColumn.modPalette.getValue(value);
   }
   return value;
 };
+
 const getSecondary = (
   voxelId: number,
   value: number,

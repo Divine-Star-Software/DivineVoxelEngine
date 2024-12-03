@@ -17,10 +17,10 @@ export class DataLoaderTool {
   _enabled = typeof DataHanlderWrapper.instance !== "undefined";
 
   constructor() {
-    this.mode = EngineSettings.settings.data.mode as any;
+    this.mode = EngineSettings.settings.dataLoader.mode as any;
 
     DataHooks.settingsSynced.subscribe("data-loader", (data) => {
-      this.mode = data.data.mode as any;
+      this.mode = data.dataLoader.mode as any;
     });
   }
 

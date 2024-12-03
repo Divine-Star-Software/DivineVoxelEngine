@@ -380,7 +380,7 @@ export function BuildStateData(
             statement.push([
               schemaIdPalette.getNumberId(schemaId),
               StateCompareOperationsMap[op],
-              !schemaValuePalette.has(schemaId)!
+              schemaValuePalette.has(schemaId)!
                 ? schemaValuePalette.get(schemaId)!.getNumberId(value)
                 : Number(value),
             ]);
@@ -467,11 +467,6 @@ export function BuildStateData(
         model.data.id
       );
       if (effect.type == "tag") {
-        console.warn(
-          tagStateTreeData,
-          newTagStateTree,
-          treePalette,
-        )
         tagEffects.push({
           type: "tag",
           tagId: effect.tagId,

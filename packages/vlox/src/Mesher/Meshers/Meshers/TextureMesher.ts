@@ -6,6 +6,7 @@ import { Quad } from "@amodx/meshing/Classes/Quad.js";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types.js";
 import { GeometryBuilder } from "@amodx/meshing";
 import { Flat2DIndex, Vec2Array, Vector3Like } from "@amodx/math";
+import { CompactMesh } from "../../Functions/CompactMesh.js";
 
 const Quads = {
   north: Quad.Create(
@@ -29,8 +30,9 @@ const Quads = {
 };
 
 const tool = new MesherDataTool();
-tool.attributes.set("uv", [[], 2, BinaryNumberTypes.Float32]);
-tool.attributes.set("textureIndex", [[], 3, BinaryNumberTypes.Float32]);
+tool.startNewMesh();
+tool.mesh!.attributes.set("uv", [[], 2, BinaryNumberTypes.Float32]);
+tool.mesh!.attributes.set("textureIndex", [[], 3, BinaryNumberTypes.Float32]);
 /**
  * @todo
  * For 32x32 textures the uvs and pixels are not correct.
@@ -62,8 +64,8 @@ class TXTBuilderBase extends Mesher {
         ? true
         : false;
 
-    const uvs = tool.getAttribute("uv");
-    const textureIndex = tool.getAttribute("textureIndex");
+    const uvs = tool.mesh!.getAttribute("uv");
+    const textureIndex = tool.mesh!.getAttribute("textureIndex");
     const uvOffset = width > 16 ? -(2 / Math.max(width, height)) : 0;
 
     const addUvs = (sx: number, sy: number, ex: number, ey: number) => {
@@ -289,9 +291,8 @@ class TXTBuilderBase extends Mesher {
       }
     }
 
-    const [attributes, transfers] = tool.getAllAttributes();
-    for (const [type, data] of attributes) {
-      if (type == "position") {
+    for (const [key, [data]] of tool.mesh!.attributes) {
+      if (key == "position") {
         for (let i = 0; i < data.length; i += 3) {
           (data as any as number[])[i] -= 0.5;
           (data as any as number[])[i + 1] -= 0.5;
@@ -300,10 +301,14 @@ class TXTBuilderBase extends Mesher {
       }
     }
 
+    const compacted = CompactMesh(tool);
     tool.resetVars();
+    tool.mesh!.clear();
 
-    tool.resetAttributes();
-    return [[location, attributes], transfers] as [SetNodeMesh, ArrayBuffer[]];
+    return [[location, compacted], [compacted[1]]] as [
+      SetNodeMesh,
+      ArrayBuffer[],
+    ];
   }
 }
 

@@ -73,7 +73,7 @@ export class EngineSettings {
   }
 
   static syncChunkInDataThread() {
-    return this.settings.data.enabled && this.settings.data.autoSyncChunks;
+    return this.settings.dataLoader.enabled && this.settings.dataLoader.autoSyncChunks;
   }
 
   static syncChunksInNexusThread() {
@@ -94,7 +94,7 @@ export class EngineSettings {
     return this.settings.flow.enable;
   }
   static saveWorldData() {
-    return this.settings.data.enabled;
+    return this.settings.dataLoader.enabled;
   }
   static isServer() {
     return this.settings.server.enabled && this.enviorment == "node";

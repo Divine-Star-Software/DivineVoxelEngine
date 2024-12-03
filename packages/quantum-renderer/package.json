@@ -12,11 +12,7 @@
  ],
  "scripts": {
   "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ../../LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
-  "compile": "cd ./src && npx tsc --watch",
-  "publish": "npm run build && cd ./dist && npm publish",
-  "copy-js": "cd src && for file in $(find ./ -name '*.js')  \n do \n cp ${file} ../dist/${file} \n done",
-  "sync-wasm": "cp ./kernel/kernel.wasm ../../testing/static/kernel.wasm",
-  "sync-js": "cp ./kernel/kernel.js ./src/Kernel/kernel.js && cp ./kernel/kernel.js ./dist/Kernel/kernel.js"
+  "compile": "cd ./src && npx tsc --watch"
  },
  "repository": {
   "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"

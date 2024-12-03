@@ -3,6 +3,8 @@ import { BuilderDataTool } from "../../Tools/BuilderDataTool.js";
 import { RenderedSubstances } from "../../Rules/RenderedSubstances.js";
 import { ShapeTool } from "../../Shapes/ShapeTool.js";
 import { BuildNodeMesh, SetNodeMesh } from "../../Tasks/BuidlerTasks.types.js";
+import { VoxelGeometryLookUp } from "../../../VoxelModels/Constructor/VoxelGeometryLookUp.js";
+import { CompactMesh } from "../../Functions/CompactMesh.js";
 class VoxelBuilderBase extends Mesher {
   dataTool = new BuilderDataTool();
 
@@ -22,21 +24,24 @@ class VoxelBuilderBase extends Mesher {
     );
 
     if (!mesher || !constructor) return false;
-    ShapeTool.origin.x = 0;
-    ShapeTool.origin.y = 0;
-    ShapeTool.origin.z = 0;
+    ShapeTool.origin.x = -.5;
+    ShapeTool.origin.y = -.5;
+    ShapeTool.origin.z = -.5;
     mesher.resetAll();
+    VoxelGeometryLookUp.start("main",0,0,0);
+    VoxelGeometryLookUp.dataTool
+      .loadInRaw(rawVoxelData)
+      .setMode(BuilderDataTool.Modes.VOXEL_DATA);
+    
     mesher.voxel
       .loadInRaw(rawVoxelData)
       .setMode(BuilderDataTool.Modes.VOXEL_DATA);
-    mesher.nVoxel
-      .loadInRaw(rawVoxelData)
-      .setMode(BuilderDataTool.Modes.VOXEL_DATA);
+    mesher.nVoxel.setMode(BuilderDataTool.Modes.VOXEL_DATA).loadIn();
     ShapeTool.setMesher(mesher);
     constructor.process(mesher);
     mesher.resetVars();
+    const [attributes, buffers] = mesher.mesh!.getAllAttributes();
 
-    const [attributes, buffers] = mesher.getAllAttributes();
 
     for (const [type, data] of attributes) {
       if (type == "position") {
@@ -48,9 +53,18 @@ class VoxelBuilderBase extends Mesher {
 
     mesher.voxel.setMode(BuilderDataTool.Modes.WORLD);
     mesher.nVoxel.setMode(BuilderDataTool.Modes.WORLD);
+    VoxelGeometryLookUp.dataTool.setMode(BuilderDataTool.Modes.WORLD);
+    VoxelGeometryLookUp.stop();
 
-    mesher.resetAttributes();
-    return [[location, attributes], buffers];
+
+    const compacted = CompactMesh(mesher);
+    mesher.resetVars();
+    mesher.mesh!.clear();
+
+    return [[location, compacted], [compacted[1]]] as [
+      SetNodeMesh,
+      ArrayBuffer[],
+    ];
   }
 }
 

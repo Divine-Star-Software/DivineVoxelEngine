@@ -29,6 +29,7 @@ export type NodeMeshData = {
   materialId: string;
   boundingBoxMaxSize: Vec3Array;
   type?: string;
+  worldMesh?:boolean;
 } & NodeMeshOptions;
 
 export type NodeMeshOptions = {

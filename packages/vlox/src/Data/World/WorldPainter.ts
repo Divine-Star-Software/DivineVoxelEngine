@@ -2,7 +2,7 @@ import { WorldRegister } from "./WorldRegister.js";
 import { DataHooks } from "../DataHooks.js";
 
 import { DataTool } from "../../Tools/Data/DataTool.js";
-import { AddVoxelData } from "Data/Types/WorldData.types.js";
+import { PaintVoxelData } from "Data/Types/WorldData.types.js";
 import { VoxelPalette } from "../../Data/Voxel/VoxelPalette.js";
 export class WorldPainter {
   static instance: WorldPainter;
@@ -12,7 +12,7 @@ export class WorldPainter {
   }
 
   dataTool = new DataTool();
-  data: AddVoxelData;
+  data: PaintVoxelData;
   dimenion: string = "main";
 
   paintVoxel(x: number, y: number, z: number) {

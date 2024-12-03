@@ -91,7 +91,6 @@ export class RayPipeline {
         },
         {
           binding: 1,
-
           visibility: GPUShaderStage.FRAGMENT,
           texture: { sampleType: "unfilterable-float" },
         },

@@ -4,11 +4,11 @@ import { WorldPainter } from "../../Data/World/WorldPainter.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { VoxelPalette } from "../../Data/Voxel/VoxelPalette.js";
 import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
-import { AddVoxelData } from "../../Data/Types/WorldData.types.js";
+import { PaintVoxelData } from "../../Data/Types/WorldData.types.js";
 const air = "dve_air";
 
 export class BrushTool extends LocationBoundTool {
-  data: AddVoxelData = {
+  data: PaintVoxelData = {
     id: air,
     shapeState: 0,
     secondaryVoxelId: air,
@@ -23,7 +23,7 @@ export class BrushTool extends LocationBoundTool {
 
   _dt = new DataTool();
 
-  setData(data: Partial<AddVoxelData>) {
+  setData(data: Partial<PaintVoxelData>) {
     this.data.id = data.id ? data.id : air;
     this.data.shapeState = data.shapeState ? data.shapeState : 0;
     this.data.secondaryVoxelId = data.secondaryVoxelId

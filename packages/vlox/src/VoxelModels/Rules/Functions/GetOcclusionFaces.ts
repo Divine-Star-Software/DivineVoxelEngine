@@ -25,6 +25,7 @@ export function GetOcclusionFaces(
     if (prcoessedNode.node.type == "box") {
       const keys = Object.keys(prcoessedNode.tranform);
 
+
       if (
         !keys.length ||
         (keys.length == 1 &&
@@ -39,7 +40,6 @@ export function GetOcclusionFaces(
             )
           )
         );
-
         faceContainer.addFace(
           new OcclusionFlatQuadFace(
             parentId,
@@ -264,5 +264,6 @@ export function GetOcclusionFaces(
   }
   geometry.vertexCount = vertexCount;
   geometry.faceCount = faceCount;
+
   return faceContainer;
 }

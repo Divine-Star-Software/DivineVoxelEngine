@@ -142,7 +142,6 @@ export const WorldGen = {
     }
   },
 
-  
   generateNormalChunk(chunkX: number, chunkZ: number) {
     for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
       for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
@@ -160,7 +159,6 @@ export const WorldGen = {
       }
     }
   },
-
 
   //1376271
   generateRoofChunk(chunkX: number, chunkZ: number) {
@@ -182,7 +180,6 @@ export const WorldGen = {
       }
     }
   },
-
 
   generateBlankChunk(chunkX: number, chunkZ: number) {
     for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
@@ -212,7 +209,6 @@ export const WorldGen = {
       }
     }
   },
-
 
   generateBoxChunk(chunkX: number, chunkZ: number) {
     for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
@@ -264,7 +260,7 @@ export const WorldGen = {
       for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
         for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
           //   if (Math.random() > 0.85) continue;
-        brush.setId("dve_dread_stone").setXYZ(x, y, z).paint();
+          brush.setId("dve_dread_stone").setXYZ(x, y, z).paint();
         }
       }
     }
@@ -272,7 +268,8 @@ export const WorldGen = {
 
   pyramidColumn(chunkX: number, chunkZ: number) {
     let minus = 0;
-    const height = (10 + Math.random() * 10) >> 0;
+    //  const height = (10 + Math.random() * 10) >> 0;
+    const height = 20;
     for (let y = 1; y < height; y++) {
       if (y % 3 == 0) continue;
       for (let x = chunkX + minus; x < this.chunkWidth + chunkX - minus; x++) {

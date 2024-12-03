@@ -23,15 +23,11 @@ export class ShapeStateRelationsNode {
     let value = 1;
     const conditionsLength = this.conditions.length;
     for (let i = 0; i < conditionsLength; i++) {
-
       if (!this.conditions[i].evulate()) {
         value = 0;
         break;
       }
     }
-    
     return value;
   }
-
-
 }

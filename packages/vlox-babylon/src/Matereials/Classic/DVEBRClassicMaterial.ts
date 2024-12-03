@@ -1,10 +1,8 @@
-import { Engine, Scene, Vector4 } from "@babylonjs/core";
+import { AssetContainer, Engine, Scene, Vector4 } from "@babylonjs/core";
 import { Effect } from "@babylonjs/core/Materials/effect.js";
 import { ShaderMaterial } from "@babylonjs/core/Materials/shaderMaterial.js";
 import { Matrix, Vector2, Vector3 } from "@babylonjs/core/Maths/";
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager.js";
-import { TextureBuilder } from "@divinevoxel/vlox/Textures/TextureBuilder";
-
 import { URIShader } from "@amodx/uri/Shaders/Classes/URIShader";
 import {
   URIMaterial,
@@ -14,10 +12,14 @@ import { DVEBRScene } from "../../Renderer/Scene/DVEBRScene.js";
 import { URIScene } from "@amodx/uri/Scenes/URIScene.js";
 import { URITexture } from "@amodx/uri/Textures/URITexture.js";
 import { DefaultMaterialManager } from "../DefaultMaterialManager";
+import { DVEBRTexture } from "Renderer/Textures/DVEBRTexture.js";
 
+const conatiner = new AssetContainer();
 type DVEBRClassicMaterialBaseData = {
   textureTypeId: string;
   shaderId: string;
+  material?: ShaderMaterial;
+  textures?: Map<string, DVEBRTexture>;
 };
 
 export type DVEBRClassicMaterialData = URIMaterialData<
@@ -35,7 +37,10 @@ export class DVEBRClassicMaterial extends URIMaterial<
   shader: URIShader;
 
   afterCreate: ((material: ShaderMaterial) => void)[] = [];
-  constructor(public id: string, public data: DVEBRClassicMaterialData) {
+  constructor(
+    public id: string,
+    public data: DVEBRClassicMaterialData
+  ) {
     super();
   }
 
@@ -46,6 +51,11 @@ export class DVEBRClassicMaterial extends URIMaterial<
   }
 
   _create(data: DVEBRClassicMaterialData): ShaderMaterial {
+    if (this.data.data.material && this.data.data.textures) {
+      this._material = this.data.data.material;
+      this.textures = this.data.data.textures;
+      return this._material;
+    }
     const type = TextureManager.getTextureType(
       data.data.textureTypeId ? data.data.textureTypeId : this.id
     );
@@ -79,26 +89,35 @@ export class DVEBRClassicMaterial extends URIMaterial<
       {
         attributes: shader.getAttributeList(),
         uniforms: shader.getUniformList(),
-        needAlphaBlending: data.alphaBlending,
-        needAlphaTesting: data.alphaTesting,
+       // needAlphaBlending: data.alphaBlending,
+      //  needAlphaTesting: data.alphaTesting,
       }
     );
 
-    if(data.alphaBlending) {
-      shaderMaterial.separateCullingPass = true;
-    }
+    conatiner.materials.push(shaderMaterial);
 
+/*     if (data.alphaBlending) {
+    //  shaderMaterial.alpha = .5;
+    shaderMaterial.disableDepthWrite = true;
+    shaderMaterial.separateCullingPass  = true;
+ //   shaderMaterial.needDepthPrePass = true;
+   //   shaderMaterial.separateCullingPass = true;
+    //  shaderMaterial.needDepthPrePass = true;
+  //    shaderMaterial.backFaceCulling = false;
+      shaderMaterial.transparencyMode = ShaderMaterial.MATERIAL_ALPHATESTANDBLEND;
+    }
+ */
     this._material = shaderMaterial;
 
     this._material.fogEnabled = true;
 
-   // shaderMaterial.wireframe = true;
+    // shaderMaterial.wireframe = true;
 
-    if (data.stencil) {
+/*     if (data.stencil) {
       shaderMaterial.stencil.enabled = true;
       shaderMaterial.stencil.func = Engine.NOTEQUAL;
       this.scene.setRenderingAutoClearDepthStencil(0, false, false, false);
-    }
+    } */
     if (data.backFaceCulling !== undefined) {
       shaderMaterial.backFaceCulling = data.backFaceCulling;
     }
@@ -125,8 +144,6 @@ export class DVEBRClassicMaterial extends URIMaterial<
       effect.setColor3("vFogColor", scene.fogColor);
     };
 
-    
-
     this.afterCreate.forEach((_) => _(this._material));
     return this._material;
   }
@@ -139,9 +156,40 @@ export class DVEBRClassicMaterial extends URIMaterial<
       sampler.map((_) => _._texture)
     );
   }
-  setTexture(samplerId: string, sampler: URITexture<URIScene<any>, any>): void {
-    this._material.setTexture(samplerId, sampler._texture);
+  textures = new Map<string, DVEBRTexture>();
+  setTexture(samplerId: string, sampler: DVEBRTexture): void {
+    this._material.setTexture(samplerId, sampler._texture!);
+    this.textures.set(samplerId, sampler);
   }
+
+  clone(scene: Scene) {
+    const textures = new Map<string, DVEBRTexture>();
+    for (const [textId, texture] of this.textures) {
+      this._material.removeTexture(textId);
+    }
+
+    const newMat = ShaderMaterial.Parse(this._material.serialize(), scene, "/");
+
+    for (const [textId, texture] of this.textures) {
+      const newTexture = texture.clone(scene)!;
+      textures.set(textId, newTexture);
+      newMat.setTexture(textId, newTexture._texture!);
+      this._material.setTexture(textId, texture._texture!);
+    }
+
+    const mat = new DVEBRClassicMaterial(this.id, {
+      ...this.data,
+      data: {
+        ...this.data.data,
+        material: newMat,
+        textures,
+      },
+    });
+    mat._material = newMat;
+    mat.textures = textures;
+    return mat;
+  }
+
   setNumber(uniform: string, value: number): void {
     this._material.setFloat(uniform, value);
   }

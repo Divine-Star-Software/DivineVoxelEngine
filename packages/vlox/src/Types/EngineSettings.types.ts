@@ -1,4 +1,5 @@
 export class EngineSettingsData {
+  rendererSettings = { mode: "webgl" as "webgl" | "webgpu" };
   floatingOrigi = {
     enable: false,
   };
@@ -7,7 +8,7 @@ export class EngineSettingsData {
     autoSyncChunks: true,
     autoSyncVoxelPalette: true,
   };
-  data = {
+  dataLoader = {
     enabled: false,
     autoSyncChunks: true,
     mode: "indexdb",

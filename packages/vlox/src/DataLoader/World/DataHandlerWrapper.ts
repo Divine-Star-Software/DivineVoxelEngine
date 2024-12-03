@@ -200,5 +200,5 @@ export class DataHanlderWrapper {
 }
 
 DataHooks.settingsSynced.subscribe("data-handler-wrapper", (data) => {
-  DataHanlderWrapper.mode = data.data.mode as any;
+  DataHanlderWrapper.mode = data.dataLoader.mode as any;
 });

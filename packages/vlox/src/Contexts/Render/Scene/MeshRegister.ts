@@ -30,7 +30,23 @@ class Chunk {
     chunk?.meshes.set(substance, mesh);
     return chunk;
   }
-
+  static add(location: LocationData) {
+    let column = MeshRegister.column.get(location);
+    if (!column) {
+      column = MeshRegister.column.add(location);
+    }
+    const index = WorldSpaces.chunk.getIndexXYZ(
+      location[1],
+      location[2],
+      location[3]
+    );
+    let chunk = column.chunks.get(index);
+    if (!chunk) {
+      chunk = new ChunkMesh([location[1], location[2], location[3]]);
+      column.chunks.set(index, chunk);
+    }
+    return chunk;
+  }
   static removeMesh(location: LocationData, substance: string) {
     const column = MeshRegister.column.get(location);
     if (!column) return false;

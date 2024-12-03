@@ -19,22 +19,21 @@ import { VoxelGeometryLookUp } from "../../VoxelGeometryLookUp";
 import { GeoemtryNode } from "../GeometryNode";
 import { VoxelGeometryConstructor } from "../../Register/VoxelGeometryConstructor";
 import {
-  addQuadWeights,
   getInterpolationValue,
-  getVertexWeights,
   shouldCauseFlip,
 } from "../../../../Mesher/Calc/CalcConstants";
-
 import { LightData } from "../../../../Data/LightData";
-
 import { VoxelRelativeCubeIndexPositionMap } from "../../../Indexing/VoxelRelativeCubeIndex";
 import { VoxelGeometryTransform } from "../../../../VoxelData/VoxelSyncData";
-import { TransformBox } from "../../../Shared/Transform";
+import { EngineSettings } from "../../../../Data/Settings/EngineSettings";
+import { GetBoxGeometryNodeData } from "../Common/BoxGeometryNode";
+import { UpdateBounds } from "../Common/BoundsFunctions";
 
 const ArgIndexes = BoxVoxelGometryInputs.ArgIndexes;
 
 export class BoxVoxelGometryNode extends GeoemtryNode<BoxVoxelGometryArgs> {
   quads: Quad[] = [];
+  quadBounds: [Vec3Array, Vec3Array][] = [];
   vertexWeights: [Vec4Array, Vec4Array, Vec4Array, Vec4Array][] = [];
   worldLight: QuadScalarVertexData;
   worldAO: QuadScalarVertexData;
@@ -46,108 +45,15 @@ export class BoxVoxelGometryNode extends GeoemtryNode<BoxVoxelGometryArgs> {
     transform: VoxelGeometryTransform
   ) {
     super(geometryPaletteId, geometry);
-
-    const [start, end] = data.points.map((_) => Vector3Like.Create(..._));
-
     this.faceCount = 6;
     this.vertexCount = this.faceCount * 4;
-    const quadPoints: [Vec3Array, Vec3Array, Vec3Array, Vec3Array][] = [
-      //top
-      [
-        [end.x, end.y, end.z],
-        [start.x, end.y, end.z],
-        [start.x, end.y, start.z],
-        [end.x, end.y, start.z],
-      ],
-      //bottom
-      [
-        [start.x, start.y, end.z],
-        [end.x, start.y, end.z],
-        [end.x, start.y, start.z],
-        [start.x, start.y, start.z],
-      ],
-      //north
-      [
-        [start.x, end.y, end.z],
-        [end.x, end.y, end.z],
-        [end.x, start.y, end.z],
-        [start.x, start.y, end.z],
-      ],
-      //south
-      [
-        [end.x, end.y, start.z],
-        [start.x, end.y, start.z],
-        [start.x, start.y, start.z],
-        [end.x, start.y, start.z],
-      ],
-      //east
-      [
-        [end.x, end.y, end.z],
-        [end.x, end.y, start.z],
-        [end.x, start.y, start.z],
-        [end.x, start.y, end.z],
-      ],
-      //west
-      [
-        [start.x, end.y, start.z],
-        [start.x, end.y, end.z],
-        [start.x, start.y, end.z],
-        [start.x, start.y, start.z],
-      ],
-    ];
-
-    const tranformed = TransformBox(
-      quadPoints.map((_) => Quad.Create(_)) as any,
+    const { quads, vertexWeights, quadBounds } = GetBoxGeometryNodeData(
+      data,
       transform
     );
-
-    this.quads[VoxelFaces.Up] = tranformed[VoxelFaces.Up];
-    tranformed[VoxelFaces.Up].orientation = 0;
-
-    this.vertexWeights[VoxelFaces.Up] = addQuadWeights(
-      this.quads[VoxelFaces.Up],
-      VoxelFaces.Up
-    );
-
-    this.quads[VoxelFaces.Down] = tranformed[VoxelFaces.Down];
-    tranformed[VoxelFaces.Down].orientation = 0;
-
-    this.vertexWeights[VoxelFaces.Down] = addQuadWeights(
-      this.quads[VoxelFaces.Down],
-      VoxelFaces.Down
-    );
-
-    this.quads[VoxelFaces.North] = tranformed[VoxelFaces.North];
-    tranformed[VoxelFaces.North].orientation = 0;
-
-    this.vertexWeights[VoxelFaces.North] = addQuadWeights(
-      this.quads[VoxelFaces.North],
-      VoxelFaces.North
-    );
-
-    this.quads[VoxelFaces.South] = tranformed[VoxelFaces.South];
-    tranformed[VoxelFaces.South].orientation = 0;
-
-    this.vertexWeights[VoxelFaces.South] = addQuadWeights(
-      this.quads[VoxelFaces.South],
-      VoxelFaces.South
-    );
-
-    this.quads[VoxelFaces.East] = tranformed[VoxelFaces.East];
-    tranformed[VoxelFaces.East].orientation = 0;
-
-    this.vertexWeights[VoxelFaces.East] = addQuadWeights(
-      this.quads[VoxelFaces.East],
-      VoxelFaces.East
-    );
-
-    this.quads[VoxelFaces.West] = tranformed[VoxelFaces.West];
-    tranformed[VoxelFaces.West].orientation = 0;
-
-    this.vertexWeights[VoxelFaces.West] = addQuadWeights(
-      this.quads[VoxelFaces.West],
-      VoxelFaces.West
-    );
+    this.quads = quads;
+    this.vertexWeights = vertexWeights;
+    this.quadBounds = quadBounds;
   }
 
   isExposed(face: VoxelFaces) {
@@ -358,7 +264,9 @@ export class BoxVoxelGometryNode extends GeoemtryNode<BoxVoxelGometryArgs> {
         this.determineShading(face);
         const faceArgs = args[face];
         const quad = this.quads[face];
+
         quad.flip = this.shouldFlip() || faceArgs[ArgIndexes.Fliped];
+
         tool.setTexture(faceArgs[ArgIndexes.Texture]);
 
         const uvs = faceArgs[ArgIndexes.UVs];
@@ -375,6 +283,8 @@ export class BoxVoxelGometryNode extends GeoemtryNode<BoxVoxelGometryArgs> {
         quad.uvs.vertices[3].x = uvs[3][0];
         quad.uvs.vertices[3].y = uvs[3][1];
         VoxelGeometry.addQuad(tool, origin, quad);
+
+        UpdateBounds(tool, origin, this.quadBounds[face]);
       }
     }
 

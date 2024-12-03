@@ -1,6 +1,6 @@
-export class AddVoxelData {
-  static Create(data: Partial<AddVoxelData>) {
-    return new AddVoxelData(
+export class PaintVoxelData {
+  static Create(data: Partial<PaintVoxelData>) {
+    return new PaintVoxelData(
       data.id,
       data.mod,
       data.shapeState,

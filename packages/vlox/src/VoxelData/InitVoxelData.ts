@@ -4,6 +4,10 @@ import {
   candlesGeometry3,
   candlesGeometry4,
   candlesModel,
+  carpetGeometry,
+  carpetModel,
+  chainGeometry,
+  chainModel,
   fence,
   fenceEastWest,
   fenceNorthsouth,
@@ -56,6 +60,7 @@ import {
   simpleThinPannel,
 } from "../VoxelModels/Defaults/PanelVoxelModels";
 import { VoxelTagStates } from "../VoxelState/VoxelTagStates";
+import { VoxelIndex } from "./VoxelIndex";
 
 export type InitVoxelDataProps = {
   constructors: ThreadPool;
@@ -70,9 +75,6 @@ export function InitVoxelData(data: InitVoxelDataProps) {
 
   VoxelModelManager.registerGeometry(
     cube,
-    fencePost,
-    fenceEastWest,
-    fenceNorthsouth,
     halfDownCube,
     halfSouthCube,
     halfWestCube,
@@ -85,6 +87,13 @@ export function InitVoxelData(data: InitVoxelDataProps) {
     thinPanelWest,
     diagonalFlatPanelEastWest,
     diagonalFlatPanelWestEast,
+
+    fencePost,
+    fenceEastWest,
+    fenceNorthsouth,
+
+    chainGeometry,
+    carpetGeometry,
 
     candlesGeometry1,
     candlesGeometry2,
@@ -102,13 +111,16 @@ export function InitVoxelData(data: InitVoxelDataProps) {
     simpleHalfCube,
     pillarCube,
     simpleThinPannel,
-    fence,
+
     stair,
     simpleCrossedPannel,
 
+    chainModel,
+    carpetModel,
     candlesModel,
     leverModel,
 
+    fence,
     ...(data.models || [])
   );
 
@@ -117,7 +129,7 @@ export function InitVoxelData(data: InitVoxelDataProps) {
     geometry: [],
     models: [],
     voxels: [],
-    tagState:[]
+    tagState: [],
   };
 
   for (const voxel of data.voxels) {
@@ -215,6 +227,8 @@ export function InitVoxelData(data: InitVoxelDataProps) {
     "init voxel models done | totle time: ",
     performance.now() - initTime
   );
+
+  const voxelIndex = new VoxelIndex(data.voxels);
 
   /* 
   const blob = new Blob([JSON.stringify(output, null, 1)], {});
