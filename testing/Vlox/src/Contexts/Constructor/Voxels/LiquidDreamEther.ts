@@ -11,12 +11,12 @@ export function GetDreamEther(): VoxelConstructor {
     id: "dve_liquid_dream_ether",
     onTexturesRegistered(textureMangager) {
       uv = textureMangager.getTextureUV([
-        "#dve_liquid",
+        "#dve_voxel",
         "dve_liquid_dream_ether",
         "still-1",
       ]);
       OutlinedVoxelTool.getOutlineUVs(
-        ["#dve_liquid", "foam", "up"],
+        ["#dve_voxel", "foam", "up"],
         (textures) => {
           overlayTextures = textures;
         }

@@ -3,71 +3,9 @@ import { VoxelCommon } from "./VoxelCommon";
 import { VoxelMeshQuery } from "./VoxelMeshQuery";
 
 export class VoxelRayRender {
-  static Create() {
-    const shader = /* wgsl */ `
-const INFINITY = 100000000.0;
-
-
-${VoxelCommon.CommonStructs}
-
-//data
-struct VoxelMeshVertex {
-    position: vec3f,
-    normal: vec3f,
-    voxelData: f32,
-    textureIndex: vec3f,
-    uv: vec2f,
-    colors: vec3f,
-    _padding: vec3f, 
-};
-
-
-
-
-${VoxelMeshQuery.MeshStruct}
-
-//bindgs 
-${VoxelCommon.CommonBinds}
-
-@group(1) @binding(0) 
-var<storage, read> vertices: array<VoxelMeshVertex>;
-
-@group(1) @binding(1) 
-var<storage, read> indices: array<u32>;
-
-@group(1) @binding(2) 
-var<storage, read> voxel_meshes: array<VoxelMesh>;
-
-@group(1) @binding(3) 
-var<storage, read> voxel_bvh: array<AABB>;
-
-@group(1) @binding(4) 
-var<storage, read> voxel_indice: array<vec2u>;
-
-
-@group(2) @binding(0) var output_texture: texture_storage_2d<rgba32float, write>;
-
-
-@compute @workgroup_size(8, 8)
-fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
-    textureStore(
-    output_texture, 
-    vec2<i32>(global_id.xy), 
-    mainFragment(vec2<f32>(f32(global_id.x),f32(global_id.y))) 
-    );
-}
-
-
-
-
-/*
-Ray Functions
-*/
-
-${VoxelMeshQuery.MeshQueryCode}
-
-
-
+  static TestCode: /* wgsl */ `
+  
+  
 fn sdfSphere(position: vec3f, center: vec3f, radius: f32) -> f32 {
   return length(position - center) - radius;
 }
@@ -185,16 +123,277 @@ fn dataTestFragment(fragCoord: vec2f) -> vec4f {
   return color * 2;
 }
 
-fn mainFragment(fragCoord: vec2f) -> vec4f {
+  `;
 
-  let worldUp = vec3(0.0, 1.0, 0.0);
-  var color = vec4f(1.,1.,1.,1.);
+  static Create() {
+    const shader = /* wgsl */ `
+const INFINITY = 100000000.0;
 
 
-  let finalCoord = fragCoord;
-  var sunPosition =scene_props.sunPosition;
+${VoxelCommon.CommonStructs}
 
-  var screenCoord = (finalCoord.xy / scene_props.resolution.xy) * 2.0 - 1.0;
+//data
+struct VoxelMeshVertex {
+  position: vec3f, 
+  normal: vec3f,     
+  textureIndex: vec3f,    
+  uv: vec2f,    
+  colors: vec3f,
+  voxelData: f32,    
+  _padding: vec4f
+};
+
+
+
+
+${VoxelMeshQuery.MeshStruct}
+
+
+
+/*
+Ray Functions
+*/
+
+${VoxelMeshQuery.MeshQueryCode}
+
+struct Basis {
+  T: vec3<f32>,
+  B: vec3<f32>,
+  N: vec3<f32>,
+};
+
+fn cosineWeightedHemisphereSample(u: f32, v: f32) -> vec3<f32> {
+  let phi = 2.0 * 3.1415926535 * u;
+  let r = sqrt(v);
+  let x = r * cos(phi);
+  let y = r * sin(phi);
+  let z = sqrt(1.0 - v);
+  return vec3<f32>(x, y, z);
+}
+
+fn buildOrthonormalBasis(N: vec3<f32>) -> Basis {
+ // Select the appropriate 'up' vector based on N
+ let up = select(vec3<f32>(0.0, 1.0, 0.0), vec3<f32>(0.0, 0.0, 1.0), abs(N.z) < 0.999);
+
+ // Compute tangent and bitangent vectors
+ let T = normalize(cross(up, N));
+ let B = normalize(cross(N, T));
+
+ return Basis(T, B, N);
+}
+
+fn hemisphereToWorld(localDir: vec3<f32>, T: vec3<f32>, B: vec3<f32>, N: vec3<f32>) -> vec3<f32> {
+  return localDir.x * T + localDir.y * B + localDir.z * N;
+}
+
+
+// A basic hash function that maps a float to a pseudo-random value in [0,1).
+fn hash11(p: f32) -> f32 {
+  // This uses a sine function and a large constant multiplier.
+  // It's a common trick in shaders, but not very high quality.
+  return fract(sin(p) * 43758.5453123);
+}
+
+// You can use this to generate two random numbers u1 and u2 from a seed.
+// For example, seed could be something like (frame * 1000.0 + fragCoord.x * fragCoord.y).
+fn getTwoRandomNumbers(seed: f32) -> vec2<f32> {
+  let u1 = hash11(seed);
+  let u2 = hash11(seed + 1.0);
+  return vec2<f32>(u1, u2);
+}
+
+
+
+//bindgs 
+${VoxelCommon.CommonBinds}
+
+@group(1) @binding(0) 
+var<storage, read> vertices: array<VoxelMeshVertex>;
+
+@group(1) @binding(1) 
+var<storage, read> indices: array<u32>;
+
+@group(1) @binding(2) 
+var<storage, read> voxel_meshes: array<VoxelMesh>;
+
+@group(1) @binding(3) 
+var<storage, read> voxel_bvh: array<AABB>;
+
+@group(1) @binding(4) 
+var<storage, read> voxel_indice: array<vec2u>;
+
+
+@group(2) @binding(0) var normal_texture: texture_2d<f32>;
+@group(2) @binding(1) var position_texture: texture_2d<f32>;
+@group(2) @binding(2) var light_texture: texture_storage_2d<rgba32float, write>;
+@group(2) @binding(3) var ao_texture:  texture_storage_2d<rgba16float, write>;
+
+@compute @workgroup_size(8, 8)
+fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
+  let screenTextureCords =  vec2<i32>(global_id.xy) * 2;
+  let position = textureLoad(position_texture, screenTextureCords, 0);
+  if(position.a <= 0) {
+    textureStore(
+      light_texture, 
+      vec2i(global_id.xy), 
+      vec4f(1.0)
+      );
+    
+    //set ao
+    textureStore(
+      ao_texture, 
+      vec2i(global_id.xy), 
+      vec4f(1.0)
+      );
+    
+    return;
+  }
+  let worldUp = vec3f(0.0, 1.0, 0.0);
+  let fragCoord = vec2<f32>(screenTextureCords.xy);
+
+
+
+  let normalColor = vec3f(textureLoad(normal_texture, screenTextureCords, 0).rgb);
+
+
+  let normal = ( 2 * normalColor)   -  1;
+
+  
+
+let hitPosition = vec3f(position.rgb); 
+
+
+
+var light = vec4f(1.,1.,1.,1.);
+var ao = vec4f(1.,1.,1.,1.);
+let nt = (normal + vec3<f32>(1)) / 2;
+
+let seedBase = fragCoord.x * fragCoord.y + 0.1234 + time;
+//DO SUN
+let epsilon = 0.01;
+let newHitPosition = hitPosition + normal * epsilon;
+let sunDirection = normalize(  scene_props.sunPosition - newHitPosition );
+
+
+let sunRight = normalize(cross(sunDirection, worldUp));
+let sunUp = normalize(cross(sunRight, sunDirection));
+let sunLookUp = voxelMeshQuery(newHitPosition, sunDirection, sunRight, sunUp, 300.0);
+
+if (sunLookUp.found) {
+  light.r = 0.25;
+  light.g = 0.25;
+  light.b = 0.25;
+}
+
+if (sunLookUp.error) {
+  light.r = 1;
+  light.g = 0;
+  light.b = 0;
+    
+}
+
+//DO AO
+  let basias = buildOrthonormalBasis(normal);
+
+  let T = basias.T;
+  let B = basias.B;
+  let N = basias.N;
+
+ 
+
+  var hit = 0.0;
+  for(var i = 0u; i < 4u; i++) {
+    let seed = seedBase + f32(i) * (13.37 ) ; 
+    let randoms = getTwoRandomNumbers(seed);
+    let u1 = randoms.x; 
+    let u2 = randoms.y; 
+    let localSample = cosineWeightedHemisphereSample(u1, u2);
+    let dir = hemisphereToWorld(localSample, T, B, N);
+    let sampleRight = normalize(cross(dir, worldUp));
+    let sampleUp = normalize(cross(sampleRight, dir));
+    let aoLookUp = voxelMeshQuery(newHitPosition, dir, sampleRight, sampleUp, .99);
+
+
+    if(aoLookUp.found) {
+      hit += 1.0;
+    // Apply AO to color
+  
+    } 
+
+  }
+
+  let occlusionFactor = 1.0 - (hit/4);
+
+    ao.r *= occlusionFactor;
+    ao.g *= occlusionFactor;
+    ao.b *= occlusionFactor; 
+  
+
+ 
+  
+
+
+
+
+//set light
+textureStore(
+  light_texture, 
+  vec2i(global_id.xy), 
+  light 
+  );
+
+//set ao
+textureStore(
+  ao_texture, 
+  vec2i(global_id.xy), 
+  ao
+  );
+
+}
+
+
+
+
+
+
+`;
+    return shader;
+  }
+}
+
+/* 
+  //do ray tracing 
+var screenCoord = (fragCoord.xy / scene_props.resolution.xy) * 2.0 - 1.0;
+  screenCoord.y *= -1.0;
+
+  let rayOrigin = camera.position;
+  let clipSpacePoint = vec4<f32>(screenCoord.x, screenCoord.y, 1, 1.0);
+  let viewSpacePoint = camera.inverseViewProjection * clipSpacePoint;
+  let viewSpacePos = viewSpacePoint.xyz / viewSpacePoint.w;
+  let rayDirection = normalize( viewSpacePos);
+  let rayRight = normalize(cross(rayDirection, worldUp));
+  let rayUp = normalize(cross(rayRight, rayDirection));
+
+  let meshLookUp = voxelMeshQuery(rayOrigin,rayDirection,rayRight,rayUp, 300.0);
+  if(!meshLookUp.found ) {
+    textureStore(
+      light_texture, 
+      vec2i(global_id.xy), 
+      vec4f(1,0,0,1)
+      );
+    
+      return;
+  }
+
+ // let normal = meshLookUp.triangle.normal;
+  let hitPosition = meshLookUp.triangle.position;
+
+  */
+
+/**
+  var sunPosition = scene_props.sunPosition;
+
+  var screenCoord = (fragCoord.xy / scene_props.resolution.xy) * 2.0 - 1.0;
   screenCoord.y *= -1.0;
   let tanHalfFov = tan(camera.settings.x * 0.5);
   var rayDirection = normalize(
@@ -204,136 +403,97 @@ fn mainFragment(fragCoord: vec2f) -> vec4f {
   );
   var rayOrigin = camera.position;
   var rayRight = normalize(cross(rayDirection, worldUp));
-
-  const elipse = f32(1e-6);
-
-  if(rayDirection.x == 0){ rayDirection.x = elipse;}
-  if(rayDirection.y == 0){ rayDirection.y = elipse;}
-  if(rayDirection.z == 0) {rayDirection.z =elipse;}
-  
-
-  if(rayRight.x == 0){ rayRight.x = elipse;}
-  if(rayRight.y == 0){ rayRight.y = elipse;}
-  if(rayRight.z == 0) {rayRight.z =elipse;}
-  
-
   var rayUp = normalize(cross(rayRight, rayDirection));
-  if(rayUp.x == 0){ rayUp.x = elipse;}
-  if(rayUp.y == 0) {rayUp.y = elipse;}
-  if(rayUp.z == 0) { rayUp.z = elipse;}
-  
-  let meshLookUp = voxelMeshQuery(camera.position,rayDirection,rayRight,rayUp);
+
+  let meshLookUp = voxelMeshQuery(camera.position,rayDirection,rayRight,rayUp, 300.0);
   if(meshLookUp.error) {
-      return vec4f(1.,0.,0.,1);
+      return;
   }
+
+  let seedBase = fragCoord.x * fragCoord.y + 0.1234 + time;
+
   if(
     meshLookUp.found 
   ) {
-    let normal = meshLookUp.triangle.normal;
+let normal = meshLookUp.triangle.normal;
     
-  /*   let baseColor = vec4f(
-      abs(normal.x),  // Red for X-axis
-      abs(normal.y),  // Green for Y-axis
-      abs(normal.z)   // Blue for Z-axis,
-      ,1.0
-  );
 
-  // Compute the tint for negative directions
-  var tint = vec4f(0.0, 0.0, 0.0,1.0);
-  if (normal.x < 0.0) {
-      tint.x = 0.5;
-  }
-  if (normal.y < 0.0) {
-      tint.y = 0.5;
-  }
-  if (normal.z < 0.0) {
-      tint.z = 0.5;
-  }
+let hitPosition = meshLookUp.triangle.position;
 
-  // Combine base color with the tint
-   color = (baseColor - tint);  */
-
-
-   let hitPosition = meshLookUp.triangle.position;
-
+//DO SUN
 let sunDirection = normalize(sunPosition - hitPosition);
 
 let epsilon = 0.01;
 let newHitPosition = hitPosition + normal * epsilon;
 
-//let angle = max(dot(normal, sunDirection), 0.0);
-//let epsilon = 0.0001 * (1.0 / angle); // Adjust epsilon based on angle
-//let newHitPosition = hitPosition + normal * epsilon;
-
 let sunRight = normalize(cross(sunDirection, worldUp));
 let sunUp = normalize(cross(sunRight, sunDirection));
-
-
-let distanceToSun = length(sunPosition - newHitPosition);
-
-
-let sunLookUp = voxelMeshQuery(newHitPosition, sunDirection, sunRight, sunUp);
+let sunLookUp = voxelMeshQuery(newHitPosition, sunDirection, sunRight, sunUp, 300.0);
 
 if (sunLookUp.found) {
-   color.r = 0.25;
-   color.g = 0.25;
-    color.b = 0.25;
+  light.r = 0.25;
+  light.g = 0.25;
+  light.b = 0.25;
     
 }
 
- }
- return color;
+//DO AO
+  let basias = buildOrthonormalBasis(normal);
 
-}
+  let T = basias.T;
+  let B = basias.B;
+  let N = basias.N;
 
-`;
-    return shader;
+ 
+  let maxSamples = 8u;
+  var hit = 0.0;
+  for(var i = 0u; i < maxSamples; i++) {
+    let seed = seedBase + f32(i) * (13.37  * 10.2) ; // Add some offset per sample
+    let randoms = getTwoRandomNumbers(seed);
+    let u1 = randoms.x; // pseudo-random in [0,1)
+    let u2 = randoms.y; // pseudo-random in [0,1)
+    let localSample = cosineWeightedHemisphereSample(u1, u2);
+    let dir = hemisphereToWorld(localSample, T, B, N);
+    let sampleRight = normalize(cross(dir, worldUp));
+    let sampleUp = normalize(cross(sampleRight, dir));
+    let aoLookUp = voxelMeshQuery(newHitPosition, dir, sampleRight, sampleUp, .99);
+
+
+    if(aoLookUp.found) {
+      hit += 1.0;
+    // Apply AO to color
+  
+    } 
+
   }
+
+  let occlusionFactor = 1.0 - hit/f32(maxSamples);
+  ao.r *= occlusionFactor;
+  ao.g *= occlusionFactor;
+  ao.b *= occlusionFactor; 
+ 
+
+//ao = mix(previousAO, currentAO, alpha);
+
+
 }
 
-/*
+//set light
+textureStore(
+  light_texture, 
+  vec2i(global_id.xy), 
+  light
+  );
 
+//set ao
+textureStore(
+  ao_texture, 
+  vec2i(global_id.xy), 
+  ao
+  );
 
-fn BoundingBoxIntersect(  minCorner: vec3f,  maxCorner: vec3f, rayOrigin: vec3f, invDir: vec3f ) -> f32 {
-
-
-  let near = (minCorner - rayOrigin) * invDir;
-  let far  = (maxCorner - rayOrigin) * invDir;
-
-  let tmin = min(near, far);
-  let tmax = max(near, far);
-
-  let t0 = max( max(tmin.x, tmin.y), tmin.z);
-  let t1 = min( min(tmax.x, tmax.y), tmax.z);
-
-  //return t1 >= max(t0, 0.0) ? t0 : INFINITY;
-   if(max(t0, 0.0) > t1) { 
-    return INFINITY; 
-  } 
-   
-   return t0; 
 }
-*/
-/*   const MAX_STEPS = 100;
-  const HIT_THRESHOLD = 0.01; // Minimum distance to consider a hit
-  const MAX_DISTANCE = 100.0;
 
-  var totalDistance = 0.0;
-  for (var i = 0; i < MAX_STEPS; i++) {
-      let distanceToSphere = sdfSphere(rayPosition, vec3f(0.0, 0.0, 0.0), .5);
-  
-      if (distanceToSphere < HIT_THRESHOLD) {
-          color = vec4f(1.0, 0.0, 0.0, 1.0); // Hit the sphere
-          break;
-      }
-  
-      totalDistance += distanceToSphere;
-  
-      if (totalDistance > MAX_DISTANCE) {
-          // Exceeded maximum ray distance
-          break;
-      }
-  
-      rayPosition += rayDirection * distanceToSphere;
-  }
+
+
  */

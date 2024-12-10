@@ -3,7 +3,7 @@ import type { DirectionNames } from "../../../../Types/Util.types.js";
 
 import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 import { ShapeTool } from "../../ShapeTool.js";
-import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
+import { QuadScalarVertexData } from "@amodx/meshing/Primitives/QuadVertexData";
 import {
   VoxelFaceOpositeDirectionMap,
   VoxelFaces,
@@ -12,7 +12,7 @@ import {
 import { QuadUVData } from "@amodx/meshing/Geometry.types.js";
 import { VoxelShapeBase } from "../../VoxelShapeBase.js";
 import { VoxelShapeManager } from "../../VoxelShapeManager.js";
-import { Quad } from "@amodx/meshing/Classes/Quad.js";
+import { Quad } from "@amodx/meshing/Primitives/Quad.js";
 import { StairOverrides } from "../Stairs/StairOverrides.js";
 import { VoxelShaderData } from "../../../../Data/VoxelShaderData.js";
 import { VoxelGeometry } from "../../../Geometry/VoxelGeometry.js";

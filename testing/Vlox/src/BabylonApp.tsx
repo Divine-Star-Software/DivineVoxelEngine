@@ -24,7 +24,7 @@ import { DVEVoxelData } from "Data/VoxelData";
 import { StartRenderer } from "@divinevoxel/vlox/Init/StartRenderer";
 import { GradientCheckSets } from "@divinevoxel/vlox/Mesher/Calc/CalcConstants";
 import { Vec3Array, Vector3Like } from "@amodx/math";
-import { QuadVec3ArrayVertexData } from "@amodx/meshing/Classes/QuadVertexData";
+
 import {
   VoxelFaceDirections,
   VoxelFaces,
@@ -211,14 +211,15 @@ export function App() {
         constructorWorkers,
         voxels: DVEVoxelData,
       });
-      await CreateDisplayIndex(DVER, DVEVoxelData);
-      /*   const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
+      //   await CreateDisplayIndex(DVER, DVEVoxelData);
+      const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
       skybox.infiniteDistance = true;
       const skyboxMat = renderer.nodes.materials.get("#dve_skybox");
+      console.warn("got skybox",skybox)
       if (skyboxMat) {
         skybox.material = skyboxMat._material;
         skybox.material!.backFaceCulling = false;
-      } */
+      }
       const sceneTool = new SceneTool();
       sceneTool.fog.setDensity(0.00001);
       sceneTool.fog.setColor(1, 1, 1);

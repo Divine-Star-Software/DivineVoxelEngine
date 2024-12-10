@@ -1,9 +1,6 @@
 export type TextureTypes = string;
 
-export type TextureTypeUVMap = Record<
-  string,
-  Record<string, Record<string, number>>
->;
+export type TextureTypeUVMap = Record<string, Record<string, number>>;
 
 export type TextureAnimationData = {
   /**# Frames
@@ -61,10 +58,6 @@ export type TextureData = {
    * If the texture is not in the default path specify it here.
    */
   path?: string;
-  /**# Segment
-   * Define the segmetn of the texutre. By default it is main.
-   */
-  segment?: string;
   /**# normalMap
    * If the texture is an overlay specify it here.
    */

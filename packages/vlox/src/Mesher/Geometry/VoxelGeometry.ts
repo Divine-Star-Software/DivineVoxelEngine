@@ -3,7 +3,7 @@ import { VoxelShaderData } from "../../Data/VoxelShaderData";
 import { VoxelMesherDataTool } from "../Tools/VoxelMesherDataTool";
 
 import { GeometryBuilder } from "@amodx/meshing/Geometry/GeometryBuilder";
-import { Quad } from "@amodx/meshing/Classes/Quad";
+import { Quad } from "@amodx/meshing/Primitives/Quad";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 
 export class VoxelGeometry {

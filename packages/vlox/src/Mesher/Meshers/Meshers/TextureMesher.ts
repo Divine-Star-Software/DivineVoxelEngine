@@ -2,7 +2,7 @@ import { MesherDataTool } from "@amodx/meshing/Tools/MesherDataTools.js";
 import { Mesher } from "../Classes/Mesher.js";
 import { BuildNodeMesh, SetNodeMesh } from "../../Tasks/BuidlerTasks.types.js";
 import { BinaryNumberTypes } from "@amodx/binary";
-import { Quad } from "@amodx/meshing/Classes/Quad.js";
+import { Quad } from "@amodx/meshing/Primitives/Quad.js";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types.js";
 import { GeometryBuilder } from "@amodx/meshing";
 import { Flat2DIndex, Vec2Array, Vector3Like } from "@amodx/math";
@@ -312,4 +312,4 @@ class TXTBuilderBase extends Mesher {
   }
 }
 
-export const TextureBuilder = new TXTBuilderBase("#dve_node_texture");
+export const TextureBuilder = new TXTBuilderBase("#dve_node");

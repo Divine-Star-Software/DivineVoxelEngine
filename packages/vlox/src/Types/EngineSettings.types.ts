@@ -64,10 +64,7 @@ export class EngineSettingsData {
   };
   meshes = {
     clearChachedGeometry: true,
-    checkMagmaCollisions: false,
-    checkLiquidCollisions: false,
-    checkFloraCollisions: false,
-    checkSolidCollisions: false,
+    checkCollisions: false,
     serialize: false,
     pickable: false,
   };

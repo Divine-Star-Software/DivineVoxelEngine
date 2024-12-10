@@ -140,11 +140,6 @@ export class VoxelMeshRegister {
     mesh.meshStruct.indexOffsets.z = (index * VoxelMesh.SectorIndexSize) / 8;
     mesh.meshStruct.indexOffsets.w = (index * VoxelMesh.VoxelIndexSize) / 2;
 
-    console.warn(
-      mesh.meshStruct.indexOffsets.w,
-      index * VoxelMesh.VoxelIndexSize * 4,
-      mesh.voxels
-    );
     this.scene.scene.engine.device.queue.writeBuffer(
       this._meshStructBuffer,
       index * VoxelMeshStruct.StructBufferSize,
@@ -157,7 +152,7 @@ export class VoxelMeshRegister {
     );
     this.scene.scene.engine.device.queue.writeBuffer(
       this._indiceBuffer,
-      index * VoxelMesh.VoxelBufferSize ,
+      index * VoxelMesh.VoxelBufferSize,
       mesh.voxels
     );
   }

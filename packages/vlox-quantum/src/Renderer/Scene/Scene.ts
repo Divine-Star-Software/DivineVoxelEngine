@@ -7,22 +7,20 @@ export class Scene {
 
   voxelScene: VoxelScene;
 
-  private _isReady = false;
+  _isReady = false;
 
   constructor(
     public engine: Engine,
     public renderRadius: number
   ) {}
 
-  async init() {
-    this.voxelScene = new VoxelScene(this, this.renderRadius);
-    await this.voxelScene.init();
-    this._isReady = true;
-  }
+  async init() {}
 
   setCamera(camera: PerspectiveCamera) {
-    this.voxelScene.setCamera(camera);
+
     this.activeCamera = camera;
+
+  
   }
 
   render() {

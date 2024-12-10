@@ -30,7 +30,7 @@ struct TriangleIntersectResult {
 
 
 
-fn BVH_TriangleIntersect(  v0: vec3f,  v1:vec3f, v2:vec3f, rayOrigin:vec3f, rayDirection:vec3f) -> TriangleIntersectResult
+fn BVH_TriangleIntersect_1(  v0: vec3f,  v1:vec3f, v2:vec3f, rayOrigin:vec3f, rayDirection:vec3f) -> TriangleIntersectResult
 {	
 	let edge1 = v1 - v0;
 	let edge2 = v2 - v0;
@@ -45,6 +45,62 @@ fn BVH_TriangleIntersect(  v0: vec3f,  v1:vec3f, v2:vec3f, rayOrigin:vec3f, rayD
     return TriangleIntersectResult(u, v, INFINITY);
 }
   return TriangleIntersectResult(u,v,t);
+}
+
+
+
+fn BVH_TriangleIntersect_2(
+    v0: vec3f,
+    v1: vec3f,
+    v2: vec3f,
+    rayOrigin: vec3f,
+    rayDirection: vec3f,
+) -> TriangleIntersectResult {
+    let n = cross(v1 - v0, v2 - v0);
+    let nDotDir = dot(n, rayDirection);
+
+    // Check if ray is parallel or pointing away from the triangle
+    if nDotDir >= 0.0 {
+        return TriangleIntersectResult(0.0, 0.0, INFINITY);
+    }
+
+    let nDotDirInv = 1.0 / nDotDir;
+    let denom = 1.0 / dot(n, n);
+    let d = -dot(n, v0);
+
+    let t = -(dot(n, rayOrigin) + d) * nDotDirInv;
+    if t < 0.0 {
+        return TriangleIntersectResult(0.0, 0.0, INFINITY);
+    }
+
+    let ip = rayOrigin + t * rayDirection;
+
+    // Inside-outside test for each edge
+    let edge0 = v1 - v0;
+    let c0 = cross(edge0, ip - v0);
+    if dot(n, c0) < 0.0 {
+        return TriangleIntersectResult(0.0, 0.0, INFINITY);
+    }
+
+    let edge1 = v2 - v1;
+    let c1 = cross(edge1, ip - v1);
+    let u = dot(n, c1);
+    if u < 0.0 {
+        return TriangleIntersectResult(0.0, 0.0, INFINITY);
+    }
+
+    let edge2 = v0 - v2;
+    let c2 = cross(edge2, ip - v2);
+    let v = dot(n, c2);
+    if v < 0.0 {
+        return TriangleIntersectResult(0.0, 0.0, INFINITY);
+    }
+
+    // Normalize u and v
+    let uNorm = u * denom;
+    let vNorm = v * denom;
+
+    return TriangleIntersectResult(uNorm, vNorm, t);
 }
 
 fn BoundingBoxIntersect(  minCorner: vec3f,  maxCorner: vec3f, rayOrigin: vec3f, invDir: vec3f ) -> f32 {
@@ -124,7 +180,8 @@ fn voxelMeshQuery(
   rayOrigin: vec3f,
   rayDirection: vec3f,
   rayRight: vec3f,
-  rayUp: vec3f
+  rayUp: vec3f,
+  MAX_DISTANCE: f32
 ) -> VoxelMeshIntersectResult {
   let worldUp = vec3(0.0, 1.0, 0.0);
   var finalResult  = VoxelMeshIntersectResult(false, 0u, 0,false,
@@ -144,7 +201,6 @@ fn voxelMeshQuery(
   var t = INFINITY;
 
 
-  const MAX_DISTANCE = 300.0;
 
   var totalDistance = 0.0;
 
@@ -193,11 +249,13 @@ fn voxelMeshQuery(
                   invDir
                 );
 
+                  
                 if(
                   meshLookUp.found && 
                   chunkT < t
+                  && chunkT < MAX_DISTANCE
                 ) {
-                  let result =  VoxelMeshIntersect(rayOrigin, rayDirection, meshLookUp.index);
+                  let result =  VoxelMeshIntersect(rayOrigin, rayDirection, meshLookUp.index, MAX_DISTANCE);
                   if(result.found) {
                     if(result.t <= t) {
                       finalResult = result;
@@ -264,10 +322,10 @@ fn VoxelGeometryIntersect(ro: vec3f, rd: vec3f, nodeId: u32, voxelMeshIndex: u32
       let v2 = vertexOffset + indices[indiceOffset + indiceIndex + 1u];
       let v3 = vertexOffset + indices[indiceOffset + indiceIndex + 2u];
 
-      let triResult = BVH_TriangleIntersect(
+      let triResult = BVH_TriangleIntersect_1(
+        vertices[v3].position + position, 
         vertices[v2].position + position, 
         vertices[v1].position + position, 
-        vertices[v3].position + position, 
         ro, 
         rd
       );
@@ -333,7 +391,7 @@ const STACK_SIZE = 13;
 var<private> stack: array<StackNode,STACK_SIZE> = array<StackNode,STACK_SIZE>(${new Array(13).fill(0).map((_)=>'StackNode(0u,0.0)').join(',')});
 
 const VOXEL_NODE_INDEX = 4095u;
-fn VoxelMeshIntersect(ro: vec3f, rd: vec3f, voxelMeshIndex: u32) -> VoxelMeshIntersectResult {
+fn VoxelMeshIntersect(ro: vec3f, rd: vec3f, voxelMeshIndex: u32, MAX_DISTANCE: f32) -> VoxelMeshIntersectResult {
   let mesh = voxel_meshes[voxelMeshIndex];
 
   var intersectResult = VoxelMeshIntersectResult(false, 0u, 0,false,
@@ -397,6 +455,9 @@ fn VoxelMeshIntersect(ro: vec3f, rd: vec3f, voxelMeshIndex: u32) -> VoxelMeshInt
               ro,
               inverseDir
           );
+          if(leftChildT > MAX_DISTANCE) {
+            leftChildT = INFINITY;
+          }
       }
 
       // Test right child
@@ -407,6 +468,9 @@ fn VoxelMeshIntersect(ro: vec3f, rd: vec3f, voxelMeshIndex: u32) -> VoxelMeshInt
               ro,
               inverseDir
           );
+          if(rightChildT > MAX_DISTANCE) {
+            rightChildT = INFINITY;
+          }
       }
 
       // If neither child is hit

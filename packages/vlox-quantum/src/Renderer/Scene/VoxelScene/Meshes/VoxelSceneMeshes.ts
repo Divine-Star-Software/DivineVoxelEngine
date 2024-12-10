@@ -45,7 +45,7 @@ export class VoxelSceneMeshes {
 
   createMesh(position: Vec3Array, data: CompactMeshData) {
     if (data[0] == 0) return;
-    console.warn("start", position);
+
     const vertexBuffer = data[1];
     const indicesBuffer = data[2];
     const bvhTreeBuffer = data[3];
@@ -176,15 +176,6 @@ export class VoxelSceneMeshes {
 
       this.register.addMesh(newMesh);
 
-    console.warn(
-      "end",
-    newMesh.data.indicesLength/3,
-      verticeStart,
-      vertexBuffer.byteLength / 96,
-      indicesStart,
-      indicesBuffer.byteLength / 4,
-      indicesBuffer.byteLength / 4 / 3
-    );
   }
 
   render() {}

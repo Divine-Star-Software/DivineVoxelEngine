@@ -8,7 +8,7 @@ import {
 } from "@amodx/meshing/Geometry.types";
 import { VoxelBoxGeometryNode } from "../../../VoxelModel.types";
 
-import { Quad } from "@amodx/meshing/Classes/Quad";
+import { Quad } from "@amodx/meshing/Primitives/Quad";
 import { VoxelMesherDataTool } from "../../../../Mesher/Tools/VoxelMesherDataTool";
 import { VoxelGeometry } from "../../../../Mesher/Geometry/VoxelGeometry";
 import {

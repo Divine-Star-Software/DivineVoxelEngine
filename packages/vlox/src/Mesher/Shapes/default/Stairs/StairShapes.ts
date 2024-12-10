@@ -3,8 +3,8 @@ import {
   VoxelFaceCompassDirectionMap,
   VoxelFaces,
 } from "../../../../Math/index.js";
-import { Quad } from "@amodx/meshing/Classes/Quad.js";
-import { QuadVertexData } from "@amodx/meshing/Classes/QuadVertexData.js";
+import { Quad } from "@amodx/meshing/Primitives/Quad.js";
+import { QuadVertexData } from "@amodx/meshing/Primitives/QuadVertexData.js";
 import { QuadUVData, QuadVerticies } from "@amodx/meshing/Geometry.types.js";
 import {
   AMath,
@@ -15,7 +15,7 @@ import {
   Vector3Like,
 } from "@amodx/math";
 
-import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData.js";
+import { QuadScalarVertexData } from "@amodx/meshing/Primitives/QuadVertexData.js";
 
 import { StairStates } from "./StairStates.js";
 import { ShapeTool } from "../../ShapeTool.js";

@@ -1,28 +1,21 @@
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import type { TextureData, TextureTypeUVMap } from "./Texture.types";
 import { TextureBuilder } from "./TextureBuilder.js";
-import { TextureType } from "./TextureType.js";
+import { TextureArray } from "./TextureArray.js";
 import { ConstructorTextureData } from "./Constructor.types";
 
 export class TextureManager {
   static defaultTexturePath = "assets/textures";
 
-  static textureTypes = new Map<string, TextureType>();
+  static textureTypes = new Map<string, TextureArray>();
 
-  static getTextureIndex(
-    data: ConstructorTextureData,
-    overlay: boolean = false
-  ): number {
+  static getTextureIndex(data: ConstructorTextureData): number {
     const [textureType, textureId, varation] = data;
 
     const type = this.getTextureType(textureType);
     if (!type) return NaN;
 
-    return type.getTextureIndex(
-      textureId,
-      varation,
-      overlay ? "overlay" : "main"
-    );
+    return type.getTextureIndex(textureId, varation);
   }
 
   static _ready = false;
@@ -67,9 +60,8 @@ export class TextureManager {
     | undefined {
     const t = this.getTextureType(type);
     if (!t) return undefined;
-    let s = segment ? t.segments.get(segment) : t.segments.get("main")!;
-    if (!s) return undefined;
-    return s.textureMap.get(id);
+
+    return t.textureMap.get(id);
   }
 
   static getTextureType(id: string) {
@@ -84,13 +76,14 @@ export class TextureManager {
     return texture;
   }
   static addTextureType(id: string) {
-    const newType = new TextureType(id);
+    const newType = new TextureArray(id);
     this.textureTypes.set(id, newType);
     return newType;
   }
 
   static clearTextureData() {
-    this.textureTypes.forEach((_) => _.clearSegmentData());
+    //
+    //  this.textureTypes.forEach((_) => _.clearSegmentData());
   }
 
   static registerTexture(textureData: TextureData | TextureData[]) {
@@ -133,66 +126,47 @@ export class TextureManager {
   static async createRawDataMap() {
     const map: Map<string, Uint8ClampedArray> = new Map();
     for (const [typeKey, type] of this.textureTypes) {
-      for (const [segKey, segment] of type.segments) {
-        for (const data of segment.textures) {
-          if (!data.includeInRawDataMap) continue;
-          if (!data.path && !data.rawData) continue;
-          const key = `${type.id}|${data.id}|default`;
-          if (data.frames) {
-            for (let i = 1; i <= data.frames; i++) {
-              const rawData = await TextureBuilder.loadImage(
-                data.rawData
-                  ? <Uint8ClampedArray>data.rawData[i - 1]
-                  : type._getPath(data, `${key}-${i}`, type.extension),
-                TextureBuilder._textureSize,
-                TextureBuilder._textureSize
-              );
-
-              data.rawData = rawData;
-              map.set(`${key}-${i}`, rawData);
-            }
-          } else {
-            const rawData = await TextureBuilder.loadImage(
-              data.rawData
-                ? (data.rawData as any)
-                : type._getPath(data, "default", type.extension),
-              TextureBuilder._textureSize,
-              TextureBuilder._textureSize
+      for (const data of type.textures) {
+        if (!data.includeInRawDataMap) continue;
+        if (!data.path && !data.rawData) continue;
+        const key = `${type.id}|${data.id}|default`;
+        if (data.frames) {
+          for (let i = 1; i <= data.frames; i++) {
+            const rawData = await TextureBuilder.getRawData(
+              type._getPath(data, `${key}-${i}`, type.extension)
             );
 
             data.rawData = rawData;
-
-            map.set(key, rawData);
+            map.set(`${key}-${i}`, rawData);
           }
-          if (data.variations) {
-            for (const varId in data.variations) {
-              const varation = data.variations[varId];
-              if (!varation.includeInRawDataMap) continue;
-              const key = `${type.id}|${data.id}|${varId}`;
-              if (data.frames) {
-                for (let i = 1; i <= data.frames; i++) {
-                  const rawData = await TextureBuilder.loadImage(
-                    data.rawData
-                      ? <Uint8ClampedArray>data.rawData[i - 1]
-                      : type._getPath(data, `${key}-${i}`, type.extension),
-                    TextureBuilder._textureSize,
-                    TextureBuilder._textureSize
-                  );
-                  data.rawData = rawData;
-                  map.set(`${key}-${i}`, rawData);
-                }
-              } else {
-                const rawData = await TextureBuilder.loadImage(
-                  data.rawData
-                    ? <Uint8ClampedArray>data.rawData
-                    : type._getPath(data, varId, type.extension),
-                  TextureBuilder._textureSize,
-                  TextureBuilder._textureSize
+        } else {
+          const rawData = await TextureBuilder.getRawData(
+            type._getPath(data, "default", type.extension)
+          );
+
+          data.rawData = rawData;
+
+          map.set(key, rawData);
+        }
+        if (data.variations) {
+          for (const varId in data.variations) {
+            const varation = data.variations[varId];
+            if (!varation.includeInRawDataMap) continue;
+            const key = `${type.id}|${data.id}|${varId}`;
+            if (data.frames) {
+              for (let i = 1; i <= data.frames; i++) {
+                const rawData = await TextureBuilder.getRawData(
+                  type._getPath(data, `${key}-${i}`, type.extension)
                 );
                 data.rawData = rawData;
-
-                map.set(key, rawData);
+                map.set(`${key}-${i}`, rawData);
               }
+            } else {
+              const rawData = await TextureBuilder.getRawData(
+                type._getPath(data, varId, type.extension)
+              );
+              data.rawData = rawData;
+              map.set(key, rawData);
             }
           }
         }
@@ -200,6 +174,6 @@ export class TextureManager {
     }
     return map;
   }
-
-  
 }
+TextureManager.getOrAddTextureType("#dve_voxel");
+TextureManager.getOrAddTextureType("#dve_node");

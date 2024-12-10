@@ -1,5 +1,5 @@
 import type { VoxelMesherDataTool } from "../../Tools/VoxelMesherDataTool";
-import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
+import { QuadScalarVertexData } from "@amodx/meshing/Primitives/QuadVertexData";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 
 const checkSets = {

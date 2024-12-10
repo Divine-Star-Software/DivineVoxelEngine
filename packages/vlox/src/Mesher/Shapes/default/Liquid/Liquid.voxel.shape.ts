@@ -1,13 +1,13 @@
 //types
 import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 import { ShapeTool } from "../../ShapeTool.js";
-import { QuadScalarVertexData } from "@amodx/meshing/Classes/QuadVertexData";
+import { QuadScalarVertexData } from "@amodx/meshing/Primitives/QuadVertexData";
 
 import { DirectionNames } from "../../../../Types/Util.types.js";
 import { CubeVoxelShape } from "../Cube/Cube.voxel.shape.js";
 import { VoxelFaces } from "../../../../Math/index.js";
 import { VoxelShapeBase } from "../../VoxelShapeBase.js";
-import { Quad } from "@amodx/meshing/Classes/Quad.js";
+import { Quad } from "@amodx/meshing/Primitives/Quad.js";
 import { QuadUVData, QuadVerticies } from "@amodx/meshing/Geometry.types.js";
 import { VoxelGeometry } from "../../../Geometry/VoxelGeometry.js";
 import { CompassAngles } from "@amodx/math";

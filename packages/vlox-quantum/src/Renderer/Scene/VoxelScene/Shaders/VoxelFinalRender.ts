@@ -15,8 +15,15 @@ ${VoxelCommon.CommonBinds}
 @group(1) @binding(0) var scene_sampler: sampler;
 @group(1) @binding(1) var scene_texture: texture_2d<f32>;
 
-@group(1) @binding(2) var effect_sampler: sampler;
-@group(1) @binding(3) var effect_texture: texture_2d<f32>;
+@group(1) @binding(2) var normal_texture_sampler: sampler;
+@group(1) @binding(3) var normal_texture: texture_2d<f32>;
+
+@group(1) @binding(4) var light_texture_sampler: sampler;
+@group(1) @binding(5) var light_texture: texture_2d<f32>;
+
+@group(1) @binding(6) var ao_texture_sampler: sampler;
+@group(1) @binding(7) var ao_texture: texture_2d<f32>;
+
 
 @vertex
 fn vs(@location(0) position: vec4<f32>, @location(1) uv: vec2<f32>) -> VertexOutput {
@@ -30,10 +37,13 @@ fn vs(@location(0) position: vec4<f32>, @location(1) uv: vec2<f32>) -> VertexOut
 
 @fragment
 fn fs(@location(0) uv: vec2<f32>) -> @location(0) vec4<f32> {
-return  textureSample(scene_texture, scene_sampler, uv) * textureSample(effect_texture, effect_sampler, uv);
+//return  textureSample(scene_texture, scene_sampler, uv) * textureSample(light_texture, light_texture_sampler, uv);
 //return  textureSample(scene_texture, scene_sampler, uv);
-//return  textureSample(effect_texture, effect_sampler, uv);
-
+//return  textureSample(light_texture, light_texture_sampler, uv);
+// return textureSample(normal_texture, normal_texture_sampler, uv);
+//return  textureSample(ao_texture, ao_texture_sampler, uv);
+return textureSample(ao_texture, ao_texture_sampler, uv)  * textureSample(scene_texture, scene_sampler, uv) * textureSample(light_texture, light_texture_sampler, uv);
+//return  textureSample(normal_texture, normal_texture_sampler, uv);
 }
 `;
     return shader;

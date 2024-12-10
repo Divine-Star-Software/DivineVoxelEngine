@@ -1,6 +1,7 @@
-import { PerspectiveCamera } from "../../../Camera/PerspectiveCamera";
-import { VoxelRayRender } from "../Shaders/VoxelRayRender";
-import { VoxelScene } from "../VoxelScene";
+import { PerspectiveCamera } from "../../../../Camera/PerspectiveCamera";
+import { VoxelRayRender } from "../../Shaders/VoxelRayRender";
+import { VoxelScene } from "../../VoxelScene";
+import { AOBlurPipeline } from "./AOBlurPipeline";
 
 export class VoxelRayComputePipeline {
   _pipeline: GPUComputePipeline;
@@ -11,15 +12,20 @@ export class VoxelRayComputePipeline {
   _commonBindGroupLayout: GPUBindGroupLayout;
   _commonBindGroup: GPUBindGroup;
 
-  _outputTexture: GPUTexture;
-  _outputTextureView: GPUTextureView;
+  _lightTexture: GPUTexture;
+  _lightTextureView: GPUTextureView;
+
+  _aoTexture: GPUTexture;
+  _aoTextureView: GPUTextureView;
+
   _outputTextureBindGroupLaytout: GPUBindGroupLayout;
   _outputTextureBindGroup: GPUBindGroup;
+
+  //aoBlurPipeline: AOBlurPipeline;
 
   constructor(public scene: VoxelScene) {}
 
   async init() {
-
     const module = this.scene.scene.engine.device.createShaderModule({
       label: "",
       code: VoxelRayRender.Create(),
@@ -37,6 +43,13 @@ export class VoxelRayComputePipeline {
           },
           {
             binding: 1, //scene props struct
+            visibility: GPUShaderStage.COMPUTE,
+            buffer: {
+              type: "uniform",
+            },
+          },
+          {
+            binding: 2, //time
             visibility: GPUShaderStage.COMPUTE,
             buffer: {
               type: "uniform",
@@ -89,12 +102,38 @@ export class VoxelRayComputePipeline {
     this._outputTextureBindGroupLaytout =
       this.scene.scene.engine.device.createBindGroupLayout({
         entries: [
+          //normal texture
           {
             binding: 0,
+            visibility: GPUShaderStage.COMPUTE,
+            texture: {
+              sampleType: "unfilterable-float",
+            },
+          },
+          //position texture
+          {
+            binding: 1,
+            visibility: GPUShaderStage.COMPUTE,
+            texture: {
+              sampleType: "unfilterable-float",
+            },
+          },
+          //light texture
+          {
+            binding: 2,
             visibility: GPUShaderStage.COMPUTE,
             storageTexture: {
               access: "write-only", // Access type
               format: "rgba32float", // Must match the texture format
+            },
+          },
+          //ao texture
+          {
+            binding: 3,
+            visibility: GPUShaderStage.COMPUTE,
+            storageTexture: {
+              access: "write-only", // Access type
+              format: "rgba16float", // Must match the texture format
             },
           },
         ],
@@ -136,21 +175,36 @@ export class VoxelRayComputePipeline {
         },
       ],
     });
+
+    //  this.aoBlurPipeline = new AOBlurPipeline(this.scene.scene);
+    //  await this.aoBlurPipeline.init();
   }
 
   createTexture(width: number, height: number) {
-    if (this._outputTexture) this._outputTexture.destroy();
+    if (this._lightTexture) this._lightTexture.destroy();
+    console.warn("Create compute texture", width, height);
 
-    this._outputTexture = this.scene.scene.engine.device.createTexture({
-      size: [width, height, 1], // Width, height, and depth/layers
-      format: "rgba32float", // Texture format
+    this._lightTexture = this.scene.scene.engine.device.createTexture({
+      size: [width / 2, height / 2, 1],
+      format: "rgba32float",
       usage:
         GPUTextureUsage.STORAGE_BINDING |
         GPUTextureUsage.COPY_DST |
         GPUTextureUsage.TEXTURE_BINDING |
         GPUTextureUsage.COPY_SRC,
     });
-    this._outputTextureView = this._outputTexture.createView();
+    this._lightTextureView = this._lightTexture.createView();
+
+    this._aoTexture = this.scene.scene.engine.device.createTexture({
+      size: [width / 2, height / 2, 1],
+      format: "rgba16float",
+      usage:
+        GPUTextureUsage.STORAGE_BINDING |
+        GPUTextureUsage.COPY_DST |
+        GPUTextureUsage.TEXTURE_BINDING |
+        GPUTextureUsage.COPY_SRC,
+    });
+    this._aoTextureView = this._aoTexture.createView();
 
     this._outputTextureBindGroup =
       this.scene.scene.engine.device.createBindGroup({
@@ -158,7 +212,19 @@ export class VoxelRayComputePipeline {
         entries: [
           {
             binding: 0,
-            resource: this._outputTextureView,
+            resource: this.scene.renderPipeline._normalTexture!.createView(),
+          },
+          {
+            binding: 1,
+            resource: this.scene.renderPipeline._positionTexture!.createView(),
+          },
+          {
+            binding: 2,
+            resource: this._lightTextureView,
+          },
+          {
+            binding: 3,
+            resource: this._aoTextureView,
           },
         ],
       });
@@ -171,17 +237,19 @@ export class VoxelRayComputePipeline {
       entries: [
         { binding: 0, resource: { buffer: camera._cameraDataUniformBuffer } },
         { binding: 1, resource: { buffer: this.scene._scenePropsBuffer } },
+        { binding: 2, resource: { buffer: this.scene._timeBuffer } },
       ],
     });
   }
 
   render() {
+    //   const t = performance.now();
     const commandEncoder =
       this.scene.scene.engine.device.createCommandEncoder();
     const pass = commandEncoder.beginComputePass();
 
-    const width = this._outputTexture.width;
-    const height = this._outputTexture.height;
+    const width = this._lightTexture.width;
+    const height = this._lightTexture.height;
 
     pass.setPipeline(this._pipeline);
     pass.setBindGroup(0, this._commonBindGroup);
@@ -191,6 +259,10 @@ export class VoxelRayComputePipeline {
     pass.dispatchWorkgroups(Math.ceil(width / 8), Math.ceil(height / 8));
 
     pass.end();
-    this.scene.scene.engine.device.queue.submit([commandEncoder.finish()]); 
+
+    this.scene.scene.engine.device.queue.submit([commandEncoder.finish()]);
+    /*     this.scene.scene.engine.device.queue
+      .onSubmittedWorkDone()
+      .finally(() => {console.clear(); console.log(performance.now() - t)}); */
   }
 }

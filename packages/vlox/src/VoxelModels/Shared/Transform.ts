@@ -1,4 +1,4 @@
-import { Quad } from "@amodx/meshing/Classes/Quad";
+import { Quad } from "@amodx/meshing/Primitives/Quad";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 import { Vector3Like } from "@amodx/math";
 import { VoxelGeometryTransform } from "../../VoxelData/VoxelSyncData";

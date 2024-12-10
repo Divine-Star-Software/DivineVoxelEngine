@@ -11,6 +11,7 @@ import { SubstanceRules } from "./Rules/SubstanceRules.js";
 import { VoxelConstructor } from "./Constructors/Voxel/Classes/VoxelConstructor.js";
 import { VoxelShapeManager } from "./Shapes/VoxelShapeManager.js";
 import { Observable } from "@amodx/core/Observers";
+import { ShapeTool } from "./Shapes/ShapeTool.js";
 export type DVEMesherInitData = {
   constructors: VoxelConstructor[];
 };
@@ -59,7 +60,14 @@ export class DVEMesher  {
         });
         this.observers.texturesRegistered.notify(this.textureManager);
         this.textureManager.releaseTextureData();
-        SubstanceRules.buildRules();
+
+        
+        RenderedSubstances.add("#dve_solid");
+        RenderedSubstances.add("#dve_flora");
+        RenderedSubstances.add("#dve_liquid");
+        
+
+     //   SubstanceRules.buildRules();
       }
     );
     DivineVoxelEngineConstructor.instance.TC.registerTasks<BuildNodeMesh>(

@@ -1,4 +1,10 @@
-import { AssetContainer, Engine, Scene, Vector4 } from "@babylonjs/core";
+import {
+  AssetContainer,
+  Engine,
+  Scene,
+  Texture,
+  Vector4,
+} from "@babylonjs/core";
 import { Effect } from "@babylonjs/core/Materials/effect.js";
 import { ShaderMaterial } from "@babylonjs/core/Materials/shaderMaterial.js";
 import { Matrix, Vector2, Vector3 } from "@babylonjs/core/Maths/";
@@ -11,15 +17,15 @@ import {
 import { DVEBRScene } from "../../Renderer/Scene/DVEBRScene.js";
 import { URIScene } from "@amodx/uri/Scenes/URIScene.js";
 import { URITexture } from "@amodx/uri/Textures/URITexture.js";
-import { DefaultMaterialManager } from "../DefaultMaterialManager";
-import { DVEBRTexture } from "Renderer/Textures/DVEBRTexture.js";
+import { DVEBRShaderStore } from "../../Renderer/Shaders/DVEBRShaderStore.js";
+import { ImageArrayTexture } from "../../Renderer/Textures/ImageArrayTexture.js";
 
 const conatiner = new AssetContainer();
 type DVEBRClassicMaterialBaseData = {
   textureTypeId: string;
-  shaderId: string;
+  effectId: string;
   material?: ShaderMaterial;
-  textures?: Map<string, DVEBRTexture>;
+  textures?: Map<string, ImageArrayTexture>;
 };
 
 export type DVEBRClassicMaterialData = URIMaterialData<
@@ -56,64 +62,53 @@ export class DVEBRClassicMaterial extends URIMaterial<
       this.textures = this.data.data.textures;
       return this._material;
     }
-    const type = TextureManager.getTextureType(
+    const texture = TextureManager.getTextureType(
       data.data.textureTypeId ? data.data.textureTypeId : this.id
     );
 
-    if (!type && data.data.textureTypeId) {
+    if (!texture && data.data.textureTypeId) {
       throw new Error(
         `Could find the texture type for material ${this.id}. Texture typeid:  ${data.data.textureTypeId}`
       );
     }
-    const shader = DefaultMaterialManager.shaders.register.get(
-      data.data.shaderId
-    );
 
-    if (!shader) {
+    const shaderData = DVEBRShaderStore.getShaderData(this.data.data.effectId);
+    if (!shaderData) {
       throw new Error(
-        `Could find the shader for material ${this.id}. Shader id:  ${data.data.shaderId}`
+        `Could not find shader data for ${this.data.data.effectId}`
       );
     }
-    if (type) type.addToShader(shader);
 
-    this.shader = shader;
-    shader.compile();
-
-    Effect.ShadersStore[`${this.id}VertexShader`] = shader.compiled.vertex;
-
-    Effect.ShadersStore[`${this.id}FragmentShader`] = shader.compiled.fragment;
     const shaderMaterial = new ShaderMaterial(
       this.id,
       data.scene._scene,
       this.id,
       {
-        attributes: shader.getAttributeList(),
-        uniforms: shader.getUniformList(),
-       // needAlphaBlending: data.alphaBlending,
-      //  needAlphaTesting: data.alphaTesting,
+        ...shaderData,
+        needAlphaBlending: data.alphaBlending,
+        needAlphaTesting: data.alphaTesting,
       }
     );
 
     conatiner.materials.push(shaderMaterial);
 
-/*     if (data.alphaBlending) {
-    //  shaderMaterial.alpha = .5;
-    shaderMaterial.disableDepthWrite = true;
-    shaderMaterial.separateCullingPass  = true;
- //   shaderMaterial.needDepthPrePass = true;
-   //   shaderMaterial.separateCullingPass = true;
-    //  shaderMaterial.needDepthPrePass = true;
-  //    shaderMaterial.backFaceCulling = false;
-      shaderMaterial.transparencyMode = ShaderMaterial.MATERIAL_ALPHATESTANDBLEND;
+    if (data.alphaBlending) {
+      //  shaderMaterial.alpha = .5;
+      shaderMaterial.disableDepthWrite = true;
+      shaderMaterial.separateCullingPass = true;
+      //   shaderMaterial.needDepthPrePass = true;
+      //   shaderMaterial.separateCullingPass = true;
+      //  shaderMaterial.needDepthPrePass = true;
+      //    shaderMaterial.backFaceCulling = false;
     }
- */
+
     this._material = shaderMaterial;
 
     this._material.fogEnabled = true;
 
     // shaderMaterial.wireframe = true;
 
-/*     if (data.stencil) {
+    /*     if (data.stencil) {
       shaderMaterial.stencil.enabled = true;
       shaderMaterial.stencil.func = Engine.NOTEQUAL;
       this.scene.setRenderingAutoClearDepthStencil(0, false, false, false);
@@ -121,8 +116,6 @@ export class DVEBRClassicMaterial extends URIMaterial<
     if (data.backFaceCulling !== undefined) {
       shaderMaterial.backFaceCulling = data.backFaceCulling;
     }
-
-    if (type) type.addToMaterial(this);
 
     shaderMaterial.setVector3("worldOrigin", Vector3.Zero());
     if (data.mipMapBias) {
@@ -144,6 +137,10 @@ export class DVEBRClassicMaterial extends URIMaterial<
       effect.setColor3("vFogColor", scene.fogColor);
     };
 
+    if (texture) {
+      this.setTexture(texture.textureID, texture.shaderTexture);
+    }
+
     this.afterCreate.forEach((_) => _(this._material));
     return this._material;
   }
@@ -156,14 +153,15 @@ export class DVEBRClassicMaterial extends URIMaterial<
       sampler.map((_) => _._texture)
     );
   }
-  textures = new Map<string, DVEBRTexture>();
-  setTexture(samplerId: string, sampler: DVEBRTexture): void {
-    this._material.setTexture(samplerId, sampler._texture!);
+  textures = new Map<string, ImageArrayTexture>();
+  //@ts-ignore
+  setTexture(samplerId: string, sampler: ImageArrayTexture): void {
+    this._material.setTexture(samplerId, sampler!);
     this.textures.set(samplerId, sampler);
   }
 
   clone(scene: Scene) {
-    const textures = new Map<string, DVEBRTexture>();
+    const textures = new Map<string, ImageArrayTexture>();
     for (const [textId, texture] of this.textures) {
       this._material.removeTexture(textId);
     }
@@ -171,10 +169,10 @@ export class DVEBRClassicMaterial extends URIMaterial<
     const newMat = ShaderMaterial.Parse(this._material.serialize(), scene, "/");
 
     for (const [textId, texture] of this.textures) {
-      const newTexture = texture.clone(scene)!;
+      const newTexture = texture.copy(scene)!;
       textures.set(textId, newTexture);
-      newMat.setTexture(textId, newTexture._texture!);
-      this._material.setTexture(textId, texture._texture!);
+      newMat.setTexture(textId, newTexture!);
+      this._material.setTexture(textId, texture!);
     }
 
     const mat = new DVEBRClassicMaterial(this.id, {

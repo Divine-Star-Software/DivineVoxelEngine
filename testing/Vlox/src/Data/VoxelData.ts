@@ -16,12 +16,12 @@ export const DVEVoxelData: VoxelData[] = [
           id: "dve_fence",
           inputs: {
             "*": {
-              "@upTex": ["#dve_solid", "dve_dream_log"],
-              "@downTex": ["#dve_solid", "dve_dream_log"],
-              "@northTex": ["#dve_solid", "dve_dream_log"],
-              "@southTex": ["#dve_solid", "dve_dream_log"],
-              "@eastTex": ["#dve_solid", "dve_dream_log"],
-              "@westTex": ["#dve_solid", "dve_dream_log"],
+              "@upTex": ["#dve_voxel", "dve_dream_log"],
+              "@downTex": ["#dve_voxel", "dve_dream_log"],
+              "@northTex": ["#dve_voxel", "dve_dream_log"],
+              "@southTex": ["#dve_voxel", "dve_dream_log"],
+              "@eastTex": ["#dve_voxel", "dve_dream_log"],
+              "@westTex": ["#dve_voxel", "dve_dream_log"],
             },
           },
         },
@@ -57,7 +57,7 @@ export const DVEVoxelData: VoxelData[] = [
           id: "dve_simple_cube",
           inputs: {
             "*": {
-              "@texture": ["#dve_flora", "dve_dream_leaves"],
+              "@texture": ["#dve_voxel", "dve_dream_leaves"],
               "@transparent": true,
             },
           },
@@ -95,12 +95,12 @@ export const DVEVoxelData: VoxelData[] = [
           modRelationSchema: [],
           inputs: {
             "*": {
-              "@upTex": ["#dve_solid", "dve_dream_log"],
-              "@downTex": ["#dve_solid", "dve_dream_log"],
-              "@northTex": ["#dve_solid", "dve_dream_log"],
-              "@southTex": ["#dve_solid", "dve_dream_log"],
-              "@eastTex": ["#dve_solid", "dve_dream_log"],
-              "@westTex": ["#dve_solid", "dve_dream_log"],
+              "@upTex": ["#dve_voxel", "dve_dream_log"],
+              "@downTex": ["#dve_voxel", "dve_dream_log"],
+              "@northTex": ["#dve_voxel", "dve_dream_log"],
+              "@southTex": ["#dve_voxel", "dve_dream_log"],
+              "@eastTex": ["#dve_voxel", "dve_dream_log"],
+              "@westTex": ["#dve_voxel", "dve_dream_log"],
             },
           },
         },
@@ -160,9 +160,9 @@ export const DVEVoxelData: VoxelData[] = [
           ],
           modRelationSchema: [],
           inputs: {
-            "grassy=false": { "@texture": ["#dve_solid", "dve_dream_stone"] },
+            "grassy=false": { "@texture": ["#dve_voxel", "dve_dream_stone"] },
             "grassy=true": {
-              "@texture": ["#dve_solid", "dve_dream_stone", "grassy-top"],
+              "@texture": ["#dve_voxel", "dve_dream_stone", "grassy-top"],
             },
           },
         },
@@ -199,8 +199,8 @@ export const DVEVoxelData: VoxelData[] = [
           id: "dve_lever",
           inputs: {
             "*": {
-              "@baseTexture": ["#dve_solid", "dve_dream_stone"],
-              "@leverTexture": ["#dve_solid", "dve_lever"],
+              "@baseTexture": ["#dve_voxel", "dve_dream_stone"],
+              "@leverTexture": ["#dve_voxel", "dve_lever"],
             },
           },
         },
@@ -224,8 +224,8 @@ export const DVEVoxelData: VoxelData[] = [
           id: "dve_candle",
           inputs: {
             "*": {
-              "@candleTexture": ["#dve_solid", "dve_candle"],
-              "@candleLitTexture": ["#dve_solid", "dve_candle", "lit"],
+              "@candleTexture": ["#dve_voxel", "dve_candle"],
+              "@candleLitTexture": ["#dve_voxel", "dve_candle", "lit"],
             },
           },
         },
@@ -247,7 +247,7 @@ export const DVEVoxelData: VoxelData[] = [
           id: "dve_simple_crossed_panels",
           inputs: {
             "*": {
-              "@texture": ["#dve_flora", "dve_dread_grass"],
+              "@texture": ["#dve_voxel", "dve_dread_grass"],
             },
           },
         },
@@ -269,8 +269,8 @@ export const DVEVoxelData: VoxelData[] = [
           id: "dve_simple_thin_panel",
           inputs: {
             "*": {
-              "@upDownTextures": ["#dve_solid", "dve_dread_stone"],
-              "@sideTextures": ["#dve_solid", "dve_dread_stone"],
+              "@upDownTextures": ["#dve_voxel", "dve_dread_stone"],
+              "@sideTextures": ["#dve_voxel", "dve_dread_stone"],
             },
           },
         },
@@ -330,9 +330,9 @@ export const DVEVoxelData: VoxelData[] = [
           ],
           modRelationSchema: [],
           inputs: {
-            "grassy=false": { "@texture": ["#dve_solid", "dve_dread_stone"] },
+            "grassy=false": { "@texture": ["#dve_voxel", "dve_dread_stone"] },
             "grassy=true": {
-              "@texture": ["#dve_solid", "dve_dread_stone", "grassy-top"],
+              "@texture": ["#dve_voxel", "dve_dread_stone", "grassy-top"],
             },
           },
         },
@@ -395,8 +395,8 @@ export const DVEVoxelData: VoxelData[] = [
           modRelationSchema: [],
           inputs: {
             "grassy=false": {
-              "@upDownTextures": ["#dve_solid", "dve_dread_stone"],
-              "@sideTextures": ["#dve_solid", "dve_dread_stone"],
+              "@upDownTextures": ["#dve_voxel", "dve_dread_stone"],
+              "@sideTextures": ["#dve_voxel", "dve_dread_stone"],
             },
             "grassy=true": {
               "@upDownTextures": [
@@ -404,7 +404,7 @@ export const DVEVoxelData: VoxelData[] = [
                 "dve_dread_stone",
                 "grassy-top",
               ],
-              "@sideTextures": ["#dve_solid", "dve_dread_stone", "grassy-top"],
+              "@sideTextures": ["#dve_voxel", "dve_dread_stone", "grassy-top"],
             },
           },
         },
@@ -440,7 +440,7 @@ export const DVEVoxelData: VoxelData[] = [
           id: "dve_simple_stair",
           inputs: {
             "*": {
-              "@texture": ["#dve_solid", "dve_dread_stone"],
+              "@texture": ["#dve_voxel", "dve_dread_stone"],
             },
           },
         },
@@ -478,7 +478,7 @@ export const DVEVoxelData: VoxelData[] = [
           id: "dve_simple_crossed_panels",
           inputs: {
             "*": {
-              "@texture": ["#dve_solid", "dve_dream_grass"],
+              "@texture": ["#dve_voxel", "dve_dream_grass"],
               "@doubleSided": true,
             },
           },
@@ -516,7 +516,7 @@ export const DVEVoxelData: VoxelData[] = [
         {
           id: "dve_simple_cube",
           inputs: {
-            "*": { "@texture": ["#dve_glow", "dve_dream_lamp"] },
+            "*": { "@texture": ["#dve_voxel", "dve_dream_lamp"] },
           },
         },
       ],
@@ -562,12 +562,12 @@ export const DVEVoxelData: VoxelData[] = [
           modRelationSchema: [],
           inputs: {
             "*": {
-              "@upTex": ["#dve_solid", "dve_dream_stone_pillar"],
-              "@downTex": ["#dve_solid", "dve_dream_stone_pillar"],
-              "@northTex": ["#dve_solid", "dve_dream_stone_pillar"],
-              "@southTex": ["#dve_solid", "dve_dream_stone_pillar"],
-              "@eastTex": ["#dve_solid", "dve_dream_stone_pillar"],
-              "@westTex": ["#dve_solid", "dve_dream_stone_pillar"],
+              "@upTex": ["#dve_voxel", "dve_dream_stone_pillar"],
+              "@downTex": ["#dve_voxel", "dve_dream_stone_pillar"],
+              "@northTex": ["#dve_voxel", "dve_dream_stone_pillar"],
+              "@southTex": ["#dve_voxel", "dve_dream_stone_pillar"],
+              "@eastTex": ["#dve_voxel", "dve_dream_stone_pillar"],
+              "@westTex": ["#dve_voxel", "dve_dream_stone_pillar"],
             },
           },
         },
@@ -647,7 +647,7 @@ export const DVEVoxelData: VoxelData[] = [
           id: "dve_pillar_cube",
           inputs: {
             "*": {
-              "@sideConnectedTex": ["#dve_solid", "dve_dream_stone_pillar"],
+              "@sideConnectedTex": ["#dve_voxel", "dve_dream_stone_pillar"],
               "@sideDisconnectedTex": [
                 "#dve_solid",
                 "dve_dream_stone_pillar",
@@ -663,8 +663,8 @@ export const DVEVoxelData: VoxelData[] = [
                 "dve_dream_stone_pillar",
                 "side-bottom",
               ],
-              "@upTex": ["#dve_solid", "dve_dream_stone_pillar", "top"],
-              "@downTex": ["#dve_solid", "dve_dream_stone_pillar", "top"],
+              "@upTex": ["#dve_voxel", "dve_dream_stone_pillar", "top"],
+              "@downTex": ["#dve_voxel", "dve_dream_stone_pillar", "top"],
             },
           },
         },

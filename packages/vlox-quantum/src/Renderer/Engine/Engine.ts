@@ -1,8 +1,12 @@
+import { Observable } from "@amodx/core/Observers/Observable";
+
 export class Engine {
   device: GPUDevice;
   adapter: GPUAdapter;
   context: GPUCanvasContext;
   presentationFormat: GPUTextureFormat;
+
+  resizeObserver = new Observable();
   constructor(public canvas: HTMLCanvasElement) {}
 
   async init() {

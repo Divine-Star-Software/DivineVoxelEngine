@@ -98,7 +98,7 @@ export default async function CreateDisplayIndex(
 
           const mesh = new Mesh(crypto.randomUUID(), displayScene);
           if (!materialMap.has(renderedSubstance)) {
-            const newMat = (material as DVEBRClassicMaterial).clone(
+            const newMat = (material as any).clone(
               displayScene
             );
 

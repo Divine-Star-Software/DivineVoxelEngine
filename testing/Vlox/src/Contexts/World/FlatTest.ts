@@ -38,7 +38,13 @@ export async function flatTest() {
     }
     for (let x = startX; x < endX; x += 16) {
       for (let z = startZ; z < endZ; z += 16) {
-        WorldGen.pyramidColumn(x, z);
+         const t = Math.random();
+        if( t> .6) {
+          WorldGen.pyramidColumn(x, z);
+        } else {
+          WorldGen.flatColumn(x, z);
+        } 
+      //  PerlinGen.generateTest(x,z);
       }
     }
   }

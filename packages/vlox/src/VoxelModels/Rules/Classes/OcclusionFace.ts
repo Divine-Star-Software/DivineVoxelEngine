@@ -1,5 +1,5 @@
 import { Vec3Array, Vector3Like } from "@amodx/math";
-import { Quad } from "@amodx/meshing/Classes/Quad";
+import { Quad } from "@amodx/meshing/Primitives/Quad";
 import { VoxelFaceNames } from "../../../Math";
 
 export abstract class OcclusionFace {
@@ -428,7 +428,7 @@ export class OcclusionQuadFace extends OcclusionFace {
   ) {
     super();
 
-    this.normals = Quad.GetQuadNormal(
+    this.normals = Quad.GetQuadNormalLeftHanded(
       _points[0],
       _points[1],
       _points[2],

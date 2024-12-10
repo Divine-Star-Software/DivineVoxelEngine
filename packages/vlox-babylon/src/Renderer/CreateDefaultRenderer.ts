@@ -13,6 +13,8 @@ import { TextureBuilder } from "@divinevoxel/vlox/Textures/TextureBuilder";
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
 import { SceneTool } from "../Tools/SceneTool.js";
 import InitDefaultEffects from "../Effects/InitDefaultEffects.js";
+import { TextureData } from "@divinevoxel/vlox/Textures/Texture.types.js";
+import { ImageArrayTexture } from "./Textures/ImageArrayTexture.js";
 const defaultSubstances = [
   "#dve_glow",
   "#dve_flora",
@@ -21,6 +23,21 @@ const defaultSubstances = [
 
   "#dve_liquid",
 ];
+
+export async function CreateTextures(scene: Scene, textureData: TextureData[]) {
+  TextureManager.getOrAddTextureType("#dve_voxel");
+  TextureManager.getOrAddTextureType("#dve_node");
+
+  await TextureBuilder.setUpImageCreation();
+  TextureManager.registerTexture(textureData);
+  await TextureManager.$INIT();
+  await TextureManager.createRawDataMap();
+
+  for (const [key, type] of TextureManager.textureTypes) {
+    if (!type.images!.length) continue;
+    type.shaderTexture = new ImageArrayTexture(type.images!, scene);
+  }
+}
 
 export function CreateDefaultRenderer(
   initData: DVEBRDefaultMaterialBaseData & {
@@ -31,9 +48,11 @@ export function CreateDefaultRenderer(
     afterCreate?: (sceneTool: SceneTool) => Promise<void>;
   }
 ): DVEBabylonRenderer {
-  const renderer = new DVEBabylonRenderer({
-    scene: initData.scene,
-  });
+  const renderer = DVEBabylonRenderer.instance
+    ? DVEBabylonRenderer.instance
+    : new DVEBabylonRenderer({
+        scene: initData.scene,
+      });
 
   const createVoxelShader = (id: string) => {
     const shader = DefaultMaterialManager.shaders.createVoxelShader(id);
@@ -42,6 +61,7 @@ export function CreateDefaultRenderer(
     DefaultMaterialManager.shaders.register.create([shader]);
     return id;
   };
+
   const DefaultSubstances: NodeSubstanceData[] = defaultSubstances.map((id) => {
     return {
       id,
@@ -54,8 +74,8 @@ export function CreateDefaultRenderer(
         stencil: id == "#dve_liquid" ? true : undefined,
         mipMapBias: -0.6,
       },
-      textureType: id,
-      shaderId: createVoxelShader(id),
+      textureType: "#dve_voxel",
+      shaderId: id,
       mesh: {
         boundingBoxMaxSize: [1, 1, 1],
         type: "chunk",
@@ -66,22 +86,14 @@ export function CreateDefaultRenderer(
   renderer.init = async (dver) => {
     const substances = [...DefaultSubstances, ...initData.substances];
 
-    TextureManager.getOrAddTextureType("#dve_node_texture");
-    for (const data of substances) {
-      TextureManager.getOrAddTextureType(data.textureType);
-    }
     DefaultMaterialManager.shaders.register.create([
       DefaultMaterialManager.shaders.createSkyBoxShader("#dve_skybox"),
-      DefaultMaterialManager.shaders.createBasicTextureShader(
-        "#dve_node_texture"
-      ),
+      DefaultMaterialManager.shaders.createBasicTextureShader("#dve_node"),
     ]);
 
-    await TextureBuilder.setUpImageCreation();
-    TextureManager.registerTexture(initData.textureData);
-
-    await TextureManager.$INIT();
-    await TextureManager.createRawDataMap();
+    const skybox = DefaultMaterialManager.shaders
+      .createBasicTextureShader("#dve_node")
+      .compile();
 
     const uvMap = TextureManager.generateTextureUVMap();
 
@@ -95,7 +107,7 @@ export function CreateDefaultRenderer(
       const newMaterial = {
         id: substance.id,
         shaderId: substance.id,
-        textureTypeId: substance.id,
+        textureTypeId: "#dve_voxel",
         ...substance.material,
       };
 
@@ -112,9 +124,9 @@ export function CreateDefaultRenderer(
 
     materials.push(
       {
-        id: "#dve_node_texture",
-        shaderId: "#dve_node_texture",
-        textureTypeId: "#dve_node_texture",
+        id: "#dve_node",
+        shaderId: "#dve_node",
+        textureTypeId: "#dve_node",
         alphaBlending: false,
         alphaTesting: true,
       },
@@ -128,8 +140,8 @@ export function CreateDefaultRenderer(
     );
     meshes.push(
       new DVEBRNodeMesh({
-        id: "#dve_node_texture",
-        materialId: "#dve_node_texture",
+        id: "#dve_node",
+        materialId: "#dve_node",
         boundingBoxMaxSize: [1, 1, 1],
       })
     );

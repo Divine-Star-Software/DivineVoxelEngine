@@ -67,6 +67,7 @@ export class VoxelFinalPipeLine {
     this._textureBindGroupLayout =
       this.scene.scene.engine.device.createBindGroupLayout({
         entries: [
+          //scene texture
           {
             binding: 0,
             visibility: GPUShaderStage.FRAGMENT,
@@ -77,6 +78,7 @@ export class VoxelFinalPipeLine {
             visibility: GPUShaderStage.FRAGMENT,
             texture: { sampleType: "unfilterable-float" },
           },
+          //normal texture
           {
             binding: 2,
             visibility: GPUShaderStage.FRAGMENT,
@@ -86,6 +88,28 @@ export class VoxelFinalPipeLine {
             binding: 3,
             visibility: GPUShaderStage.FRAGMENT,
             texture: { sampleType: "unfilterable-float" },
+          },
+          //light texture
+          {
+            binding: 4,
+            visibility: GPUShaderStage.FRAGMENT,
+            sampler: { type: "non-filtering" },
+          },
+          {
+            binding: 5,
+            visibility: GPUShaderStage.FRAGMENT,
+            texture: { sampleType: "unfilterable-float" },
+          },
+          //ao texture
+          {
+            binding: 6,
+            visibility: GPUShaderStage.FRAGMENT,
+            sampler: { type: "filtering" },
+          },
+          {
+            binding: 7,
+            visibility: GPUShaderStage.FRAGMENT,
+            texture: { sampleType: "float" },
           },
         ],
       });
@@ -133,23 +157,43 @@ export class VoxelFinalPipeLine {
     this._pipeline = pipeline;
   }
 
-  setTextures(sceneTexture: GPUTexture, effectTexture: GPUTexture) {
+  setTextures(
+    sceneTexture: GPUTexture,
+    normalTexture: GPUTexture,
+    lightTexture: GPUTexture,
+    aoTexture: GPUTexture
+  ) {
     const sceneTextureView = sceneTexture.createView({
       format: this.scene.scene.engine.presentationFormat,
     });
     const sceneTextureSampler = this.scene.scene.engine.device.createSampler();
-    const effectTextureView = effectTexture.createView({
+    const normalTextureView = normalTexture.createView({
+      format: "rgba16float",
+    });
+    const normalTextureSampler = this.scene.scene.engine.device.createSampler({});
+    const lightTextureView = lightTexture.createView({
       format: "rgba32float",
     });
-    const effectTextureSampler = this.scene.scene.engine.device.createSampler();
+    const lightTextureSampler = this.scene.scene.engine.device.createSampler();
+    const aoTextureView = aoTexture.createView({
+      format: "rgba16float",
+    });
+    const aoTextureSampler = this.scene.scene.engine.device.createSampler({
+      minFilter: "linear",
+      magFilter: "linear",
+    });
 
     this._textureBindGroup = this.scene.scene.engine.device.createBindGroup({
       layout: this._textureBindGroupLayout,
       entries: [
         { binding: 0, resource: sceneTextureSampler },
         { binding: 1, resource: sceneTextureView },
-        { binding: 2, resource: effectTextureSampler },
-        { binding: 3, resource: effectTextureView },
+        { binding: 2, resource: normalTextureSampler },
+        { binding: 3, resource: normalTextureView },
+        { binding: 4, resource: lightTextureSampler },
+        { binding: 5, resource: lightTextureView },
+        { binding: 6, resource: aoTextureSampler },
+        { binding: 7, resource: aoTextureView },
       ],
     });
   }

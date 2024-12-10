@@ -2,7 +2,7 @@ import { Vec3Array, Vec4Array, Vector3Like } from "@amodx/math";
 import { VoxelFaces } from "../../../../Math";
 import { VoxelBoxGeometryNode } from "../../../VoxelModel.types";
 
-import { Quad } from "@amodx/meshing/Classes/Quad";
+import { Quad } from "@amodx/meshing/Primitives/Quad";
 
 import { addQuadWeights } from "../../../../Mesher/Calc/CalcConstants";
 
@@ -117,6 +117,8 @@ export function GetBoxGeometryNodeData(
     quads[VoxelFaces.West],
     VoxelFaces.West
   );
+
+ // console.log(quads);
   return {
     quads,
     vertexWeights,

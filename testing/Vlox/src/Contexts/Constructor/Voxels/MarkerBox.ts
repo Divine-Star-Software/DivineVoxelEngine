@@ -12,7 +12,7 @@ export function GetMarkerBox(): VoxelConstructor {
       for (let i = 0; i < 16; i++) {
         textures.push(
           textureMangager.getTextureUV([
-            "#dve_solid",
+            "#dve_voxel",
             "dve_light_debug",
             `light-level-${i}`,
           ])

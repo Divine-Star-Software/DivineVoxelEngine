@@ -20,4 +20,32 @@ export class DVEBRShaderStore extends URIShaderStore {
       }`
     ] = shader;
   }
+  static getShader(id: string, type: URIShaderTypes): string | null {
+    const code =
+      Effect.ShadersStore[
+        `${id}${
+          type == URIShaderTypes.Vertex ? "VertexShader" : "FragmentShader"
+        }`
+      ];
+    if (!code) return null;
+    return code;
+  }
+  static storeShader(id: string, type: URIShaderTypes, shader: string): void {
+    Effect.ShadersStore[
+      `${id}${
+        type == URIShaderTypes.Vertex ? "VertexShader" : "FragmentShader"
+      }`
+    ] = shader;
+  }
+  static _shaderData = new Map<
+    string,
+    { uniforms: string[]; attributes: string[] }
+  >();
+
+  static setShaderData(id: string, uniforms: string[], attributes: string[]) {
+    this._shaderData.set(id, { uniforms, attributes });
+  }
+  static getShaderData(id: string) {
+    return this._shaderData.get(id);
+  }
 }

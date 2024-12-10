@@ -237,6 +237,7 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
   static createVoxelShader(id: string) {
     const shader = this._defaultShader.clone(id);
     this._addInstances(shader);
+    const compiled = shader.compile();
     return shader;
   }
 

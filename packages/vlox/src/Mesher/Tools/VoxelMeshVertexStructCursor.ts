@@ -3,10 +3,12 @@ export class VoxelMeshVertexStructCursor {
   static VertexByteSize = this.VertexFloatSize * 4;
   static PositionOffset = 0;
   static NormalOffset = 4;
-  static VoxelDataOFfset = 8;
-  static TextureIndexOffset = 9;
-  static UVOffset = 11;
-  static ColorOffset = 13;
+  static TextureIndexOffset = 8;
+  static UVOffset = 12;
+  static ColorOffset = 14;
+  static VoxelDataOFfset = 18;
+
+
 
   // position
   get positionX() {

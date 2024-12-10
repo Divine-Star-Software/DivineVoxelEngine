@@ -134,10 +134,5 @@ export function CompactVoxelMesh(tool: VoxelMesherDataTool): CompactMeshData {
     if (tool.bvhTool.tree[i] == -Infinity) tool.bvhTool.tree[i] = -1;
   }
 
-
-  return [
-    0,
-    finalBuffer,
-    dataMap
-  ];
+  return [0, finalBuffer, dataMap];
 }

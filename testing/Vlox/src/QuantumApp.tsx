@@ -62,9 +62,9 @@ export function App() {
 
       const gui = new GUI();
       const cameraSettings = gui.addFolder("Camera Settings");
-      cameraSettings.add(camera, "fov", 0, 200);
-      cameraSettings.add(camera, "near", camera.near, 1);
-      cameraSettings.add(camera, "far", 0, 100000);
+      cameraSettings.add(camera.struct, "fov", 0, 200);
+      cameraSettings.add(camera.struct, "near", camera.struct.near, 1);
+      cameraSettings.add(camera.struct, "far", 0, 100000);
       cameraSettings.open();
       const cameraPositionFolder = gui.addFolder("Camera Position");
       cameraPositionFolder.add(camera.position, "x", -100, 100, 0.5);
@@ -76,9 +76,9 @@ export function App() {
       cameraTargetFolder.add(camera.target, "y", -100, 100, 0.5);
       cameraTargetFolder.add(camera.target, "z", -100, 100, 0.5);
       const sunFolder = gui.addFolder("Sun");
-      sunFolder.add(scene.voxelScene.sunPosition, "x", -100, 100, 0.5);
-      sunFolder.add(scene.voxelScene.sunPosition, "y", 30, 100, 0.5);
-      sunFolder.add(scene.voxelScene.sunPosition, "z", -100, 100, 0.5);
+      sunFolder.add(scene.voxelScene.sunPosition, "x", -200, 200, 0.5);
+      sunFolder.add(scene.voxelScene.sunPosition, "y", -100, 100, 0.5);
+      sunFolder.add(scene.voxelScene.sunPosition, "z", -200, 200, 0.5);
       sunFolder.open();
       const sceneTool = new SceneTool();
       sceneTool.fog.setDensity(0.00001);

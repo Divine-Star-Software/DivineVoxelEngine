@@ -59,7 +59,7 @@ export class NodeMeshTool {
         "build-node-mesh",
         [
           location,
-          "#dve_node_texture",
+          "#dve_node",
           {
             textureId: textureId,
             textureData: rawTextureData,
@@ -69,7 +69,7 @@ export class NodeMeshTool {
         (data: SetNodeMesh | false) => {
           if (!data) return onDone(false);
           const mesh = DVEBabylonRenderer.instance.nodes.meshes
-            .get("#dve_node_texture")
+            .get("#dve_node")
             .createMesh([data[0][1], data[0][2], data[0][3]], data[1]);
           if (!mesh) return onDone(false);
 

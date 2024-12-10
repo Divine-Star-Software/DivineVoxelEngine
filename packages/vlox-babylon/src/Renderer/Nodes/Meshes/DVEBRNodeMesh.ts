@@ -1,13 +1,10 @@
-import {
-  type Scene,
-  type Engine,
-} from "@babylonjs/core";
+import { type Scene, type Engine } from "@babylonjs/core";
 import type { Vec3Array } from "@amodx/math";
 import { Geometry } from "@babylonjs/core/Meshes/geometry.js";
 import { Vector3 } from "@babylonjs/core/Maths/";
 import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo.js";
-import type { EngineSettingsData } from "@divinevoxel/vlox/Types/EngineSettings.types";
+import { EngineSettingsData } from "@divinevoxel/vlox/Types/EngineSettings.types";
 
 import type {
   DVENodeMeshAttributes,
@@ -19,7 +16,7 @@ import { DVENodeMesh } from "@divinevoxel/vlox/Interfaces/Render/Nodes/Meshes/DV
 import { DVEBabylonRenderer } from "../../DVEBabylonRenderer";
 import { DVEBRMesh } from "./DVEBRMesh";
 import { CompactMeshData } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
-
+import { EngineSettings } from "@divinevoxel/vlox/Data/Settings/EngineSettings";
 
 export class DVEBRNodeMesh extends DVENodeMesh {
   static UpdateVertexData(mesh: Mesh, engine: Engine, data: CompactMeshData) {
@@ -88,8 +85,6 @@ export class DVEBRNodeMesh extends DVENodeMesh {
     dveMesh._mesh = mesh;
     mesh.hasVertexAlpha = false;
 
-
-
     //  viewer.createBoxes(0);
 
     const mat = DVEBabylonRenderer.instance.nodes.materials.get(this.data.id);
@@ -101,7 +96,7 @@ export class DVEBRNodeMesh extends DVENodeMesh {
       mesh.parent = DVEBabylonRenderer.instance.foManager.activeNode;
     }
 
-    if (!this.checkCollisions) {
+    if (! EngineSettings.settings.meshes.checkCollisions) {
       mesh.doNotSyncBoundingInfo = true;
     }
     mesh.isPickable = this.pickable;
@@ -120,7 +115,10 @@ export class DVEBRNodeMesh extends DVENodeMesh {
       geo!.useBoundingInfoFromGeometry = true;
     }
 
-    mesh.checkCollisions = this.checkCollisions;
+    mesh.checkCollisions = EngineSettings.settings.meshes.checkCollisions;
+    console.warn(
+      mesh.checkCollisions
+    )
     mesh.doNotSerialize = this.serialize;
     mesh.alwaysSelectAsActiveMesh = true;
 
@@ -167,13 +165,13 @@ export class DVEBRNodeMesh extends DVENodeMesh {
   }
 
   _clearCached(dveMesh: DVEBRMesh) {
-    if (!this.clearCachedGeometry) return;
-    /*     const mesh = dveMesh._mesh;
+    if (!EngineSettings.settings.meshes.clearChachedGeometry) return;
+    const mesh = dveMesh._mesh;
     mesh.geometry!.clearCachedData();
     if (mesh.subMeshes) {
       for (const sm of mesh.subMeshes) {
         sm.setBoundingInfo(this.defaultBb);
       }
-    } */
+    }
   }
 }

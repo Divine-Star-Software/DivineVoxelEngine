@@ -14,19 +14,109 @@ import {
   DVEBRTextureSamplingModeMap,
 } from "../Constants/DVEBRTextureConstants";
 import { DVEBRScene } from "../Scene/DVEBRScene";
-import { Constants, Engine, InternalTexture, InternalTextureSource, Scene, Texture } from "@babylonjs/core";
+import {
+  Constants,
+  Engine,
+  InternalTexture,
+  InternalTextureSource,
+  Scene,
+  Texture,
+} from "@babylonjs/core";
 import { TextureBuilder } from "@divinevoxel/vlox/Textures/TextureBuilder";
 
-export class DVEBRTexture extends URITexture<DVEBRScene, Texture> {
+export class ImageTexture extends Texture {
+  constructor(imgs: HTMLImageElement[], scene: Scene) {
+    super(null, scene);
 
-   clone(scene: Scene) {
+    const gl = (scene.getEngine() as any)._gl as WebGL2RenderingContext;
+    if (!gl.TEXTURE_2D_ARRAY) {
+      throw new Error("TEXTURE_2D_ARRAY is not supported on this device.");
+    }
+
+    const width = imgs[0].width;
+    const height = imgs[0].height;
+    const layers = imgs.length;
+
+    const texture = gl.createTexture()!;
+
+    gl.bindTexture(gl.TEXTURE_2D_ARRAY, texture);
+
+    gl.texStorage3D(
+      gl.TEXTURE_2D_ARRAY,
+      Math.log2(Math.max(width, height)) + 1,
+      gl.RGBA8,
+      width,
+      height,
+      layers
+    );
+
+   
+    for (let layer = 0; layer < imgs.length; layer++) {
+      const img = imgs[layer];
+
+      gl.texSubImage3D(
+        gl.TEXTURE_2D_ARRAY,
+        0, 
+        0,
+        0,
+        layer, 
+        width,
+        height,
+        1, 
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        img
+      );
+    }
+    gl.generateMipmap(gl.TEXTURE_2D_ARRAY);
+    gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.bindTexture(gl.TEXTURE_2D_ARRAY, null);
+
+    const itex = new InternalTexture(
+      scene.getEngine(),
+      InternalTextureSource.Unknown
+    );
+    itex.width = width;
+    itex.height = height;
+    itex.isReady = true;
+    itex.type = Engine.TEXTURETYPE_UNSIGNED_INT;
+    itex.is2DArray = true;
+
+    itex._hardwareTexture = {
+      setUsage() {
+      },
+      reset() {
+      },
+      release() {
+      },
+      set(hardware) {
+      },
+      underlyingResource: texture,
+    };
+
+    this._texture = itex;
+
+    this.updateSamplingMode(Texture.NEAREST_NEAREST_MIPLINEAR)
+  }
+}
+
+export class DVEBRTexture extends URITexture<DVEBRScene, Texture> {
+  clone(scene: Scene) {
     const dveTexture = new DVEBRTexture(this.data);
     const data = this.data;
     if (data.type == URITextureTypes.Texture2D) {
     }
     if (data.type == URITextureTypes.Texture2DArray) {
       const textureData = data as URITexture2DArrayData;
-      let rawData: Uint8ClampedArray | null = null;
+      console.warn("Create texture", textureData);
+
+      if (Array.isArray(textureData.data)) {
+        const texture = new ImageTexture(textureData.data as any, scene);
+        dveTexture._texture = texture;
+      }
+
+      /*      let rawData: Uint8ClampedArray | null = null;
       if (textureData.data instanceof Uint8ClampedArray) {
         rawData = textureData.data;
       }
@@ -38,7 +128,7 @@ export class DVEBRTexture extends URITexture<DVEBRScene, Texture> {
         (textureData.format !== undefined &&
           DVEBRTextureFormatMap[textureData.format]) ||
           DVEBRTextureFormatMap[URITextureFormat.Rgba],
-          scene,
+        scene,
         //gen mip maps
         true,
         //invert y
@@ -48,8 +138,7 @@ export class DVEBRTexture extends URITexture<DVEBRScene, Texture> {
           DVEBRTextureSamplingModeMap[
             URITextureSamplingMode.NearestLinearMipLinear
           ]
-      );
-      dveTexture._texture = texture;
+      ); */
     }
     return dveTexture;
   }
@@ -59,7 +148,18 @@ export class DVEBRTexture extends URITexture<DVEBRScene, Texture> {
     }
     if (data.type == URITextureTypes.Texture2DArray) {
       const textureData = data as URITexture2DArrayData;
-      let rawData: Uint8ClampedArray | null = null;
+
+      if (Array.isArray(textureData.data)) {
+        console.log("Create image", textureData);
+        const texture = new ImageTexture(
+          textureData.data as any,
+          data.scene._scene
+        );
+
+        this._texture = texture;
+        return this._texture;
+      }
+      /*    let rawData: Uint8ClampedArray | null = null;
       if (textureData.data instanceof Uint8ClampedArray) {
         rawData = textureData.data;
       }
@@ -68,7 +168,7 @@ export class DVEBRTexture extends URITexture<DVEBRScene, Texture> {
         throw new Error(
           `Could not create Raw2DTextureArray invalid data. ${data}`
         );
- 
+
       const texture = new RawTexture2DArray(
         rawData,
         textureData.width,
@@ -87,9 +187,9 @@ export class DVEBRTexture extends URITexture<DVEBRScene, Texture> {
           DVEBRTextureSamplingModeMap[
             URITextureSamplingMode.NearestLinearMipLinear
           ]
-      );
+      ); */
 
- /*
+      /*
       const engine = data.scene._scene.getEngine() as Engine;
       const iTexture = new InternalTexture(engine,InternalTextureSource.Raw2DArray,false);
    
@@ -158,8 +258,6 @@ export class DVEBRTexture extends URITexture<DVEBRScene, Texture> {
 
 
 */
-      this._texture = texture;
-      return texture;
     }
     throw new Error(`Unsuppourted texture type`);
   }

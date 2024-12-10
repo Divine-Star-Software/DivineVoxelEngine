@@ -165,4 +165,29 @@ export const PerlinGen = {
     }
     brush.stop();
   },
+  generateTest(chunkX: number, chunkZ: number) {
+    brush.setDimension("main");
+    brush.setId("dve_dream_stone")
+    brush.start();
+    //  return this.generateBlankChunk(chunkX, chunkZ);
+    let totalTrees = 0;
+    const dataTool = brush._dt;
+    for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
+      for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
+        for (let y = 0; y < this.worldHeight; y++) {
+          if (y == 0) {
+            brush.setId("dve_dream_stone").setXYZ(x, y, z).paint();
+            continue;
+          }
+
+          if (this.inNoiseRange(x, y, z)) {
+            brush.setId("dve_dream_stone");
+            brush.setXYZ(x, y, z).paint();
+          } 
+        
+        }
+      }
+    }
+    brush.stop();
+  },
 };

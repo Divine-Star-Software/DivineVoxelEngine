@@ -76,7 +76,7 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
       const newMat = new DVEBRPBRMaterial(matData.id, {
         scene: scene,
         data: {
-          shaderId: matData.shaderId,
+          effectId: matData.shaderId,
           textureTypeId: matData.textureTypeId || "",
         },
         ...matData,

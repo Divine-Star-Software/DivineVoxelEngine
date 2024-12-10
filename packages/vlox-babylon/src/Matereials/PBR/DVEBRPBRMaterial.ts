@@ -19,7 +19,7 @@ import { TextureType } from "@divinevoxel/vlox/Textures/TextureType";
 import { DVEBRTexture } from "Renderer/Textures/DVEBRTexture.js";
 type DVEBRPBRMaterialBaseData = {
   textureTypeId: string;
-  shaderId: string;
+  effectId: string;
 
   material?: PBRBaseMaterial;
   plugin?: DVEPBRMaterialPlugin;
@@ -63,25 +63,17 @@ export class DVEBRPBRMaterial extends URIMaterial<
     );
 
     this.scene = data.scene._scene;
-    if (!textureType && data.data.textureTypeId) {
-      throw new Error(
-        `Could find the texture type for material ${this.id}. Texture typeid:  ${data.data.textureTypeId}`
-      );
-    } else if (textureType) {
-      this.texture = textureType;
-    }
 
     const shader = DefaultMaterialManager.shaders.register.get(
-      data.data.shaderId
+      data.data.effectId
     );
 
     if (!shader) {
       throw new Error(
-        `Could find the shader for material ${this.id}. Shader id:  ${data.data.shaderId}`
+        `Could find the shader for material ${this.id}. Shader id:  ${data.data.effectId}`
       );
     }
-    if (textureType) textureType.addToShader(shader);
-
+  
     this.shader = shader;
     shader.compile();
     const material = new PBRMaterial(shader.id, data.scene._scene);
@@ -90,16 +82,13 @@ export class DVEBRPBRMaterial extends URIMaterial<
       const effect = this._material.getEffect();
 
       if (this?.texture) {
-        for (const [segment, textureSemgnet] of this.texture.segments) {
-          if (!textureSemgnet.shaderTexture) {
-            continue;
-          }
+   
 
           effect.setTexture(
-            textureSemgnet.textureID,
-            textureSemgnet.shaderTexture._texture
+            this.texture.textureID,
+            this.texture.shaderTexture!._texture
           );
-        }
+        
       }
 
       if (!synced) {

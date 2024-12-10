@@ -84,7 +84,7 @@ return base *  VOXEL[0];
     body: {
       GLSL: () => /* glsl */ `
 
-     return  texture(tex, vec3(UV.x,UV.y,index),mipMapBias + bias);
+     return  texture(tex, vec3(UV.x,UV.y,index));
   `,
     },
   });
@@ -103,7 +103,7 @@ return base *  VOXEL[0];
    UV.xy += ${args.mainVarying}.xy;
    vec4 rgb = getBase(${args.textureID},UV.xy,${args.mainVarying}.z,0.);
 
-      vec4 oRGB1 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.x,-10.);
+/*       vec4 oRGB1 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.x,-10.);
       vec4 oRGB2 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.y,-10.);
       vec4 oRGB3 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.z,-10.);
       vec4 oRGB4 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.w,-10.);
@@ -119,7 +119,7 @@ return base *  VOXEL[0];
       if(oRGB4.a > 0.5) {
          rgb = oRGB4;
       }
-   
+    */
    return rgb;
     `,
     },

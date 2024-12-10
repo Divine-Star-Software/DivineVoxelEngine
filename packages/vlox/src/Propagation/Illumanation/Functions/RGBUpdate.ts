@@ -1,6 +1,6 @@
 import type { LightTaskRequest } from "../../../Contexts/Constructor/Tasks/TasksRequest";
 import { IlluminationManager as IM } from "../IlluminationManager.js";
-
+//@todo change array to not use push and shift
 export function RGBUpdate(tasks: LightTaskRequest) {
   IM.setDimension(tasks.origin[0]);
   const queue = tasks.queues.rgb.update;

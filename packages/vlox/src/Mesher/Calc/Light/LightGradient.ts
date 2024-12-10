@@ -3,7 +3,7 @@ import type { VoxelMesherDataTool } from "../../Tools/VoxelMesherDataTool";
 import { OverrideManager } from "../../Rules/Overrides/OverridesManager.js";
 import { LightData } from "../../../Data/LightData";
 
-import { QuadScalarVertexData, QuadVec3ArrayVertexData } from "@amodx/meshing/Classes/QuadVertexData";
+import { QuadScalarVertexData, QuadVec3ArrayVertexData } from "@amodx/meshing/Primitives/QuadVertexData";
 import { SubstanceRules } from "../../Rules/SubstanceRules.js";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 import { VoxelFaces, VoxelFaceDirections } from "../../../Math";

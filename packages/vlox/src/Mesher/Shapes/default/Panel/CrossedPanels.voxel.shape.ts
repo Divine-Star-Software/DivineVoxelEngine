@@ -2,7 +2,7 @@ import { ShapeTool } from "../../ShapeTool.js";
 import { VoxelGeometry } from "../../../Geometry/VoxelGeometry.js";
 import { WorldSpaces } from "../../../../Data/World/WorldSpaces.js";
 import { VoxelShapeBase } from "../../VoxelShapeBase.js";
-import { Quad } from "@amodx/meshing/Classes/Quad.js";
+import { Quad } from "@amodx/meshing/Primitives/Quad.js";
 import { VoxelShaderData } from "../../../../Data/VoxelShaderData.js";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types.js";
 

@@ -2,7 +2,7 @@ import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 import { ShapeTool } from "../../ShapeTool.js";
 import { VoxelShapeBase } from "../../VoxelShapeBase.js";
 import { QuadUVData } from "@amodx/meshing/Geometry.types.js";
-import { Quad } from "@amodx/meshing/Classes/Quad.js";
+import { Quad } from "@amodx/meshing/Primitives/Quad.js";
 import { VoxelGeometry } from "../../../Geometry/VoxelGeometry.js";
 import { VoxelShaderData } from "../../../../Data/VoxelShaderData.js";
 import { PanelStates } from "./PanelStates.js";

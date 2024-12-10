@@ -6,7 +6,7 @@ import { VoxelFaces, VoxelFacesArray } from "../../Math";
 import { Vec3Array, Vec4Array, Vector2Like } from "@amodx/math";
 import { VoxelRelativeCubeIndex } from "../../VoxelModels/Indexing/VoxelRelativeCubeIndex";
 import { LightData } from "../../Data/LightData";
-import { Quad } from "@amodx/meshing/Classes/Quad";
+import { Quad } from "@amodx/meshing/Primitives/Quad";
 
 export const GradientCheckSets: Record<
   VoxelFaces,

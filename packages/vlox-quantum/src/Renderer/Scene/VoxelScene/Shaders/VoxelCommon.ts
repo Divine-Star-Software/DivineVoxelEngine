@@ -4,8 +4,9 @@ struct CameraData {
     projection: mat4x4f,
     view: mat4x4f,
     viewProjection: mat4x4f,
-    //x -> FOV in radians 
-    settings: vec3f,
+    inverseViewProjection: mat4x4f,
+    //x -> FOV in radians, y -> near, z -> far, w -> aspect
+    settings: vec4f,
     position: vec3f,
     forward: vec3f,
     right: vec3f,
@@ -29,5 +30,8 @@ var<uniform> camera: CameraData;
 
 @group(0) @binding(1)
 var<uniform> scene_props: SceneProperties;
+
+@group(0) @binding(2)
+var<uniform> time: f32;
 `
 }
