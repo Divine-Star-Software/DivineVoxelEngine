@@ -20,9 +20,9 @@ export const FaceDataCalc = {
 
     const faceNormal = VoxelFaceDirections[face];
     tool.nVoxel.loadInAt(
-      tool.voxel.x + faceNormal[0],
-      tool.voxel.y + faceNormal[1],
-      tool.voxel.z + faceNormal[2]
+      tool.position.x + faceNormal[0],
+      tool.position.y + faceNormal[1],
+      tool.position.z + faceNormal[2]
     );
 
     const otherLight = tool.nVoxel.getLight();
@@ -39,9 +39,9 @@ export const FaceDataCalc = {
 
       for (let i = 0; i < 9; i += 3) {
         const didLoad = tool.nVoxel.loadInAt(
-          GradientCheckSets[face][vertex][i] + tool.voxel.x,
-          GradientCheckSets[face][vertex][i + 1] + tool.voxel.y,
-          GradientCheckSets[face][vertex][i + 2] + tool.voxel.z
+          GradientCheckSets[face][vertex][i] + tool.position.x,
+          GradientCheckSets[face][vertex][i + 1] + tool.position.y,
+          GradientCheckSets[face][vertex][i + 2] + tool.position.z
         );
 
         if (!settings.doLight || !didLoad) continue;

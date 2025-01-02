@@ -45,7 +45,7 @@ export const FlowGradient = {
     const cs = tool.voxel.getLevelState();
 
     let log = false;
-    if (tool.voxel.x == -1 && tool.voxel.z == -1) {
+    if (tool.position.x == -1 && tool.position.z == -1) {
       log = true;
     }
 
@@ -57,16 +57,16 @@ export const FlowGradient = {
       let zerCount = 0;
 
       for (let i = 0; i < 6; i += 2) {
-        const cx = checkSet[i] + tool.voxel.x;
-        const cz = checkSet[i + 1] + tool.voxel.z;
+        const cx = checkSet[i] + tool.position.x;
+        const cz = checkSet[i + 1] + tool.position.z;
 
-        const aboveLevel = this.getLevel(tool, cx, tool.voxel.y + 1, cz);
+        const aboveLevel = this.getLevel(tool, cx, tool.position.y + 1, cz);
 
         if (aboveLevel > 0) {
           finalLevel = 9;
           break;
         }
-        const level = this.getLevel(tool, cx, tool.voxel.y, cz);
+        const level = this.getLevel(tool, cx, tool.position.y, cz);
 
         if (level == -1) {
           zerCount++;

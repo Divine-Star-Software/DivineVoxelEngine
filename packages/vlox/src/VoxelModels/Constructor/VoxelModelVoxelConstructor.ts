@@ -78,9 +78,9 @@ export class VoxelModelVoxelConstructor extends VoxelConstructor {
 
   process(tool: VoxelMesherDataTool) {
     const hashed = VoxelGeometryLookUp.getHash(
-      tool.voxel.x,
-      tool.voxel.y,
-      tool.voxel.z
+      tool.position.x,
+      tool.position.y,
+      tool.position.z
     );
 
     const treeState = VoxelGeometryLookUp.stateCache[hashed];

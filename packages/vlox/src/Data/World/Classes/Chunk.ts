@@ -10,34 +10,43 @@ export interface VoxelDataArrays {
 }
 
 export interface ChunkData extends VoxelDataArrays {
-  stateBuffer: ArrayBuffer;
+  buffer: ArrayBufferLike;
 }
 
 export interface Chunk extends ChunkData {}
 
 export class Chunk {
   static CreateNew(): ChunkData {
-    const stateBuffer = new SharedArrayBuffer(Chunk.StateStruct.structSize);
-    Chunk.StateStruct.setBuffer(stateBuffer);
-
     const voxelSize = WorldSpaces.chunk.getVolume();
+    const chunkBuffer = new SharedArrayBuffer(
+      Chunk.StateStruct.structSize +
+        //ids
+        voxelSize * 2 +
+        //light
+        voxelSize * 2 +
+        //state
+        voxelSize * 2 +
+        //mod
+        voxelSize * 2 +
+        //secondary
+        voxelSize * 2
+    );
+    let bufferStart = 0;
+    Chunk.StateStruct.setBuffer(chunkBuffer);
+    bufferStart = Chunk.StateStruct.structSize;
 
-    const idsBuffers = new SharedArrayBuffer(voxelSize * 2);
-    const ids = new Uint16Array(idsBuffers);
-
-    const lightBuffers = new SharedArrayBuffer(voxelSize * 2);
-    const light = new Uint16Array(lightBuffers);
-
-    const stateBuffers = new SharedArrayBuffer(voxelSize * 2);
-    const state = new Uint16Array(stateBuffers);
-
-    const modBuffer = new SharedArrayBuffer(voxelSize * 2);
-    const mod = new Uint16Array(modBuffer);
-
-    const secondaryBuffers = new SharedArrayBuffer(voxelSize * 2);
-    const secondary = new Uint16Array(secondaryBuffers);
+    const ids = new Uint16Array(chunkBuffer, bufferStart, voxelSize);
+    bufferStart += voxelSize * 2;
+    const light = new Uint16Array(chunkBuffer, bufferStart, voxelSize);
+    bufferStart += voxelSize * 2;
+    const state = new Uint16Array(chunkBuffer, bufferStart, voxelSize);
+    bufferStart += voxelSize * 2;
+    const mod = new Uint16Array(chunkBuffer, bufferStart, voxelSize);
+    bufferStart += voxelSize * 2;
+    const secondary = new Uint16Array(chunkBuffer, bufferStart, voxelSize);
+    bufferStart += voxelSize * 2;
     return {
-      stateBuffer,
+      buffer: chunkBuffer,
       ids,
       light,
       state,
@@ -46,7 +55,6 @@ export class Chunk {
     };
   }
 
-
   static toObject(data: ChunkData) {
     return new Chunk(data);
   }
@@ -54,13 +62,18 @@ export class Chunk {
   chunkState: DataView;
 
   constructor(data: ChunkData) {
-    this.chunkState = new DataView(data.stateBuffer);
-    return Object.assign(this, data);
+    this.chunkState = new DataView(data.buffer);
+    this.buffer = data.buffer;
+    this.ids = data.ids;
+    this.light = data.light;
+    this.secondary = data.secondary;
+    this.state = data.state;
+    this.mod = data.mod;
   }
 
   serialize(): ChunkData {
     return {
-      stateBuffer: this.stateBuffer,
+      buffer: this.buffer,
       ids: this.ids,
       light: this.light,
       secondary: this.secondary,

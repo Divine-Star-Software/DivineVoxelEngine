@@ -19,12 +19,14 @@ export class VoxelShapeManager {
   }
 
   static getMappedId(id: string) {
-    return this.getShape(id).numberId;
+    const v = this.getShape(id);
+    return v === null ? -1 : v.numberId;
   }
 
   static getShape(id: string) {
     const shape = this.shapes.get(id);
-    if (!shape) throw new Error(`Shape with id ${id} does not exist`);
+    //  if (!shape) throw new Error(`Shape with id ${id} does not exist`);
+    if (!shape) return null;
     return shape;
   }
 }
@@ -36,6 +38,7 @@ segment.onEntryAdded(shapeIdSegment, (entry) => {
   VoxelShapeManager.init();
   for (let i = 0; i < entry.length; i++) {
     const shape = VoxelShapeManager.getShape(entry[i]);
+    if (!shape) continue;
     shape.numberId = i;
     VoxelShapeManager.mappedShapes.set(i, shape);
   }

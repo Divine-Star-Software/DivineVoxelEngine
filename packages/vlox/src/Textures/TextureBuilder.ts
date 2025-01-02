@@ -31,7 +31,7 @@ export class TextureBuilder {
 
     document.body.append(this._canvas);
 
-  /*   this._canvas.setAttribute(
+    /*   this._canvas.setAttribute(
       "style",
       `
     image-rendering: pixelated; 
@@ -91,6 +91,27 @@ export class TextureBuilder {
           image.height
         );
         resolve(imgData.data);
+        this._canvas.width = this.finalImagWidth;
+        this._canvas.height = this.finalImageHeight;
+      };
+      image.onerror = (err) => reject(err);
+    });
+  }
+
+  static async getBase64(imageSrc: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.crossOrigin = "Anonymous";
+      image.src = imageSrc;
+      image.onload = () => {
+        if (!this.context) {
+          return reject(new Error("Context is not set for texture creation."));
+        }
+        this._canvas.width = image.width;
+        this._canvas.height = image.height;
+        this.context.clearRect(0, 0, image.width, image.height);
+        this.context.drawImage(image, 0, 0, image.width, image.height);
+        resolve(this._canvas.toDataURL("image/png"));
         this._canvas.width = this.finalImagWidth;
         this._canvas.height = this.finalImageHeight;
       };

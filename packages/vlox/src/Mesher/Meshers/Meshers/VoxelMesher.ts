@@ -33,9 +33,9 @@ class VoxelBuilderBase extends Mesher {
       .loadInRaw(rawVoxelData)
       .setMode(BuilderDataTool.Modes.VOXEL_DATA);
     
-    mesher.voxel
+/*     mesher.voxel
       .loadInRaw(rawVoxelData)
-      .setMode(BuilderDataTool.Modes.VOXEL_DATA);
+      .setMode(BuilderDataTool.Modes.VOXEL_DATA); */
     mesher.nVoxel.setMode(BuilderDataTool.Modes.VOXEL_DATA).loadIn();
     ShapeTool.setMesher(mesher);
     constructor.process(mesher);
@@ -51,7 +51,7 @@ class VoxelBuilderBase extends Mesher {
       }
     }
 
-    mesher.voxel.setMode(BuilderDataTool.Modes.WORLD);
+
     mesher.nVoxel.setMode(BuilderDataTool.Modes.WORLD);
     VoxelGeometryLookUp.dataTool.setMode(BuilderDataTool.Modes.WORLD);
     VoxelGeometryLookUp.stop();

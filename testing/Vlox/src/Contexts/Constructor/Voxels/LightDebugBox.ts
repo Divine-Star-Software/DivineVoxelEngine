@@ -28,7 +28,7 @@ export function GetLightDebugBox(): VoxelConstructor {
       }
     },
     process(tool) {
-      const [dimension, x, y, z] = tool.voxel.getLocation();
+      const { x, y, z } = tool.position;
       const dt = tool.nVoxel;
 
       if (tool.isFaceExposed(VoxelFaces.Up)) {

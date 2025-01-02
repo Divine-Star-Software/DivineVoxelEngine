@@ -284,7 +284,7 @@ export default function ArchiveColumn(
     },
 
     chunks: states.map((archiveChunk): ArchivedChunkData => {
-      chunkStructInstance.setBuffer(archiveChunk.chunk.stateBuffer);
+      chunkStructInstance.setBuffer(archiveChunk.chunk.buffer);
 
       const serializeChunkState = chunkStructInstance.serialize() as Record<
         string,

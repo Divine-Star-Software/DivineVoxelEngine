@@ -110,7 +110,7 @@ export class RulelessBoxVoxelGeometryNode extends RulelessGeoemtryNode<BoxVoxelG
     args: BoxVoxelGometryArgs
   ) {
     this.tool = tool;
-    this.origin = tool.voxel;
+    this.origin = tool.position;
 
     this.worldAO = tool.getWorldAO();
     this.worldLight = tool.getWorldLight();

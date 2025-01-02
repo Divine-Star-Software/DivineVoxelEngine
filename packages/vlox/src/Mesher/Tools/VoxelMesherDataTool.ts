@@ -18,12 +18,14 @@ import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 import { FaceDataCalc } from "../Calc/Light/FaceDataCalc";
 import { Mesh } from "@amodx/meshing/Mesh/Mesh";
 import { VoxelMeshBVHBuilder } from "./VoxelMeshBVHBuilder";
-import { Vec3Array } from "@amodx/math";
+import { Vec3Array, Vector3Like } from "@amodx/math";
 import { WorldSpaces } from "../../Data/World/WorldSpaces";
+import { VoxelCursor } from "../../Data/Cursor/VoxelCursor";
 
 export class VoxelMesherDataTool extends MesherDataTool {
   template = new VoxelTemplateDataTool();
-  voxel = new BuilderDataTool();
+  voxel : VoxelCursor;
+  position= Vector3Like.Create();
   nVoxel = new BuilderDataTool();
 
   bvhTool = new VoxelMeshBVHBuilder();
@@ -44,8 +46,8 @@ export class VoxelMesherDataTool extends MesherDataTool {
   };
   constructor() {
     super();
-    this.faceDataOverride.currentVoxel = this.voxel;
-    this.faceDataOverride.neighborVoxel = this.nVoxel;
+  //  this.faceDataOverride.currentVoxel = this.voxel;
+  //  this.faceDataOverride.neighborVoxel = this.nVoxel;
 
     this.dataCalculated = [] as any;
     for (const face of VoxelFacesArray) {
@@ -124,9 +126,9 @@ export class VoxelMesherDataTool extends MesherDataTool {
 
   endConstruction() {
     const position = WorldSpaces.voxel.getPositionXYZ(
-      this.voxel.x,
-      this.voxel.y,
-      this.voxel.z
+      this.position.x,
+      this.position.y,
+      this.position.z
     );
     if (
       this.bounds.min.includes(Infinity) ||
@@ -232,9 +234,9 @@ export class VoxelMesherDataTool extends MesherDataTool {
       return this.template.isFaceExposed(face);
     } */
     const voxelExists = this.nVoxel.loadInAt(
-      VoxelFaceDirections[face][0] + this.voxel.x,
-      VoxelFaceDirections[face][1] + this.voxel.y,
-      VoxelFaceDirections[face][2] + this.voxel.z
+      VoxelFaceDirections[face][0] + this.position.x,
+      VoxelFaceDirections[face][1] + this.position.y,
+      VoxelFaceDirections[face][2] + this.position.z
     );
 
     if (!voxelExists || !this.nVoxel.isRenderable()) return true;

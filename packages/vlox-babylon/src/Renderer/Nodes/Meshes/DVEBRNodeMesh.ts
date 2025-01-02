@@ -96,7 +96,7 @@ export class DVEBRNodeMesh extends DVENodeMesh {
       mesh.parent = DVEBabylonRenderer.instance.foManager.activeNode;
     }
 
-    if (! EngineSettings.settings.meshes.checkCollisions) {
+    if (!EngineSettings.settings.meshes.checkCollisions) {
       mesh.doNotSyncBoundingInfo = true;
     }
     mesh.isPickable = this.pickable;
@@ -116,9 +116,7 @@ export class DVEBRNodeMesh extends DVENodeMesh {
     }
 
     mesh.checkCollisions = EngineSettings.settings.meshes.checkCollisions;
-    console.warn(
-      mesh.checkCollisions
-    )
+
     mesh.doNotSerialize = this.serialize;
     mesh.alwaysSelectAsActiveMesh = true;
 
@@ -134,6 +132,7 @@ export class DVEBRNodeMesh extends DVENodeMesh {
     mesh._mesh.dispose();
     DVEBabylonRenderer.instance.observers.meshDisposed.notify(mesh);
   }
+
   updateVertexData(
     location: Vec3Array,
     data: CompactMeshData,
@@ -174,4 +173,6 @@ export class DVEBRNodeMesh extends DVENodeMesh {
       }
     }
   }
+
+  
 }

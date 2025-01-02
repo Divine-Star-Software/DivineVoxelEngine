@@ -3,11 +3,17 @@ import type { WorldSunTaskRequest } from "../../../Contexts/Constructor/Tasks/Ta
 //data
 import { WorldBounds } from "../../../Data/World/WorldBounds.js";
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
-import { $3dCardinalNeighbors } from "../../../Math/Constants/CardinalNeighbors.js";
+import {
+  $3dCardinalNeighbors,
+  $3dMooreNeighborhood,
+} from "../../../Math/Constants/CardinalNeighbors.js";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 
 import { IlluminationManager as IM } from "../IlluminationManager.js";
 import { HeightMapTool } from "../../../Tools/Data/WorldData/HeightMapTool.js";
+import { ColumnCursor } from "../../../Data/Cursor/ColumnCursor";
+import { LightData } from "../../../Data/LightData";
+import { WorldCursor } from "../../../Data/Cursor/WorldCursor";
 const inColumnBounds = (cx: number, cz: number, x: number, z: number) => {
   if (
     x >= cx &&
@@ -19,57 +25,10 @@ const inColumnBounds = (cx: number, cz: number, x: number, z: number) => {
   return false;
 };
 
-class QueueNode {
-  public next: QueueNode | null = null;
-  constructor(public x: number, public y: number, public z: number) {}
-}
-
-class ReusableQueue {
-  private head: QueueNode | null = null;
-  private tail: QueueNode | null = null;
-  private freeList: QueueNode[] = [];
-
-  enqueue(x: number, y: number, z: number) {
-    let node: QueueNode;
-    if (this.freeList.length) {
-      node = this.freeList.shift()!;
-      node.x = x;
-      node.y = y;
-      node.z = z;
-      node.next = null;
-    } else {
-      node = new QueueNode(x, y, z);
-    }
-
-    if (this.tail) {
-      this.tail.next = node;
-    } else {
-      this.head = node;
-    }
-    this.tail = node;
-  }
-
-  dequeue(): QueueNode | null {
-    if (!this.head) return null;
-    const node = this.head;
-    this.head = this.head.next;
-    if (!this.head) this.tail = null;
-
-    return node;
-  }
-
-  returnNode(node: QueueNode) {
-    this.freeList.push(node);
-  }
-
-  isEmpty(): boolean {
-    return this.head === null;
-  }
-}
-
-const queue = new ReusableQueue();
-
+const worldCursor = new WorldCursor();
 const heightMapTool = new HeightMapTool();
+
+const queue: number[] = [];
 
 export function RunWorldSun(tasks: WorldSunTaskRequest) {
   IM.setDimension(tasks.origin[0]);
@@ -89,116 +48,143 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
   const RmaxY = heightMapTool.column.getRelative(tasks.origin);
   const AmaxY = heightMapTool.column.getAbsolute(tasks.origin);
 
+  const maxX = cx + WorldSpaces.chunk._bounds.x;
+  const maxY = WorldBounds.bounds.MaxY;
+  const maxZ = cz + WorldSpaces.chunk._bounds.z;
+
+  worldCursor.setFocalPoint(...tasks.origin);
+
+  const columnCursor = worldCursor.getColumnCursor(
+    tasks.origin[1],
+    tasks.origin[2],
+    tasks.origin[3]
+  );
   //fill
-  for (let iy = AmaxY; iy < WorldBounds.bounds.MaxY; iy++) {
-    for (let iz = cz; iz < cz + WorldSpaces.chunk._bounds.z; iz++) {
-      for (let ix = cx; ix < cx + WorldSpaces.chunk._bounds.x; ix++) {
-        if (!IM._sDataTool.loadInAt(ix, iy, iz)) continue;
-        const l = IM._sDataTool.getLight();
+  for (let iy = AmaxY; iy < maxY; iy++) {
+    for (let iz = cz; iz < maxZ; iz++) {
+      for (let ix = cx; ix < maxX; ix++) {
+        if (!columnCursor.loadIn(ix, iy, iz)) continue;
+        const l = columnCursor.voxel.getLight();
         if (l < 0) continue;
-        IM._sDataTool.setLight(IM.lightData.setS(0xf, l)).commit();
+        columnCursor.voxel.setLight(LightData.setS(0xf, l));
       }
     }
   }
 
   //accumulate
   for (let iy = AmaxY; iy <= RmaxY; iy++) {
-    for (let iz = cz; iz < cz + WorldSpaces.chunk._bounds.z; iz++) {
-      for (let ix = cx; ix < cx + WorldSpaces.chunk._bounds.x; ix++) {
-        if (!IM._sDataTool.loadInAt(ix, iy, iz)) continue;
-        const l = IM._sDataTool.getLight();
+    for (let iz = cz; iz < maxZ; iz++) {
+      for (let ix = cx; ix < maxX; ix++) {
+        if (!columnCursor.loadIn(ix, iy, iz)) continue;
+        const l = columnCursor.voxel.getLight();
         if (l < 0 && IM.lightData.getS(l) != 0xf) continue;
-        let add = false;
-        for (const n of $3dCardinalNeighbors) {
+
+        for (let i = 0; i < $3dCardinalNeighbors.length; i++) {
+          const n = $3dCardinalNeighbors[i];
           const nx = ix + n[0];
           const ny = iy + n[1];
           const nz = iz + n[2];
-          if (IM._nDataTool.loadInAt(nx, ny, nz)) {
-            const nl = IM._nDataTool.getLight();
-            if (nl >= 0 && IM.lightData.getS(nl) < 0xf) {
-              add = true;
+
+          const nTool = worldCursor.getColumnCursor(nx, ny, nz);
+          if (nTool.loadIn(nx, ny, nz)) {
+            const nl = nTool.voxel.getLight();
+            if (nl > -1 && LightData.getS(nl) < 0xf) {
+              queue.push(ix, iy, iz);
               break;
             }
           }
-        }
-        if (add) {
-          queue.enqueue(ix, iy, iz);
         }
       }
     }
   }
 
   //flood
-  while (!queue.isEmpty()) {
-    const node = queue.dequeue();
-    if (!node) break;
-    if (!IM._sDataTool.loadInAt(node.x, node.y, node.z)) continue;
-    const sl = IM._sDataTool.getLight();
+  while (queue.length) {
+    const x = queue.shift()!;
+    const y = queue.shift()!;
+    const z = queue.shift()!;
+    const column = worldCursor.getColumnCursor(x, y, z);
+    if (!column.loadIn(x, y, z)) continue;
+    const sl = column.voxel.getLight();
     if (sl <= 0) continue;
-    const sunL = IM.lightData.getS(sl);
-    if (sunL >= 0xf && !inColumnBounds(cx, cz, node.x, node.z)) continue;
+    const sunL = LightData.getS(sl);
+    if (sunL >= 0xf && !inColumnBounds(cx, cz, x, z)) continue;
 
-    if (IM._nDataTool.loadInAt(node.x - 1, node.y, node.z)) {
-      const nl = IM._nDataTool.getLight();
-      if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-        queue.enqueue(node.x - 1, node.y, node.z);
-        IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();
+    {
+      const nColumn = worldCursor.getColumnCursor(x - 1, y, z);
+      const nVoxel = nColumn.loadIn(x - 1, y, z);
+      if (nVoxel) {
+        const nl = nVoxel.getLight();
+        if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
+          queue.push(x - 1, y, z);
+          nVoxel.setLight(IM.lightData.getMinusOneForSun(sl, nl));
+        }
+      }
+    }
+    {
+      const nColumn = worldCursor.getColumnCursor(x + 1, y, z);
+      const nVoxel = nColumn.loadIn(x + 1, y, z);
+      if (nVoxel) {
+        const nl = nVoxel.getLight();
+        if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
+          queue.push(x + 1, y, z);
+          nVoxel.setLight(IM.lightData.getMinusOneForSun(sl, nl));
+        }
+      }
+    }
+    {
+      const nColumn = worldCursor.getColumnCursor(x, y, z + 1);
+      const nVoxel = nColumn.loadIn(x, y, z + 1);
+      if (nVoxel) {
+        const nl = nVoxel.getLight();
+        if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
+          queue.push(x, y, z + 1);
+          nVoxel.setLight(IM.lightData.getMinusOneForSun(sl, nl));
+        }
+      }
+    }
+    {
+      const nColumn = worldCursor.getColumnCursor(x, y, z - 1);
+      const nVoxel = nColumn.loadIn(x, y, z - 1);
+      if (nVoxel) {
+        const nl = nVoxel.getLight();
+        if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
+          queue.push(x, y, z - 1);
+          nVoxel.setLight(IM.lightData.getMinusOneForSun(sl, nl));
+        }
       }
     }
 
-    if (IM._nDataTool.loadInAt(node.x + 1, node.y, node.z)) {
-      const nl = IM._nDataTool.getLight();
-      if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-        queue.enqueue(node.x + 1, node.y, node.z);
-        IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();
-      }
-    }
-
-    if (IM._nDataTool.loadInAt(node.x, node.y, node.z - 1)) {
-      const nl = IM._nDataTool.getLight();
-      if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-        queue.enqueue(node.x, node.y, node.z - 1);
-        IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();
-      }
-    }
-
-    if (IM._nDataTool.loadInAt(node.x, node.y, node.z + 1)) {
-      const nl = IM._nDataTool.getLight();
-      if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-        queue.enqueue(node.x, node.y, node.z + 1);
-        IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();
-      }
-    }
-
-    if (IM._nDataTool.loadInAt(node.x, node.y - 1, node.z)) {
-      const nl = IM._nDataTool.getLight();
-
-      if (nl > -1 && IM.lightData.isLessThanForSunAddDown(nl, sl)) {
-        if (IM._nDataTool.isAir()) {
-          queue.enqueue(node.x, node.y - 1, node.z);
-          IM._nDataTool
-            .setLight(IM.lightData.getSunLightForUnderVoxel(sl, nl))
-            .commit();
-        } else {
-          if (!IM._nDataTool.isOpaque()) {
-            queue.enqueue(node.x, node.y - 1, node.z);
-            IM._nDataTool
-              .setLight(IM.lightData.getMinusOneForSun(sl, nl))
-              .commit();
+    {
+      const nColumn = worldCursor.getColumnCursor(x, y - 1, z);
+      const nVoxel = nColumn.loadIn(x, y - 1, z);
+      if (nVoxel) {
+        const nl = nVoxel.getLight();
+        if (nl > -1 && LightData.isLessThanForSunAddDown(nl, sl)) {
+          if (nVoxel.isAir()) {
+            queue.push(x, y - 1, z);
+            nVoxel.setLight(LightData.getSunLightForUnderVoxel(sl, nl));
+          } else {
+            if (!nVoxel.isOpaque()) {
+              queue.push(x, y - 1, z);
+              nVoxel.setLight(LightData.getMinusOneForSun(sl, nl));
+            }
           }
         }
       }
     }
 
-    if (IM._nDataTool.loadInAt(node.x, node.y + 1, node.z)) {
-      const nl = IM._nDataTool.getLight();
-      if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-        queue.enqueue(node.x, node.y + 1, node.z);
-        IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();
+    {
+      const nColumn = worldCursor.getColumnCursor(x, y + 1, z);
+      const nVoxel = nColumn.loadIn(x, y + 1, z);
+      if (nVoxel) {
+        const nl = nVoxel.getLight();
+        if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
+          queue.push(x, y + 1, z);
+          nVoxel.setLight(IM.lightData.getMinusOneForSun(sl, nl));
+        }
       }
     }
-
-    queue.returnNode(node);
   }
 
   tasks.stop();

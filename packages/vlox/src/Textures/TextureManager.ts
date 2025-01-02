@@ -35,14 +35,6 @@ export class TextureManager {
     this._ready = true;
   }
 
-  static $START_ANIMATIONS() {
-    setInterval(() => {
-      for (const [key, type] of this.textureTypes) {
-        type.runAnimations();
-      }
-    }, 50);
-  }
-
   static generateTextureUVMap() {
     const uvMap: TextureTypeUVMap = {};
     for (const [key, type] of this.textureTypes) {
@@ -122,7 +114,52 @@ export class TextureManager {
 
     return type._getPath(data, varation, type.extension);
   }
-
+  static async createCached() {
+    const cachedTextureData: TextureData[] = [];
+    for (const [typeKey, type] of this.textureTypes) {
+      for (const baseData of type.textures) {
+        const data = structuredClone(baseData);
+        const id = baseData.id;
+        if (data.frames) {
+          const images: string[] = [];
+          for (let i = 1; i <= data.frames; i++) {
+            images.push(
+              await TextureBuilder.getBase64(
+                type._getPath(data, `${id}-${i}`, type.extension)
+              )
+            );
+          }
+          data.base64 = images;
+        } else {
+          data.base64 = await TextureBuilder.getBase64(
+            type._getPath(data, "default", type.extension)
+          );
+        }
+        if (data.variations) {
+          for (const varId in data.variations) {
+            const varation = data.variations[varId];
+            if (varation.frames) {
+              const images: string[] = [];
+              for (let i = 1; i <= varation.frames; i++) {
+                images.push(
+                  await TextureBuilder.getBase64(
+                    type._getPath(data, `${varId}-${i}`, type.extension)
+                  )
+                );
+              }
+              varation.base64 = images;
+            } else {
+              varation.base64 = await TextureBuilder.getBase64(
+                type._getPath(data, varId, type.extension)
+              );
+            }
+          }
+        }
+        cachedTextureData.push(data);
+      }
+    }
+    return cachedTextureData;
+  }
   static async createRawDataMap() {
     const map: Map<string, Uint8ClampedArray> = new Map();
     for (const [typeKey, type] of this.textureTypes) {

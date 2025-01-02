@@ -1,7 +1,10 @@
 import { AdvancedBrush } from "@divinevoxel/vlox/Tools/Brush/AdvancedBrushTool";
+import { WorldCursor } from "@divinevoxel/vlox/Data/Cursor/WorldCursor";
 const brush = new AdvancedBrush();
 
+const worldCursor = new WorldCursor();
 export const WorldGen = {
+  worldCursor,
   chunkDepth: 16,
   chunkWidth: 16,
   worldHeight: 256,
@@ -267,6 +270,7 @@ export const WorldGen = {
   },
 
   pyramidColumn(chunkX: number, chunkZ: number) {
+    const columnCursor = this.worldCursor.getColumnCursor(chunkX, 0, chunkZ);
     let minus = 0;
     //  const height = (10 + Math.random() * 10) >> 0;
     const height = 20;
@@ -278,8 +282,9 @@ export const WorldGen = {
           z < this.chunkDepth + chunkZ - minus;
           z++
         ) {
-          //   if (Math.random() > 0.85) continue;
-          brush.setId("dve_dread_stone").setXYZ(x, y, z).paint();
+          columnCursor.loadIn(x, y, z);
+          columnCursor.voxel.setStringId("dve_dread_stone");
+          columnCursor.voxel.updateHeightMap(0);
         }
       }
       minus++;

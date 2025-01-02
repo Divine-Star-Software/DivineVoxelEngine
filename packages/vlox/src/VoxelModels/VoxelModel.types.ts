@@ -36,7 +36,6 @@ interface VoxelOutlinedTextureProtocalData {
   };
 }
 
-type VoxelTextureProtocalData = VoxelOutlinedTextureProtocalData;
 
 //box
 export interface VoxelBoxGeometryNode {

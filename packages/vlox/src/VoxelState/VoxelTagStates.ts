@@ -27,7 +27,9 @@ export class VoxelTagStates {
   }
 
   static load(data: VoxelTagStatesData) {
+    
     data.forEach((v, index) => {
+      if(!v) return;
       const stateSceham = new StateSchema(
         SchemaRegister.modelStaeBaseSchemaData.get(
           SchemaRegister.voxelModelMap.get(VoxelPalette.ids.getStringId(index))!

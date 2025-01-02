@@ -10,142 +10,17 @@ import {
   Vector3,
   FreeCamera,
   AxesViewer,
-  CreateGreasedLine,
-  Color3,
-  StandardMaterial,
-  Color4,
-  CreateTube,
 } from "@babylonjs/core";
-import { DivineVoxelEngineRender } from "@divinevoxel/vlox/Contexts/Render";
 import { Textures } from "Data/TextureData";
 import { SceneTool } from "@divinevoxel/vlox-babylon/Tools/SceneTool";
 import { RenderNodes } from "Classes";
 import { DVEVoxelData } from "Data/VoxelData";
 import { StartRenderer } from "@divinevoxel/vlox/Init/StartRenderer";
-import { GradientCheckSets } from "@divinevoxel/vlox/Mesher/Calc/CalcConstants";
-import { Vec3Array, Vector3Like } from "@amodx/math";
-
-import {
-  VoxelFaceDirections,
-  VoxelFaces,
-  VoxelFacesArray,
-} from "@divinevoxel/vlox/Math";
-import { QuadVerticies } from "@amodx/meshing/Geometry.types";
-import { BVHViewer } from "@divinevoxel/vlox-babylon/Renderer/Nodes/Meshes/Utility/BVHTool";
+import { CacheManager } from "@divinevoxel/vlox/Cache/CacheManager";
+import { Compressor } from "@amodx/core/Compression/Compression";
 let ran = false;
 import { GUI } from "dat.gui";
-const quads = ((): [Vec3Array, Vec3Array, Vec3Array, Vec3Array][] => {
-  const start = Vector3Like.Create();
-  const end = Vector3Like.Create(1, 1, 1);
-
-  return [
-    //up
-    [
-      [end.x, end.y, end.z],
-      [start.x, end.y, end.z],
-      [start.x, end.y, start.z],
-      [end.x, end.y, start.z],
-    ],
-    //down
-    [
-      [start.x, start.y, end.z],
-      [end.x, start.y, end.z],
-      [end.x, start.y, start.z],
-      [start.x, start.y, start.z],
-    ],
-    //north
-    [
-      [start.x, end.y, end.z],
-      [end.x, end.y, end.z],
-      [end.x, start.y, end.z],
-      [start.x, start.y, end.z],
-    ],
-    //south
-    [
-      [end.x, end.y, start.z],
-      [start.x, end.y, start.z],
-      [start.x, start.y, start.z],
-      [end.x, start.y, start.z],
-    ],
-    //east
-    [
-      [end.x, end.y, end.z],
-      [end.x, end.y, start.z],
-      [end.x, start.y, start.z],
-      [end.x, start.y, end.z],
-    ],
-    //east
-    [
-      [start.x, end.y, start.z],
-      [start.x, end.y, end.z],
-      [start.x, start.y, end.z],
-      [start.x, start.y, start.z],
-    ],
-  ];
-})();
-const faceColors: Record<VoxelFaces, Color3> = {
-  [VoxelFaces.Up]: new Color3(1, 0, 0),
-  [VoxelFaces.Down]: new Color3(0, 1, 0),
-  [VoxelFaces.North]: new Color3(0, 0, 1),
-  [VoxelFaces.South]: new Color3(1, 0, 1),
-  [VoxelFaces.East]: new Color3(1, 1, 0),
-  [VoxelFaces.West]: new Color3(0, 1, 1),
-};
-
-const vertexColors: Record<QuadVerticies, Color3> = {
-  [QuadVerticies.TopRight]: new Color3(1, 0, 0),
-  [QuadVerticies.TopLeft]: new Color3(0, 1, 0),
-  [QuadVerticies.BottomLeft]: new Color3(0, 0, 1),
-  [QuadVerticies.BottomRight]: new Color3(1, 0, 1),
-};
-
-const getLines = (face: VoxelFaces) => {
-  const normal = VoxelFaceDirections[face];
-  CreateGreasedLine(
-    "",
-    {
-      points: quads[face].map(
-        (_) => new Vector3(...Vector3Like.AddArray(_, normal))
-      ),
-    },
-    { color: faceColors[face] }
-  );
-
-  const set = GradientCheckSets[face];
-  for (let v = 0 as QuadVerticies; v < 4; v++) {
-    const sphere = CreateSphere("", { diameter: 0.1 });
-    const mat = new StandardMaterial("");
-    mat.diffuseColor = vertexColors[v];
-    sphere.material = mat;
-
-    const point = Vector3Like.AddArray(quads[face][v], normal);
-    sphere.position.set(
-      ...Vector3Like.AddArray(
-        quads[face][v],
-        Vector3Like.MultiplyScalarArray(normal, 0.1)
-      )
-    );
-    for (let i = 0; i < 9; i += 3) {
-      const x = set[v][i] + point[0] + normal[0];
-      const y = set[v][i + 1] + point[1] + normal[1];
-      const z = set[v][i + 2] + point[2] + normal[2];
-
-      CreateGreasedLine(
-        "",
-        {
-          points: [new Vector3(...point), new Vector3(x, y, z)],
-        },
-        { color: faceColors[face] }
-      );
-    }
-  }
-};
-
-const gradientTest = () => {
-  for (const face of VoxelFacesArray) {
-    getLines(face);
-  }
-};
+import { BinaryObject } from "@amodx/binary";
 
 export function App() {
   const [gameReady, setGameReady] = useState(false);
@@ -155,6 +30,23 @@ export function App() {
       if (ran) return;
       if (!canvasRef.current) return;
       ran = true;
+
+      CacheManager.cacheLoadEnabled = true;
+   //   CacheManager.cacheStoreEnabled = true;
+
+      if (CacheManager.cacheLoadEnabled) {
+        BinaryObject.setUseSharedMemory(true);
+        const cachedData = BinaryObject.bufferToObject(
+          (
+            await Compressor.core.decompressArrayBuffer(
+              await (await fetch("/dve-cache.bin")).arrayBuffer()
+            )
+          ).buffer as any
+        );
+        BinaryObject.setUseSharedMemory(false);
+        console.warn("got the cache data", cachedData);
+        CacheManager.cachedData = cachedData as any;
+      }
 
       const worldWorker = new Worker(
         new URL("./Contexts/World/", import.meta.url),
@@ -215,7 +107,7 @@ export function App() {
       const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
       skybox.infiniteDistance = true;
       const skyboxMat = renderer.nodes.materials.get("#dve_skybox");
-      console.warn("got skybox",skybox)
+      console.warn("got skybox", skybox);
       if (skyboxMat) {
         skybox.material = skyboxMat._material;
         skybox.material!.backFaceCulling = false;
@@ -263,100 +155,29 @@ export function App() {
 
       const gui = new GUI();
 
-      const rayOrigin = CreateSphere("", {}, scene);
-      const rayTarget = CreateSphere("", {}, scene);
-      rayOrigin.position.set(8.1, 10, -4);
-      rayTarget.position.set(8, 0, 8);
-      const ray = CreateTube(
-        "",
-        {
-          path: [rayOrigin.position, rayTarget.position],
-          radius: 0.05,
-        },
-        scene
-      );
-
-      const sun = CreateSphere(
-        "sun",
-        {
-          diameter: 1,
-        },
-        scene
-      );
-      sun.position.set(-64, 128, -64);
-      const hitPosition = CreateSphere(
-        "hit-position",
-        {
-          diameter: 0.6,
-        },
-        scene
-      );
-
-      const Debug = {
-        _bvhLevel: 0,
-        get bvhLevel() {
-          return this._bvhLevel;
-        },
-        set bvhLevel(level: number) {
-          this._bvhLevel = level;
-          const ro = rayOrigin.position.clone();
-          const rd = rayTarget.position
-            .subtract(rayOrigin.position)
-            .normalize();
-          for (const instance of BVHViewer.instances) {
-            instance.createBoxes(level, ro, rd);
-          }
-        },
-      };
+      const Debug = {};
       const actions = {
-        runIntersectTest: () => {
-          const ro = rayOrigin.position.clone();
-          const rd = rayTarget.position
-            .subtract(rayOrigin.position)
-            .normalize();
-          for (const instance of BVHViewer.instances) {
-            const tested = instance.testIntersection(ro, rd);
+        async downloadCache() {
+          CacheManager.cachedModelData;
+          const data = BinaryObject.objectToBuffer(
+            CacheManager.getCachedData()
+          );
+          const compressed = await Compressor.core.compressArrayBuffer(data);
 
-            if (tested.found) {
-              if (tested.triangle.hit) {
-                hitPosition.position.copyFrom(tested.triangle.position);
-
-                console.log(
-                  "hit sun",
-                  hitPosition.position.subtract(sun.position).normalize()
-                );
-                const sunRay = CreateTube(
-                  "",
-                  {
-                    path: [sun.position, hitPosition.position],
-                    radius: 0.05,
-                  },
-                  scene
-                );
-              }
-            }
-            console.warn(ro, rd, tested);
-          }
-        },
-        toggleChunkMeshes: () => {
-          for (const instance of BVHViewer.instances) {
-            instance.mesh.setEnabled(!instance.mesh.isEnabled());
-          }
-        },
-        clearBVHMesh: () => {
-          for (const instance of BVHViewer.instances) {
-            instance._boxes.forEach((_) => _.dispose());
-          }
+          const blob = new Blob([compressed], {});
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "dve-cache.bin";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
         },
       };
-      const cameraSettings = gui.addFolder("Debug");
-      cameraSettings.add(Debug, "bvhLevel", 0, 12, 1);
-      cameraSettings.add(actions, "runIntersectTest").name("Run Test");
-      cameraSettings.add(actions, "clearBVHMesh").name("Clear");
-      cameraSettings
-        .add(actions, "toggleChunkMeshes")
-        .name("Toggle Chunk Meshes");
-      cameraSettings.open();
+      const debugFolder = gui.addFolder("Debug");
+      debugFolder.add(actions, "downloadCache");
+      debugFolder.open();
 
       /*    setTimeout(() => {
         Inspector.Show(scene, {});
@@ -364,6 +185,7 @@ export function App() {
  */
       //  await InitRenderPlayer(DVER, nodes);
 
+      console.log("start world gen");
       DVER.threads.world.runTasks("start-world", []);
     })();
   }, []);

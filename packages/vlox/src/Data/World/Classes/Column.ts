@@ -1,7 +1,7 @@
 import { RemoteBinaryStruct } from "@amodx/binary/";
 import { Chunk, ChunkData } from "./Chunk.js";
 export interface ColumnData {
-  stateBuffer: ArrayBuffer;
+  stateBuffer: ArrayBufferLike;
   chunks: ChunkData[];
 }
 export interface Column extends ColumnData {}

@@ -61,6 +61,7 @@ import {
 } from "../VoxelModels/Defaults/PanelVoxelModels";
 import { VoxelTagStates } from "../VoxelState/VoxelTagStates";
 import { VoxelIndex } from "./VoxelIndex";
+import { CacheManager } from "../Cache/CacheManager";
 
 export type InitVoxelDataProps = {
   constructors: ThreadPool;
@@ -71,6 +72,14 @@ export type InitVoxelDataProps = {
 };
 
 export function InitVoxelData(data: InitVoxelDataProps) {
+  if (CacheManager.cacheLoadEnabled && CacheManager.cachedData) {
+    const syncData = CacheManager.cachedData.models;
+    data.world.runAsyncTasks("sync-voxel-model-data", syncData);
+    data.constructors.runTasksForAll("sync-voxel-model-data", syncData);
+    const voxelIndex = new VoxelIndex(data.voxels);
+    return;
+  }
+
   const initTime = performance.now();
 
   VoxelModelManager.registerGeometry(
@@ -219,8 +228,15 @@ export function InitVoxelData(data: InitVoxelDataProps) {
     }
   }
   syncData.tagState = VoxelTagStates.toJSON();
+
+  if (CacheManager.cacheStoreEnabled) {
+    console.warn("Store sync data", syncData);
+    CacheManager.cachedModelData = syncData;
+  }
+
   data.world.runAsyncTasks("sync-voxel-model-data", syncData);
   data.constructors.runTasksForAll("sync-voxel-model-data", syncData);
+
   console.log("done building inputs", performance.now() - inputStartTime);
 
   console.log(

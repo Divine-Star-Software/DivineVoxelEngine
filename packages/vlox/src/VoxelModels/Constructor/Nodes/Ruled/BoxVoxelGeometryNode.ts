@@ -71,9 +71,9 @@ export class BoxVoxelGometryNode extends GeoemtryNode<BoxVoxelGometryArgs> {
       const currentIndex = faceIndexes[positionIndex];
       const p = VoxelRelativeCubeIndexPositionMap[currentIndex];
       const hashed = VoxelGeometryLookUp.getHash(
-        tool.voxel.x + p[0],
-        tool.voxel.y + p[1],
-        tool.voxel.z + p[2]
+        tool.position.x + p[0],
+        tool.position.y + p[1],
+        tool.position.z + p[2]
       );
 
       const offsetBaseGometry = VoxelGeometryLookUp.geometryCache[hashed];
@@ -166,9 +166,9 @@ export class BoxVoxelGometryNode extends GeoemtryNode<BoxVoxelGometryArgs> {
         const p = VoxelRelativeCubeIndexPositionMap[currentIndex];
 
         const hashed = VoxelGeometryLookUp.getHash(
-          tool.voxel.x + p[0],
-          tool.voxel.y + p[1],
-          tool.voxel.z + p[2]
+          tool.position.x + p[0],
+          tool.position.y + p[1],
+          tool.position.z + p[2]
         );
 
         if (VoxelGeometryLookUp.noCastAO[hashed] === true) continue;
@@ -253,7 +253,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<BoxVoxelGometryArgs> {
     args: BoxVoxelGometryArgs
   ) {
     this.tool = tool;
-    this.origin = tool.voxel;
+    this.origin = tool.position;
 
     this.worldAO = tool.getWorldAO();
     this.worldLight = tool.getWorldLight();

@@ -15,12 +15,12 @@ import { SceneTool } from "../Tools/SceneTool.js";
 import InitDefaultEffects from "../Effects/InitDefaultEffects.js";
 import { TextureData } from "@divinevoxel/vlox/Textures/Texture.types.js";
 import { ImageArrayTexture } from "./Textures/ImageArrayTexture.js";
+import { CacheManager } from "@divinevoxel/vlox/Cache/CacheManager.js";
 const defaultSubstances = [
   "#dve_glow",
   "#dve_flora",
   "#dve_solid",
   "#dve_transparent",
-
   "#dve_liquid",
 ];
 
@@ -29,9 +29,19 @@ export async function CreateTextures(scene: Scene, textureData: TextureData[]) {
   TextureManager.getOrAddTextureType("#dve_node");
 
   await TextureBuilder.setUpImageCreation();
-  TextureManager.registerTexture(textureData);
+
+  if (CacheManager.cacheLoadEnabled && CacheManager.cachedData?.textures) {
+    TextureManager.registerTexture(CacheManager.cachedData.textures);
+  } else {
+    TextureManager.registerTexture(textureData);
+  }
+
   await TextureManager.$INIT();
   await TextureManager.createRawDataMap();
+
+  if (CacheManager.cacheStoreEnabled) {
+    CacheManager.cachedTextureData = await TextureManager.createCached();
+  }
 
   for (const [key, type] of TextureManager.textureTypes) {
     if (!type.images!.length) continue;
@@ -162,7 +172,11 @@ export function CreateDefaultRenderer(
     setInterval(() => {
       DefaultMaterialManager.runEffects();
     }, 20);
-    TextureManager.$START_ANIMATIONS();
+    setInterval(() => {
+      for (const [key, type] of TextureManager.textureTypes) {
+        type.runAnimations();
+      }
+    }, 50);
     const sceneTool = DefaultMaterialManager.sceneTool;
 
     sceneTool.levels

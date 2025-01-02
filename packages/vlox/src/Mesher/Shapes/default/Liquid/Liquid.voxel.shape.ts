@@ -4,7 +4,6 @@ import { ShapeTool } from "../../ShapeTool.js";
 import { QuadScalarVertexData } from "@amodx/meshing/Primitives/QuadVertexData";
 
 import { DirectionNames } from "../../../../Types/Util.types.js";
-import { CubeVoxelShape } from "../Cube/Cube.voxel.shape.js";
 import { VoxelFaces } from "../../../../Math/index.js";
 import { VoxelShapeBase } from "../../VoxelShapeBase.js";
 import { Quad } from "@amodx/meshing/Primitives/Quad.js";
@@ -251,7 +250,10 @@ class LiquidVoxelShapeClass extends VoxelShapeBase {
 
     down() {
       ShapeTool.data.getAnimationData().setAll(0);
-      CubeVoxelShape.add.down();
+
+      Quads.down.flip = ShapeTool.data.isFaceFlipped();
+
+      VoxelGeometry.addQuad(ShapeTool.data, ShapeTool.origin, Quads.down);
     },
 
     north() {

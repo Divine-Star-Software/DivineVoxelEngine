@@ -111,7 +111,7 @@ export class RulelessQuadVoxelGeometryNode extends RulelessGeoemtryNode<QuadVoxe
     args: QuadVoxelGometryArgs
   ) {
     this.tool = tool;
-    this.origin = tool.voxel;
+    this.origin = tool.position;
 
     this.worldAO = tool.getWorldAO();
     this.worldLight = tool.getWorldLight();

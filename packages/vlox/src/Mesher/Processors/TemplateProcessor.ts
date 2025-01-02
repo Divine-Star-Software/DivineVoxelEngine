@@ -33,7 +33,7 @@ export const TemplateProcessor = {
     mesher.template.setActive(true);
     mesher.template.load(template, index);
 
-    mesher.voxel.loadInAtLocation(this.nLocation);
+  //  mesher.voxel.loadInAtLocation(this.nLocation);
     mesher.nVoxel.loadInAtLocation(this.nLocation);
     ShapeTool.setMesher(mesher);
 

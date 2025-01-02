@@ -151,9 +151,9 @@ export const LightGradient = {
 
     const faceNormal = VoxelFaceDirections[face];
     tool.nVoxel.loadInAt(
-      tool.voxel.x + faceNormal[0],
-      tool.voxel.y + faceNormal[1],
-      tool.voxel.z + faceNormal[2]
+      tool.position.x + faceNormal[0],
+      tool.position.y + faceNormal[1],
+      tool.position.z + faceNormal[2]
     );
 
     light = tool.nVoxel.getLight();
@@ -202,9 +202,9 @@ export const LightGradient = {
         if (this.settings.doRGB || this.settings.doSun) {
           if (
             !tool.nVoxel.loadInAt(
-              checkSet[i] + tool.voxel.x,
-              checkSet[i + 1] + tool.voxel.y,
-              checkSet[i + 2] + tool.voxel.z
+              checkSet[i] + tool.position.x,
+              checkSet[i + 1] + tool.position.y,
+              checkSet[i + 2] + tool.position.z
             )
           )
             continue;

@@ -106,7 +106,7 @@ const generateCheck = (
   normal: Vec3Array,
   sets: Vec3Array[]
 ) => {
-  const { x, y, z } = tool.voxel;
+  const { x, y, z } = tool.position;
 
   let key = 0b0;
 

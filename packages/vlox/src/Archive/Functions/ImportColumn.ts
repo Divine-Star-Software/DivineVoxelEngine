@@ -321,7 +321,7 @@ export default function ImportColumn(
 
     updateChunkBuffers(column, chunk);
     if (!archiveData.loadChunkState) {
-      chunkStructInstance.setBuffer(newChunk.stateBuffer);
+      chunkStructInstance.setBuffer(newChunk.buffer);
       chunkStructInstance.deserialize(chunkState);
     } else {
       archiveData.loadChunkState(column.keys.chunkState, chunk.state, newChunk);
