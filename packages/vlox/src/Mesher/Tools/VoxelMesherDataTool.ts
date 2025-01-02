@@ -20,13 +20,16 @@ import { Mesh } from "@amodx/meshing/Mesh/Mesh";
 import { VoxelMeshBVHBuilder } from "./VoxelMeshBVHBuilder";
 import { Vec3Array, Vector3Like } from "@amodx/math";
 import { WorldSpaces } from "../../Data/World/WorldSpaces";
-import { VoxelCursor } from "../../Data/Cursor/VoxelCursor";
+import { WorldVoxelCursor } from "../../Data/Cursor/World/WorldVoxelCursor";
+import { VoxelCursorInterface } from "../../Data/Cursor/Interfaces/VoxelCursor.interface";
+import { DataCursorInterface } from "Data/Cursor/Interfaces/DataCursor.interface";
 
 export class VoxelMesherDataTool extends MesherDataTool {
   template = new VoxelTemplateDataTool();
-  voxel : VoxelCursor;
-  position= Vector3Like.Create();
-  nVoxel = new BuilderDataTool();
+  voxel: VoxelCursorInterface;
+  // nVoxel = new BuilderDataTool();
+  nVoxel: DataCursorInterface;
+  position = Vector3Like.Create();
 
   bvhTool = new VoxelMeshBVHBuilder();
 
@@ -46,8 +49,8 @@ export class VoxelMesherDataTool extends MesherDataTool {
   };
   constructor() {
     super();
-  //  this.faceDataOverride.currentVoxel = this.voxel;
-  //  this.faceDataOverride.neighborVoxel = this.nVoxel;
+    //  this.faceDataOverride.currentVoxel = this.voxel;
+    //  this.faceDataOverride.neighborVoxel = this.nVoxel;
 
     this.dataCalculated = [] as any;
     for (const face of VoxelFacesArray) {
@@ -140,7 +143,7 @@ export class VoxelMesherDataTool extends MesherDataTool {
       position.y,
       position.z,
       this._indexStart,
-      this.mesh!.indices.length ,
+      this.mesh!.indices.length,
       this.bounds.min[0],
       this.bounds.min[1],
       this.bounds.min[2],
@@ -229,49 +232,5 @@ export class VoxelMesherDataTool extends MesherDataTool {
     return this.vars.get("face-flipped")! == 1;
   }
 
-  isFaceExposed(face: VoxelFaces) {
-    /*     if (this.template.isAcive()) {
-      return this.template.isFaceExposed(face);
-    } */
-    const voxelExists = this.nVoxel.loadInAt(
-      VoxelFaceDirections[face][0] + this.position.x,
-      VoxelFaceDirections[face][1] + this.position.y,
-      VoxelFaceDirections[face][2] + this.position.z
-    );
 
-    if (!voxelExists || !this.nVoxel.isRenderable()) return true;
-    let finalResult = false;
-    let substanceRuleResult = SubstanceRules.exposedCheck(
-      this.voxel.getSubstance(),
-      this.nVoxel.getSubstance()
-    );
-
-    this.faceDataOverride.face = face;
-    this.faceDataOverride.default = substanceRuleResult;
-    finalResult = substanceRuleResult;
-    this.faceDataOverride.default = finalResult;
-    finalResult = OverrideManager.FaceExposedShapeCheck.run(
-      this.voxel.getShapeId(),
-      OverrideManager.ANY,
-      this.faceDataOverride
-    );
-    this.faceDataOverride.default = finalResult;
-    finalResult = OverrideManager.FaceExposedShapeCheck.run(
-      this.voxel.getShapeId(),
-      this.nVoxel.getShapeId(),
-      this.faceDataOverride
-    );
-    this.faceDataOverride.default = finalResult;
-    finalResult = OverrideManager.FaceExposedVoxelCheck.run(
-      this.voxel.getId(true),
-      OverrideManager.ANY,
-      this.faceDataOverride
-    );
-    finalResult = OverrideManager.FaceExposedVoxelCheck.run(
-      this.voxel.getId(true),
-      this.nVoxel.getId(true),
-      this.faceDataOverride
-    );
-    return finalResult;
-  }
 }

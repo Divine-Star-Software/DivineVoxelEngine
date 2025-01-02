@@ -14,7 +14,7 @@ export async function flatTest() {
 
   const tasks = new TaskTool();
   tasks.setFocalPoint(["main", 0, 0, 0]);
-
+  PerlinGen.worldCursor.setFocalPoint("main", 0, 0, 0);
   WorldGen.worldCursor.setFocalPoint("main", 0, 0, 0);
   let genOne = false;
   if (genOne) {
@@ -43,7 +43,8 @@ export async function flatTest() {
     console.log("Gen done = ", tGen - tStart);
     for (let x = startX; x < endX; x += 16) {
       for (let z = startZ; z < endZ; z += 16) {
-        WorldGen.pyramidColumn(x, z);
+        //   WorldGen.pyramidColumn(x, z);
+        PerlinGen.generateTest(x, z);
       }
     }
   }

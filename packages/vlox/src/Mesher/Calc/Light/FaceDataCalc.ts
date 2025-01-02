@@ -19,33 +19,30 @@ export const FaceDataCalc = {
     let light = tool.voxel.getLight();
 
     const faceNormal = VoxelFaceDirections[face];
-    tool.nVoxel.loadInAt(
+    const nVoxel = tool.nVoxel.getVoxel(
       tool.position.x + faceNormal[0],
       tool.position.y + faceNormal[1],
       tool.position.z + faceNormal[2]
     );
 
-    const otherLight = tool.nVoxel.getLight();
+    const otherLight = nVoxel?.getLight() || 0;
     light = otherLight >= 0 ? otherLight : light >= 0 ? light : 0;
 
-    const baseIndex = face * faceLength;
     for (let vertex: QuadVerticies = <QuadVerticies>0; vertex < 4; vertex++) {
-      const checkSetIndex = baseIndex + vertex * 9;
-
       if (settings.doLight) {
         tool.lightData[face][vertex] = light;
         LightData.getLightValuesToRef(light, currentLightValues);
       }
 
       for (let i = 0; i < 9; i += 3) {
-        const didLoad = tool.nVoxel.loadInAt(
+        const loadedVoxel = tool.nVoxel.getVoxel(
           GradientCheckSets[face][vertex][i] + tool.position.x,
           GradientCheckSets[face][vertex][i + 1] + tool.position.y,
           GradientCheckSets[face][vertex][i + 2] + tool.position.z
         );
 
-        if (!settings.doLight || !didLoad) continue;
-        const nl = tool.nVoxel.getLight();
+        if (!settings.doLight || !loadedVoxel) continue;
+        const nl = loadedVoxel.getLight();
         if (nl <= 0) continue;
         /*
       Do Light

@@ -78,6 +78,7 @@ export class VoxelModelVoxelConstructor extends VoxelConstructor {
 
   process(tool: VoxelMesherDataTool) {
     const hashed = VoxelGeometryLookUp.getHash(
+      tool.nVoxel,
       tool.position.x,
       tool.position.y,
       tool.position.z

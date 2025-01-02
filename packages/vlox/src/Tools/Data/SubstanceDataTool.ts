@@ -15,11 +15,13 @@ export class SubstanceDataTool {
     this.substanceTagIndex =
       SubstancePaletteReader.id.numberFromString(substance);
     SubstanceStruct.setSubstance(this.substanceTagIndex);
+    return this;
   }
   setSubstance(substance: number) {
     //  this.substance = substance;
     this.substanceTagIndex = substance;
     SubstanceStruct.setSubstance(this.substanceTagIndex);
+    return this;
   }
 
   getSubstanceStringId() {

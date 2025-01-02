@@ -8,7 +8,7 @@ export type BoxFaceArags = [
   texture: number,
   rotation: number,
   transparent: boolean,
-  uvs: QuadUVData
+  uvs: QuadUVData,
 ];
 
 enum ArgIndexes {
@@ -42,7 +42,10 @@ export class BoxVoxelGometryInputs {
   static ArgIndexes = ArgIndexes;
   static CreateArgs(): BoxVoxelGometryArgs {
     const base: BoxVoxelGometryArgs = [] as any;
-    VoxelFacesArray.forEach((_) => (base[_] = getArgs()));
+    for (let i = 0; i < VoxelFacesArray.length; i++) {
+      const face = VoxelFacesArray[i];
+      base[face] = getArgs();
+    }
     return base;
   }
 }

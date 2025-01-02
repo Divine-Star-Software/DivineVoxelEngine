@@ -127,8 +127,10 @@ class WorldRegisterColumns {
     return true;
   }
   fill(x: number, y: number, z: number) {
-    const column = this.add(x, y, z, Column.CreateNew({}));
-    if (!column) return;
+    let column = this.get(x, y, z);
+    if (!column) {
+      column = this.add(x, y, z, Column.CreateNew({}))!;
+    }
     const data = {
       location: [this._register._currentDimension, x, y, z],
       chunk: null,

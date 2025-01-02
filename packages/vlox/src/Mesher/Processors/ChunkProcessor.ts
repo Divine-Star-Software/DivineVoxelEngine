@@ -10,56 +10,58 @@ import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 
 //tools
 import { HeightMapTool } from "../../Tools/Data/WorldData/HeightMapTool.js";
-import { BuilderDataTool } from "../Tools/BuilderDataTool.js";
 import { ShapeTool } from "../Shapes/ShapeTool.js";
 import { VoxelGeometryLookUp } from "../../VoxelModels/Constructor/VoxelGeometryLookUp.js";
 import { CompactVoxelMesh } from "../Functions/CompactVoxelMesh.js";
-import { ColumnCursor } from "../../Data/Cursor/ColumnCursor.js";
 import { DVEMesher } from "../../Mesher/Mesher.js";
 import { SubstanceDataTool } from "../../Tools/Data/SubstanceDataTool.js";
+import { WorldCursor } from "../../Data/Cursor/World/WorldCursor.js";
+import { ChunkCursor } from "../../Data/Cursor/World/ChunkCursor.js";
 
 export class ChunkProcessor {
   heightMapTool = new HeightMapTool();
 
   substanceData = new SubstanceDataTool();
-  columnCursor = new ColumnCursor();
+  chunkCursor = new ChunkCursor();
+  worldCursor = new WorldCursor();
 
   _process(x: number, y: number, z: number, doSecondCheck = false): boolean {
-    if (!this.columnCursor.loadIn(x, y, z)) return false;
-    if (!this.columnCursor.voxel.isRenderable()) return false;
+    const voxel = this.chunkCursor.getVoxel(x, y, z);
+    if (!voxel) return false;
+    if (!voxel.isRenderable()) return false;
 
     let hasVoxel = false;
-    this.columnCursor.voxel.setSecondary(doSecondCheck);
+    voxel.setSecondary(doSecondCheck);
     if (!doSecondCheck) {
-      if (this.columnCursor.voxel.hasSecondaryVoxel()) {
+      if (voxel.hasSecondaryVoxel()) {
         hasVoxel = this._process(x, y, z, true);
       }
     }
     const constructor = DVEMesher.instance.constructors.get(
-      this.columnCursor.voxel.getStringId()
+      voxel.getStringId()
     );
 
-    this.substanceData.setSubstance(this.columnCursor.voxel.getSubstance());
+    this.substanceData.setSubstance(voxel.getSubstance());
     const mesher = RenderedSubstances.meshers.get(
       this.substanceData.getRendered()
     );
 
     if (!mesher || !constructor) {
       throw new Error(
-        `Could not find mesh or constructor ${this.columnCursor.voxel.getId()} | ${this.columnCursor.voxel.getName()} | ${
+        `Could not find mesh or constructor ${voxel.getId()} | ${voxel.getName()} | ${
           constructor?.id
         }`
       );
     }
 
-    ShapeTool.origin.x = this.columnCursor._voxelPosition.x;
-    ShapeTool.origin.y = this.columnCursor._voxelPosition.y;
-    ShapeTool.origin.z = this.columnCursor._voxelPosition.z;
+    ShapeTool.origin.x = this.chunkCursor._voxelPosition.x;
+    ShapeTool.origin.y = this.chunkCursor._voxelPosition.y;
+    ShapeTool.origin.z = this.chunkCursor._voxelPosition.z;
     mesher.position.x = x;
     mesher.position.y = y;
     mesher.position.z = z;
-    mesher.voxel = this.columnCursor.voxel;
-    mesher.nVoxel.loadInAt(x, y, z);
+    mesher.voxel = voxel;
+    mesher.nVoxel = this.worldCursor;
     ShapeTool.setMesher(mesher);
     mesher.startConstruction();
     constructor.process(mesher);
@@ -71,11 +73,10 @@ export class ChunkProcessor {
   build(location: LocationData, priority = 0) {
     this.heightMapTool.chunk.loadInAtLocation(location);
 
-    RenderedSubstances.setDimension(location[0]);
-
     const [dimension, cx, cy, cz] = location;
 
-    this.columnCursor.setColumn(...location);
+    this.worldCursor.setFocalPoint(...location);
+    this.chunkCursor.setChunk(...location);
 
     let [minY, maxY] = this.heightMapTool.chunk.getMinMax();
     const maxX = WorldSpaces.chunk._bounds.x;

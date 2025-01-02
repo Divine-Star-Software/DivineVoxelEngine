@@ -74,6 +74,14 @@ export type InitVoxelDataProps = {
 export function InitVoxelData(data: InitVoxelDataProps) {
   if (CacheManager.cacheLoadEnabled && CacheManager.cachedData) {
     const syncData = CacheManager.cachedData.models;
+    for (const model of syncData.models) {
+      SchemaRegister.registerModel(model.id, model.schema);
+    }
+    for (const voxel of syncData.voxels) {
+      SchemaRegister.registerVoxel(voxel.id, voxel.modelId, voxel.modSchema);
+    }
+    VoxelTagStates.load(syncData.tagState);
+
     data.world.runAsyncTasks("sync-voxel-model-data", syncData);
     data.constructors.runTasksForAll("sync-voxel-model-data", syncData);
     const voxelIndex = new VoxelIndex(data.voxels);

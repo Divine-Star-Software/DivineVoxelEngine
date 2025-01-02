@@ -80,6 +80,7 @@ export class QuadVoxelGometryNode extends GeoemtryNode<QuadVoxelGometryArgs> {
       const currentIndex = faceIndexes[positionIndex];
       const p = VoxelRelativeCubeIndexPositionMap[currentIndex];
       const hashed = VoxelGeometryLookUp.getHash(
+        tool.nVoxel,
         tool.position.x + p[0],
         tool.position.y + p[1],
         tool.position.z + p[2]
@@ -171,6 +172,7 @@ export class QuadVoxelGometryNode extends GeoemtryNode<QuadVoxelGometryArgs> {
         const p = VoxelRelativeCubeIndexPositionMap[currentIndex];
 
         const hashed = VoxelGeometryLookUp.getHash(
+          tool.nVoxel,
           tool.position.x + p[0],
           tool.position.y + p[1],
           tool.position.z + p[2]

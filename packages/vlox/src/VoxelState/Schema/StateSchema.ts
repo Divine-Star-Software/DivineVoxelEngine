@@ -1,12 +1,14 @@
 import { ShapeStateRelationsNode } from "./ShapeStateRelationsNode";
 import { BinarySchemaNode } from "./BinarySchemaNode";
 import { VoxelModelStateSchemaData } from "../State.types";
-import { DataTool } from "../../Tools/Data/DataTool";
-
+import { DataCursorInterface } from "../../Data/Cursor/Interfaces/DataCursor.interface";
+import { Vector3Like } from "@amodx/math";
+import { VoxelCursorInterface } from "../../Data/Cursor/Interfaces/VoxelCursor.interface";
 export class StateSchema {
-  voxel = new DataTool();
-  nVoxel = new DataTool();
   nodes: (BinarySchemaNode | ShapeStateRelationsNode)[] = [];
+  position = Vector3Like.Create();
+  voxel: VoxelCursorInterface;
+  dataCursor: DataCursorInterface;
   constructor(schema: VoxelModelStateSchemaData[]) {
     for (const node of schema) {
       if (node.type == "binary") {

@@ -15,14 +15,21 @@ import { WorldRegister } from "../Data/World/WorldRegister.js";
 import { WorldSpaces } from "../Data/World/WorldSpaces.js";
 import { ColumnDataTool } from "../Tools/Data/WorldData/ColumnDataTool.js";
 import { HeightMapTool } from "../Tools/Data/WorldData/HeightMapTool.js";
+import { WorldCursor } from "../Data/Cursor/World/WorldCursor.js";
+import { ChunkCursor } from "../Data/Cursor/World/ChunkCursor.js";
+import { SubstanceDataTool } from "../Tools/Data/SubstanceDataTool.js";
 
 const columnTool = new ColumnDataTool();
 const heightMapTool = new HeightMapTool();
 
-const mainDT = new DataTool();
-const secondaryDT = new DataTool();
+//const mainDT = new DataTool();
+//const secondaryDT = new DataTool();
 export class Analyzer extends DVEAnaylzer {
   updater = AnalyzerUpdater;
+
+  worldCurosr = new WorldCursor();
+  chunkCursor = new ChunkCursor();
+  substanceData = new SubstanceDataTool();
 
   _flowChecks = [
     [0, -1, 0],
@@ -34,12 +41,14 @@ export class Analyzer extends DVEAnaylzer {
   async runPropagation(data: AnaylzerTask) {
     let t: any = {};
 
+    this.worldCurosr.setFocalPoint(...data[0]);
+
     const options = {
       light: EngineSettings.doLight(),
       flow: EngineSettings.doFlow(),
     };
-    mainDT.setDimension(data[0][0]);
-    secondaryDT.setDimension(data[0][0]);
+    //  mainDT.setDimension(data[0][0]);
+    // secondaryDT.setDimension(data[0][0]);
     const tasks = TasksRequest.getVoxelUpdateRequests(data[0], "none", "self");
     tasks.start();
 
@@ -53,6 +62,7 @@ export class Analyzer extends DVEAnaylzer {
       const chunk = column.chunks[i];
       if (!chunk) continue;
       heightMapTool.chunk.setChunk(chunk);
+      this.chunkCursor.setChunk(chunk);
       const [cx, cy, cz] = [
         location[1],
         location[2] + i * WorldSpaces.chunk.getHeight(),
@@ -60,36 +70,36 @@ export class Analyzer extends DVEAnaylzer {
       ];
       let [minY, maxY] = heightMapTool.chunk.getMinMax();
 
-
       if (Math.abs(minY) == Infinity && Math.abs(maxY) == Infinity) continue;
       for (let y = cy + minY; y <= cy + maxY; y++) {
         for (let z = cz; z < maxZ; z++) {
           for (let x = cx; x < maxX; x++) {
-            if (!mainDT.loadInAt(x, y, z) || mainDT.isAir()) continue;
+            const voxel = this.chunkCursor.getVoxel(x, y, z);
+            if (!voxel || voxel.isAir()) continue;
 
             if (options.light) {
-      
-              if (mainDT.isLightSource()) {
+              if (voxel.isLightSource()) {
                 tasks.queues.rgb.update.push(x, y, z);
               }
             }
             if (options.flow) {
               t = {
-                id: mainDT.getStringId(),
-                sustance: mainDT.getSubstance(),
-                substanceStringId: mainDT.getSubstanceStringId(),
+                id: voxel.getStringId(),
+                sustance: voxel.getSubstance(),
+                substanceStringId: voxel.getSubstanceStringId(),
               };
-              if (mainDT.getSubstnaceData().isLiquid()) {
+              if (
+                this.substanceData.setSubstance(voxel.getSubstance()).isLiquid()
+              ) {
                 let add = false;
                 for (const check of this._flowChecks) {
-                  if (
-                    secondaryDT.loadInAt(
-                      x + check[0],
-                      y + check[1],
-                      z + check[2]
-                    )
-                  ) {
-                    if (secondaryDT.isAir()) {
+                  const nVoxel = this.worldCurosr.getVoxel(
+                    x + check[0],
+                    y + check[1],
+                    z + check[2]
+                  );
+                  if (nVoxel) {
+                    if (nVoxel.isAir()) {
                       add = true;
                       break;
                     }
@@ -111,7 +121,7 @@ export class Analyzer extends DVEAnaylzer {
     const dimension = data[0][0];
     for (const flowUpdate of tasks.queues.flow.update.queue) {
       const [x, y, z] = flowUpdate;
-      if (!mainDT.loadInAt(x, y, z)) continue;
+      if (!this.worldCurosr.getVoxel(x, y, z)) continue;
       await Propagation.instance.flowUpdate(
         TasksRequest.getFlowUpdateRequest([dimension, x, y, z], "none", "self"),
         false
@@ -121,7 +131,7 @@ export class Analyzer extends DVEAnaylzer {
   }
 
   async runUpdate(data: AnaylzerTask) {
-    if (!columnTool.setLocation(data[0]).loadIn()) return;
+    /*     if (!columnTool.setLocation(data[0]).loadIn()) return;
     const deltaTime = Date.now() - columnTool.getLastAnalyzerUpdateTimestamp();
 
     const location = [...data[0]] as LocationData;
@@ -163,6 +173,6 @@ export class Analyzer extends DVEAnaylzer {
     }
 
     WorldRegister.instance.cache.disable();
-    columnTool.setLastAnalyzerUpdateTimestamp();
+    columnTool.setLastAnalyzerUpdateTimestamp(); */
   }
 }

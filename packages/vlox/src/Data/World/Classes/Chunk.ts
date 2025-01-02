@@ -45,6 +45,7 @@ export class Chunk {
     bufferStart += voxelSize * 2;
     const secondary = new Uint16Array(chunkBuffer, bufferStart, voxelSize);
     bufferStart += voxelSize * 2;
+
     return {
       buffer: chunkBuffer,
       ids,

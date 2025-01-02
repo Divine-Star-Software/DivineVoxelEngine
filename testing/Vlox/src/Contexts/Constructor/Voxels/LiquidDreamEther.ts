@@ -26,7 +26,11 @@ export function GetDreamEther(): VoxelConstructor {
       OutlinedVoxelTool.setCurrentTextures(overlayTextures);
       LiquidVoxelShape.start();
       tool.getOverlayTextures().setAll(0);
-      if (tool.isFaceExposed(VoxelFaces.Up)) {
+      const x = tool.position.x;
+      const y = tool.position.y;
+      const z = tool.position.z;
+      let n = tool.nVoxel.getDataSection(x, y + 1, z)?.loadIn(x, y + 1, z);
+      if (n && !tool.voxel.isSameVoxel(n)) {
         tool.setTexture(uv).calculateLight(VoxelFaces.Up);
         if (tool.voxel.getLevel() == 15 && tool.voxel.getLevelState() != 1) {
           OutlinedVoxelTool.addTo.bottom(tool);
@@ -34,23 +38,28 @@ export function GetDreamEther(): VoxelConstructor {
         LiquidVoxelShape.add.up();
       }
       tool.getOverlayTextures().setAll(0);
-      if (tool.isFaceExposed(VoxelFaces.Down)) {
+      n = tool.nVoxel.getDataSection(x, y - 1, z)?.loadIn(x, y - 1, z);
+      if (n && !tool.voxel.isSameVoxel(n)) {
         tool.setTexture(uv).calculateLight(VoxelFaces.Down);
         LiquidVoxelShape.add.down();
       }
-      if (tool.isFaceExposed(VoxelFaces.East)) {
+      n = tool.nVoxel.getDataSection(x + 1, y, z)?.loadIn(x + 1, y, z);
+      if (n && !tool.voxel.isSameVoxel(n)) {
         tool.setTexture(uv).calculateLight(VoxelFaces.East);
         LiquidVoxelShape.add.east();
       }
-      if (tool.isFaceExposed(VoxelFaces.West)) {
+      n = tool.nVoxel.getDataSection(x - 1, y, z)?.loadIn(x - 1, y, z);
+      if (n && !tool.voxel.isSameVoxel(n)) {
         tool.setTexture(uv).calculateLight(VoxelFaces.West);
         LiquidVoxelShape.add.west();
       }
-      if (tool.isFaceExposed(VoxelFaces.South)) {
+      n = tool.nVoxel.getDataSection(x, y, z + 1)?.loadIn(x, y, z + 1);
+      if (n && !tool.voxel.isSameVoxel(n)) {
         tool.setTexture(uv).calculateLight(VoxelFaces.South);
         LiquidVoxelShape.add.south();
       }
-      if (tool.isFaceExposed(VoxelFaces.North)) {
+      n = tool.nVoxel.getDataSection(x, y, z - 1)?.loadIn(x, y, z - 1);
+      if (n && !tool.voxel.isSameVoxel(n)) {
         tool.setTexture(uv).calculateLight(VoxelFaces.North);
         LiquidVoxelShape.add.north();
       }

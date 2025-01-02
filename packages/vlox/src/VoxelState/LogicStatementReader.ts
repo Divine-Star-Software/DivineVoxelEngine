@@ -1,3 +1,4 @@
+import { CondtionalTreeReader } from "./CondiotnalTreeReader";
 import { StateSchema } from "./Schema/StateSchema";
 import {
   StateCompareOperations,
@@ -11,7 +12,7 @@ export class LogicStatementReader {
     public statement: StateLogicStatement
   ) {}
 
-  getValue(shapeState: number) {
+  getValue(treeReader: CondtionalTreeReader) {
     let currentOperation: StateLogiceOperations | -1 = -1;
     let returnVaue = false;
     let currentValue = false;
@@ -27,7 +28,7 @@ export class LogicStatementReader {
         continue;
       }
 
-      const value = this.schema.nodes[node[0]].getValue(shapeState);
+      const value = this.schema.nodes[node[0]].getValue(this.schema.voxel.getShapeState());
 
       switch (node[1]) {
         case StateCompareOperations.Equals:

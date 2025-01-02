@@ -1,5 +1,5 @@
 import { Flat3DIndex, Traverse, Vec3Array } from "@amodx/math";
-import { VoxelTemplateData } from "./VoxelTemplates.types";
+import {  VoxelTemplateData } from "./VoxelTemplates.types";
 import type { RawVoxelData } from "../Data/Types/VoxelData.types";
 import { StringPalette } from "../Interfaces/Data/StringPalette";
 import { NumberPalette } from "../Interfaces/Data/NumberPalette";
@@ -133,6 +133,7 @@ export class VoxelTemplate {
       yield curosr;
     }
   }
+
 
   toJSON(): VoxelTemplateData {
     return {

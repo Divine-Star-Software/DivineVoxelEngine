@@ -1,6 +1,7 @@
 import { SameVoxelRelationsConditionData } from "../../State.types";
 import { ShapeStateSchemaRelationsCondition } from "./ShapeStateSchemaRelationsCondition";
 import { StateSchema } from "../StateSchema";
+import { CondtionalTreeReader } from "VoxelState/CondiotnalTreeReader";
 
 export class SameVoxelCondition extends ShapeStateSchemaRelationsCondition {
   constructor(
@@ -11,14 +12,11 @@ export class SameVoxelCondition extends ShapeStateSchemaRelationsCondition {
   }
 
   evulate(): boolean {
-    if (
-      !this.schema.nVoxel.loadInAt(
-        this.schema.voxel.x + this.data.direction[0],
-        this.schema.voxel.y + this.data.direction[1],
-        this.schema.voxel.z + this.data.direction[2]
-      )
-    )
-      return false;
-    return this.schema.voxel.getId() == this.schema.nVoxel.getId();
+    const nx = this.schema.position.x + this.data.direction[0];
+    const ny = this.schema.position.y + this.data.direction[1];
+    const nz = this.schema.position.z + this.data.direction[2];
+    const nVoxel = this.schema.dataCursor.getVoxel(nx, ny, nz);
+    if (!nVoxel) return false;
+    return this.schema.voxel.isSameVoxel(nVoxel);
   }
 }

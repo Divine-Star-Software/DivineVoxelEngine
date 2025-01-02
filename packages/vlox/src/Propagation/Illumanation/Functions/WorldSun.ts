@@ -3,31 +3,24 @@ import type { WorldSunTaskRequest } from "../../../Contexts/Constructor/Tasks/Ta
 //data
 import { WorldBounds } from "../../../Data/World/WorldBounds.js";
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
-import {
-  $3dCardinalNeighbors,
-  $3dMooreNeighborhood,
-} from "../../../Math/Constants/CardinalNeighbors.js";
+import { $3dCardinalNeighbors } from "../../../Math/Constants/CardinalNeighbors.js";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 
 import { IlluminationManager as IM } from "../IlluminationManager.js";
 import { HeightMapTool } from "../../../Tools/Data/WorldData/HeightMapTool.js";
-import { ColumnCursor } from "../../../Data/Cursor/ColumnCursor";
 import { LightData } from "../../../Data/LightData";
-import { WorldCursor } from "../../../Data/Cursor/WorldCursor";
-const inColumnBounds = (cx: number, cz: number, x: number, z: number) => {
-  if (
-    x >= cx &&
-    x <= cx + WorldSpaces.chunk._bounds.x &&
-    z >= cz &&
-    z <= cz + WorldSpaces.chunk._bounds.z
-  )
-    return true;
-  return false;
-};
+import { WorldCursor } from "../../../Data/Cursor/World/WorldCursor";
+import { Vec3Array } from "@amodx/math";
 
 const worldCursor = new WorldCursor();
 const heightMapTool = new HeightMapTool();
-
+const FloodOutPositions: Vec3Array[] = [
+  [1, 0, 0],
+  [-1, 0, 0],
+  [0, 0, 1],
+  [0, 0, -1],
+  [0, 1, 0],
+];
 const queue: number[] = [];
 
 export function RunWorldSun(tasks: WorldSunTaskRequest) {
@@ -54,44 +47,45 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
 
   worldCursor.setFocalPoint(...tasks.origin);
 
-  const columnCursor = worldCursor.getColumnCursor(
+  const columnCursor = worldCursor.getColumn(
     tasks.origin[1],
     tasks.origin[2],
     tasks.origin[3]
   );
+  if (!columnCursor) return;
+  const minY = AmaxY - 1 < 0 ? 0 : AmaxY;
   //fill
-  for (let iy = AmaxY; iy < maxY; iy++) {
+  for (let iy = minY; iy < maxY; iy++) {
     for (let iz = cz; iz < maxZ; iz++) {
       for (let ix = cx; ix < maxX; ix++) {
-        if (!columnCursor.loadIn(ix, iy, iz)) continue;
-        const l = columnCursor.voxel.getLight();
+        const voxel = columnCursor.getVoxel(ix, iy, iz);
+        if (!voxel) continue;
+        const l = voxel.getLight();
         if (l < 0) continue;
-        columnCursor.voxel.setLight(LightData.setS(0xf, l));
+        voxel.setLight(LightData.setS(0xf, l));
       }
     }
   }
 
+  const maxAcculamteY = AmaxY == RmaxY ? RmaxY + 1 : RmaxY;
   //accumulate
-  for (let iy = AmaxY; iy <= RmaxY; iy++) {
+  for (let iy = minY; iy <= maxAcculamteY; iy++) {
     for (let iz = cz; iz < maxZ; iz++) {
       for (let ix = cx; ix < maxX; ix++) {
-        if (!columnCursor.loadIn(ix, iy, iz)) continue;
-        const l = columnCursor.voxel.getLight();
-        if (l < 0 && IM.lightData.getS(l) != 0xf) continue;
-
+        const l = columnCursor.getVoxel(ix, iy, iz)?.getLight();
+        if (l && l < 0 && LightData.getS(l) != 0xf) continue;
         for (let i = 0; i < $3dCardinalNeighbors.length; i++) {
           const n = $3dCardinalNeighbors[i];
           const nx = ix + n[0];
           const ny = iy + n[1];
           const nz = iz + n[2];
 
-          const nTool = worldCursor.getColumnCursor(nx, ny, nz);
-          if (nTool.loadIn(nx, ny, nz)) {
-            const nl = nTool.voxel.getLight();
-            if (nl > -1 && LightData.getS(nl) < 0xf) {
-              queue.push(ix, iy, iz);
-              break;
-            }
+          const nVoxel = worldCursor.getVoxel(nx, ny, nz);
+          if (!nVoxel) continue;
+          const nl = nVoxel.getLight();
+          if (nl > -1 && LightData.getS(nl) < 0xf) {
+            queue.push(ix, iy, iz);
+            break;
           }
         }
       }
@@ -103,85 +97,35 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
     const x = queue.shift()!;
     const y = queue.shift()!;
     const z = queue.shift()!;
-    const column = worldCursor.getColumnCursor(x, y, z);
-    if (!column.loadIn(x, y, z)) continue;
-    const sl = column.voxel.getLight();
-    if (sl <= 0) continue;
-    const sunL = LightData.getS(sl);
-    if (sunL >= 0xf && !inColumnBounds(cx, cz, x, z)) continue;
+    const sl = worldCursor.getVoxel(x, y, z)?.getLight();
+    if (!sl || sl < 0) continue;
 
-    {
-      const nColumn = worldCursor.getColumnCursor(x - 1, y, z);
-      const nVoxel = nColumn.loadIn(x - 1, y, z);
+    for (let i = 0; i < 5; i++) {
+      const nx = x + FloodOutPositions[i][0];
+      const ny = y + FloodOutPositions[i][1];
+      const nz = z + FloodOutPositions[i][2];
+      const nVoxel = worldCursor.getVoxel(nx, ny, nz);
       if (nVoxel) {
         const nl = nVoxel.getLight();
-        if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-          queue.push(x - 1, y, z);
-          nVoxel.setLight(IM.lightData.getMinusOneForSun(sl, nl));
-        }
-      }
-    }
-    {
-      const nColumn = worldCursor.getColumnCursor(x + 1, y, z);
-      const nVoxel = nColumn.loadIn(x + 1, y, z);
-      if (nVoxel) {
-        const nl = nVoxel.getLight();
-        if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-          queue.push(x + 1, y, z);
-          nVoxel.setLight(IM.lightData.getMinusOneForSun(sl, nl));
-        }
-      }
-    }
-    {
-      const nColumn = worldCursor.getColumnCursor(x, y, z + 1);
-      const nVoxel = nColumn.loadIn(x, y, z + 1);
-      if (nVoxel) {
-        const nl = nVoxel.getLight();
-        if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-          queue.push(x, y, z + 1);
-          nVoxel.setLight(IM.lightData.getMinusOneForSun(sl, nl));
-        }
-      }
-    }
-    {
-      const nColumn = worldCursor.getColumnCursor(x, y, z - 1);
-      const nVoxel = nColumn.loadIn(x, y, z - 1);
-      if (nVoxel) {
-        const nl = nVoxel.getLight();
-        if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-          queue.push(x, y, z - 1);
-          nVoxel.setLight(IM.lightData.getMinusOneForSun(sl, nl));
+        if (nl > -1 && LightData.isLessThanForSunAdd(nl, sl)) {
+          queue.push(nx, ny, nz);
+          nVoxel.setLight(LightData.getMinusOneForSun(sl, nl));
         }
       }
     }
 
-    {
-      const nColumn = worldCursor.getColumnCursor(x, y - 1, z);
-      const nVoxel = nColumn.loadIn(x, y - 1, z);
-      if (nVoxel) {
-        const nl = nVoxel.getLight();
-        if (nl > -1 && LightData.isLessThanForSunAddDown(nl, sl)) {
-          if (nVoxel.isAir()) {
+    const nVoxel = worldCursor.getVoxel(x, y - 1, z);
+    if (nVoxel) {
+      const nl = nVoxel.getLight();
+      if (nl > -1 && LightData.isLessThanForSunAddDown(nl, sl)) {
+        if (nVoxel.isAir()) {
+          queue.push(x, y - 1, z);
+          nVoxel.setLight(LightData.getSunLightForUnderVoxel(sl, nl));
+        } else {
+          if (!nVoxel.isOpaque()) {
             queue.push(x, y - 1, z);
-            nVoxel.setLight(LightData.getSunLightForUnderVoxel(sl, nl));
-          } else {
-            if (!nVoxel.isOpaque()) {
-              queue.push(x, y - 1, z);
-              nVoxel.setLight(LightData.getMinusOneForSun(sl, nl));
-            }
+            nVoxel.setLight(LightData.getMinusOneForSun(sl, nl));
           }
-        }
-      }
-    }
-
-    {
-      const nColumn = worldCursor.getColumnCursor(x, y + 1, z);
-      const nVoxel = nColumn.loadIn(x, y + 1, z);
-      if (nVoxel) {
-        const nl = nVoxel.getLight();
-        if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-          queue.push(x, y + 1, z);
-          nVoxel.setLight(IM.lightData.getMinusOneForSun(sl, nl));
         }
       }
     }

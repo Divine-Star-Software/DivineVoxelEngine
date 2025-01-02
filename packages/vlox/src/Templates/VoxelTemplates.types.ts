@@ -7,6 +7,15 @@ export interface VoxelTemplateBuffers {
   secondary: Uint16Array | Uint8Array | number;
 }
 
+export interface FullVoxelTemplateData {
+  size: Vec3Array;
+  ids: Uint16Array;
+  state: Uint16Array;
+  light: Uint16Array;
+  mod: Uint16Array;
+  secondary: Uint16Array;
+}
+
 export interface VoxelTemplatePaletteData {
   id: string[];
   secondaryId: string[];

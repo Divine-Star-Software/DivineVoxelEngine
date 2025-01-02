@@ -1,8 +1,9 @@
 import { AdvancedBrush } from "@divinevoxel/vlox/Tools/Brush/AdvancedBrushTool";
-import { WorldCursor } from "@divinevoxel/vlox/Data/Cursor/WorldCursor";
+import { WorldCursor } from "@divinevoxel/vlox/Data/Cursor/World/WorldCursor";
+import { VoxelCursor } from "@divinevoxel/vlox/Data/Cursor/VoxelCursor";
 const brush = new AdvancedBrush();
-
 const worldCursor = new WorldCursor();
+const voxelCursor = new VoxelCursor();
 export const WorldGen = {
   worldCursor,
   chunkDepth: 16,
@@ -270,21 +271,22 @@ export const WorldGen = {
   },
 
   pyramidColumn(chunkX: number, chunkZ: number) {
-    const columnCursor = this.worldCursor.getColumnCursor(chunkX, 0, chunkZ);
+    const columnCursor = this.worldCursor.getColumn(chunkX, 0, chunkZ)!;
     let minus = 0;
-    //  const height = (10 + Math.random() * 10) >> 0;
+    voxelCursor.setStringId("dve_dread_stone").process();
     const height = 20;
-    for (let y = 1; y < height; y++) {
-      if (y % 3 == 0) continue;
+    for (let y = 1; y < 1 + height; y++) {
+      if (y % 2 == 0) continue;
       for (let x = chunkX + minus; x < this.chunkWidth + chunkX - minus; x++) {
         for (
           let z = chunkZ + minus;
           z < this.chunkDepth + chunkZ - minus;
           z++
         ) {
-          columnCursor.loadIn(x, y, z);
-          columnCursor.voxel.setStringId("dve_dread_stone");
-          columnCursor.voxel.updateHeightMap(0);
+          columnCursor
+            .getVoxel(x, y, z)!
+            .setId(voxelCursor.id)
+            .updateHeightMap(0);
         }
       }
       minus++;

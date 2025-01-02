@@ -1,11 +1,11 @@
+import { DataCursorInterface } from "Data/Cursor/Interfaces/DataCursor.interface";
 import { VoxelConstructorsRegister } from "../../Mesher/Constructors/Voxel/VoxelConstructorsRegister";
-import { DataTool } from "../../Tools/Data/DataTool";
 import { VoxelModelConstructorRegister } from "./Register/VoxelModelConstructorRegister";
 import { VoxelModelVoxelConstructor } from "./VoxelModelVoxelConstructor";
 import { Vec3Array, Vector3Like } from "@amodx/math";
+import { VoxelCursor } from "../../Data/Cursor/VoxelCursor";
 
 export class VoxelGeometryLookUp {
-  static dataTool: DataTool;
   static voxelHash: VoxelModelVoxelConstructor[] = [];
   static modCache: number[] = [];
   static stateCache: number[] = [];
@@ -15,12 +15,11 @@ export class VoxelGeometryLookUp {
   static noCastAO: boolean[] = [];
   static offset: Vec3Array = [0, 0, 0];
 
-  static init() {
-    this.dataTool = new DataTool();
-  }
+  static voxelCursor = new VoxelCursor();
+
+  static init() {}
 
   static start(dimension: string, x: number, y: number, z: number) {
-    this.dataTool.setDimension(dimension);
     this.offset[0] = x;
     this.offset[1] = y;
     this.offset[2] = z;
@@ -40,52 +39,73 @@ export class VoxelGeometryLookUp {
     this.noCastAO.length = 0;
   }
 
-  static getHash(x: number, y: number, z: number) {
+  static getHash(
+    dataCursor: DataCursorInterface,
+    x: number,
+    y: number,
+    z: number
+  ) {
     const hashed = Vector3Like.HashXYZ(
       x - this.offset[0],
       y - this.offset[1],
       z - this.offset[2]
     );
-    if (!this.stateCache[hashed]) this.hashState(hashed, x, y, z);
+    if (!this.stateCache[hashed]) this.hashState(dataCursor, hashed, x, y, z);
     return hashed;
   }
 
-  private static hashState(hashed: number, x: number, y: number, z: number) {
+  private static hashState(
+    dataCursor: DataCursorInterface,
+    hashed: number,
+    x: number,
+    y: number,
+    z: number
+  ) {
     if (this.stateCache[hashed] !== undefined) return this.stateCache[hashed];
 
-    if (!this.dataTool.loadInAt(x, y, z)) {
+    const voxel = dataCursor.getVoxel(x, y, z);
+
+    if (!voxel) {
       this.stateCache[hashed] = -1;
       return -1;
     }
-    if (!this.dataTool.isRenderable()) {
+    if (!voxel.isRenderable()) {
       this.stateCache[hashed] = -1;
       return -1;
     }
 
     const voxelConstructor = VoxelConstructorsRegister.constructorsPaltte[
-      this.dataTool.getId()
+      voxel.getId()
     ] as VoxelModelVoxelConstructor;
 
     if (!voxelConstructor || !voxelConstructor.isModel) {
       this.stateCache[hashed] = -1;
       return -1;
     }
-    voxelConstructor.model.schema.voxel.setDimension(this.dataTool.dimension);
-    voxelConstructor.model.schema.voxel.loadInAt(x, y, z);
-    const shapeState = this.dataTool.getShapeState();
+
+    //no ao
+    this.noCastAO[hashed] = voxel.isLightSource() || voxel.noAO();
+    //state
+    const shapeState = voxel.getShapeState();
     const state = voxelConstructor.model.shapeStateTree.getState(shapeState);
-    const mod = this.dataTool.getMod();
+    this.stateCache[hashed] = state;
+    //mod
+    const mod = voxel.getMod();
     const modState = voxelConstructor.modTree.getState(mod);
     this.modCache[hashed] = modState;
+    this.voxelCursor.copy(voxel);
+
+    voxelConstructor.model.schema.position.x = x;
+    voxelConstructor.model.schema.position.y = y;
+    voxelConstructor.model.schema.position.z = z;
+    voxelConstructor.model.schema.voxel = this.voxelCursor;
+    voxelConstructor.model.schema.dataCursor = dataCursor;
+
     const conditonalState =
-      voxelConstructor.model.condtioanlShapeStateTree.getState(shapeState);
-    this.stateCache[hashed] = state;
+      voxelConstructor.model.condtioanlShapeStateTree.getState();
 
     this.voxelHash[hashed] = voxelConstructor;
     this.conditonalStateCache[hashed] = conditonalState;
-
-    this.noCastAO[hashed] =
-      this.dataTool.isLightSource() || this.dataTool.noAO();
 
     this.geometryCache[hashed] =
       voxelConstructor.model.data.shapeStateGeometryMap[state];

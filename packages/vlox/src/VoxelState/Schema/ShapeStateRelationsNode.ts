@@ -1,3 +1,4 @@
+import { CondtionalTreeReader } from "VoxelState/CondiotnalTreeReader";
 import { VoxelRelationsScehmaNodeData } from "../State.types";
 import { SameVoxelCondition } from "./Conditions/SameVoxelConditions";
 import { ShapeStateSchemaRelationsCondition } from "./Conditions/ShapeStateSchemaRelationsCondition";
@@ -8,13 +9,14 @@ export class ShapeStateRelationsNode {
 
   conditions: ShapeStateSchemaRelationsCondition[] = [];
   constructor(
+
     public schema: StateSchema,
     data: VoxelRelationsScehmaNodeData
   ) {
     this.id = data.id;
     for (const cond of data.conditions) {
       if (cond.type == "same-voxel") {
-        this.conditions.push(new SameVoxelCondition(schema, cond));
+        this.conditions.push(new SameVoxelCondition( schema, cond));
       }
     }
   }

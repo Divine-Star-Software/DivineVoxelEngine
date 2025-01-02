@@ -119,6 +119,7 @@ export default async function CreateDisplayIndex(
             mesh.material = materialMap.get(renderedSubstance)!._material;
           }
 
+
           VoxelModelIndex.registerModel(
             voxelId,
             stateID,
