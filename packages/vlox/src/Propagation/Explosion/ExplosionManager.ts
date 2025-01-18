@@ -9,21 +9,27 @@ import { Distance3D } from "@amodx/math/Vectors/Functions/Distance3d";
 import { RGBRemove, RGBUpdate } from "../Illumanation/Functions/RGBUpdate.js";
 import { SunRemove, SunUpdate } from "../Illumanation/Functions/SunUpdate.js";
 import { FlowManager } from "../Flow/FlowManager.js";
+import { UpdateTasks } from "../../Types/Tasks.types";
+import { VisitedMap } from "../../Util/VisistedMap";
+import { UpdateTask } from "../../Contexts/Constructor/Tasks/UpdateTask";
+import { Vec3Array } from "@amodx/math";
 
 const dataTool = new DataTool();
 const nDataTool = new DataTool();
+
 export const ExplosionManager = {
- runExplosion(tasks: ExplosionTaskRequests) {
-  tasks.start();
+ runExplosion(tasks: UpdateTask,radius: number) {
+
   const [dimension, sx, sy, sz] = tasks.origin;
   FlowManager.setDimension(dimension);
-  tasks.setPriority(0);
-  const queue = tasks.queues.queue;
-  const map = tasks.queues.map;
+
+  const queue: Vec3Array[] = [];
+  const map = new VisitedMap();
+
   queue.push([sx, sy, sz]);
   dataTool.setDimension(dimension);
   nDataTool.setDimension(dimension);
-  const radius = tasks.getData();
+
   while (queue.length) {
    const node = queue.shift();
    if (!node) break;
@@ -97,16 +103,16 @@ export const ExplosionManager = {
        const l = nDataTool.getLight();
        if (l > 0) {
         if (LightData.getS(l) > 0) {
-         tasks.queues.sun.remove.push(nx, ny, nz);
+         tasks.sun.remove.push(nx, ny, nz);
         }
         if (LightData.hasRGBLight(l)) {
-         tasks.queues.rgb.remove.push(nx, ny, nz);
+         tasks.rgb.remove.push(nx, ny, nz);
         }
        }
       }
      }
 
-     tasks.addNeighborsToRebuildQueue(x, y, z);
+     tasks.bounds.update(x, y, z);
      if (
       dataTool.getHardness() > 10_000 ||
       dataTool.getSubstnaceData().isLiquid()
@@ -124,7 +130,7 @@ export const ExplosionManager = {
   RGBUpdate(tasks);
   SunUpdate(tasks);
 
-  tasks.runRebuildQueue();
-  tasks.stop();
+ // tasks.runRebuildQueue();
+
  },
 };

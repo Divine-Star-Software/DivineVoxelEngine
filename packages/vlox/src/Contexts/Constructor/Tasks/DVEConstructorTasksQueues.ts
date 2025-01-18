@@ -12,6 +12,9 @@ export class DVEConstructorTasksQueues {
     if (!DVEConstructorTasksQueues.instance)
       DVEConstructorTasksQueues.instance = this;
     this.registerTasks("build-chunk", ConstructorTasksIds.BuildChunk);
+    console.warn(
+      DVEConstructorTasksQueues.onCreated
+    )
     DVEConstructorTasksQueues.onCreated.notify(this);
     this.addQueue("main");
   }

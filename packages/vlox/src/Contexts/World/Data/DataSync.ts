@@ -19,7 +19,7 @@ import { SubstanceTagBuilder } from "./StructBuilders/SubstanceStructBuilder.js"
 import { CommSyncOptions } from "./DataSyncNode.js";
 import { DataSyncNode } from "./DataSyncNode.js";
 import { VoxelDataGenerator } from "./Generators/VoxelDataGenerator.js";
-import { Pipeline, AsyncPipeline } from "@amodx/core/Pipelines/";
+import { Pipeline } from "@amodx/core/Pipelines/";
 import { DataSyncIds } from "../../../Interfaces/Common/DataSyncIds.js";
 
 import type { LocationData } from "../../../Math/index.js";
@@ -53,7 +53,7 @@ export class DataSync {
   _ready = false;
 
   pipelines = {
-    init: new AsyncPipeline<DataSync>(),
+    init: new Pipeline<DataSync>(),
   };
 
   constructor() {
@@ -89,7 +89,7 @@ export class DataSync {
     this.palettes.substance.sync();
     this.tags.voxel.sync();
     this.tags.substance.sync();
-    await this.pipelines.init.pipe(this);
+    await this.pipelines.init.pipeAsync(this);
     this._ready = true;
   }
 

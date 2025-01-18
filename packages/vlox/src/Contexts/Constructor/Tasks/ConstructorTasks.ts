@@ -23,6 +23,7 @@ import {
 import { TasksRequest } from "../Tasks/TasksRequest.js";
 import { Propagation } from "../../../Propagation";
 import { Analyzer } from "../../../Analyzer/Analyzer";
+import { UpdateTask } from "./UpdateTask.js";
 
 export default function (DVEC: DivineVoxelEngineConstructor) {
   Threads.registerTasks("clear-all", () => {
@@ -61,9 +62,7 @@ export default function (DVEC: DivineVoxelEngineConstructor) {
   Threads.registerTasks<ExplosionTasks>(
     ConstructorTasksIds.Explosion,
     async (data) => {
-      await propagation.explosion(
-        TasksRequest.getExplosionRequests(data[0], data[1], data[2], data[3])
-      );
+      await propagation.explosion(new UpdateTask(), data[1]);
     }
   );
 
@@ -123,7 +122,6 @@ export default function (DVEC: DivineVoxelEngineConstructor) {
       for (let i = 0; i < column.chunks.length; i++) {
         const chunk = column.chunks[i];
         if (!chunk) continue;
-
 
         DVEC.mesher.meshChunk(
           [

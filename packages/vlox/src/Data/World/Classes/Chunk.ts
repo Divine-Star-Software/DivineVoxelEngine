@@ -1,6 +1,8 @@
 import { RemoteBinaryStruct } from "@amodx/binary/";
 
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
+import { Column } from "./Column.js";
+import { Vec3Array } from "@amodx/math";
 export interface VoxelDataArrays {
   ids: Uint16Array;
   light: Uint16Array;
@@ -15,6 +17,7 @@ export interface ChunkData extends VoxelDataArrays {
 
 export interface Chunk extends ChunkData {}
 
+const position: Vec3Array = [0, 0, 0];
 export class Chunk {
   static CreateNew(): ChunkData {
     const voxelSize = WorldSpaces.chunk.getVolume();
@@ -56,13 +59,17 @@ export class Chunk {
     };
   }
 
-  static toObject(data: ChunkData) {
-    return new Chunk(data);
+  static toObject(column: Column, index: number, data: ChunkData) {
+    return new Chunk(column, index, data);
   }
   static StateStruct = new RemoteBinaryStruct("chunk-tags");
   chunkState: DataView;
 
-  constructor(data: ChunkData) {
+  constructor(
+    public column: Column,
+    public index: number,
+    data: ChunkData
+  ) {
     this.chunkState = new DataView(data.buffer);
     this.buffer = data.buffer;
     this.ids = data.ids;
@@ -70,6 +77,14 @@ export class Chunk {
     this.secondary = data.secondary;
     this.state = data.state;
     this.mod = data.mod;
+  }
+
+  getPosition(): Readonly<Vec3Array> {
+    position[0] = this.column.location[1];
+    position[1] =
+      this.column.location[2] + this.index * WorldSpaces.chunk._bounds.y;
+    position[2] = this.column.location[3];
+    return position;
   }
 
   serialize(): ChunkData {

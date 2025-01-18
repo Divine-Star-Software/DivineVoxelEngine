@@ -5,4 +5,5 @@ export abstract class DataCursorInterface {
     y: number,
     z: number
   ): VoxelCursorInterface | null;
+  abstract inBounds(x: number, y: number, z: number): boolean;
 }

@@ -1,8 +1,9 @@
 import type { FlowTaskRequests }from "../../../Contexts/Constructor/Tasks/TasksRequest"
 import { FlowManager as FM } from "../FlowManager.js";
 import { EngineSettings } from "../../../Data/Settings/EngineSettings.js";
+import { UpdateTask } from "../../../Contexts/Constructor/Tasks/UpdateTask.js";
 
-export async function FlowUpdate(tasks: FlowTaskRequests, rebuild = true) {
+export async function FlowUpdate(tasks: UpdateTask, rebuild = true) {
   const [dimension, x, y, z] = tasks.origin;
   FM.setDimension(dimension);
   const vox = FM.getVoxel(x, y, z);
@@ -11,20 +12,20 @@ export async function FlowUpdate(tasks: FlowTaskRequests, rebuild = true) {
   const level = FM.getLevel(vox.getStringId(), x, y, z);
   if (level < 0) return;
   const levelState = FM.getLevelState(vox.getStringId(), x, y, z);
-  tasks.queues.flow.update.queue.push([x, y, z, level, levelState]);
-  while (tasks.queues.flow.update.queue.length != 0) {
+  tasks.flow.update.queue.push([x, y, z, level, levelState]);
+  while (tasks.flow.update.queue.length != 0) {
     FM.setDimension(dimension);
     RunFlowPropagation(tasks, vox.getStringId());
     RunFlowIncrease(tasks, vox.getStringId());
     if (rebuild) {
-      tasks.runRebuildQueue();
+    //  tasks.runRebuildQueue();
       await FM.wait(EngineSettings.settings.flow.baseFlowLimit * flowRate);
     }
   }
 }
-function RunFlowPropagation(tasks: FlowTaskRequests, vox: string) {
-  const que = tasks.queues.flow.update.queue;
-  const noRemoveMap = tasks.queues.flow.remove.noRemoveMap;
+function RunFlowPropagation(tasks: UpdateTask, vox: string) {
+  const que = tasks.flow.update.queue;
+  const noRemoveMap = tasks.flow.remove.noRemoveMap;
   for (let i = 0; i < que.length; i++) {
     const node = que[i];
     const x = node[0];
@@ -73,9 +74,9 @@ function RunFlowPropagation(tasks: FlowTaskRequests, vox: string) {
   }
 }
 
-function RunFlowIncrease(tasks: FlowTaskRequests, vox: string) {
-  const que = tasks.queues.flow.update.queue;
-  const map = tasks.queues.flow.update.map;
+function RunFlowIncrease(tasks: UpdateTask, vox: string) {
+  const que = tasks.flow.update.queue;
+  const map = tasks.flow.update.map;
   const reque: number[][] = [];
   while (que.length != 0) {
     const node = que.shift();
@@ -87,14 +88,14 @@ function RunFlowIncrease(tasks: FlowTaskRequests, vox: string) {
     const z = node[2];
     const level = node[3];
     const levelState = node[4];
-    if (map.inMap(x, y, z)) continue;
+    if (map.has(x, y, z)) continue;
     map.add(x, y, z);
     if (level > -1) {
       FM.setVoxel(tasks, vox, level, levelState, x, y, z);
 
       reque.push([x, y, z, -1]);
     }
-    tasks.addToRebuildQueue(x, y, z);
+    tasks.bounds.update(x,y,z);
   }
 
   //@ts-ignore

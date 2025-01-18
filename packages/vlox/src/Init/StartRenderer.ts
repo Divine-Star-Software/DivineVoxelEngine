@@ -14,8 +14,11 @@ type StartRendererProps = {
 export async function StartRenderer(props: StartRendererProps) {
   const DVER = new DivineVoxelEngineRender();
 
+  const t = performance.now();
   await DVER.init(props);
+  console.log("DONE INIT DVE", performance.now() - t);
 
+  const t2 = performance.now();
   InitVoxelData({
     world: DVER.threads.world,
     constructors: DVER.threads.construcotrs,
@@ -23,6 +26,7 @@ export async function StartRenderer(props: StartRendererProps) {
     models: props.models,
     voxels: props.voxels,
   });
+  console.log("DONE INIT VOXEL DATA", performance.now() - t2);
 
   return DVER;
 }

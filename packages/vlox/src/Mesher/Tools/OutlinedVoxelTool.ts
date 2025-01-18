@@ -106,7 +106,8 @@ const generateCheck = (
   normal: Vec3Array,
   sets: Vec3Array[]
 ) => {
-  const { x, y, z } = tool.position;
+  return 0;
+  /*   const { x, y, z } = tool.position;
 
   let key = 0b0;
 
@@ -134,7 +135,7 @@ const generateCheck = (
   }
   if (uvsSets[direction][key] == undefined) return 0;
   const index = uvsSets[direction][key];
-  return OutlinedVoxelTool._currentTexts[index];
+  return OutlinedVoxelTool._currentTexts[index]; */
 };
 
 export class OutlinedVoxelTool {

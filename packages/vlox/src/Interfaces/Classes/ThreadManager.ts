@@ -1,11 +1,11 @@
 import { Thread, ThreadPool, CommPortTypes, Threads } from "@amodx/threads";
-import { AsyncPipeline } from "@amodx/core/Pipelines";
+import { Pipeline } from "@amodx/core/Pipelines";
 import { ThreadState } from "./ThreadState";
 
 export abstract class ThreadManager {
   pipelines = {
-    setPorts: new AsyncPipeline<ThreadManager>(),
-    init: new AsyncPipeline<ThreadManager>(),
+    setPorts: new Pipeline<ThreadManager>(),
+    init: new Pipeline<ThreadManager>(),
   };
   commMap = new Map<string, Thread | ThreadPool>();
   comms: (Thread | ThreadPool)[] = [];

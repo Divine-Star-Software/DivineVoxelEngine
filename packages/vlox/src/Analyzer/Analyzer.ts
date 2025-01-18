@@ -18,6 +18,7 @@ import { HeightMapTool } from "../Tools/Data/WorldData/HeightMapTool.js";
 import { WorldCursor } from "../Data/Cursor/World/WorldCursor.js";
 import { ChunkCursor } from "../Data/Cursor/World/ChunkCursor.js";
 import { SubstanceDataTool } from "../Tools/Data/SubstanceDataTool.js";
+import { UpdateTask } from "../Contexts/Constructor/Tasks/UpdateTask.js";
 
 const columnTool = new ColumnDataTool();
 const heightMapTool = new HeightMapTool();
@@ -48,11 +49,11 @@ export class Analyzer extends DVEAnaylzer {
       flow: EngineSettings.doFlow(),
     };
     //  mainDT.setDimension(data[0][0]);
-    // secondaryDT.setDimension(data[0][0]);
-    const tasks = TasksRequest.getVoxelUpdateRequests(data[0], "none", "self");
-    tasks.start();
-
     const location = data[0];
+    // secondaryDT.setDimension(data[0][0]);
+    const tasks = new UpdateTask();
+    tasks.setOrigin(location);
+
     if (!columnTool.loadInAtLocation(location)) return;
     WorldRegister.instance.cache.enable();
     const column = columnTool.getColumn();
@@ -79,7 +80,7 @@ export class Analyzer extends DVEAnaylzer {
 
             if (options.light) {
               if (voxel.isLightSource()) {
-                tasks.queues.rgb.update.push(x, y, z);
+                tasks.rgb.update.push(x, y, z);
               }
             }
             if (options.flow) {
@@ -106,7 +107,7 @@ export class Analyzer extends DVEAnaylzer {
                   }
                 }
                 if (add) {
-                  tasks.queues.flow.update.queue.push([x, y, z]);
+                  tasks.flow.update.queue.push([x, y, z]);
                 }
               }
             }
@@ -119,15 +120,13 @@ export class Analyzer extends DVEAnaylzer {
 
     Propagation.instance.rgbUpdate(tasks);
     const dimension = data[0][0];
-    for (const flowUpdate of tasks.queues.flow.update.queue) {
+    for (const flowUpdate of tasks.flow.update.queue) {
       const [x, y, z] = flowUpdate;
       if (!this.worldCurosr.getVoxel(x, y, z)) continue;
-      await Propagation.instance.flowUpdate(
-        TasksRequest.getFlowUpdateRequest([dimension, x, y, z], "none", "self"),
-        false
-      );
+      const tasks = new UpdateTask();
+      tasks.setOrigin([dimension, x, y, z]);
+      await Propagation.instance.flowUpdate(tasks, false);
     }
-    tasks.stop();
   }
 
   async runUpdate(data: AnaylzerTask) {

@@ -7,6 +7,9 @@ export class TemplateCursor extends DataCursorInterface {
   _template: FullVoxelTemplate | null = null;
   private voxel = new TemplateVoxelCursor(this);
 
+  inBounds(x: number, y: number, z: number): boolean {
+      return true;
+  }
   setTemplate(template: FullVoxelTemplate) {
     this._template = template;
   }

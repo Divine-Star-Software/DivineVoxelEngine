@@ -1,3 +1,5 @@
+import { CachedDisplayIndex } from "Cache/Cache.types";
+
 export class VoxelTextureIndex {
   static voxelImages = new Map<string, Map<string, HTMLImageElement>>();
 
@@ -19,5 +21,24 @@ export class VoxelTextureIndex {
     const source = voxelMap.get(namedStateId);
     if (!source) return false;
     return source;
+  }
+  static loadData(data: CachedDisplayIndex["textures"]) {
+    for (const vid in data) {
+      const voxels = data[vid];
+      for (const sid in voxels) {
+        this.registerImage(vid, sid, voxels[sid]);
+      }
+    }
+  }
+
+  static cacheData(): CachedDisplayIndex["textures"] {
+    const meshes: CachedDisplayIndex["textures"] = {};
+    for (const [voxelId, vmap] of this.voxelImages) {
+      for (const [stateId, image] of vmap) {
+        meshes[voxelId] ??= {};
+        meshes[voxelId][stateId] = image.src;
+      }
+    }
+    return meshes;
   }
 }

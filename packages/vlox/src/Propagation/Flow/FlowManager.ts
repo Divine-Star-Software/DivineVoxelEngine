@@ -7,6 +7,7 @@ import { SunRemove, SunUpdate } from "../Illumanation/Functions/SunUpdate.js";
 import { RGBRemove, RGBUpdate } from "../Illumanation/Functions/RGBUpdate.js";
 import { IlluminationManager } from "../Illumanation/IlluminationManager.js";
 import { SubstanceDataTool } from "../../Tools/Data/SubstanceDataTool.js";
+import { UpdateTask } from "Contexts/Constructor/Tasks/UpdateTask.js";
 
 export class FlowManager {
   static lightData = LightData;
@@ -18,7 +19,7 @@ export class FlowManager {
 
 
   static setVoxel(
-    tasks: FlowTaskRequests,
+    tasks: UpdateTask,
     vox: string,
     level: number,
     levelState: number,
@@ -42,11 +43,11 @@ export class FlowManager {
   static setDimension(dimension: string) {
     this._sDataTool.setDimension(dimension);
     this._nDataTool.setDimension(dimension);
-    this._brush.setDimension(dimension);
+ //   this._brush.setDimension(dimension);
     IlluminationManager.setDimension(dimension);
   }
 
-  static removeVoxel(tasks: FlowTaskRequests, x: number, y: number, z: number) {
+  static removeVoxel(tasks: UpdateTask, x: number, y: number, z: number) {
     for (const n of $3dCardinalNeighbors) {
       const nx = x + n[0];
       const ny = y + n[1];
@@ -58,11 +59,11 @@ export class FlowManager {
       if (l <= 0) continue;
 
       if (this.lightData.getS(l) > 0) {
-        tasks.queues.sun.update.push(nx, ny, nz);
+        tasks.sun.update.push(nx, ny, nz);
       }
 
       if (this.lightData.hasRGBLight(l)) {
-        tasks.queues.rgb.update.push(nx, ny, nz);
+        tasks.rgb.update.push(nx, ny, nz);
       }
     }
     this._nDataTool.loadInAt(x, y, z);
@@ -70,7 +71,7 @@ export class FlowManager {
     this._brush.setXYZ(x, y, z).erase();
     this._nDataTool.clear().loadInAt(x, y, z);
     this._nDataTool.setLight(currentLight).commit();
-    tasks.queues.rgb.remove.push(x, y, z);
+    tasks.rgb.remove.push(x, y, z);
     RGBRemove(tasks);
     SunUpdate(tasks);
     RGBUpdate(tasks);
@@ -162,12 +163,12 @@ export class FlowManager {
     return this.lightData.minusOneForAll(brightest);
   }
 
-  static sunCheck(tasks: FlowTaskRequests, x: number, y: number, z: number) {
+  static sunCheck(tasks: UpdateTask, x: number, y: number, z: number) {
     if (!this._nDataTool.loadInAt(x, y - 1, z)) return;
     if (!this._nDataTool.isAir()) return;
     const l = this._nDataTool.getLight();
     if (this.lightData.getS(l) == 0xf) {
-      tasks.queues.sun.remove.push(x, y - 1, z);
+      tasks.sun.remove.push(x, y - 1, z);
     }
   }
 }

@@ -62,10 +62,12 @@ export class ImageArrayTexture extends Texture {
     );
     itex.width = width;
     itex.height = height;
+    itex
     itex.isReady = true;
     itex.generateMipMaps = true;
     itex.type = Engine.TEXTURETYPE_UNSIGNED_INT;
     itex.is2DArray = true;
+
 
     itex._hardwareTexture = {
       setUsage() {
@@ -82,6 +84,7 @@ export class ImageArrayTexture extends Texture {
       },
       underlyingResource: texture,
     };
+
 
     this._texture = itex;
 

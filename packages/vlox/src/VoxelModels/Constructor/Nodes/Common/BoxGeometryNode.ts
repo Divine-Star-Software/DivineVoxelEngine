@@ -71,54 +71,42 @@ export function GetBoxGeometryNodeData(
   );
 
   quads[VoxelFaces.Up] = tranformed[VoxelFaces.Up];
-  tranformed[VoxelFaces.Up].orientation = 0;
-
   vertexWeights[VoxelFaces.Up] = addQuadWeights(
     quads[VoxelFaces.Up],
     VoxelFaces.Up
   );
 
   quads[VoxelFaces.Down] = tranformed[VoxelFaces.Down];
-  tranformed[VoxelFaces.Down].orientation = 0;
-
   vertexWeights[VoxelFaces.Down] = addQuadWeights(
     quads[VoxelFaces.Down],
     VoxelFaces.Down
   );
 
   quads[VoxelFaces.North] = tranformed[VoxelFaces.North];
-  tranformed[VoxelFaces.North].orientation = 0;
-
   vertexWeights[VoxelFaces.North] = addQuadWeights(
     quads[VoxelFaces.North],
     VoxelFaces.North
   );
 
   quads[VoxelFaces.South] = tranformed[VoxelFaces.South];
-  tranformed[VoxelFaces.South].orientation = 0;
-
   vertexWeights[VoxelFaces.South] = addQuadWeights(
     quads[VoxelFaces.South],
     VoxelFaces.South
   );
 
   quads[VoxelFaces.East] = tranformed[VoxelFaces.East];
-  tranformed[VoxelFaces.East].orientation = 0;
-
   vertexWeights[VoxelFaces.East] = addQuadWeights(
     quads[VoxelFaces.East],
     VoxelFaces.East
   );
 
   quads[VoxelFaces.West] = tranformed[VoxelFaces.West];
-  tranformed[VoxelFaces.West].orientation = 0;
-
   vertexWeights[VoxelFaces.West] = addQuadWeights(
     quads[VoxelFaces.West],
     VoxelFaces.West
   );
 
- // console.log(quads);
+  
   return {
     quads,
     vertexWeights,

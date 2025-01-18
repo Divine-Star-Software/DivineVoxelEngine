@@ -1,7 +1,6 @@
 import { SameVoxelRelationsConditionData } from "../../State.types";
 import { ShapeStateSchemaRelationsCondition } from "./ShapeStateSchemaRelationsCondition";
 import { StateSchema } from "../StateSchema";
-import { CondtionalTreeReader } from "VoxelState/CondiotnalTreeReader";
 
 export class SameVoxelCondition extends ShapeStateSchemaRelationsCondition {
   constructor(

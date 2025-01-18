@@ -10,7 +10,7 @@ import { RawVoxelData } from "../Data/Types/VoxelData.types";
 import { DivineVoxelEngineConstructor } from "../Contexts/Constructor";
 
 const brush = new BrushTool();
-const dataTool = brush._dt;
+const dataTool = brush.voxelCursor;
 const chunkTool = new ChunkDataTool();
 export class WorldGenRegister {
   static MAX_ATTEMPTS = 100;
@@ -112,7 +112,7 @@ export class WorldGenRegister {
       }
       return false;
     }
-    brush.setDimension(requests.dimension);
+/*     brush.setDimension(requests.dimension);
     dataTool.setDimension(requests.dimension);
     const voxels = requests.voxels;
     brush.start();
@@ -121,7 +121,7 @@ export class WorldGenRegister {
       if (!data) break;
       dataTool.loadInAt(data[0], data[1], data[2]);
       brush.setXYZ(data[0], data[1], data[2]).setRaw(data[3]).paint();
-    }
+    } */
     brush.stop();
     this._requests.delete(registerId);
     return true;

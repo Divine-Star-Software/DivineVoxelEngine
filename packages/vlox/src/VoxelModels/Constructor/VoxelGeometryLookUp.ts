@@ -93,8 +93,7 @@ export class VoxelGeometryLookUp {
     const mod = voxel.getMod();
     const modState = voxelConstructor.modTree.getState(mod);
     this.modCache[hashed] = modState;
-    this.voxelCursor.copy(voxel);
-
+    this.voxelCursor.copy(voxel).process();
     voxelConstructor.model.schema.position.x = x;
     voxelConstructor.model.schema.position.y = y;
     voxelConstructor.model.schema.position.z = z;

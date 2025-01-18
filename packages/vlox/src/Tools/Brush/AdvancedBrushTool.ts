@@ -3,10 +3,18 @@
 //tools
 import { BrushTool } from "./Brush.js";
 import { TaskRunModes, TaskTool } from "../Tasks/TasksTool.js";
+import { LocationData } from "Math/index.js";
 
 export class AdvancedBrush extends BrushTool {
+  _location: LocationData = ["main",0,0,0];
   tasks = new TaskTool();
   mode: TaskRunModes = "async";
+  _mapLocation() {
+    this._location[0] = this.dimension;
+    this._location[1] = this.x;
+    this._location[2] = this.y;
+    this._location[3] = this.z;
+  }
   setMode(mode: TaskRunModes) {
     this.mode = mode;
     return this;
@@ -27,9 +35,10 @@ export class AdvancedBrush extends BrushTool {
     });
   }
   paintAndUpdate(onDone?: Function) {
-    this.tasks.setFocalPoint(this.location);
+    this._mapLocation();
+    this.tasks.setFocalPoint(this._location);
     this.tasks.voxelUpdate.paint.run(
-      this.location,
+      this._location,
       this.getRaw(),
       () => {
         if (onDone) onDone();
@@ -38,9 +47,10 @@ export class AdvancedBrush extends BrushTool {
     );
   }
   eraseAndUpdate(onDone?: Function) {
-    this.tasks.setFocalPoint(this.location);
+    this._mapLocation();
+    this.tasks.setFocalPoint(this._location);
     this.tasks.voxelUpdate.erase.run(
-      this.location,
+      this._location,
       () => {
         if (onDone) onDone();
       },
@@ -48,9 +58,10 @@ export class AdvancedBrush extends BrushTool {
     );
   }
   update(onDone?: Function) {
-    this.tasks.setFocalPoint(this.location);
+    this._mapLocation();
+    this.tasks.setFocalPoint(this._location);
     this.tasks.voxelUpdate.update.run(
-      this.location,
+      this._location,
       this.getRaw(),
       () => {
         if (onDone) onDone();
@@ -66,8 +77,9 @@ export class AdvancedBrush extends BrushTool {
     });
   }
   explode(radius = 6, onDone?: Function) {
-    this.tasks.setFocalPoint(this.location);
-    this.tasks.explosion.run(this.location, radius, () => {
+    this._mapLocation();
+    this.tasks.setFocalPoint(this._location);
+    this.tasks.explosion.run(this._location, radius, () => {
       if (onDone) onDone();
     });
   }

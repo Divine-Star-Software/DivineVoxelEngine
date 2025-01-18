@@ -43,6 +43,8 @@ export type AddToRebuildQueue = [
 
 export type RunRebuildTasks = [buildQueue: string];
 
+export type RunBuildQueue = [dimension: string, chunks: Vec3Array[]];
+
 export type BuildTasks = [location: LocationData, LOD: number];
 
 export type GenerateTasks = [location: LocationData, data: any];

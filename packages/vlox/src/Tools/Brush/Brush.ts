@@ -1,38 +1,70 @@
-import { DataTool } from "../../Tools/Data/DataTool.js";
 import type { RawVoxelData } from "../../Data/Types/VoxelData.types.js";
-import { WorldPainter } from "../../Data/World/WorldPainter.js";
-import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { VoxelPalette } from "../../Data/Voxel/VoxelPalette.js";
-import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
 import { PaintVoxelData } from "../../Data/Types/WorldData.types.js";
-const air = "dve_air";
+import { WorldCursor } from "../../Data/Cursor/World/WorldCursor.js";
+import { VoxelCursor } from "../../Data/Cursor/VoxelCursor.js";
+import { SubstanceDataTool } from "../../Tools/Data/SubstanceDataTool.js";
+const airId = "dve_air";
 
-export class BrushTool extends LocationBoundTool {
+const air: RawVoxelData = [0, 0, 0, 0, 0];
+
+export class BrushTool {
   data: PaintVoxelData = {
-    id: air,
+    id: airId,
     shapeState: 0,
-    secondaryVoxelId: air,
+    secondaryVoxelId: airId,
     level: 0,
     levelState: 0,
     mod: 0,
   };
 
-  name = air;
+  dimension: string;
+  x = 0;
+  y = 0;
+  z = 0;
+  name = airId;
 
-  _worldPainter = new WorldPainter();
-
-  _dt = new DataTool();
+  voxelCursor = new VoxelCursor();
+  dataCursor = new WorldCursor();
+  substanceData = new SubstanceDataTool();
+  setXYZ(x: number, y: number, z: number) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+    return this;
+  }
 
   setData(data: Partial<PaintVoxelData>) {
-    this.data.id = data.id ? data.id : air;
+    this.data.id = data.id ? data.id : airId;
     this.data.shapeState = data.shapeState ? data.shapeState : 0;
     this.data.secondaryVoxelId = data.secondaryVoxelId
       ? data.secondaryVoxelId
-      : air;
+      : airId;
     this.data.level = data.level ? data.level : 0;
     this.data.levelState = data.levelState ? data.levelState : 0;
     this.data.mod = data.mod ? data.mod : 0;
     return this;
+  }
+  getData() {
+    return this.data;
+  }
+  setRaw(data: RawVoxelData) {
+    this.voxelCursor.copyRaw(data).process();
+    this.data.id = this.voxelCursor.getStringId();
+    this.data.shapeState = this.voxelCursor.getShapeState();
+    this.data.levelState = this.voxelCursor.getLevelState();
+    this.data.level = this.voxelCursor.getLevel();
+    this.voxelCursor.setSecondary(true);
+    if (this.voxelCursor.secondaryId >= 2) {
+      this.data.secondaryVoxelId = this.voxelCursor.getStringId();
+    }
+    this.voxelCursor.setSecondary(false);
+    this.data.mod = this.voxelCursor.getMod();
+    return this;
+  }
+
+  getRaw() {
+   return VoxelCursor.VoxelDataToRaw(this.data)
   }
 
   setId(id: string) {
@@ -43,12 +75,6 @@ export class BrushTool extends LocationBoundTool {
   setName(name: string) {
     this.data.id = VoxelPalette.name.getId(name);
     this.name = name;
-    return this;
-  }
-
-  setDimension(dimensionId: string) {
-    this.dimension = dimensionId;
-    this._dt.setDimension(dimensionId);
     return this;
   }
 
@@ -89,60 +115,82 @@ export class BrushTool extends LocationBoundTool {
     this.z = 0;
   }
 
-  setRaw(data: RawVoxelData) {
-    this._dt.loadInRaw(data);
-    this.data.id = this._dt.getStringId();
-    this.data.shapeState = this._dt.getShapeState();
-    this.data.levelState = this._dt.getLevelState();
-    this.data.level = this._dt.getLevel();
-    this._dt.setSecondary(true);
-    if (this._dt.data.secondaryId >= 2) {
-      this.data.secondaryVoxelId = this._dt.getStringId();
+
+
+
+
+  _paint() {
+    const voxel = this.dataCursor.getVoxel(this.x, this.y, this.z);
+    if (!voxel) return;
+    const id = VoxelPalette.ids.getNumberId(this.data.id);
+    if (id < 0) return false;
+    voxel.setId(id);
+
+    voxel.setShapeState(this.data.shapeState ? this.data.shapeState : 0);
+
+    const substance = voxel.getSubstance();
+    if (
+      substance > -1 && !voxel.isAir()
+        ? this.substanceData.setSubstance(voxel.getSubstance()).isLiquid()
+        : false
+    ) {
+      voxel.setLevel(7);
     }
-    this._dt.setSecondary(false);
-    this.data.mod = this._dt.getMod();
-    return this;
+    voxel.setMod(this.data.mod);
+
+    if (
+      this.data.secondaryVoxelId &&
+      this.data.secondaryVoxelId != "dve_air" &&
+      voxel.canHaveSecondaryVoxel()
+    ) {
+      const vid = VoxelPalette.ids.getNumberId(this.data.secondaryVoxelId);
+
+      if (vid > 0) {
+        voxel.setSecondary(true);
+        voxel.setId(vid);
+        voxel.setSecondary(false);
+      }
+    }
+
+    if (voxel.isLightSource() && voxel.getLightSourceValue()) {
+      voxel.setLight(voxel.getLightSourceValue());
+    }
+
+    /*    if (this.voxelCursor.isRich()) {
+      DataHooks.paint.onRichVoxelPaint.notify([
+        this.voxelCursor.getStringId(),
+        [this.dimenion, x, y, z],
+      ]);
+    } */
+
+    voxel.updateHeightMap(0);
   }
-
-  getRaw() {
-    this._dt.setId(VoxelPalette.ids.getNumberId(this.data.id));
-    this._dt
-      .setSecondary(true)
-      .setId(VoxelPalette.ids.getNumberId(this.data.secondaryVoxelId))
-      .setSecondary(false);
-
-    this._dt.setLevel(this.data.level);
-    this._dt.setLevelState(this.data.levelState);
-    this._dt.setShapeState(this.data.shapeState);
-    this._dt.data.raw[3] == -1 ? (this._dt.data.raw[3] = 0) : false;
-    this._dt.data.raw[4] = this.data.mod;
-    return this._dt.data.raw;
-  }
-
-  getData() {
-    return this.data;
+  _erase() {
+    const voxel = this.dataCursor.getVoxel(this.x, this.y, this.z);
+    if (!voxel) return;
+    voxel.copyRaw(air).updateHeightMap(1);
   }
 
   paint() {
-    this._worldPainter.dimenion = this.dimension;
-    this._worldPainter.data = this.data;
-    this._worldPainter.paintVoxel(this.x, this.y, this.z);
+    this._paint();
     return this;
   }
 
   erase() {
-    this._worldPainter.dimenion = this.dimension;
-    this._worldPainter.eraseVoxel(this.x, this.y, this.z);
+    this._erase();
     return this;
   }
 
-  start() {
-    WorldRegister.instance.cache.enable();
+  start(dimension: string, x: number, y: number, z: number) {
+    this.dataCursor.setFocalPoint(dimension, x, y, z);
+    this.dimension = dimension;
+    this.x = x;
+    this.y = y;
+    this.z = z;
     return this;
   }
 
   stop() {
-    WorldRegister.instance.cache.disable();
     return this;
   }
 }

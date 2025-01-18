@@ -321,7 +321,7 @@ export class TaskTool {
     },
   };
 }
-DVEConstructorTasksQueues.onCreated.subscribe(TaskTool, () => {
+DVEConstructorTasksQueues.onCreated.subscribe("TaskTool", () => {
   DVEConstructorTasksQueues.instance.registerTasks(
     "world-sun",
     ConstructorTasksIds.WorldSun

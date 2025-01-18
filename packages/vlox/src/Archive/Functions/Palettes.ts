@@ -4,10 +4,10 @@ import { NibbleArray } from "@amodx/binary/Arrays/NibbleArray";
 
 export const convertToPaletteBuffer = (
   paletteSize: number,
-  data: Uint16Array,
+  data: any,
   sharedMemory = false
 ): Uint16Array | Uint8Array => {
-  let buffer: Uint8Array | Uint16Array = data;
+  let buffer: any = data;
 
   if (paletteSize > 15 && paletteSize <= 255) {
     buffer = Uint8Array.from(data);

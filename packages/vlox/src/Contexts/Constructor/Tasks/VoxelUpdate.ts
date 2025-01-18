@@ -1,62 +1,70 @@
 import { EngineSettings as ES } from "../../../Data/Settings/EngineSettings.js";
 import { $3dCardinalNeighbors } from "../../../Math/Constants/CardinalNeighbors.js";
 
-import { LightTaskRequest, TasksRequest } from "./TasksRequest.js";
-import { BrushTool } from "../../../Tools/Brush/Brush.js";
-import { DataTool } from "../../../Tools/Data/DataTool.js";
-import { UpdateTasks, VoxelUpdateTasks } from "Types/Tasks.types";
+import {
+  RunBuildQueue,
+  UpdateTasks,
+  VoxelUpdateTasks,
+} from "Types/Tasks.types";
 import { Propagation } from "../../../Propagation/Propagation.js";
+import { UpdateTask } from "./UpdateTask.js";
+import { DivineVoxelEngineConstructor } from "../DivineVoxelEngineConstructor.js";
+import { SubstanceDataTool } from "../../../Tools/Data/SubstanceDataTool.js";
 
-const dataTool = new DataTool();
-const nDataTool = new DataTool();
-const brushTool = new BrushTool();
+const tasks = new UpdateTask();
+const substanceData = new SubstanceDataTool();
 
-const updateLightTask = (tasks: LightTaskRequest) => {
+const updateLightTask = (tasks: UpdateTask) => {
   let doRGB = ES.doRGBPropagation();
   let doSun = ES.doSunPropagation();
   const [dimension, x, y, z] = tasks.origin;
-  nDataTool.setDimension(dimension);
+  tasks.nDataCursor.setFocalPoint(dimension, x, y, z);
   for (const n of $3dCardinalNeighbors) {
     const nx = n[0] + x;
     const ny = n[1] + y;
     const nz = n[2] + z;
-    if (!nDataTool.loadInAt(nx, ny, nz)) continue;
+    const nVoxel = tasks.nDataCursor.getVoxel(nx, ny, nz);
+    if (!nVoxel) continue;
     if (doRGB) {
-      if (nDataTool.hasRGBLight()) {
-        tasks.queues.rgb.update.push(nx, ny, nz);
+      if (nVoxel.hasRGBLight()) {
+        tasks.rgb.update.push(nx, ny, nz);
       }
     }
     if (doSun) {
-      if (nDataTool.hasSunLight()) {
-        tasks.queues.sun.update.push(nx, ny, nz);
+      if (nVoxel.hasSunLight()) {
+        tasks.sun.update.push(nx, ny, nz);
       }
     }
   }
 };
 
 export async function EreaseAndUpdate(data: UpdateTasks) {
-  if (!dataTool.setLocation(data[0]).loadIn()) return false;
   const [dimension, x, y, z] = data[0];
-  const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[1], data[2]);
-  tasks.setPriority(0).start().setBuldMode("sync").addToRebuildQueue(x, y, z);
-  tasks.setBuldMode("async").addNeighborsToRebuildQueue(x, y, z);
-  if (ES.doFlow() && dataTool.isRenderable()) {
-    if (dataTool.getSubstnaceData().isLiquid()) {
+  tasks.setOrigin(data[0]);
+  let voxel = tasks.sDataCursor.getVoxel(x, y, z);
+  if (!voxel) return false;
+  substanceData.setSubstance(voxel.getSubstance());
+  if (!voxel.isAir() && ES.doFlow() && voxel.isRenderable()) {
+    if (substanceData.isLiquid()) {
       await Propagation.instance.flowRemove(tasks);
-      tasks.stop();
       return true;
     }
   }
-
-  const light = dataTool.getLight();
-  const isLightSource = dataTool.isLightSource();
-  dataTool
+  voxel = tasks.sDataCursor.getVoxel(x, y, z)!;
+  const light = voxel.getLight();
+  const isLightSource = voxel.isLightSource();
+  voxel.setSecondary(true).setId(0).setSecondary(false);
+  voxel
     .setLight(light > 0 ? light : 0)
-    .setAir()
-    .commit(2);
+    .setId(0)
+    .setLevel(0)
+    .setLevelState(0)
+    .setShapeState(0)
+    .setMod(0)
+    .updateHeightMap(1);
   if (ES.doLight()) {
     if (ES.doRGBPropagation() && isLightSource) {
-      tasks.queues.rgb.remove.push(x, y, z);
+      tasks.rgb.remove.push(x, y, z);
       Propagation.instance.rgbRemove(tasks);
     }
     updateLightTask(tasks);
@@ -68,81 +76,110 @@ export async function EreaseAndUpdate(data: UpdateTasks) {
     }
   }
 
-  tasks.runRebuildQueue();
-  tasks.stop();
+  DivineVoxelEngineConstructor.instance.threads.world.runTasks<RunBuildQueue>(
+    "build-queue",
+    [dimension, tasks.bounds.getChunks()]
+  );
+
   return true;
 }
 
 export async function PaintAndUpdate(data: VoxelUpdateTasks) {
-  if (!dataTool.setLocation(data[0]).loadIn()) return false;
   const [dimension, x, y, z] = data[0];
+  tasks.setOrigin(data[0]);
+  let voxel = tasks.sDataCursor.getVoxel(x, y, z);
+  if (!voxel) return false;
   const raw = data[1];
-  const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[2], data[3]);
-  tasks.start().setPriority(0).setBuldMode("sync").addToRebuildQueue(x, y, z);
-  tasks.setBuldMode("async").addNeighborsToRebuildQueue(x, y, z);
-  brushTool.setLocation(data[0]).setRaw(raw);
-  nDataTool.loadInRaw(raw);
 
-  const isOpaque = nDataTool.isOpaque();
+  const isOpaque = voxel.isOpaque();
   let doRGB = ES.doRGBPropagation();
   let doSun = ES.doSunPropagation();
 
   lighttest: if (ES.doLight()) {
-    const light = dataTool.getLight();
+    const light = voxel.getLight();
     if (light <= 0) break lighttest;
     if (doSun) {
-      if (dataTool.hasSunLight()) {
-        tasks.queues.sun.remove.push(x, y, z);
+      if (voxel.hasSunLight()) {
+        tasks.sun.remove.push(x, y, z);
         Propagation.instance.sunRemove(tasks);
       }
     }
     if (doRGB) {
-      if (dataTool.hasRGBLight() && isOpaque) {
-        tasks.queues.rgb.remove.push(x, y, z);
+      if (voxel.hasRGBLight() && isOpaque) {
+        tasks.rgb.remove.push(x, y, z);
         Propagation.instance.rgbRemove(tasks);
       }
     }
   }
+  voxel = tasks.sDataCursor.getVoxel(x, y, z)!;
+  const id = raw[0];
+  if (id < 0) return false;
+  voxel.setId(id);
 
+  voxel.setShapeState(raw[2]);
 
+  const substance = voxel.getSubstance();
+  if (
+    substance > -1 && !voxel.isAir()
+      ? substanceData.setSubstance(voxel.getSubstance()).isLiquid()
+      : false
+  ) {
+    voxel.setLevel(7);
+  }
+  voxel.setMod(raw[4]);
 
-  brushTool.paint();
+  if (raw[3] > 0 && voxel.canHaveSecondaryVoxel()) {
+    voxel.setSecondary(true);
+    voxel.setId(raw[3]);
+    voxel.setSecondary(false);
+  }
 
+  if (voxel.isLightSource() && voxel.getLightSourceValue()) {
+    voxel.setLight(voxel.getLightSourceValue());
+  }
 
+  /*    if (this.voxelCursor.isRich()) {
+      DataHooks.paint.onRichVoxelPaint.notify([
+        this.voxelCursor.getStringId(),
+        [this.dimenion, x, y, z],
+      ]);
+    } */
+
+  voxel.updateHeightMap(0);
   if (ES.doLight()) {
     updateLightTask(tasks);
     if (doRGB) {
-      tasks.queues.rgb.update.push(x, y, z);
+      tasks.rgb.update.push(x, y, z);
       Propagation.instance.rgbUpdate(tasks);
     }
     if (doSun) {
       Propagation.instance.sunUpdate(tasks);
     }
   }
+  voxel = tasks.sDataCursor.getVoxel(x, y, z)!;
 
+  console.warn("GET VOXEL", voxel.getSubstance(), voxel.isAir());
   if (ES.doFlow()) {
-    nDataTool.loadInRaw(raw);
-
-    const substanceData = nDataTool.getSubstnaceData();
-    if (substanceData.isLiquid()) {
+    if (
+      !voxel.isAir() &&
+      substanceData.setSubstance(voxel.getSubstance()).isLiquid()
+    ) {
       Propagation.instance.flowUpdate(tasks);
     }
   }
+  DivineVoxelEngineConstructor.instance.threads.world.runTasks<RunBuildQueue>(
+    "build-queue",
+    [dimension, tasks.bounds.getChunks()]
+  );
 
-  tasks.runRebuildQueue();
-  tasks.stop();
   return;
 }
 
 export async function VoxelUpdate(data: VoxelUpdateTasks) {
-  if (!dataTool.setLocation(data[0]).loadIn()) return false;
   const [dimension, x, y, z] = data[0];
-  const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[2], data[3]);
-  tasks.setPriority(0).start().setBuldMode("sync").addToRebuildQueue(x, y, z);
-  tasks.setBuldMode("async").addNeighborsToRebuildQueue(x, y, z);
-
-  dataTool.loadInRaw(data[1]);
-  dataTool.commit();
+  tasks.setOrigin(data[0]);
+  const voxel = tasks.sDataCursor.getVoxel(x, y, z);
+  if (!voxel) return false;
 
   let doRGB = ES.doRGBPropagation();
   let doSun = ES.doSunPropagation();
@@ -150,7 +187,7 @@ export async function VoxelUpdate(data: VoxelUpdateTasks) {
   if (ES.doLight()) {
     updateLightTask(tasks);
     if (doRGB) {
-      tasks.queues.rgb.update.push(x, y, z);
+      tasks.rgb.update.push(x, y, z);
       Propagation.instance.rgbUpdate(tasks);
     }
     if (doSun) {
@@ -159,12 +196,14 @@ export async function VoxelUpdate(data: VoxelUpdateTasks) {
   }
 
   if (ES.doFlow()) {
-    if (dataTool.getSubstnaceData().isLiquid()) {
+    if (substanceData.setSubstance(voxel.getSubstance()).isLiquid()) {
       Propagation.instance.flowUpdate(tasks);
     }
   }
+  DivineVoxelEngineConstructor.instance.threads.world.runTasks<RunBuildQueue>(
+    "build-queue",
+    [dimension, tasks.bounds.getChunks()]
+  );
 
-  tasks.runRebuildQueue();
-  tasks.stop();
   return;
 }

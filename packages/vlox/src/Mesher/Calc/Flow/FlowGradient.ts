@@ -31,17 +31,17 @@ const flowStates = new QuadScalarVertexData();
 
 export const FlowGradient = {
   getLevel(tool: VoxelMesherDataTool, x: number, y: number, z: number) {
-    if (!tool.nVoxel.loadInAt(x, y, z)) return -1;
+/*     if (!tool.nVoxel.loadInAt(x, y, z)) return -1;
     if (!tool.nVoxel.isRenderable()) return -1;
 
     if (!tool.voxel.isSameVoxel(tool.nVoxel)) return -1;
     const level = tool.nVoxel.getLevel();
     const levelState = tool.nVoxel.getLevelState();
     if (levelState > 0) return 7;
-    return level;
+    return level; */
   },
   calculate(tool: VoxelMesherDataTool) {
-    const cl = tool.voxel.getLevel();
+/*     const cl = tool.voxel.getLevel();
     const cs = tool.voxel.getLevelState();
 
     let log = false;
@@ -82,6 +82,6 @@ export const FlowGradient = {
 
       flowStates.vertices[vertex] = finalLevel;
     }
-    tool.getWorldLevel().setFromQuadData(flowStates);
+    tool.getWorldLevel().setFromQuadData(flowStates); */
   },
 };

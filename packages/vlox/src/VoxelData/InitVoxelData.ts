@@ -60,7 +60,7 @@ import {
   simpleThinPannel,
 } from "../VoxelModels/Defaults/PanelVoxelModels";
 import { VoxelTagStates } from "../VoxelState/VoxelTagStates";
-import { VoxelIndex } from "./VoxelIndex";
+import { VoxelIndex } from "../VoxelIndexes/VoxelIndex";
 import { CacheManager } from "../Cache/CacheManager";
 
 export type InitVoxelDataProps = {
@@ -73,18 +73,28 @@ export type InitVoxelDataProps = {
 
 export function InitVoxelData(data: InitVoxelDataProps) {
   if (CacheManager.cacheLoadEnabled && CacheManager.cachedData) {
+    console.warn("load sync data");
     const syncData = CacheManager.cachedData.models;
-    for (const model of syncData.models) {
+
+    for (let i = 0; i < syncData.models.length; i++) {
+      const model = syncData.models[i];
       SchemaRegister.registerModel(model.id, model.schema);
     }
-    for (const voxel of syncData.voxels) {
+
+    for (let i = 0; i < syncData.voxels.length; i++) {
+      const voxel = syncData.voxels[i];
       SchemaRegister.registerVoxel(voxel.id, voxel.modelId, voxel.modSchema);
     }
     VoxelTagStates.load(syncData.tagState);
+    const t = performance.now();
 
     data.world.runAsyncTasks("sync-voxel-model-data", syncData);
     data.constructors.runTasksForAll("sync-voxel-model-data", syncData);
+
+    console.log("sent the data", performance.now() - t);
+    const t2 = performance.now();
     const voxelIndex = new VoxelIndex(data.voxels);
+    console.log("built the index", performance.now() - t2);
     return;
   }
 

@@ -1,164 +1,81 @@
-import type { LightTaskRequest } from "../../../Contexts/Constructor/Tasks/TasksRequest";
-import { IlluminationManager as IM } from "../IlluminationManager.js";
+import { UpdateTask } from "../../../Contexts/Constructor/Tasks/UpdateTask";
+import { $3dCardinalNeighbors } from "../../../Math/Constants/CardinalNeighbors";
+import { LightData } from "../../../Data/LightData";
 //@todo change array to not use push and shift
-export function RGBUpdate(tasks: LightTaskRequest) {
-  IM.setDimension(tasks.origin[0]);
-  const queue = tasks.queues.rgb.update;
-  while (queue.length != 0) {
+export function RGBUpdate(tasks: UpdateTask) {
+  const queue = tasks.rgb.update;
+  while (queue.length) {
     const x = queue.shift()!;
     const y = queue.shift()!;
     const z = queue.shift()!;
-    if (!IM._sDataTool.loadInAt(x, y, z)) continue;
-    if (IM._sDataTool.isBarrier()) continue;
-    const sl = IM._sDataTool.getLight();
+    const voxel = tasks.sDataCursor.getVoxel(x, y, z);
+    if (!voxel) continue;
+    const sl = voxel.getLight();
     if (sl <= 0) continue;
-    if (IM._nDataTool.loadInAt(x - 1, y, z)) {
-      const nl = IM._nDataTool.getLight();
-      if (nl > -1 && IM.lightData.isLessThanForRGBAdd(nl, sl)) {
-        queue.push(x - 1, y, z);
-        IM._nDataTool.setLight(IM.lightData.getMinusOneForRGB(sl, nl)).commit();
-      }
-    }
-    if (IM._nDataTool.loadInAt(x + 1, y, z)) {
-      const nl = IM._nDataTool.getLight();
-      if (nl > -1 && IM.lightData.isLessThanForRGBAdd(nl, sl)) {
-        queue.push(x + 1, y, z);
-        IM._nDataTool.setLight(IM.lightData.getMinusOneForRGB(sl, nl)).commit();
-      }
-    }
-    if (IM._nDataTool.loadInAt(x, y, z - 1)) {
-      const nl = IM._nDataTool.getLight();
-      if (nl > -1 && IM.lightData.isLessThanForRGBAdd(nl, sl)) {
-        queue.push(x, y, z - 1);
-        IM._nDataTool.setLight(IM.lightData.getMinusOneForRGB(sl, nl)).commit();
-      }
-    }
-    if (IM._nDataTool.loadInAt(x, y, z + 1)) {
-      const nl = IM._nDataTool.getLight();
-      if (nl > -1 && IM.lightData.isLessThanForRGBAdd(nl, sl)) {
-        queue.push(x, y, z + 1);
-        IM._nDataTool.setLight(IM.lightData.getMinusOneForRGB(sl, nl)).commit();
-      }
-    }
-    if (IM._nDataTool.loadInAt(x, y - 1, z)) {
-      const nl = IM._nDataTool.getLight();
-      if (nl > -1 && IM.lightData.isLessThanForRGBAdd(nl, sl)) {
-        queue.push(x, y - 1, z);
-        IM._nDataTool.setLight(IM.lightData.getMinusOneForRGB(sl, nl)).commit();
-      }
-    }
-    if (IM._nDataTool.loadInAt(x, y + 1, z)) {
-      const nl = IM._nDataTool.getLight();
-      if (nl > -1 && IM.lightData.isLessThanForRGBAdd(nl, sl)) {
-        queue.push(x, y + 1, z);
-        IM._nDataTool.setLight(IM.lightData.getMinusOneForRGB(sl, nl)).commit();
-      }
-    }
 
-    tasks.addNeighborsToRebuildQueue(x, y, z);
+    for (let i = 0; i < 6; i++) {
+      const nx = $3dCardinalNeighbors[i][0] + x;
+      const ny = $3dCardinalNeighbors[i][1] + y;
+      const nz = $3dCardinalNeighbors[i][2] + z;
+      if (!tasks.nDataCursor.inBounds(nx, ny, nz)) continue;
+      const voxel = tasks.nDataCursor.getVoxel(nx, ny, nz);
+
+      if (!voxel) continue;
+      const nl = voxel.getLight();
+
+      if (nl > -1 && LightData.isLessThanForRGBAdd(nl, sl)) {
+        queue.push(nx, ny, nz);
+        voxel.setLight(LightData.getMinusOneForRGB(sl, nl));
+      }
+    }
+    tasks.bounds.update(x, y, z);
   }
 }
 
-export function RGBRemove(tasks: LightTaskRequest) {
-  IM.setDimension(tasks.origin[0]);
-  const remove = tasks.queues.rgb.remove;
-  const update = tasks.queues.rgb.update;
-  const map = tasks.queues.rgb.map;
-  while (remove.length != 0) {
+export function RGBRemove(tasks: UpdateTask) {
+  const remove = tasks.rgb.remove;
+  const update = tasks.rgb.update;
+  const removeMap = tasks.rgb.removeMap;
+  const updateMap = tasks.sun.updateMap;
+  while (remove.length) {
     const x = remove.shift()!;
     const y = remove.shift()!;
     const z = remove.shift()!;
-    if (map.inMap(x, y, z)) continue;
-    map.add(x, y, z);
-    if (!IM._sDataTool.loadInAt(x, y, z)) continue;
-    const sl = IM._sDataTool.getLight();
+    if (removeMap.has(x, y, z)) continue;
+    removeMap.add(x, y, z);
+    const voxel = tasks.sDataCursor.getVoxel(x, y, z);
+    if (!voxel) continue;
+    const sl = voxel.getLight();
     if (sl <= 0) continue;
-    if (IM._nDataTool.loadInAt(x - 1, y, z)) {
-      const nl = IM._nDataTool.getLight();
-      const n1HasRGB = IM.lightData.hasRGBLight(nl);
-      if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
-        remove.push(x - 1, y, z);
-        if (IM._nDataTool.isLightSource()) {
-          update.push(x - 1, y, z);
+
+    for (let i = 0; i < 6; i++) {
+      const nx = $3dCardinalNeighbors[i][0] + x;
+      const ny = $3dCardinalNeighbors[i][1] + y;
+      const nz = $3dCardinalNeighbors[i][2] + z;
+      if (!tasks.nDataCursor.inBounds(nx, ny, nz)) continue;
+      const voxel = tasks.nDataCursor.getVoxel(nx, ny, nz);
+      if (!voxel) continue;
+      const nl = voxel.getLight();
+      const n1HasRGB = LightData.hasRGBLight(nl);
+      if (n1HasRGB && LightData.isLessThanForRGBRemove(nl, sl)) {
+        remove.push(nx, ny, nz);
+        if (voxel.isLightSource()) {
+          update.push(nx, ny, nz);
         }
       } else {
-        if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
-          update.push(x - 1, y, z);
+        if (
+          n1HasRGB &&
+          LightData.isGreaterOrEqualThanForRGBRemove(nl, sl) &&
+          !updateMap.has(nx, ny, nz)
+        ) {
+          updateMap.add(nx, ny, nz);
+          update.push(nx, ny, nz);
         }
       }
     }
 
-    if (IM._nDataTool.loadInAt(x + 1, y, z)) {
-      const nl = IM._nDataTool.getLight();
-      const n1HasRGB = IM.lightData.hasRGBLight(nl);
-      if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
-        remove.push(x + 1, y, z);
-        if (IM._nDataTool.isLightSource()) {
-          update.push(x + 1, y, z);
-        }
-      } else {
-        if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
-          update.push(x + 1, y, z);
-        }
-      }
-    }
-
-    if (IM._nDataTool.loadInAt(x, y, z - 1)) {
-      const nl = IM._nDataTool.getLight();
-      const n1HasRGB = IM.lightData.hasRGBLight(nl);
-      if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
-        remove.push(x, y, z - 1);
-      } else {
-        if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
-          update.push(x, y, z - 1);
-        }
-      }
-    }
-
-    if (IM._nDataTool.loadInAt(x, y, z + 1)) {
-      const nl = IM._nDataTool.getLight();
-      const n1HasRGB = IM.lightData.hasRGBLight(nl);
-      if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
-        remove.push(x, y, z + 1);
-        if (IM._nDataTool.isLightSource()) {
-          update.push(x, y, z + 1);
-        }
-      } else {
-        if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
-          update.push(x, y, z + 1);
-        }
-      }
-    }
-    if (IM._nDataTool.loadInAt(x, y - 1, z)) {
-      const nl = IM._nDataTool.getLight();
-      const n1HasRGB = IM.lightData.hasRGBLight(nl);
-      if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
-        remove.push(x, y - 1, z);
-        if (IM._nDataTool.isLightSource()) {
-          update.push(x, y - 1, z);
-        }
-      } else {
-        if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
-          update.push(x, y - 1, z);
-        }
-      }
-    }
-    if (IM._nDataTool.loadInAt(x, y + 1, z)) {
-      const nl = IM._nDataTool.getLight();
-      const n1HasRGB = IM.lightData.hasRGBLight(nl);
-      if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
-        remove.push(x, y + 1, z);
-        if (IM._nDataTool.isLightSource()) {
-          update.push(x, y + 1, z);
-        }
-      } else {
-        if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
-          update.push(x, y + 1, z);
-        }
-      }
-    }
-    tasks.addNeighborsToRebuildQueue(x, y, z);
-    IM._sDataTool.setLight(IM.lightData.removeRGBLight(sl)).commit();
+    tasks.bounds.update(x, y, z);
+    voxel.setLight(LightData.removeRGBLight(sl));
   }
-  map.clear();
+  removeMap.clear();
 }

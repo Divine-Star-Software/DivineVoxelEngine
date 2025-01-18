@@ -140,8 +140,11 @@ export class TextureBuilder {
         ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
         ctx.imageSmoothingEnabled = false;
 
-        ctx.drawImage(image, 0, 0, this._canvas.width!, this._canvas.height!);
-
+        ctx.save();
+        ctx.translate(0, this._canvas.height);
+        ctx.scale(1, -1);
+        ctx.drawImage(image, 0, 0, this._canvas.width, this._canvas.height);
+        ctx.restore();
         const dataUrl = this._canvas.toDataURL("image/png");
         const returnImage = new Image(this._canvas.width, this._canvas.height);
         returnImage.src = dataUrl;

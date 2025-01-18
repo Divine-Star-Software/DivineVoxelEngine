@@ -17,11 +17,11 @@ import { RenderNodes } from "Classes";
 import { DVEVoxelData } from "Data/VoxelData";
 import { StartRenderer } from "@divinevoxel/vlox/Init/StartRenderer";
 import { CacheManager } from "@divinevoxel/vlox/Cache/CacheManager";
-import { Compressor } from "@amodx/core/Compression/Compression";
+
 let ran = false;
 import { GUI } from "dat.gui";
 import { BinaryObject } from "@amodx/binary";
-
+import { Compressor } from "@amodx/core/Compression/Compression";
 export function App() {
   const [gameReady, setGameReady] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);

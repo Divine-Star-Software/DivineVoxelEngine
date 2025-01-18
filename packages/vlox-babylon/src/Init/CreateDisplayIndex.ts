@@ -22,21 +22,43 @@ import { DVEBabylonRenderer } from "../Renderer/DVEBabylonRenderer";
 import { VoxelIndex } from "@divinevoxel/vlox/VoxelData/VoxelIndex";
 import { SchemaRegister } from "@divinevoxel/vlox/VoxelState/SchemaRegister";
 import { DVEBRNodeMesh } from "../Renderer/Nodes/Meshes/DVEBRNodeMesh";
-import { VoxelTextureIndex } from "../Display/VoxelTextureIndex";
+
 import { DVEBRClassicMaterial } from "../Matereials/Classic/DVEBRClassicMaterial";
 import { DefaultMaterialManager } from "../Matereials/DefaultMaterialManager";
-import { Inspector } from "@babylonjs/inspector";
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
-import { VoxelModelIndex } from "../Display/VoxelModelIndex";
+import { VoxelModelIndex } from "@divinevoxel/vlox/VoxelIndexes/VoxelModelIndex";
+import { VoxelTextureIndex } from "@divinevoxel/vlox/VoxelIndexes/VoxelTextureIndex";
+import { CacheManager } from "@divinevoxel/vlox/Cache/CacheManager";
+import { VoxelCursor } from "@divinevoxel/vlox/Data/Cursor/VoxelCursor";
 export default async function CreateDisplayIndex(
   DVER: DivineVoxelEngineRender,
   data: VoxelData[]
 ) {
+  const voxelIndex = new VoxelIndex(data);
+  if (
+    !CacheManager.cacheStoreEnabled &&
+    CacheManager.cacheLoadEnabled &&
+    CacheManager.cachedData?.displayIndex
+  ) {
+    VoxelTextureIndex.loadData(CacheManager.cachedData.displayIndex.textures);
+    VoxelModelIndex.loadData(CacheManager.cachedData.displayIndex.meshes);
+
+    for (const [voxelId, states] of VoxelModelIndex.voxelModels) {
+      for (const [stateId, state] of states) {
+        const material = DVEBabylonRenderer.instance.nodes.materials.get(
+          state.material
+        );
+
+        if (!material) continue;
+        VoxelModelIndex.registerMaterial(voxelId, stateId, material);
+      }
+    }
+
+    return;
+  }
+
   const dataTool = new DataTool();
   const materialMap = new Map<string, DVEBRClassicMaterial>();
-
-  const voxelIndex = new VoxelIndex(data);
-  VoxelModelIndex;
 
   const canvas = document.createElement("canvas");
   canvas.width = 256;
@@ -98,9 +120,7 @@ export default async function CreateDisplayIndex(
 
           const mesh = new Mesh(crypto.randomUUID(), displayScene);
           if (!materialMap.has(renderedSubstance)) {
-            const newMat = (material as any).clone(
-              displayScene
-            );
+            const newMat = (material as any).clone(displayScene);
 
             if (!newMat) throw new Error("Error creating mat.");
 
@@ -119,11 +139,11 @@ export default async function CreateDisplayIndex(
             mesh.material = materialMap.get(renderedSubstance)!._material;
           }
 
-
           VoxelModelIndex.registerModel(
             voxelId,
             stateID,
             data[1],
+            renderedSubstance,
             material._material
           );
           DVEBRNodeMesh.UpdateVertexData(mesh, engine, data[1]);
@@ -203,4 +223,13 @@ export default async function CreateDisplayIndex(
   }
 
   engine.dispose();
+
+  if (CacheManager.cacheStoreEnabled) {
+    console.warn("done creating display index");
+    CacheManager.cachedDisplayData = {
+      textures: VoxelTextureIndex.cacheData(),
+      meshes: VoxelModelIndex.cacheData(),
+    };
+    console.log(CacheManager.cachedDisplayData);
+  }
 }

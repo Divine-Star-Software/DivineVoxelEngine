@@ -9,6 +9,10 @@ import { VoxelPalette } from "../../Voxel/VoxelPalette";
 import { DataTool } from "../../../Tools/Data/DataTool";
 import { SubstancePaletteReader } from "../../Substance/SubstancePalette";
 import { RawVoxelData } from "Data/Types/VoxelData.types";
+interface WritableArrayLike<T> {
+  length: number;
+  [index: number]: T;
+}
 export abstract class VoxelCursorInterface {
   _loadedId = 0;
   id = 0;
@@ -20,11 +24,11 @@ export abstract class VoxelCursorInterface {
   // private _chunk: Chunk;
   _index = 0;
 
-  abstract ids: Uint16Array;
-  abstract light: Uint16Array;
-  abstract state: Uint16Array;
-  abstract secondary: Uint16Array;
-  abstract mod: Uint16Array;
+  abstract ids: WritableArrayLike<number>;
+  abstract light: WritableArrayLike<number>;
+  abstract state: WritableArrayLike<number>;
+  abstract secondary: WritableArrayLike<number>;
+  abstract mod: WritableArrayLike<number>;
 
   process() {
     if (!this.__struct) this.__struct = VoxelStruct.clone();
@@ -108,6 +112,16 @@ export abstract class VoxelCursorInterface {
   canHaveSecondaryVoxel() {
     return this.__struct[VoxelTagIDs.canHaveSecondary] == 1;
   }
+  hasRGBLight() {
+    const light = this.getLight();
+    if (light <= 0) false;
+    return LightData.hasRGBLight(light);
+  }
+  hasSunLight() {
+    const light = this.getLight();
+    if (light <= 0) false;
+    return LightData.hasSunLight(light);
+  }
   getLight() {
     const vID = this._loadedId;
     if (vID == 0) return this.light[this._index];
@@ -158,6 +172,11 @@ export abstract class VoxelCursorInterface {
         ) === true
       : this.__struct[VoxelTagIDs.isLightSource] == 1;
   }
+  getLightSourceValue() {
+    const vID = this._loadedId;
+    if (vID < 2) return 0;
+    return this.__struct[VoxelTagIDs.lightValue];
+  }
   noAO() {
     const vID = this._loadedId;
     if (vID < 2) return false;
@@ -169,6 +188,10 @@ export abstract class VoxelCursorInterface {
   }
   isAir() {
     return 0 == this.ids[this._index];
+  }
+  setAir() {
+    this.ids[0] = 0;
+    return this;
   }
   isBarrier() {
     return 1 == this.ids[this._index];
@@ -224,5 +247,24 @@ export abstract class VoxelCursorInterface {
     this.secondary[this._index] = raw[3];
     this.mod[this._index] = raw[4];
     return this;
+  }
+
+  getRaw(): RawVoxelData {
+    return [
+      this.ids[this._index],
+      this.light[this._index],
+      this.state[this._index],
+      this.secondary[this._index],
+      this.mod[this._index],
+    ];
+  }
+
+  getRawToRef(raw: RawVoxelData): RawVoxelData {
+    raw[0] = this.ids[this._index];
+    raw[1] = this.light[this._index];
+    raw[2] = this.state[this._index];
+    raw[3] = this.secondary[this._index];
+    raw[4] = this.mod[this._index];
+    return raw;
   }
 }

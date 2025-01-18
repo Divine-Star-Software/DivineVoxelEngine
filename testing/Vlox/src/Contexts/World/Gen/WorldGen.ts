@@ -1,9 +1,10 @@
 import { AdvancedBrush } from "@divinevoxel/vlox/Tools/Brush/AdvancedBrushTool";
 import { WorldCursor } from "@divinevoxel/vlox/Data/Cursor/World/WorldCursor";
 import { VoxelCursor } from "@divinevoxel/vlox/Data/Cursor/VoxelCursor";
-const brush = new AdvancedBrush();
 const worldCursor = new WorldCursor();
 const voxelCursor = new VoxelCursor();
+const brush = new AdvancedBrush();
+
 export const WorldGen = {
   worldCursor,
   chunkDepth: 16,

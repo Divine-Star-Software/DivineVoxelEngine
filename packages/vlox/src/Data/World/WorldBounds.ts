@@ -24,6 +24,16 @@ export class WorldBounds {
     this.bounds.MaxY = maxY;
   }
 
+  static inBounds(x: number, y: number, z: number) {
+    if (x < this.bounds.MinX) return false;
+    if (y < this.bounds.MinY) return false;
+    if (z < this.bounds.MinZ) return false;
+    if (x > this.bounds.MaxX) return false;
+    if (y > this.bounds.MaxY) return false;
+    if (z > this.bounds.MaxZ) return false;
+    return true;
+  }
+
   static getWorldWidth(): number {
     return this.bounds.MaxX - this.bounds.MinX;
   }

@@ -128,7 +128,7 @@ export const LightGradient = {
   },
   aoOffset: Vector3Like.Create(),
   calculate(face: VoxelFaces, tool: VoxelMesherDataTool, ignoreAO?: boolean) {
-    tool.setFaceFlipped(false).getWorldLight().setAll(0);
+/*     tool.setFaceFlipped(false).getWorldLight().setAll(0);
 
     tool.getWorldAO().setAll(0);
     this.tool = tool;
@@ -241,9 +241,6 @@ export const LightGradient = {
             }
           }
         }
-        /*
-    Do AO
-    */
 
         if (!states.ignoreAO) {
           if (
@@ -292,9 +289,7 @@ export const LightGradient = {
       }
 
 
-      /*
-   Light End
-   */
+  
       if (this.settings.doSun || this.settings.doRGB) {
         newRGBValues[0] = sunValues.s;
         newRGBValues[1] = RGBValues.r;
@@ -302,9 +297,7 @@ export const LightGradient = {
         newRGBValues[3] = RGBValues.b;
         LightValue.setVertex(vertex, LD.setLightValues(newRGBValues));
       }
-      /*
-   AO End
-   */
+
       if (this.settings.doAO) {
         AOValue.setVertex(vertex, Math.ceil((AOValues.a / 3) * 15));
       }
@@ -329,6 +322,6 @@ export const LightGradient = {
           AOValue.vertices[QuadVerticies.BottomLeft],
           AOValue.vertices[QuadVerticies.BottomRight]
         );
-    }
+    } */
   },
 };

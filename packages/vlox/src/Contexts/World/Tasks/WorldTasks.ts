@@ -8,6 +8,7 @@ import {
   LoadRegionHeadertasks,
   WorldLockTasks,
   LoadColumnDataTasks,
+  RunBuildQueue,
 } from "../../../Types/Tasks.types.js";
 import { RegionHeaderRegister } from "../../../Data/RegionHeaderRegister.js";
 import { DataLoaderTool } from "../../../DataLoader/World/Tools/DataLoaderTool.js";
@@ -17,6 +18,7 @@ import { WorldLock } from "../Lock/WorldLock.js";
 import { ColumnData } from "../../../Data/World/Classes/Column.js";
 import { DivineVoxelEngineWorld } from "../index.js";
 import { DataSync } from "../Data/DataSync.js";
+import { MesherTool } from "../../../Tools/Mesher/MesherTool.js";
 
 export class WorldTasks {
   constructor(public DVEW: DivineVoxelEngineWorld) {}
@@ -65,6 +67,7 @@ export default function (DVEW: DivineVoxelEngineWorld) {
   const dataLoaderTool = new DataLoaderTool();
   const loadInMap: Map<string, boolean> = new Map();
 
+  const mesher = new MesherTool();
   Threads.registerTasks("add-chunk", async (location: LocationData) => {
     WorldRegister.instance.setDimension(location[0]);
     const chunk = WorldRegister.instance.chunk.get(
@@ -146,7 +149,14 @@ export default function (DVEW: DivineVoxelEngineWorld) {
       return onDone ? onDone(resutls) : resutls;
     }
   );
-
+  Threads.registerTasks<RunBuildQueue>(
+    "build-queue",
+    async ([dim, chunks]) => {
+      for (const position of chunks) {
+        mesher.setLocation([dim, ...position]).buildChunk();
+      }
+    }
+  );
   Threads.registerTasks("clear-all", () => {
     WorldRegister.instance.clearAll();
   });

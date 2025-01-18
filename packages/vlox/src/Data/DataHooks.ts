@@ -1,5 +1,5 @@
 import { Observable } from "@amodx/core/Observers/index.js";
-import { AsyncPipeline, Pipeline } from "@amodx/core/Pipelines/";
+import {  Pipeline } from "@amodx/core/Pipelines/";
 import type { LocationData } from "../Math/index.js";
 import { DimensionData } from "./Types/DimensionData.types";
 import { EngineSettingsData } from "../Types/EngineSettings.types";
@@ -10,7 +10,7 @@ export const DataHooks = {
     onRegisterDimension: new Pipeline<DimensionData>(),
   },
   chunk: {
-    onGetAsync: new AsyncPipeline<{
+    onGetAsync: new Pipeline<{
       location: LocationData;
       chunk: ChunkData | null;
     }>(),
@@ -19,7 +19,7 @@ export const DataHooks = {
     onRemove: new Observable<LocationData>(),
   },
   column: {
-    onGetAsync: new AsyncPipeline<{
+    onGetAsync: new Pipeline<{
       location: LocationData;
       column: ColumnData | null;
     }>(),
@@ -31,7 +31,7 @@ export const DataHooks = {
     onRemove: new Observable<LocationData>(),
   },
   region: {
-    onGetAsync: new AsyncPipeline<{
+    onGetAsync: new Pipeline<{
       location: LocationData;
       region: RegionData | null;
     }>(),

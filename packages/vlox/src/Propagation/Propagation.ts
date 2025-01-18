@@ -1,8 +1,6 @@
 //objects
 import {
   ExplosionTaskRequests,
-  FlowTaskRequests,
-  LightTaskRequest,
   WorldSunTaskRequest,
 } from "../Contexts/Constructor/Tasks/TasksRequest";
 import { RGBRemove, RGBUpdate } from "./Illumanation/Functions/RGBUpdate.js";
@@ -11,6 +9,7 @@ import { RunWorldSun } from "./Illumanation/Functions/WorldSun.js";
 import { FlowUpdate } from "./Flow/Functions/FlowUpdate.js";
 import { FlowRemove } from "./Flow/Functions/FlowRemove.js";
 import { ExplosionManager } from "./Explosion/ExplosionManager.js";
+import { UpdateTask } from "../Contexts/Constructor/Tasks/UpdateTask";
 
 export class Propagation {
   static instance: Propagation;
@@ -18,14 +17,14 @@ export class Propagation {
     if (!Propagation.instance) Propagation.instance = this;
   }
 
-  explosion(tasks: ExplosionTaskRequests) {
-    ExplosionManager.runExplosion(tasks);
+  explosion(tasks: UpdateTask, radius: number) {
+    ExplosionManager.runExplosion(tasks, radius);
   }
 
-  async flowUpdate(tasks: FlowTaskRequests, rebuild = true) {
+  async flowUpdate(tasks: UpdateTask, rebuild = true) {
     await FlowUpdate(tasks, rebuild);
   }
-  async flowRemove(tasks: FlowTaskRequests, rebuild = true) {
+  async flowRemove(tasks: UpdateTask, rebuild = true) {
     await FlowRemove(tasks);
   }
 
@@ -33,18 +32,18 @@ export class Propagation {
     RunWorldSun(tasks);
   }
 
-  rgbUpdate(tasks: LightTaskRequest) {
+  rgbUpdate(tasks: UpdateTask) {
     RGBUpdate(tasks);
   }
-  rgbRemove(tasks: LightTaskRequest) {
+  rgbRemove(tasks: UpdateTask) {
     RGBRemove(tasks);
   }
 
-  sunUpdate(tasks: LightTaskRequest) {
+  sunUpdate(tasks: UpdateTask) {
     SunUpdate(tasks);
   }
 
-  sunRemove(tasks: LightTaskRequest, clearUpdateMap = false) {
+  sunRemove(tasks: UpdateTask, clearUpdateMap = false) {
     SunRemove(tasks, clearUpdateMap);
   }
 }

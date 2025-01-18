@@ -95,7 +95,10 @@ class WorldRegisterColumns {
         z,
       ]);
     }
-    const newColumn = Column.toObject(column);
+    const newColumn = Column.toObject(
+      [this._register._currentDimension, x, y, z],
+      column
+    );
     region.columns.set(region.getColumnIndex(x, y, z), newColumn);
 
     return newColumn;
@@ -143,7 +146,7 @@ class WorldRegisterColumns {
         data.chunk = null;
         const newChunk = DataHooks.chunk.onGetSync.pipe(data);
         if (!newChunk.chunk) continue;
-        column.chunks[i] = new Chunk(newChunk.chunk);
+        column.chunks[i] = new Chunk(column, i, newChunk.chunk);
       }
     }
     DataHooks.column.onNew.notify([this._register._currentDimension, x, y, z]);
@@ -169,8 +172,9 @@ class WorldRegisterChunks {
       ]);
     }
     if (!column) return;
-    const newChunk = Chunk.toObject(chunk);
-    column.chunks[WorldSpaces.chunk.getIndexXYZ(x, y, z)] = newChunk;
+    const index = WorldSpaces.chunk.getIndexXYZ(x, y, z);
+    const newChunk = Chunk.toObject(column, index, chunk);
+    column.chunks[index] = newChunk;
     DataHooks.chunk.onNew.notify([this._register._currentDimension, x, y, z]);
     return newChunk;
   }

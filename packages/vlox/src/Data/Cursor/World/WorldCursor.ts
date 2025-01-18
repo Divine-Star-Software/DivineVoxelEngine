@@ -2,6 +2,7 @@ import { Vector3Like } from "@amodx/math";
 import { ColumnCursor } from "./ColumnCursor";
 import { WorldSpaces } from "../../World/WorldSpaces";
 import { DataCursorInterface } from "../Interfaces/DataCursor.interface";
+import { WorldBounds } from "../../../Data/World/WorldBounds";
 
 let cursorCache: ColumnCursor[] = [];
 
@@ -25,6 +26,10 @@ export class WorldCursor extends DataCursorInterface {
     this.origin.x = columnPos.x / WorldSpaces.column._bounds.x;
     this.origin.y = columnPos.y / WorldSpaces.column._bounds.y;
     this.origin.z = columnPos.z / WorldSpaces.column._bounds.z;
+  }
+
+  inBounds(x: number, y: number, z: number) {
+    return WorldBounds.inBounds(x, y, z);
   }
 
   getColumn(x: number, y: number, z: number) {

@@ -46,7 +46,7 @@ export default function (){
     data.column = WorldDataGenerator.column.create();
     return data;
   });
-  DataHooks.column.onNew.subscribe("world", (data) => {
+  DataHooks.column.onNew.subscribe("world", (data)  => {
     DVE.dataSync.worldData.column.sync(data);
   });
   DataHooks.column.onRemove.subscribe("world", (data) => {

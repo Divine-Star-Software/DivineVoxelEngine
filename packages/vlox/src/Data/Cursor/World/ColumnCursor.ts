@@ -16,12 +16,29 @@ export class ColumnCursor
   private voxel = new WorldVoxelCursor(this);
   _voxelIndex = 0;
   _voxelPosition = Vector3Like.Create();
+  _columnPosition = Vector3Like.Create();
+
+  inBounds(x: number, y: number, z: number): boolean {
+    const maxX = this._columnPosition.x + WorldSpaces.column._bounds.x;
+    const maxY = this._columnPosition.y + WorldSpaces.column._bounds.y;
+    const maxZ = this._columnPosition.z + WorldSpaces.column._bounds.z;
+    if (x < this._columnPosition.x) return false;
+    if (y < this._columnPosition.y) return false;
+    if (z < this._columnPosition.z) return false;
+    if (x > maxX) return false;
+    if (y > maxY) return false;
+    if (z > maxZ) return false;
+    return true;
+  }
 
   setColumn(dimension: string, x: number, y: number, z: number) {
     WorldRegister.instance.setDimension(dimension);
     const column = WorldRegister.instance.column.get(x, y, z);
     if (!column) return false;
     this._current = column;
+    this._columnPosition.x = column.location[1];
+    this._columnPosition.y = column.location[2];
+    this._columnPosition.z = column.location[3];
     return true;
   }
 
