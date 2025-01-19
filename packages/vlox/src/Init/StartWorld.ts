@@ -9,7 +9,7 @@ type StartWorldProps = {
   voxels: VoxelData[];
 } & DVEWorldProps;
 export async function StartWorld(props: StartWorldProps) {
-  const DVEW = new DivineVoxelEngineWorld();
+  const DVEW = new DivineVoxelEngineWorld(props);
 
   InitVoxelModelsWorld(DVEW);
   DVEW.dataRegiser.voxels.registerData(props.voxels);
