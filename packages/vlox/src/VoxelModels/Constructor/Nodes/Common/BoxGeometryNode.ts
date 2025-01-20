@@ -4,19 +4,23 @@ import { VoxelBoxGeometryNode } from "../../../VoxelModel.types";
 
 import { Quad } from "@amodx/meshing/Primitives/Quad";
 
-import { addQuadWeights } from "../../../../Mesher/Calc/CalcConstants";
+import { addQuadWeights, QuadVertexWeights } from "../../../../Mesher/Calc/CalcConstants";
 
 import { VoxelGeometryTransform } from "../../../../VoxelData/VoxelSyncData";
 import { TransformBox } from "../../../Shared/Transform";
 import { GetBounds } from "./BoundsFunctions";
 
 export function GetBoxGeometryNodeData(
-  data: VoxelBoxGeometryNode,
+  points: [Vec3Array,Vec3Array],
   transform: VoxelGeometryTransform
-) {
+):{
+  quads: Record<VoxelFaces,Quad>,
+  vertexWeights: Record<VoxelFaces,QuadVertexWeights>,
+  quadBounds: [Vec3Array,Vec3Array][]
+} {
   const quads: Quad[] = [];
   const vertexWeights: [Vec4Array, Vec4Array, Vec4Array, Vec4Array][] = [];
-  const [start, end] = data.points.map((_) => Vector3Like.Create(..._));
+  const [start, end] = points.map((_) => Vector3Like.Create(..._));
   const quadPoints: [Vec3Array, Vec3Array, Vec3Array, Vec3Array][] = [
     //top
     [
@@ -111,5 +115,5 @@ export function GetBoxGeometryNodeData(
     quads,
     vertexWeights,
     quadBounds,
-  };
+  } as any;
 }

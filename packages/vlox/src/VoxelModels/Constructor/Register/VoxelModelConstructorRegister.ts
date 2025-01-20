@@ -4,16 +4,13 @@ import {
   VoxelGeometrySyncData,
   VoxelModelSyncData,
 } from "../../../VoxelData/VoxelSyncData";
+import { GeoemtryNode, GeoemtryNodeConstructor } from "../Nodes/GeometryNode";
 import { VoxelGeometryConstructor } from "./VoxelGeometryConstructor";
 import { VoxelModelConstructor } from "./VoxelModelsConstructor";
-import { VoxelGeometryRulelessConstructor } from "./VoxelGeometryRulelessConstructor";
 
 export class VoxelModelConstructorRegister {
   static geometryPalette: StringPalette;
-  static geometry: (
-    | VoxelGeometryConstructor
-    | VoxelGeometryRulelessConstructor
-  )[] = [];
+  static geometry: VoxelGeometryConstructor[] = [];
 
   static rulesless: boolean[] = [];
 
@@ -21,6 +18,20 @@ export class VoxelModelConstructorRegister {
     this.geometryPalette = new StringPalette(palette);
   }
   static models = new Map<string, VoxelModelConstructor>();
+
+  static customNodes = new Map<string, GeoemtryNodeConstructor<any, any>>();
+
+  static registerCustomNode(
+    id: string,
+    node: GeoemtryNodeConstructor<any, any>
+  ) {
+    this.customNodes.set(id, node);
+  }
+  static getCustomNode(id: string) {
+    const node = this.customNodes.get(id);
+    if (!node) throw new Error(`Custom geometry node [${id}] does not exist.`);
+    return node;
+  }
 
   static registerModels(models: VoxelModelSyncData[]) {
     for (const model of models) {
@@ -32,17 +43,14 @@ export class VoxelModelConstructorRegister {
   ) {
     for (const geometry of geometries) {
       const paletteId = this.geometryPalette.getNumberId(geometry.id);
+
+      this.geometry[paletteId] = new VoxelGeometryConstructor(
+        paletteId,
+        geometry
+      );
       if ((geometry as VoxelGeometryRulelessSyncData).ruleless == true) {
-        this.geometry[paletteId] = new VoxelGeometryRulelessConstructor(
-          paletteId,
-          geometry as VoxelGeometryRulelessSyncData
-        );
         this.rulesless[paletteId] = true;
       } else {
-        this.geometry[paletteId] = new VoxelGeometryConstructor(
-          paletteId,
-          geometry as VoxelGeometrySyncData
-        );
         this.rulesless[paletteId] = false;
       }
     }

@@ -2,6 +2,37 @@ import { VoxelData, VoxelNamedStateData } from "@divinevoxel/vlox/Types";
 const states = (...data: VoxelNamedStateData[]) => data;
 export const DVEVoxelData: VoxelData[] = [
   {
+    id: "dve_liquid_dream_ether",
+    tags: [
+      ["#dve_is_transparent", true],
+      ["#dve_substance", "#dve_liquid"],
+      ["#dve_shape_id", "#dve_liquid"],
+      ["#dve_collider_id", "#dve_cube"],
+      ["#dve_check_collisions", true],
+      ["#dve_material", "water"],
+      [
+        "#dve_model_data",
+        {
+          id: "dve_liquid",
+          inputs: {
+            "*": {
+              "@flowTexture": [
+                "#dve_voxel",
+                "dve_liquid_dream_ether",
+                "still-1",
+              ],
+              "@stillTexture": [
+                "#dve_voxel",
+                "dve_liquid_dream_ether",
+                "still-1",
+              ],
+            },
+          },
+        },
+      ],
+    ],
+  },
+  {
     id: "dve_dream_fence",
     tags: [
       ["#dve_is_transparent", true],
@@ -522,16 +553,7 @@ export const DVEVoxelData: VoxelData[] = [
       ],
     ],
   },
-  {
-    id: "dve_liquid_dream_ether",
-    tags: [
-      ["#dve_substance", "#dve_liquid"],
-      ["#dve_shape_id", "#dve_liquid"],
-      ["#dve_collider_id", "#dve_cube"],
-      ["#dve_check_collisions", true],
-      ["#dve_material", "water"],
-    ],
-  },
+
   {
     id: "dve_dream_stone_pillar",
     tags: [

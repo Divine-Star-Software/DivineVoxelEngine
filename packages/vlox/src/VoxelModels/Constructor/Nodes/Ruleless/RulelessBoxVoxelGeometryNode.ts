@@ -1,11 +1,8 @@
 import { Vec3Array, Vec4Array, Vector3Like } from "@amodx/math";
 import { VoxelFaces } from "../../../../Math";
 
-import { QuadScalarVertexData, QuadVec3ArrayVertexData } from "@amodx/meshing";
-import {
-  QuadVerticies,
-  QuadVerticiesArray,
-} from "@amodx/meshing/Geometry.types";
+import { QuadScalarVertexData } from "@amodx/meshing";
+import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 import { VoxelBoxGeometryNode } from "../../../VoxelModel.types";
 
 import { Quad } from "@amodx/meshing/Primitives/Quad";
@@ -16,48 +13,42 @@ import {
   BoxVoxelGometryInputs,
 } from "../../../Input/BoxVoxelGometryInputs";
 import {
-  addQuadWeights,
   getInterpolationValue,
-  getVertexWeights,
   shouldCauseFlip,
 } from "../../../../Mesher/Calc/CalcConstants";
 
 import { LightData } from "../../../../Data/LightData";
-import { VoxelGeometryRulelessConstructor } from "../../Register/VoxelGeometryRulelessConstructor";
-import { RulelessGeoemtryNode } from "../RulelessGeometryNode";
+
+import { GeoemtryNode } from "../GeometryNode";
 import { VoxelGeometryTransform } from "../../../../VoxelData/VoxelSyncData";
-import { TransformBox } from "../../../Shared/Transform";
 import { GetBoxGeometryNodeData } from "../Common/BoxGeometryNode";
 import { UpdateBounds } from "../Common/BoundsFunctions";
+import { VoxelGeometryConstructor } from "VoxelModels/Constructor/Register/VoxelGeometryConstructor";
 
 const ArgIndexes = BoxVoxelGometryInputs.ArgIndexes;
 
-export class RulelessBoxVoxelGeometryNode extends RulelessGeoemtryNode<BoxVoxelGometryArgs> {
-  quads: Quad[] = [];
+export class RulelessBoxVoxelGeometryNode extends GeoemtryNode<
+  VoxelBoxGeometryNode,
+  BoxVoxelGometryArgs
+> {
+  quads: Record<VoxelFaces,Quad>;
   quadBounds: [Vec3Array, Vec3Array][] = [];
-  vertexWeights: [Vec4Array, Vec4Array, Vec4Array, Vec4Array][] = [];
+  vertexWeights: Record<VoxelFaces,[Vec4Array, Vec4Array, Vec4Array, Vec4Array]>;
   worldLight: QuadScalarVertexData;
   worldAO: QuadScalarVertexData;
 
-  constructor(
-    geometryPaletteId: number,
-    geometry: VoxelGeometryRulelessConstructor,
-    public data: VoxelBoxGeometryNode,
-    transform: VoxelGeometryTransform
-  ) {
-    super(geometryPaletteId, geometry);
+  init(): void {
     this.faceCount = 6;
     this.vertexCount = this.faceCount * 4;
 
     const { quads, vertexWeights, quadBounds } = GetBoxGeometryNodeData(
-      data,
-      transform
+      this.data.points,
+      this.transform
     );
     this.quads = quads;
     this.quadBounds = quadBounds;
     this.vertexWeights = vertexWeights;
   }
-
   determineShading(face: VoxelFaces) {
     const tool = this.tool;
 

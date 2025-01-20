@@ -2,10 +2,7 @@ import { Vec3Array, Vec4Array, Vector3Like } from "@amodx/math";
 import { VoxelFaces } from "../../../../Math";
 
 import { QuadScalarVertexData } from "@amodx/meshing";
-import {
-  QuadVerticies,
-  QuadVerticiesArray,
-} from "@amodx/meshing/Geometry.types";
+import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 import { VoxelBoxGeometryNode } from "../../../VoxelModel.types";
 
 import { Quad } from "@amodx/meshing/Primitives/Quad";
@@ -25,31 +22,27 @@ import {
 import { LightData } from "../../../../Data/LightData";
 import { VoxelRelativeCubeIndexPositionMap } from "../../../Indexing/VoxelRelativeCubeIndex";
 import { VoxelGeometryTransform } from "../../../../VoxelData/VoxelSyncData";
-import { EngineSettings } from "../../../../Data/Settings/EngineSettings";
 import { GetBoxGeometryNodeData } from "../Common/BoxGeometryNode";
 import { UpdateBounds } from "../Common/BoundsFunctions";
 
 const ArgIndexes = BoxVoxelGometryInputs.ArgIndexes;
 
-export class BoxVoxelGometryNode extends GeoemtryNode<BoxVoxelGometryArgs> {
-  quads: Quad[] = [];
+export class BoxVoxelGometryNode extends GeoemtryNode<
+  VoxelBoxGeometryNode,
+  BoxVoxelGometryArgs
+> {
+  quads: Record<VoxelFaces,Quad>;
   quadBounds: [Vec3Array, Vec3Array][] = [];
-  vertexWeights: [Vec4Array, Vec4Array, Vec4Array, Vec4Array][] = [];
+  vertexWeights: Record<VoxelFaces,[Vec4Array, Vec4Array, Vec4Array, Vec4Array]>;
   worldLight: QuadScalarVertexData;
   worldAO: QuadScalarVertexData;
 
-  constructor(
-    geometryPaletteId: number,
-    geometry: VoxelGeometryConstructor,
-    public data: VoxelBoxGeometryNode,
-    transform: VoxelGeometryTransform
-  ) {
-    super(geometryPaletteId, geometry);
+  init(): void {
     this.faceCount = 6;
     this.vertexCount = this.faceCount * 4;
     const { quads, vertexWeights, quadBounds } = GetBoxGeometryNodeData(
-      data,
-      transform
+      this.data.points,
+      this.transform
     );
     this.quads = quads;
     this.vertexWeights = vertexWeights;
@@ -58,7 +51,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<BoxVoxelGometryArgs> {
 
   isExposed(face: VoxelFaces) {
     const trueFaceIndex = face + this.faceIndex;
-    const faceIndexes = this.geomtry.data.faceCullMap[trueFaceIndex];
+    const faceIndexes = this.geomtry.faceCullMap![trueFaceIndex];
     if (!faceIndexes) return true;
 
     const tool = this.tool;
@@ -154,7 +147,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<BoxVoxelGometryArgs> {
 
       const trueVertexIndex = this.vertexIndex + face * 4 + v;
 
-      const aoIndexes = this.geomtry.data.vertexHitMap[trueVertexIndex];
+      const aoIndexes = this.geomtry.vertexHitMap![trueVertexIndex];
 
       if (!aoIndexes) continue;
 

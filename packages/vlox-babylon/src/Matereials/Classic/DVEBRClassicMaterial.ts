@@ -86,13 +86,36 @@ export class DVEBRClassicMaterial extends URIMaterial<
       {
         ...shaderData,
         needAlphaBlending: data.alphaBlending,
-        needAlphaTesting: data.alphaTesting,
+        needAlphaTesting:  data.alphaTesting,
       }
     );
 
     conatiner.materials.push(shaderMaterial);
+    if (data.backFaceCulling !== undefined) {
+      shaderMaterial.backFaceCulling = data.backFaceCulling;
+    }
 
-    if (data.alphaBlending) {
+
+    let liquid = false;
+    if (this.id.includes("liquid")) {
+      liquid = true;
+
+      //  shaderMaterial.alpha = 0.5;
+      //     shaderMaterial.disableDepthWrite = true;
+      //   shaderMaterial.needDepthPrePass = true;
+      //   shaderMaterial.separateCullingPass = false;
+       shaderMaterial.forceDepthWrite = true;
+shaderMaterial.needDepthPrePass = true; 
+      shaderMaterial.backFaceCulling = false;
+   // shaderMaterial.transparencyMode = 0;
+   // shaderMaterial.alphaMode = 0;
+      //  shaderMaterial.alphaMode = 2;
+   //   shaderMaterial.stencil.enabled = true;
+   //   shaderMaterial.stencil.func = Engine.NOTEQUAL;
+ //shaderMaterial.stencil.opStencilDepthPass = Engine.KEEP;
+    //  shaderMaterial.stencil.mask = 0x00;
+    this.scene.setRenderingAutoClearDepthStencil(0, false, false, false);
+    } else if (data.alphaBlending) {
       //  shaderMaterial.alpha = .5;
       shaderMaterial.disableDepthWrite = true;
       shaderMaterial.separateCullingPass = true;
@@ -113,9 +136,6 @@ export class DVEBRClassicMaterial extends URIMaterial<
       shaderMaterial.stencil.func = Engine.NOTEQUAL;
       this.scene.setRenderingAutoClearDepthStencil(0, false, false, false);
     } */
-    if (data.backFaceCulling !== undefined) {
-      shaderMaterial.backFaceCulling = data.backFaceCulling;
-    }
 
     shaderMaterial.setVector3("worldOrigin", Vector3.Zero());
     if (data.mipMapBias) {
@@ -126,6 +146,7 @@ export class DVEBRClassicMaterial extends URIMaterial<
       const effect = this._material.getEffect();
       const scene = mesh.getScene();
       if (!effect) return;
+
 
       effect.setFloat4(
         "vFogInfos",

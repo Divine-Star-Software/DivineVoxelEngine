@@ -1,10 +1,7 @@
 import { Observable } from "@amodx/core/Observers";
 import { BoxVoxelGometryInputs } from "../../Input/BoxVoxelGometryInputs";
 import { VoxelRuleGeometry } from "../Classes/VoxelRulesGeometry";
-import {
-  VoxelFaceNameArray,
-  VoxelFaceNameRecord,
-} from "../../../Math";
+import { VoxelFaceNameArray, VoxelFaceNameRecord } from "../../../Math";
 import { TextureManager } from "../../../Textures/TextureManager";
 import { Matrix2x2Like, Mat2Array, Vec4Array, AMath } from "@amodx/math";
 import { QuadUVData } from "@amodx/meshing/Geometry.types";
@@ -12,7 +9,7 @@ import { QuadVoxelGometryInputs } from "../../Input/QuadVoxelGometryInputs";
 import { VoxelGeometryTransform } from "../../../VoxelData/VoxelSyncData";
 
 const isArgString = (data: any) => {
-  if (typeof data !== "string") return;
+  if (typeof data !== "string") return false;
   return data[0] == "@";
 };
 
@@ -99,6 +96,24 @@ export function BuildGeomtryInputs(geomtry: VoxelRuleGeometry) {
   let args: any[] = [];
   for (const prcoessedNode of geomtry.data.nodes) {
     const { node, tranform } = prcoessedNode;
+    if (node.type == "custom") {
+      const newArgs: any = {};
+      args.push(newArgs);
+      const argsIndex = args.length - 1;
+      for (const input in node.inputs) {
+        const value = node.inputs[input];
+        if (isArgString(value)) {
+          args[argsIndex][input] = null;
+          getInputObserver(value!).subscribe((value) => {
+            args[argsIndex][input] = value;
+
+            console.warn("set the value", value, args[argsIndex][input]);
+          });
+        } else {
+          args[argsIndex][input] = value;
+        }
+      }
+    }
     if (node.type == "box") {
       const newArgs = BoxVoxelGometryInputs.CreateArgs();
       args.push(newArgs);

@@ -214,8 +214,8 @@ class LiquidVoxelShapeClass extends VoxelShapeBase {
       upFaceExposed = true;
       const level = ShapeTool.data.voxel.getLevel();
 
-      ShapeTool.data.calculateFlow();
-      vertexLevel.setFromQuadData(ShapeTool.data.getWorldLevel());
+ //     ShapeTool.data.calculateFlow();
+ //     vertexLevel.setFromQuadData(ShapeTool.data.getWorldLevel());
 
       vertexValue.set(
         vertexLevel.vertices[0] / 7,

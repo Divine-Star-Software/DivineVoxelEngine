@@ -1,5 +1,8 @@
-import type { VoxelMesherDataTool } from "../../Tools/VoxelMesherDataTool";
-import { QuadScalarVertexData } from "@amodx/meshing/Primitives/QuadVertexData";
+import type { VoxelMesherDataTool } from "../../../../../Mesher/Tools/VoxelMesherDataTool";
+import {
+  QuadScalarVertexData,
+  QuadVertexData,
+} from "@amodx/meshing/Primitives/QuadVertexData";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 
 const checkSets = {
@@ -27,21 +30,18 @@ const checkSets = {
   ],
 };
 
-const flowStates = new QuadScalarVertexData();
-
 export const FlowGradient = {
   getLevel(tool: VoxelMesherDataTool, x: number, y: number, z: number) {
-/*     if (!tool.nVoxel.loadInAt(x, y, z)) return -1;
-    if (!tool.nVoxel.isRenderable()) return -1;
-
-    if (!tool.voxel.isSameVoxel(tool.nVoxel)) return -1;
-    const level = tool.nVoxel.getLevel();
-    const levelState = tool.nVoxel.getLevelState();
+    const voxel = tool.nVoxel.getVoxel(x, y, z);
+    if (!voxel || !voxel.isRenderable()) return -1;
+    if (!tool.voxel.isSameVoxel(voxel)) return -1;
+    const level = voxel.getLevel();
+    const levelState = voxel.getLevelState();
     if (levelState > 0) return 7;
-    return level; */
+    return level;
   },
-  calculate(tool: VoxelMesherDataTool) {
-/*     const cl = tool.voxel.getLevel();
+  calculate(tool: VoxelMesherDataTool, flowStates: QuadScalarVertexData) {
+    const cl = tool.voxel.getLevel();
     const cs = tool.voxel.getLevelState();
 
     let log = false;
@@ -82,6 +82,7 @@ export const FlowGradient = {
 
       flowStates.vertices[vertex] = finalLevel;
     }
-    tool.getWorldLevel().setFromQuadData(flowStates); */
+
+    return flowStates;
   },
 };

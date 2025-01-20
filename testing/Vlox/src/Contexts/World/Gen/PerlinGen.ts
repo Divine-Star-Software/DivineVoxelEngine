@@ -43,7 +43,7 @@ export const PerlinGen = {
 
   generateTree() {},
   generateFloodedForest(chunkX: number, chunkZ: number) {
-    brush.setDimension("main");
+    /*     brush.setDimension("main");
     brush.setId("dve_dream_stone");
     brush.start();
     //  return this.generateBlankChunk(chunkX, chunkZ);
@@ -104,17 +104,16 @@ export const PerlinGen = {
           }
         }
       }
-    }
+    } */
     brush.stop();
   },
   generateForest(chunkX: number, chunkZ: number) {
-    brush.setDimension("main");
-    brush.setId("dve_dream_stone");
-    brush.start();
+    const columnCursor = this.worldCursor.getColumn(chunkX, 0, chunkZ)!;
+    voxelCursor.setStringId("dve_dread_stone").process();
     //  return this.generateBlankChunk(chunkX, chunkZ);
     let totalTrees = 0;
-    const dataTool = brush._dt;
-    for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
+
+    /*    for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
       for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
         for (let y = 0; y < this.worldHeight; y++) {
           if (y == 0) {
@@ -165,16 +164,17 @@ export const PerlinGen = {
           }
         }
       }
-    }
+    } */
     brush.stop();
   },
   generateTest(chunkX: number, chunkZ: number) {
     const columnCursor = this.worldCursor.getColumn(chunkX, 0, chunkZ)!;
-    voxelCursor.setStringId("dve_dread_stone").process();
+
     for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
       for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
         for (let y = 0; y < this.worldHeight; y++) {
           if (y == 0) {
+            voxelCursor.setStringId("dve_dread_stone").process();
             columnCursor
               .getVoxel(x, y, z)!
               .setId(voxelCursor.id)
@@ -183,10 +183,20 @@ export const PerlinGen = {
           }
 
           if (this.inNoiseRange(x, y, z)) {
+            voxelCursor.setStringId("dve_dread_stone").process();
             columnCursor
               .getVoxel(x, y, z)!
               .setId(voxelCursor.id)
               .updateHeightMap(0);
+          } else {
+            if (y < 30) {
+              voxelCursor.setStringId("dve_liquid_dream_ether").process();
+              columnCursor
+                .getVoxel(x, y, z)!
+                .setId(voxelCursor.id)
+                .setLevel(7)
+                .updateHeightMap(0);
+            }
           }
         }
       }

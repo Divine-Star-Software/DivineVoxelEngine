@@ -1,7 +1,7 @@
 import type { FaceDataOverride } from "../Types/Override.types";
 //objects
 import { LightGradient } from "../Calc/Light/LightGradient.js";
-import { FlowGradient } from "../Calc/Flow/FlowGradient.js";
+import { FlowGradient } from "../../VoxelModels/Constructor/Nodes/Custom/Liquid/FlowGradient.js";
 import { OverrideManager } from "../Rules/Overrides/OverridesManager.js";
 import { SubstanceRules } from "../Rules/SubstanceRules.js";
 
@@ -178,13 +178,6 @@ export class VoxelMesherDataTool extends MesherDataTool {
     LightGradient.calculate(direction, this, ignoreAO);
   }
 
-  calculateFlow() {
-    if (this.template.isAcive()) {
-      return;
-    }
-    FlowGradient.calculate(this);
-  }
-
   getAnimationData() {
     return this.quadVertexData.get("animation")!;
   }
@@ -203,12 +196,7 @@ export class VoxelMesherDataTool extends MesherDataTool {
     return this.quadVertexData.get("ao")!;
   }
 
-  getWorldLevel() {
-    if (this.template.isAcive()) {
-      return this.template._level;
-    }
-    return this.quadVertexData.get("level")!;
-  }
+
 
   getOverlayTextures() {
     return this.quadVertexData.get("overlay-uvs")!;

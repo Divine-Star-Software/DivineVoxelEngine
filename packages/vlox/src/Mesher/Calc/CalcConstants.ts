@@ -399,7 +399,7 @@ export function getInterpolationValue(value: Vec4Array, weights: Vec4Array) {
   return LightData.setLightValues(lightValues5);
 }
 
-type QuadVertexWeights = [Vec4Array, Vec4Array, Vec4Array, Vec4Array];
+export type QuadVertexWeights = [Vec4Array, Vec4Array, Vec4Array, Vec4Array];
 
 export const addQuadWeights = (
   quad: Quad,

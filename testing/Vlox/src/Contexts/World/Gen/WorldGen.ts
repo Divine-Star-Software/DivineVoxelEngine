@@ -295,7 +295,7 @@ export const WorldGen = {
   },
 
   generateWorldColumn(chunkX: number, chunkZ: number) {
-    brush.start();
+  //  brush.start();
     return this.generateBlankChunk(chunkX, chunkZ);
     let toss = Math.random();
 

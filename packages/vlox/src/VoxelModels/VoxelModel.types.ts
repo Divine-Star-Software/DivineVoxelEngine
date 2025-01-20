@@ -9,6 +9,7 @@ import {
 } from "VoxelState/State.types";
 import { VoxelEffectData } from "../VoxelEffects/VoxelEffects.types";
 
+/**The model data assoicated with the actual voxel. */
 export interface VoxelModelConstructorData {
   id: string;
   modRelationSchema?: VoxelModelRelationsSchemaData[];
@@ -36,6 +37,12 @@ interface VoxelOutlinedTextureProtocalData {
   };
 }
 
+/**Define a custom geomtry node */
+export interface VoxelCustomGeomtryNode {
+  type: "custom";
+  id: string;
+  inputs: Record<string, any>;
+}
 
 //box
 export interface VoxelBoxGeometryNode {
@@ -117,6 +124,7 @@ export interface VoxelGeometryVector3Argument {
 }
 
 export type VoxelGeometryNodes =
+  | VoxelCustomGeomtryNode
   | VoxelBoxGeometryNode
   | VoxelTriangleGeometryNode
   | VoxelQuadGeometryNode

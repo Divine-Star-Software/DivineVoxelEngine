@@ -23,16 +23,15 @@ import { GUI } from "dat.gui";
 import { BinaryObject } from "@amodx/binary";
 import { Compressor } from "@amodx/core/Compression/Compression";
 export function App() {
-  const [gameReady, setGameReady] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   useEffect(() => {
+    if (ran) return;
+    if (!canvasRef.current) return;
+    ran = true;
+console.error("MOUNT THE APP");
     (async () => {
-      if (ran) return;
-      if (!canvasRef.current) return;
-      ran = true;
-
-      CacheManager.cacheLoadEnabled = true;
-   //   CacheManager.cacheStoreEnabled = true;
+      //  CacheManager.cacheLoadEnabled = true;
+      //   CacheManager.cacheStoreEnabled = true;
 
       if (CacheManager.cacheLoadEnabled) {
         BinaryObject.setUseSharedMemory(true);
@@ -83,7 +82,7 @@ export function App() {
         engine.resize();
         dirty = true;
       });
-      canvasResized.observe(canvas);
+      canvasResized.observe(canvas!);
       const scene = new Scene(engine);
       scene.clearColor.setAll(0);
       const light = new HemisphericLight("", new Vector3(0, 0, 0), scene);
@@ -103,7 +102,7 @@ export function App() {
         constructorWorkers,
         voxels: DVEVoxelData,
       });
-        await CreateDisplayIndex(DVER, DVEVoxelData);
+      await CreateDisplayIndex(DVER, DVEVoxelData);
       const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
       skybox.infiniteDistance = true;
       const skyboxMat = renderer.nodes.materials.get("#dve_skybox");
@@ -142,7 +141,7 @@ export function App() {
       nodes.camera = camera as any;
       //  nodes.camera = camera;
       nodes.scene = scene;
-      nodes.canvas = canvas;
+      nodes.canvas = canvas!;
       nodes.engine = engine;
 
       nodes.sceneTool = sceneTool;
@@ -150,8 +149,6 @@ export function App() {
       engine.runRenderLoop(() => {
         scene.render();
       });
-
-      setGameReady(true);
 
       const gui = new GUI();
 

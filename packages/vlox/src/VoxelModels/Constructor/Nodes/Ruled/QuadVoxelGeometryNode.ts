@@ -2,10 +2,7 @@ import { Vec3Array, Vec4Array, Vector3Like } from "@amodx/math";
 import { VoxelFaces } from "../../../../Math";
 
 import { QuadScalarVertexData } from "@amodx/meshing";
-import {
-  QuadVerticies,
-  QuadVerticiesArray,
-} from "@amodx/meshing/Geometry.types";
+import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 import { VoxelQuadGeometryNode } from "../../../VoxelModel.types";
 
 import { Quad } from "@amodx/meshing/Primitives/Quad";
@@ -16,8 +13,6 @@ import { VoxelGeometryLookUp } from "../../VoxelGeometryLookUp";
 import { GeoemtryNode } from "../GeometryNode";
 import { VoxelGeometryConstructor } from "../../Register/VoxelGeometryConstructor";
 import {
-  addQuadWeights,
-  closestUnitNormal,
   getInterpolationValue,
   shouldCauseFlip,
 } from "../../../../Mesher/Calc/CalcConstants";
@@ -30,13 +25,15 @@ import {
   QuadVoxelGometryInputs,
 } from "../../../Input/QuadVoxelGometryInputs";
 import { VoxelGeometryTransform } from "../../../../VoxelData/VoxelSyncData";
-import { TransformQuad } from "../../../Shared/Transform";
 import { GetQuadGeometryData } from "../Common/QuadGeometryNode";
 import { UpdateBounds } from "../Common/BoundsFunctions";
 
 const ArgIndexes = QuadVoxelGometryInputs.ArgIndexes;
 
-export class QuadVoxelGometryNode extends GeoemtryNode<QuadVoxelGometryArgs> {
+export class QuadVoxelGometryNode extends GeoemtryNode<
+  VoxelQuadGeometryNode,
+  QuadVoxelGometryArgs
+> {
   quad: Quad;
   quadBounds: [Vec3Array, Vec3Array] = [
     [0, 0, 0],
@@ -46,28 +43,20 @@ export class QuadVoxelGometryNode extends GeoemtryNode<QuadVoxelGometryArgs> {
   worldLight: QuadScalarVertexData;
   worldAO: QuadScalarVertexData;
   closestFace: VoxelFaces;
-  constructor(
-    geometryPaletteId: number,
-    geometry: VoxelGeometryConstructor,
-    public data: VoxelQuadGeometryNode,
-    transform: VoxelGeometryTransform
-  ) {
-    super(geometryPaletteId, geometry);
-
+  init(): void {
     this.faceCount = 6;
     this.vertexCount = this.faceCount * 4;
 
     const { quad, quadBounds, closestFace, vertexWeights } =
-      GetQuadGeometryData(data, transform);
+      GetQuadGeometryData(this.data, this.transform);
     this.quad = quad;
     this.quadBounds = quadBounds;
     this.vertexWeights = vertexWeights;
     this.closestFace = closestFace;
   }
-
   isExposed() {
     const trueFaceIndex = this.faceIndex;
-    const faceIndexes = this.geomtry.data.faceCullMap[trueFaceIndex];
+    const faceIndexes = this.geomtry.faceCullMap![trueFaceIndex];
     if (!faceIndexes) return true;
 
     const tool = this.tool;
@@ -159,7 +148,7 @@ export class QuadVoxelGometryNode extends GeoemtryNode<QuadVoxelGometryArgs> {
 
       const trueVertexIndex = this.vertexIndex + 4 + v;
 
-      const aoIndexes = this.geomtry.data.vertexHitMap[trueVertexIndex];
+      const aoIndexes = this.geomtry.vertexHitMap![trueVertexIndex];
 
       if (!aoIndexes) continue;
 

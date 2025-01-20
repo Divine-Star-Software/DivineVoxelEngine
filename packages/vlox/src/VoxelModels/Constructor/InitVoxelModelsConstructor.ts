@@ -7,6 +7,7 @@ import { VoxelModelConstructorRegister } from "./Register/VoxelModelConstructorR
 import { VoxelGeometryLookUp } from "./VoxelGeometryLookUp";
 import { SchemaRegister } from "../../VoxelState/SchemaRegister";
 import { VoxelTagStates } from "../../VoxelState/VoxelTagStates";
+import { LiquidGeometryNode } from "./Nodes/Custom/Liquid/LiquidGeomtryNode";
 
 export default function (DVEC: DivineVoxelEngineConstructor) {
   VoxelGeometryLookUp.init();
@@ -14,6 +15,10 @@ export default function (DVEC: DivineVoxelEngineConstructor) {
   DVEC.TC.registerTasks<ConstructorVoxelModelSyncData>(
     "sync-voxel-model-data",
     (data) => {
+      VoxelModelConstructorRegister.registerCustomNode(
+        "liquid",
+        LiquidGeometryNode
+      );
       VoxelModelConstructorRegister.setGeometryPalette(data.geometryPalette);
 
       VoxelModelConstructorRegister.registerGeometry(data.geometry);

@@ -33,13 +33,13 @@ export interface PrcoessedVoxelGeometryData {
   nodes: PrcoessedVoxelGeometryNodes[];
 }
 
-export interface VoxelGeometrySyncData {
+export type VoxelGeometrySyncData  = {
   id: string;
   nodes: PrcoessedVoxelGeometryNodes[];
-  faceCullMap: number[][];
-  vertexHitMap: number[][];
-  aoIndex: VoxelAOResultsIndexData;
-  cullIndex: VoxelFaceCullResultsIndexData;
+  faceCullMap?: number[][];
+  vertexHitMap?: number[][];
+  aoIndex?: VoxelAOResultsIndexData;
+  cullIndex?: VoxelFaceCullResultsIndexData;
 }
 
 export interface VoxelGeometryRulelessSyncData {

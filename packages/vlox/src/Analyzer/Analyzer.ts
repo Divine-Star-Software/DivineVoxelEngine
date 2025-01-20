@@ -107,7 +107,7 @@ export class Analyzer extends DVEAnaylzer {
                   }
                 }
                 if (add) {
-                  tasks.flow.update.queue.push([x, y, z]);
+                //  tasks.flow.update.queue.push([x, y, z]);
                 }
               }
             }

@@ -39,7 +39,10 @@ import {
   thinPanelWest,
 } from "../VoxelModels/Defaults/PanelVoxelGeometry";
 import { stair } from "../VoxelModels/Defaults/StairVoxelModel";
-
+import {
+  liquidGeometry,
+  liquidModel,
+} from "../VoxelModels/Defaults/LiquidVoxelModel";
 import { VoxelModelManager } from "../VoxelModels/Rules/VoxelModelManager";
 import {
   VoxelGeometryData,
@@ -127,6 +130,8 @@ export function InitVoxelData(data: InitVoxelDataProps) {
     candlesGeometry3,
     candlesGeometry4,
 
+    liquidGeometry,
+
     ...leverGeometry,
 
     ...(data.geometry || [])
@@ -148,6 +153,9 @@ export function InitVoxelData(data: InitVoxelDataProps) {
     leverModel,
 
     fence,
+
+    liquidModel,
+
     ...(data.models || [])
   );
 
@@ -220,9 +228,9 @@ export function InitVoxelData(data: InitVoxelDataProps) {
     });
   }
 
-  for (const [mainKey, geometry] of VoxelModelManager.geometry) {
+  /*   for (const [mainKey, geometry] of VoxelModelManager.geometry) {
     BuildGeomtryInputs(geometry);
-  }
+  } */
 
   for (const [mainKey, model] of VoxelModelManager.models) {
     const {
@@ -252,6 +260,8 @@ export function InitVoxelData(data: InitVoxelDataProps) {
     CacheManager.cachedModelData = syncData;
   }
 
+  console.log(syncData);
+  console.log(syncData.voxels.find((_) => _.id == "dve_liquid_dream_ether"));
   data.world.runAsyncTasks("sync-voxel-model-data", syncData);
   data.constructors.runTasksForAll("sync-voxel-model-data", syncData);
 

@@ -9,10 +9,7 @@ import { Quad } from "@amodx/meshing/Primitives/Quad";
 import { VoxelMesherDataTool } from "../../../../Mesher/Tools/VoxelMesherDataTool";
 import { VoxelGeometry } from "../../../../Mesher/Geometry/VoxelGeometry";
 
-import { VoxelGeometryRulelessConstructor } from "../../Register/VoxelGeometryRulelessConstructor";
 import {
-  addQuadWeights,
-  closestUnitNormal,
   getInterpolationValue,
   shouldCauseFlip,
 } from "../../../../Mesher/Calc/CalcConstants";
@@ -23,14 +20,18 @@ import {
   QuadVoxelGometryArgs,
   QuadVoxelGometryInputs,
 } from "../../../Input/QuadVoxelGometryInputs";
-import { RulelessGeoemtryNode } from "../RulelessGeometryNode";
+import { GeoemtryNode } from "../GeometryNode";
 import { VoxelGeometryTransform } from "../../../../VoxelData/VoxelSyncData";
 import { GetQuadGeometryData } from "../Common/QuadGeometryNode";
 import { UpdateBounds } from "../Common/BoundsFunctions";
+import { VoxelGeometryConstructor } from "VoxelModels/Constructor/Register/VoxelGeometryConstructor";
 
 const ArgIndexes = QuadVoxelGometryInputs.ArgIndexes;
 
-export class RulelessQuadVoxelGeometryNode extends RulelessGeoemtryNode<QuadVoxelGometryArgs> {
+export class RulelessQuadVoxelGeometryNode extends GeoemtryNode<
+  VoxelQuadGeometryNode,
+  QuadVoxelGometryArgs
+> {
   quad: Quad;
   quadBounds: [Vec3Array, Vec3Array] = [
     [0, 0, 0],
@@ -40,25 +41,18 @@ export class RulelessQuadVoxelGeometryNode extends RulelessGeoemtryNode<QuadVoxe
   worldLight: QuadScalarVertexData;
   worldAO: QuadScalarVertexData;
   closestFace: VoxelFaces;
-  constructor(
-    geometryPaletteId: number,
-    geometry: VoxelGeometryRulelessConstructor,
-    public data: VoxelQuadGeometryNode,
-    transform: VoxelGeometryTransform
-  ) {
-    super(geometryPaletteId, geometry);
 
+  init(): void {
     this.faceCount = 6;
     this.vertexCount = this.faceCount * 4;
 
     const { quad, closestFace, vertexWeights, quadBounds } =
-      GetQuadGeometryData(data, transform);
+      GetQuadGeometryData(this.data, this.transform);
     this.quad = quad;
     this.quadBounds = quadBounds;
     this.vertexWeights = vertexWeights;
     this.closestFace = closestFace;
   }
-
   determineShading() {
     const tool = this.tool;
 
