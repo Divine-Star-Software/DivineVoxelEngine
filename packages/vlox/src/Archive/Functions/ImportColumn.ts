@@ -3,9 +3,9 @@ import { Chunk, ChunkData, Column, ColumnData } from "../../Data/World/Classes";
 
 import { ArchivedChunkData, ArchivedColumnData } from "../Archive.types";
 import { VoxelStruct } from "../../Data/Structs/VoxelStruct";
-import { VoxelStructIds } from "../../Data/Constants/Structs/VoxelStructIds";
-import { NumberPalette } from "../../Interfaces/Data/NumberPalette";
-import { StringPalette } from "../../Interfaces/Data/StringPalette";
+import { VoxelStructIds } from "../../Voxels/Voxel.types";
+import { NumberPalette } from "../../Util/NumberPalette";
+import { StringPalette } from "../../Util/StringPalette";
 import { getPaletteArray } from "./Palettes";
 
 let columnStructInstance: ReturnType<typeof Column.StateStruct.instantiate>;

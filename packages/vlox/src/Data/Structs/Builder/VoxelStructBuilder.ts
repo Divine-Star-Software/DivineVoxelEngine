@@ -1,5 +1,5 @@
 import { BinaryNumberTypes } from "@amodx/binary";
-import { VoxelStructIds } from "../../Constants/Structs/VoxelStructIds"
+import { VoxelStructIds } from "../../../Voxels/Voxel.types"
 import { StructBuilder } from "./StructBuilder.js"
 
 export const VoxelStructBuilder = new StructBuilder("voxel-tag-manager", "voxel");
@@ -25,9 +25,14 @@ VoxelStructBuilder.addNode([
     default: false,
   },
   {
-    id: VoxelStructIds.material,
+    id: VoxelStructIds.renderedMaterial,
     type: "string-map",
-    allowedComms: ["nexus"],
+    allowedComms: ["constructor", "nexus", "fx", "world", "render"],
+  },
+  {
+    id: VoxelStructIds.voxelMaterial,
+    type: "string-map",
+    allowedComms: ["constructor", "nexus", "fx", "world", "render"],
   },
   {
     id: VoxelStructIds.isLightSource,

@@ -1,4 +1,4 @@
-import { DVERenderer } from "@divinevoxel/vlox/Interfaces/Render/DVERenderer";
+import { DVERenderer } from "@divinevoxel/vlox/Renderer/DVERenderer";
 
 import { DVEQRMeshCuller } from "./DVEQRMeshCuller";
 import { DVEQRFOManager } from "./DVEQRFOManger";
@@ -7,7 +7,7 @@ import { DVEQRFOManager } from "./DVEQRFOManger";
 import { DivineVoxelEngineRender } from "@divinevoxel/vlox/Contexts/Render/DivineVoxelEngineRender.js";
 import { Observable } from "@amodx/core/Observers/Observable.js";
 import { DVEQRMesh } from "./Nodes/Meshes/DVEQRMesh.js";
-import { DVEChunkMeshes } from "@divinevoxel/vlox/Interfaces/Render/DVEChunkMeshes";
+import { DVEChunkMeshes } from "@divinevoxel/vlox/Renderer/DVEChunkMeshes";
 import { DVEQRNodeMesh } from "./Nodes/Meshes/DVEQRNodeMesh";
 import { DVEQRMaterialsRegister } from "./Nodes/Materials/DVEQRNodeMaterialsManager";
 

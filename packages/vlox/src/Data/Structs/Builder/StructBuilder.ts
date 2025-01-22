@@ -5,7 +5,7 @@ import {
   BinaryNumberTypes,
 } from "@amodx/binary/";
 import { BinaryStruct } from "@amodx/binary/";
-import { DataSyncMapsData } from "../../Types/DataSync.types"
+import { DataSyncMapsData } from "../../../Contexts/Base/Remote/Sync/DataSync.types"
 
 export class StructBuilder {
   _built = false;

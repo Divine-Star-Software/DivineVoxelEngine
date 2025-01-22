@@ -1,4 +1,4 @@
-import { DVERenderer } from "@divinevoxel/vlox/Interfaces/Render/DVERenderer";
+import { DVERenderer } from "@divinevoxel/vlox/Renderer/DVERenderer";
 import { Scene } from "@babylonjs/core/scene";
 import { DVEBRMeshCuller } from "./DVEBRMeshCuller";
 import { DVEBRFOManager } from "./DVEBRFOManger";

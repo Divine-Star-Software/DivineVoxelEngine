@@ -3,20 +3,16 @@ import {
   BinaryStructData,
   InstantiatedStruct,
 } from "@amodx/binary/";
-import { SubstanceStructIds } from "../Constants/Structs/SubstanceStructIds";
-import { SubstancePaletteReader } from "../Palettes/SubstancePalette.js";
+import { SubstanceStructIds } from "../../Voxels/VoxelSubstances.types.js"
+import { SubstancePalette } from "../Palettes/SubstancePalette.js";
 
 export interface SubstanceStruct {
   [SubstanceStructIds.parent]: number;
-  [SubstanceStructIds.rendered]: number;
   [SubstanceStructIds.isSolid]: number;
   [SubstanceStructIds.isTransparent]: number;
   [SubstanceStructIds.isLiquid]: number;
   [SubstanceStructIds.flowRate]: number;
-  [SubstanceStructIds.culledSubstnaces]: number;
-  [SubstanceStructIds.cullDense]: number;
   [SubstanceStructIds.isWindAffected]: number;
-  [SubstanceStructIds.isBackFaceCulled]: number;
 }
 
 const remote = new RemoteBinaryStruct("voxel-data");
@@ -33,7 +29,7 @@ export class SubstanceStruct extends InstantiatedStruct<SubstanceStruct> {
   static setSubstance(id: string | number) {
     this.instance.setIndex(
       typeof id == "string"
-        ? SubstancePaletteReader.id.numberFromString(id)
+        ? SubstancePalette.id.numberFromString(id)
         : id
     );
   }

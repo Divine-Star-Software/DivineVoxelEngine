@@ -1,5 +1,5 @@
 import { Threads } from "@amodx/threads/";
-import { ThreadManager } from "../../Interfaces/Classes/ThreadManager.js";
+import { ThreadManager } from "../Base/ThreadManager.js";
 
 export const parent = Threads.parent;
 export const Richworld = Threads.createThread("rich-world");

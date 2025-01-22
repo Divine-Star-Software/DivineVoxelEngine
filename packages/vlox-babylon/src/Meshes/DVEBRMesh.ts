@@ -1,6 +1,6 @@
 import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import { Observable } from "@amodx/core/Observers/Observable";
-import { ChunkMeshInterface } from "@divinevoxel/vlox/Interfaces/Render/DVEChunkMeshInterface";
+import { ChunkMeshInterface } from "@divinevoxel/vlox/Renderer/DVEChunkMeshInterface";
 
 class DVEBRMeshObservers {
   updated = new Observable();

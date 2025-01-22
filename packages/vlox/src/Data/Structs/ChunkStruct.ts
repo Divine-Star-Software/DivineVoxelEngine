@@ -1,6 +1,6 @@
 import { BinaryNumberTypes, BinaryStruct } from "@amodx/binary/";
 import { WorldSpaces } from "../World/WorldSpaces.js";
-import { ChunkStructProperties } from "../Constants/Structs/ChunkStructProperties.js";
+import { ChunkStructProperties } from "../Structs/Constants/ChunkStructProperties.js";
 import { Chunk } from "../World/Classes/Chunk.js"
 
 export const ChunkStatStruct = new BinaryStruct("chunk-tags");

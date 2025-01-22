@@ -1,29 +1,20 @@
-import { StringPalette } from "../../Interfaces/Data/StringPalette";
+import { StringPalette } from "../../Util/StringPalette";
 
 export class VoxelPalette {
   static _nameToIdMap = new Map<string, string>();
   static _idToNameMap = new Map<string, string>();
-  static ids = new StringPalette();
-  static setVoxelIdPalette(
+  static ids: StringPalette;
+  static loadIn(
     voxelPalette: string[],
-    voxelPaletteMap: Record<string, number>
-  ) {
-    this.ids._map = voxelPaletteMap;
-    this.ids._palette = voxelPalette;
-  }
-  static setVoxelNamePalette(
     nameToIdMap: Record<string, string>,
     idToNameMap: Record<string, string>
   ) {
+    this.ids = new StringPalette(voxelPalette);
     this._nameToIdMap = new Map<string, string>(Object.entries(nameToIdMap));
     this._idToNameMap = new Map<string, string>(Object.entries(idToNameMap));
   }
   static name = {
-    getId: (name: string) => {
-      return this._nameToIdMap.get(name)!;
-    },
-    getName: (id: string) => {
-      return this._idToNameMap.get(id)!;
-    },
+    getId: (name: string) => this._nameToIdMap.get(name)!,
+    getName: (id: string) => this._idToNameMap.get(id)!,
   };
 }

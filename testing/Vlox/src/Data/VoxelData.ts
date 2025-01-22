@@ -1,14 +1,14 @@
-import { VoxelData } from "@divinevoxel/vlox/VoxelData/Voxel.types";
+import { VoxelData } from "@divinevoxel/vlox/Voxels/Voxel.types";
 export const DVEVoxelData: VoxelData[] = [
   {
     id: "dve_liquid_dream_ether",
     properties: {
       dve_is_transparent: true,
       dve_substance: "dve_liquid",
-      dve_shape_id: "dve_liquid",
+      dve_rendered_material: "dve_liquid",
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
-      dve_material: "water",
+      dve_voxel_material: "water",
       dve_model_data: {
         id: "dve_liquid",
         inputs: {
@@ -25,10 +25,10 @@ export const DVEVoxelData: VoxelData[] = [
     properties: {
       dve_is_transparent: true,
       dve_substance: "dve_solid",
-      dve_shape_id: "dve_cube",
+      dve_rendered_material: "dve_solid",
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
-      dve_material: "wood",
+      dve_voxel_material: "wood",
 
       dve_model_data: {
         id: "dve_fence",
@@ -49,10 +49,10 @@ export const DVEVoxelData: VoxelData[] = [
     id: "dve_dream_leaves",
     properties: {
       dve_substance: "dve_flora",
-      dve_shape_id: "dve_cube",
+      dve_rendered_material: "dve_flora",
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
-      dve_material: "leaves",
+      dve_voxel_material: "leaves",
 
       dve_named_states: [
         {
@@ -84,11 +84,10 @@ export const DVEVoxelData: VoxelData[] = [
     id: "dve_dream_log",
     properties: {
       dve_substance: "dve_solid",
-      dve_shape_id: "dve_cube",
+      dve_rendered_material: "dve_solid",
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
-      dve_material: "wood",
-
+      dve_voxel_material: "wood",
       dve_named_states: [
         {
           id: "dve_dream_log",
@@ -124,11 +123,10 @@ export const DVEVoxelData: VoxelData[] = [
     id: "dve_dream_stone",
     properties: {
       dve_substance: "dve_solid",
-      dve_shape_id: "dve_cube",
+      dve_rendered_material: "dve_solid",
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
-      dve_material: "grassy-stone",
-
+      dve_voxel_material: "grassy-stone",
       dve_named_states: [
         {
           id: "dve_dream_stone",
@@ -182,12 +180,12 @@ export const DVEVoxelData: VoxelData[] = [
     id: "dve_dream_lever",
     properties: {
       dve_substance: "dve_solid",
-      dve_shape_id: "dve_cube",
+      dve_rendered_material: "dve_solid",
+
       dve_is_transparent: true,
-      dve_material: "wax",
+      dve_voxel_material: "wax",
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
-
       dve_named_states: [
         {
           id: "dve_dream_lever",
@@ -202,7 +200,6 @@ export const DVEVoxelData: VoxelData[] = [
           },
         },
       ],
-
       dve_model_data: {
         id: "dve_lever",
         inputs: {
@@ -218,7 +215,8 @@ export const DVEVoxelData: VoxelData[] = [
     id: "dve_dream_candle",
     properties: {
       dve_substance: "dve_solid",
-      dve_material: "wax",
+      dve_rendered_material: "dve_solid",
+      dve_voxel_material: "wax",
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
       dve_is_light_source: false,
@@ -239,8 +237,7 @@ export const DVEVoxelData: VoxelData[] = [
     id: "dve_dread_grass",
     properties: {
       dve_substance: "dve_flora",
-      dve_shape_id: "dve_crossed_panels",
-      dve_material: "grass",
+      dve_voxel_material: "grass",
       dve_collider_id: "dve_climable_box",
       dve_check_collisions: true,
 
@@ -259,10 +256,10 @@ export const DVEVoxelData: VoxelData[] = [
     id: "dve_dread_stone_thin_panel",
     properties: {
       dve_substance: "dve_solid",
-      dve_shape_id: "dve_cube",
+      dve_rendered_material: "dve_solid",
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
-      dve_material: "grassy-stone",
+      dve_voxel_material: "grassy-stone",
 
       dve_model_data: {
         id: "dve_simple_thin_panel",
@@ -279,10 +276,10 @@ export const DVEVoxelData: VoxelData[] = [
     id: "dve_dread_stone",
     properties: {
       dve_substance: "dve_solid",
-      dve_shape_id: "dve_cube",
+      dve_rendered_material: "dve_solid",
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
-      dve_material: "grassy-stone",
+      dve_voxel_material: "grassy-stone",
 
       dve_named_states: [
         {
@@ -339,10 +336,10 @@ export const DVEVoxelData: VoxelData[] = [
     properties: {
       dve_is_transparent: true,
       dve_substance: "dve_solid",
-      dve_shape_id: "dve_cube",
+      dve_rendered_material: "dve_solid",
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
-      dve_material: "grassy-stone",
+      dve_voxel_material: "grassy-stone",
 
       dve_named_states: [
         {
@@ -401,10 +398,10 @@ export const DVEVoxelData: VoxelData[] = [
     id: "dve_dread_stone_stair",
     properties: {
       dve_substance: "dve_solid",
-      dve_shape_id: "dve_cube",
+      dve_rendered_material: "dve_solid",
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
-      dve_material: "grassy-stone",
+      dve_voxel_material: "grassy-stone",
 
       dve_named_states: [
         {
@@ -435,12 +432,11 @@ export const DVEVoxelData: VoxelData[] = [
     id: "dve_dream_grass",
     properties: {
       dve_substance: "dve_flora",
-      dve_shape_id: "dve_cube",
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
       dve_no_ao: true,
       dve_is_transparent: true,
-      dve_material: "grass",
+      dve_voxel_material: "grass",
 
       dve_named_states: [
         {
@@ -472,10 +468,9 @@ export const DVEVoxelData: VoxelData[] = [
     id: "dve_dream_lamp",
     properties: {
       dve_substance: "dve_glow",
-      dve_shape_id: "dve_cube",
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
-      dve_material: "stone",
+      dve_voxel_material: "stone",
       dve_is_light_source: true,
       dve_light_value: [15, 0, 15],
 
@@ -507,10 +502,10 @@ export const DVEVoxelData: VoxelData[] = [
     id: "dve_dream_stone_pillar",
     properties: {
       dve_substance: "dve_solid",
-      dve_shape_id: "dve_cube",
+      dve_rendered_material: "dve_solid",
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
-      dve_material: "wood",
+      dve_voxel_material: "wood",
       dve_named_states: [
         {
           id: "dve_dream_stone_pillar",
@@ -552,7 +547,7 @@ export const DVEVoxelData: VoxelData[] = [
       ["dve_light_value", [15, 15, 15]],
       "dve_collider_id": "dve_cube",
       "dve_check_collisions": true,
-      ["dve_material", "stone"],
+      ["dve_voxel_material", "stone"],
     ],
   },
   {
@@ -562,7 +557,7 @@ export const DVEVoxelData: VoxelData[] = [
       "dve_shape_id": "dve_cube",
       "dve_collider_id": "dve_cube",
       "dve_check_collisions": true,
-      ["dve_material", "stone"],
+      ["dve_voxel_material", "stone"],
     ],
   },
   {
@@ -573,7 +568,7 @@ export const DVEVoxelData: VoxelData[] = [
       "dve_collider_id": "dve_cube",
       "dve_check_collisions": true,
       ["dve_is_rich", true],
-      ["dve_material", "stone"],
+      ["dve_voxel_material", "stone"],
     ],
   },
   {
@@ -584,7 +579,7 @@ export const DVEVoxelData: VoxelData[] = [
       "dve_shape_id": "dve_cube",
       "dve_collider_id": "dve_cube",
       "dve_check_collisions": true,
-      ["dve_material", "stone"],
+      ["dve_voxel_material", "stone"],
     ],
   },
   //dream
@@ -596,7 +591,7 @@ export const DVEVoxelData: VoxelData[] = [
       "dve_shape_id": "dve_cube",
       "dve_collider_id": "dve_cube",
       "dve_check_collisions": true,
-      "dve_material": "grassy-stone",
+      "dve_voxel_material": "grassy-stone",
     ],
   },
   {
@@ -607,7 +602,7 @@ export const DVEVoxelData: VoxelData[] = [
       "dve_shape_id": "dve_cube",
       "dve_collider_id": "dve_cube",
       "dve_check_collisions": true,
-      ["dve_material", "stone"],
+      ["dve_voxel_material", "stone"],
       [
         "dve_model_data",
         {
@@ -645,7 +640,7 @@ export const DVEVoxelData: VoxelData[] = [
       "dve_shape_id": "dve_cube",
       "dve_collider_id": "dve_cube",
       "dve_check_collisions": true,
-      ["dve_material", "stone"],
+      ["dve_voxel_material", "stone"],
     ],
   },
   {
@@ -657,7 +652,7 @@ export const DVEVoxelData: VoxelData[] = [
       ["dve_light_value", [15, 0, 15]],
       "dve_collider_id": "dve_cube",
       "dve_check_collisions": true,
-      ["dve_material", "stone"],
+      ["dve_voxel_material", "stone"],
     ],
   },
   {
@@ -667,7 +662,7 @@ export const DVEVoxelData: VoxelData[] = [
       ["dve_shape_id", "dve_half_cube"],
       "dve_collider_id": "dve_cube",
       "dve_check_collisions": true,
-      "dve_material": "grassy-stone",
+      "dve_voxel_material": "grassy-stone",
     ],
   },
   {
@@ -677,7 +672,7 @@ export const DVEVoxelData: VoxelData[] = [
       "dve_shape_id": "dve_cube",
       "dve_collider_id": "dve_cube",
       "dve_check_collisions": true,
-      "dve_material": "wood",
+      "dve_voxel_material": "wood",
     ],
   },
 
@@ -688,7 +683,7 @@ export const DVEVoxelData: VoxelData[] = [
       ["dve_shape_id", "dve_stair"],
       ["dve_collider_id", "dve_stair"],
       "dve_check_collisions": true,
-      ["dve_material", "stone"],
+      ["dve_voxel_material", "stone"],
     ],
   },
   {
@@ -697,7 +692,7 @@ export const DVEVoxelData: VoxelData[] = [
       "dve_substance": "dve_flora",
       ["dve_shape_id", "dve_crossed_panels"],
       ["dve_check_collisions", false],
-      ["dve_material", "grass"],
+      ["dve_voxel_material", "grass"],
     ],
   },
   {
@@ -706,7 +701,7 @@ export const DVEVoxelData: VoxelData[] = [
       "dve_substance": "dve_flora",
       ["dve_shape_id", "dve_flat_panel"],
       ["dve_check_collisions", false],
-      ["dve_material", "grass"],
+      ["dve_voxel_material", "grass"],
     ],
   },
   {
@@ -716,7 +711,7 @@ export const DVEVoxelData: VoxelData[] = [
       "dve_shape_id": "dve_cube",
       "dve_collider_id": "dve_cube",
       "dve_check_collisions": true,
-      ["dve_material", "grass"],
+      ["dve_voxel_material", "grass"],
     ],
   },
   {
@@ -726,7 +721,7 @@ export const DVEVoxelData: VoxelData[] = [
       ["dve_shape_id", "dve_liquid"],
       "dve_collider_id": "dve_cube",
       "dve_check_collisions": true,
-      ["dve_material", "water"],
+      ["dve_voxel_material", "water"],
     ],
   },
   //dread
@@ -739,7 +734,7 @@ export const DVEVoxelData: VoxelData[] = [
       "dve_shape_id": "dve_cube",
       "dve_collider_id": "dve_cube",
       "dve_check_collisions": true,
-      ["dve_material", "stone"],
+      ["dve_voxel_material", "stone"],
     ],
   },
   {
@@ -747,7 +742,7 @@ export const DVEVoxelData: VoxelData[] = [
     properties: [
       ["dve_substance", "dve_translucent"],
       ["dve_shape_id", "dve_crossed_panels"],
-      ["dve_material", "grass"],
+      ["dve_voxel_material", "grass"],
       ["dve_collider_id", "dve_climable_box"],
       "dve_check_collisions": true,
     ],
@@ -761,7 +756,7 @@ export const DVEVoxelData: VoxelData[] = [
       ["dve_light_value", [15, 0, 0]],
       "dve_collider_id": "dve_cube",
       "dve_check_collisions": true,
-      ["dve_material", "stone"],
+      ["dve_voxel_material", "stone"],
     ],
   },
 
@@ -772,7 +767,7 @@ export const DVEVoxelData: VoxelData[] = [
       "dve_shape_id": "dve_cube",
       "dve_collider_id": "dve_cube",
       "dve_check_collisions": true,
-      ["dve_material", "stone"],
+      ["dve_voxel_material", "stone"],
     ],
   },
 
@@ -783,7 +778,7 @@ export const DVEVoxelData: VoxelData[] = [
       ["dve_shape_id", "dve_liquid"],
       "dve_collider_id": "dve_cube",
       "dve_check_collisions": true,
-      ["dve_material", "water"],
+      ["dve_voxel_material", "water"],
       ["dve_light_value", [15, 0, 0]],
       ["dve_is_light_source", true],
     ],

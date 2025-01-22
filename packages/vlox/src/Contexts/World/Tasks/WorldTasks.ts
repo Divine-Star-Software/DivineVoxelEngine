@@ -9,15 +9,14 @@ import {
   WorldLockTasks,
   LoadColumnDataTasks,
   RunBuildQueue,
-} from "../../../Data/Types/Tasks.types.js";
+} from "../../../Tasks/Tasks.types.js"
 import { RegionHeaderRegister } from "../../../Data/World/RegionHeaderRegister.js";
-import { DataLoaderTool } from "../../../DataLoader/World/Tools/DataLoaderTool.js";
+import { DataLoaderTool } from "../../../Tasks/DataLoader/World/Tools/DataLoaderTool.js";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 import { WorldLock } from "../Lock/WorldLock.js";
 
 import { ColumnData } from "../../../Data/World/Classes/Column.js";
 import { DivineVoxelEngineWorld } from "../index.js";
-import { DataSync } from "../Data/DataSync.js";
 import { MesherTool } from "../../../Tools/Mesher/MesherTool.js";
 
 export class WorldTasks {

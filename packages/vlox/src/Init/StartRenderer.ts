@@ -1,18 +1,15 @@
-import { InitVoxelData } from "../VoxelData/InitVoxelData";
+import { InitVoxelData } from "../Voxels/InitVoxelData";
 import { DivineVoxelEngineRender, DVERInitData } from "../Contexts/Render";
-import { VoxelData } from "../VoxelData/Voxel.types";
-import {
-  VoxelGeometryData,
-  VoxelModelData,
-} from "../VoxelModels/VoxelModel.types";
-import InitDataGenerator from "../Data/Generator/InitDataGenerator";
-import { SubstanceData } from "Data/Types/Substances.types";
+import { VoxelData } from "../Voxels/Voxel.types";
+import { VoxelGeometryData, VoxelModelData } from "../Models/VoxelModel.types";
+import InitDataGenerator from "../Contexts/Base/Main/Generator/InitDataGenerator";
+import { VoxelSubstanceData } from "Voxels/VoxelSubstances.types";
 import { Thread, ThreadPool } from "@amodx/threads";
 type StartRendererProps = {
   voxels: VoxelData[];
   geometry?: VoxelGeometryData[];
   models?: VoxelModelData[];
-  substances?: SubstanceData[];
+  substances?: VoxelSubstanceData[];
   materials?: { id: string }[];
 } & DVERInitData;
 export async function StartRenderer(initData: StartRendererProps) {
@@ -53,11 +50,6 @@ export async function StartRenderer(initData: StartRendererProps) {
     );
   }
   const t2 = performance.now();
-  const modelSyncData = await InitVoxelData({
-    geometry: initData.geometry,
-    models: initData.models,
-    voxels: initData.voxels,
-  });
 
   console.log("DONE INIT VOXEL DATA", performance.now() - t2);
   const syncData = InitDataGenerator({
@@ -67,9 +59,16 @@ export async function StartRenderer(initData: StartRendererProps) {
     voxels: initData.voxels,
     substances: initData.substances || [],
     materials: initData.materials || [],
-    voxelModels: modelSyncData,
+    // voxelModels: modelSyncData,
   });
 
+  const modelSyncData = await InitVoxelData({
+    geometry: initData.geometry,
+    models: initData.models,
+    voxels: initData.voxels,
+  });
+
+  syncData.modelData = modelSyncData;
   //make sure threads are ready
   await DVER.threads.world.waitTillTasksExist("sync-data");
   for (const thread of DVER.threads.construcotrs.getThreads()) {

@@ -1,7 +1,7 @@
 import { Flat3DIndex, Traverse, Vec3Array } from "@amodx/math";
-import { StringPalette } from "../../Interfaces/Data/StringPalette";
+import { StringPalette } from "../../Util/StringPalette";
 import { VoxelTemplate } from "../VoxelTemplate";
-import { NumberPalette } from "../../Interfaces/Data/NumberPalette";
+import { NumberPalette } from "../../Util/NumberPalette";
 import { DataTool } from "../../Tools/Data/DataTool";
 import { convertToPaletteBuffer } from "../../Archive/Functions/Palettes";
 

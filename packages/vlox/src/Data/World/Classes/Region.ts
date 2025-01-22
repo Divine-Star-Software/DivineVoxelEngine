@@ -1,6 +1,6 @@
 import { RemoteBinaryStruct } from "@amodx/binary/";
 import { Column } from "./Column";
-import { WorldDataStructProperties } from "../../Constants/Structs/WorldDataStructProperties";
+import { WorldDataStructProperties } from "../../Structs/Constants/WorldDataStructProperties";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces";
 import { Vec3Array } from "@amodx/math";
 

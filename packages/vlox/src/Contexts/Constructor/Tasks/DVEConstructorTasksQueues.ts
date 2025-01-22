@@ -1,9 +1,9 @@
 //types
 import { ThreadPool } from "@amodx/threads";
 //objects
-import { ConstructorTasksIds } from "./ConstructorTasksIds.js";
 import { QueueManager } from "@amodx/threads/Queue/QueueManager";
 import { Observable } from "@amodx/core/Observers/Observable.js";
+import { TasksIds } from "../../../Tasks/TasksIds";
 
 export class DVEConstructorTasksQueues {
   static instance: DVEConstructorTasksQueues;
@@ -11,7 +11,7 @@ export class DVEConstructorTasksQueues {
   constructor(public constructors: ThreadPool) {
     if (!DVEConstructorTasksQueues.instance)
       DVEConstructorTasksQueues.instance = this;
-    this.registerTasks("build-chunk", ConstructorTasksIds.BuildChunk);
+    this.registerTasks("build-chunk", TasksIds.BuildChunk);
 
     DVEConstructorTasksQueues.onCreated.notify(this);
     this.addQueue("main");

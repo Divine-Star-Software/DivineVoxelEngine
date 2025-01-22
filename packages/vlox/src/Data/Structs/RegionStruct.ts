@@ -1,7 +1,7 @@
 import { WorldSpaces } from "../World/WorldSpaces.js";
 
 import { BinaryNumberTypes, BinaryStruct } from "@amodx/binary/";
-import { WorldDataStructProperties } from "../Constants/Structs/WorldDataStructProperties.js";
+import { WorldDataStructProperties } from "../Structs/Constants/WorldDataStructProperties.js";
 import { Region } from "../World/Classes/Region.js";
 import { RegionHeaderTags } from "../World/RegionHeaderRegister.js";
 export const RegionStateStruct = new BinaryStruct("region-tags");

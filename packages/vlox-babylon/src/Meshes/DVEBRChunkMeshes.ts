@@ -6,7 +6,7 @@ import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo.js";
 import { EngineSettingsData } from "@divinevoxel/vlox/Settings/EngineSettings.types";
 
-import { DVEChunkMeshes } from "@divinevoxel/vlox/Interfaces/Render/DVEChunkMeshes";
+import { DVEChunkMeshes } from "@divinevoxel/vlox/Renderer/DVEChunkMeshes";
 import { DVEBabylonRenderer } from "../Renderer/DVEBabylonRenderer";
 import { DVEBRMesh } from "./DVEBRMesh";
 import {
@@ -14,8 +14,8 @@ import {
   CompactSubMesh,
 } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
 import { EngineSettings } from "@divinevoxel/vlox/Settings/EngineSettings";
-import { ChunkMeshInterface } from "@divinevoxel/vlox/Interfaces/Render/DVEChunkMeshInterface";
-import { ChunkMesh } from "@divinevoxel/vlox/Contexts/Render/Scene/Classes/ChunkMesh";
+import { ChunkMeshInterface } from "@divinevoxel/vlox/Renderer/DVEChunkMeshInterface";
+import { ChunkMesh } from "@divinevoxel/vlox/Renderer/Classes/ChunkMesh";
 
 export class DVEBRChunkMeshes extends DVEChunkMeshes {
   createMesh(position: Vec3Array, data: CompactMeshData): ChunkMeshInterface {
@@ -120,9 +120,10 @@ export class DVEBRChunkMeshes extends DVEChunkMeshes {
       found[subMeshMaterial] = true;
       let mesh: Mesh;
       if (chunk.meshes.has(subMeshMaterial)) {
-        mesh = chunk.meshes.get(subMeshMaterial);
+        mesh = chunk.meshes.get(subMeshMaterial) as Mesh;
       } else {
         mesh = new Mesh("", this.scene);
+        mesh.doNotSyncBoundingInfo = true;
       }
       mesh.unfreezeWorldMatrix();
       mesh.position.x = location[0];

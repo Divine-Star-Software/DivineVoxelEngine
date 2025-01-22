@@ -1,5 +1,5 @@
 import { Threads } from "@amodx/threads";
-import { ThreadManager } from "../../Interfaces/Classes/ThreadManager";
+import { ThreadManager } from "../Base/ThreadManager";
 
 export class DVERenderThreads extends ThreadManager {
   nexus = Threads.createThread("nexus");

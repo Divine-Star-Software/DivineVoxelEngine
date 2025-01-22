@@ -2,7 +2,7 @@ import { WorldGen } from "./Gen/WorldGen";
 import { TaskTool } from "@divinevoxel/vlox/Tools/Tasks/TasksTool";
 import { MesherTool } from "@divinevoxel/vlox/Tools/Mesher/MesherTool";
 import { BrushTool } from "@divinevoxel/vlox/Tools/Brush/Brush";
-import { SchemaRegister } from "@divinevoxel/vlox/VoxelState/SchemaRegister";
+import { SchemaRegister } from "@divinevoxel/vlox/Voxels/State/SchemaRegister";
 import {
   VoxelFaceNameDirectionsRecord,
   VoxelFaceNames,

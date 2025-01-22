@@ -10,26 +10,25 @@ import {
   HemisphericLight,
 } from "@babylonjs/core";
 import { DivineVoxelEngineRender } from "@divinevoxel/vlox/Contexts/Render/DivineVoxelEngineRender";
-import { RawVoxelData } from "@divinevoxel/vlox/VoxelData/Voxel.types";
+import { RawVoxelData } from "@divinevoxel/vlox/Voxels/Voxel.types";
 import { PaintVoxelData } from "@divinevoxel/vlox/Data/Types/WorldData.types";
 import {
   BuildNodeMesh,
   SetNodeMesh,
 } from "@divinevoxel/vlox/Mesher/Tasks/BuidlerTasks.types";
 import { DataTool } from "@divinevoxel/vlox/Tools/Data/DataTool";
-import { VoxelData } from "@divinevoxel/vlox/VoxelData/Voxel.types";
+import { VoxelData } from "@divinevoxel/vlox/Voxels/Voxel.types";
 import { DVEBabylonRenderer } from "../Renderer/DVEBabylonRenderer";
-import { VoxelIndex } from "@divinevoxel/vlox/VoxelIndexes/VoxelIndex";
-import { SchemaRegister } from "@divinevoxel/vlox/VoxelState/SchemaRegister";
-import { DVEBRChunkMeshes } from "../Meshes/DVEBRChunkMeshes";
+
+import { SchemaRegister } from "@divinevoxel/vlox/Voxels/State/SchemaRegister";
 
 import { DVEBRClassicMaterial } from "../Matereials/Classic/DVEBRClassicMaterial";
 import { DefaultMaterialManager } from "../Matereials/DefaultMaterialManager";
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
-import { VoxelModelIndex } from "@divinevoxel/vlox/VoxelIndexes/VoxelModelIndex";
-import { VoxelTextureIndex } from "@divinevoxel/vlox/VoxelIndexes/VoxelTextureIndex";
+import { VoxelIndex } from "@divinevoxel/vlox/Voxels/Indexes/VoxelIndex";
+import { VoxelModelIndex } from "@divinevoxel/vlox/Voxels/Indexes/VoxelModelIndex";
+import { VoxelTextureIndex } from "@divinevoxel/vlox/Voxels/Indexes/VoxelTextureIndex";
 import { CacheManager } from "@divinevoxel/vlox/Cache/CacheManager";
-import { VoxelCursor } from "@divinevoxel/vlox/Data/Cursor/VoxelCursor";
 import { DVEBRMesh } from "../Meshes/DVEBRMesh";
 export default async function CreateDisplayIndex(
   DVER: DivineVoxelEngineRender,
@@ -113,20 +112,20 @@ export default async function CreateDisplayIndex(
         (data: SetNodeMesh | false) => {
           if (!data) return resolve(false);
           dataTool.loadInRaw(voxelData);
-          const renderedSubstance = dataTool.getSubstnaceData().getRendered();
+          const renderedMaterial = dataTool.getRenderedMaterialStringId();
    
           const material =
-            DVEBabylonRenderer.instance.materials.get(renderedSubstance);
+            DVEBabylonRenderer.instance.materials.get(renderedMaterial);
           if (!material)
-            throw new Error(`Could not load material ${renderedSubstance}`);
+            throw new Error(`Could not load material ${renderedMaterial}`);
 
           const mesh = new Mesh(crypto.randomUUID(), displayScene);
-          if (!materialMap.has(renderedSubstance)) {
+          if (!materialMap.has(renderedMaterial)) {
             const newMat = (material as any).clone(displayScene);
 
             if (!newMat) throw new Error("Error creating mat.");
 
-            materialMap.set(renderedSubstance, newMat);
+            materialMap.set(renderedMaterial, newMat);
 
             newMat.setNumberArray(
               "lightGradient",
@@ -138,14 +137,14 @@ export default async function CreateDisplayIndex(
             //    newMat.wireframe = true;
             mesh.material = newMat._material;
           } else {
-            mesh.material = materialMap.get(renderedSubstance)!._material;
+            mesh.material = materialMap.get(renderedMaterial)!._material;
           }
 
           VoxelModelIndex.registerModel(
             voxelId,
             stateID,
             data[1],
-            renderedSubstance,
+            renderedMaterial,
             material._material
           );
    

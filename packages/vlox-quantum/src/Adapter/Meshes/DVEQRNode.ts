@@ -1,4 +1,4 @@
-import { ChunkMeshInterface } from "@divinevoxel/vlox/Interfaces/Render/DVEChunkMeshInterface";
+import { ChunkMeshInterface } from "@divinevoxel/vlox/Renderer/DVEChunkMeshInterface";
 
 export class DVEQRNode implements ChunkMeshInterface {
     dispose(): void {

@@ -1,13 +1,14 @@
-import { VoxelStructIds } from "../../Constants/Structs/VoxelStructIds";
-import { LightData } from "../../../VoxelData/LightData";
+import { VoxelStructIds } from "../../../Voxels/Voxel.types";
+import { LightData } from "../../../Voxels/LightData";
 import { MappedDataRegister } from "../../Register/MappedDataRegister";
 import { VoxelStruct } from "../../Structs/VoxelStruct";
-import { VoxelStateReader } from "../../../VoxelData/VoxelStateReader";
-import { VoxelTagStates } from "../../../VoxelState/VoxelTagStates";
+import { VoxelStateReader } from "../../../Voxels/VoxelStateReader";
+import { VoxelTagStates } from "../../../Voxels/State/VoxelTagStates";
 import { VoxelPalette } from "../../Palettes/VoxelPalette";
 import { DataTool } from "../../../Tools/Data/DataTool";
-import { SubstancePaletteReader } from "../../Palettes/SubstancePalette";
-import { RawVoxelData } from "../../../VoxelData/Voxel.types"
+import { SubstancePalette } from "../../Palettes/SubstancePalette";
+import { RawVoxelData } from "../../../Voxels/Voxel.types";
+import { MaterialPalette } from "../../../Data/Palettes/MaterialPalette";
 interface WritableArrayLike<T> {
   length: number;
   [index: number]: T;
@@ -55,15 +56,27 @@ export abstract class VoxelCursorInterface {
     this._loadedId = this.getId();
     return this;
   }
+  getRenderedMaterial() {
+    return this.__struct[VoxelStructIds.renderedMaterial];
+  }
+  getRenderedMaterialStringId() {
+    return MaterialPalette.id.stringFromNumber(
+      this.__struct[VoxelStructIds.renderedMaterial]
+    );
+  }
+  getMaterial() {
+    return this.__struct[VoxelStructIds.voxelMaterial];
+  }
+  getMaterialStringId() {
+    return MaterialPalette.id.stringFromNumber(
+      this.__struct[VoxelStructIds.voxelMaterial]
+    );
+  }
   getSubstance() {
-    const vID = this._loadedId;
-    if (vID < 2) return -1;
     return this.__struct[VoxelStructIds.substance];
   }
   getSubstanceStringId() {
-    const vID = this._loadedId;
-    if (vID < 2) return "dve_transparent";
-    return SubstancePaletteReader.id.stringFromNumber(this.getSubstance());
+    return SubstancePalette.id.stringFromNumber(this.getSubstance());
   }
   isOpaque() {
     return this.__struct[VoxelStructIds.isTransparent] == 0;

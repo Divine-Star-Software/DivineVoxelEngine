@@ -1,6 +1,6 @@
 import { ParticleSystem, Texture, Vector3 } from "@babylonjs/core";
 import { DivineVoxelEngineRender } from "@divinevoxel/vlox/Contexts/Render/DivineVoxelEngineRender";
-import { VoxelEffect } from "@divinevoxel/vlox/VoxelEffects/VoxelEffect";
+import { VoxelEffect } from "@divinevoxel/vlox/Voxels/Effects/VoxelEffect";
 import { DVEBabylonRenderer } from "../../Renderer/DVEBabylonRenderer";
 
 const smokeTexture =

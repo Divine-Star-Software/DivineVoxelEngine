@@ -2,7 +2,7 @@ import { Observable } from "@amodx/core/Observers/Observable";
 class DVEQRMeshObservers {
   updated = new Observable();
 }
-import { ChunkMeshInterface } from "@divinevoxel/vlox/Interfaces/Render/DVEChunkMeshInterface";
+import { ChunkMeshInterface } from "@divinevoxel/vlox/Renderer/DVEChunkMeshInterface";
 
 export class DVEQRMesh implements ChunkMeshInterface {
   observers = new DVEQRMeshObservers();

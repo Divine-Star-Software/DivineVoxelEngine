@@ -1,4 +1,4 @@
-import InitDataSync from "../Data/Sync/InitDataSync";
+import InitDataSync from "../Contexts/Base/Remote/Sync/InitDataSync"
 import { DivineVoxelEngineNexus } from "../Contexts/Nexus/DivineVoxelEngineNexus";
 import { Environment } from "@amodx/core/Environment/Environment";
 import { Threads } from "@amodx/threads";

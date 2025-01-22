@@ -2,14 +2,14 @@ import { MesherInterface } from "./MesherInterface.js";
 import { RenderedSubstances } from "../Substances/RenderedSubstances.js";
 
 import { BuildNodeMesh, SetNodeMesh } from "../Tasks/BuidlerTasks.types.js";
-import { VoxelGeometryLookUp } from "../../VoxelModels/Constructor/VoxelGeometryLookUp.js";
+import { VoxelGeometryLookUp } from "../Models/VoxelGeometryLookUp.js";
 import { TemplateCursor } from "../../Data/Cursor/Template/TemplateCursor.js";
 import { VoxelCursor } from "../../Data/Cursor/VoxelCursor.js";
 import { SubstanceDataTool } from "../../Tools/Data/SubstanceDataTool.js";
 import { DVEMesher } from "../Mesher.js";
 import { FullVoxelTemplate } from "../../Templates/FullVoxelTemplate.js";
 import { CompactVoxelMesh } from "../Functions/CompactVoxelMesh.js";
-import { VoxelModelConstructorRegister } from "../../VoxelModels/Constructor/VoxelModelConstructorRegister.js";
+import { VoxelModelConstructorRegister } from "../Models/VoxelModelConstructorRegister.js";
 
 class VoxelBuilderBase implements MesherInterface {
   templateCursor = new TemplateCursor();
@@ -17,8 +17,6 @@ class VoxelBuilderBase implements MesherInterface {
   substanceData = new SubstanceDataTool();
 
   constructor(public id: string) {
-  
-
     this.templateCursor.setTemplate(
       new FullVoxelTemplate(FullVoxelTemplate.CreateNew([3, 3, 3], 0xf))
     );
@@ -36,9 +34,8 @@ class VoxelBuilderBase implements MesherInterface {
       voxel.getStringId()
     );
 
-    this.substanceData.setSubstance(voxel.getSubstance());
     const mesher = RenderedSubstances.meshers.get(
-      this.substanceData.getRendered()
+      voxel.getRenderedMaterialStringId()
     );
     if (!mesher || !constructor) return false;
 

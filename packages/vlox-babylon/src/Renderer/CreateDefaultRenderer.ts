@@ -6,7 +6,7 @@ import {
 } from "../Matereials/Types/DVEBRDefaultMaterial.types.js";
 
 import type { Material, Scene } from "@babylonjs/core";
-import { NodeMaterialData } from "@divinevoxel/vlox/Interfaces/Render/DVERenderNode.types";
+import { NodeMaterialData } from "@divinevoxel/vlox/Renderer/DVERenderNode.types";
 
 import { TextureBuilder } from "@divinevoxel/vlox/Textures/TextureBuilder";
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";

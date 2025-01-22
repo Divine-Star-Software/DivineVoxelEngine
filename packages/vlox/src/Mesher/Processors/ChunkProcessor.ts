@@ -9,7 +9,7 @@ import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 
 //tools
 import { HeightMapTool } from "../../Tools/Data/WorldData/HeightMapTool.js";
-import { VoxelGeometryLookUp } from "../../VoxelModels/Constructor/VoxelGeometryLookUp.js";
+import { VoxelGeometryLookUp } from "../Models//VoxelGeometryLookUp.js";
 import { CompactVoxelMesh } from "../Functions/CompactVoxelMesh.js";
 import { DVEMesher } from "../../Mesher/Mesher.js";
 import { SubstanceDataTool } from "../../Tools/Data/SubstanceDataTool.js";
@@ -17,7 +17,7 @@ import { WorldCursor } from "../../Data/Cursor/World/WorldCursor.js";
 import { ChunkCursor } from "../../Data/Cursor/World/ChunkCursor.js";
 import { RenderedSubstances } from "../Substances/RenderedSubstances.js";
 import { VoxelMesherDataTool } from "Mesher/Tools/VoxelMesherDataTool.js";
-import { VoxelModelConstructorRegister } from "../../VoxelModels/Constructor/VoxelModelConstructorRegister.js";
+import { VoxelModelConstructorRegister } from "../Models/VoxelModelConstructorRegister.js";
 
 export class ChunkProcessor {
   heightMapTool = new HeightMapTool();
@@ -46,14 +46,14 @@ export class ChunkProcessor {
         `Could not find constructor ${voxel.getId()} | ${voxel.getName()} `
       );
     }
-    this.substanceData.setSubstance(voxel.getSubstance());
+
     const mesher = RenderedSubstances.meshers.get(
-      this.substanceData.getRendered()
+      voxel.getRenderedMaterialStringId()
     );
 
     if (!mesher) {
       throw new Error(
-        `Could not find mesh ${voxel.getId()} | ${voxel.getName()} | ${constructor?.id} | ${this.substanceData.getRendered()}`
+        `Could not find material for ${voxel.getId()} | ${voxel.getName()} | ${constructor?.id} | ${voxel.getMaterial()} | ${voxel.getRenderedMaterialStringId()}`
       );
     }
 

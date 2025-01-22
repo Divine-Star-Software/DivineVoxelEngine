@@ -1,17 +1,11 @@
-export const SubstancePaletteReader = {
- _palette: <string[]>[],
- _map: <Map<string, number>>new Map(),
-
- setPalette(palette: string[], map: Record<string, number>) {
-  this._palette = palette;
-  this._map = new Map(Object.entries(map));
- },
- id: {
-  stringFromNumber(id: number) {
-   return SubstancePaletteReader._palette[id];
-  },
-  numberFromString(id: string) {
-   return SubstancePaletteReader._map.get(id)!;
-  },
- },
-};
+import { StringPalette } from "../../Util/StringPalette";
+export class SubstancePalette {
+  static palette: StringPalette;
+  static setPalette(palette: string[]) {
+    this.palette = new StringPalette(palette);
+  }
+  static id = {
+    stringFromNumber: (id: number) => this.palette.getStringId(id),
+    numberFromString: (id: string) => this.palette.getNumberId(id),
+  };
+}

@@ -1,19 +1,19 @@
-import InitDataSync from "../Data/Sync/InitDataSync";
+import InitDataSync from "../Contexts/Base/Remote/Sync/InitDataSync"
 import { DivineVoxelEngineConstructor } from "../Contexts/Constructor/DivineVoxelEngineConstructor";
 import { Threads } from "@amodx/threads";
 import { CreatePromiseCheck } from "@amodx/core/Intervals/CreatePromiseCheck";
-import { VoxelModelConstructorRegister } from "../VoxelModels/Constructor/VoxelModelConstructorRegister";
-import { SchemaRegister } from "../VoxelState/SchemaRegister";
-import { LiquidGeometryNode } from "../VoxelModels/Constructor/Nodes/Custom/Liquid/LiquidGeomtryNode";
-import { VoxelTagStates } from "../VoxelState/VoxelTagStates";
-
-import { VoxelConstructor } from "../VoxelModels/Constructor/VoxelConstructor";
-import { VoxelGeometryLookUp } from "../VoxelModels/Constructor/VoxelGeometryLookUp";
+import { VoxelGeometryLookUp } from "../Mesher/Models/VoxelGeometryLookUp";
 import { Environment } from "@amodx/core/Environment/Environment";
-import ConstructorTasks from "../Contexts/Constructor/Tasks/ConstructorTasks";
+import { WorldRegister } from "../Data/World/WorldRegister";
+import InitAnalyzerTasks from "../Tasks/Analyzer/InitTasks";
+import InitUpdateTasks from "../Tasks/Update/InitTasks";
+import InitPropagationTasks from "../Tasks/Propagation/InitTasks";
+import InitMesherTasks from "../Tasks/Mesher/InitTasks";
+import InitWorldGenerationTasks from "../Tasks/WorldGeneration/InitTasks";
+
 export async function StartContrusctor(data: {} = {}) {
   const DVEC = new DivineVoxelEngineConstructor();
-  ConstructorTasks(DVEC);
+
   DivineVoxelEngineConstructor.environment = Environment.nodeJS.isNode
     ? "node"
     : "browser";
@@ -29,45 +29,13 @@ export async function StartContrusctor(data: {} = {}) {
 
   InitDataSync({
     onSync(data) {
-      if (data.modelData) {
-        const modelData = data.modelData;
-        VoxelModelConstructorRegister.registerCustomNode(
-          "liquid",
-          LiquidGeometryNode
-        );
-        VoxelModelConstructorRegister.setGeometryPalette(
-          modelData.geometryPalette
-        );
-
-        VoxelModelConstructorRegister.registerGeometry(modelData.geometry);
-        VoxelModelConstructorRegister.registerModels(modelData.models);
-
-        for (const model of modelData.models) {
-          SchemaRegister.registerModel(model.id, model.schema);
-        }
-
-        for (const voxel of modelData.voxels) {
-          SchemaRegister.registerVoxel(
-            voxel.id,
-            voxel.modelId,
-            voxel.modSchema
-          );
-        }
-        VoxelTagStates.load(modelData.tagState);
-
-        for (const voxel of modelData.voxels) {
-          VoxelModelConstructorRegister.registerVoxel(
-            new VoxelConstructor(
-              voxel.id,
-              VoxelModelConstructorRegister.modelData.get(voxel.modelId)!,
-              voxel
-            )
-          );
-        }
-      }
-      ready = true;
       DVEC.mesher.init(data);
+      ready = true;
     },
+  });
+
+  Threads.registerTasks("clear-all", () => {
+    WorldRegister.instance.clearAll();
   });
 
   await CreatePromiseCheck({
@@ -75,5 +43,17 @@ export async function StartContrusctor(data: {} = {}) {
     checkInterval: 1,
   });
 
+  InitAnalyzerTasks();
+  InitPropagationTasks();
+  InitMesherTasks(DVEC.mesher);
+  InitUpdateTasks({
+    onDone(tasks) {
+      DVEC.threads.world.runTasks("build-queue", [
+        tasks.origin[0],
+        tasks.bounds.getChunks(),
+      ]);
+    },
+  });
+  InitWorldGenerationTasks();
   return DVEC;
 }

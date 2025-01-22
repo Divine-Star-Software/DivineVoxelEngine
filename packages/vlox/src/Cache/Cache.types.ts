@@ -1,6 +1,6 @@
 import { CompactMeshData } from "../Mesher/Types/Mesher.types";
 import { TextureData } from "../Textures/Texture.types";
-import { ConstructorVoxelModelSyncData } from "../VoxelData/VoxelSyncData";
+import { ConstructorVoxelModelSyncData } from "../Voxels/VoxelSyncData";
 
 export interface CachedVoxelModelData extends ConstructorVoxelModelSyncData {}
 

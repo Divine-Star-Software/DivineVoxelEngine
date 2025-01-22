@@ -3,13 +3,14 @@ import {
   BinaryStructData,
   InstantiatedStruct,
 } from "@amodx/binary/";
-import { VoxelStructIds } from "../Constants/Structs/VoxelStructIds";
+import { VoxelStructIds } from "../../Voxels/Voxel.types";
 import { VoxelPalette } from "../Palettes/VoxelPalette";
 
 export interface VoxelStruct {
   [VoxelStructIds.substance]: number;
   [VoxelStructIds.shapeID]: number;
-  [VoxelStructIds.material]: number;
+  [VoxelStructIds.renderedMaterial]: number;
+  [VoxelStructIds.voxelMaterial]: number;
   [VoxelStructIds.hardness]: number;
   [VoxelStructIds.colliderID]: number;
   [VoxelStructIds.checkCollisions]: number;

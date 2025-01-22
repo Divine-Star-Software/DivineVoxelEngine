@@ -1,7 +1,7 @@
-import { SubstancePaletteReader } from "../../Data/Palettes/SubstancePalette.js";
+import { SubstancePalette } from "../../Data/Palettes/SubstancePalette.js";
 import { SubstanceStruct } from "../../Data/Structs/SubstanceStruct.js";
 import { MappedDataRegister } from "../../Data/Register/MappedDataRegister.js";
-import { SubstanceStructIds } from "../../Data/Constants/Structs/SubstanceStructIds.js";
+import { SubstanceStructIds } from "../../Voxels/VoxelSubstances.types.js"
 
 export class SubstanceDataTool {
   static tags = SubstanceStruct;
@@ -11,8 +11,7 @@ export class SubstanceDataTool {
 
   setSubstanceFromString(substance: string) {
     //   this.substance = substance;
-    this.substanceTagIndex =
-      SubstancePaletteReader.id.numberFromString(substance);
+    this.substanceTagIndex = SubstancePalette.id.numberFromString(substance);
     SubstanceStruct.setSubstance(this.substanceTagIndex);
     return this;
   }
@@ -24,7 +23,7 @@ export class SubstanceDataTool {
   }
 
   getSubstanceStringId() {
-    return SubstancePaletteReader.id.stringFromNumber(this.substanceTagIndex);
+    return SubstancePalette.id.stringFromNumber(this.substanceTagIndex);
   }
 
   /*   isTransparent() {
@@ -42,13 +41,6 @@ export class SubstanceDataTool {
     return SubstanceStruct.instance[SubstanceStructIds.isWindAffected] == 1;
   }
 
-  isBackFaceCulled() {
-    return SubstanceStruct.instance[SubstanceStructIds.isBackFaceCulled] == 1;
-  }
-
-  cullDense() {
-    return SubstanceStruct.instance[SubstanceStructIds.cullDense] == 1;
-  }
   /*   isOpaque() {
     return this.isSolid() && !this.isTransparent();
   }
@@ -64,20 +56,7 @@ export class SubstanceDataTool {
       SubstanceStruct.instance[SubstanceStructIds.parent]
     )!;
   }
-  getRendered() {
-    return MappedDataRegister.stringMaps.get(
-      "substance",
-      SubstanceStructIds.rendered,
-      SubstanceStruct.instance[SubstanceStructIds.rendered]
-    )!;
-  }
-  getCulled(): string[] {
-    return MappedDataRegister.objectMaps.get(
-      "substance",
-      SubstanceStructIds.culledSubstnaces,
-      SubstanceStruct.instance[SubstanceStructIds.culledSubstnaces]
-    )!;
-  }
+
   getFlowRate() {
     return SubstanceStruct.instance[SubstanceStructIds.flowRate];
   }

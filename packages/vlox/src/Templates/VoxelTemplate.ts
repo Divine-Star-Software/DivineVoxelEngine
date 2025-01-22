@@ -1,11 +1,11 @@
 import { Flat3DIndex, Traverse, Vec3Array } from "@amodx/math";
 import {  VoxelTemplateData } from "./VoxelTemplates.types";
-import type { RawVoxelData } from "../VoxelData/Voxel.types";
-import { StringPalette } from "../Interfaces/Data/StringPalette";
-import { NumberPalette } from "../Interfaces/Data/NumberPalette";
+import type { RawVoxelData } from "../Voxels/Voxel.types";
+import { StringPalette } from "../Util/StringPalette";
+import { NumberPalette } from "../Util/NumberPalette";
 import { VoxelPalette } from "../Data/Palettes/VoxelPalette";
 import { VoxelStruct } from "../Data/Structs/VoxelStruct";
-import { VoxelStructIds } from "../Data/Constants/Structs/VoxelStructIds";
+import { VoxelStructIds } from "../Voxels/Voxel.types";
 import { getPaletteArray } from "../Archive/Functions/Palettes";
 import { NibbleArray } from "@amodx/binary/Arrays/NibbleArray";
 

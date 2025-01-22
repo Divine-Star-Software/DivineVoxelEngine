@@ -1,10 +1,10 @@
 import { type LocationData } from "../../../Math/index.js";
 import { Vector3Like } from "@amodx/math";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
-import { MushRegisterRegion } from "./Classes/MushRegisterRegion.js";
-import { MeshRegisterColumn } from "./Classes/MeshRegisterColumn.js";
-import { ChunkMesh } from "./Classes/ChunkMesh.js";
-import { ChunkMeshInterface } from "Interfaces/Render/DVEChunkMeshInterface.js";
+import { MushRegisterRegion } from "../../../Renderer/Classes/MushRegisterRegion.js";
+import { MeshRegisterColumn } from "../../../Renderer/Classes/MeshRegisterColumn.js";
+import { ChunkMesh } from "../../../Renderer/Classes/ChunkMesh.js";
+import { ChunkMeshInterface } from "../../../Renderer/DVEChunkMeshInterface.js"
 
 export type MeshRegisterDimensions = Map<
   string,

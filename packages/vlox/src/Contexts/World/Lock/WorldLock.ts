@@ -1,9 +1,9 @@
-import type { WorldLockTasks } from "../../../Data/Types/Tasks.types";
+import type { WorldLockTasks } from "../../../Tasks/Tasks.types"
 import type { LocationData } from "../../../Math";
 
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
-import { DataLoaderTool } from "../../../DataLoader/World/Tools/DataLoaderTool.js";
+import { DataLoaderTool } from "../../../Tasks/DataLoader/World/Tools/DataLoaderTool.js";
 import { SafeInterval } from "@amodx/core/Intervals/SafeInterval.js";
 
 export const WorldLock = {

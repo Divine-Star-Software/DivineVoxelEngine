@@ -7,7 +7,7 @@ import { VoxelTemplateDataTool } from "./VoxelTemplateDataTool.js";
 import { BinaryNumberTypes } from "@amodx/binary";
 import { VoxelFaces, VoxelFacesArray } from "../../Math";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types";
-import { FaceDataCalc } from "../../VoxelModels/Constructor/Nodes/Common/Calc/FaceDataCalc.js";
+import { FaceDataCalc } from "../Models/Common/Calc/FaceDataCalc.js"
 import { Mesh } from "@amodx/meshing/Mesh/Mesh";
 import { VoxelMeshBVHBuilder } from "./VoxelMeshBVHBuilder";
 import { Vec3Array, Vector3Like } from "@amodx/math";

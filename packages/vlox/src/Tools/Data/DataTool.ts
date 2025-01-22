@@ -1,6 +1,6 @@
-import type { RawVoxelData } from "../../VoxelData/Voxel.types";
+import type { RawVoxelData } from "../../Voxels/Voxel.types";
 import { DimensionsRegister } from "../../Data/World/DimensionsRegister.js";
-import { VoxelStateReader } from "../../VoxelData/VoxelStateReader.js";
+import { VoxelStateReader } from "../../Voxels/VoxelStateReader.js";
 import { VoxelStruct } from "../../Data/Structs/VoxelStruct.js";
 import { VoxelPalette } from "../../Data/Palettes/VoxelPalette.js";
 import { ChunkDataTool } from "./WorldData/ChunkDataTool.js";
@@ -8,16 +8,17 @@ import { HeightMapTool } from "./WorldData/HeightMapTool.js";
 import { DataToolBase } from "../Classes/DataToolBase.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
-import { LightData } from "../../VoxelData/LightData.js";
-import { VoxelStructIds } from "../../Data/Constants/Structs/VoxelStructIds";
+import { LightData } from "../../Voxels/LightData.js";
+import { VoxelStructIds } from "../../Voxels/Voxel.types";
 import { MappedDataRegister } from "../../Data/Register/MappedDataRegister.js";
 import { SubstanceDataTool } from "./SubstanceDataTool.js";
 import { SafeInterval } from "@amodx/core/Intervals/SafeInterval.js";
 import { SafePromise } from "@amodx/core/Promises/SafePromise.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { PaintVoxelData } from "../../Data/Types/WorldData.types.js";
-import { SubstancePaletteReader } from "../../Data/Palettes/SubstancePalette.js";
-import { VoxelTagStates } from "../../VoxelState/VoxelTagStates";
+import { SubstancePalette } from "../../Data/Palettes/SubstancePalette.js";
+import { VoxelTagStates } from "../../Voxels/State/VoxelTagStates";
+import { MaterialPalette } from "../../Data/Palettes/MaterialPalette";
 
 export enum DataToolModes {
   /**# World Data Mode
@@ -48,7 +49,10 @@ export class DataTool extends DataToolBase {
     return dataTool1.getId(true) == dataTool2.getId(true);
   }
 
-  static VoxelDataToRaw(data: Partial<PaintVoxelData>, light = 0): RawVoxelData {
+  static VoxelDataToRaw(
+    data: Partial<PaintVoxelData>,
+    light = 0
+  ): RawVoxelData {
     const id =
       (data.id !== undefined && VoxelPalette.ids.getNumberId(data.id)) || 0;
     const secondaryId =
@@ -202,7 +206,7 @@ export class DataTool extends DataToolBase {
       return false;
     }
     if (this._mode == DataTool.Modes.VOXEL_DATA) {
-      if(this.x == 0 && this.y == 0 && this.z == 0) return true; 
+      if (this.x == 0 && this.y == 0 && this.z == 0) return true;
       this.data.raw[0] = 0;
       this.data.raw[1] = LightData.getS(0xff);
       this.data.raw[2] = 0;
@@ -352,20 +356,27 @@ export class DataTool extends DataToolBase {
   getSubstanceStringId() {
     const vID = this._loadedId;
     if (vID < 2) return "dve_transparent";
-    return SubstancePaletteReader.id.stringFromNumber(this.getSubstance());
+    return SubstancePalette.id.stringFromNumber(this.getSubstance());
   }
   getSubstance() {
     const vID = this._loadedId;
     if (vID < 2) return -1;
     return this.__struct[VoxelStructIds.substance];
   }
+  getRenderedMaterial() {
+    return this.__struct[VoxelStructIds.renderedMaterial];
+  }
+  getRenderedMaterialStringId() {
+    return MaterialPalette.id.stringFromNumber(
+      this.__struct[VoxelStructIds.renderedMaterial]
+    );
+  }
   getMaterial() {
-    const vID = this._loadedId;
-    if (vID < 2) return "none";
-    return MappedDataRegister.stringMaps.get(
-      "voxel",
-      VoxelStructIds.material,
-      this.__struct[VoxelStructIds.material]
+    return this.__struct[VoxelStructIds.voxelMaterial];
+  }
+  getMaterialStringId() {
+    return MaterialPalette.id.stringFromNumber(
+      this.__struct[VoxelStructIds.voxelMaterial]
     );
   }
   getHardness() {

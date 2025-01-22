@@ -1,7 +1,7 @@
 import { URIMaterialData } from "@amodx/uri/Materials/URIMaterial";
 import { URIScene } from "@amodx/uri/Scenes/URIScene";
 import { URITexture } from "@amodx/uri/Textures/URITexture";
-import { NodeMaterialData } from "@divinevoxel/vlox/Interfaces/Render/DVERenderNode.types";
+import { NodeMaterialData } from "@divinevoxel/vlox/Renderer/DVERenderNode.types";
 
 export class DVEQMaterial {
   constructor(

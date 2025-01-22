@@ -1,5 +1,5 @@
 import { Threads } from "@amodx/threads/";
-import { ThreadManager } from "../../Interfaces/Classes/ThreadManager";
+import { ThreadManager } from "../Base/ThreadManager";
 const world = Threads.createThread("world");
 export class ConstructorThreadManager extends ThreadManager {
   static instnace: ConstructorThreadManager;

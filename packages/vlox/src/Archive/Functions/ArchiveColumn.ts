@@ -1,10 +1,10 @@
-import { StringPalette } from "../../Interfaces/Data/StringPalette";
-import { NumberPalette } from "../../Interfaces/Data/NumberPalette";
+import { StringPalette } from "../../Util/StringPalette";
+import { NumberPalette } from "../../Util/NumberPalette";
 import { LocationData } from "../../Math";
 import { WorldRegister } from "../../Data/World/WorldRegister";
 import { VoxelPalette } from "../../Data/Palettes/VoxelPalette";
 import { VoxelStruct } from "../../Data/Structs/VoxelStruct";
-import { VoxelStructIds } from "../../Data/Constants/Structs/VoxelStructIds";
+import { VoxelStructIds } from "../../Voxels/Voxel.types";
 import { Chunk, ChunkData, Column } from "../../Data/World/Classes";
 import { ArchivedChunkData, ArchivedColumnData } from "../Archive.types";
 import { convertToPaletteBuffer } from "./Palettes";

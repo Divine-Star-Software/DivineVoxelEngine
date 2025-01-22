@@ -1,5 +1,5 @@
 import { ThreadPool, Threads } from "@amodx/threads/";
-import { ThreadManager } from "../../Interfaces/Classes/ThreadManager.js";
+import { ThreadManager } from "../Base/ThreadManager.js";
 
 export class WorldThreadManager extends ThreadManager {
   constructors: ThreadPool = Threads.createThreadPool({

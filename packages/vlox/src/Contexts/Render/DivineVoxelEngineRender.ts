@@ -7,9 +7,9 @@ import { Threads } from "@amodx/threads/";
 
 import type { EngineSettingsData } from "../../Settings/EngineSettings.types.js";
 import type { RecursivePartial } from "../../Util/Util.types.js";
-import { DVERenderer } from "../../Interfaces/Render/DVERenderer.js";
-import { MeshManager } from "./Scene/MeshManager.js";
-import { MeshRegister } from "./Scene/MeshRegister.js";
+import { DVERenderer } from "../../Renderer/DVERenderer.js"
+import { MeshManager } from "../../Renderer/MeshManager.js";
+import { MeshRegister } from "../../Renderer/MeshRegister.js";
 
 import { DVERenderThreads } from "./DVERenderThreads.js";
 

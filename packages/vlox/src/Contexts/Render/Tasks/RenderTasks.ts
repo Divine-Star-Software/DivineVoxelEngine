@@ -5,8 +5,8 @@ import type {
 } from "./RenderTasks.types.js";
 import type { LocationData } from "Math/index.js";
 import { Threads } from "@amodx/threads/";
-import { MeshManager } from "../Scene/MeshManager.js";
-import { MeshRegister } from "../Scene/MeshRegister.js";
+import { MeshManager } from "../../../Renderer/MeshManager.js";
+import { MeshRegister } from "../../../Renderer/MeshRegister.js";
 
 export const RenderTasks = {
   setChunk: Threads.registerTasks<SetChunkMeshTask>("set-chunk", (data) => {

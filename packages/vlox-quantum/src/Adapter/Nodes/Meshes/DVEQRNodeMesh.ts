@@ -1,16 +1,12 @@
 import type { Vec3Array } from "@amodx/math";
 import type { EngineSettingsData } from "@divinevoxel/vlox/Settings/EngineSettings.types";
 
-
-import { DVEChunkMeshes } from "@divinevoxel/vlox/Interfaces/Render/DVEChunkMeshes.js";
+import { DVEChunkMeshes } from "@divinevoxel/vlox/Renderer/DVEChunkMeshes.js";
 import { DVEQRMesh } from "./DVEQRMesh";
 import { DVEQuantumRenderer } from "../../DVEQuantumRenderer";
 import { Scene } from "../../../Renderer/Scene/Scene";
-import {
-  CompactMeshData,
-  CompactSubMesh,
-} from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
-import { ChunkMesh } from "@divinevoxel/vlox/Contexts/Render/Scene/Classes/ChunkMesh";
+import { CompactMeshData } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
+import { ChunkMesh } from "@divinevoxel/vlox/Renderer/Classes/ChunkMesh";
 export class DVEQRNodeMesh extends DVEChunkMeshes {
   static UpdateVertexData(mesh: any, engine: any, data: any) {
     for (const [id, attribute, stride] of data) {

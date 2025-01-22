@@ -17,7 +17,7 @@ import { RegionHeaderRegister } from "../../../Data/World/RegionHeaderRegister.j
 import { DimensionsRegister } from "../../../Data/World/DimensionsRegister.js";
 import { DVEFDataSyncIds } from "../../../Data/Constants/DVEFDataSyncIds.js";
 import { DivineVoxelEngineWorld } from "../index.js";
-import { WorldDataSync } from "../../../Data/Types/DataSync.types.js";
+import { WorldDataSync } from "../../Base/Remote/Sync/DataSync.types.js";
 
 export class DataSync {
   commMap = new Map<string, Thread | ThreadPool>();

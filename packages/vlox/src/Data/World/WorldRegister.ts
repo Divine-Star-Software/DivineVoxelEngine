@@ -1,4 +1,4 @@
-import { DataHooks } from "../Sync/DataHooks.js";
+import { DataHooks } from "../../Contexts/Base/DataHooks"
 import {
   Chunk,
   ChunkData,

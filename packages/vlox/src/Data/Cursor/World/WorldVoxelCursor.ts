@@ -1,6 +1,6 @@
 import { ColumnCursor } from "./ColumnCursor";
 import { Chunk } from "../../World/Classes";
-import { ChunkStructProperties } from "../../Constants/Structs/ChunkStructProperties";
+import { ChunkStructProperties } from "../../Structs/Constants/ChunkStructProperties";
 import { VoxelCursorInterface } from "../Interfaces/VoxelCursor.interface";
 import { WorldSectionCursorInterface } from "./WorldSectionCursor.interface";
 export class WorldVoxelCursor extends VoxelCursorInterface {
