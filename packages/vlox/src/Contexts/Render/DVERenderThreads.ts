@@ -18,34 +18,7 @@ export class DVERenderThreads extends ThreadManager {
     this.addThread(this.construcotrs);
     this.addThread(this.parent);
     this.addThread(this.world);
-    this.pipelines.setPorts.regiser("render", (threads) => {
-      for (const comm of this.construcotrs.getThreads()) {
-        this.world.connectToThread(comm);
-      }
 
-      return threads;
-    });
-    this.nexus.onSetPort(() => {
-      this.addThread(this.nexus);
-      this.pipelines.setPorts.regiser("nexus", (data) => {
-        this.world.connectToThread(this.nexus);
-        return data;
-      });
-    });
-    this.dataLoader.onSetPort(() => {
-      this.addThread(this.dataLoader);
-      this.pipelines.setPorts.regiser("dataloader", (data) => {
-        this.world.connectToThread(this.dataLoader);
-        return data;
-      });
-    });
-    this.richWorld.onSetPort(() => {
-      this.addThread(this.richWorld);
-      this.pipelines.setPorts.regiser("richworld", (data) => {
-        this.world.connectToThread(this.richWorld);
-        return data;
-      });
-    });
   }
 
 

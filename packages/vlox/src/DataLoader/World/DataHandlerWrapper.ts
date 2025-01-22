@@ -5,7 +5,7 @@ import {
   DVEDataHandler,
   DataLoaderModes,
 } from "../../Interfaces/DataLoader/DVEDataHandler.js";
-import { DataHooks } from "../../Data/DataHooks.js";
+import { DataHooks } from "../../Data/Sync/DataHooks.js";
 import { RichDataTool } from "../../Tools/Data/RichDataTool.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { arrayBufferToSharedArrayBuffer } from "@amodx/core/Buffers/arrayBufferToSharedArrayBuffer.js";

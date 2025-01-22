@@ -6,7 +6,7 @@ import { ChunkDataTool } from "../Tools/Data/WorldData/ChunkDataTool";
 
 
 import { WorldBounds } from "../Data/World/WorldBounds";
-import { RawVoxelData } from "../Data/Types/VoxelData.types";
+import { RawVoxelData } from "../VoxelData/Voxel.types";
 import { DivineVoxelEngineConstructor } from "../Contexts/Constructor";
 
 const brush = new BrushTool();

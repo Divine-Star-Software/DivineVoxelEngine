@@ -7,7 +7,7 @@ import { Quad } from "@amodx/meshing/Primitives/Quad";
 import {
   addQuadWeights,
   closestUnitNormal,
-} from "../../../../Mesher/Calc/CalcConstants";
+} from "./Calc/CalcConstants";
 
 import { VoxelGeometryTransform } from "../../../../VoxelData/VoxelSyncData";
 import { TransformQuad } from "../../../Shared/Transform";

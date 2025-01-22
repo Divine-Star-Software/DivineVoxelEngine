@@ -1,6 +1,6 @@
 //types
 import { VoxelSpaces } from "../../Math/Spaces/VoxelSpaces.js";
-import type { EngineSettingsData } from "../../Types/EngineSettings.types.js";
+import type { EngineSettingsData } from "../../Settings/EngineSettings.types.js";
 //Objects
 
 export const WorldSpaces = new VoxelSpaces();

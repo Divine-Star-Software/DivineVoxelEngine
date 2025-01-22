@@ -10,12 +10,9 @@ export type CompactMeshIndex = [
   type: BinaryNumberTypes,
 ][];
 
+export type CompactSubMesh = [materialId: string, index: CompactMeshIndex];
 export type CompactMeshData =
-  | [
-      type: 0,
-      buffer: ArrayBuffer,
-      index: CompactMeshIndex
-    ]
+  | [type: 0, buffer: ArrayBuffer, meshes: CompactSubMesh[]]
   | [
       type: 1,
       vertexBuffer: ArrayBuffer,

@@ -1,12 +1,10 @@
 import { Vector4, Color3 } from "@babylonjs/core/Maths/";
-import type { RenderFogOptions } from "@divinevoxel/vlox/Shaders/Types/Shader.types.js";
-import { RecursivePartial } from "@divinevoxel/vlox/Types";
+import type { RenderFogOptions } from "../Shaders/Shader.types";
+import { RecursivePartial } from "@divinevoxel/vlox/Util/Util.types";
 import { DVEBabylonRenderer } from "../Renderer/DVEBabylonRenderer";
-import { DVEShaders } from "@divinevoxel/vlox/Shaders/DVEShaders";
 import { SceneTool } from "../Tools/SceneTool";
 export class DefaultMaterialManager {
   static time = 0;
-  static shaders = DVEShaders;
   static fogOptions: RenderFogOptions = {
     mode: "volumetric",
     color: [1, 1, 1],
@@ -37,8 +35,9 @@ export class DefaultMaterialManager {
       },
     };
     this.updateFogOptions(this.fogOptions);
-    for (const [id, mat] of DVEBabylonRenderer.instance.nodes.materials
+    for (const [id, mat] of DVEBabylonRenderer.instance.materials
       .materials) {
+      
       mat.setNumberArray("lightGradient", this.unifrosm.lightGradient);
     }
   }
@@ -62,14 +61,14 @@ export class DefaultMaterialManager {
   static updateUniforms() {
     const position = DVEBabylonRenderer.instance.foManager.activeNode?.position;
     if (!position) return;
-    for (const [id, mat] of DVEBabylonRenderer.instance.nodes.materials
+    for (const [id, mat] of DVEBabylonRenderer.instance.materials
       .materials) {
       mat.setVector3("worldOrigin", position.x, position.y, position.z);
     }
   }
 
   static runEffects() {
-    for (const [id, mat] of DVEBabylonRenderer.instance.nodes.materials
+    for (const [id, mat] of DVEBabylonRenderer.instance.materials
       .materials) {
       mat.setNumber("time", this.time);
       this.time += 0.1;
@@ -77,27 +76,27 @@ export class DefaultMaterialManager {
   }
 
   static updateFogData(data: Vector4) {
-    for (const [id, mat] of DVEBabylonRenderer.instance.nodes.materials
+    for (const [id, mat] of DVEBabylonRenderer.instance.materials
       .materials) {
       mat.setVector4("fogOptions", data.x, data.y, data.z, data.w);
     }
   }
 
   static setSunLevel(level: number) {
-    for (const [id, mat] of DVEBabylonRenderer.instance.nodes.materials
+    for (const [id, mat] of DVEBabylonRenderer.instance.materials
       .materials) {
       mat.setNumber("sunLightLevel", level);
     }
   }
   static setBaseLevel(level: number) {
-    for (const [id, mat] of DVEBabylonRenderer.instance.nodes.materials
+    for (const [id, mat] of DVEBabylonRenderer.instance.materials
       .materials) {
       mat.setNumber("baseLevel", level);
     }
   }
 
   static setOption(id: string, value: boolean) {
-    for (const [matid, mat] of DVEBabylonRenderer.instance.nodes.materials
+    for (const [matid, mat] of DVEBabylonRenderer.instance.materials
       .materials) {
       mat.setNumber(id, value ? 1 : 0);
     }
@@ -118,7 +117,7 @@ export class DefaultMaterialManager {
     }
 
     if (options.color && DVEBabylonRenderer.instance.scene) {
-      DVEBabylonRenderer.instance.scene._scene.fogColor = new Color3(
+      DVEBabylonRenderer.instance.scene.fogColor = new Color3(
         ...this.fogOptions.color
       );
     }

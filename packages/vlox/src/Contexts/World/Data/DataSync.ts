@@ -1,52 +1,25 @@
 //types
 import type { Thread, ThreadPool } from "@amodx/threads/";
-
-import type {
-  PaletteSyncData,
-  RegisterObjectMapSync,
-  RegisterStringMapSync,
-} from "Types/DataSync.types.js";
-import type { BinaryStructData } from "@amodx/binary/";
 //objects
-
-import { VoxelStruct } from "../../../Data/Voxel/VoxelStruct.js";
-
-import { VoxelTagBuilder } from "./StructBuilders/VoxelStructBuilder.js";
-import { SubstanceDataGenerator } from "./Generators/SubstanceDataGenerator.js";
-import { SubstanceStruct } from "../../../Data/Substance/SubstanceStruct.js";
-import { SubstanceTagBuilder } from "./StructBuilders/SubstanceStructBuilder.js";
 
 import { CommSyncOptions } from "./DataSyncNode.js";
 import { DataSyncNode } from "./DataSyncNode.js";
-import { VoxelDataGenerator } from "./Generators/VoxelDataGenerator.js";
 import { Pipeline } from "@amodx/core/Pipelines/";
-import { DataSyncIds } from "../../../Interfaces/Common/DataSyncIds.js";
 
 import type { LocationData } from "../../../Math/index.js";
-import type { WorldDataSync } from "../../../Data/Types/DataSync.types.js";
+
 import type { DimensionData } from "../../../Data/Types/DimensionData.types.js";
 import { Chunk, Column, Region } from "../../../Data/World/Classes/index.js";
 //objects
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 
-import { ChunkStatStruct, InitalizeChunkTags } from "./Structs/ChunkStruct.js";
-import {
-  ColumnStateStruct,
-  InitalizeColumnTags,
-} from "./Structs/ColumnStruct.js";
-import {
-  InitalizeRegionTags,
-  RegionStateStruct,
-  RegionHeaderTagManager,
-} from "./Structs/RegionStruct.js";
-import { RegionHeaderRegister } from "../../../Data/RegionHeaderRegister.js";
+import { RegionHeaderRegister } from "../../../Data/World/RegionHeaderRegister.js";
 import { DimensionsRegister } from "../../../Data/World/DimensionsRegister.js";
 import { DVEFDataSyncIds } from "../../../Data/Constants/DVEFDataSyncIds.js";
 import { DivineVoxelEngineWorld } from "../index.js";
+import { WorldDataSync } from "../../../Data/Types/DataSync.types.js";
 
 export class DataSync {
-  static instance: DataSync;
-  static constructorPipeLine = new Pipeline<DataSync>();
   commMap = new Map<string, Thread | ThreadPool>();
   comms: (Thread | ThreadPool)[] = [];
   commOptions = new WeakMap<any, CommSyncOptions>();
@@ -55,12 +28,6 @@ export class DataSync {
   pipelines = {
     init: new Pipeline<DataSync>(),
   };
-
-  constructor() {
-    if (DataSync.instance) return DataSync.instance;
-    DataSync.instance = DataSync.constructorPipeLine.pipe(this);
-    return DataSync.instance;
-  }
 
   async init(world: DivineVoxelEngineWorld) {
     for (const comm of world.threads.comms) {
@@ -72,23 +39,6 @@ export class DataSync {
       this.commMap.set(comm.name, comm);
     });
 
-    SubstanceDataGenerator.$generate();
-    SubstanceTagBuilder.sync();
-
-    VoxelDataGenerator.generate();
-    VoxelTagBuilder.sync();
-    InitalizeChunkTags();
-    InitalizeColumnTags();
-    InitalizeRegionTags();
-
-    this.worldDataTags.chunk.sync();
-    this.worldDataTags.column.sync();
-    this.worldDataTags.region.sync();
-
-    this.palettes.voxel.sync();
-    this.palettes.substance.sync();
-    this.tags.voxel.sync();
-    this.tags.substance.sync();
     await this.pipelines.init.pipeAsync(this);
     this._ready = true;
   }
@@ -120,45 +70,7 @@ export class DataSync {
       func(comm, options);
     }
   }
-  worldDataTags = {
-    chunk: new DataSyncNode<void, BinaryStructData, void, false>(
-      {
-        dataSyncType: DVEFDataSyncIds.ChunkTags,
-        commCheck: (options) => options.worldDataTags,
-        getSyncData: () => ChunkStatStruct.structData,
-        getUnSyncData: () => false,
-      },
-      this
-    ),
 
-    column: new DataSyncNode<void, BinaryStructData, void, false>(
-      {
-        dataSyncType: DVEFDataSyncIds.ColumnTags,
-        commCheck: (options) => options.worldDataTags,
-        getSyncData: () => ColumnStateStruct.structData,
-        getUnSyncData: () => false,
-      },
-      this
-    ),
-
-    region: new DataSyncNode<
-      void,
-      [BinaryStructData, BinaryStructData],
-      void,
-      false
-    >(
-      {
-        dataSyncType: DVEFDataSyncIds.RegionTags,
-        commCheck: (options) => options.worldDataTags,
-        getSyncData: () => [
-          RegionStateStruct.structData,
-          RegionHeaderTagManager.structData,
-        ],
-        getUnSyncData: () => false,
-      },
-      this
-    ),
-  };
   worldData = {
     dimesnion: new DataSyncNode<
       string | number,
@@ -266,97 +178,6 @@ export class DataSync {
           return [input, regionHeader.buffer];
         },
         getUnSyncData: () => true,
-      },
-      this
-    ),
-  };
-  tags = {
-    voxel: new DataSyncNode<
-      void,
-      [BinaryStructData, SharedArrayBuffer],
-      void,
-      false
-    >(
-      {
-        dataSyncType: DataSyncIds.VoxelTags,
-        commCheck: (options) => options.voxelTags,
-        getSyncData: () => [
-          VoxelStruct.initData,
-          <SharedArrayBuffer>VoxelStruct.voxelIndex.buffer,
-        ],
-        getUnSyncData: () => false,
-      },
-      this
-    ),
-    substance: new DataSyncNode<void, BinaryStructData, void, false>(
-      {
-        dataSyncType: DataSyncIds.SubstanceTags,
-        commCheck: (options) => options.voxelTags,
-        getSyncData: () => SubstanceStruct.initData,
-
-        getUnSyncData: () => false,
-      },
-      this
-    ),
-  };
-
-  palettes = {
-    voxel: new DataSyncNode<void, PaletteSyncData, void, false>(
-      {
-        dataSyncType: DataSyncIds.VoxelPalette,
-        commCheck: (options) => options.worldDataTags,
-        getSyncData: () => [
-          VoxelDataGenerator.palette._palette,
-          VoxelDataGenerator.palette._map,
-          VoxelDataGenerator.nameToIdMap,
-          VoxelDataGenerator.idToNameMap,
-        ],
-        getUnSyncData: () => false,
-      },
-      this
-    ),
-    substance: new DataSyncNode<void, PaletteSyncData, void, false>(
-      {
-        dataSyncType: DataSyncIds.SubstancePalette,
-        commCheck: (options) => options.worldDataTags,
-        getSyncData: () => [
-          SubstanceDataGenerator.palette._palette,
-          SubstanceDataGenerator.palette._map,
-          {},
-          {},
-        ],
-        getUnSyncData: () => false,
-      },
-      this
-    ),
-  };
-
-  maps = {
-    strings: new DataSyncNode<
-      RegisterStringMapSync,
-      RegisterStringMapSync,
-      void,
-      false
-    >(
-      {
-        dataSyncType: DataSyncIds.RegisterStringMap,
-        commCheck: () => true,
-        getSyncData: (data) => data,
-        getUnSyncData: () => false,
-      },
-      this
-    ),
-    objects: new DataSyncNode<
-      RegisterObjectMapSync,
-      RegisterObjectMapSync,
-      void,
-      false
-    >(
-      {
-        dataSyncType: DataSyncIds.RegisterObjectMap,
-        commCheck: () => true,
-        getSyncData: (data) => data,
-        getUnSyncData: () => false,
       },
       this
     ),

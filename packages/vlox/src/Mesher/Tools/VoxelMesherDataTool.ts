@@ -1,35 +1,28 @@
-import type { FaceDataOverride } from "../Types/Override.types";
-//objects
-import { LightGradient } from "../Calc/Light/LightGradient.js";
-import { FlowGradient } from "../../VoxelModels/Constructor/Nodes/Custom/Liquid/FlowGradient.js";
-import { OverrideManager } from "../Rules/Overrides/OverridesManager.js";
-import { SubstanceRules } from "../Rules/SubstanceRules.js";
-
 //tools
-import { BuilderDataTool } from "./BuilderDataTool.js";
 import { MesherDataTool } from "@amodx/meshing/Tools/MesherDataTools";
 
 //data
 import { QuadScalarVertexData } from "@amodx/meshing/Primitives/QuadVertexData";
 import { VoxelTemplateDataTool } from "./VoxelTemplateDataTool.js";
 import { BinaryNumberTypes } from "@amodx/binary";
-import { VoxelFaces, VoxelFaceDirections, VoxelFacesArray } from "../../Math";
+import { VoxelFaces, VoxelFacesArray } from "../../Math";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types";
-import { FaceDataCalc } from "../Calc/Light/FaceDataCalc";
+import { FaceDataCalc } from "../../VoxelModels/Constructor/Nodes/Common/Calc/FaceDataCalc.js";
 import { Mesh } from "@amodx/meshing/Mesh/Mesh";
 import { VoxelMeshBVHBuilder } from "./VoxelMeshBVHBuilder";
 import { Vec3Array, Vector3Like } from "@amodx/math";
 import { WorldSpaces } from "../../Data/World/WorldSpaces";
-import { WorldVoxelCursor } from "../../Data/Cursor/World/WorldVoxelCursor";
 import { VoxelCursorInterface } from "../../Data/Cursor/Interfaces/VoxelCursor.interface";
-import { DataCursorInterface } from "Data/Cursor/Interfaces/DataCursor.interface";
+import { DataCursorInterface } from "../../Data/Cursor/Interfaces/DataCursor.interface";
 
 export class VoxelMesherDataTool extends MesherDataTool {
   template = new VoxelTemplateDataTool();
   voxel: VoxelCursorInterface;
-  // nVoxel = new BuilderDataTool();
   nVoxel: DataCursorInterface;
+  /**The current world position */
   position = Vector3Like.Create();
+  /**The current local origin  */
+  origin = Vector3Like.Create();
 
   bvhTool = new VoxelMeshBVHBuilder();
 
@@ -40,14 +33,9 @@ export class VoxelMesherDataTool extends MesherDataTool {
     Record<QuadVerticies, [number[][], number[][], number[][]]>
   >;
   lightData: Record<VoxelFaces, Record<QuadVerticies, number>>;
+  effects: Record<string, number[]>;
 
-  faceDataOverride = <FaceDataOverride>{
-    face: VoxelFaces.South,
-    default: false,
-    currentVoxel: <BuilderDataTool>{},
-    neighborVoxel: <BuilderDataTool>{},
-  };
-  constructor() {
+  constructor(public id: string) {
     super();
     //  this.faceDataOverride.currentVoxel = this.voxel;
     //  this.faceDataOverride.neighborVoxel = this.nVoxel;
@@ -169,15 +157,6 @@ export class VoxelMesherDataTool extends MesherDataTool {
     this.dataCalculated[VoxelFaces.West] = false;
   }
 
-  calculateLight(direction: VoxelFaces, ignoreAO = false) {
-    /*     if (this.template.isAcive()) {
-      this.template._light = this.template._lights[direction];
-      this.template._ao = this.template._aos[direction];
-      return;
-    } */
-    LightGradient.calculate(direction, this, ignoreAO);
-  }
-
   getAnimationData() {
     return this.quadVertexData.get("animation")!;
   }
@@ -195,8 +174,6 @@ export class VoxelMesherDataTool extends MesherDataTool {
     }
     return this.quadVertexData.get("ao")!;
   }
-
-
 
   getOverlayTextures() {
     return this.quadVertexData.get("overlay-uvs")!;
@@ -219,6 +196,4 @@ export class VoxelMesherDataTool extends MesherDataTool {
   isFaceFlipped() {
     return this.vars.get("face-flipped")! == 1;
   }
-
-
 }

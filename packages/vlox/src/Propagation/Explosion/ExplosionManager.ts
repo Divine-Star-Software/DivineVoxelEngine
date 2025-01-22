@@ -1,15 +1,14 @@
-import type { ExplosionTaskRequests } from "../../Contexts/Constructor/Tasks/TasksRequest"
 //data
 import { $3dCardinalNeighbors } from "../../Math/Constants/CardinalNeighbors.js";
 //objects
 import { DataTool } from "../../Tools/Data/DataTool.js";
-import { LightData } from "../../Data/LightData.js";
+import { LightData } from "../../VoxelData/LightData.js";
 //functions
 import { Distance3D } from "@amodx/math/Vectors/Functions/Distance3d";
 import { RGBRemove, RGBUpdate } from "../Illumanation/Functions/RGBUpdate.js";
 import { SunRemove, SunUpdate } from "../Illumanation/Functions/SunUpdate.js";
 import { FlowManager } from "../Flow/FlowManager.js";
-import { UpdateTasks } from "../../Types/Tasks.types";
+import { UpdateTasks } from "../../Data/Types/Tasks.types";
 import { VisitedMap } from "../../Util/VisistedMap";
 import { UpdateTask } from "../../Contexts/Constructor/Tasks/UpdateTask";
 import { Vec3Array } from "@amodx/math";

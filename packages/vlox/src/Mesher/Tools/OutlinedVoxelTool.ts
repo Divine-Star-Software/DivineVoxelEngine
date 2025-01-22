@@ -225,11 +225,11 @@ export class OutlinedVoxelTool {
     onRegister: (uvs: number[]) => void
   ) {
     const overlayTextures: number[] = [];
-    DVEMesher.observers.texturesRegistered.subscribeOnce((textureManager) => {
+    /*     DVEMesher.observers.texturesRegistered.subscribeOnce((textureManager) => {
       const type = texture[0];
       const id = texture[1];
       overlayTextures.push(
-        textureManager.getTextureUV([type, id, "top"]) /** */,
+        textureManager.getTextureUV([type, id, "top"]) ,
         textureManager.getTextureUV([type, id, "corner-top-right"]),
         textureManager.getTextureUV([type, id, "corner-top-left"]),
         textureManager.getTextureUV([type, id, "corner-top-left-top-right"]),
@@ -246,5 +246,6 @@ export class OutlinedVoxelTool {
       );
       onRegister(overlayTextures);
     });
+ */
   }
 }

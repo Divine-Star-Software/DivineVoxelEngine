@@ -1,8 +1,4 @@
 //objects
-import {
-  ExplosionTaskRequests,
-  WorldSunTaskRequest,
-} from "../Contexts/Constructor/Tasks/TasksRequest";
 import { RGBRemove, RGBUpdate } from "./Illumanation/Functions/RGBUpdate.js";
 import { SunRemove, SunUpdate } from "./Illumanation/Functions/SunUpdate.js";
 import { RunWorldSun } from "./Illumanation/Functions/WorldSun.js";
@@ -28,7 +24,7 @@ export class Propagation {
     await FlowRemove(tasks);
   }
 
-  worldSun(tasks: WorldSunTaskRequest) {
+  worldSun(tasks: UpdateTask) {
     RunWorldSun(tasks);
   }
 

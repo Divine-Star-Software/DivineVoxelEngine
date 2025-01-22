@@ -1,4 +1,4 @@
-import type { DirectionNames } from "../../Types/Util.types.js";
+import type { DirectionNames } from "../../Util/Util.types.js";
 //data
 import { QuadScalarVertexData } from "@amodx/meshing/Primitives/QuadVertexData";
 

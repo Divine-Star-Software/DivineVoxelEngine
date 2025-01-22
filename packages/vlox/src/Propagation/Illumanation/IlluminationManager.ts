@@ -1,7 +1,7 @@
 //functions
 
 import { DataTool } from "../../Tools/Data/DataTool.js";
-import { LightData } from "../../Data/LightData.js";
+import { LightData } from "../../VoxelData/LightData.js";
 
 export const IlluminationManager = {
   lightData: LightData,

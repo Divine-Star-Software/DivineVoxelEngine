@@ -1,4 +1,4 @@
-import type { WorldLockTasks } from "../../../Types/Tasks.types";
+import type { WorldLockTasks } from "../../../Data/Types/Tasks.types";
 import type { LocationData } from "../../../Math";
 
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";

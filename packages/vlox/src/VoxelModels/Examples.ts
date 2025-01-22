@@ -873,7 +873,7 @@ export const candlesModel: VoxelModelData = {
     },
     {
       type: "tag",
-      tagId: "#dve_is_light_source",
+      tagId: "dve_is_light_source",
       values: {
         "num_candles=0,lit=false": false,
         "num_candles=0,lit=true": true,

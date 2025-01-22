@@ -1,8 +1,8 @@
 import { $3dCardinalNeighbors } from "../../Math/Constants/CardinalNeighbors.js";
-import { LightData } from "../../Data/LightData.js";
+import { LightData } from "../../VoxelData/LightData.js";
 import { DataTool } from "../../Tools/Data/DataTool.js";
 import { BrushTool } from "../../Tools/Brush/Brush.js";
-import type { FlowTaskRequests } from  "../../Contexts/Constructor/Tasks/TasksRequest"
+
 import { SunRemove, SunUpdate } from "../Illumanation/Functions/SunUpdate.js";
 import { RGBRemove, RGBUpdate } from "../Illumanation/Functions/RGBUpdate.js";
 import { IlluminationManager } from "../Illumanation/IlluminationManager.js";

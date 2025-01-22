@@ -46,15 +46,12 @@ import {
 import { VoxelModelManager } from "../VoxelModels/Rules/VoxelModelManager";
 import {
   VoxelGeometryData,
-  VoxelModelConstructorData,
   VoxelModelData,
 } from "../VoxelModels/VoxelModel.types";
 import { VoxelData } from "./Voxel.types";
-import { Thread, ThreadPool } from "@amodx/threads";
 
 import { BuildRules } from "../VoxelModels/Rules/Functions/BuildRules";
 import { BuildStateData } from "./Functions/BuildStateData";
-import { BuildGeomtryInputs } from "../VoxelModels/Rules/Functions/BuildGeomtryInputs";
 import { BuildFinalInputs } from "../VoxelModels/Rules/Functions/BuildFinalInputs";
 import { ConstructorVoxelModelSyncData } from "./VoxelSyncData";
 import { SchemaRegister } from "../VoxelState/SchemaRegister";
@@ -67,14 +64,12 @@ import { VoxelIndex } from "../VoxelIndexes/VoxelIndex";
 import { CacheManager } from "../Cache/CacheManager";
 
 export type InitVoxelDataProps = {
-  constructors: ThreadPool;
-  world: Thread;
   geometry?: VoxelGeometryData[];
   models?: VoxelModelData[];
   voxels: VoxelData[];
 };
 
-export function InitVoxelData(data: InitVoxelDataProps) {
+export function InitVoxelData(data: InitVoxelDataProps) : ConstructorVoxelModelSyncData{
   if (CacheManager.cacheLoadEnabled && CacheManager.cachedData) {
     console.warn("load sync data");
     const syncData = CacheManager.cachedData.models;
@@ -91,14 +86,11 @@ export function InitVoxelData(data: InitVoxelDataProps) {
     VoxelTagStates.load(syncData.tagState);
     const t = performance.now();
 
-    data.world.runAsyncTasks("sync-voxel-model-data", syncData);
-    data.constructors.runTasksForAll("sync-voxel-model-data", syncData);
-
     console.log("sent the data", performance.now() - t);
     const t2 = performance.now();
     const voxelIndex = new VoxelIndex(data.voxels);
     console.log("built the index", performance.now() - t2);
-    return;
+    return syncData;
   }
 
   const initTime = performance.now();
@@ -168,12 +160,8 @@ export function InitVoxelData(data: InitVoxelDataProps) {
   };
 
   for (const voxel of data.voxels) {
-    const data = voxel.tags.find((_) => _[0] == "#dve_model_data") as any as [
-      string,
-      VoxelModelConstructorData,
-    ];
-    if (!data) continue;
-    const voxelData = data[1];
+    const voxelData = voxel.properties["dve_model_data"];
+    if (!voxelData) continue;
     VoxelModelManager.registerVoxel(voxel.id, voxelData);
     const model = VoxelModelManager.models.get(voxelData.id)!;
     if (!model)
@@ -262,8 +250,6 @@ export function InitVoxelData(data: InitVoxelDataProps) {
 
   console.log(syncData);
   console.log(syncData.voxels.find((_) => _.id == "dve_liquid_dream_ether"));
-  data.world.runAsyncTasks("sync-voxel-model-data", syncData);
-  data.constructors.runTasksForAll("sync-voxel-model-data", syncData);
 
   console.log("done building inputs", performance.now() - inputStartTime);
 
@@ -285,4 +271,6 @@ export function InitVoxelData(data: InitVoxelDataProps) {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
  */
+
+  return syncData;
 }

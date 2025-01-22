@@ -1,11 +1,11 @@
-import { EngineSettings as ES } from "../../../Data/Settings/EngineSettings.js";
+import { EngineSettings as ES } from "../../../Settings/EngineSettings.js";
 import { $3dCardinalNeighbors } from "../../../Math/Constants/CardinalNeighbors.js";
 
 import {
   RunBuildQueue,
   UpdateTasks,
   VoxelUpdateTasks,
-} from "Types/Tasks.types";
+} from "Data/Types/Tasks.types.js";
 import { Propagation } from "../../../Propagation/Propagation.js";
 import { UpdateTask } from "./UpdateTask.js";
 import { DivineVoxelEngineConstructor } from "../DivineVoxelEngineConstructor.js";

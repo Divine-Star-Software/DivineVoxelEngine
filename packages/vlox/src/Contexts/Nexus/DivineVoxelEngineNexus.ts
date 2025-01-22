@@ -1,35 +1,24 @@
 //intercomms
 //functions
-import InitWorker from "./InitWorker.js";
+
 import { Threads } from "@amodx/threads/";
 import { DataTool } from "../../Tools/Data/DataTool.js";
 
 import { RichDataTool } from "../../Tools/Data/RichDataTool.js";
-import { NexusThreads } from "./Threads/NexusTheads.js";
-import { DVEDataCore } from "../../Data/DVEDataCore.js";
-
-export type DivineVoxelEngineNexusInitData = {
-  data: DVEDataCore;
-};
+import { NexusThreads } from "./NexusTheads.js";
 
 export class DivineVoxelEngineNexus {
+  static environment: "node" | "browser" = "browser";
   static instance: DivineVoxelEngineNexus;
-  environment = <"node" | "browser">"browser";
 
   TC = Threads;
-  data: DVEDataCore;
+
   threads = new NexusThreads();
 
-  constructor(data: DivineVoxelEngineNexusInitData) {
+  constructor(data: {}) {
     if (DivineVoxelEngineNexus.instance) return DivineVoxelEngineNexus.instance;
 
     DivineVoxelEngineNexus.instance = this;
-
-    this.data = data.data;
-  }
-
-  async init() {
-    await InitWorker(this);
   }
 
   getRichDataTool() {

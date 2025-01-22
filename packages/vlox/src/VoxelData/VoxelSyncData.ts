@@ -10,8 +10,8 @@ import {
   VoxelGeometryData,
   VoxelGeometryNodes,
 } from "../VoxelModels/VoxelModel.types";
-import { VoxelEffectSyncData } from "VoxelEffects/VoxelEffects.types";
-import { VoxelTagStatesData } from "VoxelState/VoxelTagStates";
+import { VoxelEffectSyncData } from "../VoxelEffects/VoxelEffects.types";
+import { VoxelTagStatesData } from "../VoxelState/VoxelTagStates";
 
 export interface PrcoessedVoxelGeometryNodes {
   node: VoxelGeometryNodes;

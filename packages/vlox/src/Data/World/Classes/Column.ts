@@ -13,7 +13,7 @@ export class Column {
     const stateBuffer = new SharedArrayBuffer(Column.StateStruct.structSize);
     Column.StateStruct.setBuffer(stateBuffer);
 
-    Column.StateStruct.setProperty("#dve_is_stored", 0);
+    Column.StateStruct.setProperty("dve_is_stored", 0);
     return {
       stateBuffer,
       chunks: [],

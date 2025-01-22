@@ -14,12 +14,12 @@ import {
 } from "../../../Input/BoxVoxelGometryInputs";
 import { VoxelGeometryLookUp } from "../../VoxelGeometryLookUp";
 import { GeoemtryNode } from "../GeometryNode";
-import { VoxelGeometryConstructor } from "../../Register/VoxelGeometryConstructor";
+import { VoxelGeometryConstructor } from "../VoxelGeometryConstructor";
 import {
   getInterpolationValue,
   shouldCauseFlip,
-} from "../../../../Mesher/Calc/CalcConstants";
-import { LightData } from "../../../../Data/LightData";
+} from "../Common/Calc/CalcConstants";
+import { LightData } from "../../../../VoxelData/LightData";
 import { VoxelRelativeCubeIndexPositionMap } from "../../../Indexing/VoxelRelativeCubeIndex";
 import { VoxelGeometryTransform } from "../../../../VoxelData/VoxelSyncData";
 import { GetBoxGeometryNodeData } from "../Common/BoxGeometryNode";

@@ -1,13 +1,10 @@
-import type { AnaylzerTask } from "../Types/Tasks.types.js";
+import type { AnaylzerTask } from "../Data/Types/Tasks.types.js";
 import type { LocationData } from "../Math";
 //objects
-import { EngineSettings } from "../Data/Settings/EngineSettings.js";
+import { EngineSettings } from "../Settings/EngineSettings.js";
 import { DivineVoxelEngineConstructor } from "../Contexts/Constructor/DivineVoxelEngineConstructor.js";
 import { AnalyzerUpdater } from "./AnalyzerUpdater.js";
 
-import { DVEAnaylzer } from "../Interfaces/Anaylzer/DVEAnaylzer.js";
-import { DataTool } from "../Tools/Data/DataTool.js";
-import { TasksRequest } from "../Contexts/Constructor/Tasks/TasksRequest.js";
 import { Propagation } from "../Propagation/Propagation.js";
 import { WorldRegister } from "../Data/World/WorldRegister.js";
 //tools
@@ -25,7 +22,7 @@ const heightMapTool = new HeightMapTool();
 
 //const mainDT = new DataTool();
 //const secondaryDT = new DataTool();
-export class Analyzer extends DVEAnaylzer {
+export class Analyzer {
   updater = AnalyzerUpdater;
 
   worldCurosr = new WorldCursor();
@@ -107,7 +104,7 @@ export class Analyzer extends DVEAnaylzer {
                   }
                 }
                 if (add) {
-                //  tasks.flow.update.queue.push([x, y, z]);
+                  //  tasks.flow.update.queue.push([x, y, z]);
                 }
               }
             }

@@ -1,6 +1,6 @@
 import { UpdateTask } from "../../../Contexts/Constructor/Tasks/UpdateTask";
 import { $3dCardinalNeighbors } from "../../../Math/Constants/CardinalNeighbors";
-import { LightData } from "../../../Data/LightData";
+import { LightData } from "../../../VoxelData/LightData";
 //@todo change array to not use push and shift
 export function RGBUpdate(tasks: UpdateTask) {
   const queue = tasks.rgb.update;

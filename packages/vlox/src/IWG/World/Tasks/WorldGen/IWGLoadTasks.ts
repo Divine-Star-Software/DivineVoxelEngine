@@ -8,7 +8,7 @@ import { IWGTasksTypes } from "../../Types/IWG.types";
 
 export class IWGLoadTask extends IWGSingleTask {
   static Data: IWGTasksData = {
-    id: "#dve_iwg_load",
+    id: "dve_iwg_load",
     name: "load",
     type: IWGTasksTypes.WorldGen,
     propagationBlocking: true,

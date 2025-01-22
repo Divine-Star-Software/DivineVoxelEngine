@@ -1,7 +1,10 @@
 import { ConstructorTasksIds } from "./ConstructorTasksIds.js";
 import { Threads } from "@amodx/threads/";
 
-import type { BuildTasks, PriorityTask } from "../../../Types/Tasks.types.js";
+import type {
+  BuildTasks,
+  PriorityTask,
+} from "../../../Data/Types/Tasks.types.js";
 
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
@@ -12,7 +15,7 @@ import type {
   VoxelUpdateTasks as VoxelUpdateTasks,
   AnaylzerTask,
   WorldSunTask,
-} from "../../../Types/Tasks.types.js";
+} from "../../../Data/Types/Tasks.types.js";
 
 import {
   EreaseAndUpdate,
@@ -20,10 +23,11 @@ import {
   VoxelUpdate,
 } from "../Tasks/VoxelUpdate.js";
 
-import { TasksRequest } from "../Tasks/TasksRequest.js";
+
 import { Propagation } from "../../../Propagation";
 import { Analyzer } from "../../../Analyzer/Analyzer";
 import { UpdateTask } from "./UpdateTask.js";
+import { BuildNodeMesh } from "../../../Mesher/Tasks/BuidlerTasks.types.js";
 
 export default function (DVEC: DivineVoxelEngineConstructor) {
   Threads.registerTasks("clear-all", () => {
@@ -32,6 +36,15 @@ export default function (DVEC: DivineVoxelEngineConstructor) {
   const propagation = new Propagation();
   const analyzer = new Analyzer();
 
+  Threads.registerTasks<BuildNodeMesh>(
+    "build-node-mesh",
+    (data, onDone) => {
+      const nodeData = DVEC.mesher.nodes.buildNode(data);
+      if (!nodeData) return onDone ? onDone(false) : 0;
+      onDone ? onDone(nodeData[0], nodeData[1]) : 0;
+    },
+    "deferred"
+  );
   Threads.registerTasks<VoxelUpdateTasks>(
     ConstructorTasksIds.VoxelUpdate,
     async (data, onDone) => {
@@ -69,7 +82,9 @@ export default function (DVEC: DivineVoxelEngineConstructor) {
   Threads.registerTasks<WorldSunTask>(
     ConstructorTasksIds.WorldSun,
     (data, onDone) => {
-      propagation.worldSun(TasksRequest.getWorldSunRequests(data[0], data[1]));
+      const task = new UpdateTask();
+      task.setOrigin(data[0]);
+      propagation.worldSun(task);
       if (onDone) onDone();
     },
     "deferred"

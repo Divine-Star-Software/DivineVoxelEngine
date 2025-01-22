@@ -1,17 +1,18 @@
 import type { Vec3Array } from "@amodx/math";
-import type { EngineSettingsData } from "@divinevoxel/vlox/Types/EngineSettings.types";
+import type { EngineSettingsData } from "@divinevoxel/vlox/Settings/EngineSettings.types";
 
-import type {
-  DVENodeMeshAttributes,
-  NodeMeshData,
-} from "@divinevoxel/vlox/Interfaces/Render/Nodes/DVERenderNode.types.js";
-import { DVENodeMesh } from "@divinevoxel/vlox/Interfaces/Render/Nodes/Meshes/DVENodeMesh.js";
+
+import { DVEChunkMeshes } from "@divinevoxel/vlox/Interfaces/Render/DVEChunkMeshes.js";
 import { DVEQRMesh } from "./DVEQRMesh";
 import { DVEQuantumRenderer } from "../../DVEQuantumRenderer";
 import { Scene } from "../../../Renderer/Scene/Scene";
-import { CompactMeshData } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
-export class DVEQRNodeMesh extends DVENodeMesh {
-  static UpdateVertexData(mesh: any, engine: any, data: DVENodeMeshAttributes) {
+import {
+  CompactMeshData,
+  CompactSubMesh,
+} from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
+import { ChunkMesh } from "@divinevoxel/vlox/Contexts/Render/Scene/Classes/ChunkMesh";
+export class DVEQRNodeMesh extends DVEChunkMeshes {
+  static UpdateVertexData(mesh: any, engine: any, data: any) {
     for (const [id, attribute, stride] of data) {
       switch (id) {
         case "position":
@@ -30,18 +31,14 @@ export class DVEQRNodeMesh extends DVENodeMesh {
   serialize = false;
   clearCachedGeometry = true;
 
-  constructor(
-    public data: NodeMeshData,
-    public scene: Scene
-  ) {
-    super(data);
+  constructor(public scene: Scene) {
+    super();
   }
 
   createMesh(location: Vec3Array, data: CompactMeshData) {
-    const dveMesh = new DVEQRMesh(DVEQuantumRenderer.instance.scene);
-    if (this.data.worldMesh) {
-      this.scene.voxelScene.meshes.createMesh(location,data);
-    }
+    const dveMesh = new DVEQRMesh();
+
+    this.scene.voxelScene.meshes.createMesh(location, data);
 
     //console.warn("create mesh", location, data);
     return dveMesh;
@@ -51,11 +48,12 @@ export class DVEQRNodeMesh extends DVENodeMesh {
     DVEQuantumRenderer.instance.observers.meshDisposed.notify(mesh);
   }
   updateVertexData(
+    chunk: ChunkMesh,
     location: Vec3Array,
-    data: CompactMeshData,
-    dveMesh: DVEQRMesh
+    data: CompactMeshData
   ) {
-    dveMesh.observers.updated.notify();
+    //   dveMesh.observers.updated.notify();
+    return chunk;
   }
 
   syncSettings(settings: EngineSettingsData) {

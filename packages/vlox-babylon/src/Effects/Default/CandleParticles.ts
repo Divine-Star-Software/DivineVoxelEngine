@@ -15,7 +15,7 @@ export class CandleParticles extends VoxelEffect {
   smokeParticles: ParticleSystem;
 
   init(): void {
-    const scene = DVEBabylonRenderer.instance.scene._scene;
+    const scene = DVEBabylonRenderer.instance.scene;
     {
       const particles = new ParticleSystem("", 1000, scene);
       particles.isAnimationSheetEnabled = true;

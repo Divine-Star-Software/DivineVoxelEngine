@@ -1,16 +1,13 @@
-import { URIMaterial, URIMaterialData } from "@amodx/uri/Materials/URIMaterial";
+import { URIMaterialData } from "@amodx/uri/Materials/URIMaterial";
 import { URIScene } from "@amodx/uri/Scenes/URIScene";
 import { URITexture } from "@amodx/uri/Textures/URITexture";
-import { NodeMaterialData } from "@divinevoxel/vlox/Interfaces/Render/Nodes/DVERenderNode.types";
-import { DVEQRScene } from "../Adapter/Scene/DVEQRScene";
+import { NodeMaterialData } from "@divinevoxel/vlox/Interfaces/Render/DVERenderNode.types";
 
-export class DVEQMaterial extends URIMaterial<DVEQRScene> {
+export class DVEQMaterial {
   constructor(
     public id: string,
     public data: NodeMaterialData
-  ) {
-    super();
-  }
+  ) {}
 
   _create(data: URIMaterialData<URIScene<unknown>, any>): unknown {
     //  throw new Error("Method not implemented.");
@@ -41,7 +38,7 @@ export class DVEQMaterial extends URIMaterial<DVEQRScene> {
     z: number,
     w: number
   ): void {
-  //  throw new Error("Method not implemented.");
+    //  throw new Error("Method not implemented.");
   }
   setMatrix<MatrixType = any>(uniform: string, matrix: MatrixType): void {
     //    throw new Error("Method not implemented.");

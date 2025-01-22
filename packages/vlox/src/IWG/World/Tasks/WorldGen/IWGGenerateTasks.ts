@@ -7,7 +7,7 @@ import { IWGTasksTypes } from "../../Types/IWG.types";
 
 export class IWGGenerateTasks extends IWGSingleTask {
   static Data: IWGTasksData = {
-    id: "#dve_iwg_generate",
+    id: "dve_iwg_generate",
     name: "generate",
     type: IWGTasksTypes.WorldGen,
     propagationBlocking: true,
@@ -29,14 +29,14 @@ export class IWGGenerateTasks extends IWGSingleTask {
     const gen = this.gen;
     if (
       gen.columnTool.loadInAt(x, y, z) &&
-      gen.columnTool.getStructValue("#dve_is_world_gen_done")
+      gen.columnTool.getStructValue("dve_is_world_gen_done")
     )
       return onDone();
     gen.builder.setDimension(gen.dimension).setXYZ(x, y, z).fillColumn();
     gen.dveTasks.generate.deferred.run([gen.dimension, x, y, z], [], () => {
       onDone();
       if (gen.columnTool.loadInAt(x, y, z))
-        return gen.columnTool.setTagValue("#dve_is_world_gen_done", 1);
+        return gen.columnTool.setTagValue("dve_is_world_gen_done", 1);
       console.error(`${x} ${y} ${z} could not be loaded after generted`);
     });
   }

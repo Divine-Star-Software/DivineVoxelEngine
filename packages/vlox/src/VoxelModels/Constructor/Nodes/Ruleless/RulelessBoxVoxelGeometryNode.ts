@@ -15,15 +15,15 @@ import {
 import {
   getInterpolationValue,
   shouldCauseFlip,
-} from "../../../../Mesher/Calc/CalcConstants";
+} from "../Common/Calc/CalcConstants";
 
-import { LightData } from "../../../../Data/LightData";
+import { LightData } from "../../../../VoxelData/LightData";
 
 import { GeoemtryNode } from "../GeometryNode";
 import { VoxelGeometryTransform } from "../../../../VoxelData/VoxelSyncData";
 import { GetBoxGeometryNodeData } from "../Common/BoxGeometryNode";
 import { UpdateBounds } from "../Common/BoundsFunctions";
-import { VoxelGeometryConstructor } from "VoxelModels/Constructor/Register/VoxelGeometryConstructor";
+import { VoxelGeometryConstructor } from "VoxelModels/Constructor/Nodes/VoxelGeometryConstructor";
 
 const ArgIndexes = BoxVoxelGometryInputs.ArgIndexes;
 

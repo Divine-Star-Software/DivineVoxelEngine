@@ -1,8 +1,7 @@
-import { SubstanceStructProperties } from "../../Data/Constants/Structs/SubstanceStructProperties.js";
-import { SubstancePaletteReader } from "../../Data/Substance/SubstancePalette.js";
-import { SubstanceStruct } from "../../Data/Substance/SubstanceStruct.js";
+import { SubstancePaletteReader } from "../../Data/Palettes/SubstancePalette.js";
+import { SubstanceStruct } from "../../Data/Structs/SubstanceStruct.js";
 import { MappedDataRegister } from "../../Data/Register/MappedDataRegister.js";
-import { SubstanceTagIds } from "../../Data/Constants/SubstanceTagIds.js";
+import { SubstanceStructIds } from "../../Data/Constants/Structs/SubstanceStructIds.js";
 
 export class SubstanceDataTool {
   static tags = SubstanceStruct;
@@ -29,26 +28,26 @@ export class SubstanceDataTool {
   }
 
   /*   isTransparent() {
-    return SubstanceStruct.instance[SubstanceTagIds.isTransparent] == 1;
+    return SubstanceStruct.instance[SubstanceStructIds.isTransparent] == 1;
   }
 
   isSolid() {
-    return SubstanceStruct.instance[SubstanceTagIds.isSolid] == 1;
+    return SubstanceStruct.instance[SubstanceStructIds.isSolid] == 1;
   } */
   isLiquid() {
-    return SubstanceStruct.instance[SubstanceTagIds.isLiquid] == 1;
+    return SubstanceStruct.instance[SubstanceStructIds.isLiquid] == 1;
   }
 
   isWindAffected() {
-    return SubstanceStruct.instance[SubstanceTagIds.isWindAffected] == 1;
+    return SubstanceStruct.instance[SubstanceStructIds.isWindAffected] == 1;
   }
 
   isBackFaceCulled() {
-    return SubstanceStruct.instance[SubstanceTagIds.isBackFaceCulled] == 1;
+    return SubstanceStruct.instance[SubstanceStructIds.isBackFaceCulled] == 1;
   }
 
   cullDense() {
-    return SubstanceStruct.instance[SubstanceTagIds.cullDense] == 1;
+    return SubstanceStruct.instance[SubstanceStructIds.cullDense] == 1;
   }
   /*   isOpaque() {
     return this.isSolid() && !this.isTransparent();
@@ -61,25 +60,25 @@ export class SubstanceDataTool {
   getParent() {
     return MappedDataRegister.stringMaps.get(
       "substance",
-      SubstanceStructProperties.parent,
-      SubstanceStruct.instance[SubstanceTagIds.parent]
+      SubstanceStructIds.parent,
+      SubstanceStruct.instance[SubstanceStructIds.parent]
     )!;
   }
   getRendered() {
     return MappedDataRegister.stringMaps.get(
       "substance",
-      SubstanceStructProperties.rendered,
-      SubstanceStruct.instance[SubstanceTagIds.rendered]
+      SubstanceStructIds.rendered,
+      SubstanceStruct.instance[SubstanceStructIds.rendered]
     )!;
   }
   getCulled(): string[] {
     return MappedDataRegister.objectMaps.get(
       "substance",
-      SubstanceStructProperties.culledSubstnaces,
-      SubstanceStruct.instance[SubstanceTagIds.culledSubstnaces]
+      SubstanceStructIds.culledSubstnaces,
+      SubstanceStruct.instance[SubstanceStructIds.culledSubstnaces]
     )!;
   }
   getFlowRate() {
-    return SubstanceStruct.instance[SubstanceTagIds.flowRate];
+    return SubstanceStruct.instance[SubstanceStructIds.flowRate];
   }
 }

@@ -1,10 +1,10 @@
 import { type LocationData } from "../../../Math/index.js";
 import { Vector3Like } from "@amodx/math";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
-import { URIMesh } from "@amodx/uri/Meshes/URIMesh.js";
 import { MushRegisterRegion } from "./Classes/MushRegisterRegion.js";
 import { MeshRegisterColumn } from "./Classes/MeshRegisterColumn.js";
 import { ChunkMesh } from "./Classes/ChunkMesh.js";
+import { ChunkMeshInterface } from "Interfaces/Render/DVEChunkMeshInterface.js";
 
 export type MeshRegisterDimensions = Map<
   string,
@@ -12,7 +12,7 @@ export type MeshRegisterDimensions = Map<
 >;
 
 class Chunk {
-  static addMesh(location: LocationData, mesh: URIMesh, substance: string) {
+  static addMesh(location: LocationData, mesh: ChunkMeshInterface, substance: string) {
     let column = MeshRegister.column.get(location);
     if (!column) {
       column = MeshRegister.column.add(location);
@@ -204,7 +204,7 @@ class Dimensions {
 
   static *getAllMeshes(
     id: string
-  ): Generator<[location: LocationData, substance: string, mesh: URIMesh]> {
+  ): Generator<[location: LocationData, substance: string, mesh: ChunkMeshInterface]> {
     const dimension = MeshRegister._dimensions.get(id);
     if (!dimension) return;
     for (const [key, region] of dimension) {

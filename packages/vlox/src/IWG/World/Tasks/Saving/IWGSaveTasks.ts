@@ -8,7 +8,7 @@ import { IWGTasksTypes } from "../../Types/IWG.types";
 
 export class IWGSaveTasks extends IWGSingleTask {
   static Data: IWGTasksData = {
-    id: "#dve_iwg_save",
+    id: "dve_iwg_save",
     name: "save",
     type: IWGTasksTypes.Saving,
   };

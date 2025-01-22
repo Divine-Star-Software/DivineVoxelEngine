@@ -1,6 +1,6 @@
 import { VoxelMesherDataTool } from "../../../Mesher/Tools/VoxelMesherDataTool";
 import { Vector3Like } from "@amodx/math";
-import { VoxelGeometryConstructor } from "../Register/VoxelGeometryConstructor";
+import { VoxelGeometryConstructor } from "./VoxelGeometryConstructor";
 import { VoxelGeometryTransform } from "../../../VoxelData/VoxelSyncData";
 export interface GeoemtryNodeConstructor<Data = any, Args = any> {
   new (

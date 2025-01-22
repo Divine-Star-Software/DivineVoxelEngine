@@ -10,18 +10,18 @@ import {
   HemisphericLight,
 } from "@babylonjs/core";
 import { DivineVoxelEngineRender } from "@divinevoxel/vlox/Contexts/Render/DivineVoxelEngineRender";
-import { RawVoxelData } from "@divinevoxel/vlox/Data/Types/VoxelData.types";
+import { RawVoxelData } from "@divinevoxel/vlox/VoxelData/Voxel.types";
 import { PaintVoxelData } from "@divinevoxel/vlox/Data/Types/WorldData.types";
 import {
   BuildNodeMesh,
   SetNodeMesh,
 } from "@divinevoxel/vlox/Mesher/Tasks/BuidlerTasks.types";
 import { DataTool } from "@divinevoxel/vlox/Tools/Data/DataTool";
-import { VoxelData } from "@divinevoxel/vlox/Types";
+import { VoxelData } from "@divinevoxel/vlox/VoxelData/Voxel.types";
 import { DVEBabylonRenderer } from "../Renderer/DVEBabylonRenderer";
-import { VoxelIndex } from "@divinevoxel/vlox/VoxelData/VoxelIndex";
+import { VoxelIndex } from "@divinevoxel/vlox/VoxelIndexes/VoxelIndex";
 import { SchemaRegister } from "@divinevoxel/vlox/VoxelState/SchemaRegister";
-import { DVEBRNodeMesh } from "../Renderer/Nodes/Meshes/DVEBRNodeMesh";
+import { DVEBRChunkMeshes } from "../Meshes/DVEBRChunkMeshes";
 
 import { DVEBRClassicMaterial } from "../Matereials/Classic/DVEBRClassicMaterial";
 import { DefaultMaterialManager } from "../Matereials/DefaultMaterialManager";
@@ -30,6 +30,7 @@ import { VoxelModelIndex } from "@divinevoxel/vlox/VoxelIndexes/VoxelModelIndex"
 import { VoxelTextureIndex } from "@divinevoxel/vlox/VoxelIndexes/VoxelTextureIndex";
 import { CacheManager } from "@divinevoxel/vlox/Cache/CacheManager";
 import { VoxelCursor } from "@divinevoxel/vlox/Data/Cursor/VoxelCursor";
+import { DVEBRMesh } from "../Meshes/DVEBRMesh";
 export default async function CreateDisplayIndex(
   DVER: DivineVoxelEngineRender,
   data: VoxelData[]
@@ -45,7 +46,7 @@ export default async function CreateDisplayIndex(
 
     for (const [voxelId, states] of VoxelModelIndex.voxelModels) {
       for (const [stateId, state] of states) {
-        const material = DVEBabylonRenderer.instance.nodes.materials.get(
+        const material = DVEBabylonRenderer.instance.materials.get(
           state.material
         );
 
@@ -107,14 +108,15 @@ export default async function CreateDisplayIndex(
     return new Promise<Mesh | false>((resolve) => {
       DVER.threads.construcotrs.runPromiseTasks<BuildNodeMesh>(
         "build-node-mesh",
-        [["main", 0, 0, 0], "#dve_node_voxel", voxelData],
+        [["main", 0, 0, 0], "dve_node_voxel", voxelData],
         [],
         (data: SetNodeMesh | false) => {
           if (!data) return resolve(false);
           dataTool.loadInRaw(voxelData);
           const renderedSubstance = dataTool.getSubstnaceData().getRendered();
+   
           const material =
-            DVEBabylonRenderer.instance.nodes.materials.get(renderedSubstance);
+            DVEBabylonRenderer.instance.materials.get(renderedSubstance);
           if (!material)
             throw new Error(`Could not load material ${renderedSubstance}`);
 
@@ -146,7 +148,8 @@ export default async function CreateDisplayIndex(
             renderedSubstance,
             material._material
           );
-          DVEBRNodeMesh.UpdateVertexData(mesh, engine, data[1]);
+   
+          DVEBRMesh.UpdateVertexData(mesh, engine, data[1][2][0]);
 
           resolve(mesh);
         }

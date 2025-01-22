@@ -1,4 +1,7 @@
-import { DVEBRShaderStore } from "../../Renderer/Shaders/DVEBRShaderStore";
+import { DVEBRShaderStore } from "../../Shaders/DVEBRShaderStore";
+import { VoxelBaseShader } from "../../Shaders/Code/VoxelBaseShader";
+import { SkyboxShader } from "../../Shaders/Code/SkyboxShader";
+import { NodeShader } from "../../Shaders/Code/NodeShader";
 import { DVEBRClassicMaterial } from "../../Matereials/Classic/DVEBRClassicMaterial";
 import { DVEBRDefaultMaterialBaseData } from "../../Matereials/Types/DVEBRDefaultMaterial.types";
 import {
@@ -6,41 +9,39 @@ import {
   CreateTextures,
 } from "../../Renderer/CreateDefaultRenderer";
 import { HemisphericLight, Vector3 } from "@babylonjs/core";
-import { URIShaderTypes } from "@amodx/uri/Constants/URIShaderTypes";
-import { VoxelBaseShader } from "../../Renderer/Shaders/Code/VoxelBaseShader";
+
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
-import { SkyboxShader } from "../../Renderer/Shaders/Code/SkyboxShader";
-import { NodeShader } from "../../Renderer/Shaders/Code/NodeShader";
+
 export type DVEBRClassicData = DVEBRDefaultMaterialBaseData & {
   doSun?: boolean;
   doRGB?: boolean;
   doAO?: boolean;
 };
 const defaultSubstances = [
-  "#dve_glow",
-  "#dve_flora",
-  "#dve_solid",
-  "#dve_transparent",
-  "#dve_liquid",
+  "dve_glow",
+  "dve_flora",
+  "dve_solid",
+  "dve_transparent",
+  "dve_liquid",
 ];
 
 export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
   await CreateTextures(initData.scene, initData.textureData);
 
   DVEBRShaderStore.storeShader(
-    "#dve_skybox",
-    URIShaderTypes.Vertex,
+    "dve_skybox",
+    "vertex",
     SkyboxShader.GetVertex()
   );
 
   DVEBRShaderStore.storeShader(
-    "#dve_skybox",
-    URIShaderTypes.Fragment,
+    "dve_skybox",
+    "frag",
     SkyboxShader.GetFragment()
   );
 
   DVEBRShaderStore.setShaderData(
-    "#dve_skybox",
+    "dve_skybox",
     [
       "time",
       "fogOptions",
@@ -56,24 +57,24 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
     ],
     ["position", "normal", "indices"]
   );
-  const nodeTexture = TextureManager.getOrAddTextureType("#dve_node");
+  const nodeTexture = TextureManager.getOrAddTextureType("dve_node");
   const nodeTextureLength = nodeTexture.animationUniform.length;
   DVEBRShaderStore.storeShader(
-    "#dve_node",
-    URIShaderTypes.Vertex,
+    "dve_node",
+    "vertex",
     NodeShader.GetVertex({
       textureLength: nodeTextureLength,
     })
   );
 
   DVEBRShaderStore.storeShader(
-    "#dve_node",
-    URIShaderTypes.Fragment,
+    "dve_node",
+    "frag",
     NodeShader.GetFragment()
   );
 
   DVEBRShaderStore.setShaderData(
-    "#dve_node",
+    "dve_node",
     [
       "time",
       "fogOptions",
@@ -89,7 +90,7 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
     ],
     ["position", "normal", "indices"]
   );
-  const voxelTexture = TextureManager.getOrAddTextureType("#dve_voxel");
+  const voxelTexture = TextureManager.getOrAddTextureType("dve_voxel");
   const voxelTextureLength = voxelTexture.animationUniform.length;
   for (const substance of defaultSubstances) {
     DVEBRShaderStore.setShaderData(
@@ -126,7 +127,7 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
     );
     DVEBRShaderStore.storeShader(
       substance,
-      URIShaderTypes.Vertex,
+      "vertex",
       VoxelBaseShader.GetVertex({
         doAO: true,
         textureLength: voxelTextureLength,
@@ -134,7 +135,7 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
     );
     DVEBRShaderStore.storeShader(
       substance,
-      URIShaderTypes.Fragment,
+      "frag",
       VoxelBaseShader.GetFragment({
         doAO: !substance.includes("liquid"),
       })
@@ -173,7 +174,7 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
         },
         ...matData,
       });
-      newMat.createMaterial(scene._scene);
+      newMat.createMaterial(scene);
       return newMat;
     },
 

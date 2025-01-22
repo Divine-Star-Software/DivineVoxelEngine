@@ -8,7 +8,7 @@ import { IWGTasksTypes } from "../../Types/IWG.types";
 
 export class IWGBuildTasks extends IWGSingleTask {
   static Data: IWGTasksData = {
-    id: "#dve_iwg_build",
+    id: "dve_iwg_build",
     name: "build",
     type: IWGTasksTypes.Rendering,
   };

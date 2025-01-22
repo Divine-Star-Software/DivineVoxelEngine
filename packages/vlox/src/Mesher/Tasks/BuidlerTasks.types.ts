@@ -1,5 +1,5 @@
 import { LocationData } from "../../Math";
-import { DVENodeMeshAttributes } from "../../Interfaces/Render/Nodes/DVERenderNode.types";
+import { DVEChunkMeshesAttributes } from "../../Interfaces/Render/DVERenderNode.types";
 import { CompactMeshData } from "Mesher/Types/Mesher.types";
 export type BuildNodeMesh = [location: LocationData, type: string, data: any];
 

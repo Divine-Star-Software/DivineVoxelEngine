@@ -1,6 +1,5 @@
 import { Thread, ThreadPool, CommPortTypes, Threads } from "@amodx/threads";
 import { Pipeline } from "@amodx/core/Pipelines";
-import { ThreadState } from "./ThreadState";
 
 export abstract class ThreadManager {
   pipelines = {
@@ -10,7 +9,7 @@ export abstract class ThreadManager {
   commMap = new Map<string, Thread | ThreadPool>();
   comms: (Thread | ThreadPool)[] = [];
 
-  abstract state: ThreadState;
+
   async init() {
     await this.pipelines.init.pipe(this);
   }

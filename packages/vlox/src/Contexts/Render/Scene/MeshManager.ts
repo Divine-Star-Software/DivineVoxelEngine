@@ -6,8 +6,6 @@ import { MeshRegister } from "./MeshRegister.js";
 import { LocationData } from "../../../Math/index.js";
 
 import { DivineVoxelEngineRender } from "../../Render/DivineVoxelEngineRender.js";
-import { URIMesh } from "@amodx/uri/Meshes/URIMesh.js";
-import { DVENodeMeshAttributes } from "../../../Interfaces/Render/Nodes/DVERenderNode.types.js";
 import { Square, Circle } from "@amodx/math/Shapes";
 import { Vector2Like } from "@amodx/math";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
@@ -49,10 +47,7 @@ export class MeshManager {
     const [location, substance] = data;
     const mesh = MeshRegister.chunk.removeMesh(location, substance);
     if (!mesh) return false;
-
-    DivineVoxelEngineRender.instance.renderer.nodes.meshes
-      .get(substance)!
-      .returnMesh(mesh);
+    mesh.dispose();
   }
 
   static update(data: SetChunkMeshTask) {
@@ -84,49 +79,18 @@ export class MeshManager {
       }
     }
 
-    while (i--) {
-      const chunkData = chunks[i];
-      const substance = chunkData[0];
-      const remove = !chunkData[1];
-
-      if (remove) {
-        const mesh = MeshRegister.chunk.removeMesh(location, substance);
-        if (mesh) {
-          DivineVoxelEngineRender.instance.renderer.nodes.meshes
-            .get(substance)!
-            .returnMesh(mesh);
-        }
-        continue;
-      }
-      let chunkMesh = MeshRegister.chunk.getMesh(location, substance);
-      let mesh: URIMesh;
-      if (!chunkMesh) {
-        mesh = DivineVoxelEngineRender.instance.renderer.nodes.meshes
-          .get(substance)!
-          .createMesh([location[1], location[2], location[3]], chunkData[1][1]);
-        (mesh as any).type = "chunk";
-        MeshRegister.chunk.addMesh(location, mesh, substance);
-      } else {
-        mesh = chunkMesh;
-        DivineVoxelEngineRender.instance.renderer.nodes.meshes
-          .get(substance)!
-          .updateVertexData(
-            [location[1], location[2], location[3]],
-            chunkData[1][1],
-            mesh
-          );
-      }
+    if (data[1][0] == 0) {
+      DivineVoxelEngineRender.instance.renderer.chunkMeshes.updateVertexData(
+        chunk,
+        [location[1], location[2], location[3]],
+        data[1]
+      );
     }
   }
   static removeColumn(data: LocationData) {
     const column = MeshRegister.column.remove(data);
     if (!column) return false;
     for (const [key, chunk] of column.chunks) {
-      for (const [substance, mesh] of chunk.meshes) {
-        DivineVoxelEngineRender.instance.renderer.nodes.meshes
-          .get(substance)!
-          .returnMesh(mesh);
-      }
       chunk.dispose();
     }
   }

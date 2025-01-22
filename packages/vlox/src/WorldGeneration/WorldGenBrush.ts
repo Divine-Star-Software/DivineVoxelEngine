@@ -2,13 +2,12 @@ import type { Vec3Array } from "@amodx/math";
 
 import { WorldGenRegister } from "./WorldGenRegister.js";
 
-import { WorldLockTasks } from "../Types/Tasks.types.js";
+import { WorldLockTasks } from "../Data/Types/Tasks.types.js";
 
 import { RichDataTool } from "../Tools/Data/RichDataTool.js";
 import { BrushTool } from "../Tools/Brush/Brush.js";
-import { LightData } from "../Data/LightData.js";
+import { LightData } from "../VoxelData/LightData.js";
 
-import { TasksRequest } from "../Contexts/Constructor/Tasks/TasksRequest.js";
 import { WorldGeneration } from "./WorldGeneration.js";
 import { SafePromise } from "@amodx/core/Promises/SafePromise.js";
 import { Propagation } from "../Propagation/Propagation.js";

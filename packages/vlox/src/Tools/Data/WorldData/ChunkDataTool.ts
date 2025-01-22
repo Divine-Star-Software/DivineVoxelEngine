@@ -4,7 +4,7 @@ import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 
 
 import { Chunk } from "../../../Data/World/Classes/Chunk.js";
-import { RawVoxelData } from "../../../Data/Types/VoxelData.types.js";
+import { RawVoxelData } from "../../../VoxelData/Voxel.types.js";
 
 export class ChunkDataTool extends DataToolBase {
   struct = Chunk.StateStruct;

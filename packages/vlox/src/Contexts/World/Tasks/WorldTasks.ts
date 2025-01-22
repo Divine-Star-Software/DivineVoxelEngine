@@ -9,8 +9,8 @@ import {
   WorldLockTasks,
   LoadColumnDataTasks,
   RunBuildQueue,
-} from "../../../Types/Tasks.types.js";
-import { RegionHeaderRegister } from "../../../Data/RegionHeaderRegister.js";
+} from "../../../Data/Types/Tasks.types.js";
+import { RegionHeaderRegister } from "../../../Data/World/RegionHeaderRegister.js";
 import { DataLoaderTool } from "../../../DataLoader/World/Tools/DataLoaderTool.js";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 import { WorldLock } from "../Lock/WorldLock.js";
@@ -31,7 +31,7 @@ export class WorldTasks {
       location[3],
       column
     );
-    DataSync.instance.worldData.column.sync(location);
+    this.DVEW.dataSync.worldData.column.sync(location);
   }
   unLoadColumn(location: LocationData) {
     if (WorldLock.isLocked(location)) return false;
@@ -59,7 +59,7 @@ export class WorldTasks {
   loadRegionHeader(location: LocationData, data: SharedArrayBuffer) {
     RegionHeaderRegister.add(location, data);
 
-    DataSync.instance.worldData.regionHeader.sync(location);
+    this.DVEW.dataSync.worldData.regionHeader.sync(location);
   }
 }
 
@@ -149,14 +149,11 @@ export default function (DVEW: DivineVoxelEngineWorld) {
       return onDone ? onDone(resutls) : resutls;
     }
   );
-  Threads.registerTasks<RunBuildQueue>(
-    "build-queue",
-    async ([dim, chunks]) => {
-      for (const position of chunks) {
-        mesher.setLocation([dim, ...position]).buildChunk();
-      }
+  Threads.registerTasks<RunBuildQueue>("build-queue", async ([dim, chunks]) => {
+    for (const position of chunks) {
+      mesher.setLocation([dim, ...position]).buildChunk();
     }
-  );
+  });
   Threads.registerTasks("clear-all", () => {
     WorldRegister.instance.clearAll();
   });

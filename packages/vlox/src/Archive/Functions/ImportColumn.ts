@@ -1,9 +1,9 @@
-import { VoxelPalette } from "../../Data/Voxel/VoxelPalette";
+import { VoxelPalette } from "../../Data/Palettes/VoxelPalette";
 import { Chunk, ChunkData, Column, ColumnData } from "../../Data/World/Classes";
 
 import { ArchivedChunkData, ArchivedColumnData } from "../Archive.types";
-import { VoxelStruct } from "../../Data/Voxel/VoxelStruct";
-import { VoxelTagIDs } from "../../Data/Constants/VoxelTagIds";
+import { VoxelStruct } from "../../Data/Structs/VoxelStruct";
+import { VoxelStructIds } from "../../Data/Constants/Structs/VoxelStructIds";
 import { NumberPalette } from "../../Interfaces/Data/NumberPalette";
 import { StringPalette } from "../../Interfaces/Data/StringPalette";
 import { getPaletteArray } from "./Palettes";
@@ -256,7 +256,7 @@ const getSecondary = (
   if (importedChunk.chunk.buffers.state instanceof Uint16Array) return value;
 
   VoxelStruct.setVoxel(voxelId);
-  if (VoxelStruct.instance[VoxelTagIDs.canHaveSecondary] == 1) {
+  if (VoxelStruct.instance[VoxelStructIds.canHaveSecondary] == 1) {
     if (typeof importedChunk.chunk.buffers.secondary == "number") {
       return VoxelPalette.ids.getNumberId(
         importedColumn.column.palettes.secondaryId![

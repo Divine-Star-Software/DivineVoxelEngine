@@ -3,7 +3,7 @@ import {
  GetRichDataTasks,
  SetRichColumnTasks,
  SetRichDataTasks,
-} from "../../Types/Tasks.types";
+} from "../../Data/Types/Tasks.types";
 import { Thread, Threads } from "@amodx/threads/";
 import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
 import { LocationData } from "../../Math";

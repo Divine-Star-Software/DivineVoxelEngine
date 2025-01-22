@@ -6,5 +6,6 @@ export class MappedDataRegister {
 }
 
 MappedDataRegister.stringMaps.addSegment("voxel");
+MappedDataRegister.objectMaps.addSegment("voxel");
 MappedDataRegister.stringMaps.addSegment("substance");
 MappedDataRegister.objectMaps.addSegment("substance");

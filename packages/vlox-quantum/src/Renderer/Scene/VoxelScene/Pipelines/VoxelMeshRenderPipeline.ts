@@ -102,7 +102,7 @@ export class VoxelMeshRenderPipeline {
     });
 
     this._voxelTexture =
-      TextureManager.textureTypes.get("#dve_voxel")!.shaderTexture;
+      TextureManager.textureTypes.get("dve_voxel")!.shaderTexture;
 
     this._textureBindGroupLayout = device.createBindGroupLayout({
       entries: [

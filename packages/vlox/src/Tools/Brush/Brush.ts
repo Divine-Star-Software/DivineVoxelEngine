@@ -1,5 +1,5 @@
-import type { RawVoxelData } from "../../Data/Types/VoxelData.types.js";
-import { VoxelPalette } from "../../Data/Voxel/VoxelPalette.js";
+import type { RawVoxelData } from "../../VoxelData/Voxel.types.js";
+import { VoxelPalette } from "../../Data/Palettes/VoxelPalette.js";
 import { PaintVoxelData } from "../../Data/Types/WorldData.types.js";
 import { WorldCursor } from "../../Data/Cursor/World/WorldCursor.js";
 import { VoxelCursor } from "../../Data/Cursor/VoxelCursor.js";

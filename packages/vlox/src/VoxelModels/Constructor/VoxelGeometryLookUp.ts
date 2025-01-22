@@ -1,12 +1,11 @@
-import { DataCursorInterface } from "Data/Cursor/Interfaces/DataCursor.interface";
-import { VoxelConstructorsRegister } from "../../Mesher/Constructors/Voxel/VoxelConstructorsRegister";
-import { VoxelModelConstructorRegister } from "./Register/VoxelModelConstructorRegister";
-import { VoxelModelVoxelConstructor } from "./VoxelModelVoxelConstructor";
+import { DataCursorInterface } from "../../Data/Cursor/Interfaces/DataCursor.interface";
+import { VoxelModelConstructorRegister } from "./VoxelModelConstructorRegister";
+import { VoxelConstructor } from "./VoxelConstructor";
 import { Vec3Array, Vector3Like } from "@amodx/math";
 import { VoxelCursor } from "../../Data/Cursor/VoxelCursor";
 
 export class VoxelGeometryLookUp {
-  static voxelHash: VoxelModelVoxelConstructor[] = [];
+  static voxelHash: VoxelConstructor[] = [];
   static modCache: number[] = [];
   static stateCache: number[] = [];
   static conditonalStateCache: number[] = [];
@@ -74,45 +73,43 @@ export class VoxelGeometryLookUp {
       return -1;
     }
 
-    const voxelConstructor = VoxelConstructorsRegister.constructorsPaltte[
-      voxel.getId()
-    ] as VoxelModelVoxelConstructor;
+    const voxelConstructor =
+      VoxelModelConstructorRegister.constructorsPaltte[voxel.getId()];
 
     if (!voxelConstructor || !voxelConstructor.isModel) {
       this.stateCache[hashed] = -1;
       return -1;
     }
 
+
     //no ao
     this.noCastAO[hashed] = voxel.isLightSource() || voxel.noAO();
     //state
     const shapeState = voxel.getShapeState();
-    const state = voxelConstructor.model.shapeStateTree.getState(shapeState);
+    const state = voxelConstructor.shapeStateTree.getState(shapeState);
     this.stateCache[hashed] = state;
     //mod
     const mod = voxel.getMod();
     const modState = voxelConstructor.modTree.getState(mod);
     this.modCache[hashed] = modState;
     this.voxelCursor.copy(voxel).process();
-    voxelConstructor.model.schema.position.x = x;
-    voxelConstructor.model.schema.position.y = y;
-    voxelConstructor.model.schema.position.z = z;
-    voxelConstructor.model.schema.voxel = this.voxelCursor;
-    voxelConstructor.model.schema.dataCursor = dataCursor;
+    voxelConstructor.schema.position.x = x;
+    voxelConstructor.schema.position.y = y;
+    voxelConstructor.schema.position.z = z;
+    voxelConstructor.schema.voxel = this.voxelCursor;
+    voxelConstructor.schema.dataCursor = dataCursor;
 
     const conditonalState =
-      voxelConstructor.model.condtioanlShapeStateTree.getState();
+      voxelConstructor.condtioanlShapeStateTree.getState();
 
     this.voxelHash[hashed] = voxelConstructor;
     this.conditonalStateCache[hashed] = conditonalState;
 
     this.geometryCache[hashed] =
-      voxelConstructor.model.data.shapeStateGeometryMap[state];
+      voxelConstructor.data.shapeStateGeometryMap[state];
 
     this.conditionalGeometryCache[hashed] =
-      voxelConstructor.model.data.condiotnalShapeStateGeometryMap[
-        conditonalState
-      ];
+      voxelConstructor.data.condiotnalShapeStateGeometryMap[conditonalState];
 
     return state;
   }

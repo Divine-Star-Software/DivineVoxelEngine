@@ -1,11 +1,3 @@
-import {
-  URITextureFormat,
-  URITextureSamplingMode,
-  URITextureTypes,
-} from "@amodx/uri/Constants/URITexturesConstants";
-import { URITexture } from "@amodx/uri/Textures/URITexture";
-import { DivineVoxelEngineRender } from "../Contexts/Render/DivineVoxelEngineRender";
-
 export class TextureBuilder {
   static context: CanvasRenderingContext2D | null = null;
 

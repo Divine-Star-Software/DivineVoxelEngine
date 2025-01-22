@@ -12,9 +12,9 @@ import { VoxelGeometry } from "../../../../Mesher/Geometry/VoxelGeometry";
 import {
   getInterpolationValue,
   shouldCauseFlip,
-} from "../../../../Mesher/Calc/CalcConstants";
+} from "../Common/Calc/CalcConstants";
 
-import { LightData } from "../../../../Data/LightData";
+import { LightData } from "../../../../VoxelData/LightData";
 
 import {
   QuadVoxelGometryArgs,
@@ -24,7 +24,7 @@ import { GeoemtryNode } from "../GeometryNode";
 import { VoxelGeometryTransform } from "../../../../VoxelData/VoxelSyncData";
 import { GetQuadGeometryData } from "../Common/QuadGeometryNode";
 import { UpdateBounds } from "../Common/BoundsFunctions";
-import { VoxelGeometryConstructor } from "VoxelModels/Constructor/Register/VoxelGeometryConstructor";
+import { VoxelGeometryConstructor } from "VoxelModels/Constructor/Nodes/VoxelGeometryConstructor";
 
 const ArgIndexes = QuadVoxelGometryInputs.ArgIndexes;
 

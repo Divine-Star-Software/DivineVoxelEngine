@@ -2,7 +2,7 @@ import { TextureData } from "@divinevoxel/vlox/Textures/Texture.types";
 
 export const Textures: TextureData[] = [
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_candle",
     frames: 0,
     variations: {
@@ -10,7 +10,7 @@ export const Textures: TextureData[] = [
     },
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_debug_box",
     frames: 0,
     variations: {
@@ -23,7 +23,7 @@ export const Textures: TextureData[] = [
     },
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_light_debug",
     frames: 0,
     variations: {
@@ -46,7 +46,7 @@ export const Textures: TextureData[] = [
     },
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_dream_stone",
     frames: 0,
     variations: {
@@ -55,12 +55,12 @@ export const Textures: TextureData[] = [
     },
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_lever",
     frames: 0,
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_dread_stone",
     frames: 0,
     variations: {
@@ -69,7 +69,7 @@ export const Textures: TextureData[] = [
     },
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_data_holder",
     frames: 0,
     variations: {
@@ -77,7 +77,7 @@ export const Textures: TextureData[] = [
     },
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_dream_grass_block",
     frames: 0,
     variations: {
@@ -85,7 +85,7 @@ export const Textures: TextureData[] = [
     },
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_dream_stone_pillar",
     frames: 0,
     variations: {
@@ -95,7 +95,7 @@ export const Textures: TextureData[] = [
     },
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_dread_stone_pillar",
     frames: 0,
     variations: {
@@ -105,42 +105,42 @@ export const Textures: TextureData[] = [
     },
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_dream_lamp",
     frames: 0,
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_dread_lamp",
     frames: 0,
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_dream_log",
     frames: 0,
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_dream_grass",
     frames: 0,
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_dread_grass",
     frames: 0,
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_dream_vine",
     frames: 0,
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_dream_leaves",
     frames: 0,
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_liquid_dream_ether",
     frames: 0,
     variations: {
@@ -152,7 +152,7 @@ export const Textures: TextureData[] = [
     },
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "dve_liquid_dread_ether",
     frames: 0,
     variations: {
@@ -164,7 +164,7 @@ export const Textures: TextureData[] = [
     },
   },
   {
-    type: "#dve_voxel",
+    type: "dve_voxel",
     id: "foam",
     frames: 0,
     variations: {

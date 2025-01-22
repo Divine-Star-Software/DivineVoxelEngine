@@ -1,4 +1,4 @@
-import type { RawVoxelData } from "@divinevoxel/vlox/Data/Types/VoxelData.types.js"
+import type { RawVoxelData } from "@divinevoxel/vlox/VoxelData/Voxel.types.js"
 import {
   BuildNodeMesh,
   SetNodeMesh,
@@ -59,7 +59,7 @@ export class NodeMeshTool {
         "build-node-mesh",
         [
           location,
-          "#dve_node",
+          "dve_node",
           {
             textureId: textureId,
             textureData: rawTextureData,
@@ -68,8 +68,8 @@ export class NodeMeshTool {
         [],
         (data: SetNodeMesh | false) => {
           if (!data) return onDone(false);
-          const mesh = DVEBabylonRenderer.instance.nodes.meshes
-            .get("#dve_node")
+    /*       const mesh = DVEBabylonRenderer.instance.nodes.meshes
+            .get("dve_node")
             .createMesh([data[0][1], data[0][2], data[0][3]], data[1]);
           if (!mesh) return onDone(false);
 
@@ -77,9 +77,9 @@ export class NodeMeshTool {
 
           (mesh._mesh as any).type = "node";
           mesh._mesh.parent =
-            DVEBabylonRenderer.instance.foManager.getActiveNode()?._node ||
+            DVEBabylonRenderer.instance.foManager.getActiveNode() ||
             null;
-          onDone(mesh._mesh);
+          onDone(mesh._mesh); */
         }
       );
     },
@@ -146,7 +146,7 @@ export class NodeMeshTool {
         "build-node-mesh",
         [
           [this.dimension, ...location] as LocationData,
-          "#dve_node_voxel",
+          "dve_node_voxel",
           voxelData,
         ],
         [],
@@ -159,7 +159,7 @@ export class NodeMeshTool {
             this.voxel.dataTool.loadInData(voxelData);
           }
 
-          const mesh = DVEBabylonRenderer.instance.nodes.meshes
+     /*      const mesh = DVEBabylonRenderer.instance.nodes.meshes
             .get(this.voxel.dataTool.getSubstnaceData().getRendered())
             .createMesh([data[0][1], data[0][2], data[0][3]], data[1]);
           if (!mesh) return onDone(false);
@@ -167,9 +167,9 @@ export class NodeMeshTool {
           mesh._mesh.unfreezeWorldMatrix();
           (mesh._mesh as any).type = "node";
           mesh._mesh.parent =
-            DVEBabylonRenderer.instance.foManager.getActiveNode()?._node ||
+            DVEBabylonRenderer.instance.foManager.getActiveNode() ||
             null;
-          onDone(mesh._mesh);
+          onDone(mesh._mesh); */
         }
       );
     },

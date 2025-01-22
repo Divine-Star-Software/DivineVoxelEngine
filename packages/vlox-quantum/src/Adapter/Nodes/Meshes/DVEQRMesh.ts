@@ -1,18 +1,18 @@
-import { URIMesh } from "@amodx/uri/Meshes/URIMesh";
-import { DVEQRScene } from "../../Scene/DVEQRScene";
 import { Observable } from "@amodx/core/Observers/Observable";
 class DVEQRMeshObservers {
   updated = new Observable();
 }
+import { ChunkMeshInterface } from "@divinevoxel/vlox/Interfaces/Render/DVEChunkMeshInterface";
 
-export class DVEQRMesh extends URIMesh<DVEQRScene, any> {
+export class DVEQRMesh implements ChunkMeshInterface {
   observers = new DVEQRMeshObservers();
+
   dispose(): void {
-    this._mesh.dispose();
+  //  this._mesh.dispose();
   }
   isVisible: boolean;
   setEnabled(enabled: boolean): void {
-    this._mesh.setEnabled(enabled);
+   // this._mesh.setEnabled(enabled);
   }
   setIndicies(indices: ArrayLike<number>): void {
     throw new Error("Method not implemented.");

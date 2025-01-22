@@ -1,3 +1,7 @@
-import { URINode } from "@amodx/uri/Meshes/URINode.js";
+import { ChunkMeshInterface } from "@divinevoxel/vlox/Interfaces/Render/DVEChunkMeshInterface";
 
-export class DVEQRNode extends URINode<any> {}
+export class DVEQRNode implements ChunkMeshInterface {
+    dispose(): void {
+        
+    }
+}

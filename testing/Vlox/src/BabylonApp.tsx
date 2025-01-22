@@ -103,14 +103,14 @@ console.error("MOUNT THE APP");
         voxels: DVEVoxelData,
       });
       await CreateDisplayIndex(DVER, DVEVoxelData);
-      const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
+   const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
       skybox.infiniteDistance = true;
-      const skyboxMat = renderer.nodes.materials.get("#dve_skybox");
+      const skyboxMat = renderer.materials.get("dve_skybox");
       console.warn("got skybox", skybox);
       if (skyboxMat) {
         skybox.material = skyboxMat._material;
         skybox.material!.backFaceCulling = false;
-      }
+      } 
       const sceneTool = new SceneTool();
       sceneTool.fog.setDensity(0.00001);
       sceneTool.fog.setColor(1, 1, 1);

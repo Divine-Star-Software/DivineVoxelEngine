@@ -1,8 +1,7 @@
-import { RawVoxelData } from "../Data/Types/VoxelData.types";
 import { PaintVoxelData } from "../Data/Types/WorldData.types";
-import { VoxelData, VoxelNamedStateData } from "../Types";
+import { VoxelData, RawVoxelData, VoxelNamedStateData } from "../VoxelData/Voxel.types";
 import { SchemaRegister } from "../VoxelState/SchemaRegister";
-import { VoxelPalette } from "../Data/Voxel/VoxelPalette";
+import { VoxelPalette } from "../Data/Palettes/VoxelPalette";
 export class VoxelNamedState {
   tags = new Map<string, any>();
 
@@ -16,8 +15,8 @@ export class VoxelNamedState {
     public voxelId: string,
     public data: VoxelNamedStateData
   ) {
-    for (const tag of data.tags) {
-      this.tags.set(tag[0], tag[1]);
+    for (const key in data.properties) {
+      this.tags.set(key, data.properties[key]);
     }
     if (SchemaRegister.voxelModSchemaData.has(this.voxelId)) {
       const schema = SchemaRegister.getVoxelSchemas(this.voxelId);
@@ -86,30 +85,27 @@ export class VoxelIndex {
     if (VoxelIndex.instance) return VoxelIndex.instance;
     if (!VoxelIndex.instance) VoxelIndex.instance = this;
 
-    const findNamedState = (_: any) => _[0] == "#dve_named_states";
     for (const voxelData of data) {
-      const namedStates = voxelData.tags.find(findNamedState);
+      const namedStates = voxelData.properties["dve_named_states"];
       if (!namedStates) continue;
       const states = new VoxelNamedStateContainer(
         voxelData.id,
-        (namedStates[1] as VoxelNamedStateData[]).map(
-          (_) => new VoxelNamedState(voxelData.id, _)
-        )
+        namedStates.map((_) => new VoxelNamedState(voxelData.id, _))
       );
       this.dataMap.set(voxelData.id, voxelData);
       this.stateArray.push(states);
       this.states.set(voxelData.id, states);
       for (const [id, state] of states.states) {
-        for (const tagData of state.data.tags) {
-          const tagId = tagData[0];
+        for (const tagId in state.data.properties) {
+          const tagData = state.data.properties[tagId];
           let tag = this.tagIndexes.get(tagId);
           if (!tag) {
             tag = new TagIndex(tagId);
             this.tagIndexes.set(tagId, tag);
           }
           tag.states.set(state.data.id, state);
-          tag.states.set(state.data.id, tagData[1]);
-          tag.values.add(tagData[1]);
+          tag.states.set(state.data.id, tagData);
+          tag.values.add(tagData);
         }
       }
     }

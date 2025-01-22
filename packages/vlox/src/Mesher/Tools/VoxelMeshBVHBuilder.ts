@@ -1,4 +1,3 @@
-import { Vec3Array } from "@amodx/math";
 import { WorldSpaces } from "../../Data/World/WorldSpaces";
 
 /**

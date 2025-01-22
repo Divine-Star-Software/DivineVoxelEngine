@@ -3,8 +3,8 @@ import type { LocationData } from "../../../Math";
 import { ColumnDataTool } from "../../../Tools/Data/WorldData/ColumnDataTool.js";
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { Distance3D } from "@amodx/math/Vectors/Functions/Distance3d";
-import { EngineSettings } from "../../../Data/Settings/EngineSettings.js";
-import { DataHooks } from "../../../Data/DataHooks.js";
+import { EngineSettings } from "../../../Settings/EngineSettings.js";
+import { DataHooks } from "../../../Data/Sync/DataHooks.js";
 import { WorldLock } from "../../../Contexts/World/Lock/WorldLock.js";
 import { DataHanlderWrapper } from "../DataHandlerWrapper.js";
 

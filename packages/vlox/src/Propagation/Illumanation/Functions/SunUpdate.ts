@@ -1,5 +1,5 @@
 import { UpdateTask } from "../../../Contexts/Constructor/Tasks/UpdateTask";
-import { LightData } from "../../../Data/LightData";
+import { LightData } from "../../../VoxelData/LightData";
 import { Vec3Array } from "@amodx/math";
 const FloodOutPositions: Vec3Array[] = [
   [1, 0, 0],

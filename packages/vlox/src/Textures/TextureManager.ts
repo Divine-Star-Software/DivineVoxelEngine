@@ -1,4 +1,4 @@
-import { EngineSettings } from "../Data/Settings/EngineSettings.js";
+import { EngineSettings } from "../Settings/EngineSettings.js";
 import type { TextureData, TextureTypeUVMap } from "./Texture.types";
 import { TextureBuilder } from "./TextureBuilder.js";
 import { TextureArray } from "./TextureArray.js";
@@ -212,5 +212,5 @@ export class TextureManager {
     return map;
   }
 }
-TextureManager.getOrAddTextureType("#dve_voxel");
-TextureManager.getOrAddTextureType("#dve_node");
+TextureManager.getOrAddTextureType("dve_voxel");
+TextureManager.getOrAddTextureType("dve_node");

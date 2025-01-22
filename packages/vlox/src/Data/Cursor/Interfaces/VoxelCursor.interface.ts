@@ -1,14 +1,13 @@
-import { VoxelStructProperties } from "../../Constants/Structs/VoxelStructProperties";
-import { VoxelTagIDs } from "../../Constants/VoxelTagIds";
-import { LightData } from "../../LightData";
+import { VoxelStructIds } from "../../Constants/Structs/VoxelStructIds";
+import { LightData } from "../../../VoxelData/LightData";
 import { MappedDataRegister } from "../../Register/MappedDataRegister";
-import { VoxelStruct } from "../../Voxel/VoxelStruct";
-import { VoxelStateReader } from "../../VoxelStateReader";
+import { VoxelStruct } from "../../Structs/VoxelStruct";
+import { VoxelStateReader } from "../../../VoxelData/VoxelStateReader";
 import { VoxelTagStates } from "../../../VoxelState/VoxelTagStates";
-import { VoxelPalette } from "../../Voxel/VoxelPalette";
+import { VoxelPalette } from "../../Palettes/VoxelPalette";
 import { DataTool } from "../../../Tools/Data/DataTool";
-import { SubstancePaletteReader } from "../../Substance/SubstancePalette";
-import { RawVoxelData } from "Data/Types/VoxelData.types";
+import { SubstancePaletteReader } from "../../Palettes/SubstancePalette";
+import { RawVoxelData } from "../../../VoxelData/Voxel.types"
 interface WritableArrayLike<T> {
   length: number;
   [index: number]: T;
@@ -59,15 +58,15 @@ export abstract class VoxelCursorInterface {
   getSubstance() {
     const vID = this._loadedId;
     if (vID < 2) return -1;
-    return this.__struct[VoxelTagIDs.substance];
+    return this.__struct[VoxelStructIds.substance];
   }
   getSubstanceStringId() {
     const vID = this._loadedId;
-    if (vID < 2) return "#dve_transparent";
+    if (vID < 2) return "dve_transparent";
     return SubstancePaletteReader.id.stringFromNumber(this.getSubstance());
   }
   isOpaque() {
-    return this.__struct[VoxelTagIDs.isTransparent] == 0;
+    return this.__struct[VoxelStructIds.isTransparent] == 0;
   }
   getMod() {
     return this.mod[this._index];
@@ -110,7 +109,7 @@ export abstract class VoxelCursorInterface {
     return this.secondaryId > 1;
   }
   canHaveSecondaryVoxel() {
-    return this.__struct[VoxelTagIDs.canHaveSecondary] == 1;
+    return this.__struct[VoxelStructIds.canHaveSecondary] == 1;
   }
   hasRGBLight() {
     const light = this.getLight();
@@ -127,7 +126,7 @@ export abstract class VoxelCursorInterface {
     if (vID == 0) return this.light[this._index];
     if (vID < 2) return -1;
 
-    const lightValue = this.__struct[VoxelTagIDs.lightValue];
+    const lightValue = this.__struct[VoxelStructIds.lightValue];
     if (this.isOpaque()) {
       if (this.isLightSource() && lightValue) {
         return lightValue;
@@ -144,43 +143,30 @@ export abstract class VoxelCursorInterface {
     this.light[this._index] = light;
     return this;
   }
-  getShapeId() {
-    const vID = this._loadedId;
-    if (vID < 2) return -1;
-    return this.__struct[VoxelTagIDs.shapeID];
-  }
-  getShapeStringId() {
-    const vID = this._loadedId;
-    if (vID < 2) return "";
-    return MappedDataRegister.stringMaps.get(
-      "voxel",
-      VoxelStructProperties.shapeID,
-      this.__struct[VoxelTagIDs.shapeID]
-    );
-  }
+
   isLightSource() {
     const vID = this._loadedId;
     if (vID < 2) return false;
     return VoxelTagStates.isRegistered(
       this._loadedId,
-      VoxelTagIDs.isLightSource
+      VoxelStructIds.isLightSource
     )
       ? VoxelTagStates.getValue(
           this._loadedId,
-          VoxelTagIDs.isLightSource,
+          VoxelStructIds.isLightSource,
           this.getShapeState()
         ) === true
-      : this.__struct[VoxelTagIDs.isLightSource] == 1;
+      : this.__struct[VoxelStructIds.isLightSource] == 1;
   }
   getLightSourceValue() {
     const vID = this._loadedId;
     if (vID < 2) return 0;
-    return this.__struct[VoxelTagIDs.lightValue];
+    return this.__struct[VoxelStructIds.lightValue];
   }
   noAO() {
     const vID = this._loadedId;
     if (vID < 2) return false;
-    return this.__struct[VoxelTagIDs.noAO] == 1;
+    return this.__struct[VoxelStructIds.noAO] == 1;
   }
   isRenderable() {
     if (this.id < 2 && this.secondaryId < 2) return false;

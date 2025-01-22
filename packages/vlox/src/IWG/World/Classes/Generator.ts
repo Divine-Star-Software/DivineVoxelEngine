@@ -117,7 +117,7 @@ export class Generator extends LocationBoundTool {
           !WorldRegister.instance.columnTool.isStored() ||
           WorldRegister.instance.columnTool.isDirty()
         ) {
-          this.tasks.saving.get("#dve_iwg_save")!.add(x, y, z);
+          this.tasks.saving.get("dve_iwg_save")!.add(x, y, z);
         }
       });
     });
@@ -135,7 +135,7 @@ export class Generator extends LocationBoundTool {
   unLoadAllColumns() {
     if (!this.dataLoader) return;
     this.dataLoader.allColumns((tool, [dim, x, y, z]) => {
-      this.tasks["saving"].get("#dve_iwg_save_and_unload")!.add(x, y, z);
+      this.tasks["saving"].get("dve_iwg_save_and_unload")!.add(x, y, z);
     });
   }
 
@@ -269,7 +269,7 @@ export class Generator extends LocationBoundTool {
 
     if (!this.nColumnTool.loadInAt(cx, cy, cz)) {
       allLoaded = false;
-      this.tasks["world-gen"].get("#dve_iwg_load")!.add(cx, cy, cz);
+      this.tasks["world-gen"].get("dve_iwg_load")!.add(cx, cy, cz);
       return {
         nWorldGenAllDone: false,
         nDecorAllDone: false,
@@ -332,7 +332,7 @@ export class Generator extends LocationBoundTool {
     if (!this.nColumnTool.loadInAt(columnPOS.x, cy, columnPOS.z)) {
       allLoaded = false;
       this.tasks["world-gen"]
-        .get("#dve_iwg_load")!
+        .get("dve_iwg_load")!
         .add(columnPOS.x, cy, columnPOS.z);
       return {
         genAlldone,
@@ -405,7 +405,7 @@ export class Generator extends LocationBoundTool {
       );
 
       if (!genAlldone && allLoaded) {
-        this.tasks["world-gen"].get("#dve_iwg_generate")!.add(cx, cy, cz);
+        this.tasks["world-gen"].get("dve_iwg_generate")!.add(cx, cy, cz);
       }
     }
     this._visitedMap.clear();
@@ -463,7 +463,7 @@ export class Generator extends LocationBoundTool {
       } = this.getColumnState([cx, 0, cz], queue);
 
       if (!genAlldone && allLoaded) {
-        this.tasks["world-gen"].get("#dve_iwg_generate")!.add(cx, cy, cz);
+        this.tasks["world-gen"].get("dve_iwg_generate")!.add(cx, cy, cz);
         continue;
       }
 
@@ -475,7 +475,7 @@ export class Generator extends LocationBoundTool {
         nWorldGenAllDone &&
         !this.columnTool.getStructValue(ColumnState.DecorDone)
       ) {
-        this.tasks["world-gen"].get("#dve_iwg_decorate")!.add(cx, cy, cz);
+        this.tasks["world-gen"].get("dve_iwg_decorate")!.add(cx, cy, cz);
         continue;
       }
 
@@ -483,7 +483,7 @@ export class Generator extends LocationBoundTool {
         nDecorAllDone &&
         !this.columnTool.getStructValue(ColumnState.SunDone)
       ) {
-        this.tasks["world-gen"].get("#dve_iwg_world_sun")!.add(cx, cy, cz);
+        this.tasks["world-gen"].get("dve_iwg_world_sun")!.add(cx, cy, cz);
 
         continue;
       }
@@ -492,7 +492,7 @@ export class Generator extends LocationBoundTool {
         nSunAllDone &&
         !this.columnTool.getStructValue(ColumnState.PropagationDone)
       ) {
-        this.tasks["world-gen"].get("#dve_iwg_propagation")!.add(cx, cy, cz);
+        this.tasks["world-gen"].get("dve_iwg_propagation")!.add(cx, cy, cz);
         continue;
       }
     }
@@ -565,7 +565,7 @@ export class Generator extends LocationBoundTool {
         } */
         if (this._builtColumns.has(columnKey)) continue;
         this.tasks[IWGTasksTypes.Rendering]
-          .get("#dve_iwg_build")!
+          .get("dve_iwg_build")!
           .add(cx, cy, cz);
 
       }

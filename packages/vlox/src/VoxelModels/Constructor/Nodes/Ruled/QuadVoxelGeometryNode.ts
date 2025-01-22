@@ -11,13 +11,13 @@ import { VoxelGeometry } from "../../../../Mesher/Geometry/VoxelGeometry";
 
 import { VoxelGeometryLookUp } from "../../VoxelGeometryLookUp";
 import { GeoemtryNode } from "../GeometryNode";
-import { VoxelGeometryConstructor } from "../../Register/VoxelGeometryConstructor";
+import { VoxelGeometryConstructor } from "../VoxelGeometryConstructor";
 import {
   getInterpolationValue,
   shouldCauseFlip,
-} from "../../../../Mesher/Calc/CalcConstants";
+} from "../Common/Calc/CalcConstants";
 
-import { LightData } from "../../../../Data/LightData";
+import { LightData } from "../../../../VoxelData/LightData";
 
 import { VoxelRelativeCubeIndexPositionMap } from "../../../Indexing/VoxelRelativeCubeIndex";
 import {

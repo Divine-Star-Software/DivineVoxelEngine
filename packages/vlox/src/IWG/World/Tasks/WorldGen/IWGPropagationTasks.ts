@@ -7,7 +7,7 @@ import { IWGTasksTypes } from "../../Types/IWG.types";
 
 export class IWGPropagationTasks extends IWGSingleTask {
   static Data: IWGTasksData = {
-    id: "#dve_iwg_propagation",
+    id: "dve_iwg_propagation",
     name: "propagation",
     type: IWGTasksTypes.WorldGen,
     propagationBlocking: true,
@@ -29,13 +29,13 @@ export class IWGPropagationTasks extends IWGSingleTask {
     const gen = this.gen;
     if (
       gen.columnTool.loadInAt(x, y, z) &&
-      gen.columnTool.getStructValue("#dve_is_world_propagation_done")
+      gen.columnTool.getStructValue("dve_is_world_propagation_done")
     )
       return onDone();
     gen.dveTasks.propagation.deferred.run([gen.dimension, x, y, z], () => {
       onDone();
       if (gen.columnTool.loadInAt(x, y, z))
-        return gen.columnTool.setTagValue("#dve_is_world_propagation_done", 1);
+        return gen.columnTool.setTagValue("dve_is_world_propagation_done", 1);
     });
   }
 }

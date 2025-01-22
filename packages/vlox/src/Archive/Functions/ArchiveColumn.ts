@@ -2,9 +2,9 @@ import { StringPalette } from "../../Interfaces/Data/StringPalette";
 import { NumberPalette } from "../../Interfaces/Data/NumberPalette";
 import { LocationData } from "../../Math";
 import { WorldRegister } from "../../Data/World/WorldRegister";
-import { VoxelPalette } from "../../Data/Voxel/VoxelPalette";
-import { VoxelStruct } from "../../Data/Voxel/VoxelStruct";
-import { VoxelTagIDs } from "../../Data/Constants/VoxelTagIds";
+import { VoxelPalette } from "../../Data/Palettes/VoxelPalette";
+import { VoxelStruct } from "../../Data/Structs/VoxelStruct";
+import { VoxelStructIds } from "../../Data/Constants/Structs/VoxelStructIds";
 import { Chunk, ChunkData, Column } from "../../Data/World/Classes";
 import { ArchivedChunkData, ArchivedColumnData } from "../Archive.types";
 import { convertToPaletteBuffer } from "./Palettes";
@@ -152,7 +152,7 @@ export default function ArchiveColumn(
       if (firstLight == -1) firstLight = voxelLight;
 
       const secondaryId =
-        VoxelStruct.instance[VoxelTagIDs.canHaveSecondary] == 1 &&
+        VoxelStruct.instance[VoxelStructIds.canHaveSecondary] == 1 &&
         VoxelPalette.ids.getStringId(chunk.secondary[i]);
 
       const voxelSecondary = secondaryId
@@ -239,7 +239,7 @@ export default function ArchiveColumn(
         chunk.light[i] = chunk.lightPalette.getId(chunk.chunk.light[i]);
       if (reMapSecondary)
         chunk.secondary[i] =
-          VoxelStruct.instance[VoxelTagIDs.canHaveSecondary] == 1
+          VoxelStruct.instance[VoxelStructIds.canHaveSecondary] == 1
             ? chunk.secondaryPalette.getId(chunk.secondary[i])
             : chunk.secondaryStatePalette.getId(chunk.secondary[i]);
     }

@@ -2,14 +2,18 @@ import {
   MeshAttributes,
   MeshDefaultAttributes,
 } from "@amodx/meshing/MeshData.types";
-import { EngineSettings } from "../../Data/Settings/EngineSettings";
+import { EngineSettings } from "../../Settings/EngineSettings";
 import { MesherDataTool } from "@amodx/meshing";
 import {
   BinaryNumberTypes,
   TypedArrayClassMap,
   MappedByteCounts,
 } from "@amodx/binary";
-import { CompactMeshData, CompactMeshIndex } from "../Types/Mesher.types";
+import {
+  CompactMeshData,
+  CompactSubMesh,
+  CompactMeshIndex,
+} from "../Types/Mesher.types";
 import { VoxelMeshTypes } from "../../Mesher/Types/VoxelMesh.types";
 import { Vector3Like } from "@amodx/math";
 import { VoxelMesherDataTool } from "Mesher/Tools/VoxelMesherDataTool";
@@ -88,51 +92,63 @@ function MakeWebGPUMesh(tool: VoxelMesherDataTool): CompactMeshData {
   ];
 }
 
-export function CompactVoxelMesh(tool: VoxelMesherDataTool): CompactMeshData {
+export function CompactVoxelMesh(
+  ...tools: VoxelMesherDataTool[]
+): CompactMeshData {
   if (EngineSettings.settings.rendererSettings.mode == "webgpu") {
-    return MakeWebGPUMesh(tool);
+    throw new Error("WebGPU disabled right now");
+    //    return MakeWebGPUMesh(tool);
   }
-
-  const mesh = tool.mesh!;
-  const dataMap: CompactMeshIndex = [];
+  const dataMap: CompactSubMesh[] = [];
   let totalSize = 0;
-  for (let [key, [array, stride, type]] of mesh.attributes) {
-    if (key == MeshDefaultAttributes.Indices) {
-      if (array.length > 60_000) {
-        type = BinaryNumberTypes.Uint32;
-      }
-    }
-    let current = totalSize;
+  for (const tool of tools) {
+    const mesh = tool.mesh!;
 
-    totalSize += MappedByteCounts[type] * array.length;
-    dataMap.push([
-      key,
-      {} as any,
-      array.length,
-      current,
-      totalSize,
-      stride,
-      type,
-    ]);
+    const subMesh: CompactSubMesh = [tool.id, []];
+
+    for (let [key, [array, stride, type]] of mesh.attributes) {
+      if (key == MeshDefaultAttributes.Indices) {
+        if (array.length > 60_000) {
+          type = BinaryNumberTypes.Uint32;
+        }
+      }
+      let current = totalSize;
+
+      totalSize += MappedByteCounts[type] * array.length;
+      subMesh[1].push([
+        key,
+        mesh.attributes.get(key)![0] as any,
+        array.length,
+        current,
+        totalSize,
+        stride,
+        type,
+      ]);
+    }
+
+    for (let i = 0; i < tool.bvhTool.tree.length; i++) {
+      if (tool.bvhTool.tree[i] == -Infinity) tool.bvhTool.tree[i] = -1;
+    }
+
+    dataMap.push(subMesh);
   }
 
   const finalBuffer = new ArrayBuffer(totalSize);
 
-  for (let data of dataMap) {
-    const [id, n, length, startByte, endByte, stride, type] = data;
-
-    const newArray = new TypedArrayClassMap[type](
-      finalBuffer,
-      startByte,
-      length
-    ) as Float32Array;
-    newArray.set(mesh.attributes.get(id)![0]);
-    data[1] = newArray;
+  for (let subMesh of dataMap) {
+    for (const data of subMesh[1]) {
+      const [id, n, length, startByte, endByte, stride, type] = data;
+      const newArray = new TypedArrayClassMap[type](
+        finalBuffer,
+        //@ts-ignore
+        startByte,
+        length
+      ) as Float32Array;
+      newArray.set(n as any as number[]);
+      data[1] = newArray;
+    }
   }
 
-  for (let i = 0; i < tool.bvhTool.tree.length; i++) {
-    if (tool.bvhTool.tree[i] == -Infinity) tool.bvhTool.tree[i] = -1;
-  }
 
   return [0, finalBuffer, dataMap];
 }

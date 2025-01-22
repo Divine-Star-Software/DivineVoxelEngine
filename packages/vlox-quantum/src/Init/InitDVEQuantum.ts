@@ -3,8 +3,7 @@ import {
   DVEBRDefaultMaterialBaseData,
   NodeSubstanceData,
 } from "../Materials/DVEQRDefaultMaterial.types";
-import { NodeMaterialData } from "@divinevoxel/vlox/Interfaces/Render/Nodes/DVERenderNode.types";
-import { DVEQRNodeMesh } from "../Adapter/Nodes/Meshes/DVEQRNodeMesh.js";
+import { NodeMaterialData } from "@divinevoxel/vlox/Interfaces/Render/DVERenderNode.types";
 import { TextureBuilder } from "@divinevoxel/vlox/Textures/TextureBuilder";
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
 import { DVEQuantumRenderer } from "../Adapter/DVEQuantumRenderer.js";
@@ -15,16 +14,16 @@ import { TextureData } from "@divinevoxel/vlox/Textures/Texture.types";
 import { VoxelScene } from "../Renderer/Scene/VoxelScene/VoxelScene";
 
 const defaultSubstances = [
-  "#dve_glow",
-  "#dve_flora",
-  "#dve_solid",
-  "#dve_transparent",
+  "dve_glow",
+  "dve_flora",
+  "dve_solid",
+  "dve_transparent",
 
-  "#dve_liquid",
+  "dve_liquid",
 ];
 export async function CreateTextures(scene: Scene, textureData: TextureData[]) {
-  TextureManager.getOrAddTextureType("#dve_voxel");
-  TextureManager.getOrAddTextureType("#dve_node");
+  TextureManager.getOrAddTextureType("dve_voxel");
+  TextureManager.getOrAddTextureType("dve_node");
 
   await TextureBuilder.setUpImageCreation();
   TextureManager.registerTexture(textureData);
@@ -46,28 +45,20 @@ export default async function CreateDefaultRenderer(
 
   const scene = initData.scene;
 
-  const createVoxelShader = (id: string) => {
-    const shader = DefaultMaterialManager.shaders.createVoxelShader(id);
-    shader.setCodeBody("vertex", `@${id}_vertex`);
-    shader.setCodeBody("frag", `@${id}_frag`);
-    DefaultMaterialManager.shaders.register.create([shader]);
-    return id;
-  };
-
   const DefaultSubstances: NodeSubstanceData[] = defaultSubstances.map((id) => {
     return {
       id,
       material: {
         alphaBlending:
-          id == "#dve_liquid" || id == "#dve_transparent" ? true : false,
+          id == "dve_liquid" || id == "dve_transparent" ? true : false,
         alphaTesting: true,
         backFaceCulling:
-          id == "#dve_liquid" || id == "#dve_flora" ? false : true,
-        stencil: id == "#dve_liquid" ? true : undefined,
+          id == "dve_liquid" || id == "dve_flora" ? false : true,
+        stencil: id == "dve_liquid" ? true : undefined,
         mipMapBias: -0.6,
       },
       textureType: id,
-      shaderId: createVoxelShader(id),
+      shaderId: id,
       mesh: {
         boundingBoxMaxSize: [1, 1, 1],
         type: "chunk",
@@ -88,7 +79,7 @@ export default async function CreateDefaultRenderer(
       await constructor.runAsyncTasks("sync-texuture-index", uvMap);
     }
 
-    const meshes: DVEQRNodeMesh[] = [];
+
     const materials: NodeMaterialData[] = [];
     for (const substance of DefaultSubstances) {
       const newMaterial = {
@@ -99,52 +90,29 @@ export default async function CreateDefaultRenderer(
       };
 
       materials.push(newMaterial);
-      meshes.push(
-        new DVEQRNodeMesh(
-          {
-            id: substance.id,
-            materialId: newMaterial.id,
-            boundingBoxMaxSize: [16, 16, 16],
-            type: substance.mesh.type,
-            worldMesh: true,
-          },
-          initData.scene
-        )
-      );
+
     }
 
     materials.push(
       {
-        id: "#dve_node",
-        shaderId: "#dve_node",
-        textureTypeId: "#dve_node",
+        id: "dve_node",
+        shaderId: "dve_node",
+        textureTypeId: "dve_node",
         alphaBlending: false,
         alphaTesting: true,
       },
       {
-        id: "#dve_skybox",
-        shaderId: "#dve_skybox",
+        id: "dve_skybox",
+        shaderId: "dve_skybox",
         textureTypeId: "",
         alphaBlending: false,
         alphaTesting: false,
       }
     );
-    meshes.push(
-      new DVEQRNodeMesh(
-        {
-          id: "#dve_node",
-          materialId: "#dve_node",
-          boundingBoxMaxSize: [1, 1, 1],
-        },
-        initData.scene
-      )
-    );
 
-    for (const mesh of meshes) {
-      renderer.nodes.meshes.register(mesh.data.id, mesh);
-    }
+ 
     for (const mat of materials) {
-      renderer.nodes.materials.register(mat.id, new DVEQMaterial(mat.id, mat));
+      renderer.materials.register(mat.id, new DVEQMaterial(mat.id, mat));
     }
     DefaultMaterialManager.init();
     /* 
@@ -157,7 +125,7 @@ export default async function CreateDefaultRenderer(
     }, 20);
  */
 
-    TextureManager.$START_ANIMATIONS();
+ //   TextureManager.$START_ANIMATIONS();
 
     // initData.afterCreate && (await initData.afterCreate({} as any));
   };

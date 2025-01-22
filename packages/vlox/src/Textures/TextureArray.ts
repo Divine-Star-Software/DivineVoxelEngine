@@ -1,11 +1,7 @@
 import type { TextureData } from "./Texture.types";
-import { URIShader } from "@amodx/uri/Shaders/Classes/URIShader";
 import { TextureManager } from "./TextureManager.js";
 import { TextureAnimationCreator } from "./TextureAnimations.js";
 import { TextureBuilder } from "./TextureBuilder.js";
-//import { DVENodeMaterial } from "../Materials/NodeMaterial.js";
-import { URIMaterial } from "@amodx/uri/Materials/URIMaterial";
-import { URITexture } from "@amodx/uri/Textures/URITexture";
 
 export class TextureArray {
   extension = "png";
@@ -31,7 +27,7 @@ export class TextureArray {
   /* actual renderer resource */
   shaderTexture: any|null = null;
   textureID = "";
-  materials: Map<string, URIMaterial> = new Map();
+
   attributeID = "textureIndex";
   constructor(public id: string) {
     this.textureID = id.replace("#", "");
@@ -64,7 +60,7 @@ export class TextureArray {
     this.totalTextures = 0;
   }
   flushAll() {
-    this.materials.clear();
+  //  this.materials.clear();
   }
 
   async build() {
@@ -114,12 +110,12 @@ export class TextureArray {
         anim.currentFrame = 0;
       }
       this.animationUniform[anim.uniformIndex] = anim.keys[anim.currentFrame];
-      for (const [key, material] of this.materials) {
+/*       for (const [key, material] of this.materials) {
         material!.setNumberArray(
           this.animationUniforID,
           this.animationUniform as any
         );
-      }
+      } */
     }
   }
 

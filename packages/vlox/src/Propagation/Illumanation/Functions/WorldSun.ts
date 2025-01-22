@@ -1,5 +1,4 @@
 //types
-import type { WorldSunTaskRequest } from "../../../Contexts/Constructor/Tasks/TasksRequest";
 //data
 import { WorldBounds } from "../../../Data/World/WorldBounds.js";
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
@@ -8,9 +7,10 @@ import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 
 import { IlluminationManager as IM } from "../IlluminationManager.js";
 import { HeightMapTool } from "../../../Tools/Data/WorldData/HeightMapTool.js";
-import { LightData } from "../../../Data/LightData";
+import { LightData } from "../../../VoxelData/LightData";
 import { WorldCursor } from "../../../Data/Cursor/World/WorldCursor";
 import { Vec3Array } from "@amodx/math";
+import { UpdateTask } from "../../../Contexts/Constructor/Tasks/UpdateTask";
 
 const worldCursor = new WorldCursor();
 const heightMapTool = new HeightMapTool();
@@ -23,9 +23,9 @@ const FloodOutPositions: Vec3Array[] = [
 ];
 const queue: number[] = [];
 
-export function RunWorldSun(tasks: WorldSunTaskRequest) {
+export function RunWorldSun(tasks: UpdateTask) {
   IM.setDimension(tasks.origin[0]);
-  tasks.start();
+
   WorldRegister.instance.setDimension(tasks.origin[0]);
   if (
     !WorldRegister.instance.column.get(
@@ -131,5 +131,5 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
     }
   }
 
-  tasks.stop();
+
 }

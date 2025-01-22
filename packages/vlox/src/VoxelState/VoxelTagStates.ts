@@ -1,4 +1,4 @@
-import { VoxelPalette } from "../Data/Voxel/VoxelPalette";
+import { VoxelPalette } from "../Data/Palettes/VoxelPalette";
 import { StateSchema } from "./Schema/StateSchema";
 import { StateTreeReader } from "./StateTreeReader";
 import { SchemaRegister } from "./SchemaRegister";

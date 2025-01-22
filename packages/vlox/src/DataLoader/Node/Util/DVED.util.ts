@@ -25,7 +25,7 @@ export const RegionData = {
 };
 
 export const RegionTagIds = {
-  sectorIndex: "#dved-column-sector-index",
-  columnLength: "#dved-column-legnth-index",
-  timeStamp: "#dved-column-save-timestamp",
+  sectorIndex: "dved-column-sector-index",
+  columnLength: "dved-column-legnth-index",
+  timeStamp: "dved-column-save-timestamp",
 };

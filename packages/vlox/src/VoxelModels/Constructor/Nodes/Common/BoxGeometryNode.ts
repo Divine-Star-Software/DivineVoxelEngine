@@ -4,7 +4,7 @@ import { VoxelBoxGeometryNode } from "../../../VoxelModel.types";
 
 import { Quad } from "@amodx/meshing/Primitives/Quad";
 
-import { addQuadWeights, QuadVertexWeights } from "../../../../Mesher/Calc/CalcConstants";
+import { addQuadWeights, QuadVertexWeights } from "./Calc/CalcConstants";
 
 import { VoxelGeometryTransform } from "../../../../VoxelData/VoxelSyncData";
 import { TransformBox } from "../../../Shared/Transform";

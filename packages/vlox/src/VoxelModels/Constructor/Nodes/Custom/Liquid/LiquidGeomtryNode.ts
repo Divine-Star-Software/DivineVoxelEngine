@@ -10,8 +10,8 @@ import { QuadScalarVertexData } from "@amodx/meshing/Primitives/QuadVertexData";
 import { VoxelFaceDirections, VoxelFaces } from "../../../../../Math";
 import { UpdateBounds } from "../../Common/BoundsFunctions";
 import { VoxelGeometry } from "../../../../../Mesher/Geometry/VoxelGeometry";
-import { LightData } from "../../../../../Data/LightData";
-import { shouldCauseFlip } from "../../../../../Mesher/Calc/CalcConstants";
+import { LightData } from "../../../../../VoxelData/LightData";
+import { shouldCauseFlip } from "../../Common/Calc/CalcConstants";
 import type { LiquidVoxelModelArgs } from "VoxelModels/Defaults/LiquidVoxelModel";
 import { FlowGradient } from "./FlowGradient";
 import { GetBoxGeometryNodeData } from "../../Common/BoxGeometryNode";
@@ -150,7 +150,7 @@ export class LiquidGeometryNode extends GeoemtryNode<
 > {
   worldLight: QuadScalarVertexData;
   init(): void {
-    console.log("INIT LIQUID MESH", this.data);
+   
   }
 
   isExposed(face: VoxelFaces) {

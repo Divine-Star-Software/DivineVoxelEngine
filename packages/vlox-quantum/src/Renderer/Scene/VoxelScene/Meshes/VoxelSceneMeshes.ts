@@ -1,7 +1,7 @@
 import { Vec3Array } from "@amodx/math";
 import { VoxelMesh } from "./VoxelMesh";
 import { VoxelScene } from "../VoxelScene";
-import { CompactMeshData } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
+import { CompactMeshData, CompactSubMesh } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
 import { VoxelMeshTypes } from "@divinevoxel/vlox/Mesher/Types/VoxelMesh.types";
 import { VoxelMeshRegister } from "./VoxelMeshRegister";
 export class VoxelSceneMeshes {
@@ -45,7 +45,7 @@ export class VoxelSceneMeshes {
 
   createMesh(position: Vec3Array, data: CompactMeshData) {
     if (data[0] == 0) return;
-
+  
     const vertexBuffer = data[1];
     const indicesBuffer = data[2];
     const bvhTreeBuffer = data[3];

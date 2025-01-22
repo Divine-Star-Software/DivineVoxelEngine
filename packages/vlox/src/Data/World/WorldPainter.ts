@@ -1,8 +1,8 @@
 import { PaintVoxelData } from "../../Data/Types/WorldData.types.js";
-import { VoxelPalette } from "../../Data/Voxel/VoxelPalette.js";
+import { VoxelPalette } from "../Palettes/VoxelPalette.js";
 import { WorldCursor } from "../../Data/Cursor/World/WorldCursor.js";
 import { SubstanceDataTool } from "../../Tools/Data/SubstanceDataTool.js";
-import { RawVoxelData } from "Data/Types/VoxelData.types.js";
+import { RawVoxelData } from "../../VoxelData/Voxel.types.js"
 
 const air: RawVoxelData = [0, 0, 0, 0, 0];
 

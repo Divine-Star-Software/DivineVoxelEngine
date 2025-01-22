@@ -9,11 +9,11 @@ import {
   UpdateTasks,
   AnaylzerTask,
   WorldSunTask,
-} from "../../Types/Tasks.types.js";
+} from "../../Data/Types/Tasks.types.js";
 
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { LocationData } from "../../Math";
-import type { RawVoxelData } from "../../Data/Types/VoxelData.types.js"
+import type { RawVoxelData } from "../../VoxelData/Voxel.types.js"
 import { ConstructorRemoteThreadTasks } from "../../Contexts/Constructor/Tasks/ConstructorRemoteThreadTasks.js";
 import { ConstructorTasksIds } from "../../Contexts/Constructor/Tasks/ConstructorTasksIds.js";
 import { DVEConstructorTasksQueues } from "../../Contexts/Constructor/Tasks/DVEConstructorTasksQueues.js";

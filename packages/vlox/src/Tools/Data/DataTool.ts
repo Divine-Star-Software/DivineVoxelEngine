@@ -1,23 +1,22 @@
-import type { RawVoxelData } from "../../Data/Types/VoxelData.types";
+import type { RawVoxelData } from "../../VoxelData/Voxel.types";
 import { DimensionsRegister } from "../../Data/World/DimensionsRegister.js";
-import { VoxelStateReader } from "../../Data/VoxelStateReader.js";
-import { VoxelStruct } from "../../Data/Voxel/VoxelStruct.js";
-import { VoxelPalette } from "../../Data/Voxel/VoxelPalette.js";
+import { VoxelStateReader } from "../../VoxelData/VoxelStateReader.js";
+import { VoxelStruct } from "../../Data/Structs/VoxelStruct.js";
+import { VoxelPalette } from "../../Data/Palettes/VoxelPalette.js";
 import { ChunkDataTool } from "./WorldData/ChunkDataTool.js";
 import { HeightMapTool } from "./WorldData/HeightMapTool.js";
 import { DataToolBase } from "../Classes/DataToolBase.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
-import { LightData } from "../../Data/LightData.js";
-import { VoxelStructProperties } from "../../Data/Constants/Structs/VoxelStructProperties.js";
+import { LightData } from "../../VoxelData/LightData.js";
+import { VoxelStructIds } from "../../Data/Constants/Structs/VoxelStructIds";
 import { MappedDataRegister } from "../../Data/Register/MappedDataRegister.js";
 import { SubstanceDataTool } from "./SubstanceDataTool.js";
 import { SafeInterval } from "@amodx/core/Intervals/SafeInterval.js";
 import { SafePromise } from "@amodx/core/Promises/SafePromise.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { PaintVoxelData } from "../../Data/Types/WorldData.types.js";
-import { VoxelTagIDs } from "../../Data/Constants/VoxelTagIds.js";
-import { SubstancePaletteReader } from "../../Data/Substance/SubstancePalette.js";
+import { SubstancePaletteReader } from "../../Data/Palettes/SubstancePalette.js";
 import { VoxelTagStates } from "../../VoxelState/VoxelTagStates";
 
 export enum DataToolModes {
@@ -268,7 +267,7 @@ export class DataTool extends DataToolBase {
     if (vID == 0) return this.data.raw[1];
     if (vID < 2) return -1;
 
-    const lightValue = this.__struct[VoxelTagIDs.lightValue];
+    const lightValue = this.__struct[VoxelStructIds.lightValue];
     if (this.isOpaque()) {
       if (this.isLightSource() && lightValue) {
         return lightValue;
@@ -287,7 +286,7 @@ export class DataTool extends DataToolBase {
   }
 
   isOpaque() {
-    return this.__struct[VoxelTagIDs.isTransparent] == 0;
+    return this.__struct[VoxelStructIds.isTransparent] == 0;
   }
   getMod() {
     return this.data.raw[4];
@@ -321,91 +320,78 @@ export class DataTool extends DataToolBase {
     return this.data.secondaryId > 1;
   }
   canHaveSecondaryVoxel() {
-    return this.__struct[VoxelTagIDs.canHaveSecondary] == 1;
+    return this.__struct[VoxelStructIds.canHaveSecondary] == 1;
   }
 
   //voxel data
-  getShapeId() {
-    const vID = this._loadedId;
-    if (vID < 2) return -1;
-    return this.__struct[VoxelTagIDs.shapeID];
-  }
-  getShapeStringId() {
-    const vID = this._loadedId;
-    if (vID < 2) return "";
-    return MappedDataRegister.stringMaps.get(
-      "voxel",
-      VoxelStructProperties.shapeID,
-      this.__struct[VoxelTagIDs.shapeID]
-    );
-  }
+
   isLightSource() {
     const vID = this._loadedId;
     if (vID < 2) return false;
     return VoxelTagStates.isRegistered(
       this._loadedId,
-      VoxelTagIDs.isLightSource
+      VoxelStructIds.isLightSource
     )
       ? VoxelTagStates.getValue(
           this._loadedId,
-          VoxelTagIDs.isLightSource,
+          VoxelStructIds.isLightSource,
           this.getShapeState()
         ) === true
-      : this.__struct[VoxelTagIDs.isLightSource] == 1;
+      : this.__struct[VoxelStructIds.isLightSource] == 1;
   }
   noAO() {
     const vID = this._loadedId;
     if (vID < 2) return false;
-    return this.__struct[VoxelTagIDs.noAO] == 1;
+    return this.__struct[VoxelStructIds.noAO] == 1;
   }
   getLightSourceValue() {
     const vID = this._loadedId;
     if (vID < 2) return 0;
-    return this.__struct[VoxelTagIDs.lightValue];
+    return this.__struct[VoxelStructIds.lightValue];
   }
   getSubstanceStringId() {
     const vID = this._loadedId;
-    if (vID < 2) return "#dve_transparent";
+    if (vID < 2) return "dve_transparent";
     return SubstancePaletteReader.id.stringFromNumber(this.getSubstance());
   }
   getSubstance() {
     const vID = this._loadedId;
     if (vID < 2) return -1;
-    return this.__struct[VoxelTagIDs.substance];
+    return this.__struct[VoxelStructIds.substance];
   }
   getMaterial() {
     const vID = this._loadedId;
     if (vID < 2) return "none";
     return MappedDataRegister.stringMaps.get(
       "voxel",
-      VoxelStructProperties.material,
-      this.__struct[VoxelTagIDs.material]
+      VoxelStructIds.material,
+      this.__struct[VoxelStructIds.material]
     );
   }
   getHardness() {
     const vID = this._loadedId;
     if (vID < 2) return 0;
-    return this.__struct[VoxelTagIDs.hardness];
+    return this.__struct[VoxelStructIds.hardness];
   }
   getCollider() {
     const vID = this._loadedId;
     return MappedDataRegister.stringMaps.get(
       "voxel",
-      VoxelStructProperties.colliderID,
-      this.__struct[VoxelTagIDs.colliderID]
+      VoxelStructIds.colliderID,
+      this.__struct[VoxelStructIds.colliderID]
     );
   }
   checkCollisions() {
     const vID = this._loadedId;
     if (vID == 0) return false;
     if (vID == 1) return true;
-    return this.__struct[VoxelTagIDs.checkCollisions] == 1;
+    return this.__struct[VoxelStructIds.checkCollisions] == 1;
   }
 
   isRich() {
     const vID = this._loadedId;
     if (vID < 2) return 0;
-    return this.__struct[VoxelTagIDs.isRich] == 1;
+    return this.__struct[VoxelStructIds.isRich] == 1;
   }
 
   //util

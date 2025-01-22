@@ -1,10 +1,5 @@
-import { DivineVoxelEngineNexus } from "@divinevoxel/vlox/Contexts/Nexus/DivineVoxelEngineNexus";
-import { DVEDataCore } from "@divinevoxel/vlox/Data/DVEDataCore";
-const data = new DVEDataCore();
+import { StartNexus } from "@divinevoxel/vlox/Init/StartNexus";
 
-const DVEN = new DivineVoxelEngineNexus({
-  data,
-});
-await DVEN.init();
+const DVEN = await StartNexus();
 
 (self as any).DVEN = DVEN;

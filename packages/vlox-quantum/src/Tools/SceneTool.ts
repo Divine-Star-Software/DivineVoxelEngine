@@ -1,7 +1,8 @@
-import type { DVEFogTypes } from "@divinevoxel/vlox/Shaders/Types/Shader.types.js";
-
 import { Vec3Array } from "@amodx/math";
+
+
 import { DefaultMaterialManager } from "../Materials/DefaultMaterialManager";
+import { DVEFogTypes } from "Adapter/Shaders/Shader.types";
 export class SceneTool {
   constructor() {}
 

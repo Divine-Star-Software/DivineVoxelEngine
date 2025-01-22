@@ -1,28 +1,21 @@
 import type { Scene } from "@babylonjs/core";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode.js";
 import { Vector3, Vector4 } from "@babylonjs/core/Maths/math.vector.js";
-import { DVEFOManager } from "@divinevoxel/vlox/Interfaces/Render/DVEFOManager.js";
-import { DVEBRScene } from "./Scene/DVEBRScene";
-import { URINode } from "@amodx/uri/Meshes/URINode";
-import { DVEBRNode } from "./Meshes/DVEBRNode";
-export class DVEBRFOManager extends DVEFOManager {
+export class DVEBRFOManager  {
   activeCamera: TransformNode | null = null;
   activeNode: TransformNode | null = null;
   onOriginSet: Function[] = [];
 
-  uriNode = new DVEBRNode();
 
-  constructor(public scene: DVEBRScene) {
-    super(scene);
-  }
+  node: TransformNode;
 
   registerOnOriginSet(run: (node: TransformNode) => void) {
     this.onOriginSet.push(run);
   }
-  getActiveNode(): URINode<TransformNode> | null {
+  getActiveNode(): TransformNode | null {
     if (!this.activeNode) return null;
-    if (!this.uriNode._node) this.uriNode._node = this.activeNode;
-    return this.uriNode;
+    if (!this.node) this.node = this.activeNode;
+    return this.node;
   }
   setOriginCenter(scene: Scene, object: { position: Vector3 }) {
     this.activeNode = new TransformNode("", scene);

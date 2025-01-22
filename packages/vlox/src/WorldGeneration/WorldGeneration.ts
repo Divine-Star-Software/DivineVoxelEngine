@@ -6,7 +6,7 @@ import { WorldGenRegister } from "./WorldGenRegister.js";
 import { WorldGenBrush } from "./WorldGenBrush.js";
 import { SafeInterval } from "@amodx/core/Intervals/SafeInterval.js";
 import { WorldGenInterface } from "../Interfaces/WorldGen/WorldGen.types.js";
-import { GenerateTasks } from "../Types/Tasks.types.js";
+import { GenerateTasks } from "../Data/Types/Tasks.types.js";
 import { Threads } from "@amodx/threads";
 import { ConstructorTasksIds } from "../Contexts/Constructor/Tasks/ConstructorTasksIds.js";
 
