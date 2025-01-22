@@ -123,7 +123,7 @@ export class DVEBRChunkMeshes extends DVEChunkMeshes {
         mesh = chunk.meshes.get(subMeshMaterial) as Mesh;
       } else {
         mesh = new Mesh("", this.scene);
-        mesh.doNotSyncBoundingInfo = true;
+       // mesh.doNotSyncBoundingInfo = true;
       }
       mesh.unfreezeWorldMatrix();
       mesh.position.x = location[0];
@@ -135,6 +135,8 @@ export class DVEBRChunkMeshes extends DVEChunkMeshes {
       mesh.material = this.renderer.materials.get(subMeshMaterial)!._material;
 
       mesh.freezeWorldMatrix();
+
+      chunk.meshes.set(subMeshMaterial, mesh);
 
       if (EngineSettings.settings.meshes.clearChachedGeometry) {
         mesh.geometry!.clearCachedData();
@@ -152,7 +154,6 @@ export class DVEBRChunkMeshes extends DVEChunkMeshes {
         chunk.meshes.delete(key);
       }
     }
-
 
     return chunk;
   }

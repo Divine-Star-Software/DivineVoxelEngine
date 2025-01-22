@@ -5,6 +5,7 @@ import { VoxelGeometryData, VoxelModelData } from "../Models/VoxelModel.types";
 import InitDataGenerator from "../Contexts/Base/Main/Generator/InitDataGenerator";
 import { VoxelSubstanceData } from "Voxels/VoxelSubstances.types";
 import { Thread, ThreadPool } from "@amodx/threads";
+import InitWorldDataSync from "../Contexts/Base/Remote/Sync/InitWorldDataSync";
 type StartRendererProps = {
   voxels: VoxelData[];
   geometry?: VoxelGeometryData[];
@@ -61,6 +62,8 @@ export async function StartRenderer(initData: StartRendererProps) {
     materials: initData.materials || [],
     // voxelModels: modelSyncData,
   });
+
+  InitWorldDataSync();
 
   const modelSyncData = await InitVoxelData({
     geometry: initData.geometry,

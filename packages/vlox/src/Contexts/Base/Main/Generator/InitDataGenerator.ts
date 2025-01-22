@@ -8,9 +8,6 @@ import { VoxelStructBuilder } from "../../../../Data/Structs/Builder/VoxelStruct
 import { SubstanceStructBuilder } from "../../../../Data/Structs/Builder/SubstanceStructBuilder";
 import { VoxelStruct } from "../../../../Data/Structs/VoxelStruct";
 import { SubstanceStruct } from "../../../../Data/Structs/SubstanceStruct";
-import { ChunkStatStruct } from "../../../../Data/Structs/ChunkStruct";
-import { ColumnStateStruct } from "../../../../Data/Structs/ColumnStruct";
-import { RegionStateStruct } from "../../../../Data/Structs/RegionStruct";
 import { LightData } from "../../../../Voxels/LightData";
 import { InitalizeChunkTags } from "../../../../Data/Structs/ChunkStruct.js";
 import { InitalizeColumnTags } from "../../../../Data/Structs/ColumnStruct.js";
@@ -22,6 +19,7 @@ import { MappedDataRegister } from "../../../../Data/Register/MappedDataRegister
 import { MaterialPalette } from "../../../../Data/Palettes/MaterialPalette";
 import { VoxelMaterialData } from "Voxels";
 import { MaterialDataGenerator } from "./Segments/MaterialDataGenerator";
+import { Chunk, Column, Region } from "../../../../Data/World/Classes";
 export default function InitDataGenerator(
   data: DataGeneratorData
 ): DataSyncData {
@@ -207,9 +205,9 @@ export default function InitDataGenerator(
       palette: MaterialPalette.palette._palette,
     },
     worldData: {
-      chunkStruct: ChunkStatStruct.structData,
-      columnStruct: ColumnStateStruct.structData,
-      regionStruct: RegionStateStruct.structData,
+      chunkStruct: Chunk.StateStruct.structData,
+      columnStruct: Column.StateStruct.structData,
+      regionStruct: Region.StateStruct.structData,
     },
     voxel: {
       palette: VoxelDataGenerator.palette._palette,

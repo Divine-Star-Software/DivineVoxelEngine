@@ -3,7 +3,7 @@ import { WorldSpaces } from "../World/WorldSpaces.js";
 import { ChunkStructProperties } from "../Structs/Constants/ChunkStructProperties.js";
 import { Chunk } from "../World/Classes/Chunk.js"
 
-export const ChunkStatStruct = new BinaryStruct("chunk-tags");
+const ChunkStatStruct = new BinaryStruct("chunk-tags");
 ChunkStatStruct.registerProperty(
   {
     id: ChunkStructProperties.minHeight,

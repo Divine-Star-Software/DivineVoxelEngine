@@ -279,6 +279,7 @@ export class Generator extends LocationBoundTool {
         allLoaded,
       };
     }
+    
     if (!this.nColumnTool.getStructValue(ColumnState.GenDone)) {
       genAlldone = false;
     }
@@ -558,6 +559,7 @@ export class Generator extends LocationBoundTool {
       const { nWorldGenAllDone, nSunAllDone, nPropagtionAllDone } =
         this.getColumnState([cx, 0, cz], queue);
 
+  
       if (nWorldGenAllDone && nSunAllDone && nPropagtionAllDone) {
         /*     if (this.debounedRemoveMesh.hasTasks(columnKey)) {
           this.debounedRemoveMesh.clearTasks(columnKey);

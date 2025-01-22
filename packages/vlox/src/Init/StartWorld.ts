@@ -1,17 +1,20 @@
-import InitDataSync from "../Contexts/Base/Remote/Sync/InitDataSync"
+import InitDataSync from "../Contexts/Base/Remote/Sync/InitDataSync";
 import { DivineVoxelEngineWorld } from "../Contexts/World/DivineVoxelEngineWorld";
 import { Threads } from "@amodx/threads/";
 import { CreatePromiseCheck } from "@amodx/core/Intervals/CreatePromiseCheck.js";
 import { WorldLock } from "../Contexts/World/Lock/WorldLock";
 import InitWorldTasks from "../Contexts/World/Tasks/WorldTasks";
 import { DataLoaderTool } from "../Tasks/DataLoader/World/Tools/DataLoaderTool";
-import { DataHooks } from "../Contexts/Base/DataHooks"
+import { DataHooks } from "../Contexts/Base/DataHooks";
 import { Chunk, Column, Region } from "../Data/World/Classes";
 import { Environment } from "@amodx/core/Environment/Environment";
 import { VoxelTagStates } from "../Voxels/State/VoxelTagStates";
 import { SchemaRegister } from "../Voxels/State/SchemaRegister";
+import { WorldRegister } from "../Data/World/WorldRegister";
 type StartWorldProps = {};
 export async function StartWorld(props: StartWorldProps = {}) {
+  const register = new WorldRegister();
+
   const DVEW = new DivineVoxelEngineWorld();
   InitWorldTasks(DVEW);
   DivineVoxelEngineWorld.environment = Environment.nodeJS.isNode
@@ -26,7 +29,6 @@ export async function StartWorld(props: StartWorldProps = {}) {
   let ready = false;
   InitDataSync({
     onSync(data) {
-    
       if (data.threads.nexus) {
         DVEW.threads.addThread(DVEW.threads.nexus);
       }

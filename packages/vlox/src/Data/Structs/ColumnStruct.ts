@@ -1,6 +1,6 @@
 import { BinaryNumberTypes, BinaryStruct } from "@amodx/binary/";
 import { Column } from "../World/Classes/Column.js";
-export const ColumnStateStruct = new BinaryStruct("column-tags");
+const ColumnStateStruct = new BinaryStruct("column-tags");
 ColumnStateStruct.registerProperty(
   {
     id: "dve_last_save_timestamp",

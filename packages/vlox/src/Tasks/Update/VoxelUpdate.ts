@@ -145,8 +145,6 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
     }
   }
   voxel = tasks.sDataCursor.getVoxel(x, y, z)!;
-
-  console.warn("GET VOXEL", voxel.getSubstance(), voxel.isAir());
   if (ES.doFlow()) {
     if (
       !voxel.isAir() &&

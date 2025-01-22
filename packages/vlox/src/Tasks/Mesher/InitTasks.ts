@@ -31,6 +31,7 @@ export default function (mesher: DVEMesher) {
   Threads.registerTasks<BuildTasks>(
     TasksIds.BuildColumn,
     async (data, onDone) => {
+        
       WorldRegister.instance.setDimension(data[0][0]);
       const column = WorldRegister.instance.column.get(
         data[0][1],

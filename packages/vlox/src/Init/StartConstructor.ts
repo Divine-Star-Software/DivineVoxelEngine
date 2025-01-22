@@ -1,4 +1,4 @@
-import InitDataSync from "../Contexts/Base/Remote/Sync/InitDataSync"
+import InitDataSync from "../Contexts/Base/Remote/Sync/InitDataSync";
 import { DivineVoxelEngineConstructor } from "../Contexts/Constructor/DivineVoxelEngineConstructor";
 import { Threads } from "@amodx/threads";
 import { CreatePromiseCheck } from "@amodx/core/Intervals/CreatePromiseCheck";
@@ -10,6 +10,7 @@ import InitUpdateTasks from "../Tasks/Update/InitTasks";
 import InitPropagationTasks from "../Tasks/Propagation/InitTasks";
 import InitMesherTasks from "../Tasks/Mesher/InitTasks";
 import InitWorldGenerationTasks from "../Tasks/WorldGeneration/InitTasks";
+import InitWorldDataSync from "../Contexts/Base/Remote/Sync/InitWorldDataSync";
 
 export async function StartContrusctor(data: {} = {}) {
   const DVEC = new DivineVoxelEngineConstructor();
@@ -43,6 +44,7 @@ export async function StartContrusctor(data: {} = {}) {
     checkInterval: 1,
   });
 
+  InitWorldDataSync();
   InitAnalyzerTasks();
   InitPropagationTasks();
   InitMesherTasks(DVEC.mesher);

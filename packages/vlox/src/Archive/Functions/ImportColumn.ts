@@ -31,7 +31,7 @@ const updateChunkBuffers = (
         chunk.palettes.id?.length || Infinity,
         column.palettes.id?.length || 0
       ),
-      chunk.buffers.id
+      chunk.buffers.id as any
     ) as any;
   }
   if (
@@ -44,7 +44,7 @@ const updateChunkBuffers = (
         chunk.palettes.light?.length || Infinity,
         column.palettes.light?.length || 0
       ),
-      chunk.buffers.light
+      chunk.buffers.light as any
     ) as any;
   }
 
@@ -58,7 +58,7 @@ const updateChunkBuffers = (
         chunk.palettes.state?.length || Infinity,
         column.palettes.state?.length || 0
       ),
-      chunk.buffers.state
+      chunk.buffers.state as any
     ) as any;
   }
 
@@ -72,7 +72,7 @@ const updateChunkBuffers = (
         chunk.palettes.mod?.length || Infinity,
         column.palettes.mod?.length || 0
       ),
-      chunk.buffers.mod
+      chunk.buffers.mod as any
     ) as any;
   }
 
@@ -97,7 +97,7 @@ const updateChunkBuffers = (
           column.palettes.secondaryState?.length || 0
         )
       ),
-      chunk.buffers.secondary
+      chunk.buffers.secondary as any
     ) as any;
   }
 };
