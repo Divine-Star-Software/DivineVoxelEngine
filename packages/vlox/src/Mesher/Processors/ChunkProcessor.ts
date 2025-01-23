@@ -102,7 +102,7 @@ export class ChunkProcessor {
       this.heightMapTool.chunk.setY(y).setDirty(false);
     }
     VoxelGeometryLookUp.stop();
-    const trasnfers: any[] = [];
+    const transfers: any[] = [];
     const chunkEffects: SetChunkMeshTask[2] = [];
 
     const chunks = <SetChunkMeshTask>[
@@ -116,7 +116,7 @@ export class ChunkProcessor {
     for (const [substance, mesher] of RenderedSubstances.meshers) {
       for (const e in mesher.effects) {
         const float = Float32Array.from(mesher.effects[e]);
-        trasnfers.push(float.buffer);
+        transfers.push(float.buffer);
         chunkEffects.push([e, float]);
       }
       if (mesher.mesh!.positions.length == 0) {
@@ -127,7 +127,7 @@ export class ChunkProcessor {
     }
 
     const compactMesh = CompactVoxelMesh(...meshed);
-    trasnfers.push(
+    transfers.push(
       ...(compactMesh[0] == 0
         ? [compactMesh[1]]
         : [
@@ -145,7 +145,7 @@ export class ChunkProcessor {
     DivineVoxelEngineConstructor.instance.threads.parent.runTasks<SetChunkMeshTask>(
       "set-chunk",
       chunks,
-      trasnfers
+      transfers
     );
   }
 }
