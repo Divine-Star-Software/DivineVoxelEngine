@@ -5,21 +5,19 @@ export const TextureRegister = {
   textureDataHasBeenSet: false,
 
   data: <TextureTypeUVMap>{},
-  getTextureUV(data: ConstructorTextureData, overlay: boolean = false): number {
+  getTextureUV(data: ConstructorTextureData): number {
     const [textureType, textureId, varation] = data;
     let id = textureId;
     if (varation) {
       id = `${textureId}:${varation}`;
     }
     let uv = -1;
-    if (!overlay) {
-      uv = this.data[textureType]["main"][id];
-    } else {
-      uv = this.data[textureType]["overlay"][id];
-    }
+
+    uv = this.data[textureType][id];
+
     if (uv == -1) {
       throw new Error(
-        `Texture with id: ${id} does not exists. Overlay : ${overlay}`
+        `Texture with id: ${id} does not exists.`
       );
     }
     return uv;

@@ -14,7 +14,7 @@ export function GenerateTree(
   logId: string,
   leafId: string
 ) {
-  const height = ((Math.random() * 15) >> 0) + 5;
+/*   const height = ((Math.random() * 15) >> 0) + 5;
 
   const rx = ((sx - 5 + Math.random() * 10) >> 0) + 1;
 
@@ -68,5 +68,5 @@ export function GenerateTree(
     brush.setXYZ(end.x, end.y + i, end.z).paint();
     GenerateCircle(brush, leafId, end.x, end.y + i, end.z, radius, true, true);
     radius++;
-  }
+  } */
 }

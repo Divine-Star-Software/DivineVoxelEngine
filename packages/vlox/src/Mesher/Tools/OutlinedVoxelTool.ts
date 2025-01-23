@@ -106,7 +106,8 @@ const generateCheck = (
   normal: Vec3Array,
   sets: Vec3Array[]
 ) => {
-  const { x, y, z } = tool.voxel;
+  return 0;
+  /*   const { x, y, z } = tool.position;
 
   let key = 0b0;
 
@@ -134,7 +135,7 @@ const generateCheck = (
   }
   if (uvsSets[direction][key] == undefined) return 0;
   const index = uvsSets[direction][key];
-  return OutlinedVoxelTool._currentTexts[index];
+  return OutlinedVoxelTool._currentTexts[index]; */
 };
 
 export class OutlinedVoxelTool {
@@ -224,30 +225,27 @@ export class OutlinedVoxelTool {
     onRegister: (uvs: number[]) => void
   ) {
     const overlayTextures: number[] = [];
-    DVEMesher.observers.texturesRegistered.subscribeOnce(
-      (textureManager) => {
-        const type = texture[0];
-        const id = texture[1];
-        overlayTextures.push(
-          textureManager.getTextureUV([type, id, "top"], true) /** */,
-          textureManager.getTextureUV([type, id, "corner-top-right"], true),
-          textureManager.getTextureUV([type, id, "corner-top-left"], true),
-          textureManager.getTextureUV(
-            [type, id, "corner-top-left-top-right"],
-            true
-          ),
-          textureManager.getTextureUV([type, id, "bottom"], true),
-          textureManager.getTextureUV([type, id, "corner-bottom-right"], true),
-          textureManager.getTextureUV([type, id, "corner-bottom-left"], true),
-          textureManager.getTextureUV(
-            [type, id, "corner-bottom-left-bottom-right"],
-            true
-          ),
-          textureManager.getTextureUV([type, id, "right"], true),
-          textureManager.getTextureUV([type, id, "left"], true)
-        );
-        onRegister(overlayTextures);
-      }
-    );
+    /*     DVEMesher.observers.texturesRegistered.subscribeOnce((textureManager) => {
+      const type = texture[0];
+      const id = texture[1];
+      overlayTextures.push(
+        textureManager.getTextureUV([type, id, "top"]) ,
+        textureManager.getTextureUV([type, id, "corner-top-right"]),
+        textureManager.getTextureUV([type, id, "corner-top-left"]),
+        textureManager.getTextureUV([type, id, "corner-top-left-top-right"]),
+        textureManager.getTextureUV([type, id, "bottom"]),
+        textureManager.getTextureUV([type, id, "corner-bottom-right"]),
+        textureManager.getTextureUV([type, id, "corner-bottom-left"]),
+        textureManager.getTextureUV([
+          type,
+          id,
+          "corner-bottom-left-bottom-right",
+        ]),
+        textureManager.getTextureUV([type, id, "right"]),
+        textureManager.getTextureUV([type, id, "left"])
+      );
+      onRegister(overlayTextures);
+    });
+ */
   }
 }

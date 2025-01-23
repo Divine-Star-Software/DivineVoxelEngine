@@ -9,7 +9,7 @@ import { WorldBounds } from "../../../Data/World/WorldBounds.js";
 import { LocationBoundTool } from "../../../Tools/Classes/LocationBoundTool.js";
 import { ChunkDataTool } from "./ChunkDataTool.js";
 //constants
-import { ChunkStructProperties } from "../../../Data/Constants/Structs/ChunkStructProperties.js";
+import { ChunkStructProperties } from "../../../Data/Structs/Constants/ChunkStructProperties.js";
 import { $2dMooreNeighborhood } from "../../../Math/Constants/CardinalNeighbors.js";
 import { Vec3Array } from "@amodx/math";
 

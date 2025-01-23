@@ -1,76 +1,61 @@
 import { LocationData } from "../Math/index.js";
-import { VoxelConstructorsRegister } from "./Constructors/Voxel/VoxelConstructorsRegister.js";
 import { ChunkProcessor } from "./Processors/ChunkProcessor.js";
-import { OverrideManager } from "./Rules/Overrides/OverridesManager.js";
-import { RenderedSubstances } from "./Rules/RenderedSubstances.js";
-import { TextureRegister } from "../Textures/TextureRegister.js";
 import { MesherManager } from "./Meshers/MesherManager.js";
-import { DivineVoxelEngineConstructor } from "../Contexts/Constructor/DivineVoxelEngineConstructor.js";
 import { BuildNodeMesh } from "./Tasks/BuidlerTasks.types.js";
-import { SubstanceRules } from "./Rules/SubstanceRules.js";
-import { VoxelConstructor } from "./Constructors/Voxel/Classes/VoxelConstructor.js";
-import { VoxelShapeManager } from "./Shapes/VoxelShapeManager.js";
-import { Observable } from "@amodx/core/Observers";
-export type DVEMesherInitData = {
-  constructors: VoxelConstructor[];
-};
-export class DVEMesher  {
-  static observers = {
-    texturesRegistered: new Observable<typeof TextureRegister>(),
-  };
+import { RenderedSubstances } from "./Substances/RenderedSubstances.js";
+import { DataSyncData } from "../Contexts/Base/Remote/Sync/DataSync.types.js";
+import { VoxelModelConstructorRegister } from "./Models/VoxelModelConstructorRegister.js";
+import { LiquidGeometryNode } from "./Models/Nodes/Custom/Liquid/LiquidGeomtryNode.js";
+import { SchemaRegister } from "../Voxels/State/SchemaRegister.js";
+import { VoxelTagStates } from "../Voxels/State/VoxelTagStates.js";
+import { VoxelConstructor } from "./Models/VoxelConstructor.js";
+
+export class DVEMesher {
   static instance: DVEMesher;
-  static get defaults() {
-    return VoxelConstructorsRegister.defaults;
-  }
-  constructors = VoxelConstructorsRegister;
-  textureManager = TextureRegister;
   chunkProcessor = new ChunkProcessor();
   nodes = MesherManager;
-  overrides = OverrideManager;
-  renderedSubstances = RenderedSubstances;
-
-  shapes = VoxelShapeManager;
-
-  observers = DVEMesher.observers;
-
-  constructor(data: DVEMesherInitData) {
-
+  constructor() {
     if (!DVEMesher.instance) DVEMesher.instance = this;
-
-    this.constructors.registerVoxel(data.constructors);
 
     return DVEMesher.instance;
   }
 
-  init() {
-    this.shapes.init();
-    DivineVoxelEngineConstructor.instance.TC.registerTasks(
-      "sync-texuture-index",
-      (data: any) => {
-        this.textureManager.setTextureIndex(data);
-        this.constructors.constructors.forEach((_) => {
-          try {
-            _.onTexturesRegistered(this.textureManager);
-          } catch (error) {
-            console.log("error when loading textures into constructors");
-            console.log(_);
-            console.error(error);
-          }
-        });
-        this.observers.texturesRegistered.notify(this.textureManager);
-        this.textureManager.releaseTextureData();
-        SubstanceRules.buildRules();
+  init(data: DataSyncData) {
+    for (const mat of data.materials.palette) {
+      RenderedSubstances.add(mat);
+    }
+    if (data.modelData) {
+      const modelData = data.modelData;
+      VoxelModelConstructorRegister.registerCustomNode(
+        "liquid",
+        LiquidGeometryNode
+      );
+      VoxelModelConstructorRegister.setGeometryPalette(
+        modelData.geometryPalette
+      );
+
+      VoxelModelConstructorRegister.registerGeometry(modelData.geometry);
+      VoxelModelConstructorRegister.registerModels(modelData.models);
+
+      for (const model of modelData.models) {
+        SchemaRegister.registerModel(model.id, model.schema);
       }
-    );
-    DivineVoxelEngineConstructor.instance.TC.registerTasks<BuildNodeMesh>(
-      "build-node-mesh",
-      (data, onDone) => {
-        const nodeData = this.nodes.buildNode(data);
-        if (!nodeData) return onDone ? onDone(false) : 0;
-        onDone ? onDone(nodeData[0], nodeData[1]) : 0;
-      },
-      "deferred"
-    );
+
+      for (const voxel of modelData.voxels) {
+        SchemaRegister.registerVoxel(voxel.id, voxel.modelId, voxel.modSchema);
+      }
+      VoxelTagStates.load(modelData.tagState);
+
+      for (const voxel of modelData.voxels) {
+        VoxelModelConstructorRegister.registerVoxel(
+          new VoxelConstructor(
+            voxel.id,
+            VoxelModelConstructorRegister.modelData.get(voxel.modelId)!,
+            voxel
+          )
+        );
+      }
+    }
   }
   meshChunk(location: LocationData, LOD = 1, priority = 0) {
     this.chunkProcessor.build(location);

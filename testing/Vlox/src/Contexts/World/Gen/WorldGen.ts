@@ -1,7 +1,12 @@
 import { AdvancedBrush } from "@divinevoxel/vlox/Tools/Brush/AdvancedBrushTool";
+import { WorldCursor } from "@divinevoxel/vlox/Data/Cursor/World/WorldCursor";
+import { VoxelCursor } from "@divinevoxel/vlox/Data/Cursor/VoxelCursor";
+const worldCursor = new WorldCursor();
+const voxelCursor = new VoxelCursor();
 const brush = new AdvancedBrush();
 
 export const WorldGen = {
+  worldCursor,
   chunkDepth: 16,
   chunkWidth: 16,
   worldHeight: 256,
@@ -142,7 +147,6 @@ export const WorldGen = {
     }
   },
 
-  
   generateNormalChunk(chunkX: number, chunkZ: number) {
     for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
       for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
@@ -160,7 +164,6 @@ export const WorldGen = {
       }
     }
   },
-
 
   //1376271
   generateRoofChunk(chunkX: number, chunkZ: number) {
@@ -182,7 +185,6 @@ export const WorldGen = {
       }
     }
   },
-
 
   generateBlankChunk(chunkX: number, chunkZ: number) {
     for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
@@ -212,7 +214,6 @@ export const WorldGen = {
       }
     }
   },
-
 
   generateBoxChunk(chunkX: number, chunkZ: number) {
     for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
@@ -264,25 +265,29 @@ export const WorldGen = {
       for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
         for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
           //   if (Math.random() > 0.85) continue;
-        brush.setId("dve_dread_stone").setXYZ(x, y, z).paint();
+          brush.setId("dve_dread_stone").setXYZ(x, y, z).paint();
         }
       }
     }
   },
 
   pyramidColumn(chunkX: number, chunkZ: number) {
+    const columnCursor = this.worldCursor.getColumn(chunkX, 0, chunkZ)!;
     let minus = 0;
-    const height = (10 + Math.random() * 10) >> 0;
-    for (let y = 1; y < height; y++) {
-      if (y % 3 == 0) continue;
+    voxelCursor.setStringId("dve_dread_stone").process();
+    const height = 20;
+    for (let y = 1; y < 1 + height; y++) {
+      if (y % 2 == 0) continue;
       for (let x = chunkX + minus; x < this.chunkWidth + chunkX - minus; x++) {
         for (
           let z = chunkZ + minus;
           z < this.chunkDepth + chunkZ - minus;
           z++
         ) {
-          //   if (Math.random() > 0.85) continue;
-          brush.setId("dve_dread_stone").setXYZ(x, y, z).paint();
+          columnCursor
+            .getVoxel(x, y, z)!
+            .setId(voxelCursor.id)
+            .updateHeightMap(0);
         }
       }
       minus++;
@@ -290,7 +295,7 @@ export const WorldGen = {
   },
 
   generateWorldColumn(chunkX: number, chunkZ: number) {
-    brush.start();
+  //  brush.start();
     return this.generateBlankChunk(chunkX, chunkZ);
     let toss = Math.random();
 

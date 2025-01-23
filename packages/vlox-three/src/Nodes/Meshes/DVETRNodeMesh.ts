@@ -4,16 +4,16 @@ import { Box3, Vector3 } from "three";
 
 import type {
   NodeMeshData,
-  DVENodeMeshAttributes,
+  DVEChunkMeshesAttributes,
 } from "@divinevoxel/core/Interfaces/Render/Nodes/DVERenderNode.types.js";
 
 import { DVEThreeRenderer } from "../../DVEThreeRenderer";
 import { DVETRMesh } from "./DVETRMesh";
 import { DVETRScene } from "Scene/DVETRScene";
-import { DVENodeMesh } from "@divinevoxel/core/Interfaces/Render/Nodes/Meshes/DVENodeMesh";
+import { DVEChunkMeshes } from "@divinevoxel/core/Interfaces/Render/Nodes/Meshes/DVEChunkMeshes";
 import { EngineSettingsData } from "@divinevoxel/core/Types/EngineSettings.types";
 
-export class DVETRNodeMesh extends DVENodeMesh {
+export class DVETRNodeMesh extends DVEChunkMeshes {
   pickable = false;
   checkCollisions = false;
   serialize = false;
@@ -27,7 +27,7 @@ export class DVETRNodeMesh extends DVENodeMesh {
     this.scene = DVEThreeRenderer.instance.scene; // Assuming DVEThreeRenderer.scene is a THREE.Scene
   }
 
-  createMesh(location: Vector3Tuple, data: DVENodeMeshAttributes) {
+  createMesh(location: Vector3Tuple, data: DVEChunkMeshesAttributes) {
     const geometry = new THREE.BufferGeometry();
 
     const mat = DVEThreeRenderer.instance.nodes.materials.get(this.data.id);
@@ -59,7 +59,7 @@ export class DVETRNodeMesh extends DVENodeMesh {
 
   updateVertexData(
     location: Vector3Tuple,
-    data: DVENodeMeshAttributes,
+    data: DVEChunkMeshesAttributes,
     dveMesh: DVETRMesh
   ) {
     const mesh = dveMesh._mesh;

@@ -9,14 +9,15 @@ import {
   UpdateTasks,
   AnaylzerTask,
   WorldSunTask,
-} from "../../Types/Tasks.types.js";
+} from "../../Tasks/Tasks.types"
 
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { LocationData } from "../../Math";
-import type { RawVoxelData } from "../../Data/Types/VoxelData.types.js"
+import type { RawVoxelData } from "../../Voxels/Voxel.types.js"
 import { ConstructorRemoteThreadTasks } from "../../Contexts/Constructor/Tasks/ConstructorRemoteThreadTasks.js";
-import { ConstructorTasksIds } from "../../Contexts/Constructor/Tasks/ConstructorTasksIds.js";
+
 import { DVEConstructorTasksQueues } from "../../Contexts/Constructor/Tasks/DVEConstructorTasksQueues.js";
+import { TasksIds } from "../../Tasks/TasksIds.js";
 
 export type TaskRunModes = "async" | "sync";
 export class TaskTool {
@@ -54,7 +55,7 @@ export class TaskTool {
         mode: TaskRunModes = "sync"
       ) => {
         DVEConstructorTasksQueues.instance.constructors.runPromiseTasks<VoxelUpdateTasks>(
-          ConstructorTasksIds.VoxelUpdate,
+          TasksIds.VoxelUpdate,
           [location, raw, this._data.queue, this._thread],
           [],
           onDone,
@@ -69,7 +70,7 @@ export class TaskTool {
         mode: TaskRunModes = "sync"
       ) => {
         DVEConstructorTasksQueues.instance.constructors.runPromiseTasks<UpdateTasks>(
-          ConstructorTasksIds.VoxelErease,
+          TasksIds.VoxelErease,
           [location, this._data.queue, this._thread],
           [],
           onDone,
@@ -85,7 +86,7 @@ export class TaskTool {
         mode: TaskRunModes = "sync"
       ) => {
         DVEConstructorTasksQueues.instance.constructors.runPromiseTasks<VoxelUpdateTasks>(
-          ConstructorTasksIds.VoxelPaint,
+          TasksIds.VoxelPaint,
           [location, raw, this._data.queue, this._thread],
           [],
           onDone,
@@ -101,7 +102,7 @@ export class TaskTool {
           DVEConstructorTasksQueues.instance.constructors.runPromiseTasks<
             PriorityTask<BuildTasks>
           >(
-            ConstructorTasksIds.BuildChunk,
+            TasksIds.BuildChunk,
             {
               data: buildTasks,
               priority: this._priority,
@@ -143,7 +144,7 @@ export class TaskTool {
       deferred: {
         run: (location: LocationData, onDone: (data: any) => void) => {
           DVEConstructorTasksQueues.instance.constructors.runPromiseTasks<BuildTasks>(
-            ConstructorTasksIds.BuildColumn,
+            TasksIds.BuildColumn,
             [location, 1],
             [],
             onDone,
@@ -161,7 +162,7 @@ export class TaskTool {
       onDone: (data: any) => void
     ) => {
       DVEConstructorTasksQueues.instance.constructors.runPromiseTasks<ExplosionTasks>(
-        ConstructorTasksIds.Explosion,
+        TasksIds.Explosion,
         [location, radius, "", ""],
         [],
         onDone,
@@ -174,7 +175,7 @@ export class TaskTool {
     update: {
       run: (location: LocationData, onDone: (data: any) => void) => {
         DVEConstructorTasksQueues.instance.constructors.runPromiseTasks<AnaylzerTask>(
-          ConstructorTasksIds.AnalyzerUpdate,
+          TasksIds.AnalyzerUpdate,
           [location, this._data.queue, this._thread],
           [],
           onDone,
@@ -188,7 +189,7 @@ export class TaskTool {
     deferred: {
       run: (location: LocationData, onDone: (data: any) => void) => {
         DVEConstructorTasksQueues.instance.constructors.runPromiseTasks<AnaylzerTask>(
-          ConstructorTasksIds.AnalyzerPropagation,
+          TasksIds.AnalyzerPropagation,
           [location, this._data.queue, this._thread],
           [],
           onDone,
@@ -222,7 +223,7 @@ export class TaskTool {
     deferred: {
       run(location: LocationData, data: any, onDone: (data: any) => void) {
         DVEConstructorTasksQueues.instance.constructors.runPromiseTasks<GenerateTasks>(
-          ConstructorTasksIds.Generate,
+          TasksIds.Generate,
           [location, data],
           [],
           onDone,
@@ -256,7 +257,7 @@ export class TaskTool {
     deferred: {
       run: (location: LocationData, data: any, onDone: (data: any) => void) => {
         DVEConstructorTasksQueues.instance.constructors.runPromiseTasks<GenerateTasks>(
-          ConstructorTasksIds.Decorate,
+          TasksIds.Decorate,
           [location, data],
           [],
           onDone,
@@ -290,7 +291,7 @@ export class TaskTool {
     deferred: {
       run: (location: LocationData, onDone: (data: any) => void) => {
         DVEConstructorTasksQueues.instance.constructors.runPromiseTasks<WorldSunTask>(
-          ConstructorTasksIds.WorldSun,
+          TasksIds.WorldSun,
           [location, this._thread],
           [],
           onDone,
@@ -321,22 +322,22 @@ export class TaskTool {
     },
   };
 }
-DVEConstructorTasksQueues.onCreated.subscribe(TaskTool, () => {
+DVEConstructorTasksQueues.onCreated.subscribe("TaskTool", () => {
   DVEConstructorTasksQueues.instance.registerTasks(
     "world-sun",
-    ConstructorTasksIds.WorldSun
+    TasksIds.WorldSun
   );
   DVEConstructorTasksQueues.instance.registerTasks(
     "decorate",
-    ConstructorTasksIds.Decorate
+    TasksIds.Decorate
   );
   DVEConstructorTasksQueues.instance.registerTasks(
     "generate",
-    ConstructorTasksIds.Generate
+    TasksIds.Generate
   );
   DVEConstructorTasksQueues.instance.registerTasks(
     "propagation",
-    ConstructorTasksIds.AnalyzerPropagation
+    TasksIds.AnalyzerPropagation
   );
   const tasks = new TaskTool();
   Threads.registerTasks<PriorityTask<BuildTasks>>(

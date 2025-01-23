@@ -1,10 +1,13 @@
 import { PerlinNoise3d } from "@amodx/rng/perlin/index";
 const perlin = new PerlinNoise3d();
-perlin.noiseSeed(13129301280);
-
+import { WorldCursor } from "@divinevoxel/vlox/Data/Cursor/World/WorldCursor";
+import { VoxelCursor } from "@divinevoxel/vlox/Data/Cursor/VoxelCursor";
 import { AdvancedBrush } from "@divinevoxel/vlox/Tools/Brush/AdvancedBrushTool";
 import { GenerateTree } from "./Tree";
-import { VoxelPalette } from "@divinevoxel/vlox/Data/Voxel/VoxelPalette";
+
+perlin.noiseSeed(13129301280);
+const worldCursor = new WorldCursor();
+const voxelCursor = new VoxelCursor();
 
 const brush = new AdvancedBrush();
 
@@ -13,7 +16,7 @@ export const PerlinGen = {
   chunkWidth: 16,
   worldHeight: 256,
   minY: 30,
-
+  worldCursor,
   inNoiseRange(x: number, y: number, z: number) {
     const p1 = perlin;
     const [xOffSet, yOffset, zOffSet] = [1000, 100, 10000];
@@ -39,10 +42,9 @@ export const PerlinGen = {
   //1376271
 
   generateTree() {},
-  generateWorldColumn(chunkX: number, chunkZ: number) {
-    brush.setDimension("main");
-    brush.setId("dve_dream_stone")
-    console.log(structuredClone(brush.data),VoxelPalette.ids.getNumberId("dve_dream_stone"),structuredClone(brush.getRaw()))
+  generateFloodedForest(chunkX: number, chunkZ: number) {
+    /*     brush.setDimension("main");
+    brush.setId("dve_dream_stone");
     brush.start();
     //  return this.generateBlankChunk(chunkX, chunkZ);
     let totalTrees = 0;
@@ -98,6 +100,102 @@ export const PerlinGen = {
             if (y <= 20) {
               brush.setId("dve_liquid_dream_ether").setXYZ(x, y, z).paint();
               continue;
+            }
+          }
+        }
+      }
+    } */
+    brush.stop();
+  },
+  generateForest(chunkX: number, chunkZ: number) {
+    const columnCursor = this.worldCursor.getColumn(chunkX, 0, chunkZ)!;
+    voxelCursor.setStringId("dve_dread_stone").process();
+    //  return this.generateBlankChunk(chunkX, chunkZ);
+    let totalTrees = 0;
+
+    /*    for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
+      for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
+        for (let y = 0; y < this.worldHeight; y++) {
+          if (y == 0) {
+            brush.setId("dve_dream_stone").setXYZ(x, y, z).paint();
+            continue;
+          }
+
+          if (this.inNoiseRange(x, y, z)) {
+            brush.setId("dve_dream_stone");
+            brush.setXYZ(x, y, z).paint();
+          } else {
+            if (y > 20 && this.inNoiseRange(x, y - 1, z)) {
+              if (Math.random() > 0.6) {
+                brush.setXYZ(x, y, z).setId("dve_dream_grass").paint();
+                continue;
+              }
+              if (Math.random() > 0.6) {
+                let height = (Math.random() * 10) >> 0;
+                let i = 0;
+                while (height--) {
+                  brush
+                    .setXYZ(x, y + i, z)
+                    .setId("dve_dream_stone_pillar")
+                    .paint();
+                  i++;
+                }
+                brush
+                  .setXYZ(x, y + i, z)
+                  .setId("dve_dream_lamp")
+                  .paint();
+                continue;
+              }
+              if (totalTrees < 3) {
+                if (Math.random() > 0.98) {
+                  GenerateTree(
+                    brush,
+                    x,
+                    y,
+                    z,
+                    "dve_dream_log",
+                    "dve_dream_leaves"
+                  );
+                  totalTrees++;
+                  continue;
+                }
+              }
+            }
+          }
+        }
+      }
+    } */
+    brush.stop();
+  },
+  generateTest(chunkX: number, chunkZ: number) {
+    const columnCursor = this.worldCursor.getColumn(chunkX, 0, chunkZ)!;
+
+    for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
+      for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
+        for (let y = 0; y < this.worldHeight; y++) {
+          if (y == 0) {
+            voxelCursor.setStringId("dve_dread_stone").process();
+            columnCursor
+              .getVoxel(x, y, z)!
+              .setId(voxelCursor.id)
+              .updateHeightMap(0);
+            continue;
+          }
+
+          if (this.inNoiseRange(x, y, z)) {
+            voxelCursor.setStringId("dve_dread_stone").process();
+            columnCursor
+              .getVoxel(x, y, z)!
+              .setId(voxelCursor.id)
+              .updateHeightMap(0);
+          } else {
+            if (y < 30) {
+              voxelCursor.setStringId("dve_liquid_dream_ether").process();
+              columnCursor
+                .getVoxel(x, y, z)!
+                .setId(voxelCursor.id)
+                .setLevel(7)
+                .updateHeightMap(0);
             }
           }
         }

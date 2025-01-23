@@ -2,15 +2,26 @@
 import { createRoot } from "react-dom/client";
 
 import "./core.css";
-import { App } from "App";
+
+const quantum = new URL(window.location.href).searchParams.has("quantum");
 
 const root = createRoot(document.getElementById("root")!);
 document.getElementById("root")!.classList.add("bp5-dark");
 
-root.render(
-  <>
-    <App />
-  </>
-);
+if (quantum) {
+  const { App } = await import("./QuantumApp");
+  root.render(
+    <>
+      <App />
+    </>
+  );
+} else {
+  const { App } = await import("./BabylonApp");
+  root.render(
+    <>
+      <App />
+    </>
+  );
+}
 
 document.body.classList.add("bp5-dark");

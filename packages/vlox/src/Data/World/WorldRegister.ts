@@ -1,4 +1,4 @@
-import { DataHooks } from "../../Data/DataHooks.js";
+import { DataHooks } from "../../Contexts/Base/DataHooks"
 import {
   Chunk,
   ChunkData,
@@ -52,7 +52,7 @@ class WorldRegisterRegions {
       regionPOS.z
     );
 
-    dimension.set(WorldSpaces.region.getKeyXYZ(x,y,z), newRegion);
+    dimension.set(WorldSpaces.region.getKeyXYZ(x, y, z), newRegion);
     return newRegion;
   }
   get(x: number, y: number, z: number) {
@@ -95,7 +95,10 @@ class WorldRegisterColumns {
         z,
       ]);
     }
-    const newColumn = Column.toObject(column);
+    const newColumn = Column.toObject(
+      [this._register._currentDimension, x, y, z],
+      column
+    );
     region.columns.set(region.getColumnIndex(x, y, z), newColumn);
 
     return newColumn;
@@ -127,21 +130,26 @@ class WorldRegisterColumns {
     return true;
   }
   fill(x: number, y: number, z: number) {
-    for (
-      let cy = WorldBounds.bounds.MinY;
-      cy < WorldBounds.bounds.MaxY;
-      cy += WorldSpaces.chunk._bounds.y
-    ) {
-      let y = cy;
-      if (!this._register.chunk.get(x, y, z)) {
-        const newChunk = DataHooks.chunk.onGetSync.pipe({
-          location: [this._register._currentDimension, x, y, z],
-          chunk: null,
-        });
+    let column = this.get(x, y, z);
+    if (!column) {
+      column = this.add(x, y, z, Column.CreateNew({}))!;
+    }
+    const data = {
+      location: [this._register._currentDimension, x, y, z],
+      chunk: null,
+    } as any;
+    const maxChunkIndex =
+      WorldSpaces.column._bounds.y / WorldSpaces.chunk._bounds.y;
+    for (let i = 0; i < maxChunkIndex; i++) {
+      if (!column.chunks[i]) {
+        data.location[1] = y + i * WorldSpaces.chunk._bounds.y;
+        data.chunk = null;
+        const newChunk = DataHooks.chunk.onGetSync.pipe(data);
         if (!newChunk.chunk) continue;
-        this._register.chunk.add(x, y, z, newChunk.chunk);
+        column.chunks[i] = new Chunk(column, i, newChunk.chunk);
       }
     }
+    DataHooks.column.onNew.notify([this._register._currentDimension, x, y, z]);
   }
 }
 class WorldRegisterChunks {
@@ -164,8 +172,9 @@ class WorldRegisterChunks {
       ]);
     }
     if (!column) return;
-    const newChunk = Chunk.toObject(chunk);
-    column.chunks[WorldSpaces.chunk.getIndexXYZ(x, y, z)] = newChunk;
+    const index = WorldSpaces.chunk.getIndexXYZ(x, y, z);
+    const newChunk = Chunk.toObject(column, index, chunk);
+    column.chunks[index] = newChunk;
     DataHooks.chunk.onNew.notify([this._register._currentDimension, x, y, z]);
     return newChunk;
   }

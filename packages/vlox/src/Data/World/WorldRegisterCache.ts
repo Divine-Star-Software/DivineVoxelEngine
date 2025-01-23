@@ -1,7 +1,7 @@
 import { Chunk, Column } from "./Classes/index.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import {  Vector3Like } from "@amodx/math";
-import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
+import { EngineSettings } from "../../Settings/EngineSettings.js";
 import { Observable } from "@amodx/core/Observers/Observable.js";
 
 export class WorldRegisterCache {

@@ -41,7 +41,12 @@ body {
   height: 100%;
   overflow: hidden;
 }
-
+#render-canvas {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
 #inspector-host {
   position: absolute !important;
 }

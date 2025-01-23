@@ -1,10 +1,10 @@
 import { type LocationData } from "../../../Math/index.js";
 import { Vector3Like } from "@amodx/math";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
-import { URIMesh } from "@amodx/uri/Meshes/URIMesh.js";
-import { MushRegisterRegion } from "./Classes/MushRegisterRegion.js";
-import { MeshRegisterColumn } from "./Classes/MeshRegisterColumn.js";
-import { ChunkMesh } from "./Classes/ChunkMesh.js";
+import { MushRegisterRegion } from "../../../Renderer/Classes/MushRegisterRegion.js";
+import { MeshRegisterColumn } from "../../../Renderer/Classes/MeshRegisterColumn.js";
+import { ChunkMesh } from "../../../Renderer/Classes/ChunkMesh.js";
+import { ChunkMeshInterface } from "../../../Renderer/DVEChunkMeshInterface.js"
 
 export type MeshRegisterDimensions = Map<
   string,
@@ -12,7 +12,7 @@ export type MeshRegisterDimensions = Map<
 >;
 
 class Chunk {
-  static addMesh(location: LocationData, mesh: URIMesh, substance: string) {
+  static addMesh(location: LocationData, mesh: ChunkMeshInterface, substance: string) {
     let column = MeshRegister.column.get(location);
     if (!column) {
       column = MeshRegister.column.add(location);
@@ -30,7 +30,23 @@ class Chunk {
     chunk?.meshes.set(substance, mesh);
     return chunk;
   }
-
+  static add(location: LocationData) {
+    let column = MeshRegister.column.get(location);
+    if (!column) {
+      column = MeshRegister.column.add(location);
+    }
+    const index = WorldSpaces.chunk.getIndexXYZ(
+      location[1],
+      location[2],
+      location[3]
+    );
+    let chunk = column.chunks.get(index);
+    if (!chunk) {
+      chunk = new ChunkMesh([location[1], location[2], location[3]]);
+      column.chunks.set(index, chunk);
+    }
+    return chunk;
+  }
   static removeMesh(location: LocationData, substance: string) {
     const column = MeshRegister.column.get(location);
     if (!column) return false;
@@ -188,7 +204,7 @@ class Dimensions {
 
   static *getAllMeshes(
     id: string
-  ): Generator<[location: LocationData, substance: string, mesh: URIMesh]> {
+  ): Generator<[location: LocationData, substance: string, mesh: ChunkMeshInterface]> {
     const dimension = MeshRegister._dimensions.get(id);
     if (!dimension) return;
     for (const [key, region] of dimension) {

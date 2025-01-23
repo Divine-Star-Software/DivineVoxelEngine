@@ -1,0 +1,109 @@
+import { BinarySchemaNode } from "./BinarySchemaNode";
+import { BinarySchemaNodeData } from "../State.types";
+
+export class BinarySchema {
+  nodeMap = new Map<string, BinarySchemaNode>();
+  nodes: BinarySchemaNode[] = [];
+  constructor(schema: BinarySchemaNodeData[]) {
+    for (const node of schema) {
+      if (node.type == "binary") {
+        const newNode = new BinarySchemaNode(node);
+        this.nodes.push(newNode);
+        this.nodeMap.set(node.id, newNode);
+      }
+    }
+  }
+
+  private _value = 0;
+
+  readString(stateString: string) {
+    if (stateString == "*") return 0;
+    const split = stateString.split(",");
+    let ecnoded = 0;
+    for (const pair of split) {
+      const [key, v] = pair.split("=");
+      if (v == "*") continue;
+      const node = this.nodeMap.get(key);
+      if (!node) continue;
+      if (node.valuePalette) {
+        const value = node.valuePalette.getNumberId(v);
+        if (value === undefined)
+          throw new Error(
+            `Binary schema string node value  with id ${v} does not exist.`
+          );
+        ecnoded = node.setValue(ecnoded, value);
+      } else {
+        ecnoded = node.setValue(ecnoded, Number(v));
+      }
+    }
+    return ecnoded;
+  }
+
+  compareString(stateString: string, ecnoded: number): boolean {
+    if (stateString == "*") return true;
+    const split = stateString.split(",");
+    for (const pair of split) {
+      const [key, v] = pair.split("=");
+      if (v == "*") continue;
+      const node = this.nodeMap.get(key);
+      if (!node) continue;
+      if (node.valuePalette) {
+        const value = node.valuePalette.getNumberId(v);
+        if (value === undefined)
+          throw new Error(
+            `Binary schema string node value  with id ${key} does not exist.`
+          );
+        if (node.getValue(ecnoded) !== value) {
+          return false;
+        }
+      } else {
+        if (node.getValue(ecnoded) !== Number(v)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  startEncoding(value = 0) {
+    this._value = value;
+    return this;
+  }
+
+  getNmber(id: string) {
+    const node = this.nodeMap.get(id);
+    if (!node) throw new Error(`Node with ${id} does not exist.`);
+    return node.getValue(this._value);
+  }
+
+  getValue(id: string) {
+    const node = this.nodeMap.get(id);
+    if (!node) throw new Error(`Node with ${id} does not exist.`);
+    if (!node.valuePalette)
+      throw new Error(`Node with ${id} does not have a value palette.`);
+    return node.valuePalette.getStringId(node.getValue(this._value));
+  }
+
+  setNumber(id: string, value: number) {
+    const node = this.nodeMap.get(id);
+    if (!node) throw new Error(`Node with ${id} does not exist.`);
+    this._value = node.setValue(this._value, value);
+    return this;
+  }
+
+  setValue(id: string, value: string) {
+    const node = this.nodeMap.get(id);
+    if (!node) throw new Error(`Node with ${id} does not exist.`);
+    if (!node.valuePalette)
+      throw new Error(`Node with ${id} does not have a value palette.`);
+    this._value = node.setValue(
+      this._value,
+      node.valuePalette.getNumberId(value)
+    );
+    return this;
+  }
+
+  getEncoded() {
+    return this._value;
+  }
+}

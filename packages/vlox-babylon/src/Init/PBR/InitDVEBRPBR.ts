@@ -76,12 +76,12 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
       const newMat = new DVEBRPBRMaterial(matData.id, {
         scene: scene,
         data: {
-          shaderId: matData.shaderId,
+          effectId: matData.shaderId,
           textureTypeId: matData.textureTypeId || "",
         },
         ...matData,
       });
-      newMat.createMaterial(scene._scene);
+      newMat.createMaterial(scene);
       return newMat;
     },
     scene: initData.scene,
@@ -153,7 +153,7 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
         probe.renderList = probe.renderList.filter((_) => _ == _mesh);
       });
 
-      renderer.nodes.materials.materials.forEach((material, key) => {
+      renderer.materials.materials.forEach((material, key) => {
         (material as DVEBRPBRMaterial)._material.disableLighting = false;
       });
 
@@ -175,7 +175,7 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
         new Color4(0, 1, 1, 0.5)
       ); */
 
-      //   skybox.material = renderer.nodes.materials.get("#dve_skybox")!._material;
+      //   skybox.material = renderer.nodes.materials.get("dve_skybox")!._material;
     },
   });
 

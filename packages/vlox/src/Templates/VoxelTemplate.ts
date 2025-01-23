@@ -1,11 +1,11 @@
 import { Flat3DIndex, Traverse, Vec3Array } from "@amodx/math";
-import { VoxelTemplateData } from "./VoxelTemplates.types";
-import type { RawVoxelData } from "../Data/Types/VoxelData.types";
-import { StringPalette } from "../Interfaces/Data/StringPalette";
-import { NumberPalette } from "../Interfaces/Data/NumberPalette";
-import { VoxelPalette } from "../Data/Voxel/VoxelPalette";
-import { VoxelStruct } from "../Data/Voxel/VoxelStruct";
-import { VoxelTagIDs } from "../Data/Constants/VoxelTagIds";
+import {  VoxelTemplateData } from "./VoxelTemplates.types";
+import type { RawVoxelData } from "../Voxels/Voxel.types";
+import { StringPalette } from "../Util/StringPalette";
+import { NumberPalette } from "../Util/NumberPalette";
+import { VoxelPalette } from "../Data/Palettes/VoxelPalette";
+import { VoxelStruct } from "../Data/Structs/VoxelStruct";
+import { VoxelStructIds } from "../Voxels/Voxel.types";
 import { getPaletteArray } from "../Archive/Functions/Palettes";
 import { NibbleArray } from "@amodx/binary/Arrays/NibbleArray";
 
@@ -91,7 +91,7 @@ export class VoxelTemplate {
   getSecondary(id: number, index: number) {
     const secondary = this.secondary;
     VoxelStruct.setVoxel(id);
-    if (VoxelStruct.instance[VoxelTagIDs.canHaveSecondary] == 1) {
+    if (VoxelStruct.instance[VoxelStructIds.canHaveSecondary] == 1) {
       return VoxelPalette.ids.getNumberId(
         this.secondaryIdPalette.getStringId(
           typeof secondary == "number" ? secondary : secondary[index]
@@ -133,6 +133,7 @@ export class VoxelTemplate {
       yield curosr;
     }
   }
+
 
   toJSON(): VoxelTemplateData {
     return {

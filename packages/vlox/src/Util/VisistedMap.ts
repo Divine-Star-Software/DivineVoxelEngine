@@ -27,3 +27,4 @@ export class VisitedMap {
   this._map.clear();
  }
 }
+

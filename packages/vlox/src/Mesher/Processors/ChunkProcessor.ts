@@ -2,7 +2,6 @@
 import type { LocationData } from "../../Math/index.js";
 import type { SetChunkMeshTask } from "../../Contexts/Render/Tasks/RenderTasks.types.js";
 //objects
-import { RenderedSubstances } from "../Rules/RenderedSubstances.js";
 import { DivineVoxelEngineConstructor } from "../../Contexts/Constructor/DivineVoxelEngineConstructor.js";
 
 //data
@@ -10,68 +9,90 @@ import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 
 //tools
 import { HeightMapTool } from "../../Tools/Data/WorldData/HeightMapTool.js";
-import { BuilderDataTool } from "../Tools/BuilderDataTool.js";
-import { ShapeTool } from "../Shapes/ShapeTool.js";
-import { VoxelGeometryLookUp } from "../../VoxelModels/Constructor/VoxelGeometryLookUp.js";
+import { VoxelGeometryLookUp } from "../Models//VoxelGeometryLookUp.js";
+import { CompactVoxelMesh } from "../Functions/CompactVoxelMesh.js";
+import { DVEMesher } from "../../Mesher/Mesher.js";
+import { SubstanceDataTool } from "../../Tools/Data/SubstanceDataTool.js";
+import { WorldCursor } from "../../Data/Cursor/World/WorldCursor.js";
+import { ChunkCursor } from "../../Data/Cursor/World/ChunkCursor.js";
+import { RenderedSubstances } from "../Substances/RenderedSubstances.js";
+import { VoxelMesherDataTool } from "Mesher/Tools/VoxelMesherDataTool.js";
+import { VoxelModelConstructorRegister } from "../Models/VoxelModelConstructorRegister.js";
 
 export class ChunkProcessor {
-  mDataTool = new BuilderDataTool();
   heightMapTool = new HeightMapTool();
 
+  substanceData = new SubstanceDataTool();
+  chunkCursor = new ChunkCursor();
+  worldCursor = new WorldCursor();
+
   _process(x: number, y: number, z: number, doSecondCheck = false): boolean {
-    if (!this.mDataTool.loadInAt(x, y, z)) return false;
-    if (!this.mDataTool.isRenderable()) return false;
+    const voxel = this.chunkCursor.getVoxel(x, y, z);
+    if (!voxel) return false;
+    if (!voxel.isRenderable()) return false;
 
     let hasVoxel = false;
-    this.mDataTool.setSecondary(doSecondCheck);
+    voxel.setSecondary(doSecondCheck);
     if (!doSecondCheck) {
-      if (this.mDataTool.hasSecondaryVoxel()) {
+      if (voxel.hasSecondaryVoxel()) {
         hasVoxel = this._process(x, y, z, true);
       }
     }
-    const constructor = this.mDataTool.getConstructor();
-
-    const mesher = RenderedSubstances.meshers.get(
-      this.mDataTool.getSubstnaceData().getRendered()
+    const constructor = VoxelModelConstructorRegister.getConstructor(
+      voxel.getStringId()
     );
-
-    if (!mesher || !constructor) {
+    if (!constructor) {
       throw new Error(
-        `Could not find mesh or constructor ${this.mDataTool.getId()} | ${this.mDataTool.getName()} | ${
-          this.mDataTool.getConstructor()?.id
-        }`
+        `Could not find constructor ${voxel.getId()} | ${voxel.getName()} `
       );
     }
 
-    const voxelPOS = WorldSpaces.voxel.getPositionXYZ(x, y, z);
-    ShapeTool.origin.x = voxelPOS.x;
-    ShapeTool.origin.y = voxelPOS.y;
-    ShapeTool.origin.z = voxelPOS.z;
+    const mesher = RenderedSubstances.meshers.get(
+      voxel.getRenderedMaterialStringId()
+    );
 
-    mesher.voxel.loadInAt(x, y, z);
-    mesher.nVoxel.loadInAt(x, y, z);
-    ShapeTool.setMesher(mesher);
+    if (!mesher) {
+      throw new Error(
+        `Could not find material for ${voxel.getId()} | ${voxel.getName()} | ${constructor?.id} | ${voxel.getMaterial()} | ${voxel.getRenderedMaterialStringId()}`
+      );
+    }
+
+    mesher.origin.x = this.chunkCursor._voxelPosition.x;
+    mesher.origin.y = this.chunkCursor._voxelPosition.y;
+    mesher.origin.z = this.chunkCursor._voxelPosition.z;
+    mesher.position.x = x;
+    mesher.position.y = y;
+    mesher.position.z = z;
+    mesher.voxel = voxel;
+    mesher.nVoxel = this.worldCursor;
+    mesher.startConstruction();
     constructor.process(mesher);
+    mesher.endConstruction();
     mesher.resetVars();
     return true;
   }
 
   build(location: LocationData, priority = 0) {
     this.heightMapTool.chunk.loadInAtLocation(location);
-    this.mDataTool.setDimension(location[0]);
-    RenderedSubstances.setDimension(location[0]);
 
     const [dimension, cx, cy, cz] = location;
 
+    this.worldCursor.setFocalPoint(...location);
+    this.chunkCursor.setChunk(...location);
+
     let [minY, maxY] = this.heightMapTool.chunk.getMinMax();
+    const maxX = WorldSpaces.chunk._bounds.x;
+    const maxZ = WorldSpaces.chunk._bounds.z;
 
     if (Math.abs(minY) == Infinity && Math.abs(maxY) == Infinity) return;
     VoxelGeometryLookUp.start(dimension, location[1], location[2], location[3]);
-
+    for (const [substance, mesher] of RenderedSubstances.meshers) {
+      mesher.bvhTool.reset();
+    }
     for (let y = minY; y <= maxY; y++) {
       let foundVoxels = false;
-      for (let x = 0; x < WorldSpaces.chunk._bounds.x; x++) {
-        for (let z = 0; z < WorldSpaces.chunk._bounds.z; z++) {
+      for (let x = 0; x < maxX; x++) {
+        for (let z = 0; z < maxZ; z++) {
           if (this._process(x + cx, y + cy, z + cz)) {
             foundVoxels = true;
           }
@@ -84,33 +105,46 @@ export class ChunkProcessor {
     const transfers: any[] = [];
     const chunkEffects: SetChunkMeshTask[2] = [];
 
-    for (const e in ShapeTool.effects) {
+    const chunks = <SetChunkMeshTask>[
+      location,
+      [] as any,
+      chunkEffects,
+      priority,
+    ];
 
-   
-      const float = Float32Array.from(ShapeTool.effects[e]);
-      transfers.push(float.buffer);
-      chunkEffects.push([e, float]);
-    }
-    ShapeTool.effects = {};
-    const chunkMeshes: SetChunkMeshTask[1] = [];
-    const chunks = <SetChunkMeshTask>[location, chunkMeshes, chunkEffects, priority];
-
+    const meshed: VoxelMesherDataTool[] = [];
     for (const [substance, mesher] of RenderedSubstances.meshers) {
- 
-      if (mesher.positions.length == 0) {
-        chunkMeshes.push([substance, false]);
+      for (const e in mesher.effects) {
+        const float = Float32Array.from(mesher.effects[e]);
+        transfers.push(float.buffer);
+        chunkEffects.push([e, float]);
+      }
+      if (mesher.mesh!.positions.length == 0) {
         mesher.resetAll();
         continue;
       }
-      const [attributes, buffers] = mesher.getAllAttributes();
-      transfers.push(...buffers);
-      chunkMeshes.push([substance, [location, attributes]]);
+      meshed.push(mesher);
+    }
+
+    const compactMesh = CompactVoxelMesh(...meshed);
+    transfers.push(
+      ...(compactMesh[0] == 0
+        ? [compactMesh[1]]
+        : [
+            compactMesh[1],
+            compactMesh[2].buffer,
+            compactMesh[3].buffer,
+            compactMesh[4].buffer,
+          ])
+    );
+    chunks[1] = compactMesh;
+    for (const mesher of meshed) {
       mesher.resetAll();
     }
 
     DivineVoxelEngineConstructor.instance.threads.parent.runTasks<SetChunkMeshTask>(
       "set-chunk",
-      chunks, 
+      chunks,
       transfers
     );
   }

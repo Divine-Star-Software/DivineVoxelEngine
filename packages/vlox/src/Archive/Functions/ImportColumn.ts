@@ -1,16 +1,11 @@
-import { VoxelPalette } from "../../Data/Voxel/VoxelPalette";
-import {
-  Chunk,
-  ChunkData,
-  Column,
-  ColumnData,
-} from "../../Data/World/Classes";
+import { VoxelPalette } from "../../Data/Palettes/VoxelPalette";
+import { Chunk, ChunkData, Column, ColumnData } from "../../Data/World/Classes";
 
 import { ArchivedChunkData, ArchivedColumnData } from "../Archive.types";
-import { VoxelStruct } from "../../Data/Voxel/VoxelStruct";
-import { VoxelTagIDs } from "../../Data/Constants/VoxelTagIds";
-import { NumberPalette } from "../../Interfaces/Data/NumberPalette";
-import { StringPalette } from "../../Interfaces/Data/StringPalette";
+import { VoxelStruct } from "../../Data/Structs/VoxelStruct";
+import { VoxelStructIds } from "../../Voxels/Voxel.types";
+import { NumberPalette } from "../../Util/NumberPalette";
+import { StringPalette } from "../../Util/StringPalette";
 import { getPaletteArray } from "./Palettes";
 
 let columnStructInstance: ReturnType<typeof Column.StateStruct.instantiate>;
@@ -36,7 +31,7 @@ const updateChunkBuffers = (
         chunk.palettes.id?.length || Infinity,
         column.palettes.id?.length || 0
       ),
-      chunk.buffers.id
+      chunk.buffers.id as any
     ) as any;
   }
   if (
@@ -49,7 +44,7 @@ const updateChunkBuffers = (
         chunk.palettes.light?.length || Infinity,
         column.palettes.light?.length || 0
       ),
-      chunk.buffers.light
+      chunk.buffers.light as any
     ) as any;
   }
 
@@ -63,7 +58,7 @@ const updateChunkBuffers = (
         chunk.palettes.state?.length || Infinity,
         column.palettes.state?.length || 0
       ),
-      chunk.buffers.state
+      chunk.buffers.state as any
     ) as any;
   }
 
@@ -77,7 +72,7 @@ const updateChunkBuffers = (
         chunk.palettes.mod?.length || Infinity,
         column.palettes.mod?.length || 0
       ),
-      chunk.buffers.mod
+      chunk.buffers.mod as any
     ) as any;
   }
 
@@ -102,7 +97,7 @@ const updateChunkBuffers = (
           column.palettes.secondaryState?.length || 0
         )
       ),
-      chunk.buffers.secondary
+      chunk.buffers.secondary as any
     ) as any;
   }
 };
@@ -196,7 +191,6 @@ const getId = (
     importedColumn.idPalette.getStringId(value)
   );
 };
-
 const getLight = (
   value: number,
   importedColumn: ImportedColumnData,
@@ -206,16 +200,15 @@ const getLight = (
   if (typeof importedChunk.chunk.buffers.light == "number") {
     return value;
   }
-  if (importedChunk.lightPalette && importedColumn.lightPalette) {
-    return importedColumn.lightPalette.getValue(
-      importedChunk.lightPalette.getValue(value)
-    );
+  if (importedChunk.lightPalette) {
+    return importedChunk.lightPalette.getValue(value);
   }
   if (importedColumn.lightPalette) {
     return importedColumn.lightPalette.getValue(value);
   }
   return value;
 };
+
 const getState = (
   value: number,
   importedColumn: ImportedColumnData,
@@ -226,16 +219,15 @@ const getState = (
   if (typeof importedChunk.chunk.buffers.state == "number") {
     return value;
   }
-  if (importedChunk.statePalette && importedColumn.statePalette) {
-    return importedColumn.statePalette.getValue(
-      importedChunk.statePalette.getValue(value)
-    );
+  if (importedChunk.statePalette) {
+    return importedChunk.statePalette.getValue(value);
   }
   if (importedColumn.statePalette) {
     return importedColumn.statePalette.getValue(value);
   }
   return value;
 };
+
 const getMod = (
   value: number,
   importedColumn: ImportedColumnData,
@@ -246,16 +238,15 @@ const getMod = (
   if (typeof importedChunk.chunk.buffers.mod == "number") {
     return value;
   }
-  if (importedChunk.modPalette && importedColumn.modPalette) {
-    return importedColumn.modPalette.getValue(
-      importedChunk.modPalette.getValue(value)
-    );
+  if (importedChunk.modPalette) {
+    return importedChunk.modPalette.getValue(value);
   }
   if (importedColumn.modPalette) {
     return importedColumn.modPalette.getValue(value);
   }
   return value;
 };
+
 const getSecondary = (
   voxelId: number,
   value: number,
@@ -265,7 +256,7 @@ const getSecondary = (
   if (importedChunk.chunk.buffers.state instanceof Uint16Array) return value;
 
   VoxelStruct.setVoxel(voxelId);
-  if (VoxelStruct.instance[VoxelTagIDs.canHaveSecondary] == 1) {
+  if (VoxelStruct.instance[VoxelStructIds.canHaveSecondary] == 1) {
     if (typeof importedChunk.chunk.buffers.secondary == "number") {
       return VoxelPalette.ids.getNumberId(
         importedColumn.column.palettes.secondaryId![
@@ -330,7 +321,7 @@ export default function ImportColumn(
 
     updateChunkBuffers(column, chunk);
     if (!archiveData.loadChunkState) {
-      chunkStructInstance.setBuffer(newChunk.stateBuffer);
+      chunkStructInstance.setBuffer(newChunk.buffer);
       chunkStructInstance.deserialize(chunkState);
     } else {
       archiveData.loadChunkState(column.keys.chunkState, chunk.state, newChunk);

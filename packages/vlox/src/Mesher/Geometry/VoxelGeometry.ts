@@ -1,9 +1,9 @@
 import { Vector3Like, Vec2Array, Vec3Array } from "@amodx/math";
-import { VoxelShaderData } from "../../Data/VoxelShaderData";
+import { VoxelShaderData } from "../../Voxels/VoxelShaderData";
 import { VoxelMesherDataTool } from "../Tools/VoxelMesherDataTool";
 
 import { GeometryBuilder } from "@amodx/meshing/Geometry/GeometryBuilder";
-import { Quad } from "@amodx/meshing/Classes/Quad";
+import { Quad } from "@amodx/meshing/Primitives/Quad";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 
 export class VoxelGeometry {
@@ -13,12 +13,13 @@ export class VoxelGeometry {
     points: [Vec3Array, Vec3Array, Vec3Array],
     [[u1, v1], [u2, v2], [u3, v3]]: [Vec2Array, Vec2Array, Vec2Array]
   ) {
+    if(!tool.mesh) return;
     const worldLight = tool.getWorldLight();
     const worldAO = tool.getWorldAO();
     const texture = tool.getTexture();
     GeometryBuilder.addTriangle(tool, origin, points);
     {
-      const attribute = tool.getAttribute("voxelData");
+      const attribute = tool.mesh.getAttribute("voxelData");
 
       attribute.push(
         VoxelShaderData.createAttribute(
@@ -39,11 +40,11 @@ export class VoxelGeometry {
       );
     }
     {
-      const uvs = tool.getAttribute("uv");
+      const uvs = tool.mesh.getAttribute("uv");
       uvs.push(u1, v1, texture, u2, v2, texture, u3, v3, texture);
     }
     {
-      const uvs = tool.getAttribute("textureIndex");
+      const uvs = tool.mesh.getAttribute("textureIndex");
 
       uvs.push(
         //v1
@@ -64,7 +65,7 @@ export class VoxelGeometry {
       );
     }
     {
-      const colors = tool.getAttribute("colors");
+      const colors = tool.mesh.getAttribute("colors");
       colors.push(
         //v1
         0,
@@ -83,6 +84,7 @@ export class VoxelGeometry {
   }
 
   static addQuad(tool: VoxelMesherDataTool, origin: Vector3Like, quad: Quad) {
+    if(!tool.mesh) return;
     GeometryBuilder.addQuad(tool, origin, quad);
 
     const worldLight = tool.getWorldLight();
@@ -90,10 +92,10 @@ export class VoxelGeometry {
     const animData = tool.getAnimationData();
     const texture = tool.getTexture();
     const overlayTextures = tool.getOverlayTextures();
-    const attribute = tool.getAttribute("voxelData");
-    const uvs = tool.getAttribute("uv");
-    const textureIndex = tool.getAttribute("textureIndex");
-    const colors = tool.getAttribute("colors");
+    const attribute = tool.mesh.getAttribute("voxelData");
+    const uvs = tool.mesh.getAttribute("uv");
+    const textureIndex = tool.mesh.getAttribute("textureIndex");
+    const colors = tool.mesh.getAttribute("colors");
 
     let sides = quad.doubleSided ? 2 : 1;
 

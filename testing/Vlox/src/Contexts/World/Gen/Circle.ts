@@ -13,7 +13,7 @@ export function GenerateCircle(
 ) {
   let rx = sx - radius;
   let rz = sz - radius;
-
+/* 
   brush.setId(voxel);
   const dataTool = brush._dt;
   for (let ix = rx; ix <= sx + radius; ix++) {
@@ -31,5 +31,5 @@ export function GenerateCircle(
         brush.setXYZ(ix, sy, iz).paint();
       }
     }
-  }
+  } */
 }

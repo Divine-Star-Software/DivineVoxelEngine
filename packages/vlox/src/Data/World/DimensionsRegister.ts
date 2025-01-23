@@ -2,7 +2,7 @@ import {
   DimensionData,
   DimensionOptions,
 } from "../Types/DimensionData.types.js";
-import { DataHooks } from "../DataHooks.js";
+import { DataHooks } from "../../Contexts/Base/DataHooks"
 
 import { WorldRegister } from "./WorldRegister.js";
 

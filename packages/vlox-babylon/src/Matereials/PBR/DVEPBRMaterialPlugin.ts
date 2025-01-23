@@ -8,10 +8,8 @@ import type {
 import { MaterialPluginBase } from "@babylonjs/core/Materials/materialPluginBase";
 import { DVEBRPBRMaterial } from "./DVEBRPBRMaterial";
 
-import { URIShader } from "@amodx/uri/Shaders/Classes/URIShader";
-import { TextureType } from "@divinevoxel/vlox/Textures/TextureType";
-const shaders = new Map<string, URIShader>();
-const textures = new Map<string, TextureType>();
+
+
 export class DVEPBRMaterialPlugin extends MaterialPluginBase {
   uniformBuffer: UniformBuffer;
 
@@ -22,8 +20,8 @@ export class DVEPBRMaterialPlugin extends MaterialPluginBase {
     public dveMaterial: DVEBRPBRMaterial,
     public onUBSet: (uniformBuffer: UniformBuffer) => void
   ) {
-    shaders.set(material.id, dveMaterial.shader);
-    textures.set(material.id, dveMaterial.texture);
+  //  shaders.set(material.id, dveMaterial.shader);
+  //  textures.set(material.id, dveMaterial.texture);
 
     super(material, name, 20, {
       [`DVE_${name}`]: false,
@@ -53,7 +51,7 @@ export class DVEPBRMaterialPlugin extends MaterialPluginBase {
   getClassName() {
     return "DVEPBRMaterialPlugin";
   }
-
+/* 
   getSamplers(samplers: string[]) {
     const shader = this.dveMaterial?.shader || shaders.get(this._material.id)!;
   
@@ -66,9 +64,9 @@ export class DVEPBRMaterialPlugin extends MaterialPluginBase {
       if(["position","normal"].includes(atr))continue;
     }
     attributes.push(...shader.data.mesh.getAttributeList());
-  }
+  } */
 
-  getUniforms() {
+/*   getUniforms() {
     const shader = this.dveMaterial?.shader || shaders.get(this._material.id)!;
     const ubo: {
       name: string;
@@ -121,7 +119,7 @@ export class DVEPBRMaterialPlugin extends MaterialPluginBase {
       fragment: uniforms.fragment,
     };
   }
-
+ */
   _textureBound = false;
   bindForSubMesh(uniformBuffer: UniformBuffer, scene: Scene, engine: Engine) {
     if (!this.uniformBuffer) this.uniformBuffer = uniformBuffer;
@@ -130,27 +128,22 @@ export class DVEPBRMaterialPlugin extends MaterialPluginBase {
 
   //@ts-ignore
   getCustomCode(shaderType: any) {
-    const shader = this.dveMaterial?.shader || shaders.get(this._material.id)!;
 
-    const textures = shader.compileTextures();
-    const varying = shader.compileVarying();
+    const textures = "";
+    const varying = "";
 
     const ignoreFunctions = ["toGammaSpace", "toLinearSpace"];
-    const functions = shader.compileFunctinos(
-      (id, data) => !ignoreFunctions.includes(id)
-    );
+    const functions = "";
     const ignoreAttributes = ["position", "normal"];
-    const attributes = shader.compileAttributes(
-      (id) => !ignoreAttributes.includes(id)
-    );
+    const attributes = "";
     if (shaderType === "vertex") {
       return {
         CUSTOM_VERTEX_DEFINITIONS: /*glsl*/ `
 #ifdef  DVE_${this.name}
 const float lightGradient[16] = float[16]( 0.06, 0.1, 0.11, 0.14, 0.17, 0.21, 0.26, 0.31, 0.38, 0.45, 0.54, 0.64, 0.74, 0.85, 0.97, 1.);
-${attributes.vertex}
-${varying.vertexTop}
-${functions.vertex}
+${attributes}
+${varying}
+${functions}
 #endif
 `,
 CUSTOM_VERTEX_UPDATE_NORMAL: /*glsl*/ `
@@ -184,7 +177,7 @@ positionUpdated = vec3(
 
         CUSTOM_VERTEX_MAIN_BEGIN: /*glsl*/ `
 #ifdef  DVE_${this.name}
-${varying.vertexMainTop}
+${varying}
 
 
 
@@ -198,9 +191,9 @@ ${varying.vertexMainTop}
 #ifdef  DVE_${this.name}
 precision highp sampler2DArray;
 const float lightGradient[16] = float[16]( 0.06, 0.1, 0.11, 0.14, 0.17, 0.21, 0.26, 0.31, 0.38, 0.45, 0.54, 0.64, 0.74, 0.85, 0.97, 1.);
-${textures.fragment}
-${varying.fragTop}
-${functions.fragment}
+${textures}
+${varying}
+${functions}
 #endif
 `,
 

@@ -1,12 +1,12 @@
-import type { Mesher } from "./Classes/Mesher";
-import { TextureBuilder } from "./Meshers/TextureMesher.js";
-import { VoxelBuilder } from "./Meshers/VoxelMesher.js";
+import type { MesherInterface } from "./MesherInterface";
+import { TextureBuilder } from "./TextureMesher.js";
+import { VoxelBuilder } from "./VoxelMesher.js";
 import { BuildNodeMesh, SetNodeMesh } from "../Tasks/BuidlerTasks.types";
 
 export const MesherManager = {
-  builders: new Map<string, Mesher>(),
+  builders: new Map<string, MesherInterface>(),
 
-  registerBuilder(builder: Mesher) {
+  registerBuilder(builder: MesherInterface) {
     this.builders.set(builder.id, builder);
   },
 
