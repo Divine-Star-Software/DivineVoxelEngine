@@ -3,6 +3,8 @@ import { DivineVoxelEngineNexus } from "../Contexts/Nexus/DivineVoxelEngineNexus
 import { Environment } from "@amodx/core/Environment/Environment";
 import { Threads } from "@amodx/threads";
 import { CreatePromiseCheck } from "@amodx/core/Intervals/CreatePromiseCheck";
+import InitWorldDataSync from "../Contexts/Base/Remote/Sync/InitWorldDataSync";
+
 export async function StartNexus(data: {} = {}) {
   const DVEN = new DivineVoxelEngineNexus(data || {});
   DivineVoxelEngineNexus.environment = Environment.nodeJS.isNode
@@ -21,7 +23,7 @@ export async function StartNexus(data: {} = {}) {
       ready = true;
     },
   });
-
+  InitWorldDataSync();
   await CreatePromiseCheck({
     check: () => ready,
     checkInterval: 1,

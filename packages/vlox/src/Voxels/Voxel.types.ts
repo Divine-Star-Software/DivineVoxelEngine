@@ -53,7 +53,6 @@ export enum VoxelStructIds {
   canHaveSecondary = "dve_can_have_secondary",
 }
 
-
 interface VoxelProperties {
   [key: string]: any;
   /** The material used to render the voxel. Used by the engine to assign meshes to the proper material. */
@@ -70,6 +69,9 @@ interface VoxelProperties {
 
   /** Indicates whether the voxel is a light source. */
   [VoxelStructIds.isLightSource]?: boolean;
+
+  /** Indicates if the voxel lets light through */
+  [VoxelStructIds.isTransparent]?: boolean;
 
   /** Disables ambient occlusion for this voxel if set to true. */
   [VoxelStructIds.noAO]?: boolean;

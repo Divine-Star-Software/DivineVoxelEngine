@@ -191,6 +191,7 @@ export class BrushTool {
   }
 
   stop() {
+    
     return this;
   }
 }

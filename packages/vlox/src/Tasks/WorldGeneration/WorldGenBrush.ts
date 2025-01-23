@@ -13,13 +13,14 @@ import { SafePromise } from "@amodx/core/Promises/SafePromise.js";
 import { Propagation } from "../Propagation/Propagation.js";
 import { DivineVoxelEngineConstructor } from "../../Contexts/Constructor/DivineVoxelEngineConstructor.js";
 import { UpdateTask } from "../Update/UpdateTask.js"
+import { WorldRegister } from "../../Data/World/WorldRegister.js";
 
 export class WorldGenBrush extends BrushTool {
   constructor() {
     super();
     WorldGeneration._brushes.push(this);
   }
-  requestsId: "";
+  requestsId: ""; 
 
   tasks = new UpdateTask();
 
