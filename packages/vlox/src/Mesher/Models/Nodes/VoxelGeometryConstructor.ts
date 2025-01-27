@@ -1,9 +1,9 @@
 import { VoxelFaceCullResultsIndex } from "../../../Models/Indexing/VoxelFaceCullResultsIndex";
 import { VoxelAOResultsIndex } from "../../../Models/Indexing/VoxelAOResultsIndex";
 import {
-  VoxelGeometryRulelessSyncData,
-  VoxelGeometrySyncData,
-} from "../../../Voxels/VoxelSyncData";
+  CompiledVoxelGeometryRulessData,
+  CompiledVoxelGeometrySyncData,
+} from "../../../Voxels/Types/VoxelModelCompiledData.types";
 import { BoxVoxelGometryNode } from "./Ruled/BoxVoxelGeometryNode";
 import { QuadVoxelGometryNode } from "./Ruled/QuadVoxelGeometryNode";
 import { RulelessQuadVoxelGeometryNode } from "./Ruleless/RulelessQuadVoxelGeometryNode";
@@ -19,7 +19,7 @@ export class VoxelGeometryConstructor {
   aoIndex: VoxelAOResultsIndex;
   constructor(
     public geometryPaletteId: number,
-    data: VoxelGeometrySyncData | VoxelGeometryRulelessSyncData
+    data: CompiledVoxelGeometrySyncData | CompiledVoxelGeometryRulessData
   ) {
     for (const node of data.nodes) {
       if (node.node.type == "custom") {
@@ -35,8 +35,8 @@ export class VoxelGeometryConstructor {
      
       }
     }
-    if ((data as VoxelGeometryRulelessSyncData)?.ruleless) {
-      data = data as VoxelGeometryRulelessSyncData;
+    if ((data as CompiledVoxelGeometryRulessData)?.ruleless) {
+      data = data as CompiledVoxelGeometryRulessData;
       for (const node of data.nodes) {
         if (node.node.type == "box") {
           const newNode = new RulelessBoxVoxelGeometryNode(
@@ -60,7 +60,7 @@ export class VoxelGeometryConstructor {
         }
       }
     } else {
-      data = data as VoxelGeometrySyncData;
+      data = data as CompiledVoxelGeometrySyncData;
       this.faceCullMap = data.faceCullMap!;
       this.vertexHitMap = data.vertexHitMap!;
       this.cullIndex = new VoxelFaceCullResultsIndex(data.cullIndex!);
@@ -94,7 +94,7 @@ export class VoxelGeometryConstructor {
     for (const node of this.nodes) {
       node.faceIndex = faceCount;
       node.vertexIndex = vertexCount;
-      faceCount += node.faceCount;
+      faceCount += node.faceCount - 1;
       vertexCount += node.vertexCount;
     }
   }

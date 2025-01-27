@@ -27,7 +27,7 @@ export async function CreateTextures(scene: Scene, textureData: TextureData[]) {
 
   await TextureBuilder.setUpImageCreation();
   TextureManager.registerTexture(textureData);
-  await TextureManager.$INIT();
+  await TextureManager.init();
   await TextureManager.createRawDataMap();
 
   for (const [key, type] of TextureManager.textureTypes) {
@@ -73,12 +73,6 @@ export default async function CreateDefaultRenderer(
   scene.voxelScene.setCamera(scene.activeCamera!);
   scene._isReady = true;
   renderer.init = async (dver) => {
-    const uvMap = TextureManager.generateTextureUVMap();
-
-    for (const constructor of dver.threads.construcotrs.getThreads()) {
-      await constructor.runAsyncTasks("sync-texuture-index", uvMap);
-    }
-
 
     const materials: NodeMaterialData[] = [];
     for (const substance of DefaultSubstances) {

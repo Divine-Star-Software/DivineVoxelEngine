@@ -1,15 +1,15 @@
 import { EngineSettings } from "../Settings/EngineSettings.js";
-import type { TextureData, TextureTypeUVMap } from "./Texture.types";
+import type { TextureData, TextureTypeUVMap, TextureId } from "./Texture.types";
 import { TextureBuilder } from "./TextureBuilder.js";
 import { TextureArray } from "./TextureArray.js";
-import { ConstructorTextureData } from "./Constructor.types";
+import { TextureRegister } from "./TextureRegister.js";
 
 export class TextureManager {
   static defaultTexturePath = "assets/textures";
 
   static textureTypes = new Map<string, TextureArray>();
 
-  static getTextureIndex(data: ConstructorTextureData): number {
+  static getTextureIndex(data: TextureId): number {
     const [textureType, textureId, varation] = data;
 
     const type = this.getTextureType(textureType);
@@ -23,7 +23,7 @@ export class TextureManager {
     return this._ready;
   }
 
-  static async $INIT() {
+  static async init() {
     TextureBuilder.defineTextureDimensions(
       EngineSettings.settings.textures.textureSize,
       EngineSettings.settings.textures.mipMapSizes
@@ -31,7 +31,7 @@ export class TextureManager {
     for (const [key, type] of this.textureTypes) {
       await type.build();
     }
-
+    TextureRegister.setTextureIndex(this.generateTextureUVMap());
     this._ready = true;
   }
 
@@ -47,7 +47,7 @@ export class TextureManager {
     this.defaultTexturePath = path;
   }
 
-  static getTextureData([type, id, segment]: ConstructorTextureData):
+  static getTextureData([type, id, segment]: TextureId):
     | TextureData
     | undefined {
     const t = this.getTextureType(type);

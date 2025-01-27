@@ -22,13 +22,14 @@ let ran = false;
 import { GUI } from "dat.gui";
 import { BinaryObject } from "@amodx/binary";
 import { Compressor } from "@amodx/core/Compression/Compression";
+import { TextureRegister } from "@divinevoxel/vlox/Textures/TextureRegister";
 export function App() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   useEffect(() => {
     if (ran) return;
     if (!canvasRef.current) return;
     ran = true;
-console.error("MOUNT THE APP");
+    console.error("MOUNT THE APP");
     (async () => {
       //  CacheManager.cacheLoadEnabled = true;
       //   CacheManager.cacheStoreEnabled = true;
@@ -102,15 +103,15 @@ console.error("MOUNT THE APP");
         constructorWorkers,
         voxels: DVEVoxelData,
       });
-      await CreateDisplayIndex(DVER, DVEVoxelData);
-   const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
+
+      await CreateDisplayIndex(DVEVoxelData);
+      const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
       skybox.infiniteDistance = true;
       const skyboxMat = renderer.materials.get("dve_skybox");
-      console.warn("got skybox", skybox);
       if (skyboxMat) {
         skybox.material = skyboxMat._material;
         skybox.material!.backFaceCulling = false;
-      } 
+      }
       const sceneTool = new SceneTool();
       sceneTool.fog.setDensity(0.00001);
       sceneTool.fog.setColor(1, 1, 1);
@@ -125,13 +126,13 @@ console.error("MOUNT THE APP");
       viwer.yAxis.position.z -= 2;
       viwer.zAxis.position.z -= 2;
 
-      const camera = new FreeCamera("", new Vector3(-20, 40, -20), scene);
+      const camera = new FreeCamera("", new Vector3(-2, 4, -2), scene);
 
       camera.setTarget(new Vector3(0, 0, 0));
 
       camera.speed = 1;
-      camera.maxZ = 1000;
-      camera.minZ = 0.0001;
+      camera.maxZ = 500;
+      camera.minZ = 0.01;
       camera.fov = 1.8;
       camera.attachControl(canvas, true);
 
@@ -182,8 +183,22 @@ console.error("MOUNT THE APP");
  */
       //  await InitRenderPlayer(DVER, nodes);
 
-      console.log("start world gen");
-      DVER.threads.world.runTasks("start-world", []);
+      console.log("start world gen",TextureRegister,TextureRegister.data);
+      console.warn([
+        "up",
+        TextureRegister.getTextureUV(["dve_voxel", "dve_debug_box", "top"]),
+        "down",
+        TextureRegister.getTextureUV(["dve_voxel", "dve_debug_box", "bottom"]),
+        "north",
+        TextureRegister.getTextureUV(["dve_voxel", "dve_debug_box", "north"]),
+        "south",
+        TextureRegister.getTextureUV(["dve_voxel", "dve_debug_box", "south"]),
+        "east",
+        TextureRegister.getTextureUV(["dve_voxel", "dve_debug_box", "east"]),
+        "west",
+        TextureRegister.getTextureUV(["dve_voxel", "dve_debug_box", "west"]),
+      ]);
+      DVER.threads.world.runTask("start-world", []);
     })();
   }, []);
 

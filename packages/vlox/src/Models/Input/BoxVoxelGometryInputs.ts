@@ -1,4 +1,4 @@
-import { VoxelFacesArray } from "../../Math";
+import { VoxelFaces, VoxelFacesArray } from "../../Math";
 import { QuadUVData } from "@amodx/meshing/Geometry.types";
 
 export type BoxFaceArags = [
@@ -9,6 +9,7 @@ export type BoxFaceArags = [
   rotation: number,
   transparent: boolean,
   uvs: QuadUVData,
+  index: number,
 ];
 
 enum ArgIndexes {
@@ -18,9 +19,10 @@ enum ArgIndexes {
   Rotation,
   Transparent,
   UVs,
+  Index,
 }
 
-const getArgs = (): BoxFaceArags => {
+const getArgs = (face: VoxelFaces): BoxFaceArags => {
   const args: BoxFaceArags = [] as any;
   args[ArgIndexes.Enabled] = true;
   args[ArgIndexes.Fliped] = false;
@@ -33,6 +35,7 @@ const getArgs = (): BoxFaceArags => {
     [0, 0],
     [1, 0],
   ];
+  args[ArgIndexes.Index] = face;
   return args;
 };
 
@@ -42,9 +45,8 @@ export class BoxVoxelGometryInputs {
   static ArgIndexes = ArgIndexes;
   static CreateArgs(): BoxVoxelGometryArgs {
     const base: BoxVoxelGometryArgs = [] as any;
-    for (let i = 0; i < VoxelFacesArray.length; i++) {
-      const face = VoxelFacesArray[i];
-      base[face] = getArgs();
+    for (let face = 0 as VoxelFaces; face < 6; face++) {
+      base[face] = getArgs(face);
     }
     return base;
   }

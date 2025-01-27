@@ -1,6 +1,6 @@
 import { EngineSettingsData } from "./EngineSettings.types.js";
-import { WorldBounds } from "../Data/World/WorldBounds.js"
-import { InitWorldSpaces, WorldSpaces } from "../Data/World/WorldSpaces.js"
+import { WorldBounds } from "../World/WorldBounds.js"
+import { InitWorldSpaces, WorldSpaces } from "../World/WorldSpaces.js"
 import { Environment } from "@amodx/core/Environment/Environment.js";
 import { Observable } from "@amodx/core/Observers/Observable.js";
 

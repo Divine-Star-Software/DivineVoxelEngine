@@ -1,7 +1,7 @@
-import { SubstancePalette } from "../../Data/Palettes/SubstancePalette.js";
-import { SubstanceStruct } from "../../Data/Structs/SubstanceStruct.js";
+import { SubstancePalette } from "../../Voxels/Palettes/SubstancePalette.js";
 import { MappedDataRegister } from "../../Data/Register/MappedDataRegister.js";
-import { SubstanceStructIds } from "../../Voxels/VoxelSubstances.types.js"
+import { SubstanceStructIds } from "../../Voxels/Types/VoxelSubstances.types.js"
+import { SubstanceStruct } from "../../Voxels/Structs/SubstanceStruct.js";
 
 export class SubstanceDataTool {
   static tags = SubstanceStruct;
@@ -30,9 +30,10 @@ export class SubstanceDataTool {
     return SubstanceStruct.instance[SubstanceStructIds.isTransparent] == 1;
   }
 
+ */
   isSolid() {
     return SubstanceStruct.instance[SubstanceStructIds.isSolid] == 1;
-  } */
+  }
   isLiquid() {
     return SubstanceStruct.instance[SubstanceStructIds.isLiquid] == 1;
   }

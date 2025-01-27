@@ -1,10 +1,10 @@
-import { VoxelPalette } from "../../Data/Palettes/VoxelPalette";
+import { VoxelPalette } from "../../Voxels/Palettes/VoxelPalette";
 import { StringPalette } from "../../Util/StringPalette";
 import {
-  VoxelGeometryRulelessSyncData,
-  VoxelGeometrySyncData,
-  VoxelModelSyncData,
-} from "../../Voxels/VoxelSyncData";
+  CompiledVoxelGeometryRulessData,
+  CompiledVoxelGeometrySyncData,
+  CompiledVoxelModelData,
+} from "../../Voxels/Types/VoxelModelCompiledData.types";
 import { GeoemtryNodeConstructor } from "./Nodes/GeometryNode";
 import { VoxelConstructor } from "./VoxelConstructor";
 import { VoxelGeometryConstructor } from "./Nodes/VoxelGeometryConstructor";
@@ -19,10 +19,10 @@ export class VoxelModelConstructorRegister {
     this.geometryPalette = new StringPalette(palette);
   }
 
-  static modelData = new Map<string, VoxelModelSyncData>();
+  static modelData = new Map<string, CompiledVoxelModelData>();
   static customNodes = new Map<string, GeoemtryNodeConstructor<any, any>>();
 
-  static registerModels(models: VoxelModelSyncData[]) {
+  static registerModels(models: CompiledVoxelModelData[]) {
     models.forEach((_) => this.modelData.set(_.id, _));
   }
   static registerCustomNode(
@@ -54,7 +54,7 @@ export class VoxelModelConstructorRegister {
     this.constructors.set(voxel.id, voxel);
   }
   static registerGeometry(
-    geometries: (VoxelGeometrySyncData | VoxelGeometryRulelessSyncData)[]
+    geometries: (CompiledVoxelGeometrySyncData | CompiledVoxelGeometryRulessData)[]
   ) {
     for (const geometry of geometries) {
       const paletteId = this.geometryPalette.getNumberId(geometry.id);
@@ -63,7 +63,7 @@ export class VoxelModelConstructorRegister {
         paletteId,
         geometry
       );
-      if ((geometry as VoxelGeometryRulelessSyncData).ruleless == true) {
+      if ((geometry as CompiledVoxelGeometryRulessData).ruleless == true) {
         this.rulesless[paletteId] = true;
       } else {
         this.rulesless[paletteId] = false;

@@ -537,34 +537,35 @@ export const simpleCrossedPannel: VoxelModelData = {
   //  shapeStatesOverrides: {},
 
   shapeStatesNodes: {
-    "placement=down,direction=south": [
-      {
-        id: "quad-1",
-        geometryId: "dve_diagonal_flat_panel_west_east",
-        inputs: {
-          "@texture": "@texture",
-          "@textureRotation": 0,
-          "@transaprent": "@transparent",
-          "@doubleSided": "@doubleSided",
-        },
-      },
-      {
-        id: "quad-2",
-        geometryId: "dve_diagonal_flat_panel_east_west",
-        inputs: {
-          "@texture": "@texture",
-          "@textureRotation": 0,
-          "@transaprent": "@transparent",
-          "@doubleSided": "@doubleSided",
-        },
-      },
-    ],
     "placement=down,direction=north": [
       {
         id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           "@texture": "@texture",
+          "@textureRotation": 0,
+
+          "@transaprent": "@transparent",
+          "@doubleSided": "@doubleSided",
+        },
+      },
+      {
+        id: "quad-2",
+        geometryId: "dve_diagonal_flat_panel_east_west",
+        inputs: {
+          "@texture": "@texture",
+          "@textureRotation": 0,
+          "@transaprent": "@transparent",
+          "@doubleSided": "@doubleSided",
+        },
+      },
+    ],
+    "placement=down,direction=south": [
+      {
+        id: "quad-1",
+        geometryId: "dve_diagonal_flat_panel_west_east",
+        inputs: {
+          "@texture": "@texture",
           "@textureRotation": 180,
           "@transaprent": "@transparent",
           "@doubleSided": "@doubleSided",
@@ -581,6 +582,7 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
     ],
+
     "placement=down,direction=east": [
       {
         id: "quad-1",
@@ -625,35 +627,34 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
     ],
-
-    "placement=up,direction=south": [
-      {
-        id: "quad-1",
-        geometryId: "dve_diagonal_flat_panel_west_east",
-        inputs: {
-          "@texture": "@texture",
-          "@textureRotation": 180,
-          "@transaprent": "@transparent",
-          "@doubleSided": "@doubleSided",
-        },
-      },
-      {
-        id: "quad-2",
-        geometryId: "dve_diagonal_flat_panel_east_west",
-        inputs: {
-          "@texture": "@texture",
-          "@textureRotation": 180,
-          "@transaprent": "@transparent",
-          "@doubleSided": "@doubleSided",
-        },
-      },
-    ],
     "placement=up,direction=north": [
       {
         id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           "@texture": "@texture",
+          "@textureRotation": 180,
+          "@transaprent": "@transparent",
+          "@doubleSided": "@doubleSided",
+        },
+      },
+      {
+        id: "quad-2",
+        geometryId: "dve_diagonal_flat_panel_east_west",
+        inputs: {
+          "@texture": "@texture",
+          "@textureRotation": 180,
+          "@transaprent": "@transparent",
+          "@doubleSided": "@doubleSided",
+        },
+      },
+    ],
+    "placement=up,direction=south": [
+      {
+        id: "quad-1",
+        geometryId: "dve_diagonal_flat_panel_west_east",
+        inputs: {
+          "@texture": "@texture",
           "@textureRotation": 0,
           "@transaprent": "@transparent",
           "@doubleSided": "@doubleSided",
@@ -670,6 +671,7 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
     ],
+
     "placement=up,direction=east": [
       {
         id: "quad-1",
@@ -714,35 +716,34 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
     ],
-
-    "placement=north,direction=south": [
-      {
-        id: "quad-1",
-        geometryId: "dve_diagonal_flat_panel_west_east",
-        inputs: {
-          "@texture": "@texture",
-          "@textureRotation": 0,
-          "@transaprent": "@transparent",
-          "@doubleSided": "@doubleSided",
-        },
-      },
-      {
-        id: "quad-2",
-        geometryId: "dve_diagonal_flat_panel_east_west",
-        inputs: {
-          "@texture": "@texture",
-          "@textureRotation": 0,
-          "@transaprent": "@transparent",
-          "@doubleSided": "@doubleSided",
-        },
-      },
-    ],
     "placement=north,direction=north": [
       {
         id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           "@texture": "@texture",
+          "@textureRotation": 0,
+          "@transaprent": "@transparent",
+          "@doubleSided": "@doubleSided",
+        },
+      },
+      {
+        id: "quad-2",
+        geometryId: "dve_diagonal_flat_panel_east_west",
+        inputs: {
+          "@texture": "@texture",
+          "@textureRotation": 0,
+          "@transaprent": "@transparent",
+          "@doubleSided": "@doubleSided",
+        },
+      },
+    ],
+    "placement=north,direction=south": [
+      {
+        id: "quad-1",
+        geometryId: "dve_diagonal_flat_panel_west_east",
+        inputs: {
+          "@texture": "@texture",
           "@textureRotation": 180,
           "@transaprent": "@transparent",
           "@doubleSided": "@doubleSided",
@@ -759,6 +760,7 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
     ],
+
     "placement=north,direction=east": [
       {
         id: "quad-1",
@@ -803,29 +805,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
     ],
-
-    "placement=south,direction=south": [
-      {
-        id: "quad-1",
-        geometryId: "dve_diagonal_flat_panel_west_east",
-        inputs: {
-          "@texture": "@texture",
-          "@textureRotation": 180,
-          "@transaprent": "@transparent",
-          "@doubleSided": "@doubleSided",
-        },
-      },
-      {
-        id: "quad-2",
-        geometryId: "dve_diagonal_flat_panel_east_west",
-        inputs: {
-          "@texture": "@texture",
-          "@textureRotation": 180,
-          "@transaprent": "@transparent",
-          "@doubleSided": "@doubleSided",
-        },
-      },
-    ],
     "placement=south,direction=north": [
       {
         id: "quad-1",
@@ -848,6 +827,29 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
     ],
+    "placement=south,direction=south": [
+      {
+        id: "quad-1",
+        geometryId: "dve_diagonal_flat_panel_west_east",
+        inputs: {
+          "@texture": "@texture",
+          "@textureRotation": 180,
+          "@transaprent": "@transparent",
+          "@doubleSided": "@doubleSided",
+        },
+      },
+      {
+        id: "quad-2",
+        geometryId: "dve_diagonal_flat_panel_east_west",
+        inputs: {
+          "@texture": "@texture",
+          "@textureRotation": 180,
+          "@transaprent": "@transparent",
+          "@doubleSided": "@doubleSided",
+        },
+      },
+    ],
+
     "placement=south,direction=east": [
       {
         id: "quad-1",
@@ -892,29 +894,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
     ],
-
-    "placement=east,direction=south": [
-      {
-        id: "quad-1",
-        geometryId: "dve_diagonal_flat_panel_west_east",
-        inputs: {
-          "@texture": "@texture",
-          "@textureRotation": 180,
-          "@transaprent": "@transparent",
-          "@doubleSided": "@doubleSided",
-        },
-      },
-      {
-        id: "quad-2",
-        geometryId: "dve_diagonal_flat_panel_east_west",
-        inputs: {
-          "@texture": "@texture",
-          "@textureRotation": 180,
-          "@transaprent": "@transparent",
-          "@doubleSided": "@doubleSided",
-        },
-      },
-    ],
     "placement=east,direction=north": [
       {
         id: "quad-1",
@@ -937,6 +916,29 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
     ],
+    "placement=east,direction=south": [
+      {
+        id: "quad-1",
+        geometryId: "dve_diagonal_flat_panel_west_east",
+        inputs: {
+          "@texture": "@texture",
+          "@textureRotation": 180,
+          "@transaprent": "@transparent",
+          "@doubleSided": "@doubleSided",
+        },
+      },
+      {
+        id: "quad-2",
+        geometryId: "dve_diagonal_flat_panel_east_west",
+        inputs: {
+          "@texture": "@texture",
+          "@textureRotation": 180,
+          "@transaprent": "@transparent",
+          "@doubleSided": "@doubleSided",
+        },
+      },
+    ],
+
     "placement=east,direction=east": [
       {
         id: "quad-1",
@@ -981,29 +983,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
     ],
-
-    "placement=west,direction=south": [
-      {
-        id: "quad-1",
-        geometryId: "dve_diagonal_flat_panel_west_east",
-        inputs: {
-          "@texture": "@texture",
-          "@textureRotation": 180,
-          "@transaprent": "@transparent",
-          "@doubleSided": "@doubleSided",
-        },
-      },
-      {
-        id: "quad-2",
-        geometryId: "dve_diagonal_flat_panel_east_west",
-        inputs: {
-          "@texture": "@texture",
-          "@textureRotation": 180,
-          "@transaprent": "@transparent",
-          "@doubleSided": "@doubleSided",
-        },
-      },
-    ],
     "placement=west,direction=north": [
       {
         id: "quad-1",
@@ -1026,6 +1005,29 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
     ],
+    "placement=west,direction=south": [
+      {
+        id: "quad-1",
+        geometryId: "dve_diagonal_flat_panel_west_east",
+        inputs: {
+          "@texture": "@texture",
+          "@textureRotation": 180,
+          "@transaprent": "@transparent",
+          "@doubleSided": "@doubleSided",
+        },
+      },
+      {
+        id: "quad-2",
+        geometryId: "dve_diagonal_flat_panel_east_west",
+        inputs: {
+          "@texture": "@texture",
+          "@textureRotation": 180,
+          "@transaprent": "@transparent",
+          "@doubleSided": "@doubleSided",
+        },
+      },
+    ],
+
     "placement=west,direction=east": [
       {
         id: "quad-1",

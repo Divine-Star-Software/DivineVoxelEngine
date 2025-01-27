@@ -1,9 +1,9 @@
-import InitDataSync from "../Contexts/Base/Remote/Sync/InitDataSync"
+import InitDataSync from "../Contexts/Base/Remote/InitDataSync";
 import { DivineVoxelEngineNexus } from "../Contexts/Nexus/DivineVoxelEngineNexus";
 import { Environment } from "@amodx/core/Environment/Environment";
 import { Threads } from "@amodx/threads";
 import { CreatePromiseCheck } from "@amodx/core/Intervals/CreatePromiseCheck";
-import InitWorldDataSync from "../Contexts/Base/Remote/Sync/InitWorldDataSync";
+import InitWorldDataSync from "../Contexts/Base/Remote/InitWorldDataSync";
 
 export async function StartNexus(data: {} = {}) {
   const DVEN = new DivineVoxelEngineNexus(data || {});
@@ -15,7 +15,7 @@ export async function StartNexus(data: {} = {}) {
     parent = "server";
   }
 
-  await Threads.init("constructor", parent);
+  await Threads.init("constructor", self, parent);
 
   let ready = false;
   InitDataSync({

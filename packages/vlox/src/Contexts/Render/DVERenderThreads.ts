@@ -3,13 +3,7 @@ import { ThreadManager } from "../Base/ThreadManager";
 
 export class DVERenderThreads extends ThreadManager {
   nexus = Threads.createThread("nexus");
-  richWorld = Threads.createThread("rich-world");
-  dataLoader = Threads.createThread("data-loader");
-  state = {} as any;
-  construcotrs = Threads.createThreadPool({
-    name: "constructor",
-    onPortSet(port, commName) {},
-  });
+  construcotrs = Threads.createThreadPool("constructor");
   parent = Threads.parent;
   world = Threads.createThread("world");
 
@@ -18,8 +12,5 @@ export class DVERenderThreads extends ThreadManager {
     this.addThread(this.construcotrs);
     this.addThread(this.parent);
     this.addThread(this.world);
-
   }
-
-
 }

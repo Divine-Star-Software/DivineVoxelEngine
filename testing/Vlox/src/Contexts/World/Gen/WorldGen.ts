@@ -1,9 +1,9 @@
-import { AdvancedBrush } from "@divinevoxel/vlox/Tools/Brush/AdvancedBrushTool";
-import { WorldCursor } from "@divinevoxel/vlox/Data/Cursor/World/WorldCursor";
-import { VoxelCursor } from "@divinevoxel/vlox/Data/Cursor/VoxelCursor";
+import { BrushTool } from "@divinevoxel/vlox/Tools/Brush/Brush";
+import { WorldCursor } from "@divinevoxel/vlox/World/Cursor/WorldCursor";
+import { VoxelCursor } from "@divinevoxel/vlox/Voxels/Cursor/VoxelCursor";
 const worldCursor = new WorldCursor();
 const voxelCursor = new VoxelCursor();
-const brush = new AdvancedBrush();
+const brush = new BrushTool();
 
 export const WorldGen = {
   worldCursor,
@@ -295,7 +295,7 @@ export const WorldGen = {
   },
 
   generateWorldColumn(chunkX: number, chunkZ: number) {
-  //  brush.start();
+    //  brush.start();
     return this.generateBlankChunk(chunkX, chunkZ);
     let toss = Math.random();
 

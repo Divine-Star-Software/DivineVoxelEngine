@@ -1,12 +1,16 @@
 import { Observable } from "@amodx/core/Observers";
 import { BoxVoxelGometryInputs } from "../../Input/BoxVoxelGometryInputs";
 import { VoxelRuleGeometry } from "../Classes/VoxelRulesGeometry";
-import { VoxelFaceNameArray, VoxelFaceNameRecord } from "../../../Math";
+import {
+  VoxelFaceNameArray,
+  VoxelFaceNameRecord,
+  VoxelFaces,
+} from "../../../Math";
 import { TextureManager } from "../../../Textures/TextureManager";
 import { Matrix2x2Like, Mat2Array, Vec4Array, AMath } from "@amodx/math";
 import { QuadUVData } from "@amodx/meshing/Geometry.types";
 import { QuadVoxelGometryInputs } from "../../Input/QuadVoxelGometryInputs";
-import { VoxelGeometryTransform } from "../../../Voxels/VoxelSyncData";
+import { VoxelGeometryTransform } from "../../../Voxels/Types/VoxelModelCompiledData.types";
 
 const isArgString = (data: any) => {
   if (typeof data !== "string") return false;
@@ -82,13 +86,13 @@ const mapQuadUvs = (
 export function BuildGeomtryInputs(geomtry: VoxelRuleGeometry) {
   const inputObservers = new Map<string, Observable<any>>();
 
-  const getInputObserver = (id: string) => {
+  const onInput = (id: string, subscribe: (data: any) => any) => {
     let obs = inputObservers.get(id);
     if (!obs) {
       obs = new Observable<any>();
       inputObservers.set(id, obs);
     }
-    return obs;
+    return obs.subscribe(subscribe);
   };
 
   let faceTransparentIndex: boolean[] = [];
@@ -104,10 +108,8 @@ export function BuildGeomtryInputs(geomtry: VoxelRuleGeometry) {
         const value = node.inputs[input];
         if (isArgString(value)) {
           args[argsIndex][input] = null;
-          getInputObserver(value!).subscribe((value) => {
+          onInput(value!, (value) => {
             args[argsIndex][input] = value;
-
-            console.warn("set the value", value, args[argsIndex][input]);
           });
         } else {
           args[argsIndex][input] = value;
@@ -115,119 +117,107 @@ export function BuildGeomtryInputs(geomtry: VoxelRuleGeometry) {
       }
     }
     if (node.type == "box") {
-      const newArgs = BoxVoxelGometryInputs.CreateArgs();
-      args.push(newArgs);
+      args.push(BoxVoxelGometryInputs.CreateArgs());
       const argsIndex = args.length - 1;
 
-      for (const face of VoxelFaceNameArray) {
+      for (let face = 0 as VoxelFaces; face < 6; face++) {
         const relativeFaceCount = faceCount;
-        const faceIndex = VoxelFaceNameRecord[face];
+        const faceName = VoxelFaceNameArray[face];
 
-        const faceData = node.faces[face];
+        const faceData = node.faces[faceName];
         let defaultUvs: Vec4Array = [0, 0, 1, 1];
         if (isArgString(faceData.enabled)) {
-          getInputObserver(String(faceData.enabled!)).subscribe(
+          onInput(
+            String(faceData.enabled!),
             (value) =>
-              (args[argsIndex][VoxelFaceNameRecord[face]][
-                BoxVoxelGometryInputs.ArgIndexes.Enabled
-              ] = value)
+              (args[argsIndex][face][BoxVoxelGometryInputs.ArgIndexes.Enabled] =
+                value)
           );
         }
         if (isArgString(faceData.flip)) {
-          getInputObserver(String(faceData.flip!)).subscribe(
+          onInput(
+            String(faceData.flip!),
             (value) =>
-              (args[argsIndex][VoxelFaceNameRecord[face]][
-                BoxVoxelGometryInputs.ArgIndexes.Fliped
-              ] = value)
+              (args[argsIndex][face][BoxVoxelGometryInputs.ArgIndexes.Fliped] =
+                value)
           );
         }
         if (isArgString(faceData.transparent)) {
-          getInputObserver(String(faceData.transparent!)).subscribe((value) => {
-            args[argsIndex][VoxelFaceNameRecord[face]][
+          onInput(String(faceData.transparent!), (value) => {
+            args[argsIndex][face][
               BoxVoxelGometryInputs.ArgIndexes.Transparent
             ] = value;
 
-            faceTransparentIndex[relativeFaceCount + faceIndex] =
-              Boolean(value);
+            faceTransparentIndex[relativeFaceCount + face] = Boolean(value);
           });
         } else {
-          args[argsIndex][VoxelFaceNameRecord[face]][
-            BoxVoxelGometryInputs.ArgIndexes.Transparent
-          ] = Boolean(faceData.transparent);
-          faceTransparentIndex[relativeFaceCount + faceIndex] = Boolean(
+          args[argsIndex][face][BoxVoxelGometryInputs.ArgIndexes.Transparent] =
+            Boolean(faceData.transparent);
+          faceTransparentIndex[relativeFaceCount + face] = Boolean(
             faceData.transparent
           );
         }
         if (isArgString(faceData.rotation)) {
-          getInputObserver(String(faceData.rotation!)).subscribe((value) => {
-            args[argsIndex][VoxelFaceNameRecord[face]][
-              BoxVoxelGometryInputs.ArgIndexes.Rotation
-            ] = value;
+          onInput(String(faceData.rotation!), (value) => {
+            args[argsIndex][face][BoxVoxelGometryInputs.ArgIndexes.Rotation] =
+              value;
 
-            args[argsIndex][VoxelFaceNameRecord[face]][
-              BoxVoxelGometryInputs.ArgIndexes.UVs
-            ] = mapQuadUvs(defaultUvs, value, tranform);
+            args[argsIndex][face][BoxVoxelGometryInputs.ArgIndexes.UVs] =
+              mapQuadUvs(defaultUvs, value, tranform);
           });
         } else {
           faceData.rotation &&
-            (args[argsIndex][VoxelFaceNameRecord[face]][
-              BoxVoxelGometryInputs.ArgIndexes.Rotation
-            ] = faceData.rotation as number);
+            (args[argsIndex][face][BoxVoxelGometryInputs.ArgIndexes.Rotation] =
+              faceData.rotation as number);
         }
         if (isArgString(faceData.uv)) {
           const defaultInput =
             geomtry.data.ogData.arguments[(faceData.uv as string).substring(1)];
 
           if (defaultInput.type == "box-uv" && defaultInput.default) {
-            args[argsIndex][VoxelFaceNameRecord[face]][
-              BoxVoxelGometryInputs.ArgIndexes.UVs
-            ] = mapQuadUvs(
-              defaultInput.default,
-              args[argsIndex][VoxelFaceNameRecord[face]][
-                BoxVoxelGometryInputs.ArgIndexes.Rotation
-              ],
-              tranform
-            );
+            args[argsIndex][face][BoxVoxelGometryInputs.ArgIndexes.UVs] =
+              mapQuadUvs(
+                defaultInput.default,
+                args[argsIndex][face][
+                  BoxVoxelGometryInputs.ArgIndexes.Rotation
+                ],
+                tranform
+              );
             defaultUvs = defaultInput.default;
           }
 
-          getInputObserver(String(faceData.uv!)).subscribe((value) => {
-            args[argsIndex][VoxelFaceNameRecord[face]][
-              BoxVoxelGometryInputs.ArgIndexes.UVs
-            ] = mapQuadUvs(
-              value,
-              args[argsIndex][VoxelFaceNameRecord[face]][
-                BoxVoxelGometryInputs.ArgIndexes.Rotation
-              ],
-              tranform
-            );
+          onInput(String(faceData.uv!), (value) => {
+            args[argsIndex][face][BoxVoxelGometryInputs.ArgIndexes.UVs] =
+              mapQuadUvs(
+                value,
+                args[argsIndex][face][
+                  BoxVoxelGometryInputs.ArgIndexes.Rotation
+                ],
+                tranform
+              );
           });
         } else {
-          args[argsIndex][VoxelFaceNameRecord[face]][
-            BoxVoxelGometryInputs.ArgIndexes.UVs
-          ] = mapQuadUvs(
-            faceData.uv as Vec4Array,
-            args[argsIndex][VoxelFaceNameRecord[face]][
-              BoxVoxelGometryInputs.ArgIndexes.Rotation
-            ],
-            tranform
-          );
+          args[argsIndex][face][BoxVoxelGometryInputs.ArgIndexes.UVs] =
+            mapQuadUvs(
+              faceData.uv as Vec4Array,
+              args[argsIndex][face][BoxVoxelGometryInputs.ArgIndexes.Rotation],
+              tranform
+            );
           defaultUvs = faceData.uv as Vec4Array;
         }
         if (isArgString(faceData.texture)) {
-          getInputObserver(String(faceData.texture!)).subscribe(
+          onInput(
+            String(faceData.texture!),
             (value) =>
-              (args[argsIndex][VoxelFaceNameRecord[face]][
-                BoxVoxelGometryInputs.ArgIndexes.Texture
-              ] = value)
+              (args[argsIndex][face][BoxVoxelGometryInputs.ArgIndexes.Texture] =
+                value)
           );
         }
       }
       faceCount += 6;
     }
     if (node.type == "quad") {
-      const newArgs = QuadVoxelGometryInputs.CreateArgs();
-      args.push(newArgs);
+      args.push(QuadVoxelGometryInputs.CreateArgs());
       const argsIndex = args.length - 1;
 
       const relativeFaceCount = faceCount;
@@ -235,10 +225,9 @@ export function BuildGeomtryInputs(geomtry: VoxelRuleGeometry) {
       let defaultUvs: Vec4Array = [0, 0, 1, 1];
 
       if (isArgString(node.transparent)) {
-        getInputObserver(String(node.transparent!)).subscribe((value) => {
+        onInput(String(node.transparent!), (value) => {
           args[argsIndex][QuadVoxelGometryInputs.ArgIndexes.Transparent] =
             value;
-
           faceTransparentIndex[relativeFaceCount] = Boolean(value);
         });
       } else {
@@ -248,7 +237,7 @@ export function BuildGeomtryInputs(geomtry: VoxelRuleGeometry) {
       }
 
       if (isArgString(node.doubleSided)) {
-        getInputObserver(String(node.doubleSided!)).subscribe((value) => {
+        onInput(String(node.doubleSided!), (value) => {
           args[argsIndex][QuadVoxelGometryInputs.ArgIndexes.DoubleSided] =
             value;
         });
@@ -258,7 +247,7 @@ export function BuildGeomtryInputs(geomtry: VoxelRuleGeometry) {
       }
 
       if (isArgString(node.textureRotation)) {
-        getInputObserver(String(node.textureRotation!)).subscribe((value) => {
+        onInput(String(node.textureRotation!), (value) => {
           args[argsIndex][QuadVoxelGometryInputs.ArgIndexes.Rotation] = value;
 
           args[argsIndex][QuadVoxelGometryInputs.ArgIndexes.UVs] = mapQuadUvs(
@@ -285,7 +274,7 @@ export function BuildGeomtryInputs(geomtry: VoxelRuleGeometry) {
           defaultUvs = defaultInput.default;
         }
 
-        getInputObserver(String(node.uv!)).subscribe((value) => {
+        onInput(String(node.uv!), (value) => {
           args[argsIndex][QuadVoxelGometryInputs.ArgIndexes.UVs] = mapQuadUvs(
             value,
             args[argsIndex][QuadVoxelGometryInputs.ArgIndexes.Rotation],
@@ -298,10 +287,12 @@ export function BuildGeomtryInputs(geomtry: VoxelRuleGeometry) {
           args[argsIndex][QuadVoxelGometryInputs.ArgIndexes.Rotation],
           tranform
         );
+
         defaultUvs = node.uv as Vec4Array;
       }
       if (isArgString(node.texture)) {
-        getInputObserver(String(node.texture!)).subscribe(
+        onInput(
+          String(node.texture!),
           (value) =>
             (args[argsIndex][QuadVoxelGometryInputs.ArgIndexes.Texture] = value)
         );

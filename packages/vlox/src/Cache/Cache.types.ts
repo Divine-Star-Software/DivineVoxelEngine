@@ -1,8 +1,8 @@
 import { CompactMeshData } from "../Mesher/Types/Mesher.types";
 import { TextureData } from "../Textures/Texture.types";
-import { ConstructorVoxelModelSyncData } from "../Voxels/VoxelSyncData";
+import { FinalCompiledVoxelModelData } from "../Voxels/Types/VoxelModelCompiledData.types";
 
-export interface CachedVoxelModelData extends ConstructorVoxelModelSyncData {}
+export interface CachedVoxelModelData extends FinalCompiledVoxelModelData {}
 
 export interface CachedDisplayIndex {
   textures: Record<string, Record<string, string>>;
@@ -10,7 +10,7 @@ export interface CachedDisplayIndex {
 }
 
 export interface CacheData {
-  models: CachedVoxelModelData;
+  models: FinalCompiledVoxelModelData;
   textures: TextureData[];
   displayIndex: CachedDisplayIndex;
 }

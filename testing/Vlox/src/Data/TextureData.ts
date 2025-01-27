@@ -3,14 +3,6 @@ import { TextureData } from "@divinevoxel/vlox/Textures/Texture.types";
 export const Textures: TextureData[] = [
   {
     type: "dve_voxel",
-    id: "dve_candle",
-    frames: 0,
-    variations: {
-      lit: { frames: 0 },
-    },
-  },
-  {
-    type: "dve_voxel",
     id: "dve_debug_box",
     frames: 0,
     variations: {
@@ -20,6 +12,14 @@ export const Textures: TextureData[] = [
       south: { frames: 0 },
       east: { frames: 0 },
       west: { frames: 0 },
+    },
+  },
+  {
+    type: "dve_voxel",
+    id: "dve_candle",
+    frames: 0,
+    variations: {
+      lit: { frames: 0 },
     },
   },
   {

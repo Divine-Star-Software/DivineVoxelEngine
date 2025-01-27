@@ -1,23 +1,19 @@
 import {
   ArcRotateCamera,
   Engine,
-  Material,
   Mesh,
   Scene,
   Vector3,
-  Tools,
-  CreateBox,
   HemisphericLight,
 } from "@babylonjs/core";
-import { DivineVoxelEngineRender } from "@divinevoxel/vlox/Contexts/Render/DivineVoxelEngineRender";
-import { RawVoxelData } from "@divinevoxel/vlox/Voxels/Voxel.types";
-import { PaintVoxelData } from "@divinevoxel/vlox/Data/Types/WorldData.types";
+
+import { MeshVoxel } from "@divinevoxel/vlox/Mesher/Functions/MeshVoxel";
+import { VoxelCursor } from "@divinevoxel/vlox//Voxels/Cursor/VoxelCursor";
 import {
-  BuildNodeMesh,
-  SetNodeMesh,
-} from "@divinevoxel/vlox/Mesher/Tasks/BuidlerTasks.types";
-import { DataTool } from "@divinevoxel/vlox/Tools/Data/DataTool";
-import { VoxelData } from "@divinevoxel/vlox/Voxels/Voxel.types";
+  VoxelData,
+  RawVoxelData,
+  PaintVoxelData,
+} from "@divinevoxel/vlox/Voxels/";
 import { DVEBabylonRenderer } from "../Renderer/DVEBabylonRenderer";
 
 import { SchemaRegister } from "@divinevoxel/vlox/Voxels/State/SchemaRegister";
@@ -30,10 +26,58 @@ import { VoxelModelIndex } from "@divinevoxel/vlox/Voxels/Indexes/VoxelModelInde
 import { VoxelTextureIndex } from "@divinevoxel/vlox/Voxels/Indexes/VoxelTextureIndex";
 import { CacheManager } from "@divinevoxel/vlox/Cache/CacheManager";
 import { DVEBRMesh } from "../Meshes/DVEBRMesh";
-export default async function CreateDisplayIndex(
-  DVER: DivineVoxelEngineRender,
-  data: VoxelData[]
-) {
+const dataTool = new VoxelCursor();
+const materialMap = new Map<string, DVEBRClassicMaterial>();
+
+const buildMesh = (
+  scene: Scene,
+  voxelData: RawVoxelData,
+  voxelId: string,
+  stateID: string
+) => {
+  const meshedVoxel = MeshVoxel(voxelData);
+  if (!meshedVoxel) return false;
+  if (meshedVoxel[0] == 1) throw new Error(`Not in right mode`);
+  dataTool.copyRaw(voxelData).process();
+  const renderedMaterial = dataTool.getRenderedMaterialStringId();
+
+  const material = DVEBabylonRenderer.instance.materials.get(renderedMaterial);
+  if (!material) throw new Error(`Could not load material ${renderedMaterial}`);
+
+  const mesh = new Mesh(crypto.randomUUID(), scene);
+  if (!materialMap.has(renderedMaterial)) {
+    const newMat = (material as any).clone(scene);
+
+    if (!newMat) throw new Error("Error creating mat.");
+
+    materialMap.set(renderedMaterial, newMat);
+
+    newMat.setNumberArray(
+      "lightGradient",
+      DefaultMaterialManager.unifrosm.lightGradient
+    );
+    newMat.setNumber("doSun", 0);
+    newMat.setNumber("baseLevel", 1);
+    newMat.setNumber("sunLevel", 1);
+    //    newMat.wireframe = true;
+    mesh.material = newMat._material;
+  } else {
+    mesh.material = materialMap.get(renderedMaterial)!._material;
+  }
+
+  VoxelModelIndex.registerModel(
+    voxelId,
+    stateID,
+    meshedVoxel,
+    renderedMaterial,
+    material._material
+  );
+
+  DVEBRMesh.UpdateVertexData(mesh, scene.getEngine() as any, meshedVoxel[2][0]);
+
+  return mesh;
+};
+export default async function CreateDisplayIndex(data: VoxelData[]) {
   const voxelIndex = new VoxelIndex(data);
   if (
     !CacheManager.cacheStoreEnabled &&
@@ -56,9 +100,6 @@ export default async function CreateDisplayIndex(
 
     return;
   }
-
-  const dataTool = new DataTool();
-  const materialMap = new Map<string, DVEBRClassicMaterial>();
 
   const canvas = document.createElement("canvas");
   canvas.width = 256;
@@ -99,62 +140,6 @@ export default async function CreateDisplayIndex(
 
   //CreateBox("",{size:1},displayScene);
   const light = new HemisphericLight("", new Vector3(0, 1, 0), displayScene);
-  const buildMesh = (
-    voxelData: RawVoxelData,
-    voxelId: string,
-    stateID: string
-  ) => {
-    return new Promise<Mesh | false>((resolve) => {
-      DVER.threads.construcotrs.runPromiseTasks<BuildNodeMesh>(
-        "build-node-mesh",
-        [["main", 0, 0, 0], "dve_node_voxel", voxelData],
-        [],
-        (data: SetNodeMesh | false) => {
-          if (!data) return resolve(false);
-          dataTool.loadInRaw(voxelData);
-          const renderedMaterial = dataTool.getRenderedMaterialStringId();
-   
-          const material =
-            DVEBabylonRenderer.instance.materials.get(renderedMaterial);
-          if (!material)
-            throw new Error(`Could not load material ${renderedMaterial}`);
-
-          const mesh = new Mesh(crypto.randomUUID(), displayScene);
-          if (!materialMap.has(renderedMaterial)) {
-            const newMat = (material as any).clone(displayScene);
-
-            if (!newMat) throw new Error("Error creating mat.");
-
-            materialMap.set(renderedMaterial, newMat);
-
-            newMat.setNumberArray(
-              "lightGradient",
-              DefaultMaterialManager.unifrosm.lightGradient
-            );
-            newMat.setNumber("doSun", 0);
-            newMat.setNumber("baseLevel", 1);
-            newMat.setNumber("sunLevel", 1);
-            //    newMat.wireframe = true;
-            mesh.material = newMat._material;
-          } else {
-            mesh.material = materialMap.get(renderedMaterial)!._material;
-          }
-
-          VoxelModelIndex.registerModel(
-            voxelId,
-            stateID,
-            data[1],
-            renderedMaterial,
-            material._material
-          );
-   
-          DVEBRMesh.UpdateVertexData(mesh, engine, data[1][2][0]);
-
-          resolve(mesh);
-        }
-      );
-    });
-  };
 
   await displayScene.whenReadyAsync();
 
@@ -189,8 +174,13 @@ export default async function CreateDisplayIndex(
             state.data.display.mod
           );
         }
-        const rawData = DataTool.VoxelDataToRaw(addVoxelData);
-        const mesh = await buildMesh(rawData, voxelId, state.data.id);
+        const rawData = VoxelCursor.VoxelDataToRaw(addVoxelData);
+        const mesh = await buildMesh(
+          displayScene,
+          rawData,
+          voxelId,
+          state.data.id
+        );
 
         if (!mesh) continue;
         mesh.setEnabled(false);
@@ -225,13 +215,12 @@ export default async function CreateDisplayIndex(
   }
 
   engine.dispose();
+  materialMap.clear();
 
   if (CacheManager.cacheStoreEnabled) {
-    console.warn("done creating display index");
     CacheManager.cachedDisplayData = {
       textures: VoxelTextureIndex.cacheData(),
       meshes: VoxelModelIndex.cacheData(),
     };
-    console.log(CacheManager.cachedDisplayData);
   }
 }

@@ -1,13 +1,9 @@
-import { ThreadPool, Threads } from "@amodx/threads/";
+import { Threads } from "@amodx/threads/";
 import { ThreadManager } from "../Base/ThreadManager.js";
 
 export class WorldThreadManager extends ThreadManager {
-  constructors: ThreadPool = Threads.createThreadPool({
-    name: "constructor",
-    onPortSet(port, commName) {},
-  });
+  constructors = Threads.createThreadPool("constructor");
   parent = Threads.parent;
-
   nexus = Threads.createThread("nexus");
 
   constructor() {

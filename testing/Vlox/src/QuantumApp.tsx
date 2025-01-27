@@ -89,7 +89,7 @@ export function App() {
       sceneTool.levels.setSun(0.8);
       sceneTool.levels.setBase(0.01);
 
-      DVER.threads.world.runTasks("start-world", []);
+      DVER.threads.world.runTask("start-world", []);
     })();
   }, []);
 

@@ -34,7 +34,7 @@ class ColumnSpace extends VoxelSpace {
           VoxelSpace.simpleCubeHash(this),
           this.region._position
         ),
-        this._bounds
+        this.bounds
       ),
       this.region.columnBounds
     );
@@ -46,7 +46,7 @@ class ColumnSpace extends VoxelSpace {
         this.region.columnBounds,
         index
       ),
-      this._bounds,
+      this.bounds,
       this._position
     );
     return this._position;
@@ -59,7 +59,7 @@ class ChunkSpace extends VoxelSpace {
   _regionPosition = Vector3Like.Create();
   getRegionPositonx() {
     this.getPosition();
-    return VoxelSpace.spatialHash(this, this.region, this._bounds);
+    return VoxelSpace.spatialHash(this, this.region, this.bounds);
   }
   getRegionPositonxXYZ(x: number, y: number, z: number) {
     return this.setXYZ(x, y, z).getRegionPositonx();
@@ -76,11 +76,11 @@ class ChunkSpace extends VoxelSpace {
   }
   getIndex() {
     const ry =
-      (this._position.y >> this.region._boundsPower2.y) <<
-      this.region._boundsPower2.y;
+      (this._position.y >> this.region.boundsPower2.y) <<
+      this.region.boundsPower2.y;
     const cy =
-      (this._position.y >> this._boundsPower2.y) << this._boundsPower2.y;
-    return (cy - ry) / this._bounds.y;
+      (this._position.y >> this.boundsPower2.y) << this.boundsPower2.y;
+    return (cy - ry) / this.bounds.y;
   }
   getPositionFromIndex(index: number) {
     Vector3Like.MultiplyToRef(
@@ -89,7 +89,7 @@ class ChunkSpace extends VoxelSpace {
         this.region.chunkBounds,
         index
       ),
-      this._bounds,
+      this.bounds,
       this._position
     );
     return this._position;
@@ -108,12 +108,12 @@ class FinalVoxelSpace extends VoxelSpace {
     return this._position;
   }
   getIndex() {
-    return VoxelSpace.getIndex(this._hashedPosition, this._bounds);
+    return VoxelSpace.getIndex(this._hashedPosition, this.bounds);
   }
   getPositionFromIndex(index: number) {
     return VoxelSpace.getPositionFromIndex(
       this._position,
-      this.chunk._bounds,
+      this.chunk.bounds,
       index
     );
   }
@@ -142,11 +142,11 @@ export class VoxelSpaces {
     this.column.setCubeBounds(data.columns);
     this.chunk.setCubeBounds(data.chunks);
     this.voxel.setCubeBounds(data.chunks);
-    this.region.chunkBounds.x = this.region._bounds.x / this.chunk._bounds.x;
-    this.region.chunkBounds.y = this.region._bounds.y / this.chunk._bounds.y;
-    this.region.chunkBounds.z = this.region._bounds.z / this.chunk._bounds.z;
-    this.region.columnBounds.x = this.region._bounds.x / this.column._bounds.x;
-    this.region.columnBounds.y = this.region._bounds.y / this.column._bounds.y;
-    this.region.columnBounds.z = this.region._bounds.z / this.column._bounds.z;
+    this.region.chunkBounds.x = this.region.bounds.x / this.chunk.bounds.x;
+    this.region.chunkBounds.y = this.region.bounds.y / this.chunk.bounds.y;
+    this.region.chunkBounds.z = this.region.bounds.z / this.chunk.bounds.z;
+    this.region.columnBounds.x = this.region.bounds.x / this.column.bounds.x;
+    this.region.columnBounds.y = this.region.bounds.y / this.column.bounds.y;
+    this.region.columnBounds.z = this.region.bounds.z / this.column.bounds.z;
   }
 }

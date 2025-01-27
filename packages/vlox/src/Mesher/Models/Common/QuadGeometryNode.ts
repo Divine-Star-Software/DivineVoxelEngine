@@ -9,7 +9,7 @@ import {
   closestUnitNormal,
 } from "./Calc/CalcConstants";
 
-import { VoxelGeometryTransform } from "../../../Voxels/VoxelSyncData";
+import { VoxelGeometryTransform } from "../../../Voxels/Types/VoxelModelCompiledData.types";
 import { TransformQuad } from "../../../Models/Shared/Transform";
 import { GetBounds } from "./BoundsFunctions";
 

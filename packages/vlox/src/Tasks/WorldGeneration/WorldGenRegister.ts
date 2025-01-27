@@ -1,17 +1,16 @@
 import type { LocationData } from "../../Math";
 
-import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
+import { WorldSpaces } from "../../World/WorldSpaces.js";
 import { BrushTool } from "../../Tools/Brush/Brush";
-import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool";
 
-
-import { WorldBounds } from "../../Data/World/WorldBounds";
-import { RawVoxelData } from "../../Voxels/Voxel.types";
+import { WorldBounds } from "../../World/WorldBounds";
+import { RawVoxelData } from "../../Voxels/Types/Voxel.types";
 import { DivineVoxelEngineConstructor } from "../../Contexts/Constructor";
+import { WorldRegister } from "../../World/WorldRegister";
 
 const brush = new BrushTool();
 const dataTool = brush.voxelCursor;
-const chunkTool = new ChunkDataTool();
+
 export class WorldGenRegister {
   static MAX_ATTEMPTS = 100;
   static _requests = new Map<
@@ -47,24 +46,30 @@ export class WorldGenRegister {
       return false;
     const requests = this._requests.get(registerId);
     if (!requests) return;
-    const chunkPOS = WorldSpaces.chunk.getPositionXYZ(
+
+    WorldRegister.setDimension(location[0]);
+    const chunk = WorldRegister.chunk.get(
       location[1],
       location[2],
       location[3]
     );
-    const chunkKey = WorldSpaces.chunk.getKeyXYZ(
-      location[1],
-      location[2],
-      location[3]
-    );
-    if (!chunkTool.loadInAtLocation(location)) {
+    if (!chunk) {
+      const chunkPOS = WorldSpaces.chunk.getPositionXYZ(
+        location[1],
+        location[2],
+        location[3]
+      );
+      const chunkKey = WorldSpaces.chunk.getKeyXYZ(
+        location[1],
+        location[2],
+        location[3]
+      );
+      
       if (!requests.chunks.has(chunkKey)) {
-        DivineVoxelEngineConstructor.instance.threads.world.runTasks("add-chunk", [
-          requests.dimension,
-          chunkPOS.x,
-          chunkPOS.y,
-          chunkPOS.z,
-        ]);
+        DivineVoxelEngineConstructor.instance.threads.world.runTask(
+          "add-chunk",
+          [requests.dimension, chunkPOS.x, chunkPOS.y, chunkPOS.z]
+        );
         requests.chunks.set(chunkKey, [chunkPOS.x, chunkPOS.y, chunkPOS.z]);
       }
     }
@@ -75,29 +80,17 @@ export class WorldGenRegister {
   static attemptRequestFullFill(registerId: string) {
     const requests = this._requests.get(registerId);
     if (!requests || !requests.voxels.length) return true;
-    chunkTool.setDimension(requests.dimension);
-
+    WorldRegister.setDimension(requests.dimension);
     let done = true;
     for (const [key, pos] of requests.chunks) {
-      if (
-        pos[0] < WorldBounds.bounds.MinX ||
-        pos[0] > WorldBounds.bounds.MaxX ||
-        pos[1] < WorldBounds.bounds.MinY ||
-        pos[1] > WorldBounds.bounds.MaxY ||
-        pos[2] < WorldBounds.bounds.MinZ ||
-        pos[2] > WorldBounds.bounds.MaxZ
-      ) {
-        continue;
-      }
-
-      if (!chunkTool.loadInAt(pos[0], pos[1], pos[2])) {
+      if (!WorldBounds.inBounds(pos[0], pos[1], pos[2])) continue;
+      const chunk = WorldRegister.chunk.get(pos[0], pos[1], pos[2]);
+      if (!chunk) {
         done = false;
-        DivineVoxelEngineConstructor.instance.threads.world.runTasks("add-chunk", [
-          requests.dimension,
-          pos[0],
-          pos[1],
-          pos[2],
-        ]);
+        DivineVoxelEngineConstructor.instance.threads.world.runTask(
+          "add-chunk",
+          [requests.dimension, pos[0], pos[1], pos[2]]
+        );
       }
     }
     if (!done) {
@@ -112,7 +105,7 @@ export class WorldGenRegister {
       }
       return false;
     }
-/*     brush.setDimension(requests.dimension);
+    /*     brush.setDimension(requests.dimension);
     dataTool.setDimension(requests.dimension);
     const voxels = requests.voxels;
     brush.start();

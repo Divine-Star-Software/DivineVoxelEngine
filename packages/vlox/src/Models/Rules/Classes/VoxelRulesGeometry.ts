@@ -2,7 +2,7 @@ import { GetOcclusionFaces } from "../Functions/GetOcclusionFaces";
 import { OcclusionFaceContainer } from "./OcclusionFace";
 import { BuildGeomtryInputs } from "../Functions/BuildGeomtryInputs";
 import { BuildStateData } from "../../../Voxels/Functions/BuildStateData";
-import { PrcoessedVoxelGeometryData } from "../../../Voxels/VoxelSyncData";
+import { CompiledVoxelGeometryData } from "../../../Voxels/Types/VoxelModelCompiledData.types";
 
 export class VoxelRuleGeometry {
   occlusionPlane: OcclusionFaceContainer;
@@ -14,7 +14,7 @@ export class VoxelRuleGeometry {
 
   constructor(
     public id: string,
-    public data: PrcoessedVoxelGeometryData,
+    public data: CompiledVoxelGeometryData,
     occlusionPlane?: OcclusionFaceContainer,
     inputs?: ReturnType<typeof BuildGeomtryInputs>
   ) {

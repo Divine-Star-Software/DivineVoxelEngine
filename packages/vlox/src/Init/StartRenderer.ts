@@ -1,20 +1,14 @@
-import { InitVoxelData } from "../Voxels/InitVoxelData";
 import { DivineVoxelEngineRender, DVERInitData } from "../Contexts/Render";
-import { VoxelData } from "../Voxels/Voxel.types";
-import { VoxelGeometryData, VoxelModelData } from "../Models/VoxelModel.types";
-import InitDataGenerator from "../Contexts/Base/Main/Generator/InitDataGenerator";
-import { VoxelSubstanceData } from "Voxels/VoxelSubstances.types";
+import InitDataGenerator from "../Contexts/Base/Main/InitDataGenerator";
 import { Thread, ThreadPool } from "@amodx/threads";
-import InitWorldDataSync from "../Contexts/Base/Remote/Sync/InitWorldDataSync";
-type StartRendererProps = {
-  voxels: VoxelData[];
-  geometry?: VoxelGeometryData[];
-  models?: VoxelModelData[];
-  substances?: VoxelSubstanceData[];
-  materials?: { id: string }[];
-} & DVERInitData;
+import InitWorldDataSync from "../Contexts/Base/Remote/InitWorldDataSync";
+import InitRendererTasks from "../Renderer/InitTasks";
+import InitMesher from "../Mesher/InitMesher";
+import { InitVoxelDataProps } from "../Voxels/InitVoxelData";
+type StartRendererProps = {} & DVERInitData & InitVoxelDataProps;
 export async function StartRenderer(initData: StartRendererProps) {
   const DVER = new DivineVoxelEngineRender();
+  await DVER.TC.init("render", window, "window");
 
   DivineVoxelEngineRender.initialized = true;
   DVER.renderer = initData.renderer;
@@ -24,11 +18,7 @@ export async function StartRenderer(initData: StartRendererProps) {
     DVER.threads.addThread(DVER.threads.nexus);
   }
 
-  await DVER.renderer.init(DVER);
-
-  const t = performance.now();
   DVER.settings.syncSettings(<any>initData);
-  await DVER.TC.init("render", "global");
 
   if (!(initData.worldWorker instanceof Worker)) {
     throw Error(
@@ -50,9 +40,7 @@ export async function StartRenderer(initData: StartRendererProps) {
       "Supplied data for the Constructor Workers is not correct. Must be path to worker or an array workers."
     );
   }
-  const t2 = performance.now();
 
-  console.log("DONE INIT VOXEL DATA", performance.now() - t2);
   const syncData = InitDataGenerator({
     threads: {
       nexus: initData.nexusWorker ? true : false,
@@ -60,56 +48,32 @@ export async function StartRenderer(initData: StartRendererProps) {
     voxels: initData.voxels,
     substances: initData.substances || [],
     materials: initData.materials || [],
-    // voxelModels: modelSyncData,
   });
 
+  InitRendererTasks();
   InitWorldDataSync();
 
-  const modelSyncData = await InitVoxelData({
-    geometry: initData.geometry,
-    models: initData.models,
-    voxels: initData.voxels,
-  });
+  InitMesher(syncData.voxels.materials.palette, syncData.voxels.models);
 
-  syncData.modelData = modelSyncData;
-  //make sure threads are ready
-  await DVER.threads.world.waitTillTasksExist("sync-data");
-  for (const thread of DVER.threads.construcotrs.getThreads()) {
-    await thread.waitTillTasksExist("sync-data");
-  }
-  //sync threads
-  for (const thread of DVER.threads.construcotrs.getThreads()) {
-    DVER.threads.world.connectToThread(thread);
-  }
-  if (initData.nexusWorker) {
-    DVER.threads.world.connectToThread(DVER.threads.nexus);
-  }
 
-  //send data to threads
-  for (const thread of DVER.threads.comms) {
+  for (const thread of DVER.threads._threads) {
+    if (thread.name == "window" || thread.name == "world") continue;
     if (thread instanceof ThreadPool) {
-      for (const com of thread.getThreads()) {
-        com.runTasks("sync-data", syncData);
+      for (const t of thread.getThreads()) {
+        await t.waitTillTaskExist("sync-data");
+        DVER.threads.world.connectToThread(t);
+        await t.runTaskAsync("sync-data", syncData);
       }
     }
     if (thread instanceof Thread) {
-      if (thread == DVER.threads.parent) continue;
-      thread.runTasks("sync-data", syncData);
+      await thread.waitTillTaskExist("sync-data");
+      DVER.threads.world.connectToThread(thread);
+      await thread.runTaskAsync("sync-data", syncData);
     }
   }
-
-  console.log("DONE INIT DVE", performance.now() - t);
-
-  window.addEventListener("beforeunload", () => {
-    for (const thread of DVER.threads.comms) {
-      if (thread instanceof ThreadPool) {
-        thread.destroyAll();
-      }
-      if (thread instanceof Thread) {
-        thread.destroy();
-      }
-    }
-  });
+  DVER.threads.world.waitTillTaskExist("sync-data");
+  await DVER.threads.world.runTaskAsync("sync-data", syncData);
+  await DVER.renderer.init(DVER);
 
   return DVER;
 }

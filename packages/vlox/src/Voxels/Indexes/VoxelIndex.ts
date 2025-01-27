@@ -1,7 +1,7 @@
-import { PaintVoxelData } from "../../Data/Types/WorldData.types";
-import { VoxelData, RawVoxelData, VoxelNamedStateData } from "../Voxel.types";
+import { PaintVoxelData } from "../Types/Voxel.types"
+import { VoxelData, RawVoxelData, VoxelNamedStateData } from "../Types/Voxel.types";
 import { SchemaRegister } from "../State/SchemaRegister";
-import { VoxelPalette } from "../../Data/Palettes/VoxelPalette";
+import { VoxelPalette } from "../Palettes/VoxelPalette";
 export class VoxelNamedState {
   tags = new Map<string, any>();
 

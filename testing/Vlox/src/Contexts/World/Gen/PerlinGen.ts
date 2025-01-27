@@ -1,15 +1,14 @@
 import { PerlinNoise3d } from "@amodx/rng/perlin/index";
 const perlin = new PerlinNoise3d();
-import { WorldCursor } from "@divinevoxel/vlox/Data/Cursor/World/WorldCursor";
-import { VoxelCursor } from "@divinevoxel/vlox/Data/Cursor/VoxelCursor";
-import { AdvancedBrush } from "@divinevoxel/vlox/Tools/Brush/AdvancedBrushTool";
+import { BrushTool } from "@divinevoxel/vlox/Tools/Brush/Brush";
+import { WorldCursor } from "@divinevoxel/vlox/World/Cursor/WorldCursor";
+import { VoxelCursor } from "@divinevoxel/vlox/Voxels/Cursor/VoxelCursor";
+const worldCursor = new WorldCursor();
+const voxelCursor = new VoxelCursor();
+const brush = new BrushTool();
 import { GenerateTree } from "./Tree";
 
 perlin.noiseSeed(13129301280);
-const worldCursor = new WorldCursor();
-const voxelCursor = new VoxelCursor();
-
-const brush = new AdvancedBrush();
 
 export const PerlinGen = {
   chunkDepth: 16,
@@ -167,7 +166,7 @@ export const PerlinGen = {
     } */
     brush.stop();
   },
-  generateTest(chunkX: number, chunkZ: number) {
+  generateTest(chunkX: number, chunkZ: number, includeWater = false) {
     const columnCursor = this.worldCursor.getColumn(chunkX, 0, chunkZ)!;
 
     for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
@@ -183,13 +182,21 @@ export const PerlinGen = {
           }
 
           if (this.inNoiseRange(x, y, z)) {
-            voxelCursor.setStringId("dve_dread_stone").process();
+            voxelCursor.setStringId("dve_debug_box").process();
             columnCursor
               .getVoxel(x, y, z)!
               .setId(voxelCursor.id)
               .updateHeightMap(0);
+
+            if (!this.inNoiseRange(x, y + 1, z) && Math.random() > 0.9) {
+              voxelCursor.setStringId("dve_dream_grass").process();
+              columnCursor
+                .getVoxel(x, y, z)!
+                .setId(voxelCursor.id)
+                .updateHeightMap(0);
+            }
           } else {
-            if (y < 30) {
+            if (y < 30 && includeWater) {
               voxelCursor.setStringId("dve_liquid_dream_ether").process();
               columnCursor
                 .getVoxel(x, y, z)!

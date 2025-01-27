@@ -21,17 +21,17 @@ export const simpleCube: VoxelModelData = {
         geometryId: "dve_cube",
         inputs: {
           "@upTex": "@texture",
-          "@upTexTransparent":"@transparent",
+          "@upTexTransparent": "@transparent",
           "@downTex": "@texture",
-          "@downTexTransparent":"@transparent",
+          "@downTexTransparent": "@transparent",
           "@northTex": "@texture",
-          "@northTexTransparent":"@transparent",
+          "@northTexTransparent": "@transparent",
           "@southTex": "@texture",
-          "@southTexTransparent":"@transparent",
+          "@southTexTransparent": "@transparent",
           "@eastTex": "@texture",
-          "@eastTexTransparent":"@transparent",
+          "@eastTexTransparent": "@transparent",
           "@westTex": "@texture",
-          "@westTexTransparent":"@transparent",
+          "@westTexTransparent": "@transparent",
         },
       },
     ],
@@ -87,7 +87,7 @@ export const orientedCube: VoxelModelData = {
   },
   shapeStatesConditonalNodes: {},
   shapeStatesNodes: {
-    "placement=down,direction=south": [
+    "placement=down,direction=north": [
       {
         id: "cube",
         geometryId: "dve_cube",
@@ -103,7 +103,7 @@ export const orientedCube: VoxelModelData = {
         },
       },
     ],
-    "placement=down,direction=north": [
+    "placement=down,direction=south": [
       {
         id: "cube",
         geometryId: "dve_cube",
@@ -112,13 +112,14 @@ export const orientedCube: VoxelModelData = {
           "@upTexRotation": 180,
           "@downTex": "@downTex",
           "@downTexRotation": 180,
-          "@northTex": "@southTex",
-          "@southTex": "@northTex",
-          "@eastTex": "@westTex",
-          "@westTex": "@eastTex",
+          "@northTex": "@northTex",
+          "@southTex": "@southTex",
+          "@eastTex": "@eastTex",
+          "@westTex": "@westTex",
         },
       },
     ],
+
     "placement=down,direction=east": [
       {
         id: "cube",
@@ -151,8 +152,7 @@ export const orientedCube: VoxelModelData = {
         },
       },
     ],
-
-    "placement=up,direction=south": [
+    "placement=up,direction=north": [
       {
         id: "cube",
         geometryId: "dve_cube",
@@ -172,7 +172,7 @@ export const orientedCube: VoxelModelData = {
         },
       },
     ],
-    "placement=up,direction=north": [
+    "placement=up,direction=south": [
       {
         id: "cube",
         geometryId: "dve_cube",
@@ -192,6 +192,7 @@ export const orientedCube: VoxelModelData = {
         },
       },
     ],
+
     "placement=up,direction=east": [
       {
         id: "cube",
@@ -233,7 +234,7 @@ export const orientedCube: VoxelModelData = {
       },
     ],
 
-    "placement=south,direction=south": [
+    "placement=south,direction=north": [
       {
         id: "cube",
         geometryId: "dve_cube",
@@ -254,7 +255,7 @@ export const orientedCube: VoxelModelData = {
       },
     ],
 
-    "placement=south,direction=north": [
+    "placement=south,direction=south": [
       {
         id: "cube",
         geometryId: "dve_cube",
@@ -322,14 +323,14 @@ export const orientedCube: VoxelModelData = {
         id: "cube",
         geometryId: "dve_cube",
         inputs: {
-          "@upTex": "@northTex",
+          "@upTex": "@southTex",
           "@northTex": "@downTex",
-          "@northTexRotation": 0,
+          "@northTexRotation": 180,
           "@southTex": "@upTex",
-          "@southTexRotation": 0,
-          "@downTex": "@southTex",
-          "@eastTex": "@eastTex",
-          "@westTex": "@westTex",
+          "@southTexRotation": 180,
+          "@downTex": "@northTex",
+          "@eastTex": "@westTex",
+          "@westTex": "@eastTex",
           "@upTexRotation": 180,
           "@downTexRotation": 180,
           "@eastTexRotation": 270,
@@ -343,14 +344,14 @@ export const orientedCube: VoxelModelData = {
         id: "cube",
         geometryId: "dve_cube",
         inputs: {
-          "@upTex": "@southTex",
+          "@upTex": "@northTex",
           "@northTex": "@downTex",
-          "@northTexRotation": 180,
+          "@northTexRotation": 0,
           "@southTex": "@upTex",
-          "@southTexRotation": 180,
-          "@downTex": "@northTex",
-          "@eastTex": "@westTex",
-          "@westTex": "@eastTex",
+          "@southTexRotation": 0,
+          "@downTex": "@southTex",
+          "@eastTex": "@eastTex",
+          "@westTex": "@westTex",
           "@upTexRotation": 180,
           "@downTexRotation": 180,
           "@eastTexRotation": 270,
@@ -401,7 +402,7 @@ export const orientedCube: VoxelModelData = {
       },
     ],
 
-    "placement=west,direction=south": [
+    "placement=west,direction=north": [
       {
         id: "cube",
         geometryId: "dve_cube",
@@ -421,7 +422,7 @@ export const orientedCube: VoxelModelData = {
         },
       },
     ],
-    "placement=west,direction=north": [
+    "placement=west,direction=south": [
       {
         id: "cube",
         geometryId: "dve_cube",
@@ -441,6 +442,7 @@ export const orientedCube: VoxelModelData = {
         },
       },
     ],
+
     "placement=west,direction=east": [
       {
         id: "cube",
@@ -481,8 +483,7 @@ export const orientedCube: VoxelModelData = {
         },
       },
     ],
-
-    "placement=east,direction=south": [
+    "placement=east,direction=north": [
       {
         id: "cube",
         geometryId: "dve_cube",
@@ -502,7 +503,7 @@ export const orientedCube: VoxelModelData = {
         },
       },
     ],
-    "placement=east,direction=north": [
+    "placement=east,direction=south": [
       {
         id: "cube",
         geometryId: "dve_cube",
@@ -522,6 +523,7 @@ export const orientedCube: VoxelModelData = {
         },
       },
     ],
+
     "placement=east,direction=east": [
       {
         id: "cube",

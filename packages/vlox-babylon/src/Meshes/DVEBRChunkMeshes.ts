@@ -1,27 +1,17 @@
 import { type Scene, type Engine } from "@babylonjs/core";
 import type { Vec3Array } from "@amodx/math";
-import { Geometry } from "@babylonjs/core/Meshes/geometry.js";
 import { Vector3 } from "@babylonjs/core/Maths/";
 import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo.js";
 import { EngineSettingsData } from "@divinevoxel/vlox/Settings/EngineSettings.types";
-
 import { DVEChunkMeshes } from "@divinevoxel/vlox/Renderer/DVEChunkMeshes";
 import { DVEBabylonRenderer } from "../Renderer/DVEBabylonRenderer";
 import { DVEBRMesh } from "./DVEBRMesh";
-import {
-  CompactMeshData,
-  CompactSubMesh,
-} from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
+import { CompactMeshData } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
 import { EngineSettings } from "@divinevoxel/vlox/Settings/EngineSettings";
-import { ChunkMeshInterface } from "@divinevoxel/vlox/Renderer/DVEChunkMeshInterface";
 import { ChunkMesh } from "@divinevoxel/vlox/Renderer/Classes/ChunkMesh";
 
 export class DVEBRChunkMeshes extends DVEChunkMeshes {
-  createMesh(position: Vec3Array, data: CompactMeshData): ChunkMeshInterface {
-    throw new Error("Method not implemented.");
-  }
-
   pickable = false;
   checkCollisions = false;
   serialize = false;
@@ -36,70 +26,6 @@ export class DVEBRChunkMeshes extends DVEChunkMeshes {
     super();
     this.defaultBb = new BoundingInfo(Vector3.Zero(), new Vector3(16, 16, 16));
   }
-
-  /*   createMesh(location: Vec3Array, data: CompactMeshData) {
-    if (!this.scene) {
-      const scene = DVEBabylonRenderer.instance.scene;
-      if (!scene) {
-        throw new Error(`A scene is required.`);
-      }
-      this.scene = scene;
-      this.engine = scene.getEngine() as Engine;
-    }
-    if (!this.defaultBb) {
-      this.defaultBb = new BoundingInfo(
-        Vector3.Zero(),
-        new Vector3(16, 16, 16)
-      );
-    }
-
-    const mesh = new Mesh(this.data.id, this.scene);
-
-    const dveMesh = new DVEBRMesh(mesh);
-    mesh.hasVertexAlpha = false;
-
-    //  viewer.createBoxes(0);
-
-    const mat = DVEBabylonRenderer.instance.nodes.materials.get(this.data.id);
-    if (!mat) {
-      throw new Error(`Material: ${this.data.id} does not exist`);
-    }
-
-    if (DVEBabylonRenderer.instance.foManager.activeNode) {
-      mesh.parent = DVEBabylonRenderer.instance.foManager.activeNode;
-    }
-
-    if (!EngineSettings.settings.meshes.checkCollisions) {
-      mesh.doNotSyncBoundingInfo = true;
-    }
-    mesh.isPickable = this.pickable;
-
-    (mesh as any).type = !Boolean(this.data.type) ? "node" : this.data.type;
-
-    if (!mesh.geometry) {
-      const geo = new Geometry(
-        Geometry.RandomId(),
-        this.scene,
-        undefined,
-        undefined,
-        mesh
-      );
-      geo._boundingInfo = this.defaultBb;
-      geo!.useBoundingInfoFromGeometry = true;
-    }
-
-    mesh.checkCollisions = EngineSettings.settings.meshes.checkCollisions;
-
-    mesh.doNotSerialize = this.serialize;
-    mesh.alwaysSelectAsActiveMesh = true;
-
-    this.updateVertexData(location, data, dveMesh);
-    mesh.setEnabled(true);
-    mesh.isVisible = true;
-    mesh.material = mat._material;
-    DVEBabylonRenderer.instance.observers.meshCreated.notify(dveMesh);
-    return dveMesh;
-  } */
 
   returnMesh(mesh: DVEBRMesh) {
     mesh.dispose();
@@ -123,16 +49,21 @@ export class DVEBRChunkMeshes extends DVEChunkMeshes {
         mesh = chunk.meshes.get(subMeshMaterial) as Mesh;
       } else {
         mesh = new Mesh("", this.scene);
-       // mesh.doNotSyncBoundingInfo = true;
+        mesh.doNotSyncBoundingInfo = true;
       }
       mesh.unfreezeWorldMatrix();
-      mesh.position.x = location[0];
-      mesh.position.y = location[1];
-      mesh.position.z = location[2];
+      mesh.position.set(location[0], location[1], location[2]);
 
       DVEBRMesh.UpdateVertexData(mesh, this.engine, subMeshes[i]);
 
       mesh.material = this.renderer.materials.get(subMeshMaterial)!._material;
+      mesh
+        .getBoundingInfo()
+        .reConstruct(
+          Vector3.Zero(),
+          new Vector3(16, 16, 16),
+          mesh.getWorldMatrix()
+        );
 
       mesh.freezeWorldMatrix();
 

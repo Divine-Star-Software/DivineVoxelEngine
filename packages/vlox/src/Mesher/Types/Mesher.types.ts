@@ -1,13 +1,9 @@
-import { BinaryNumberTypes, TypedArrays } from "@amodx/binary";
+import { TypedArrays } from "@amodx/binary";
 import { Vec3Array } from "@amodx/math";
 export type CompactMeshIndex = [
   id: string,
   array: TypedArrays,
-  length: number,
-  startByte: number,
-  endByte: number,
   stride: number,
-  type: BinaryNumberTypes,
 ][];
 
 export type CompactSubMesh = [materialId: string, index: CompactMeshIndex];

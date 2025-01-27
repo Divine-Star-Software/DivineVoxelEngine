@@ -1,7 +1,7 @@
 import { Quad } from "@amodx/meshing/Primitives/Quad";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 import { Vector3Like } from "@amodx/math";
-import { VoxelGeometryTransform } from "../../Voxels/VoxelSyncData";
+import { VoxelGeometryTransform } from "../../Voxels/Types/VoxelModelCompiledData.types";
 
 // Utility function to convert degrees to radians
 function degreesToRadians(degrees: number): number {
@@ -218,7 +218,6 @@ export function TransformBox(
     const rotY = degreesToRadians(rotYDeg);
     const rotZ = degreesToRadians(rotZDeg);
 
-
     const pivot = transform.rotationPivot
       ? {
           x: transform.rotationPivot[0],
@@ -227,7 +226,6 @@ export function TransformBox(
         }
       : centroid;
 
-  
     for (const vertex of uniqueVertices) {
       // Translate vertex to pivot point
       let x = vertex.x - pivot.x;
@@ -282,7 +280,6 @@ export function TransformBox(
   }
 
   // Update the quads with transformed vertices
-  const transformedQuads: Quad[] = [];
 
   for (const quad of quads) {
     const originalVertices = [
@@ -301,12 +298,10 @@ export function TransformBox(
     if (determinant < 0) {
       transformedVertices.reverse();
     }
-
-    const newQuad = Quad.Create(
+    quad.setPositions(
       transformedVertices.map((v) => Vector3Like.ToArray(v)) as any
     );
-    transformedQuads.push(newQuad);
   }
 
-  return transformedQuads as [Quad, Quad, Quad, Quad, Quad, Quad];
+  return quads;
 }

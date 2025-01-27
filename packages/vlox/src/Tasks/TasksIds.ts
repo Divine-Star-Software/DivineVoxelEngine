@@ -8,7 +8,7 @@ export enum TasksIds {
   WorldSun,
   SunLightUpdate,
   SunLightRemove,
-  AnalyzerPropagation,
+  Propagation,
   AnalyzerUpdate,
   FlowUpdate,
   FlowRemove,

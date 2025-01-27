@@ -1,7 +1,7 @@
 import { Vec2Array, Vec3Array } from "@amodx/math";
 import { QuadUVData } from "@amodx/meshing/Geometry.types";
 import { VoxelFaceNames } from "../Math";
-import { ConstructorTextureData } from "../Textures/Constructor.types";
+import { TextureId } from "../Textures/Texture.types";
 import {
   VoxelStateStringSchemaData,
   VoxelModelRelationsSchemaData,
@@ -24,16 +24,16 @@ export interface VoxelModelConstructorData {
 interface VoxelOutlinedTextureProtocalData {
   type: "outlined";
   textures: {
-    top: ConstructorTextureData;
-    "corner-top-right": ConstructorTextureData;
-    "corner-top-left": ConstructorTextureData;
-    "corner-top-left-top-right": ConstructorTextureData;
-    bottom: ConstructorTextureData;
-    "corner-bottom-right": ConstructorTextureData;
-    "corner-bottom-left": ConstructorTextureData;
-    "corner-bottom-left-bottom-right": ConstructorTextureData;
-    right: ConstructorTextureData;
-    left: ConstructorTextureData;
+    top: TextureId;
+    "corner-top-right": TextureId;
+    "corner-top-left": TextureId;
+    "corner-top-left-top-right": TextureId;
+    bottom: TextureId;
+    "corner-bottom-right": TextureId;
+    "corner-bottom-left": TextureId;
+    "corner-bottom-left-bottom-right": TextureId;
+    right: TextureId;
+    left: TextureId;
   };
 }
 

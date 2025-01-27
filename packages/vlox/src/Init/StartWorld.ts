@@ -1,22 +1,18 @@
-import InitDataSync from "../Contexts/Base/Remote/Sync/InitDataSync";
+import InitDataSync from "../Contexts/Base/Remote/InitDataSync";
 import { DivineVoxelEngineWorld } from "../Contexts/World/DivineVoxelEngineWorld";
-import { Threads } from "@amodx/threads/";
+import { Thread, Threads } from "@amodx/threads/";
 import { CreatePromiseCheck } from "@amodx/core/Intervals/CreatePromiseCheck.js";
-import { WorldLock } from "../Contexts/World/Lock/WorldLock";
-import InitWorldTasks from "../Contexts/World/Tasks/WorldTasks";
-import { DataLoaderTool } from "../Tasks/DataLoader/World/Tools/DataLoaderTool";
-import { DataHooks } from "../Contexts/Base/DataHooks";
-import { Chunk, Column, Region } from "../Data/World/Classes";
+import InitWorldTasks from "../World/InitTasks";
 import { Environment } from "@amodx/core/Environment/Environment";
 import { VoxelTagStates } from "../Voxels/State/VoxelTagStates";
 import { SchemaRegister } from "../Voxels/State/SchemaRegister";
-import { WorldRegister } from "../Data/World/WorldRegister";
-type StartWorldProps = {};
+import { WorldStorageInterface } from "World/Storage/WorldStorage.interface";
+type StartWorldProps = {
+  worldStorage?: WorldStorageInterface;
+};
 export async function StartWorld(props: StartWorldProps = {}) {
-  const register = new WorldRegister();
-
   const DVEW = new DivineVoxelEngineWorld();
-  InitWorldTasks(DVEW);
+
   DivineVoxelEngineWorld.environment = Environment.nodeJS.isNode
     ? "node"
     : "browser";
@@ -25,7 +21,7 @@ export async function StartWorld(props: StartWorldProps = {}) {
   if (DivineVoxelEngineWorld.environment == "node") {
     parent = "server";
   }
-  await Threads.init("world", parent);
+  await Threads.init("world", self, parent);
   let ready = false;
   InitDataSync({
     onSync(data) {
@@ -51,96 +47,22 @@ export async function StartWorld(props: StartWorldProps = {}) {
     },
   });
 
-  DataHooks.chunk.onGetAsync.regiser("world", async (data) => {
-    data.chunk = Chunk.CreateNew();
-    return data;
-  });
-  DataHooks.chunk.onGetSync.regiser("world", (data) => {
-    data.chunk = Chunk.CreateNew();
-    return data;
-  });
-  DataHooks.chunk.onNew.subscribe("world", (data) => {
-    DVEW.dataSync.worldData.chunk.sync(data);
-  });
-  DataHooks.chunk.onRemove.subscribe("world", (data) => {
-    /*     if (!dataLoaderTool) {
-      DVEW.dataSync.worldData.chunk.unSync(data);
-      return;
-    }
-    dataLoaderTool.setLocation(data).saveColumn(() => {
-      DVEW.dataSync.worldData.chunk.unSync(data);
-    }); */
-  });
-  /*
-[columns]
-*/
-
-  DataHooks.column.onGetAsync.regiser("world", async (data) => {
-    data.column = Column.CreateNew({});
-    return data;
-  });
-  DataHooks.column.onGetSync.regiser("world", (data) => {
-    data.column = Column.CreateNew({});
-    return data;
-  });
-  DataHooks.column.onNew.subscribe("world", (data) => {
-    DVEW.dataSync.worldData.column.sync(data);
-  });
-  DataHooks.column.onRemove.subscribe("world", (data) => {
-    /*     if (!dataLoaderTool) {
-    DVEW.dataSync.worldData.column.unSync(data);
-    return;
-  }
-  dataLoaderTool.setLocation(data).saveColumn(() => {
-    DVEW.dataSync.worldData.column.unSync(data);
-  }); */
-  });
-  /*
-[region]
-*/
-  DataHooks.region.onGetAsync.regiser("world", async (data) => {
-    data.region = Region.CreateNew();
-    return data;
-  });
-  DataHooks.region.onGetSync.regiser("world", (data) => {
-    data.region = Region.CreateNew();
-    return data;
-  });
-  DataHooks.region.onNew.subscribe("world", (data) => {
-    DVEW.dataSync.worldData.region.sync(data);
-  });
-  DataHooks.region.onRemove.subscribe("world", (data) => {
-    /*     if (!dataLoaderTool) {
-  DVEW.dataSync.worldData.column.unSync(data);
-  return;
-}
-dataLoaderTool.setLocation(data).saveColumn(() => {
-  DVEW.dataSync.worldData.column.unSync(data);
-}); */
-  });
-  /*
-[paint]
-*/
-  DataHooks.paint.onRichVoxelPaint.subscribe("world", (data) => {
-    // DVEW.richworld.setInitalData(data);
-  });
-  /*
-[dimensions]
-*/
-  DataHooks.dimension.onRegisterDimension.regiser("world", (data) => {
-    DVEW.queues.addQueue(data.id);
-    DVEW.dataSync.worldData.dimesnion.sync(data.id);
-
-    return data;
-  });
-  WorldLock.init(new DataLoaderTool());
-
   await CreatePromiseCheck({
     check: () => ready,
     checkInterval: 1,
   });
 
-  await DVEW.dataSync.init(DVEW);
+  const threads: Thread[] = [
+    DVEW.threads.parent,
+    ...DVEW.threads.constructors.getThreads(),
+  ];
+  if (DVEW.threads.nexus.isPortSet) {
+    threads.push(DVEW.threads.nexus);
+  }
 
+  InitWorldTasks({
+    threads,
+    worldStorage: props.worldStorage,
+  });
   return DVEW;
 }

@@ -12,5 +12,8 @@ export class ChunkMesh {
     for (const [key, effect] of this.effects) {
       effect.dispose();
     }
+    for (const [key, mesh] of this.meshes) {
+      mesh.dispose();
+    }
   }
 }

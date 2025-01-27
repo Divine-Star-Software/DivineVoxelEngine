@@ -1,12 +1,12 @@
 //types
 //objects
-import { WorldBounds } from "../../Data/World/WorldBounds.js";
+import { WorldBounds } from "../../World/WorldBounds.js";
 import { WorldGenRegister } from "./WorldGenRegister.js";
 //tools
 import { WorldGenBrush } from "./WorldGenBrush.js";
 import { SafeInterval } from "@amodx/core/Intervals/SafeInterval.js";
 import { WorldGenInterface } from "./WorldGen.types.js";
-import { GenerateTasks } from "../Tasks.types.js"
+import { GenerateTasks } from "../Tasks.types.js";
 
 export class WorldGeneration {
   static worldGen: WorldGenInterface | null = null;
@@ -41,17 +41,23 @@ export class WorldGeneration {
       await this.worldGen.decorate(data);
     }
 
-    const inte = new SafeInterval().setInterval(100).setOnRun(() => {
-      if (WorldGenRegister.attemptRequestFullFill(requestsId)) {
-        onDone();
-        inte.stop();
-      }
-    });
-    inte.start();
+    if (!WorldGenRegister.attemptRequestFullFill(requestsId)) {
+      const inte = new SafeInterval().setInterval(100).setOnRun(() => {
+        console.warn("do the check",data,mode)
+        if (WorldGenRegister.attemptRequestFullFill(requestsId)) {
+          onDone();
+          inte.stop();
+        }
+      });
+      inte.start();
+    } else {
+      onDone();
+    }
+
+
   }
 
   static getBrush() {
-    const brush = new WorldGenBrush();
-    return brush;
+    return new WorldGenBrush();
   }
 }

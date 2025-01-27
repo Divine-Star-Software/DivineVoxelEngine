@@ -7,7 +7,7 @@ import { VoxelQuadGeometryNode } from "../../../../Models/VoxelModel.types";
 
 import { Quad } from "@amodx/meshing/Primitives/Quad";
 import { VoxelMesherDataTool } from "../../../../Mesher/Tools/VoxelMesherDataTool";
-import { VoxelGeometry } from "../../../../Mesher/Geometry/VoxelGeometry";
+import { VoxelGeometry } from "../../VoxelGeometry";
 
 import { VoxelGeometryLookUp } from "../../VoxelGeometryLookUp";
 import { GeoemtryNode } from "../GeometryNode";
@@ -17,16 +17,15 @@ import {
   shouldCauseFlip,
 } from "../../Common/Calc/CalcConstants";
 
-import { LightData } from "../../../../Voxels/LightData";
-
 import { VoxelRelativeCubeIndexPositionMap } from "../../../../Models/Indexing/VoxelRelativeCubeIndex";
 import {
   QuadVoxelGometryArgs,
   QuadVoxelGometryInputs,
 } from "../../../../Models/Input/QuadVoxelGometryInputs";
-import { VoxelGeometryTransform } from "../../../../Voxels/VoxelSyncData";
+import { VoxelGeometryTransform } from "../../../../Voxels/Types/VoxelModelCompiledData.types";
 import { GetQuadGeometryData } from "../../Common/QuadGeometryNode";
 import { UpdateBounds } from "../../Common/BoundsFunctions";
+import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData";
 
 const ArgIndexes = QuadVoxelGometryInputs.ArgIndexes;
 
@@ -43,6 +42,8 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
   worldLight: QuadScalarVertexData;
   worldAO: QuadScalarVertexData;
   closestFace: VoxelFaces;
+  lightData = new VoxelLightData();
+
   init(): void {
     this.faceCount = 6;
     this.vertexCount = this.faceCount * 4;
@@ -228,16 +229,16 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
       return true;
     return (
       shouldCauseFlip(
-        LightData.getS(this.worldLight.vertices[0]),
-        LightData.getS(this.worldLight.vertices[1]),
-        LightData.getS(this.worldLight.vertices[2]),
-        LightData.getS(this.worldLight.vertices[3])
+        this.lightData.getS(this.worldLight.vertices[0]),
+        this.lightData.getS(this.worldLight.vertices[1]),
+        this.lightData.getS(this.worldLight.vertices[2]),
+        this.lightData.getS(this.worldLight.vertices[3])
       ) ||
       shouldCauseFlip(
-        LightData.sumRGB(this.worldLight.vertices[0]),
-        LightData.sumRGB(this.worldLight.vertices[1]),
-        LightData.sumRGB(this.worldLight.vertices[2]),
-        LightData.sumRGB(this.worldLight.vertices[3])
+        this.lightData.sumRGB(this.worldLight.vertices[0]),
+        this.lightData.sumRGB(this.worldLight.vertices[1]),
+        this.lightData.sumRGB(this.worldLight.vertices[2]),
+        this.lightData.sumRGB(this.worldLight.vertices[3])
       )
     );
   }

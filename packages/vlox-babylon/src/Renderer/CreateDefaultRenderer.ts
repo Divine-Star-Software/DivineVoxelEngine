@@ -36,7 +36,7 @@ export async function CreateTextures(scene: Scene, textureData: TextureData[]) {
     TextureManager.registerTexture(textureData);
   }
 
-  await TextureManager.$INIT();
+  await TextureManager.init();
   await TextureManager.createRawDataMap();
 
   if (CacheManager.cacheStoreEnabled) {

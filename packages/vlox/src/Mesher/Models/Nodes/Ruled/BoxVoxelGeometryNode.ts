@@ -1,5 +1,5 @@
 import { Vec3Array, Vec4Array, Vector3Like } from "@amodx/math";
-import { VoxelFaces } from "../../../../Math";
+import { VoxelFaceNameArray, VoxelFaces } from "../../../../Math";
 
 import { QuadScalarVertexData } from "@amodx/meshing";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types";
@@ -7,23 +7,21 @@ import { VoxelBoxGeometryNode } from "../../../../Models/VoxelModel.types";
 
 import { Quad } from "@amodx/meshing/Primitives/Quad";
 import { VoxelMesherDataTool } from "../../../../Mesher/Tools/VoxelMesherDataTool";
-import { VoxelGeometry } from "../../../../Mesher/Geometry/VoxelGeometry";
+import { VoxelGeometry } from "../../VoxelGeometry";
 import {
   BoxVoxelGometryArgs,
   BoxVoxelGometryInputs,
 } from "../../../../Models/Input/BoxVoxelGometryInputs";
 import { VoxelGeometryLookUp } from "../../VoxelGeometryLookUp";
 import { GeoemtryNode } from "../GeometryNode";
-import { VoxelGeometryConstructor } from "../VoxelGeometryConstructor";
 import {
   getInterpolationValue,
   shouldCauseFlip,
 } from "../../Common/Calc/CalcConstants";
-import { LightData } from "../../../../Voxels/LightData";
 import { VoxelRelativeCubeIndexPositionMap } from "../../../../Models/Indexing/VoxelRelativeCubeIndex";
-import { VoxelGeometryTransform } from "../../../../Voxels/VoxelSyncData";
 import { GetBoxGeometryNodeData } from "../../Common/BoxGeometryNode";
 import { UpdateBounds } from "../../Common/BoundsFunctions";
+import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData";
 
 const ArgIndexes = BoxVoxelGometryInputs.ArgIndexes;
 
@@ -39,6 +37,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
   >;
   worldLight: QuadScalarVertexData;
   worldAO: QuadScalarVertexData;
+  lightData = new VoxelLightData();
 
   init(): void {
     this.faceCount = 6;
@@ -230,16 +229,16 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
       return true;
     return (
       shouldCauseFlip(
-        LightData.getS(this.worldLight.vertices[0]),
-        LightData.getS(this.worldLight.vertices[1]),
-        LightData.getS(this.worldLight.vertices[2]),
-        LightData.getS(this.worldLight.vertices[3])
+        this.lightData.getS(this.worldLight.vertices[0]),
+        this.lightData.getS(this.worldLight.vertices[1]),
+        this.lightData.getS(this.worldLight.vertices[2]),
+        this.lightData.getS(this.worldLight.vertices[3])
       ) ||
       shouldCauseFlip(
-        LightData.sumRGB(this.worldLight.vertices[0]),
-        LightData.sumRGB(this.worldLight.vertices[1]),
-        LightData.sumRGB(this.worldLight.vertices[2]),
-        LightData.sumRGB(this.worldLight.vertices[3])
+        this.lightData.sumRGB(this.worldLight.vertices[0]),
+        this.lightData.sumRGB(this.worldLight.vertices[1]),
+        this.lightData.sumRGB(this.worldLight.vertices[2]),
+        this.lightData.sumRGB(this.worldLight.vertices[3])
       )
     );
   }
@@ -256,8 +255,11 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
     this.worldAO = tool.getWorldAO();
     this.worldLight = tool.getWorldLight();
 
+
     for (let face = 0 as VoxelFaces; face < 6; face++) {
       if (args[face][ArgIndexes.Enabled] && this.isExposed(face)) {
+
+
         tool.calculateFaceData(face);
         this.determineShading(face);
         const faceArgs = args[face];

@@ -141,6 +141,7 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
   //@ts-ignore
   setTexture(samplerId: string, sampler: ImageArrayTexture): void {
     this._material.setTexture(samplerId, sampler!);
+
     this.textures.set(samplerId, sampler);
   }
 

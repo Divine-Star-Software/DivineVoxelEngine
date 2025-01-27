@@ -1,18 +1,21 @@
 import { type LocationData } from "../Math/index.js";
 import { Vector3Like } from "@amodx/math";
-import { WorldSpaces } from "../Data/World/WorldSpaces.js";
-import { MushRegisterRegion } from "./Classes/MushRegisterRegion.js";
+import { WorldSpaces } from "../World/WorldSpaces.js";
 import { MeshRegisterColumn } from "./Classes/MeshRegisterColumn.js";
 import { ChunkMesh } from "./Classes/ChunkMesh.js";
 import { ChunkMeshInterface } from "./DVEChunkMeshInterface.js";
 
 export type MeshRegisterDimensions = Map<
   string,
-  Map<string, MushRegisterRegion>
+  Map<string, MeshRegisterColumn>
 >;
 
 class Chunk {
-  static addMesh(location: LocationData, mesh: ChunkMeshInterface, substance: string) {
+  static addMesh(
+    location: LocationData,
+    mesh: ChunkMeshInterface,
+    substance: string
+  ) {
     let column = MeshRegister.column.get(location);
     if (!column) {
       column = MeshRegister.column.add(location);
@@ -22,10 +25,10 @@ class Chunk {
       location[2],
       location[3]
     );
-    let chunk = column.chunks.get(index);
+    let chunk = column.chunks[index];
     if (!chunk) {
       chunk = new ChunkMesh([location[1], location[2], location[3]]);
-      column.chunks.set(index, chunk);
+      column.chunks[index] = chunk;
     }
     chunk?.meshes.set(substance, mesh);
     return chunk;
@@ -40,10 +43,10 @@ class Chunk {
       location[2],
       location[3]
     );
-    let chunk = column.chunks.get(index);
+    let chunk = column.chunks[index];
     if (!chunk) {
       chunk = new ChunkMesh([location[1], location[2], location[3]]);
-      column.chunks.set(index, chunk);
+      column.chunks[index] = chunk;
     }
     return chunk;
   }
@@ -55,13 +58,13 @@ class Chunk {
       location[2],
       location[3]
     );
-    const chunk = column.chunks.get(index);
+    const chunk = column.chunks[index];
     if (!chunk) return false;
     const chunkMesh = chunk.meshes.get(substance);
     if (!chunkMesh) return false;
     chunk.meshes.delete(substance);
     if (chunk.meshes.size == 0) {
-      column.chunks.delete(index);
+      (column.chunks as any)[index] = undefined;
     }
     return chunkMesh;
   }
@@ -70,9 +73,10 @@ class Chunk {
     const column = MeshRegister.column.get(location);
 
     if (!column) return false;
-    const chunk = column.chunks.get(
-      WorldSpaces.chunk.getIndexXYZ(location[1], location[2], location[3])
-    );
+    const chunk =
+      column.chunks[
+        WorldSpaces.chunk.getIndexXYZ(location[1], location[2], location[3])
+      ];
     if (!chunk) return false;
     const chunkMesh = chunk.meshes.get(substance);
     if (!chunkMesh) return false;
@@ -86,17 +90,18 @@ class Chunk {
       location[2],
       location[3]
     );
-    const chunk = column.chunks.get(index);
+    const chunk = column.chunks[index];
     if (!chunk) return false;
-    column.chunks.delete(index);
+    (column.chunks as any)[index] = undefined;
     return chunk;
   }
   static get(location: LocationData) {
     const column = MeshRegister.column.get(location);
     if (!column) return false;
-    const chunk = column.chunks.get(
-      WorldSpaces.chunk.getIndexXYZ(location[1], location[2], location[3])
-    );
+    const chunk =
+      column.chunks[
+        WorldSpaces.chunk.getIndexXYZ(location[1], location[2], location[3])
+      ];
     if (!chunk) return false;
     return chunk;
   }
@@ -104,90 +109,45 @@ class Chunk {
 
 class Column {
   static add(location: LocationData): MeshRegisterColumn {
-    let region = MeshRegister.region.get(location);
-    if (!region) {
-      region = MeshRegister.region.add(location);
-    }
+    let dimension = MeshRegister.dimensions.get(location[0]);
+    if (!dimension) dimension = MeshRegister.dimensions.add(location[0]);
+
     const column = new MeshRegisterColumn([
       location[0],
       ...Vector3Like.ToArray(
         WorldSpaces.column.getPositionXYZ(location[1], location[2], location[3])
       ),
     ] as LocationData);
-    region.columns.set(
-      WorldSpaces.column.getIndexXYZ(location[1], location[2], location[3]),
+    dimension.set(
+      WorldSpaces.column.getKeyXYZ(location[1], location[2], location[3]),
       column
     );
     return column;
   }
 
   static remove(location: LocationData) {
-    const region = MeshRegister.region.get(location);
-    if (!region) return false;
-    const index = WorldSpaces.column.getIndexXYZ(
+    let dimension = MeshRegister.dimensions.get(location[0]);
+    if (!dimension) return false;
+    const index = WorldSpaces.column.getKeyXYZ(
       location[1],
       location[2],
       location[3]
     );
-    const column = region.columns.get(index);
+    const column = dimension.get(index);
     if (!column) return false;
-    region.columns.delete(index);
-    if (region.columns.size == 0) {
-      MeshRegister.region.remove(location);
+    dimension.delete(index);
+    if (dimension.size == 0) {
+      MeshRegister.dimensions.remove(location[0]);
     }
     return column;
   }
 
   static get(location: LocationData) {
-    const region = MeshRegister.region.get(location);
-    if (!region) return false;
-
-    return region.columns.get(
-      WorldSpaces.column.getIndexXYZ(location[1], location[2], location[3])
-    );
-  }
-}
-
-class Region {
-  static add(location: LocationData): MushRegisterRegion {
     let dimension = MeshRegister.dimensions.get(location[0]);
-    if (!dimension) {
-      dimension = MeshRegister.dimensions.add(location[0]);
-    }
-    const region = new MushRegisterRegion();
-    dimension.set(
-      WorldSpaces.region.getKeyXYZ(location[1], location[2], location[3]),
-      region
-    );
-    return region;
-  }
-
-  static remove(location: LocationData) {
-    const region = this.get(location);
-    if (!region) return false;
-    const dimension = MeshRegister.dimensions.get(location[0]);
     if (!dimension) return false;
-    dimension.delete(
-      WorldSpaces.region.getKeyXYZ(location[1], location[2], location[3])
+    return dimension.get(
+      WorldSpaces.column.getKeyXYZ(location[1], location[2], location[3])
     );
-    region.columns.forEach((column) => {
-      column.chunks.forEach((chunk) => {
-        chunk.meshes.forEach((chunkMeshes) => {
-          chunkMeshes.dispose();
-        });
-      });
-    });
-    return true;
-  }
-
-  static get(location: LocationData) {
-    const dimension = MeshRegister.dimensions.get(location[0]);
-    if (!dimension) return false;
-    const region = dimension.get(
-      WorldSpaces.region.getKeyXYZ(location[1], location[2], location[3])
-    );
-    if (!region) return false;
-    return region;
   }
 }
 
@@ -204,24 +164,24 @@ class Dimensions {
 
   static *getAllMeshes(
     id: string
-  ): Generator<[location: LocationData, substance: string, mesh: ChunkMeshInterface]> {
+  ): Generator<
+    [location: LocationData, substance: string, mesh: ChunkMeshInterface]
+  > {
     const dimension = MeshRegister._dimensions.get(id);
     if (!dimension) return;
-    for (const [key, region] of dimension) {
-      for (const [columnKey, column] of region.columns) {
-        for (const [chunkKey, chunk] of column.chunks) {
-          for (const [substance, mesh] of chunk.meshes) {
-            yield [
-              [
-                column.location[0],
-                column.location[1],
-                column.location[2] + chunkKey * WorldSpaces.chunk._bounds.y,
-                column.location[3],
-              ],
-              substance,
-              mesh,
-            ];
-          }
+    for (const [key, column] of dimension) {
+      for (let i = 0; i < column.chunks.length; i++) {
+        for (const [substance, mesh] of column.chunks[i].meshes) {
+          yield [
+            [
+              column.location[0],
+              column.location[1],
+              column.location[2] + i * WorldSpaces.chunk.bounds.y,
+              column.location[3],
+            ],
+            substance,
+            mesh,
+          ];
         }
       }
     }
@@ -230,12 +190,10 @@ class Dimensions {
   static remove(id: string) {
     const dimension = MeshRegister._dimensions.get(id);
     if (!dimension) return false;
-    dimension.forEach((region) => {
-      region.columns.forEach((column) => {
-        column.chunks.forEach((chunk) => {
-          chunk.meshes.forEach((chunkMeshes) => {
-            chunkMeshes.dispose();
-          });
+    dimension.forEach((column) => {
+      column.chunks.forEach((chunk) => {
+        chunk.meshes.forEach((chunkMeshes) => {
+          chunkMeshes.dispose();
         });
       });
     });
@@ -247,9 +205,7 @@ class Dimensions {
 export class MeshRegister {
   // Main dimensions data store
   static _dimensions: MeshRegisterDimensions = new Map([["main", new Map()]]);
-
   static dimensions = Dimensions;
-  static region = Region;
   static column = Column;
   static chunk = Chunk;
 

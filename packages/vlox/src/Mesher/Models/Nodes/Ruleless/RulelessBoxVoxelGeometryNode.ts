@@ -7,7 +7,7 @@ import { VoxelBoxGeometryNode } from "../../../../Models/VoxelModel.types";
 
 import { Quad } from "@amodx/meshing/Primitives/Quad";
 import { VoxelMesherDataTool } from "../../../../Mesher/Tools/VoxelMesherDataTool";
-import { VoxelGeometry } from "../../../../Mesher/Geometry/VoxelGeometry";
+import { VoxelGeometry } from "../../VoxelGeometry";
 import {
   BoxVoxelGometryArgs,
   BoxVoxelGometryInputs,
@@ -17,7 +17,7 @@ import {
   shouldCauseFlip,
 } from "../../Common/Calc/CalcConstants";
 
-import { LightData } from "../../../../Voxels/LightData";
+import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData";
 
 import { GeoemtryNode } from "../GeometryNode";
 import { GetBoxGeometryNodeData } from "../../Common/BoxGeometryNode";
@@ -29,11 +29,15 @@ export class RulelessBoxVoxelGeometryNode extends GeoemtryNode<
   VoxelBoxGeometryNode,
   BoxVoxelGometryArgs
 > {
-  quads: Record<VoxelFaces,Quad>;
+  quads: Record<VoxelFaces, Quad>;
   quadBounds: [Vec3Array, Vec3Array][] = [];
-  vertexWeights: Record<VoxelFaces,[Vec4Array, Vec4Array, Vec4Array, Vec4Array]>;
+  vertexWeights: Record<
+    VoxelFaces,
+    [Vec4Array, Vec4Array, Vec4Array, Vec4Array]
+  >;
   worldLight: QuadScalarVertexData;
   worldAO: QuadScalarVertexData;
+  lightData = new VoxelLightData();
 
   init(): void {
     this.faceCount = 6;
@@ -78,16 +82,16 @@ export class RulelessBoxVoxelGeometryNode extends GeoemtryNode<
       return true;
     return (
       shouldCauseFlip(
-        LightData.getS(this.worldLight.vertices[0]),
-        LightData.getS(this.worldLight.vertices[1]),
-        LightData.getS(this.worldLight.vertices[2]),
-        LightData.getS(this.worldLight.vertices[3])
+        this.lightData.getS(this.worldLight.vertices[0]),
+        this.lightData.getS(this.worldLight.vertices[1]),
+        this.lightData.getS(this.worldLight.vertices[2]),
+        this.lightData.getS(this.worldLight.vertices[3])
       ) ||
       shouldCauseFlip(
-        LightData.sumRGB(this.worldLight.vertices[0]),
-        LightData.sumRGB(this.worldLight.vertices[1]),
-        LightData.sumRGB(this.worldLight.vertices[2]),
-        LightData.sumRGB(this.worldLight.vertices[3])
+        this.lightData.sumRGB(this.worldLight.vertices[0]),
+        this.lightData.sumRGB(this.worldLight.vertices[1]),
+        this.lightData.sumRGB(this.worldLight.vertices[2]),
+        this.lightData.sumRGB(this.worldLight.vertices[3])
       )
     );
   }

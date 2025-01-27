@@ -1,6 +1,5 @@
 import { VoxelMesherDataTool } from "./VoxelMesherDataTool.js";
-import type { ConstructorTextureData } from "../../Textures/Constructor.types.js";
-import { DVEMesher } from "../Mesher.js";
+import type { TextureId } from "../../Textures/Texture.types.js";
 import { Vec3Array } from "@amodx/math";
 import { VoxelFaceDirections, VoxelFaces } from "../../Math/index.js";
 /*
@@ -221,7 +220,7 @@ export class OutlinedVoxelTool {
   };
 
   static getOutlineUVs(
-    texture: ConstructorTextureData,
+    texture: TextureId,
     onRegister: (uvs: number[]) => void
   ) {
     const overlayTextures: number[] = [];

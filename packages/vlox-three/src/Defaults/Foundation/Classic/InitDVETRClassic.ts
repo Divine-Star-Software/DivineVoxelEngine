@@ -91,7 +91,7 @@ export default function InitDVEBRClassic(initData: DVEBRClassicData) {
     await TextureBuilder.setUpImageCreation();
 
     TextureManager.registerTexture(initData.textureData);
-    await TextureManager.$INIT();
+    await TextureManager.init();
     const uvMap = TextureManager.generateTextureUVMap();
     for (const constructor of dver.threads.constructors.getThreads()) {
       await constructor.runAsyncTasks("sync-texuture-index", uvMap);

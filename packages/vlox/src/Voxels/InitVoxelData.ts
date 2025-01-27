@@ -44,16 +44,17 @@ import {
   liquidModel,
 } from "../Models/Defaults/LiquidVoxelModel";
 import { VoxelModelManager } from "../Models/Rules/VoxelModelManager";
-import {
-  VoxelGeometryData,
-  VoxelModelData,
-} from "../Models/VoxelModel.types";
-import { VoxelData } from "./Voxel.types";
+import { VoxelGeometryData, VoxelModelData } from "../Models/VoxelModel.types";
+import { VoxelData, VoxelStructIds } from "./Types/Voxel.types";
 
 import { BuildRules } from "../Models/Rules/Functions/BuildRules";
 import { BuildStateData } from "./Functions/BuildStateData";
 import { BuildFinalInputs } from "../Models/Rules/Functions/BuildFinalInputs";
-import { ConstructorVoxelModelSyncData } from "./VoxelSyncData";
+import {
+  CompiledVoxelData,
+  CompiledVoxelModelData,
+  FinalCompiledVoxelModelData,
+} from "./Types/VoxelModelCompiledData.types";
 import { SchemaRegister } from "../Voxels/State/SchemaRegister";
 import {
   simpleCrossedPannel,
@@ -62,16 +63,29 @@ import {
 import { VoxelTagStates } from "../Voxels/State/VoxelTagStates";
 import { VoxelIndex } from "../Voxels/Indexes/VoxelIndex";
 import { CacheManager } from "../Cache/CacheManager";
+import { VoxelLightData } from "./Cursor/VoxelLightData";
+import { VoxelMaterialData } from "./Types/VoxelMaterial.types";
+import { VoxelSubstanceData } from "./Types/VoxelSubstances.types";
+import { MaterialDataGenerator } from "./Segments/MaterialDataGenerator";
+import { SubstanceDataGenerator } from "./Segments/SubstanceDataGenerator";
+import { VoxelDataGenerator } from "./Segments/VoxelDataGenerator";
+import { SubstanceStructBuilder } from "./Structs/Builder/SubstanceStructBuilder";
+import { MappedDataRegister } from "../Data/Register/MappedDataRegister";
+import { MaterialPalette } from "./Palettes/MaterialPalette";
+import { VoxelStruct } from "./Structs/VoxelStruct";
+import { SubstanceStruct } from "./Structs/SubstanceStruct";
+import { VoxelStructBuilder } from "./Structs/Builder/VoxelStructBuilder";
 
 export type InitVoxelDataProps = {
   geometry?: VoxelGeometryData[];
   models?: VoxelModelData[];
   voxels: VoxelData[];
+  materials?: VoxelMaterialData[];
+  substances?: VoxelSubstanceData[];
 };
 
-export function InitVoxelData(data: InitVoxelDataProps) : ConstructorVoxelModelSyncData{
+function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
   if (CacheManager.cacheLoadEnabled && CacheManager.cachedData) {
-    console.warn("load sync data");
     const syncData = CacheManager.cachedData.models;
 
     for (let i = 0; i < syncData.models.length; i++) {
@@ -84,16 +98,9 @@ export function InitVoxelData(data: InitVoxelDataProps) : ConstructorVoxelModelS
       SchemaRegister.registerVoxel(voxel.id, voxel.modelId, voxel.modSchema);
     }
     VoxelTagStates.load(syncData.tagState);
-    const t = performance.now();
 
-    console.log("sent the data", performance.now() - t);
-    const t2 = performance.now();
-    const voxelIndex = new VoxelIndex(data.voxels);
-    console.log("built the index", performance.now() - t2);
     return syncData;
   }
-
-  const initTime = performance.now();
 
   VoxelModelManager.registerGeometry(
     cube,
@@ -151,7 +158,7 @@ export function InitVoxelData(data: InitVoxelDataProps) : ConstructorVoxelModelS
     ...(data.models || [])
   );
 
-  const syncData: ConstructorVoxelModelSyncData = {
+  const syncData: FinalCompiledVoxelModelData = {
     geometryPalette: VoxelModelManager.geometryPalette._palette,
     geometry: [],
     models: [],
@@ -169,9 +176,6 @@ export function InitVoxelData(data: InitVoxelDataProps) : ConstructorVoxelModelS
     model!.voxels.set(voxel.id, voxelData);
   }
 
-  const output: any = {};
-
-  const startTime = performance.now();
   for (const [mainKey, mainGeo] of VoxelModelManager.geometry) {
     if (mainGeo.data.ogData.doNotBuildRules) {
       syncData.geometry.push({
@@ -189,9 +193,6 @@ export function InitVoxelData(data: InitVoxelDataProps) : ConstructorVoxelModelS
     });
   }
 
-  console.log("done building rules", performance.now() - startTime);
-
-  const inputStartTime = performance.now();
   for (const [mainKey, model] of VoxelModelManager.models) {
     const stateData = BuildStateData(model, VoxelModelManager.geometryPalette);
     model.stateData = stateData;
@@ -244,33 +245,203 @@ export function InitVoxelData(data: InitVoxelDataProps) : ConstructorVoxelModelS
   syncData.tagState = VoxelTagStates.toJSON();
 
   if (CacheManager.cacheStoreEnabled) {
-    console.warn("Store sync data", syncData);
     CacheManager.cachedModelData = syncData;
   }
 
-  console.log(syncData);
-  console.log(syncData.voxels.find((_) => _.id == "dve_liquid_dream_ether"));
+  return syncData;
+}
 
-  console.log("done building inputs", performance.now() - inputStartTime);
-
-  console.log(
-    "init voxel models done | totle time: ",
-    performance.now() - initTime
-  );
-
+export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
+  const lightData = new VoxelLightData();
   const voxelIndex = new VoxelIndex(data.voxels);
 
-  /* 
-  const blob = new Blob([JSON.stringify(output, null, 1)], {});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "rules.json";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
- */
+  const materials: VoxelMaterialData[] = [
+    { id: "dve_solid", properties: {} },
+    { id: "dve_flora", properties: {} },
+    {
+      id: "dve_transparent",
+      properties: {
+        dve_is_transparent: true,
+      },
+    },
+    { id: "dve_glow", properties: {} },
+    {
+      id: "dve_liquid",
+      properties: {
+        dve_is_transparent: true,
+      },
+    },
+    ...(data.materials || []),
+  ];
+  MaterialDataGenerator.generate(materials);
 
-  return syncData;
+  const substances: VoxelSubstanceData[] = [
+    {
+      id: "dve_air",
+      properties: {
+        dve_parent_substance: "dve_air",
+        dve_is_solid: false,
+        dve_is_liquid: false,
+        dve_is_transparent: true,
+        dve_flow_rate: 0,
+      },
+    },
+    {
+      id: "dve_solid",
+      properties: {
+        dve_parent_substance: "dve_solid",
+        dve_is_solid: true,
+        dve_is_liquid: false,
+        dve_is_transparent: false,
+        dve_flow_rate: 0,
+      },
+    },
+    {
+      id: "dve_glow",
+      properties: {
+        dve_parent_substance: "dve_solid",
+        dve_is_solid: true,
+        dve_is_liquid: false,
+        dve_is_transparent: false,
+        dve_flow_rate: 0,
+      },
+    },
+    {
+      id: "dve_translucent",
+      properties: {
+        dve_parent_substance: "dve_solid",
+        dve_is_solid: true,
+        dve_is_liquid: false,
+        dve_is_transparent: true,
+        dve_flow_rate: 0,
+      },
+    },
+    {
+      id: "dve_transparent",
+      properties: {
+        dve_parent_substance: "dve_solid",
+        dve_is_solid: true,
+        dve_is_liquid: false,
+        dve_is_transparent: true,
+        dve_flow_rate: 0,
+      },
+    },
+    {
+      id: "dve_flora",
+      properties: {
+        dve_parent_substance: "dve_solid",
+        dve_is_solid: true,
+        dve_is_liquid: false,
+        dve_is_transparent: true,
+        dve_flow_rate: 0,
+        dve_is_wind_affected: true,
+      },
+    },
+    {
+      id: "dve_liquid",
+      properties: {
+        dve_parent_substance: "dve_liquid",
+        dve_is_solid: false,
+        dve_is_liquid: true,
+        dve_is_transparent: true,
+        dve_flow_rate: 1,
+      },
+    },
+    {
+      id: "dve_magma",
+      properties: {
+        dve_parent_substance: "dve_liquid",
+        dve_is_solid: false,
+        dve_is_liquid: true,
+        dve_is_transparent: false,
+        dve_flow_rate: 3,
+      },
+    },
+    ...(data.substances || []),
+  ];
+  SubstanceDataGenerator.generate(substances);
+
+  const voxels: VoxelData[] = [
+    {
+      id: "dve_air",
+      properties: {
+        dve_substance: "dve_air",
+      },
+    },
+    {
+      id: "dve_barrier",
+      properties: {
+        dve_substance: "dve_air",
+      },
+    },
+    ...data.voxels,
+  ];
+  VoxelDataGenerator.overrides.set(VoxelStructIds.lightValue, (tags, value) => {
+    const v = <number[]>value;
+    let sl = 0;
+    sl = lightData.setR(v[0], sl);
+    sl = lightData.setG(v[1], sl);
+    sl = lightData.setB(v[2], sl);
+    tags.setProperty(VoxelStructIds.lightValue, sl);
+  });
+  VoxelDataGenerator.overrides.set(
+    VoxelStructIds.renderedMaterial,
+    (tags, value) => {
+      tags.setProperty(
+        VoxelStructIds.renderedMaterial,
+        MaterialDataGenerator.palette._map[value as string]
+      );
+    }
+  );
+
+  VoxelDataGenerator.overrides.set(VoxelStructIds.substance, (tags, value) => {
+    tags.setProperty(
+      VoxelStructIds.substance,
+      SubstanceDataGenerator.palette._map[value as string]
+    );
+  });
+
+  VoxelDataGenerator.generate(voxels);
+
+  let models = GetModelData(data);
+  const voxelMaps = VoxelStructBuilder.getMaps();
+  const voxelStringMaps = MappedDataRegister.stringMaps.getSegment("voxel");
+  for (const key in voxelMaps.stringMaps) {
+    voxelStringMaps.add(key, voxelMaps.stringMaps[key]);
+  }
+  const voxelObjectMaps = MappedDataRegister.objectMaps.getSegment("voxel");
+  for (const key in voxelMaps.objectMaps) {
+    voxelObjectMaps.add(key, voxelMaps.objectMaps[key]);
+  }
+  const substanceMaps = SubstanceStructBuilder.getMaps();
+
+  const substanceStringMaps =
+    MappedDataRegister.stringMaps.getSegment("substance");
+  for (const key in substanceMaps.stringMaps) {
+    substanceStringMaps.add(key, substanceMaps.stringMaps[key]);
+  }
+  const substanceObjectMaps =
+    MappedDataRegister.objectMaps.getSegment("substance");
+  for (const key in substanceMaps.objectMaps) {
+    substanceObjectMaps.add(key, substanceMaps.objectMaps[key]);
+  }
+  return {
+    materials: {
+      palette: MaterialPalette.palette._palette,
+    },
+    models,
+    data: {
+      palette: VoxelDataGenerator.palette._palette,
+      nameToIdMap: VoxelDataGenerator.nameToIdMap,
+      idToNameMap: VoxelDataGenerator.idToNameMap,
+      ...voxelMaps,
+      struct: VoxelStruct.initData,
+      index: VoxelStruct.voxelIndex,
+    },
+    substances: {
+      palette: SubstanceDataGenerator.palette._palette,
+      ...substanceMaps,
+      struct: SubstanceStruct.initData,
+    },
+  };
 }

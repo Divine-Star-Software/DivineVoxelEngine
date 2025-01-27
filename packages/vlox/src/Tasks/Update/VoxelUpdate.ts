@@ -1,15 +1,15 @@
 import { EngineSettings as ES } from "../../Settings/EngineSettings.js";
 import { $3dCardinalNeighbors } from "../../Math/Constants/CardinalNeighbors.js";
 
-import {
-  RunBuildQueue,
-  UpdateTasks,
-  VoxelUpdateTasks,
-} from "../Tasks.types.js";
-import { Propagation } from "../../Tasks/Propagation/Propagation.js";
+import { VoxelUpdateTasks } from "../Tasks.types.js";
 import { UpdateTask } from "./UpdateTask.js";
 
 import { SubstanceDataTool } from "../../Tools/Data/SubstanceDataTool.js";
+import { LocationData } from "../../Math/index.js";
+import { RGBRemove, RGBUpdate } from "../Propagation/Illumanation/RGBUpdate.js";
+import { SunRemove, SunUpdate } from "../Propagation/Illumanation/SunUpdate.js";
+import { FlowUpdate } from "../Propagation/Flow/FlowUpdate.js";
+import { FlowRemove } from "../Propagation/Flow/FlowRemove.js";
 
 const tasks = new UpdateTask();
 const substanceData = new SubstanceDataTool();
@@ -38,15 +38,15 @@ const updateLightTask = (tasks: UpdateTask) => {
   }
 };
 
-export async function EreaseAndUpdate(data: UpdateTasks) {
-  const [dimension, x, y, z] = data[0];
-  tasks.setOrigin(data[0]);
+export async function EreaseAndUpdate(location: LocationData) {
+  const [dimension, x, y, z] = location;
+  tasks.setOrigin(location);
   let voxel = tasks.sDataCursor.getVoxel(x, y, z);
   if (!voxel) return false;
   substanceData.setSubstance(voxel.getSubstance());
   if (!voxel.isAir() && ES.doFlow() && voxel.isRenderable()) {
     if (substanceData.isLiquid()) {
-      await Propagation.instance.flowRemove(tasks);
+      FlowRemove(tasks);
       return tasks;
     }
   }
@@ -65,14 +65,14 @@ export async function EreaseAndUpdate(data: UpdateTasks) {
   if (ES.doLight()) {
     if (ES.doRGBPropagation() && isLightSource) {
       tasks.rgb.remove.push(x, y, z);
-      Propagation.instance.rgbRemove(tasks);
+      RGBRemove(tasks);
     }
     updateLightTask(tasks);
     if (ES.doRGBPropagation()) {
-      Propagation.instance.rgbUpdate(tasks);
+      RGBUpdate(tasks);
     }
     if (ES.doSunPropagation()) {
-      Propagation.instance.sunUpdate(tasks);
+      SunUpdate(tasks);
     }
   }
   return tasks;
@@ -95,13 +95,13 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
     if (doSun) {
       if (voxel.hasSunLight()) {
         tasks.sun.remove.push(x, y, z);
-        Propagation.instance.sunRemove(tasks);
+        SunRemove(tasks);
       }
     }
     if (doRGB) {
       if (voxel.hasRGBLight() && isOpaque) {
         tasks.rgb.remove.push(x, y, z);
-        Propagation.instance.rgbRemove(tasks);
+        RGBRemove(tasks);
       }
     }
   }
@@ -132,16 +132,15 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
     voxel.setLight(voxel.getLightSourceValue());
   }
 
-
   voxel.updateHeightMap(0);
   if (ES.doLight()) {
     updateLightTask(tasks);
     if (doRGB) {
       tasks.rgb.update.push(x, y, z);
-      Propagation.instance.rgbUpdate(tasks);
+      RGBUpdate(tasks);
     }
     if (doSun) {
-      Propagation.instance.sunUpdate(tasks);
+      SunUpdate(tasks);
     }
   }
   voxel = tasks.sDataCursor.getVoxel(x, y, z)!;
@@ -150,7 +149,7 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
       !voxel.isAir() &&
       substanceData.setSubstance(voxel.getSubstance()).isLiquid()
     ) {
-      Propagation.instance.flowUpdate(tasks);
+      FlowUpdate(tasks);
     }
   }
 
@@ -170,18 +169,19 @@ export async function VoxelUpdate(data: VoxelUpdateTasks) {
     updateLightTask(tasks);
     if (doRGB) {
       tasks.rgb.update.push(x, y, z);
-      Propagation.instance.rgbUpdate(tasks);
+      RGBUpdate(tasks);
     }
     if (doSun) {
-      Propagation.instance.sunUpdate(tasks);
+      tasks.sun.update.push(x, y, z);
+      SunUpdate(tasks);
     }
   }
 
   if (ES.doFlow()) {
     if (substanceData.setSubstance(voxel.getSubstance()).isLiquid()) {
-      Propagation.instance.flowUpdate(tasks);
+      FlowUpdate(tasks);
     }
   }
 
-  return  tasks;
+  return tasks;
 }

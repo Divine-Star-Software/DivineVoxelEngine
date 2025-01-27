@@ -6,14 +6,14 @@ import {
 } from "../Classes/OcclusionFace";
 import { VoxelRuleGeometry } from "../Classes/VoxelRulesGeometry";
 import { VoxelFaces } from "../../../Math";
-import { PrcoessedVoxelGeometryNodes } from "../../../Voxels/VoxelSyncData";
+import { CompiledVoxelGeometryNodes } from "../../../Voxels/Types/VoxelModelCompiledData.types";
 import { TransformBox, TransformQuad } from "../../Shared/Transform";
 import { Quad } from "@amodx/meshing/Primitives/Quad";
 
 export function GetOcclusionFaces(
   parentId: string,
   geometry: VoxelRuleGeometry,
-  data: PrcoessedVoxelGeometryNodes[]
+  data: CompiledVoxelGeometryNodes[]
 ) {
   const faceContainer = new OcclusionFaceContainer();
 

@@ -8,7 +8,7 @@ import {
   CreateDefaultRenderer,
   CreateTextures,
 } from "../../Renderer/CreateDefaultRenderer";
-import { HemisphericLight, Vector3 } from "@babylonjs/core";
+import { HemisphericLight, ShaderMaterial, Vector3 } from "@babylonjs/core";
 
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
 
@@ -17,7 +17,7 @@ export type DVEBRClassicData = DVEBRDefaultMaterialBaseData & {
   doRGB?: boolean;
   doAO?: boolean;
 };
-const defaultSubstances = [
+const defaultMaterials = [
   "dve_glow",
   "dve_flora",
   "dve_solid",
@@ -67,11 +67,7 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
     })
   );
 
-  DVEBRShaderStore.storeShader(
-    "dve_node",
-    "frag",
-    NodeShader.GetFragment()
-  );
+  DVEBRShaderStore.storeShader("dve_node", "frag", NodeShader.GetFragment());
 
   DVEBRShaderStore.setShaderData(
     "dve_node",
@@ -92,9 +88,9 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
   );
   const voxelTexture = TextureManager.getOrAddTextureType("dve_voxel");
   const voxelTextureLength = voxelTexture.animationUniform.length;
-  for (const substance of defaultSubstances) {
+  for (const material of defaultMaterials) {
     DVEBRShaderStore.setShaderData(
-      substance,
+      material,
       [
         "time",
         "fogOptions",
@@ -126,7 +122,7 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
       ]
     );
     DVEBRShaderStore.storeShader(
-      substance,
+      material,
       "vertex",
       VoxelBaseShader.GetVertex({
         doAO: true,
@@ -134,13 +130,24 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
       })
     );
     DVEBRShaderStore.storeShader(
-      substance,
+      material,
       "frag",
-      VoxelBaseShader.GetFragment({
-        doAO: !substance.includes("liquid"),
-      })
+      material.includes("liquid")
+        ? VoxelBaseShader.GetFragment(
+            VoxelBaseShader.DefaultLiquidFragmentMain(true)
+          )
+        : VoxelBaseShader.GetFragment(VoxelBaseShader.DefaultFragmentMain(true))
     );
   }
+
+  let time = 0;
+  const materials: ShaderMaterial[] = [];
+  initData.scene.registerBeforeRender(() => {
+    for (let i = 0; i < materials.length; i++) {
+      materials[i].setFloat("time", time);
+    }
+    time++;
+  });
 
   const r = await CreateDefaultRenderer({
     afterCreate: async (scene) => {
@@ -175,6 +182,7 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
         ...matData,
       });
       newMat.createMaterial(scene);
+      materials.push(newMat._material);
       return newMat;
     },
 

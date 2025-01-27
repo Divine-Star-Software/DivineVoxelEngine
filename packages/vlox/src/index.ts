@@ -1,1 +1,1 @@
-export * from "./Voxels/Voxel.types";
+export * from "./Voxels/Types/Voxel.types";

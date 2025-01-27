@@ -1,8 +1,8 @@
-import { DataCursorInterface } from "../../Data/Cursor/Interfaces/DataCursor.interface";
+import { DataCursorInterface } from "../../Data/Cursor/DataCursor.interface";
 import { VoxelModelConstructorRegister } from "./VoxelModelConstructorRegister";
 import { VoxelConstructor } from "./VoxelConstructor";
 import { Vec3Array, Vector3Like } from "@amodx/math";
-import { VoxelCursor } from "../../Data/Cursor/VoxelCursor";
+import { VoxelCursor } from "../../Voxels/Cursor/VoxelCursor"
 
 export class VoxelGeometryLookUp {
   static voxelHash: VoxelConstructor[] = [];

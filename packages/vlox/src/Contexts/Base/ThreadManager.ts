@@ -1,43 +1,44 @@
-import { Thread, ThreadPool, CommPortTypes, Threads } from "@amodx/threads";
-import { Pipeline } from "@amodx/core/Pipelines";
-
+import { Thread, ThreadPool, ThreadPortTypes, Threads } from "@amodx/threads";
 export abstract class ThreadManager {
-  pipelines = {
-    setPorts: new Pipeline<ThreadManager>(),
-    init: new Pipeline<ThreadManager>(),
-  };
-  commMap = new Map<string, Thread | ThreadPool>();
-  comms: (Thread | ThreadPool)[] = [];
+  threadMap = new Map<string, Thread | ThreadPool>();
+  _threads: (Thread | ThreadPool)[] = [];
 
-
-  async init() {
-    await this.pipelines.init.pipe(this);
+  constructor() {
+    self.addEventListener("beforeunload", () => {
+      for (const thread of this._threads) {
+        if (thread instanceof ThreadPool) {
+          thread.destroyAll();
+        }
+        if (thread instanceof Thread) {
+          thread.destroy();
+        }
+      }
+    });
   }
 
-  setThreadPort(id: string, ports: CommPortTypes | CommPortTypes[]) {
-    const comm = this.getThread(id);
-    let error;
-    if (Array.isArray(ports) && comm instanceof ThreadPool) {
-      comm.addPorts(ports);
+  setThreadPort(id: string, ports: ThreadPortTypes | ThreadPortTypes[]) {
+    const thread = this.getThread(id);
+    if (thread instanceof ThreadPool) {
+      if (!Array.isArray(ports))
+        throw new Error("Thread is a pool and needs an array of ports");
+      for (const port of ports) {
+        thread.addPort(port);
+      }
       return;
-    } else
-      error =
-        "Comm is an instance of comm manager and the passed in ports was not an array.";
-    if (!Array.isArray(ports) && comm instanceof Thread) {
-      comm.setPort(ports);
-      return;
-    } else
-      error =
-        "Comm is an instance of comm base and the passed in ports was an array.";
-    throw new Error(error);
+    }
+    if (thread instanceof Thread) {
+      if (Array.isArray(ports))
+        throw new Error("Thread is a single thread and needs one port.");
+      thread.setPort(ports);
+    }
   }
-  addThread(comm: Thread | ThreadPool) {
-    this.commMap.set(comm.name, comm);
-    this.comms.push(comm);
+  addThread(thread: Thread | ThreadPool) {
+    this.threadMap.set(thread.name, thread);
+    this._threads.push(thread);
   }
   getThread(id: string): Thread | ThreadPool {
-    const comm = this.commMap.get(id);
-    if (!comm) throw new Error(`Comm with id ${id} does not exists`);
-    return comm;
+    const thread = this.threadMap.get(id);
+    if (!thread) throw new Error(`Thread with id ${id} does not exists`);
+    return thread;
   }
 }

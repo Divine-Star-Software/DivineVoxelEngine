@@ -1,25 +1,27 @@
 import { PerlinGen } from "./Gen/PerlinGen";
 import { TaskTool } from "@divinevoxel/vlox/Tools/Tasks/TasksTool";
-import { MesherTool } from "@divinevoxel/vlox/Tools/Mesher/MesherTool";
-export async function ForestTest() {
+import { DivineVoxelEngineWorld } from "@divinevoxel/vlox/Contexts/World/DivineVoxelEngineWorld";
+import { BrushTool } from "@divinevoxel/vlox/Tools/Brush/Brush";
+export async function ForestTest(DVEW: DivineVoxelEngineWorld) {
   const numChunks = 2;
   let startX = -16 * numChunks;
   let startZ = -16 * numChunks;
   let endX = 16 * numChunks;
   let endZ = 16 * numChunks;
 
-  const mesher = new MesherTool();
-
-  const tasks = new TaskTool();
-  tasks.setFocalPoint(["main", 0, 0, 0]);
+  const tasks = new TaskTool(DVEW.threads.constructors);
+  const propagation = tasks.propagation.createQueue();
+  const worldSun = tasks.worldSun.createQueue();
   const t1 = performance.now();
 
+  const brush = new BrushTool();
+  brush.start("main", 0, 0, 0);
 
   for (let x = startX - 32; x < endX + 32; x += 16) {
     for (let z = startZ - 32; z < endZ + 32; z += 16) {
-      mesher.setXYZ(x, 0, z).fillColumn();
-      tasks.propagation.queued.add(["main", x, 0, z]);
-      tasks.worldSun.queued.add(["main", x, 0, z]);
+      brush.setXYZ(x, 0, z).fillColumn();
+      propagation.add(["main", x, 0, z]);
+      worldSun.add(["main", x, 0, z]);
     }
   }
 
@@ -29,12 +31,12 @@ export async function ForestTest() {
     }
   }
 
-  await tasks.worldSun.queued.runAndAwait();
-  await tasks.propagation.queued.runAndAwait();
+  await worldSun.run();
 
+  await propagation.run();
   for (let x = startX - 16; x < endX + 16; x += 16) {
     for (let z = startZ - 16; z < endZ + 16; z += 16) {
-      mesher.setXYZ(x, 0, z).buildColumn();
+      tasks.build.column.run(["main", x, 0, z]);
     }
   }
 

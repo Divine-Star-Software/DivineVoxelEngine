@@ -1,9 +1,9 @@
 import { ShapeStateRelationsNode } from "./ShapeStateRelationsNode";
 import { BinarySchemaNode } from "./BinarySchemaNode";
 import { VoxelModelStateSchemaData } from "../State.types";
-import { DataCursorInterface } from "../../../Data/Cursor/Interfaces/DataCursor.interface";
+import { DataCursorInterface } from "../../../Data/Cursor/DataCursor.interface";
 import { Vector3Like } from "@amodx/math";
-import { VoxelCursorInterface } from "../../../Data/Cursor/Interfaces/VoxelCursor.interface";
+import { VoxelCursorInterface } from "../../Cursor/VoxelCursor.interface";
 export class StateSchema {
   nodes: (BinarySchemaNode | ShapeStateRelationsNode)[] = [];
   position = Vector3Like.Create();

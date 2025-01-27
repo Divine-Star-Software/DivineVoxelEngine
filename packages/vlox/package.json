@@ -1,6 +1,6 @@
 {
   "name": "@divinevoxel/vlox",
-  "version": "0.0.02",
+  "version": "0.0.04",
   "description": "Vlox a block style voxel engine.",
   "main": "index.js",
   "types": "index.d.ts",
@@ -20,12 +20,11 @@
     "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
   },
   "dependencies": {
-    "@amodx/uri": "^0.0.11",
-    "@amodx/meshing": "^0.0.11",
-    "@amodx/math": "^0.0.11",
-    "@amodx/binary": "^0.0.11",
-    "@amodx/threads": "^0.0.11",
-    "@amodx/indexdb": "^0.0.11"
+    "@amodx/meshing": "latest",
+    "@amodx/core": "latest",
+    "@amodx/math": "latest",
+    "@amodx/binary": "latest",
+    "@amodx/threads": "latest"
   },
   "publishConfig": {
     "access": "public"

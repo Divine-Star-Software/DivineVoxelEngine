@@ -1,6 +1,6 @@
-import { WorldCursor } from "../../Data/Cursor/World/WorldCursor";
+import { WorldCursor } from "../../World/Cursor/WorldCursor";
 import { Vec3Array, Vector3Like } from "@amodx/math";
-import { WorldSpaces } from "../../Data/World/WorldSpaces";
+import { WorldSpaces } from "../../World/WorldSpaces";
 import { LocationData } from "../../Math";
 
  export class TaskMap {
@@ -95,9 +95,9 @@ class UpdatedBounds {
     const maxY = maxChunkPos.y;
     const maxZ = maxChunkPos.z;
     const chunkPositions: Vec3Array[] = [];
-    for (let x = minX; x <= maxX; x += WorldSpaces.chunk._bounds.x) {
-      for (let y = minY; y <= maxY; y += WorldSpaces.chunk._bounds.y) {
-        for (let z = minZ; z <= maxZ; z += WorldSpaces.chunk._bounds.z) {
+    for (let x = minX; x <= maxX; x += WorldSpaces.chunk.bounds.x) {
+      for (let y = minY; y <= maxY; y += WorldSpaces.chunk.bounds.y) {
+        for (let z = minZ; z <= maxZ; z += WorldSpaces.chunk.bounds.z) {
           if (!this._task.nDataCursor.inBounds(x, y, z)) continue;
           chunkPositions.push([x, y, z]);
         }

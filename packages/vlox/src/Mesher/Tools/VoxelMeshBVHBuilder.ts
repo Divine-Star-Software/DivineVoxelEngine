@@ -1,4 +1,4 @@
-import { WorldSpaces } from "../../Data/World/WorldSpaces";
+import { WorldSpaces } from "../../World/WorldSpaces";
 
 /**
  * A class to help with indexing a full flat binary tree defined by the number of levels it has.

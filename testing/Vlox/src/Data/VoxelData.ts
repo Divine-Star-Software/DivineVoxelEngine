@@ -1,5 +1,72 @@
-import { VoxelData } from "@divinevoxel/vlox/Voxels/Voxel.types";
+import { VoxelData } from "@divinevoxel/vlox/Voxels";
 export const DVEVoxelData: VoxelData[] = [
+  {
+    id: "dve_debug_box",
+    properties: {
+      dve_substance: "dve_solid",
+      dve_rendered_material: "dve_solid",
+      dve_collider_id: "dve_cube",
+      dve_check_collisions: true,
+      dve_voxel_material: "stone",
+      dve_model_data: {
+        id: "dve_oriented_cube",
+        modRelationSchema: [],
+        inputs: {
+          "*": {
+            "@upTex": ["dve_voxel", "dve_debug_box", "top"],
+            "@downTex": ["dve_voxel", "dve_debug_box", "bottom"],
+            "@northTex": ["dve_voxel", "dve_debug_box", "north"],
+            "@southTex": ["dve_voxel", "dve_debug_box", "south"],
+            "@eastTex": ["dve_voxel", "dve_debug_box", "east"],
+            "@westTex": ["dve_voxel", "dve_debug_box", "west"],
+          },
+        },
+      },
+      /*       dve_model_data: {
+        id: "dve_simple_cube",
+        inputs: {
+          "*": { "@texture": ["dve_voxel", "dve_debug_box","west"] },
+        },
+      }, */
+    },
+  },
+  {
+    id: "dve_dream_grass",
+    properties: {
+      dve_substance: "dve_flora",
+      dve_collider_id: "dve_cube",
+      dve_check_collisions: true,
+      dve_no_ao: true,
+      dve_is_transparent: true,
+      dve_voxel_material: "grass",
+
+      dve_named_states: [
+        {
+          id: "dve_dream_grass",
+          name: "Dream Grass",
+          mod: "*",
+          state: "*",
+          properties: [],
+          display: {
+            type: "model",
+            mod: "*",
+            state: "*",
+          },
+        },
+      ],
+
+      dve_model_data: {
+        id: "dve_simple_crossed_panels",
+        inputs: {
+          "*": {
+            "@texture": ["dve_voxel", "dve_dream_grass"],
+            "@doubleSided": true,
+          },
+        },
+      },
+    },
+  },
+  /*
   {
     id: "dve_liquid_dream_ether",
     properties: {
@@ -251,7 +318,6 @@ export const DVEVoxelData: VoxelData[] = [
       },
     },
   },
-
   {
     id: "dve_dread_stone_thin_panel",
     properties: {
@@ -330,7 +396,6 @@ export const DVEVoxelData: VoxelData[] = [
       },
     },
   },
-
   {
     id: "dve_dread_stone_slab",
     properties: {
@@ -428,42 +493,7 @@ export const DVEVoxelData: VoxelData[] = [
       },
     },
   },
-  {
-    id: "dve_dream_grass",
-    properties: {
-      dve_substance: "dve_flora",
-      dve_collider_id: "dve_cube",
-      dve_check_collisions: true,
-      dve_no_ao: true,
-      dve_is_transparent: true,
-      dve_voxel_material: "grass",
 
-      dve_named_states: [
-        {
-          id: "dve_dream_grass",
-          name: "Dream Grass",
-          mod: "*",
-          state: "*",
-          properties: [],
-          display: {
-            type: "model",
-            mod: "*",
-            state: "*",
-          },
-        },
-      ],
-
-      dve_model_data: {
-        id: "dve_simple_crossed_panels",
-        inputs: {
-          "*": {
-            "@texture": ["dve_voxel", "dve_dream_grass"],
-            "@doubleSided": true,
-          },
-        },
-      },
-    },
-  },
   {
     id: "dve_dream_lamp",
     properties: {
@@ -497,7 +527,6 @@ export const DVEVoxelData: VoxelData[] = [
       },
     },
   },
-
   {
     id: "dve_dream_stone_pillar",
     properties: {
@@ -536,6 +565,8 @@ export const DVEVoxelData: VoxelData[] = [
       },
     },
   },
+*/
+
   //util
   /* 
   {

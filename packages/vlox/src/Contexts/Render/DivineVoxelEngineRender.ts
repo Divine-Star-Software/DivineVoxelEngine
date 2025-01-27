@@ -1,13 +1,11 @@
 //objects
 import { EngineSettings } from "../../Settings/EngineSettings.js";
-import { RenderTasks } from "./Tasks/RenderTasks.js";
 import { Threads } from "@amodx/threads/";
 
 //functions
-
 import type { EngineSettingsData } from "../../Settings/EngineSettings.types.js";
 import type { RecursivePartial } from "../../Util/Util.types.js";
-import { DVERenderer } from "../../Renderer/DVERenderer.js"
+import { DVERenderer } from "../../Renderer/DVERenderer.js";
 import { MeshManager } from "../../Renderer/MeshManager.js";
 import { MeshRegister } from "../../Renderer/MeshRegister.js";
 
@@ -31,9 +29,6 @@ export class DivineVoxelEngineRender {
   meshRegister = MeshRegister;
 
   renderer: DVERenderer;
-
-  tasks = RenderTasks;
-
   threads = new DVERenderThreads();
 
   constructor() {
@@ -48,12 +43,12 @@ export class DivineVoxelEngineRender {
    */
   async clearAll() {
     this.meshRegister.clearAll();
-    await this.threads.world.runAsyncTasks("clear-all", "", []);
+    await this.threads.world.runTaskAsync("clear-all", "");
 
     await Promise.all(
       this.threads.construcotrs
         .getThreads()
-        .map((_) => _.runAsyncTasks("clear-all", ""))
+        .map((_) => _.runTaskAsync("clear-all", ""))
     );
   }
 }

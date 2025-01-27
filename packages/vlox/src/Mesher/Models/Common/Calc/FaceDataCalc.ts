@@ -1,11 +1,12 @@
 import type { VoxelMesherDataTool } from "../../../../Mesher/Tools/VoxelMesherDataTool.js";
-import { LightData } from "../../../../Voxels/LightData.js";
 import { QuadVerticies } from "@amodx/meshing/Geometry.types";
 import { VoxelFaces, VoxelFaceDirections } from "../../../../Math/index.js";
 import { GradientCheckSets } from "./CalcConstants.js";
+import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData.js";
 
 type AllLight = [s: number, r: number, g: number, b: number];
 
+const lightData = new VoxelLightData();
 const currentLightValues = new Uint16Array([0, 0, 0, 0]) as any as AllLight;
 const loadedLightValues = new Uint16Array([0, 0, 0, 0]) as any as AllLight;
 const faceLength = 9 * 4;
@@ -31,7 +32,7 @@ export const FaceDataCalc = {
     for (let vertex: QuadVerticies = <QuadVerticies>0; vertex < 4; vertex++) {
       if (settings.doLight) {
         tool.lightData[face][vertex] = light;
-        LightData.getLightValuesToRef(light, currentLightValues);
+        lightData.getLightValuesToRef(light, currentLightValues);
       }
 
       for (let i = 0; i < 9; i += 3) {
@@ -47,7 +48,7 @@ export const FaceDataCalc = {
         /*
       Do Light
       */
-        LightData.getLightValuesToRef(nl, loadedLightValues);
+        lightData.getLightValuesToRef(nl, loadedLightValues);
 
         currentLightValues[0] =
           currentLightValues[0] < loadedLightValues[0]
@@ -71,7 +72,7 @@ export const FaceDataCalc = {
       }
 
       tool.lightData[face][vertex] =
-        LightData.setLightValues(currentLightValues);
+        lightData.setLightValues(currentLightValues);
     }
   },
 };

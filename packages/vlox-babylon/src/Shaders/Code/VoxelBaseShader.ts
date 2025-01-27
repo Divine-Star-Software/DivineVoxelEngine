@@ -97,6 +97,13 @@ if(AOVL > 0.) {
 }
 
 float animVL = float(((animMask << animIndex) & vUID) >> animIndex);
+    vFlow = 0.;
+if(animVL == 1.) {
+    vFlow = -1.;
+}
+if(animVL == 2.) {
+    vFlow = 1.;
+}
 
 vLight = vec3(max(((vec3(lightGradient[redValue], lightGradient[greenValue], lightGradient[blueValue]) * doRGB) + (sVL * doSun * sunLightLevel)), baseLevel));
 
@@ -170,8 +177,84 @@ gl_Position = viewProjection * world * vec4(position, 1.0);
 }
 `;
   }
+  static DefaultLiquidFragmentMain = (doAO: boolean) => /* glsl */`
+  
+vec4 rgb = texture(dve_voxel,vec3(vec2(vUV.x,vUV.y + time * .01 * -1. * vFlow),vUV.z));
+    
+/*     
+    vec4 oRGB1 =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.x));
+    vec4 oRGB2 =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.y));
+    vec4 oRGB3 =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.z));
+    vec4 oRGB4 =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.w));
+    if(oRGB1.a > 0.5) {
+        rgb = oRGB1;
+    }
+    if(oRGB2.a > 0.5) {
+        rgb = oRGB2;
+    }
+    if(oRGB3.a > 0.5) {
+        rgb = oRGB3;
+    }
+    if(oRGB4.a > 0.5) {
+        rgb = oRGB4;
+    }
+*/
 
-  static GetFragment(props: { doAO: boolean }) {
+  //mix color
+  rgb *= vColors;
+  //mix light
+  rgb.rgb *=  vLight;
+
+  vec3 finalColor = doFog(rgb);
+
+  FragColor = vec4(finalColor.rgb, rgb.a);
+
+  if (FragColor.a < 0.5) { 
+    discard;
+  }
+
+  `;
+
+  static DefaultFragmentMain = (doAO: boolean) => /* glsl */`
+  
+      vec4 rgb = texture(dve_voxel,vec3(vUV.xy,vUV.z));
+    
+/*     
+    vec4 oRGB1 =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.x));
+    vec4 oRGB2 =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.y));
+    vec4 oRGB3 =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.z));
+    vec4 oRGB4 =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.w));
+    if(oRGB1.a > 0.5) {
+        rgb = oRGB1;
+    }
+    if(oRGB2.a > 0.5) {
+        rgb = oRGB2;
+    }
+    if(oRGB3.a > 0.5) {
+        rgb = oRGB3;
+    }
+    if(oRGB4.a > 0.5) {
+        rgb = oRGB4;
+    }
+*/
+
+  ${doAO ? "rgb.rgb *= vAO;" : ""}
+  //mix color
+  rgb *= vColors;
+  //mix light
+  rgb.rgb *=  vLight;
+
+  vec3 finalColor = doFog(rgb);
+
+  FragColor = vec4(finalColor.rgb, rgb.a);
+
+  if (FragColor.a < 0.5) { 
+    discard;
+  }
+
+  `;
+
+  static GetFragment(main: string,top = "") {
     const shader = /* glsl */ `#version 300 es
 precision highp float;
 precision highp sampler2DArray;
@@ -211,46 +294,12 @@ ${SharedShaders.FBMNoiseFunctions}
 
 ${SharedShaders.FogFragmentFunctions}
 
-
+${top}
 
 out vec4 FragColor;  
 void main(void) {
 
-    vec4 rgb = texture(dve_voxel,vec3(vUV.xy,vUV.z));
-    
-/*     
-    vec4 oRGB1 =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.x));
-    vec4 oRGB2 =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.y));
-    vec4 oRGB3 =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.z));
-    vec4 oRGB4 =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.w));
-    if(oRGB1.a > 0.5) {
-        rgb = oRGB1;
-    }
-    if(oRGB2.a > 0.5) {
-        rgb = oRGB2;
-    }
-    if(oRGB3.a > 0.5) {
-        rgb = oRGB3;
-    }
-    if(oRGB4.a > 0.5) {
-        rgb = oRGB4;
-    }
-*/
-
-  ${props.doAO ? "rgb.rgb *= vAO;" : ""}
-  //mix color
-  rgb *= vColors;
-  //mix light
-  rgb.rgb *=  vLight;
-
-  vec3 finalColor = doFog(rgb);
-
-  FragColor = vec4(finalColor.rgb, rgb.a);
-
-  if (FragColor.a < 0.5) { 
-    discard;
-  }
-
+ ${main}
   
 }
 

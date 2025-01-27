@@ -1,34 +1,15 @@
-import {
-  MeshAttributes,
-  MeshDefaultAttributes,
-} from "@amodx/meshing/MeshData.types";
+import { MeshDefaultAttributes } from "@amodx/meshing/MeshData.types";
 import { EngineSettings } from "../../Settings/EngineSettings";
-import { MesherDataTool } from "@amodx/meshing";
 import {
   BinaryNumberTypes,
   TypedArrayClassMap,
   MappedByteCounts,
 } from "@amodx/binary";
-import {
-  CompactMeshData,
-  CompactSubMesh,
-  CompactMeshIndex,
-} from "../Types/Mesher.types";
+import { CompactMeshData, CompactSubMesh } from "../Types/Mesher.types";
 import { VoxelMeshTypes } from "../../Mesher/Types/VoxelMesh.types";
 import { Vector3Like } from "@amodx/math";
 import { VoxelMesherDataTool } from "Mesher/Tools/VoxelMesherDataTool";
 import { VoxelMeshVertexStructCursor } from "../Tools/VoxelMeshVertexStructCursor";
-
-/**
-struct VoxelMeshVertex {
-    position: vec3<f32>,
-    normal: vec3<f32>,
-    voxelData: f32,
-    textureIndex: vec3<f32>,
-    uv: vec2<f32>,
-    colors: vec3<f32>,
-};
- */
 
 const structCursor = new VoxelMeshVertexStructCursor();
 
@@ -93,15 +74,20 @@ function MakeWebGPUMesh(tool: VoxelMesherDataTool): CompactMeshData {
 }
 
 export function CompactVoxelMesh(
-  ...tools: VoxelMesherDataTool[]
+  tools: VoxelMesherDataTool[]
 ): CompactMeshData {
   if (EngineSettings.settings.rendererSettings.mode == "webgpu") {
-    throw new Error("WebGPU disabled right now");
-    //    return MakeWebGPUMesh(tool);
+    return MakeWebGPUMesh(tools[0]);
   }
   const dataMap: CompactSubMesh[] = [];
+  const byteRanges: [
+    byteStart: number,
+    length: number,
+    type: BinaryNumberTypes,
+  ][] = [];
   let totalSize = 0;
-  for (const tool of tools) {
+  for (let i = 0; i < tools.length; i++) {
+    const tool = tools[i];
     const mesh = tool.mesh!;
 
     const subMesh: CompactSubMesh = [tool.id, []];
@@ -112,18 +98,9 @@ export function CompactVoxelMesh(
           type = BinaryNumberTypes.Uint32;
         }
       }
-      let current = totalSize;
-
+      byteRanges.push([totalSize, array.length, type]);
+      subMesh[1].push([key, array as any, stride]);
       totalSize += MappedByteCounts[type] * array.length;
-      subMesh[1].push([
-        key,
-        mesh.attributes.get(key)![0] as any,
-        array.length,
-        current,
-        totalSize,
-        stride,
-        type,
-      ]);
     }
 
     for (let i = 0; i < tool.bvhTool.tree.length; i++) {
@@ -135,20 +112,25 @@ export function CompactVoxelMesh(
 
   const finalBuffer = new ArrayBuffer(totalSize);
 
-  for (let subMesh of dataMap) {
-    for (const data of subMesh[1]) {
-      const [id, n, length, startByte, endByte, stride, type] = data;
+  let b = 0;
+  for (let s = 0; s < dataMap.length; s++) {
+    const attributes = dataMap[s][1];
+    for (let i = 0; i < attributes.length; i++) {
+      const startByte = byteRanges[b][0];
+      const length = byteRanges[b][1];
+      const type = byteRanges[b][2];
       const newArray = new TypedArrayClassMap[type](
         finalBuffer,
         //@ts-ignore
         startByte,
         length
       ) as Float32Array;
-      newArray.set(n as any as number[]);
-      data[1] = newArray;
+
+      newArray.set(attributes[i][1] as any as number[]);
+      attributes[i][1] = newArray;
+      b++;
     }
   }
-
 
   return [0, finalBuffer, dataMap];
 }

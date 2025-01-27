@@ -1,14 +1,14 @@
 import {
   RemoveChunkMeshTasks,
   SetChunkMeshTask,
-} from "../Contexts/Render/Tasks/RenderTasks.types.js";
-import { MeshRegister } from "./MeshRegister.js"
+} from "../Renderer/Renderer.types";
+import { MeshRegister } from "./MeshRegister.js";
 import { LocationData } from "../Math/index.js";
 
 import { DivineVoxelEngineRender } from "../Contexts/Render/DivineVoxelEngineRender.js";
 import { Square, Circle } from "@amodx/math/Shapes";
 import { Vector2Like } from "@amodx/math";
-import { WorldSpaces } from "../Data/World/WorldSpaces.js";
+import { WorldSpaces } from "../World/WorldSpaces.js";
 import { VoxelEffectRegister } from "../Voxels/Effects/VoxelEffectRegister.js";
 const added = new Set<string>();
 export class MeshManager {
@@ -20,26 +20,23 @@ export class MeshManager {
     const dimension = MeshRegister.dimensions.get(dimesnionId);
     if (!dimension) return;
 
-    this.columnSquare.sideLength = WorldSpaces.column._bounds.x;
+    this.columnSquare.sideLength = WorldSpaces.column.bounds.x;
     this.renderCircle.radius = radius;
     this.renderCircle.center.x = origion[1];
     this.renderCircle.center.y = origion[3];
 
-    dimension.forEach((region) => {
-      region.columns.forEach((column) => {
-        const location = column.location;
-        this.columnSquare.center.x = location[1];
-        this.columnSquare.center.y = location[3];
-
-        if (
-          !Circle.IsSquareInsideOrTouchingCircle(
-            this.columnSquare,
-            this.renderCircle
-          )
-        ) {
-          this.removeColumn(location);
-        }
-      });
+    dimension.forEach((column) => {
+      const location = column.location;
+      this.columnSquare.center.x = location[1];
+      this.columnSquare.center.y = location[3];
+      if (
+        !Circle.IsSquareInsideOrTouchingCircle(
+          this.columnSquare,
+          this.renderCircle
+        )
+      ) {
+        this.removeColumn(location);
+      }
     });
   }
 
@@ -90,7 +87,8 @@ export class MeshManager {
   static removeColumn(data: LocationData) {
     const column = MeshRegister.column.remove(data);
     if (!column) return false;
-    for (const [key, chunk] of column.chunks) {
+    for (const chunk of column.chunks) {
+      if (!chunk) continue;
       chunk.dispose();
     }
   }

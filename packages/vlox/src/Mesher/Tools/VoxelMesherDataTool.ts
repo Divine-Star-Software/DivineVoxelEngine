@@ -11,9 +11,9 @@ import { FaceDataCalc } from "../Models/Common/Calc/FaceDataCalc.js"
 import { Mesh } from "@amodx/meshing/Mesh/Mesh";
 import { VoxelMeshBVHBuilder } from "./VoxelMeshBVHBuilder";
 import { Vec3Array, Vector3Like } from "@amodx/math";
-import { WorldSpaces } from "../../Data/World/WorldSpaces";
-import { VoxelCursorInterface } from "../../Data/Cursor/Interfaces/VoxelCursor.interface";
-import { DataCursorInterface } from "../../Data/Cursor/Interfaces/DataCursor.interface";
+import { WorldSpaces } from "../../World/WorldSpaces.js";
+import { VoxelCursorInterface } from "../../Voxels/Cursor/VoxelCursor.interface.js";
+import { DataCursorInterface } from "../../Data/Cursor/DataCursor.interface.js";
 
 export class VoxelMesherDataTool extends MesherDataTool {
   template = new VoxelTemplateDataTool();
@@ -188,12 +188,5 @@ export class VoxelMesherDataTool extends MesherDataTool {
     return this.vars.get("texture-index")!;
   }
 
-  setFaceFlipped(value: boolean) {
-    this.vars.set("face-flipped", value ? 1 : 0);
-    return this;
-  }
 
-  isFaceFlipped() {
-    return this.vars.get("face-flipped")! == 1;
-  }
 }

@@ -1,3 +1,3 @@
-export * from "./Voxel.types"
-export * from "./VoxelMaterial.types"
-export * from "./VoxelSubstances.types"
+export * from "./Types/Voxel.types"
+export * from "./Types/VoxelMaterial.types"
+export * from "./Types/VoxelSubstances.types"

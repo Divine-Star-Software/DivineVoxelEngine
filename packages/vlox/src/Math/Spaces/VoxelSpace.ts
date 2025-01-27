@@ -12,15 +12,15 @@ export abstract class VoxelSpace {
   static simpleCubeHash(space: VoxelSpace) {
     space._position.x = alignToPowerOf2(
       space._position.x,
-      space._boundsPower2.x
+      space.boundsPower2.x
     );
     space._position.y = alignToPowerOf2(
       space._position.y,
-      space._boundsPower2.y
+      space.boundsPower2.y
     );
     space._position.z = alignToPowerOf2(
       space._position.z,
-      space._boundsPower2.z
+      space.boundsPower2.z
     );
     return space._position;
   }
@@ -63,8 +63,8 @@ export abstract class VoxelSpace {
 
   _position = Vector3Like.Create();
   _hashedPosition = Vector3Like.Create();
-  _bounds = Vector3Like.Create();
-  _boundsPower2 = Vector3Like.Create();
+  bounds = Vector3Like.Create();
+  boundsPower2 = Vector3Like.Create();
   _boundsSet = false;
 
   constructor() {}
@@ -76,23 +76,23 @@ export abstract class VoxelSpace {
   abstract getPositionFromIndex(index: number): Vector3Like;
 
   getVolume() {
-    return this._bounds.x * this._bounds.y * this._bounds.z;
+    return this.bounds.x * this.bounds.y * this.bounds.z;
   }
 
   getArea() {
-    return this._bounds.x * this._bounds.z;
+    return this.bounds.x * this.bounds.z;
   }
 
   getHeight() {
-    return this._bounds.y;
+    return this.bounds.y;
   }
 
   getWidth() {
-    return this._bounds.x;
+    return this.bounds.x;
   }
 
   getDepth() {
-    return this._bounds.z;
+    return this.bounds.z;
   }
 
   setXYZ(x: number, y: number, z: number) {
@@ -109,21 +109,21 @@ export abstract class VoxelSpace {
 
   setCubeBounds(bounds: Vector3Like) {
     if (this._boundsSet) return;
-    this._boundsPower2.x = bounds.x;
-    this._boundsPower2.y = bounds.y;
-    this._boundsPower2.z = bounds.z;
-    this._bounds.x = 2 ** this._boundsPower2.x;
-    this._bounds.y = 2 ** this._boundsPower2.y;
-    this._bounds.z = 2 ** this._boundsPower2.z;
+    this.boundsPower2.x = bounds.x;
+    this.boundsPower2.y = bounds.y;
+    this.boundsPower2.z = bounds.z;
+    this.bounds.x = 2 ** this.boundsPower2.x;
+    this.bounds.y = 2 ** this.boundsPower2.y;
+    this.bounds.z = 2 ** this.boundsPower2.z;
     this._boundsSet = true;
     return this;
   }
 
   setBounds(bounds: Vector3Like) {
     if (this._boundsSet) return;
-    this._bounds.x = bounds.x;
-    this._bounds.y = bounds.y;
-    this._bounds.z = bounds.z;
+    this.bounds.x = bounds.x;
+    this.bounds.y = bounds.y;
+    this.bounds.z = bounds.z;
     this._boundsSet = true;
     return this;
   }

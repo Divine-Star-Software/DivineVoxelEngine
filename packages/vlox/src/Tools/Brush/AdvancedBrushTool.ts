@@ -1,13 +1,12 @@
-//util
-
-//tools
 import { BrushTool } from "./Brush.js";
 import { TaskRunModes, TaskTool } from "../Tasks/TasksTool.js";
 import { LocationData } from "Math/index.js";
 
 export class AdvancedBrush extends BrushTool {
-  _location: LocationData = ["main",0,0,0];
-  tasks = new TaskTool();
+  _location: LocationData = ["main", 0, 0, 0];
+  constructor(public tasks: TaskTool) {
+    super();
+  }
   mode: TaskRunModes = "async";
   _mapLocation() {
     this._location[0] = this.dimension;
@@ -36,38 +35,21 @@ export class AdvancedBrush extends BrushTool {
   }
   paintAndUpdate(onDone?: Function) {
     this._mapLocation();
-    this.tasks.setFocalPoint(this._location);
-    this.tasks.voxelUpdate.paint.run(
-      this._location,
-      this.getRaw(),
-      () => {
-        if (onDone) onDone();
-      },
-      this.mode
-    );
+    this.tasks.voxel.paint.run([this._location, this.getRaw()], null, () => {
+      if (onDone) onDone();
+    });
   }
   eraseAndUpdate(onDone?: Function) {
     this._mapLocation();
-    this.tasks.setFocalPoint(this._location);
-    this.tasks.voxelUpdate.erase.run(
-      this._location,
-      () => {
-        if (onDone) onDone();
-      },
-      this.mode
-    );
+    this.tasks.voxel.erease.run(this._location, null, () => {
+      if (onDone) onDone();
+    });
   }
   update(onDone?: Function) {
     this._mapLocation();
-    this.tasks.setFocalPoint(this._location);
-    this.tasks.voxelUpdate.update.run(
-      this._location,
-      this.getRaw(),
-      () => {
-        if (onDone) onDone();
-      },
-      this.mode
-    );
+    this.tasks.voxel.update.run([this._location, this.getRaw()], null, () => {
+      if (onDone) onDone();
+    });
   }
   updateAndAwait() {
     return new Promise((resolve) => {
@@ -78,8 +60,7 @@ export class AdvancedBrush extends BrushTool {
   }
   explode(radius = 6, onDone?: Function) {
     this._mapLocation();
-    this.tasks.setFocalPoint(this._location);
-    this.tasks.explosion.run(this._location, radius, () => {
+    this.tasks.explosion.run([this._location, radius], null, () => {
       if (onDone) onDone();
     });
   }

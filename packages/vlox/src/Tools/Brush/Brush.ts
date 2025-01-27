@@ -1,9 +1,13 @@
-import type { RawVoxelData } from "../../Voxels/Voxel.types.js";
-import { VoxelPalette } from "../../Data/Palettes/VoxelPalette.js";
-import { PaintVoxelData } from "../../Data/Types/WorldData.types.js";
-import { WorldCursor } from "../../Data/Cursor/World/WorldCursor.js";
-import { VoxelCursor } from "../../Data/Cursor/VoxelCursor.js";
+import type {
+  PaintVoxelData,
+  RawVoxelData,
+} from "../../Voxels/Types/Voxel.types.js";
+import { VoxelPalette } from "../../Voxels/Palettes/VoxelPalette.js";
+import { WorldCursor } from "../../World/Cursor/WorldCursor.js";
 import { SubstanceDataTool } from "../../Tools/Data/SubstanceDataTool.js";
+import { VoxelCursor } from "../../Voxels/Cursor/VoxelCursor.js";
+import { WorldRegister } from "../../World/WorldRegister.js";
+import { VoxelStruct } from "Voxels/Structs/VoxelStruct.js";
 const airId = "dve_air";
 
 const air: RawVoxelData = [0, 0, 0, 0, 0];
@@ -12,13 +16,13 @@ export class BrushTool {
   data: PaintVoxelData = {
     id: airId,
     shapeState: 0,
-    secondaryVoxelId: airId,
+    secondaryVoxelId: "",
     level: 0,
     levelState: 0,
     mod: 0,
   };
 
-  dimension: string;
+  dimension = "main";
   x = 0;
   y = 0;
   z = 0;
@@ -32,6 +36,11 @@ export class BrushTool {
     this.y = y;
     this.z = z;
     return this;
+  }
+
+  fillColumn() {
+    WorldRegister.setDimension(this.dimension);
+    WorldRegister.column.fill(this.x, this.y, this.z);
   }
 
   setData(data: Partial<PaintVoxelData>) {
@@ -64,7 +73,7 @@ export class BrushTool {
   }
 
   getRaw() {
-   return VoxelCursor.VoxelDataToRaw(this.data)
+    return VoxelCursor.VoxelDataToRaw(this.data);
   }
 
   setId(id: string) {
@@ -105,7 +114,7 @@ export class BrushTool {
 
   clear() {
     this.data.id = "dve_air";
-    this.data.secondaryVoxelId = "dve_air";
+    this.data.secondaryVoxelId = "";
     this.data.level = 0;
     this.data.levelState = 0;
     this.data.shapeState = 0;
@@ -115,11 +124,9 @@ export class BrushTool {
     this.z = 0;
   }
 
-
-
-
-
   _paint() {
+    if (!this.dataCursor.inBounds(this.x, this.y, this.z)) return false;
+
     const voxel = this.dataCursor.getVoxel(this.x, this.y, this.z);
     if (!voxel) return;
     const id = VoxelPalette.ids.getNumberId(this.data.id);
@@ -128,23 +135,12 @@ export class BrushTool {
 
     voxel.setShapeState(this.data.shapeState ? this.data.shapeState : 0);
 
-    const substance = voxel.getSubstance();
-    if (
-      substance > -1 && !voxel.isAir()
-        ? this.substanceData.setSubstance(voxel.getSubstance()).isLiquid()
-        : false
-    ) {
-      voxel.setLevel(7);
-    }
+    voxel.setLevel(this.data.level);
+
     voxel.setMod(this.data.mod);
 
-    if (
-      this.data.secondaryVoxelId &&
-      this.data.secondaryVoxelId != "dve_air" &&
-      voxel.canHaveSecondaryVoxel()
-    ) {
+    if (this.data.secondaryVoxelId) {
       const vid = VoxelPalette.ids.getNumberId(this.data.secondaryVoxelId);
-
       if (vid > 0) {
         voxel.setSecondary(true);
         voxel.setId(vid);
@@ -191,7 +187,6 @@ export class BrushTool {
   }
 
   stop() {
-    
     return this;
   }
 }

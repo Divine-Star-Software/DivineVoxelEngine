@@ -1,1 +1,2 @@
-export * from "./World/Types/IWG.types.js";
+export * from "./IWG"
+export * from "./Procedures/InitalLoad"

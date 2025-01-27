@@ -5,9 +5,10 @@ import {
 import { VoxelFaces, VoxelFacesArray } from "../../../../Math";
 import { Vec3Array, Vec4Array, Vector2Like } from "@amodx/math";
 import { VoxelRelativeCubeIndex } from "../../../../Models/Indexing/VoxelRelativeCubeIndex";
-import { LightData } from "../../../../Voxels/LightData";
 import { Quad } from "@amodx/meshing/Primitives/Quad";
+import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData";
 
+const lightData = new VoxelLightData();
 export const GradientCheckSets: Record<
   VoxelFaces,
   Record<QuadVerticies, number[]>
@@ -370,10 +371,10 @@ const lightValues4: Vec4Array = [0, 0, 0, 0];
 const lightValues5: Vec4Array = [0, 0, 0, 0];
 
 export function getInterpolationValue(value: Vec4Array, weights: Vec4Array) {
-  LightData.getLightValuesToRef(value[0], lightValues1);
-  LightData.getLightValuesToRef(value[1], lightValues2);
-  LightData.getLightValuesToRef(value[2], lightValues3);
-  LightData.getLightValuesToRef(value[3], lightValues4);
+  lightData.getLightValuesToRef(value[0], lightValues1);
+  lightData.getLightValuesToRef(value[1], lightValues2);
+  lightData.getLightValuesToRef(value[2], lightValues3);
+  lightData.getLightValuesToRef(value[3], lightValues4);
 
   lightValues5[0] =
     lightValues1[0] * weights[0] +
@@ -396,7 +397,7 @@ export function getInterpolationValue(value: Vec4Array, weights: Vec4Array) {
     lightValues3[3] * weights[2] +
     lightValues4[3] * weights[3];
 
-  return LightData.setLightValues(lightValues5);
+  return lightData.setLightValues(lightValues5);
 }
 
 export type QuadVertexWeights = [Vec4Array, Vec4Array, Vec4Array, Vec4Array];

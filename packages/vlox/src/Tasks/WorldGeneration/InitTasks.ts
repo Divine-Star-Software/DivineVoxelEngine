@@ -4,20 +4,18 @@ import { TasksIds } from "../../Tasks/TasksIds";
 import { GenerateTasks } from "../Tasks.types";
 
 export default function () {
-  Threads.registerTasks<GenerateTasks>(
+  Threads.registerTask<GenerateTasks>(
     TasksIds.Generate,
-    (data, onDone) => {
-      if (!onDone) return;
-      WorldGeneration.generate(data, "generate", onDone);
-    },
-    "deferred"
+    (data) =>
+      new Promise<void>((resolve) =>
+        WorldGeneration.generate(data, "generate", resolve)
+      )
   );
-  Threads.registerTasks<GenerateTasks>(
+  Threads.registerTask<GenerateTasks>(
     TasksIds.Decorate,
-    (data, onDone) => {
-      if (!onDone) return;
-      WorldGeneration.generate(data, "decorate", onDone);
-    },
-    "deferred"
+    (data) =>
+      new Promise<void>((resolve) =>
+        WorldGeneration.generate(data, "decorate", resolve)
+      )
   );
 }

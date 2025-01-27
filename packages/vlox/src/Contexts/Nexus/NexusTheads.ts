@@ -10,8 +10,5 @@ export class NexusThreads extends ThreadManager {
   world = Threads.createThread("world");
   NexusComm = Threads.createThread("nexus");
   DataComm = Threads.createThread("data-loader");
-  ConstructorComm = Threads.createThreadPool({
-    name: "constructor",
-    onPortSet() {},
-  });
+  ConstructorComm = Threads.createThreadPool("constructor");
 }

@@ -1,11 +1,10 @@
-import type { ConstructorTextureData } from "./Constructor.types";
-import type { TextureTypeUVMap } from "./Texture.types";
+import type { TextureTypeUVMap, TextureId } from "./Texture.types";
 
-export const TextureRegister = {
-  textureDataHasBeenSet: false,
+export class TextureRegister {
+  static textureDataHasBeenSet = false;
 
-  data: <TextureTypeUVMap>{},
-  getTextureUV(data: ConstructorTextureData): number {
+  static data: TextureTypeUVMap;
+  static getTextureUV(data: TextureId): number {
     const [textureType, textureId, varation] = data;
     let id = textureId;
     if (varation) {
@@ -16,24 +15,22 @@ export const TextureRegister = {
     uv = this.data[textureType][id];
 
     if (uv == -1) {
-      throw new Error(
-        `Texture with id: ${id} does not exists.`
-      );
+      throw new Error(`Texture with id: ${id} does not exists.`);
     }
     return uv;
-  },
+  }
 
-  setTextureIndex(data: TextureTypeUVMap) {
+  static setTextureIndex(data: TextureTypeUVMap) {
     this.textureDataHasBeenSet = true;
     this.data = data;
-  },
+  }
 
-  releaseTextureData() {
+  static releaseTextureData() {
     (this as any).data = null;
     delete (this as any)["data"];
-  },
+  }
 
-  isReady() {
+  static isReady() {
     return this.textureDataHasBeenSet;
-  },
-};
+  }
+}

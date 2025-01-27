@@ -1,12 +1,12 @@
 import { Flat3DIndex, Traverse, Vec3Array } from "@amodx/math";
 import {  VoxelTemplateData } from "./VoxelTemplates.types";
-import type { RawVoxelData } from "../Voxels/Voxel.types";
+import type { RawVoxelData } from "../Voxels/Types/Voxel.types";
 import { StringPalette } from "../Util/StringPalette";
 import { NumberPalette } from "../Util/NumberPalette";
-import { VoxelPalette } from "../Data/Palettes/VoxelPalette";
-import { VoxelStruct } from "../Data/Structs/VoxelStruct";
-import { VoxelStructIds } from "../Voxels/Voxel.types";
-import { getPaletteArray } from "../Archive/Functions/Palettes";
+import { VoxelPalette } from "../Voxels/Palettes/VoxelPalette";
+import { VoxelStruct } from "../Voxels/Structs/VoxelStruct";
+import { VoxelStructIds } from "../Voxels/Types/Voxel.types";
+import { getPaletteArray } from "../Data/Functions/Palettes"
 import { NibbleArray } from "@amodx/binary/Arrays/NibbleArray";
 
 type TemplateCursor = { position: Vec3Array; raw: RawVoxelData };

@@ -2,9 +2,9 @@ import { TextureRegister } from "../../Textures/TextureRegister";
 import { VoxelMesherDataTool } from "../../Mesher/Tools/VoxelMesherDataTool";
 
 import {
-  VoxelInputsSyncData,
-  VoxelModelSyncData,
-} from "../../Voxels/VoxelSyncData";
+  CompiledVoxelModelInputData,
+  CompiledVoxelModelData,
+} from "../../Voxels/Types/VoxelModelCompiledData.types";
 import { VoxelModelConstructorRegister } from "./VoxelModelConstructorRegister";
 import { VoxelGeometryLookUp } from "./VoxelGeometryLookUp";
 import { StateSchema } from "../../Voxels/State/Schema/StateSchema";
@@ -34,8 +34,8 @@ export class VoxelConstructor {
 
   constructor(
     public id: string,
-    public data: VoxelModelSyncData,
-    voxleData: VoxelInputsSyncData
+    public data: CompiledVoxelModelData,
+    voxleData: CompiledVoxelModelInputData
   ) {
     this.baseInputMap = voxleData.baseGeometryInputMap;
     this.conditonalInputMap = voxleData.condiotnalGeometryInputMap;

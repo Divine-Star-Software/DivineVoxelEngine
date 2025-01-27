@@ -2,15 +2,16 @@ import { Flat3DIndex, Traverse, Vec3Array } from "@amodx/math";
 import { StringPalette } from "../../Util/StringPalette";
 import { VoxelTemplate } from "../VoxelTemplate";
 import { NumberPalette } from "../../Util/NumberPalette";
-import { DataTool } from "../../Tools/Data/DataTool";
-import { convertToPaletteBuffer } from "../../Archive/Functions/Palettes";
+import { convertToPaletteBuffer } from "../../Data/Functions/Palettes"
+import { WorldCursor } from "../../World";
 
 export default function CreateTemplate(
   dimension: string,
   start: Vec3Array,
   end: Vec3Array
 ) {
-  const dataTool = new DataTool();
+  const dataTool = new WorldCursor();
+  dataTool.setFocalPoint(dimension, start[0], start[1], start[2]);
   const index = Flat3DIndex.GetXZYOrder();
   const [sx, sy, sz] = [
     end[0] - start[0],
@@ -30,8 +31,6 @@ export default function CreateTemplate(
   const mod: number[] = new Array(index.size);
   const secondary: number[] = new Array(index.size);
 
-  dataTool.setDimension(dimension);
-
   let idsAllTheSame = true;
   let stateAllTheSame = true;
   let modAllTheSame = true;
@@ -47,12 +46,13 @@ export default function CreateTemplate(
     [end[0] - 1, end[1] - 1, end[2] - 1],
     1
   )) {
-    if (!dataTool.loadInAt(x, y, z)) continue;
+    const voxel = dataTool.getVoxel(x, y, x);
+    if (!voxel) continue;
 
     const vindex = index.getIndexXYZ(x - start[0], y - start[1], z - start[2]);
-    const raw = dataTool.getRaw();
+    const raw = voxel.getRaw();
 
-    const stringId = dataTool.getStringId();
+    const stringId = voxel.getStringId();
     const stateId = !statePalette.isRegistered(raw[2])
       ? statePalette.register(raw[2])
       : statePalette.getId(raw[2]);
@@ -65,12 +65,12 @@ export default function CreateTemplate(
 
     let secondaryData = 0;
 
-    if (dataTool.canHaveSecondaryVoxel()) {
-      dataTool.setSecondary(true);
-      let secondaryId = dataTool.hasSecondaryVoxel()
-        ? dataTool.getStringId()
+    if (voxel.canHaveSecondaryVoxel()) {
+      voxel.setSecondary(true);
+      let secondaryId = voxel.hasSecondaryVoxel()
+        ? voxel.getStringId()
         : "dve_air";
-      dataTool.setSecondary(false);
+      voxel.setSecondary(false);
       secondaryData = !secondaryIdPalette.isRegistered(secondaryId)
         ? secondaryIdPalette.register(secondaryId)
         : secondaryIdPalette.getNumberId(secondaryId);
@@ -95,8 +95,7 @@ export default function CreateTemplate(
     if (firstSecondary != secondaryData) secondaryAllTheSame = false;
   }
 
-
-  console.log("CREATE VOXEL TEMPLATE",{modPalette,mod})
+  console.log("CREATE VOXEL TEMPLATE", { modPalette, mod });
   return new VoxelTemplate({
     templatorVersion: 0,
     version: 0,

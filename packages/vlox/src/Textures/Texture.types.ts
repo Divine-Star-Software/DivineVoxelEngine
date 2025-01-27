@@ -1,3 +1,5 @@
+export type TextureId = [type: string, id: string, varation?: string];
+
 export type TextureTypes = string;
 
 export type TextureTypeUVMap = Record<string, Record<string, number>>;

@@ -15,7 +15,7 @@ import {
 } from "../State/State.types";
 import { VoxelEffectSyncData } from "../Effects/VoxelEffects.types";
 import { VoxelTagStates } from "../State/VoxelTagStates";
-import { VoxelPalette } from "../../Data/Palettes/VoxelPalette";
+import { VoxelPalette } from "../Palettes/VoxelPalette";
 import { StateSchema } from "../State/Schema/StateSchema";
 function bitsNeeded(n: number): number {
   if (n < 0) throw new Error("Input must be a non-negative integer.");

@@ -2,28 +2,22 @@ import { Vector3Like } from "@amodx/math";
 import { VoxelMesherDataTool } from "Mesher/Tools/VoxelMesherDataTool";
 import { GeoemtryNode } from "../../GeometryNode";
 import { VoxelCustomGeomtryNode } from "../../../../../Models/VoxelModel.types";
-let flowAnimationState = 0;
 import { CompassAngles } from "@amodx/math";
 import { Quad } from "@amodx/meshing/Primitives/Quad.js";
 import { QuadUVData, QuadVerticies } from "@amodx/meshing/Geometry.types.js";
 import { QuadScalarVertexData } from "@amodx/meshing/Primitives/QuadVertexData";
 import { VoxelFaceDirections, VoxelFaces } from "../../../../../Math";
 import { UpdateBounds } from "../../../Common/BoundsFunctions";
-import { VoxelGeometry } from "../../../../../Mesher/Geometry/VoxelGeometry";
-import { LightData } from "../../../../../Voxels/LightData";
+import { VoxelGeometry } from "../../../VoxelGeometry";
 import { shouldCauseFlip } from "../../../Common/Calc/CalcConstants";
 import type { LiquidVoxelModelArgs } from "../../../../../Models/Defaults/LiquidVoxelModel";
-import { FlowGradient } from "./FlowGradient";
+import { getFlowAngle, getFlowGradient, FlowVerticies } from "./FlowGradient";
 import { GetBoxGeometryNodeData } from "../../../Common/BoxGeometryNode";
+import { VoxelLightData } from "../../../../../Voxels/Cursor/VoxelLightData";
 const vertexValue = new QuadScalarVertexData();
 const vertexLevel = new QuadScalarVertexData();
 
-enum FlowStates {
-  None = 0,
-  Down = 1,
-  Up = 2,
-}
-
+const lightData = new VoxelLightData();
 const waterHeight = 6 / 7;
 
 const quadRotations: Record<CompassAngles, QuadUVData> = {
@@ -50,78 +44,6 @@ const quadRotations: Record<CompassAngles, QuadUVData> = {
   ),
 };
 
-const getFlowAngle = (): CompassAngles | 0 => {
-  if (vertexLevel.isAllEqualTo(15)) {
-    flowAnimationState = FlowStates.None;
-    return 0;
-  }
-  const upRight = vertexLevel.vertices[QuadVerticies.TopRight];
-  const upLeft = vertexLevel.vertices[QuadVerticies.TopLeft];
-  const downLeft = vertexLevel.vertices[QuadVerticies.BottomLeft];
-  const downRight = vertexLevel.vertices[QuadVerticies.BottomRight];
-
-  const upEqual = upRight == upLeft;
-  const downEqual = downRight == downLeft;
-  const rightEqual = upRight == downRight;
-  const leftEqual = upLeft == downLeft;
-
-  if (upEqual && downEqual) {
-    if (upRight < downRight) {
-      flowAnimationState = FlowStates.Up;
-      return CompassAngles.North;
-    }
-    if (upRight > downRight) {
-      flowAnimationState = FlowStates.Up;
-      return CompassAngles.South;
-    }
-  }
-
-  if (rightEqual && leftEqual) {
-    if (upRight < upLeft) {
-      flowAnimationState = FlowStates.Up;
-      return CompassAngles.East;
-    }
-    if (upRight > upLeft) {
-      flowAnimationState = FlowStates.Up;
-      return CompassAngles.West;
-    }
-  }
-
-  if (
-    (downRight < upRight && downRight < upLeft && downRight < downLeft) ||
-    (upLeft > upRight && upLeft > downRight && upLeft > downLeft)
-  ) {
-    flowAnimationState = FlowStates.Up;
-    return CompassAngles.SouthEast;
-  }
-
-  if (
-    (upLeft < upRight && upLeft < downRight && upLeft < downLeft) ||
-    (downRight > upRight && downRight > upLeft && downRight > downLeft)
-  ) {
-    flowAnimationState = FlowStates.Up;
-    return CompassAngles.NorthWest;
-  }
-
-  if (
-    (upRight < downRight && upRight < upLeft && upRight < downLeft) ||
-    (downLeft > downRight && downLeft > upLeft && downLeft > upRight)
-  ) {
-    flowAnimationState = FlowStates.Up;
-    return CompassAngles.NorthEast;
-  }
-
-  if (
-    (downLeft < downRight && downLeft < upLeft && downLeft < upRight) ||
-    (upRight > downRight && upRight > upLeft && upRight > downLeft)
-  ) {
-    flowAnimationState = FlowStates.Up;
-    return CompassAngles.SouthWest;
-  }
-
-  return CompassAngles.North;
-};
-
 const uvs: QuadUVData = [
   [1, 1],
   [0, 1],
@@ -141,12 +63,19 @@ const {
   {}
 );
 
+Quads[VoxelFaces.Up].setUVs(uvs);
+Quads[VoxelFaces.Down].setUVs(uvs);
+
 export class LiquidGeometryNode extends GeoemtryNode<
   VoxelCustomGeomtryNode,
   LiquidVoxelModelArgs
 > {
   worldLight: QuadScalarVertexData;
-  init(): void {}
+  init(): void {
+    this.faceCount = 1;
+    this.vertexCount = 0;
+
+  }
 
   isExposed(face: VoxelFaces) {
     const nv = this.tool.nVoxel.getVoxel(
@@ -175,16 +104,16 @@ export class LiquidGeometryNode extends GeoemtryNode<
   shouldFlip() {
     return (
       shouldCauseFlip(
-        LightData.getS(this.worldLight.vertices[0]),
-        LightData.getS(this.worldLight.vertices[1]),
-        LightData.getS(this.worldLight.vertices[2]),
-        LightData.getS(this.worldLight.vertices[3])
+        lightData.getS(this.worldLight.vertices[0]),
+        lightData.getS(this.worldLight.vertices[1]),
+        lightData.getS(this.worldLight.vertices[2]),
+        lightData.getS(this.worldLight.vertices[3])
       ) ||
       shouldCauseFlip(
-        LightData.sumRGB(this.worldLight.vertices[0]),
-        LightData.sumRGB(this.worldLight.vertices[1]),
-        LightData.sumRGB(this.worldLight.vertices[2]),
-        LightData.sumRGB(this.worldLight.vertices[3])
+        lightData.sumRGB(this.worldLight.vertices[0]),
+        lightData.sumRGB(this.worldLight.vertices[1]),
+        lightData.sumRGB(this.worldLight.vertices[2]),
+        lightData.sumRGB(this.worldLight.vertices[3])
       )
     );
   }
@@ -202,12 +131,12 @@ export class LiquidGeometryNode extends GeoemtryNode<
     this.tool = tool;
     this.origin = tool.position;
 
-    //     this.worldAO = tool.getWorldAO();
     this.worldLight = tool.getWorldLight();
 
     let upFaceExposed = false;
     if (this.isExposed(VoxelFaces.Up)) {
-      FlowGradient.calculate(tool, vertexLevel);
+      upFaceExposed = true;
+      getFlowGradient(tool, vertexLevel);
       const quad = Quads[VoxelFaces.Up];
       tool.calculateFaceData(VoxelFaces.Up);
       this.determineShading(VoxelFaces.Up);
@@ -219,8 +148,9 @@ export class LiquidGeometryNode extends GeoemtryNode<
         vertexLevel.vertices[2] / 7,
         vertexLevel.vertices[3] / 7
       );
-      const uvAngle = getFlowAngle();
-      const uvSet = quadRotations[uvAngle];
+      const flowData = getFlowAngle(vertexLevel);
+      const uvSet = quadRotations[flowData[0]];
+      tool.getAnimationData().setAll(flowData[1]);
 
       quad.uvs.vertices[QuadVerticies.TopRight].x = uvSet[0][0];
       quad.uvs.vertices[QuadVerticies.TopRight].y = uvSet[0][1];
@@ -239,11 +169,8 @@ export class LiquidGeometryNode extends GeoemtryNode<
       quad.positions.vertices[2].y = vertexValue.vertices[2] * waterHeight;
       quad.positions.vertices[3].y = vertexValue.vertices[3] * waterHeight;
 
-      tool.getAnimationData().setAll(flowAnimationState);
-
-      VoxelGeometry.addQuad(tool, origin, quad);
-      upFaceExposed = true;
       UpdateBounds(tool, origin, quadBounds[VoxelFaces.Up]);
+      VoxelGeometry.addQuad(tool, origin, quad);
     }
     if (this.isExposed(VoxelFaces.Down)) {
       tool.setTexture(args.flowTexture);
@@ -252,8 +179,9 @@ export class LiquidGeometryNode extends GeoemtryNode<
       this.determineShading(VoxelFaces.Down);
       quad.flip = this.shouldFlip();
       tool.setTexture(args.flowTexture);
-      VoxelGeometry.addQuad(tool, origin, quad);
+
       UpdateBounds(tool, origin, quadBounds[VoxelFaces.Down]);
+      VoxelGeometry.addQuad(tool, origin, quad);
     }
 
     if (this.isExposed(VoxelFaces.North)) {
@@ -265,20 +193,22 @@ export class LiquidGeometryNode extends GeoemtryNode<
       quad.flip = this.shouldFlip();
       if (upFaceExposed) {
         quad.positions.vertices[QuadVerticies.TopRight].y =
-          vertexValue.vertices[QuadVerticies.TopRight] * waterHeight;
+          vertexValue.vertices[FlowVerticies.NorthWest] * waterHeight;
         quad.positions.vertices[QuadVerticies.TopLeft].y =
-          vertexValue.vertices[QuadVerticies.TopLeft] * waterHeight;
+          vertexValue.vertices[FlowVerticies.NorthEast] * waterHeight;
+
         quad.uvs.vertices[QuadVerticies.TopRight].y =
-          vertexValue.vertices[QuadVerticies.TopRight];
+          vertexValue.vertices[FlowVerticies.NorthWest];
         quad.uvs.vertices[QuadVerticies.TopLeft].y =
-          vertexValue.vertices[QuadVerticies.TopLeft];
+          vertexValue.vertices[FlowVerticies.NorthEast];
       } else {
         quad.positions.vertices[QuadVerticies.TopRight].y = 1;
         quad.positions.vertices[QuadVerticies.TopLeft].y = 1;
         quad.setUVs(uvs);
-        UpdateBounds(tool, origin, quadBounds[VoxelFaces.North]);
       }
+
       VoxelGeometry.addQuad(tool, origin, quad);
+      UpdateBounds(tool, origin, quadBounds[VoxelFaces.North]);
     }
 
     if (this.isExposed(VoxelFaces.South)) {
@@ -290,21 +220,21 @@ export class LiquidGeometryNode extends GeoemtryNode<
       quad.flip = this.shouldFlip();
       if (upFaceExposed) {
         quad.positions.vertices[QuadVerticies.TopRight].y =
-          vertexValue.vertices[QuadVerticies.BottomRight] * waterHeight;
+          vertexValue.vertices[FlowVerticies.SouthEsat] * waterHeight;
         quad.positions.vertices[QuadVerticies.TopLeft].y =
-          vertexValue.vertices[QuadVerticies.BottomLeft] * waterHeight;
+          vertexValue.vertices[FlowVerticies.SouthWest] * waterHeight;
 
         quad.uvs.vertices[QuadVerticies.TopRight].y =
-          vertexValue.vertices[QuadVerticies.BottomRight];
+          vertexValue.vertices[FlowVerticies.SouthEsat];
         quad.uvs.vertices[QuadVerticies.TopLeft].y =
-          vertexValue.vertices[QuadVerticies.BottomLeft];
+          vertexValue.vertices[FlowVerticies.SouthWest];
       } else {
         quad.positions.vertices[QuadVerticies.TopLeft].y = 1;
         quad.positions.vertices[QuadVerticies.TopRight].y = 1;
         quad.setUVs(uvs);
-        UpdateBounds(tool, origin, quadBounds[VoxelFaces.South]);
       }
       VoxelGeometry.addQuad(tool, origin, quad);
+      UpdateBounds(tool, origin, quadBounds[VoxelFaces.South]);
     }
 
     if (this.isExposed(VoxelFaces.East)) {
@@ -313,24 +243,24 @@ export class LiquidGeometryNode extends GeoemtryNode<
       tool.getAnimationData().setAll(1);
       tool.calculateFaceData(VoxelFaces.East);
       this.determineShading(VoxelFaces.East);
-      quad.flip = this.shouldFlip();
+      //  quad.flip = this.shouldFlip();
       if (upFaceExposed) {
         quad.positions.vertices[QuadVerticies.TopRight].y =
-          vertexValue.vertices[QuadVerticies.TopRight] * waterHeight;
+          vertexValue.vertices[FlowVerticies.NorthEast] * waterHeight;
         quad.positions.vertices[QuadVerticies.TopLeft].y =
-          vertexValue.vertices[QuadVerticies.BottomRight] * waterHeight;
+          vertexValue.vertices[FlowVerticies.SouthEsat] * waterHeight;
 
         quad.uvs.vertices[QuadVerticies.TopRight].y =
-          vertexValue.vertices[QuadVerticies.TopRight];
+          vertexValue.vertices[FlowVerticies.SouthEsat];
         quad.uvs.vertices[QuadVerticies.TopLeft].y =
-          vertexValue.vertices[QuadVerticies.BottomRight];
+          vertexValue.vertices[FlowVerticies.NorthEast];
       } else {
         quad.positions.vertices[QuadVerticies.TopLeft].y = 1;
         quad.positions.vertices[QuadVerticies.TopRight].y = 1;
         quad.setUVs(uvs);
-        UpdateBounds(tool, origin, quadBounds[VoxelFaces.East]);
       }
       VoxelGeometry.addQuad(tool, origin, quad);
+      UpdateBounds(tool, origin, quadBounds[VoxelFaces.East]);
     }
 
     if (this.isExposed(VoxelFaces.West)) {
@@ -342,21 +272,21 @@ export class LiquidGeometryNode extends GeoemtryNode<
       quad.flip = this.shouldFlip();
       if (upFaceExposed) {
         quad.positions.vertices[QuadVerticies.TopRight].y =
-          vertexValue.vertices[QuadVerticies.TopLeft] * waterHeight;
+          vertexValue.vertices[FlowVerticies.SouthWest] * waterHeight;
         quad.positions.vertices[QuadVerticies.TopLeft].y =
-          vertexValue.vertices[QuadVerticies.BottomLeft] * waterHeight;
+          vertexValue.vertices[FlowVerticies.NorthWest] * waterHeight;
 
         quad.uvs.vertices[QuadVerticies.TopRight].y =
-          vertexValue.vertices[QuadVerticies.TopLeft];
+          vertexValue.vertices[FlowVerticies.SouthWest];
         quad.uvs.vertices[QuadVerticies.TopLeft].y =
-          vertexValue.vertices[QuadVerticies.BottomLeft];
+          vertexValue.vertices[FlowVerticies.NorthWest];
       } else {
         quad.positions.vertices[QuadVerticies.TopLeft].y = 1;
         quad.positions.vertices[QuadVerticies.TopRight].y = 1;
         quad.setUVs(uvs);
-        UpdateBounds(tool, origin, quadBounds[VoxelFaces.West]);
       }
       VoxelGeometry.addQuad(tool, origin, quad);
+      UpdateBounds(tool, origin, quadBounds[VoxelFaces.West]);
     }
 
     this.worldLight.setAll(0);

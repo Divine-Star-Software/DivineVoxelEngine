@@ -1,1 +1,2 @@
-export * from "./Propagation.js";
+export * from "./Illumanation/RGBUpdate"
+export * from "./Illumanation/SunUpdate"
