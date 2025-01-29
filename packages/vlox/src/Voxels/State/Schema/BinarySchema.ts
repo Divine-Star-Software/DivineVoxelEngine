@@ -1,6 +1,7 @@
 import { BinarySchemaNode } from "./BinarySchemaNode";
 import { BinarySchemaNodeData } from "../State.types";
 
+type StateObject = (string | number)[];
 export class BinarySchema {
   nodeMap = new Map<string, BinarySchemaNode>();
   nodes: BinarySchemaNode[] = [];
@@ -29,7 +30,7 @@ export class BinarySchema {
         const value = node.valuePalette.getNumberId(v);
         if (value === undefined)
           throw new Error(
-            `Binary schema string node value  with id ${v} does not exist.`
+            `Binary schema string node value with id ${v} does not exist.`
           );
         ecnoded = node.setValue(ecnoded, value);
       } else {
@@ -37,6 +38,45 @@ export class BinarySchema {
       }
     }
     return ecnoded;
+  }
+
+  fromStateObject(stateObject: StateObject) {
+    let encodedValue = 0;
+
+    for (let i = 0; i < stateObject.length; i += 2) {
+      const key = stateObject[i];
+      if (typeof key !== "string") continue;
+      const value = stateObject[i + 1];
+      const node = this.nodeMap.get(key);
+      if (!node) continue;
+
+      if (typeof value == "string") {
+        if (!node.valuePalette) continue;
+        encodedValue = node.setValue(
+          encodedValue,
+          node.valuePalette!.getNumberId(value) || 0
+        );
+        continue;
+      }
+      encodedValue = node.setValue(encodedValue, value);
+    }
+
+    return encodedValue;
+  }
+
+  getStateObject(stateValue: number) {
+    const stateArray: StateObject = [];
+    for (const node of this.nodes) {
+      if (node.valuePalette) {
+        stateArray.push(
+          node.id,
+          node.valuePalette.getStringId(node.getValue(stateValue))
+        );
+        continue;
+      }
+      stateArray.push(node.id, node.getValue(stateValue));
+    }
+    return stateArray;
   }
 
   compareString(stateString: string, ecnoded: number): boolean {

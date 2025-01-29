@@ -1,7 +1,7 @@
 import type { Vec3Array } from "@amodx/math";
 import type { TypedArrays } from "@amodx/binary/";
 
-export type DVEChunkMeshesAttributes = [
+export type DVESectionMeshesAttributes = [
   id: string,
   data: TypedArrays,
   stride: number,

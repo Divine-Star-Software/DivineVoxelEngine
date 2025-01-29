@@ -7,10 +7,10 @@ import { IWGTasks } from "./Internal/IWGTasks";
 import { runBuildUpdate } from "./Internal/Functions/runBuildUpdate";
 import { IWGTools } from "./Internal/IWGTools";
 import { IWGDimensions } from "./Internal/IWGDimensions";
-import { cullColumns } from "./Internal/Functions/cullColumns";
+import { cullSectors } from "./Internal/Functions/cullSectors";
 import { Vector3Like } from "@amodx/math";
 import { InitalLoad } from "./Procedures/InitalLoad";
-import SaveAllColumns from "./Procedures/SaveAllColumns";
+import SaveAllSectors from "./Procedures/SaveAllSectors";
 
 interface IWGInitData {
   parent: Thread;
@@ -19,7 +19,7 @@ interface IWGInitData {
 }
 let initalized = false;
 export class IWG {
-
+  private static _cullGenerators: Generator[] = [];
   static readonly _generators: Generator[] = [];
 
   static addDimension(id: string) {
@@ -28,8 +28,8 @@ export class IWG {
 
   static Procedures = {
     InitalLoad,
-    SaveAllColumns
-  }
+    SaveAllSectors,
+  };
 
   static init(data: IWGInitData) {
     initalized = true;
@@ -37,7 +37,7 @@ export class IWG {
     IWGTools.taskTool = new TaskTool(data.threads);
 
     if (data.worldStorage) IWGTools.worldStorage = data.worldStorage;
-    console.warn("load the thing",IWGTools.worldStorage,data.worldStorage);
+    console.warn("load the thing", IWGTools.worldStorage, data.worldStorage);
   }
 
   static createGenerator(data: Partial<GeneratorData>) {
@@ -69,12 +69,26 @@ export class IWG {
     if (!initalized) {
       throw new Error(`IWG must be initalized.`);
     }
-    let needCull = false;
+    if (this._cullGenerators.length) this._cullGenerators.length = 0;
     for (const gen of this._generators) {
       gen.update();
-      if (gen._positonChanged) needCull = true;
+      if (!gen._culling) continue;
+      if (gen._positonChanged) {
+        if (!gen._waitingForCull) {
+          gen._waitingForCull = true;
+          gen._cullTime = performance.now();
+        } else {
+          if (performance.now() - gen._cullTime > 4000) {
+            gen._waitingForCull = false;
+            this._cullGenerators.push(gen);
+          }
+        }
+      }
     }
+    runBuildUpdate(this._generators);
+    IWGTasks.buildTasks.runTask();
 
+    runWorldUpdate(this._generators);
     IWGTasks.worldLoadTasks.runTask();
     IWGTasks.worldGenTasks.runTask();
     IWGTasks.worldDecorateTasks.runTask();
@@ -82,14 +96,10 @@ export class IWG {
     IWGTasks.worldPropagationTasks.runTask();
     IWGTasks.saveTasks.runTask();
     IWGTasks.saveAndUnloadTasks.runTask();
-    IWGTasks.buildTasks.runTask();
 
-    runWorldUpdate(this._generators);
-    runBuildUpdate(this._generators);
 
-    if (needCull) cullColumns(this._generators);
+    cullSectors(this._generators, this._cullGenerators);
   }
 }
 
 IWG.addDimension("main");
-

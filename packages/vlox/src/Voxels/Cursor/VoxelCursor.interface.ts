@@ -21,11 +21,12 @@ export abstract class VoxelCursorInterface {
   __struct: VoxelStruct;
   __secondary = false;
 
-  // private _chunk: Chunk;
+  // private _section: Section;
   _index = 0;
 
   abstract ids: WritableArrayLike<number>;
   abstract light: WritableArrayLike<number>;
+  abstract level: WritableArrayLike<number>;
   abstract state: WritableArrayLike<number>;
   abstract secondary: WritableArrayLike<number>;
   abstract mod: WritableArrayLike<number>;
@@ -110,33 +111,30 @@ export abstract class VoxelCursorInterface {
     return this;
   }
   getLevel() {
-    return VoxelStateReader.getLevel(this.state[this._index]);
+    return VoxelStateReader.getLevel(this.level[this._index]);
   }
   setLevel(level: number) {
-    this.state[this._index] = VoxelStateReader.setLevel(
-      this.state[this._index],
+    this.level[this._index] = VoxelStateReader.setLevel(
+      this.level[this._index],
       level
     );
     return this;
   }
   getLevelState() {
-    return VoxelStateReader.getLevelState(this.state[this._index]);
+    return VoxelStateReader.getLevelState(this.level[this._index]);
   }
   setLevelState(state: number) {
-    this.state[this._index] = VoxelStateReader.setLevelState(
-      this.state[this._index],
+    this.level[this._index] = VoxelStateReader.setLevelState(
+      this.level[this._index],
       state
     );
     return this;
   }
-  getShapeState() {
-    return VoxelStateReader.getShapeState(this.state[this._index]);
+  getState() {
+    return this.state[this._index];
   }
-  setShapeState(state: number) {
-    this.state[this._index] = VoxelStateReader.setShapeState(
-      this.state[this._index],
-      state
-    );
+  setState(state: number) {
+    this.state[this._index] = state;
     return this;
   }
   hasSecondaryVoxel() {
@@ -156,10 +154,7 @@ export abstract class VoxelCursorInterface {
     return this._lightData.hasSunLight(light);
   }
   getLight() {
-    const vID = this._loadedId;
-    if (vID == 0) return this.light[this._index];
-    if (vID < 2) return -1;
-
+    if (this._loadedId == 0) return this.light[this._index];
     const lightValue = this.__struct[VoxelStructIds.lightValue];
     if (this.isOpaque()) {
       if (this.isLightSource() && lightValue) {
@@ -177,10 +172,8 @@ export abstract class VoxelCursorInterface {
     this.light[this._index] = light;
     return this;
   }
-
   isLightSource() {
-    const vID = this._loadedId;
-    if (vID < 2) return false;
+    if (this._loadedId <= 0) return false;
     return VoxelTagStates.isRegistered(
       this._loadedId,
       VoxelStructIds.isLightSource
@@ -188,23 +181,23 @@ export abstract class VoxelCursorInterface {
       ? VoxelTagStates.getValue(
           this._loadedId,
           VoxelStructIds.isLightSource,
-          this.getShapeState()
+          this.getState()
         ) === true
       : this.__struct[VoxelStructIds.isLightSource] == 1;
   }
   getLightSourceValue() {
-    const vID = this._loadedId;
-    if (vID < 2) return 0;
+    if (this._loadedId <= 0) return 0;
     return this.__struct[VoxelStructIds.lightValue];
   }
   noAO() {
-    const vID = this._loadedId;
-    if (vID < 2) return false;
+    if (this._loadedId <= 0) return false;
     return this.__struct[VoxelStructIds.noAO] == 1;
   }
   isRenderable() {
-    if (this.id < 2 && this.secondaryId < 2) return false;
-    return true;
+    if (this.id > 0) return true;
+    if (this.canHaveSecondaryVoxel() && this.secondary[this._index] > 0)
+      return true;
+    return false;
   }
   isAir() {
     return 0 == this.ids[this._index];
@@ -212,9 +205,6 @@ export abstract class VoxelCursorInterface {
   setAir() {
     this.ids[0] = 0;
     return this;
-  }
-  isBarrier() {
-    return 1 == this.ids[this._index];
   }
   getId() {
     if (this.__secondary) {
@@ -254,18 +244,20 @@ export abstract class VoxelCursorInterface {
   copy(cursor: VoxelCursorInterface) {
     this.ids[this._index] = cursor.ids[cursor._index];
     this.light[this._index] = cursor.light[cursor._index];
+    this.level[this._index] = cursor.level[cursor._index];
     this.state[this._index] = cursor.state[cursor._index];
-    this.secondary[this._index] = cursor.secondary[cursor._index];
     this.mod[this._index] = cursor.mod[cursor._index];
+    this.secondary[this._index] = cursor.secondary[cursor._index];
     return this;
   }
 
   copyRaw(raw: RawVoxelData) {
     this.ids[this._index] = raw[0];
     this.light[this._index] = raw[1];
-    this.state[this._index] = raw[2];
-    this.secondary[this._index] = raw[3];
-    this.mod[this._index] = raw[4];
+    this.level[this._index] = raw[2];
+    this.state[this._index] = raw[3];
+    this.secondary[this._index] = raw[4];
+    this.mod[this._index] = raw[5];
     return this;
   }
 
@@ -273,18 +265,20 @@ export abstract class VoxelCursorInterface {
     return [
       this.ids[this._index],
       this.light[this._index],
+      this.level[this._index],
       this.state[this._index],
-      this.secondary[this._index],
       this.mod[this._index],
+      this.secondary[this._index],
     ];
   }
 
   getRawToRef(raw: RawVoxelData): RawVoxelData {
     raw[0] = this.ids[this._index];
     raw[1] = this.light[this._index];
-    raw[2] = this.state[this._index];
-    raw[3] = this.secondary[this._index];
+    raw[2] = this.level[this._index];
+    raw[3] = this.state[this._index];
     raw[4] = this.mod[this._index];
+    raw[5] = this.secondary[this._index];
     return raw;
   }
 }

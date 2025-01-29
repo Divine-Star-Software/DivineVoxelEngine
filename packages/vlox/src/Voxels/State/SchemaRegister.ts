@@ -1,5 +1,5 @@
 import { BinarySchema } from "./Schema/BinarySchema";
-import { VoxelSceham } from "./Schema/VoxelSchema";
+import { VoxelSchema } from "./Schema/VoxelSchema";
 import { BinarySchemaNodeData, VoxelModelStateSchemaData } from "./State.types";
 
 export class SchemaRegister {
@@ -13,7 +13,11 @@ export class SchemaRegister {
   static voxelModSchemas = new Map<string, BinarySchema>();
   static voxelModelMap = new Map<string, string>();
 
-  static voxelSchemas = new Map<string, VoxelSceham>();
+  static voxelSchemas = new Map<string, VoxelSchema>();
+
+  static hasVoxelSchema(voxelId:string) {
+    return this.voxelSchemas.has(voxelId);
+  }
 
   static getVoxelSchemas(voxelId: string) {
     if (this.voxelSchemas.has(voxelId)) {
@@ -38,7 +42,7 @@ export class SchemaRegister {
       modSchema = new BinarySchema(schemaData);
     }
 
-    const voxelSchema = new VoxelSceham(voxelId, shapeStateSchema, modSchema);
+    const voxelSchema = new VoxelSchema(voxelId, shapeStateSchema, modSchema);
 
     this.voxelSchemas.set(voxelId, voxelSchema);
 

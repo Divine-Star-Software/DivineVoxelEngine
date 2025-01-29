@@ -7,7 +7,7 @@ import { Observable } from "@amodx/core/Observers/Observable.js";
 import { DVEBRMesh } from "../Meshes/DVEBRMesh.js";
 import { TimerState, type Engine } from "@babylonjs/core";
 import { SceneTool } from "../Tools/SceneTool";
-import { DVEBRChunkMeshes } from "../Meshes/DVEBRChunkMeshes";
+import { DVEBRSectionMeshes } from "../Meshes/DVEBRSectionMeshes";
 import { DVEBRMaterialRegister } from "../Matereials/DVEBRNodeMaterialsManager";
 export interface DVEBabylonRendererInitData {
   scene: Scene;
@@ -18,7 +18,7 @@ export class DVEBabylonRenderer extends DVERenderer {
     meshCreated: new Observable<DVEBRMesh>(),
     meshDisposed: new Observable<DVEBRMesh>(),
   };
-  chunkMeshes: DVEBRChunkMeshes;
+  sectorMeshes: DVEBRSectionMeshes;
   engine: Engine;
   scene: Scene;
   foManager: DVEBRFOManager;
@@ -33,7 +33,7 @@ export class DVEBabylonRenderer extends DVERenderer {
     this.foManager = new DVEBRFOManager();
     this.meshCuller = new DVEBRMeshCuller();
 
-    this.chunkMeshes = new DVEBRChunkMeshes(data.scene, this.engine, this);
+    this.sectorMeshes = new DVEBRSectionMeshes(data.scene, this.engine, this);
     this.sceneTool = new SceneTool();
     this.meshCuller.init(this.scene);
     if (!DVEBabylonRenderer.instance) DVEBabylonRenderer.instance = this;

@@ -29,7 +29,7 @@ export function App() {
     if (ran) return;
     if (!canvasRef.current) return;
     ran = true;
-    console.error("MOUNT THE APP");
+
     (async () => {
       //  CacheManager.cacheLoadEnabled = true;
       //   CacheManager.cacheStoreEnabled = true;
@@ -44,7 +44,7 @@ export function App() {
           ).buffer as any
         );
         BinaryObject.setUseSharedMemory(false);
-        console.warn("got the cache data", cachedData);
+
         CacheManager.cachedData = cachedData as any;
       }
 
@@ -89,7 +89,7 @@ export function App() {
       const light = new HemisphericLight("", new Vector3(0, 0, 0), scene);
       light.specular.set(0, 0, 0);
 
-      console.log("1");
+
       const renderer = await InitDVErenderer({
         textureTypes: [],
         substances: [],
@@ -183,21 +183,8 @@ export function App() {
  */
       //  await InitRenderPlayer(DVER, nodes);
 
-      console.log("start world gen",TextureRegister,TextureRegister.data);
-      console.warn([
-        "up",
-        TextureRegister.getTextureUV(["dve_voxel", "dve_debug_box", "top"]),
-        "down",
-        TextureRegister.getTextureUV(["dve_voxel", "dve_debug_box", "bottom"]),
-        "north",
-        TextureRegister.getTextureUV(["dve_voxel", "dve_debug_box", "north"]),
-        "south",
-        TextureRegister.getTextureUV(["dve_voxel", "dve_debug_box", "south"]),
-        "east",
-        TextureRegister.getTextureUV(["dve_voxel", "dve_debug_box", "east"]),
-        "west",
-        TextureRegister.getTextureUV(["dve_voxel", "dve_debug_box", "west"]),
-      ]);
+
+
       DVER.threads.world.runTask("start-world", []);
     })();
   }, []);

@@ -48,6 +48,10 @@ export default function FlipTemplate(
     const ids: ArrayLike<number> = template.ids;
     flipArray([sizeX, sizeY, sizeZ], ids, direction, index);
   }
+  if (typeof template.level === "object") {
+    const level: ArrayLike<number> = template.level;
+    flipArray([sizeX, sizeY, sizeZ], level, direction, index);
+  }
   if (typeof template.state === "object") {
     const state: ArrayLike<number> = template.state;
     flipArray([sizeX, sizeY, sizeZ], state, direction, index);

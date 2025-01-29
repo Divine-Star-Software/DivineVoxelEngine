@@ -77,34 +77,34 @@ class UpdatedBounds {
     if (z > this.max.z) this.max.z = z;
   }
 
-  getChunks() {
-    const minChunkPos = WorldSpaces.chunk.getPositionXYZ(
+  getSections() {
+    const minSectionPos = WorldSpaces.section.getPositionXYZ(
       this.min.x - 1,
       this.min.y - 1,
       this.min.z - 1
     );
-    const minX = minChunkPos.x;
-    const minY = minChunkPos.y;
-    const minZ = minChunkPos.z;
-    const maxChunkPos = WorldSpaces.chunk.getPositionXYZ(
+    const minX = minSectionPos.x;
+    const minY = minSectionPos.y;
+    const minZ = minSectionPos.z;
+    const maxSectionPos = WorldSpaces.section.getPositionXYZ(
       this.max.x + 1,
       this.max.y + 1,
       this.max.z + 1
     );
-    const maxX = maxChunkPos.x;
-    const maxY = maxChunkPos.y;
-    const maxZ = maxChunkPos.z;
-    const chunkPositions: Vec3Array[] = [];
-    for (let x = minX; x <= maxX; x += WorldSpaces.chunk.bounds.x) {
-      for (let y = minY; y <= maxY; y += WorldSpaces.chunk.bounds.y) {
-        for (let z = minZ; z <= maxZ; z += WorldSpaces.chunk.bounds.z) {
+    const maxX = maxSectionPos.x;
+    const maxY = maxSectionPos.y;
+    const maxZ = maxSectionPos.z;
+    const sectionPositions: Vec3Array[] = [];
+    for (let x = minX; x <= maxX; x += WorldSpaces.section.bounds.x) {
+      for (let y = minY; y <= maxY; y += WorldSpaces.section.bounds.y) {
+        for (let z = minZ; z <= maxZ; z += WorldSpaces.section.bounds.z) {
           if (!this._task.nDataCursor.inBounds(x, y, z)) continue;
-          chunkPositions.push([x, y, z]);
+          sectionPositions.push([x, y, z]);
         }
       }
     }
 
-    return chunkPositions;
+    return sectionPositions;
   }
 }
 export class UpdateTask {

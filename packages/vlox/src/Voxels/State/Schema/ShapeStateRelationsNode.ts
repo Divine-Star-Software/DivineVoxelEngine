@@ -8,14 +8,13 @@ export class ShapeStateRelationsNode {
 
   conditions: ShapeStateSchemaRelationsCondition[] = [];
   constructor(
-
     public schema: StateSchema,
     data: VoxelRelationsScehmaNodeData
   ) {
     this.id = data.id;
     for (const cond of data.conditions) {
       if (cond.type == "same-voxel") {
-        this.conditions.push(new SameVoxelCondition( schema, cond));
+        this.conditions.push(new SameVoxelCondition(schema, cond));
       }
     }
   }

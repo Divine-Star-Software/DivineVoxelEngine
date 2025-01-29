@@ -1,15 +1,15 @@
 import { BinaryObject } from "@amodx/binary";
-import { Column } from "../../../World/index";
+import { Sector } from "../../../World/index";
 import {
-  ArchivedAreaColumnData,
+  ArchivedAreaSectorData,
   ArchivedAreaData,
-  ArchivedChunkData,
-  ArchivedColumnData,
+  ArchivedSectionData,
+  ArchivedSectorData,
 } from "../Archive.types";
 
 type RunData = {
   dimension: string;
-  columns: ArchivedColumnData[];
+  sectors: ArchivedSectorData[];
   version?: number;
 };
 const charset = "0123456789ABCDEF";
@@ -31,19 +31,20 @@ function uint16To4CharString(value: number): string {
   return result;
 }
 
-let columnStructInstance: ReturnType<typeof Column.StateStruct.instantiate>;
+let sectorStructInstance: ReturnType<typeof Sector.StateStruct.instantiate>;
 
 const processPalettes = (archiveData: RunData) => {
   const allRegistered = new Set<string>();
-  archiveData.columns.forEach((_) => {
-    _.palettes.id.forEach((_) => {
-      allRegistered.add(_);
-    });
-    _.palettes.secondaryId &&
-      _.palettes.secondaryId.forEach((_) => {
-        allRegistered.add(_);
-      });
-  });
+  for (const sector of archiveData.sectors) {
+    for (const id of sector.palettes.id) {
+      allRegistered.add(id);
+    }
+    if (!sector.palettes.secondaryId) continue;
+    for (const id of sector.palettes.secondaryId) {
+      allRegistered.add(id);
+    }
+  }
+
   let count = 0;
   const idMap: Record<string, string> = {};
   const idRecord: Record<string, string> = {};
@@ -53,16 +54,15 @@ const processPalettes = (archiveData: RunData) => {
     idRecord[newId] = voxelId;
     count++;
   }
-  archiveData.columns.forEach((_) => {
-    _.palettes.id.forEach((id, index) => {
-      _.palettes.id[index] = idMap[id];
-    });
-    _.palettes.secondaryId &&
-      _.palettes.secondaryId.forEach((id, index) => {
-        _.palettes.secondaryId![index] = idMap[id];
-      });
-  });
-
+  for (const sector of archiveData.sectors) {
+    for (let i = 0; i < sector.palettes.id.length; i++) {
+      sector.palettes.id[i] = idMap[sector.palettes.id[i]];
+    }
+    if (!sector.palettes.secondaryId) continue;
+    for (let i = 0; i < sector.palettes.secondaryId.length; i++) {
+      sector.palettes.secondaryId[i] = idMap[sector.palettes.secondaryId[i]];
+    }
+  }
   return idRecord;
 };
 const hashBuffer = (buffer: ArrayBuffer) => {
@@ -75,14 +75,14 @@ const hashBuffer = (buffer: ArrayBuffer) => {
   return hash;
 };
 
-const processChunks = (archiveData: RunData) => {
-  const chunMap: Record<string, ArchivedChunkData> = {};
+const processSections = (archiveData: RunData) => {
+  const chunMap: Record<string, ArchivedSectionData> = {};
   const created = new Map<string, number>();
   const maped = new Map<string, string>();
-  const binaryObjects = new Map<ArchivedChunkData, ArrayBuffer>();
+  const binaryObjects = new Map<ArchivedSectionData, ArrayBuffer>();
   let count = 0;
 
-  const process = (object: ArchivedChunkData | string) => {
+  const process = (object: ArchivedSectionData | string) => {
     if (typeof object == "string") return object;
     let binaryObject = binaryObjects.get(object);
     if (!binaryObject) {
@@ -109,42 +109,52 @@ const processChunks = (archiveData: RunData) => {
     return object;
   };
 
-  archiveData.columns.forEach((_) => {
-    (_ as any).chunks = _.chunks.map((_) => process(_));
-  });
+  for (const sector of archiveData.sectors) {
+    for (let i = 0; i < sector.sections.length; i++) {
+      if (!sector.sections[i]) continue;
+      sector.sections[i] = process(sector.sections[i]) as any;
+    }
+  }
   created.clear();
-  archiveData.columns.forEach((_) => {
-    (_ as any).chunks = _.chunks.map((_) => process(_));
-  });
+  for (const sector of archiveData.sectors) {
+    for (let i = 0; i < sector.sections.length; i++) {
+      if (!sector.sections[i]) continue;
+      sector.sections[i] = process(sector.sections[i]) as any;
+    }
+  }
+
   return chunMap;
 };
-const processColumnStates = (archiveData: RunData) => {
-  const columnStateMap: Record<string, any[]> = {};
-  const created = new Map<string, number>();
+
+const buildSectorState = (archiveData: RunData) => {
+  const sectorStateMap = {};
   const maped = new Map<string, string>();
   const binaryObjects = new Map<any, ArrayBuffer>();
   let count = 0;
+  const sectorStateKeys = sectorStructInstance.getKeys();
+  const created = new Map<string, number>();
 
-  const columnStateKeys = columnStructInstance.getKeys();
-
-  const process = (column: ArchivedAreaColumnData) => {
-    if (typeof column.columnState == "string") return column.columnState;
-    if (!Array.isArray(column.columnState)) {
-      const columnState: any[] = [];
-      for (let i = 0; i < columnStateKeys.length; i++) {
-        columnState[i] = column.columnState[columnStateKeys[i]];
+  const processSectorState = (
+    sector: ArchivedAreaSectorData,
+    sectorStateMap: Record<string, any[]>
+  ) => {
+    if (typeof sector.sectorState == "string") return sector.sectorState;
+    if (!Array.isArray(sector.sectorState)) {
+      const sectorState: any[] = [];
+      for (let i = 0; i < sectorStateKeys.length; i++) {
+        sectorState[i] = sector.sectorState[sectorStateKeys[i]];
       }
-      column.columnState = columnState;
+      sector.sectorState = sectorState;
     }
-    let binaryObject = binaryObjects.get(column.columnState);
+    let binaryObject = binaryObjects.get(sector.sectorState);
     if (!binaryObject) {
-      binaryObject = BinaryObject.objectToBuffer(column.columnState);
-      binaryObjects.set(column.columnState, binaryObject);
+      binaryObject = BinaryObject.objectToBuffer(sector.sectorState);
+      binaryObjects.set(sector.sectorState, binaryObject);
     }
 
     let hash = hashBuffer(binaryObject);
     if (maped.has(hash)) {
-      column.columnState = maped.get(hash)!;
+      sector.sectorState = maped.get(hash)!;
       return;
     }
 
@@ -152,119 +162,117 @@ const processColumnStates = (archiveData: RunData) => {
       created.set(hash, 1)!;
 
       const id = uint16To4CharString(count);
-      columnStateMap[id] = column.columnState as any[];
+      sectorStateMap[id] = sector.sectorState as any[];
       maped.set(hash, id);
       count++;
-      column.columnState = id;
+      sector.sectorState = id;
       return id;
     }
     if (!created.has(hash)) {
       created.set(hash, 0);
     }
 
-    return column.columnState;
+    return sector.sectorState;
   };
-
-  archiveData.columns.forEach((_) => {
-    process(_ as any);
-  });
+  for (const sector of archiveData.sectors) {
+    processSectorState(sector as any, sectorStateMap);
+  }
   created.clear();
-  archiveData.columns.forEach((_) => {
-    process(_ as any);
-  });
-  return columnStateMap;
+  for (const sector of archiveData.sectors) {
+    processSectorState(sector as any, sectorStateMap);
+  }
+  return sectorStateMap;
 };
+const createPaletteMaps = <T>(
+  archiveData: RunData,
+  paletteType: keyof ArchivedSectorData["palettes"],
+  paletteMap: Record<string, T>,
+  paletteIdsMap: Map<string, string>
+) => {
+  const created = new Map<string, number>();
+  let count = 0;
 
+  for (const sector of archiveData.sectors) {
+    const palette = sector.palettes[paletteType] as T;
+    if (!palette) continue;
+    if (typeof palette == "string") continue;
+
+    const hash =
+      paletteType === "id" || paletteType === "secondaryId"
+        ? JSON.stringify(palette)
+        : hashBuffer(palette as unknown as ArrayBuffer);
+
+    if (paletteIdsMap.has(hash)) {
+      (sector as any).palettes[paletteType] = paletteIdsMap.get(hash);
+      continue;
+    }
+
+    if (created.has(hash) && created.get(hash)! === 0) {
+      created.set(hash, 1)!;
+
+      const id = uint16To4CharString(count);
+      paletteMap[id] = palette;
+      paletteIdsMap.set(hash, id);
+      count++;
+      (sector as any).palettes[paletteType] = id;
+      continue;
+    }
+
+    if (!created.has(hash)) {
+      created.set(hash, 0);
+    }
+  }
+};
 const getPaletteMaps = (archiveData: RunData) => {
-  const createPaletteMaps = <T>(
-    paletteType: keyof ArchivedColumnData["palettes"],
-    paletteMap: Record<string, T>,
-    paletteIdsMap: Map<string, string>
-  ) => {
-    const created = new Map<string, number>();
-    let count = 0;
-
-    archiveData.columns.forEach((column) => {
-      const palette = column.palettes[paletteType] as T;
-      if (!palette) return;
-      if (typeof palette == "string") return;
-
-      const hash =
-        paletteType === "id" || paletteType === "secondaryId"
-          ? JSON.stringify(palette)
-          : hashBuffer(palette as unknown as Uint16Array);
-
-      if (paletteIdsMap.has(hash)) {
-        (column as any).palettes[paletteType] = paletteIdsMap.get(hash);
-        return;
-      }
-
-      if (created.has(hash) && created.get(hash)! === 0) {
-        created.set(hash, 1)!;
-
-        const id = uint16To4CharString(count);
-        paletteMap[id] = palette;
-        paletteIdsMap.set(hash, id);
-        count++;
-        (column as any).palettes[paletteType] = id;
-        return id;
-      }
-
-      if (!created.has(hash)) {
-        created.set(hash, 0);
-      }
-    });
-  };
-
   const lightPalette: Record<string, Uint16Array> = {};
-  const lightPaletteIdMap = new Map<string, string>();
-  createPaletteMaps("light", lightPalette, lightPaletteIdMap);
-  createPaletteMaps("light", lightPalette, lightPaletteIdMap);
+  const paletteMap = new Map<string, string>();
+  createPaletteMaps(archiveData, "light", lightPalette, paletteMap);
+  createPaletteMaps(archiveData, "light", lightPalette, paletteMap);
+  paletteMap.clear();
+
+  const levelPalette: Record<string, Uint8Array> = {};
+  createPaletteMaps(archiveData, "level", levelPalette, paletteMap);
+  createPaletteMaps(archiveData, "level", levelPalette, paletteMap);
+  paletteMap.clear();
 
   const statePalette: Record<string, Uint16Array> = {};
-  const statePaletteIdsMap = new Map<string, string>();
-  createPaletteMaps("state", statePalette, statePaletteIdsMap);
-  createPaletteMaps("state", statePalette, statePaletteIdsMap);
+  createPaletteMaps(archiveData, "state", statePalette, paletteMap);
+  createPaletteMaps(archiveData, "state", statePalette, paletteMap);
+  paletteMap.clear();
 
   const modPalette: Record<string, Uint16Array> = {};
-  const modPaletteIdsMap = new Map<string, string>();
-  createPaletteMaps("mod", modPalette, modPaletteIdsMap);
-  createPaletteMaps("mod", modPalette, modPaletteIdsMap);
+  createPaletteMaps(archiveData, "mod", modPalette, paletteMap);
+  createPaletteMaps(archiveData, "mod", modPalette, paletteMap);
+  paletteMap.clear();
 
   const secondaryStatePalette: Record<string, Uint16Array> = {};
-  const secondaryStatePaletteIdsMap = new Map<string, string>();
   createPaletteMaps(
+    archiveData,
     "secondaryState",
     secondaryStatePalette,
-    secondaryStatePaletteIdsMap
+    paletteMap
   );
   createPaletteMaps(
+    archiveData,
     "secondaryState",
     secondaryStatePalette,
-    secondaryStatePaletteIdsMap
+    paletteMap
   );
+  paletteMap.clear();
 
   const idPalette: Record<string, string[]> = {};
-  const idsPaletteIdsMap = new Map<string, string>();
-  createPaletteMaps("id", idPalette, idsPaletteIdsMap);
-  createPaletteMaps("id", idPalette, idsPaletteIdsMap);
+  createPaletteMaps(archiveData, "id", idPalette, paletteMap);
+  createPaletteMaps(archiveData, "id", idPalette, paletteMap);
+  paletteMap.clear();
 
   const secondaryIdPalette: Record<string, string[]> = {};
-  const secondaryIdsPaletteIdsMap = new Map<string, string>();
-  createPaletteMaps(
-    "secondaryId",
-    secondaryIdPalette,
-    secondaryIdsPaletteIdsMap
-  );
-  createPaletteMaps(
-    "secondaryId",
-    secondaryIdPalette,
-    secondaryIdsPaletteIdsMap
-  );
-
+  createPaletteMaps(archiveData, "secondaryId", secondaryIdPalette, paletteMap);
+  createPaletteMaps(archiveData, "secondaryId", secondaryIdPalette, paletteMap);
+  paletteMap.clear();
   return {
     idPalette,
     secondaryIdPalette,
+    levelPalette,
     lightPalette,
     statePalette,
     secondaryStatePalette,
@@ -272,131 +280,151 @@ const getPaletteMaps = (archiveData: RunData) => {
   };
 };
 
+function SectorToArchivedAreaSector(
+  sector: ArchivedSectorData
+): ArchivedAreaSectorData {
+  const palettes: ArchivedAreaSectorData["palettes"] = {} as any;
+  palettes.id = sector.palettes.id;
+  if (sector.palettes.secondaryId)
+    palettes.secondaryId = sector.palettes.secondaryId;
+
+  if (sector.palettes.light) palettes.light = sector.palettes.light;
+  if (sector.palettes.secondaryState)
+    palettes.secondaryState = sector.palettes.secondaryState;
+  if (sector.palettes.state) palettes.state = sector.palettes.state;
+  sector.palettes.stateMap = sector.palettes.stateMap;
+  if (sector.palettes.mod) palettes.state = sector.palettes.mod;
+  sector.palettes.modMap = sector.palettes.modMap;
+
+  return {
+    position: [sector.location[1], sector.location[2], sector.location[3]],
+    sectorState: sector.sectorState as any,
+    buffers: sector.buffers,
+    palettes,
+    sections: sector.sections,
+  };
+}
+
 export default function CreateArchiveArea(
   archiveData: RunData
 ): ArchivedAreaData {
-  if (!columnStructInstance)
-    columnStructInstance = Column.StateStruct.instantiate();
+  if (!sectorStructInstance)
+    sectorStructInstance = Sector.StateStruct.instantiate();
 
-  const columnStateKeys = columnStructInstance.getKeys();
+  const sectorStateKeys = sectorStructInstance.getKeys();
 
-  return {
-    dimension: archiveData.dimension,
-    archiverVersion: 0,
-
-    version: archiveData.version || 0,
-    keys: {
-      columnState: columnStateKeys,
-      chunkState: archiveData.columns[0].keys.chunkState,
-    },
-    maps: {
-      columnState: processColumnStates(archiveData),
-      id: processPalettes(archiveData),
-      chunk: processChunks(archiveData),
-      ...getPaletteMaps(archiveData),
-    },
-
-    columns: archiveData.columns.map((column) => {
-      return {
-        position: [column.location[1], column.location[2], column.location[3]],
-        columnState: column.columnState as any,
-        buffers: column.buffers,
-        palettes: {
-          id: column.palettes.id,
-
-          ...(column.palettes.secondaryId
-            ? {
-                secondaryIds: column.palettes.secondaryId,
-              }
-            : {}),
-          ...(column.palettes.light
-            ? {
-                light: column.palettes.light,
-              }
-            : {}),
-          ...(column.palettes.secondaryState
-            ? {
-                secondaryState: column.palettes.secondaryState,
-              }
-            : {}),
-          ...(column.palettes.state
-            ? {
-                state: column.palettes.state,
-              }
-            : {}),
-          ...(column.palettes.mod
-            ? {
-                mod: column.palettes.mod,
-              }
-            : {}),
-        },
-        chunks: column.chunks,
-      };
-    }),
-  };
-}
-
-export function CreateColumnFromArea(
-  area: ArchivedAreaData,
-  column: ArchivedAreaColumnData
-): ArchivedColumnData {
-  const columnState: Record<string, any> = {};
-  const currentState =
-    typeof column.columnState == "string"
-      ? area.maps.columnState[column.columnState]
-      : column.columnState;
-  for (let i = 0; i < area.keys.columnState.length; i++) {
-    columnState[area.keys.columnState[i]] = currentState[i];
+  const sectors: ArchivedAreaSectorData[] = [];
+  for (const sector of archiveData.sectors) {
+    sectors.push(SectorToArchivedAreaSector(sector));
   }
 
   return {
-    archiverVersion: area.archiverVersion,
-    version: area.version,
-    location: [area.dimension, ...column.position],
-    palettes: {
-      id: (typeof column.palettes.id == "string"
-        ? area.maps.idPalette[column.palettes.id]
-        : column.palettes.id
-      ).map((_) => area.maps.id[_]),
-      light:
-        typeof column.palettes.light == "string"
-          ? area.maps.lightPalette[column.palettes.light]
-          : column.palettes.light,
-      secondaryId: column.palettes.secondary
-        ? (typeof column.palettes.secondary == "string"
-            ? area.maps.secondaryIdPalette[column.palettes.secondary]
-            : column.palettes.secondary
-          ).map((_) => area.maps.id[_])
-        : undefined,
-      secondaryState:
-        typeof column.palettes.secondaryState == "string"
-          ? area.maps.secondaryStatePalette[column.palettes.secondaryState]
-          : column.palettes.secondaryState,
-      state:
-        typeof column.palettes.state == "string"
-          ? area.maps.statePalette[column.palettes.state]
-          : column.palettes.state,
-      mod:
-        typeof column.palettes.mod == "string"
-          ? area.maps.statePalette[column.palettes.mod]
-          : column.palettes.mod,
-    },
-    buffers: column.buffers,
-    columnState,
+    dimension: archiveData.dimension,
+    version: "",
     keys: {
-      chunkState: area.keys.chunkState,
+      sectorState: sectorStateKeys,
+      sectionState: archiveData.sectors[0].keys.sectionState,
     },
-    chunks: column.chunks.map((_) => {
-      if (typeof _ == "string") return area.maps.chunk[_];
-      return _;
-    }) as ArchivedChunkData[],
+    maps: {
+      sectorState: buildSectorState(archiveData),
+      id: processPalettes(archiveData),
+      section: processSections(archiveData),
+      ...getPaletteMaps(archiveData),
+    },
+    sectors,
   };
 }
 
-export function* CreateColumnsFromArea(
+export function CreateSectorFromArea(
+  area: ArchivedAreaData,
+  sector: ArchivedAreaSectorData
+): ArchivedSectorData {
+  const sectorState: Record<string, any> = {};
+  const currentState =
+    typeof sector.sectorState == "string"
+      ? area.maps.sectorState[sector.sectorState]
+      : sector.sectorState;
+  for (let i = 0; i < area.keys.sectorState.length; i++) {
+    sectorState[area.keys.sectorState[i]] = currentState[i];
+  }
+
+  const palettes: ArchivedSectorData["palettes"] = {} as any;
+
+  let id: string[];
+  if (typeof sector.palettes.id == "string") {
+    id = area.maps.idPalette[sector.palettes.id];
+  } else {
+    id = sector.palettes.id;
+  }
+  for (let i = 0; i < id.length; i++) {
+    id[i] = area.maps.id[i];
+  }
+  palettes.id = id;
+
+  palettes.light =
+    typeof sector.palettes.light == "string"
+      ? area.maps.lightPalette[sector.palettes.light]
+      : sector.palettes.light;
+
+  palettes.level =
+    typeof sector.palettes.level == "string"
+      ? area.maps.levelPalette[sector.palettes.level]
+      : sector.palettes.level;
+
+  palettes.state =
+    typeof sector.palettes.state == "string"
+      ? area.maps.statePalette[sector.palettes.state]
+      : sector.palettes.state!;
+  palettes.stateMap = sector.palettes.stateMap;
+
+  palettes.mod =
+    typeof sector.palettes.mod == "string"
+      ? area.maps.statePalette[sector.palettes.mod]
+      : sector.palettes.mod!;
+  palettes.modMap = sector.palettes.modMap;
+
+  let secondaryId: string[];
+  if (typeof sector.palettes.secondaryId == "string") {
+    secondaryId = area.maps.idPalette[sector.palettes.secondaryId];
+  } else {
+    secondaryId = sector.palettes.secondaryId || [];
+  }
+  for (let i = 0; i < secondaryId.length; i++) {
+    secondaryId[i] = area.maps.id[i];
+  }
+  palettes.secondaryId = secondaryId;
+  palettes.secondaryState =
+    typeof sector.palettes.secondaryState == "string"
+      ? area.maps.secondaryStatePalette[sector.palettes.secondaryState]
+      : sector.palettes.secondaryState;
+
+  const sections: ArchivedSectionData[] = [];
+  for (let i = 0; i < sector.sections.length; i++) {
+    const section = sector.sections[i];
+    if (typeof section == "string") {
+      sections[i] = area.maps.section[section];
+      continue;
+    }
+    sections[i] = section;
+  }
+
+  return {
+    version: area.version,
+    location: [area.dimension, ...sector.position],
+    sectorState,
+    keys: {
+      sectionState: area.keys.sectionState,
+    },
+    palettes,
+    buffers: sector.buffers,
+    sections,
+  };
+}
+
+export function* CreateSectorsFromArea(
   area: ArchivedAreaData
-): Generator<ArchivedColumnData> {
-  for (const column of area.columns) {
-    yield CreateColumnFromArea(area, column);
+): Generator<ArchivedSectorData> {
+  for (const sector of area.sectors) {
+    yield CreateSectorFromArea(area, sector);
   }
 }

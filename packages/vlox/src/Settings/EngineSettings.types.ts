@@ -5,12 +5,12 @@ export class EngineSettingsData {
   };
   nexus = {
     enabled: false,
-    autoSyncChunks: true,
+    autoSyncSections: true,
     autoSyncVoxelPalette: true,
   };
   dataLoader = {
     enabled: false,
-    autoSyncChunks: true,
+    autoSyncSections: true,
     mode: "indexdb",
   };
   server = {
@@ -18,7 +18,7 @@ export class EngineSettingsData {
   };
   richWorld = {
     enabled: false,
-    autoSyncChunks: true,
+    autoSyncSections: true,
     autoSyncVoxelPalette: true,
   };
   textures = {
@@ -42,11 +42,11 @@ export class EngineSettingsData {
     regionYPow2: 8,
     regionZPow2: 9,
   };
-  chunks = {
+  sections = {
     autoHeightMap: true,
-    chunkXPow2: 4,
-    chunkYPow2: 4,
-    chunkZPow2: 4,
+    sectionXPow2: 4,
+    sectionYPow2: 4,
+    sectionZPow2: 4,
   };
   voxels = {
     doColors: true,

@@ -5,6 +5,7 @@ import InitWorldDataSync from "../Contexts/Base/Remote/InitWorldDataSync";
 import InitRendererTasks from "../Renderer/InitTasks";
 import InitMesher from "../Mesher/InitMesher";
 import { InitVoxelDataProps } from "../Voxels/InitVoxelData";
+import { MeshManager } from "../Renderer/MeshManager";
 type StartRendererProps = {} & DVERInitData & InitVoxelDataProps;
 export async function StartRenderer(initData: StartRendererProps) {
   const DVER = new DivineVoxelEngineRender();
@@ -12,7 +13,7 @@ export async function StartRenderer(initData: StartRendererProps) {
 
   DivineVoxelEngineRender.initialized = true;
   DVER.renderer = initData.renderer;
-
+  MeshManager.sectorMeshes = initData.renderer.sectorMeshes;
   if (initData.nexusWorker) {
     DVER.threads.nexus.setPort(initData.nexusWorker);
     DVER.threads.addThread(DVER.threads.nexus);
@@ -54,7 +55,6 @@ export async function StartRenderer(initData: StartRendererProps) {
   InitWorldDataSync();
 
   InitMesher(syncData.voxels.materials.palette, syncData.voxels.models);
-
 
   for (const thread of DVER.threads._threads) {
     if (thread.name == "window" || thread.name == "world") continue;

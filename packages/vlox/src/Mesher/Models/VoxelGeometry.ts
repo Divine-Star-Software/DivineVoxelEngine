@@ -1,5 +1,5 @@
 import { Vector3Like, Vec2Array, Vec3Array } from "@amodx/math";
-import { VoxelShaderData } from "../../Voxels/VoxelShaderData";
+import { VoxelShaderData } from "../VoxelShaderData";
 import { VoxelMesherDataTool } from "../Tools/VoxelMesherDataTool";
 
 import { GeometryBuilder } from "@amodx/meshing/Geometry/GeometryBuilder";

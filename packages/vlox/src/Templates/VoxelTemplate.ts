@@ -1,12 +1,12 @@
 import { Flat3DIndex, Traverse, Vec3Array } from "@amodx/math";
-import {  VoxelTemplateData } from "./VoxelTemplates.types";
+import { VoxelTemplateData } from "./VoxelTemplates.types";
 import type { RawVoxelData } from "../Voxels/Types/Voxel.types";
 import { StringPalette } from "../Util/StringPalette";
 import { NumberPalette } from "../Util/NumberPalette";
 import { VoxelPalette } from "../Voxels/Palettes/VoxelPalette";
 import { VoxelStruct } from "../Voxels/Structs/VoxelStruct";
 import { VoxelStructIds } from "../Voxels/Types/Voxel.types";
-import { getPaletteArray } from "../Data/Functions/Palettes"
+import { getPaletteArray } from "../Data/Functions/Palettes";
 import { NibbleArray } from "@amodx/binary/Arrays/NibbleArray";
 
 type TemplateCursor = { position: Vec3Array; raw: RawVoxelData };
@@ -15,26 +15,28 @@ export class VoxelTemplate {
   index = Flat3DIndex.GetXZYOrder();
   size: Vec3Array;
   ids: Uint8Array | Uint16Array | number;
+  level: Uint8Array | number;
   state: Uint8Array | Uint16Array | number;
   mod: Uint8Array | Uint16Array | number;
   secondary: Uint8Array | Uint16Array | number;
 
-  idPalette = new StringPalette();
-  secondaryIdPalette = new StringPalette();
-  statePalette = new NumberPalette();
-  modPalette = new NumberPalette();
-  secondaryStatePalette = new NumberPalette();
+  idPalette: StringPalette;
+  levelPalette: NumberPalette;
+  statePalette: NumberPalette;
+  modPalette: NumberPalette;
+  secondaryIdPalette: StringPalette;
+  secondaryStatePalette: NumberPalette;
   constructor(data: VoxelTemplateData) {
     this.size = [...data.size];
     this.index.setBounds(...data.size);
-    data.palettes.id.forEach((_) => this.idPalette.register(_));
-    data.palettes.state.forEach((_) => this.statePalette.register(_));
-    data.palettes.mod.forEach((_) => this.modPalette.register(_));
-    data.palettes.secondaryId.forEach((_) =>
-      this.secondaryIdPalette.register(_)
-    );
-    data.palettes.secondaryState.forEach((_) =>
-      this.secondaryStatePalette.register(_)
+
+    this.idPalette = new StringPalette(data.palettes.id);
+    this.levelPalette = new NumberPalette(data.palettes.level);
+    this.statePalette = new NumberPalette(data.palettes.state);
+    this.modPalette = new NumberPalette(data.palettes.mod);
+    this.secondaryIdPalette = new StringPalette(data.palettes.secondaryId);
+    this.secondaryStatePalette = new NumberPalette(
+      data.palettes.secondaryState
     );
 
     typeof data.buffers.ids == "object"
@@ -43,6 +45,13 @@ export class VoxelTemplate {
           data.buffers.ids as any
         ) as any)
       : (this.ids = data.buffers.ids);
+
+    typeof data.buffers.level == "object"
+      ? (this.level = getPaletteArray(
+          data.palettes.level.length,
+          data.buffers.level as any
+        ) as any)
+      : (this.level = data.buffers.level);
 
     typeof data.buffers.state == "object"
       ? (this.state = getPaletteArray(
@@ -84,6 +93,10 @@ export class VoxelTemplate {
       typeof state == "number" ? state : state[index]
     );
   }
+  getLevel(index: number) {
+    const mod = this.mod;
+    return this.modPalette.getValue(typeof mod == "number" ? mod : mod[index]);
+  }
   getMod(index: number) {
     const mod = this.mod;
     return this.modPalette.getValue(typeof mod == "number" ? mod : mod[index]);
@@ -106,7 +119,7 @@ export class VoxelTemplate {
   *traverse(): Generator<TemplateCursor> {
     const end = this.size;
 
-    const raw: RawVoxelData = [0, 0, 0, 0, 0];
+    const raw: RawVoxelData = [0, 0, 0, 0, 0, 0];
 
     const curosr: TemplateCursor = {
       position: [0, 0, 0],
@@ -124,16 +137,15 @@ export class VoxelTemplate {
       curosr.position[2] = z;
       raw[0] = this.getId(vindex);
       raw[1] = 0;
-      raw[2] = this.getState(vindex);
-      raw[3] = this.getSecondary(raw[0], vindex);
+      raw[2] = this.getLevel(vindex);
+      raw[3] = this.getState(vindex);
       raw[4] = this.getMod(vindex);
-
+      raw[5] = this.getSecondary(raw[0], vindex);
       if (raw[0] < 1 && raw[3] < 1) continue;
 
       yield curosr;
     }
   }
-
 
   toJSON(): VoxelTemplateData {
     return {
@@ -142,9 +154,10 @@ export class VoxelTemplate {
       size: this.size,
       palettes: {
         id: this.idPalette._palette,
-        secondaryId: this.secondaryIdPalette._palette,
+        level: Uint8Array.from(this.statePalette._palette),
         state: Uint16Array.from(this.statePalette._palette),
         mod: Uint16Array.from(this.modPalette._palette),
+        secondaryId: this.secondaryIdPalette._palette,
         secondaryState: Uint16Array.from(this.secondaryStatePalette._palette),
       },
       buffers: {
@@ -154,6 +167,10 @@ export class VoxelTemplate {
           typeof this.ids == "number"
             ? this.ids
             : new Uint8Array((this.ids as NibbleArray).buffer),
+        level:
+          this.level instanceof Uint8Array || typeof this.level == "number"
+            ? this.level
+            : new Uint8Array((this.level as NibbleArray).buffer),
         mod:
           this.mod instanceof Uint16Array ||
           this.mod instanceof Uint8Array ||

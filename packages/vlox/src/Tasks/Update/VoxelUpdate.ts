@@ -59,7 +59,7 @@ export async function EreaseAndUpdate(location: LocationData) {
     .setId(0)
     .setLevel(0)
     .setLevelState(0)
-    .setShapeState(0)
+    .setState(0)
     .setMod(0)
     .updateHeightMap(1);
   if (ES.doLight()) {
@@ -110,7 +110,7 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
   if (id < 0) return false;
   voxel.setId(id);
 
-  voxel.setShapeState(raw[2]);
+  voxel.setState(raw[2]);
 
   const substance = voxel.getSubstance();
   if (

@@ -272,7 +272,7 @@ export const WorldGen = {
   },
 
   pyramidColumn(chunkX: number, chunkZ: number) {
-    const columnCursor = this.worldCursor.getColumn(chunkX, 0, chunkZ)!;
+    const columnCursor = this.worldCursor.getSector(chunkX, 0, chunkZ)!;
     let minus = 0;
     voxelCursor.setStringId("dve_dread_stone").process();
     const height = 20;

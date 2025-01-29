@@ -28,7 +28,7 @@ export class LogicStatementReader {
         continue;
       }
 
-      const value = this.schema.nodes[node[0]].getValue(this.schema.voxel.getShapeState());
+      const value = this.schema.nodes[node[0]].getValue(this.schema.voxel.getState());
 
       switch (node[1]) {
         case StateCompareOperations.Equals:

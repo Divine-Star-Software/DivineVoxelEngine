@@ -62,9 +62,9 @@ export class EngineSettings {
     return JSON.parse(JSON.stringify(this.settings));
   }
 
-  static syncChunkInRichWorldThread() {
+  static syncSectionInRichWorldThread() {
     return (
-      this.settings.richWorld.enabled && this.settings.richWorld.autoSyncChunks
+      this.settings.richWorld.enabled && this.settings.richWorld.autoSyncSections
     );
   }
 
@@ -72,12 +72,12 @@ export class EngineSettings {
     return this.settings.richWorld.enabled;
   }
 
-  static syncChunkInDataThread() {
-    return this.settings.dataLoader.enabled && this.settings.dataLoader.autoSyncChunks;
+  static syncSectionInDataThread() {
+    return this.settings.dataLoader.enabled && this.settings.dataLoader.autoSyncSections;
   }
 
-  static syncChunksInNexusThread() {
-    return this.settings.nexus.enabled && this.settings.nexus.autoSyncChunks;
+  static syncSectionsInNexusThread() {
+    return this.settings.nexus.enabled && this.settings.nexus.autoSyncSections;
   }
 
   static doSunPropagation() {

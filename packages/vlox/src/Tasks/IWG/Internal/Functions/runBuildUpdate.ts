@@ -1,13 +1,14 @@
 import { Generator } from "../Classes/Generator";
 import { Circle, Square } from "@amodx/math";
 import { WorldSpaces } from "../../../../World/WorldSpaces";
-import { ColumnState } from "../Classes/ColumnState";
+import { SectorState } from "../Classes/SectorState";
 import { WorldRegister } from "../../../../World/WorldRegister";
-import { getColumnState } from "./getColumnState";
+import { getSectorState } from "./getSectorState";
 import { IWGTasks } from "../IWGTasks";
 import { IWGDimensions } from "../IWGDimensions";
-const stateCursor = new ColumnState();
-const columnSquare = new Square();
+import { IWGTools } from "../IWGTools";
+const stateCursor = new SectorState();
+const sectorSquare = new Square();
 export function runBuildUpdate(generators: Generator[]) {
   for (const generator of generators) {
     if (!generator._building) continue;
@@ -20,11 +21,11 @@ export function runBuildUpdate(generators: Generator[]) {
     const queue = segment.queue;
     const visitedMap = segment.vistedMap;
 
-    const columnPosition = generator._columnPosition;
-    queue.push(columnPosition.x, columnPosition.y, columnPosition.z);
+    const sectorPosition = generator._sectorPosition;
+    queue.push(sectorPosition.x, sectorPosition.y, sectorPosition.z);
 
-    generator._renderCircle.center.x = columnPosition.x;
-    generator._renderCircle.center.y = columnPosition.z;
+    generator._renderCircle.center.x = sectorPosition.x;
+    generator._renderCircle.center.y = sectorPosition.z;
 
     while (queue.length) {
       const cx = queue.shift()!;
@@ -32,24 +33,24 @@ export function runBuildUpdate(generators: Generator[]) {
       const cz = queue.shift()!;
       if (visitedMap.has(cx, cy, cz)) continue;
       visitedMap.add(cx, cy, cz);
-      columnSquare.sideLength = WorldSpaces.column.bounds.x;
-      columnSquare.center.x = cx;
-      columnSquare.center.y = cz;
+      sectorSquare.sideLength = WorldSpaces.sector.bounds.x;
+      sectorSquare.center.x = cx + WorldSpaces.sector.bounds.x / 2;
+      sectorSquare.center.y = cz + WorldSpaces.sector.bounds.z / 2;
 
       if (
         !Circle.IsSquareInsideOrTouchingCircle(
-          columnSquare,
+          sectorSquare,
           generator._renderCircle
         )
       )
         continue;
 
       WorldRegister.setDimension(generator._dimension);
-      const column = WorldRegister.column.get(cx, cy, cz);
+      const sector = WorldRegister.sectors.get(cx, cy, cz);
 
-      if (!column) continue;
+      if (!sector) continue;
 
-      const state = getColumnState(column, stateCursor, segment);
+      const state = getSectorState(sector, stateCursor, segment);
 
       if (
         state.nWorldGenAllDone &&
@@ -57,7 +58,7 @@ export function runBuildUpdate(generators: Generator[]) {
         state.nPropagtionAllDone
       ) {
         if (segment.rendered.has(cx, cy, cz)) continue;
-
+   
         IWGTasks.buildTasks.add(generator._dimension, cx, cy, cz);
       }
     }

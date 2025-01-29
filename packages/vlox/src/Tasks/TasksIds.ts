@@ -1,6 +1,6 @@
 export enum TasksIds {
-  BuildChunk,
-  BuildColumn,
+  BuildSection,
+  BuildSector,
   Generate,
   Decorate,
   RGBlightUpdate,

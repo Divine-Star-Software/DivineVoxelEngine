@@ -4,7 +4,7 @@ import { Thread, Threads } from "@amodx/threads/";
 //data
 import { WorldRegister } from "./WorldRegister.js";
 
-import { WorldLockTasks, LoadColumnDataTasks } from "../Tasks/Tasks.types.js";
+import { WorldLockTasks, LoadSectorDataTasks } from "../Tasks/Tasks.types.js";
 
 import { WorldSpaces } from "./WorldSpaces.js";
 import { WorldLock } from "./Lock/WorldLock.js";
@@ -19,30 +19,17 @@ export default function ({
   worldStorage?: WorldStorageInterface;
 }) {
   const loadInMap: Map<string, boolean> = new Map();
-
-  WorldLock.worldStorage = worldStorage || null;
-  WorldRegister._hooks.chunk.onNew = (location, chunk) => {
-    for (const thread of threads) {
-      thread.runTask(WorldDataSyncIds.SyncChunk, [location, chunk]);
-    }
-  };
-  WorldRegister._hooks.chunk.onRemove = (location) => {
-    for (const thread of threads) {
-      thread.runTask(WorldDataSyncIds.UnSyncChunk, location);
-    }
-  };
-
   /*
-[columns]
+[sectors]
 */
-  WorldRegister._hooks.column.onNew = (location, column) => {
+  WorldRegister._hooks.sectors.onNew = (location, sector) => {
     for (const thread of threads) {
-      thread.runTask(WorldDataSyncIds.SyncColumn, [location, column]);
+      thread.runTask(WorldDataSyncIds.SyncSector, [location, sector]);
     }
   };
-  WorldRegister._hooks.column.onRemove = (location) => {
+  WorldRegister._hooks.sectors.onRemove = (location) => {
     for (const thread of threads) {
-      thread.runTask(WorldDataSyncIds.UnSyncColumn, location);
+      thread.runTask(WorldDataSyncIds.UnSyncSector, location);
     }
   };
 
@@ -55,52 +42,54 @@ export default function ({
     }
   };
 
-  Threads.registerTask("add-chunk", async (location: LocationData) => {
+  Threads.registerTask("add-sector", async (location: LocationData) => {
     WorldRegister.setDimension(location[0]);
-    const chunk = WorldRegister.chunk.get(
+    const sector = WorldRegister.sectors.get(
       location[1],
       location[2],
       location[3]
     );
 
-    if (chunk) {
+    if (sector) {
       for (const thread of threads) {
-        thread.runTask(WorldDataSyncIds.SyncChunk, [location, chunk]);
+        thread.runTask(WorldDataSyncIds.SyncSector, [location, sector]);
       }
       return;
     }
+
+    if (!sector && !worldStorage) {
+      WorldRegister.setDimension(location[0]);
+      WorldRegister.sectors.new(location[1], location[2], location[3]);
+    }
+
     if (worldStorage) {
-      const colunPos = WorldSpaces.column.getPositionXYZ(
+      const sectorPos = WorldSpaces.sector.getPositionXYZ(
         location[1],
         location[2],
         location[3]
       );
 
-      const columnLocation = <LocationData>[
+      const sectorLocation = <LocationData>[
         location[0],
-        colunPos.x,
-        colunPos.y,
-        colunPos.z,
+        sectorPos.x,
+        sectorPos.y,
+        sectorPos.z,
       ];
-      if (loadInMap.has(columnLocation.toString())) return;
-      loadInMap.set(columnLocation.toString(), true);
-      const success = await worldStorage.loadColumn(columnLocation);
-      loadInMap.delete(columnLocation.toString());
+      const sectorId = sectorLocation.toString();
+      if (loadInMap.has(sectorId)) return;
+      loadInMap.set(sectorId, true);
+      const success = await worldStorage.loadSector(sectorLocation);
+      loadInMap.delete(sectorId);
       if (!success) {
-        WorldRegister.setDimension(columnLocation[0]);
-        WorldRegister.column.fill(
-          columnLocation[1],
-          columnLocation[2],
-          columnLocation[3]
+        WorldRegister.setDimension(sectorLocation[0]);
+        WorldRegister.sectors.new(
+          sectorLocation[1],
+          sectorLocation[2],
+          sectorLocation[3]
         );
       }
 
       return;
-    }
-
-    if (!chunk) {
-      WorldRegister.setDimension(location[0]);
-      WorldRegister.column.fill(location[1], location[2], location[3]);
     }
   });
   Threads.registerTask<WorldLockTasks>("world-alloc", async (data) => {
@@ -109,30 +98,30 @@ export default function ({
   Threads.registerTask<WorldLockTasks>("world-dealloc", async (data) => {
     await WorldLock.removeLock(data);
   });
-  Threads.registerTask<LocationData>("unload-column", (location) => {
+  Threads.registerTask<LocationData>("unload-sector", (location) => {
     if (WorldLock.isLocked(location)) return [false];
     WorldRegister.setDimension(location[0]);
-    WorldRegister.column.remove(location[1], location[2], location[3]);
+    WorldRegister.sectors.remove(location[1], location[2], location[3]);
     for (const thread of threads) {
-      thread.runTask(WorldDataSyncIds.UnSyncColumn, location);
+      thread.runTask(WorldDataSyncIds.UnSyncSector, location);
     }
     return [false];
   });
 
-  Threads.registerTask<LoadColumnDataTasks>(
-    "load-column",
-    ([location, column]) => {
+  Threads.registerTask<LoadSectorDataTasks>(
+    "load-sector",
+    ([location, sector]) => {
       WorldRegister.setDimension(location[0]);
-      WorldRegister.column.add(location[1], location[2], location[3], column);
+      WorldRegister.sectors.add(location[1], location[2], location[3], sector);
       for (const thread of threads) {
-        thread.runTask(WorldDataSyncIds.SyncColumn, [location, column]);
+        thread.runTask(WorldDataSyncIds.SyncSector, [location, sector]);
       }
       return [true];
     }
   );
-  /*   Threads.registerTask<RunBuildQueue>("build-queue", async ([dim, chunks]) => {
-    for (const position of chunks) {
-      mesher.setLocation([dim, ...position]).buildChunk();
+  /*   Threads.registerTask<RunBuildQueue>("build-queue", async ([dim, sections]) => {
+    for (const position of sections) {
+      mesher.setLocation([dim, ...position]).buildSection();
     }
   }); */
   Threads.registerTask("clear-all", () => {

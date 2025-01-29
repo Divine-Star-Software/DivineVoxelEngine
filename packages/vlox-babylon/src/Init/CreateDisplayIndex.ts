@@ -160,19 +160,17 @@ export default async function CreateDisplayIndex(data: VoxelData[]) {
   for (const [voxelId, states] of voxelIndex.states) {
     addVoxelData.id = voxelId;
     for (const [stateId, state] of states.states) {
-      addVoxelData.shapeState = 0;
+      addVoxelData.state = 0;
       addVoxelData.mod = 0;
       if (state.data.display.type == "model") {
         const voxelSchema = SchemaRegister.getVoxelSchemas(voxelId);
         if (state.data.display.state) {
-          addVoxelData.shapeState = voxelSchema.shapeState.readString(
+          addVoxelData.state = voxelSchema.state.readString(
             state.data.display.state
           );
         }
         if (state.data.display.mod) {
-          addVoxelData.mod = voxelSchema.modState.readString(
-            state.data.display.mod
-          );
+          addVoxelData.mod = voxelSchema.mod.readString(state.data.display.mod);
         }
         const rawData = VoxelCursor.VoxelDataToRaw(addVoxelData);
         const mesh = await buildMesh(

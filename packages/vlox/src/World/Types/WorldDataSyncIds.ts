@@ -1,8 +1,6 @@
 export enum WorldDataSyncIds {
-  SyncChunk = "sync-chunk",
-  UnSyncChunk = "unsync-chunk",
-  SyncColumn = "sync-column",
-  UnSyncColumn = "unsync-column",
+  SyncSector = "sync-sector",
+  UnSyncSector = "unsync-sector",
   SyncDimension = "sync-dimension",
   UnSyncDimension = "unsync-dimension",
 }

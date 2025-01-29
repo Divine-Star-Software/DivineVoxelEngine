@@ -1,13 +1,13 @@
 import type { Vec3Array } from "@amodx/math";
 import type { EngineSettingsData } from "@divinevoxel/vlox/Settings/EngineSettings.types";
 
-import { DVEChunkMeshes } from "@divinevoxel/vlox/Renderer/DVEChunkMeshes.js";
+import { DVESectionMeshes } from "@divinevoxel/vlox/Renderer";
 import { DVEQRMesh } from "./DVEQRMesh";
 import { DVEQuantumRenderer } from "../../DVEQuantumRenderer";
 import { Scene } from "../../../Renderer/Scene/Scene";
 import { CompactMeshData } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
-import { ChunkMesh } from "@divinevoxel/vlox/Renderer/Classes/ChunkMesh";
-export class DVEQRNodeMesh extends DVEChunkMeshes {
+import { SectionMesh } from "@divinevoxel/vlox/Renderer";
+export class DVEQRSectorMeshes extends DVESectionMeshes {
   static UpdateVertexData(mesh: any, engine: any, data: any) {
     for (const [id, attribute, stride] of data) {
       switch (id) {
@@ -44,7 +44,7 @@ export class DVEQRNodeMesh extends DVEChunkMeshes {
     DVEQuantumRenderer.instance.observers.meshDisposed.notify(mesh);
   }
   updateVertexData(
-    chunk: ChunkMesh,
+    chunk: SectionMesh,
     location: Vec3Array,
     data: CompactMeshData
   ) {

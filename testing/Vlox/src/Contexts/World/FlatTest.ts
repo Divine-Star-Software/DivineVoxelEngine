@@ -22,16 +22,15 @@ export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
   let genOne = true;
   for (let x = startX - 32; x < endX + 32; x += 16) {
     for (let z = startZ - 32; z < endZ + 32; z += 16) {
-      brush.setXYZ(x, 0, z).fillColumn();
+      brush.setXYZ(x, 0, z).newSector();
       propagation.add(["main", x, 0, z]);
       worldSun.add(["main", x, 0, z]);
     }
   }
   if (genOne) {
-
-    brush.setId("dve_debug_box").setXYZ(0,1,0).paint();
+    brush.setId("dve_debug_box").setXYZ(0, 1, 0).paint();
     // WorldGen.pyramidColumn(0, 0);
-  //  PerlinGen.generateTest(0, 0);
+    //  PerlinGen.generateTest(0, 0);
   } else {
     for (let x = startX; x < endX; x += 16) {
       for (let z = startZ; z < endZ; z += 16) {
@@ -48,10 +47,9 @@ export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
   const tSunE = performance.now();
   console.log("Sun done = ", tSunE - tSunS);
 
-
   for (let x = startX - 32; x < endX + 32; x += 16) {
     for (let z = startZ - 32; z < endZ + 32; z += 16) {
-      tasks.build.column.run(["main", x, 0, z]);
+      tasks.build.sector.run(["main", x, 0, z]);
     }
   }
 

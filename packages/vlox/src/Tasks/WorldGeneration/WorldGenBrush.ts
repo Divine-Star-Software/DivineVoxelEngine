@@ -74,8 +74,8 @@ export class WorldGenBrush extends BrushTool {
     return this;
   }
 
-  getUpdatedChunks() {
-    const queue = this.tasks.bounds.getChunks();
+  getUpdatedSections() {
+    const queue = this.tasks.bounds.getSections();
     this.tasks.bounds.reset();
     return queue;
   }

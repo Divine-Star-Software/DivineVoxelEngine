@@ -21,32 +21,32 @@ export class WorldLock {
         x: sx,
         y: sy,
         z: sz,
-      } = WorldSpaces.column.getPositionXYZ(ssx, ssy, ssz);
+      } = WorldSpaces.sector.getPositionXYZ(ssx, ssy, ssz);
       const {
         x: ex,
         y: ey,
         z: ez,
-      } = WorldSpaces.column.getPositionXYZ(esx, esy, esz);
+      } = WorldSpaces.sector.getPositionXYZ(esx, esy, esz);
       const run = async () => {
         let allFound = true;
         for (
           let y = sy;
-          y < ey + WorldSpaces.column.bounds.y;
-          y += WorldSpaces.column.bounds.y
+          y < ey + WorldSpaces.sector.bounds.y;
+          y += WorldSpaces.sector.bounds.y
         ) {
-          for (let x = sx; x <= ex; x += WorldSpaces.column.bounds.x) {
-            for (let z = sz; z <= ez; z += WorldSpaces.column.bounds.z) {
-              const columnPos = WorldSpaces.column.getPositionXYZ(x, y, z);
+          for (let x = sx; x <= ex; x += WorldSpaces.sector.bounds.x) {
+            for (let z = sz; z <= ez; z += WorldSpaces.sector.bounds.z) {
+              const sectorPos = WorldSpaces.sector.getPositionXYZ(x, y, z);
               const location: LocationData = [
                 taskData[0],
-                columnPos.x,
-                columnPos.y,
-                columnPos.z,
+                sectorPos.x,
+                sectorPos.y,
+                sectorPos.z,
               ] as LocationData;
               location[0] = dim;
               WorldRegister.setDimension(location[0]);
               if (
-                WorldRegister.column.get(location[1], location[2], location[3])
+                WorldRegister.sectors.get(location[1], location[2], location[3])
               )
                 continue;
               allFound = false;
@@ -56,7 +56,7 @@ export class WorldLock {
               let success = false;
               if (!this.worldStorage) {
                 if (
-                  WorldRegister.column.get(
+                  WorldRegister.sectors.get(
                     location[1],
                     location[2],
                     location[3]
@@ -65,16 +65,16 @@ export class WorldLock {
                   success = true;
                 }
               } else {
-                success = await this.worldStorage.loadColumn(location);
+                success = await this.worldStorage.loadSector(location);
               }
 
               this._loadMap.delete(key);
               if (
-                WorldRegister.column.get(location[1], location[2], location[3])
+                WorldRegister.sectors.get(location[1], location[2], location[3])
               )
                 return;
               if (!success) {
-                WorldRegister.column.fill(
+                WorldRegister.sectors.new(
                   location[1],
                   location[2],
                   location[3]

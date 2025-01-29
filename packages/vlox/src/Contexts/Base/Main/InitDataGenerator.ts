@@ -1,16 +1,16 @@
 import { DataSyncData } from "../Remote/DataSync.types";
 import { DataGeneratorData } from "./DataGenerator.types";
-import { InitalizeChunkTags } from "../../../World/Chunk/ChunkStruct.js";
-import { InitalizeColumnTags } from "../../../World/Column/ColumnStruct.js";
+import { InitalizeSectionTags } from "../../../World/Section/SectionStruct.js";
+import { InitalizeSectorTags } from "../../../World/Sector/SectorStruct.js";
 import { EngineSettings } from "../../../Settings/EngineSettings";
-import { Chunk, Column } from "../../../World";
+import { Section, Sector } from "../../../World";
 import { InitVoxelData } from "../../../Voxels/InitVoxelData";
 
 export default function InitDataGenerator(
   data: DataGeneratorData
 ): DataSyncData {
-  InitalizeChunkTags();
-  InitalizeColumnTags();
+  InitalizeSectionTags();
+  InitalizeSectorTags();
 
   const voxels = InitVoxelData(data);
 
@@ -19,8 +19,8 @@ export default function InitDataGenerator(
     threads: data.threads,
     voxels,
     worldData: {
-      chunkStruct: Chunk.StateStruct.structData,
-      columnStruct: Column.StateStruct.structData,
+      sectionStruct: Section.StateStruct.structData,
+      sectorStruct: Sector.StateStruct.structData,
     },
   };
 }

@@ -9,12 +9,12 @@ import { RawVoxelData } from "../../Voxels/Types/Voxel.types.js";
 
 const templateCursor = new TemplateCursor();
 const voxelCursor = new VoxelCursor();
-
 templateCursor.setTemplate(
   new FullVoxelTemplate(FullVoxelTemplate.CreateNew([3, 3, 3], 0xf))
 );
 
 export function MeshVoxel(rawVoxelData: RawVoxelData) {
+    
   const voxel = templateCursor.getVoxel(1, 1, 1)!;
   voxel.copyRaw(rawVoxelData);
   voxel.process();

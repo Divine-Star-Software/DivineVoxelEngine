@@ -1,4 +1,4 @@
-export enum ColumnStructIds {
+export enum SectorStateStructIds {
   lastSaveTimestamp = "dve_last_save_timestamp",
   lastAnalyzerUpdateTimestamp = "dve_last_analyzer_update_timestamp",
   hasRichData = "dve_has_rich_data",

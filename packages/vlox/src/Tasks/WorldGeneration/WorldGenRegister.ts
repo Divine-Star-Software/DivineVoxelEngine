@@ -18,7 +18,7 @@ export class WorldGenRegister {
     {
       attempts: number;
       dimension: string;
-      chunks: Map<string, [x: number, y: number, z: number]>;
+      sections: Map<string, [x: number, y: number, z: number]>;
       voxels: [x: number, y: number, z: number, data: RawVoxelData][];
     }
   >();
@@ -27,7 +27,7 @@ export class WorldGenRegister {
     const id = location.toString();
     this._requests.set(id, {
       attempts: 0,
-      chunks: new Map(),
+      sections: new Map(),
       dimension: location[0],
       voxels: [],
     });
@@ -48,29 +48,29 @@ export class WorldGenRegister {
     if (!requests) return;
 
     WorldRegister.setDimension(location[0]);
-    const chunk = WorldRegister.chunk.get(
+    const sector = WorldRegister.sectors.get(
       location[1],
       location[2],
       location[3]
     );
-    if (!chunk) {
-      const chunkPOS = WorldSpaces.chunk.getPositionXYZ(
+    if (!sector) {
+      const sectorPos = WorldSpaces.sector.getPositionXYZ(
         location[1],
         location[2],
         location[3]
       );
-      const chunkKey = WorldSpaces.chunk.getKeyXYZ(
+      const sectorKey = WorldSpaces.sector.getKeyXYZ(
         location[1],
         location[2],
         location[3]
       );
-      
-      if (!requests.chunks.has(chunkKey)) {
+
+      if (!requests.sections.has(sectorKey)) {
         DivineVoxelEngineConstructor.instance.threads.world.runTask(
-          "add-chunk",
-          [requests.dimension, chunkPOS.x, chunkPOS.y, chunkPOS.z]
+          "add-sector",
+          [requests.dimension, sectorPos.x, sectorPos.y, sectorPos.z]
         );
-        requests.chunks.set(chunkKey, [chunkPOS.x, chunkPOS.y, chunkPOS.z]);
+        requests.sections.set(sectorKey, [sectorPos.x, sectorPos.y, sectorPos.z]);
       }
     }
     const [dim, x, y, z] = location;
@@ -82,13 +82,13 @@ export class WorldGenRegister {
     if (!requests || !requests.voxels.length) return true;
     WorldRegister.setDimension(requests.dimension);
     let done = true;
-    for (const [key, pos] of requests.chunks) {
+    for (const [key, pos] of requests.sections) {
       if (!WorldBounds.inBounds(pos[0], pos[1], pos[2])) continue;
-      const chunk = WorldRegister.chunk.get(pos[0], pos[1], pos[2]);
-      if (!chunk) {
+      const sector = WorldRegister.sectors.get(pos[0], pos[1], pos[2]);
+      if (!sector) {
         done = false;
         DivineVoxelEngineConstructor.instance.threads.world.runTask(
-          "add-chunk",
+          "add-sector",
           [requests.dimension, pos[0], pos[1], pos[2]]
         );
       }

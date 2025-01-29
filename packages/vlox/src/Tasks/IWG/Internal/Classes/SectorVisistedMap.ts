@@ -1,12 +1,12 @@
 import { WorldSpaces } from "../../../../World/WorldSpaces";
 
-export class ColumnVisistedMap {
+export class SectorVisistedMap {
   _map = new Set<string>();
   get size() {
     return this._map.size;
   }
   _getKey(x: number, y: number, z: number) {
-    return WorldSpaces.column.getKeyXYZ(x, y, z);
+    return WorldSpaces.sector.getKeyXYZ(x, y, z);
   }
   has(x: number, y: number, z: number) {
     return this._map.has(this._getKey(x, y, z));

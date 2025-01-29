@@ -1,26 +1,24 @@
 import { Vec3Array } from "@amodx/math";
+import { VoxelDataArrays } from "../World";
 
 export interface VoxelTemplateBuffers {
   ids: Uint16Array | Uint8Array | number;
   state: Uint16Array | Uint8Array | number;
+  level: Uint8Array | number;
   mod: Uint16Array | Uint8Array | number;
   secondary: Uint16Array | Uint8Array | number;
 }
 
-export interface FullVoxelTemplateData {
+export interface FullVoxelTemplateData extends VoxelDataArrays {
   size: Vec3Array;
-  ids: Uint16Array;
-  state: Uint16Array;
-  light: Uint16Array;
-  mod: Uint16Array;
-  secondary: Uint16Array;
 }
 
 export interface VoxelTemplatePaletteData {
   id: string[];
-  secondaryId: string[];
+  level: Uint8Array;
   state: Uint16Array;
   mod: Uint16Array;
+  secondaryId: string[];
   secondaryState: Uint16Array;
 }
 

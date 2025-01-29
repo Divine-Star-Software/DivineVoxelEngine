@@ -2,7 +2,7 @@ import { Flat3DIndex, Traverse, Vec3Array } from "@amodx/math";
 import { StringPalette } from "../../Util/StringPalette";
 import { VoxelTemplate } from "../VoxelTemplate";
 import { NumberPalette } from "../../Util/NumberPalette";
-import { convertToPaletteBuffer } from "../../Data/Functions/Palettes"
+import { convertToPaletteBuffer } from "../../Data/Functions/Palettes";
 import { WorldCursor } from "../../World";
 
 export default function CreateTemplate(
@@ -21,22 +21,26 @@ export default function CreateTemplate(
   index.setBounds(sx, sy, sz);
 
   const idPalette = new StringPalette();
-  const secondaryIdPalette = new StringPalette();
+  const levelPalette = new NumberPalette();
   const statePalette = new NumberPalette();
   const modPalette = new NumberPalette();
+  const secondaryIdPalette = new StringPalette();
   const secondaryStatePalette = new NumberPalette();
 
-  const ids: number[] = new Array(index.size);
-  const state: number[] = new Array(index.size);
-  const mod: number[] = new Array(index.size);
-  const secondary: number[] = new Array(index.size);
+  const ids = new Uint16Array(index.size);
+  const levels = new Uint8Array(index.size);
+  const states = new Uint16Array(index.size);
+  const mods = new Uint16Array(index.size);
+  const secondarys = new Uint16Array(index.size);
 
   let idsAllTheSame = true;
+  let levelAllTheSame = true;
   let stateAllTheSame = true;
   let modAllTheSame = true;
   let secondaryAllTheSame = true;
 
   let firstId = -1;
+  let firstLevel = -1;
   let firstState = -1;
   let firstMod = -1;
   let firstSecondary = -1;
@@ -50,18 +54,25 @@ export default function CreateTemplate(
     if (!voxel) continue;
 
     const vindex = index.getIndexXYZ(x - start[0], y - start[1], z - start[2]);
-    const raw = voxel.getRaw();
+    const rawData = voxel.getRaw();
+    const level = rawData[2];
+    const state = rawData[3];
+    const mod = rawData[4];
+    const seoncdary = rawData[5];
 
     const stringId = voxel.getStringId();
-    const stateId = !statePalette.isRegistered(raw[2])
-      ? statePalette.register(raw[2])
-      : statePalette.getId(raw[2]);
-    const modId = !modPalette.isRegistered(raw[4])
-      ? modPalette.register(raw[4])
-      : modPalette.getId(raw[4]);
     const voxelId = !idPalette.isRegistered(stringId)
       ? idPalette.register(stringId)
       : idPalette.getNumberId(stringId);
+    const levelId = !levelPalette.isRegistered(level)
+      ? levelPalette.register(level)
+      : levelPalette.getId(level);
+    const stateId = !statePalette.isRegistered(state)
+      ? statePalette.register(state)
+      : statePalette.getId(state);
+    const modId = !modPalette.isRegistered(mod)
+      ? modPalette.register(mod)
+      : modPalette.getId(mod);
 
     let secondaryData = 0;
 
@@ -75,59 +86,66 @@ export default function CreateTemplate(
         ? secondaryIdPalette.register(secondaryId)
         : secondaryIdPalette.getNumberId(secondaryId);
     } else {
-      secondaryData = !secondaryStatePalette.isRegistered(raw[3])
-        ? secondaryStatePalette.register(raw[3])
-        : secondaryStatePalette.getId(raw[3]);
+      secondaryData = !secondaryStatePalette.isRegistered(seoncdary)
+        ? secondaryStatePalette.register(seoncdary)
+        : secondaryStatePalette.getId(seoncdary);
     }
     if (firstId == -1) firstId = voxelId;
+    if (firstLevel == -1) firstLevel = stateId;
     if (firstState == -1) firstState = stateId;
     if (firstMod == -1) firstMod = modId;
     if (firstSecondary == -1) firstSecondary = secondaryData;
 
     ids[vindex] = voxelId;
-    mod[vindex] = modId;
-    state[vindex] = stateId;
-    secondary[vindex] = secondaryData;
+    levels[vindex] = voxelId;
+    mods[vindex] = modId;
+    states[vindex] = stateId;
+    secondarys[vindex] = secondaryData;
 
     if (firstId != voxelId) idsAllTheSame = false;
+    if (firstLevel != levelId) levelAllTheSame = false;
     if (firstState != stateId) stateAllTheSame = false;
     if (firstMod != modId) modAllTheSame = false;
     if (firstSecondary != secondaryData) secondaryAllTheSame = false;
   }
 
-  console.log("CREATE VOXEL TEMPLATE", { modPalette, mod });
+  console.log("CREATE VOXEL TEMPLATE", { modPalette, mod: mods });
   return new VoxelTemplate({
     templatorVersion: 0,
     version: 0,
     size: [sx, sy, sz],
     palettes: {
       id: idPalette._palette,
-      secondaryId: secondaryIdPalette._palette,
+      level: Uint8Array.from(levelPalette._palette),
       state: Uint16Array.from(statePalette._palette),
       mod: Uint16Array.from(modPalette._palette),
+      secondaryId: secondaryIdPalette._palette,
       secondaryState: Uint16Array.from(secondaryStatePalette._palette),
     },
     buffers: {
       ids: !idsAllTheSame
         ? convertToPaletteBuffer(idPalette.size, Uint16Array.from(ids), true)
         : ids[0],
+      level: !levelAllTheSame
+        ? convertToPaletteBuffer(modPalette.size, levels, true) as any
+        : levels[0],
       mod: !modAllTheSame
-        ? convertToPaletteBuffer(modPalette.size, Uint16Array.from(mod), true)
-        : mod[0],
+        ? convertToPaletteBuffer(modPalette.size, Uint16Array.from(mods), true)
+        : mods[0],
       state: !stateAllTheSame
         ? convertToPaletteBuffer(
             statePalette.size,
-            Uint16Array.from(state),
+            Uint16Array.from(states),
             true
           )
-        : state[0],
+        : states[0],
       secondary: !secondaryAllTheSame
         ? convertToPaletteBuffer(
             Math.max(secondaryIdPalette.size, secondaryStatePalette.size),
-            Uint16Array.from(secondary),
+            Uint16Array.from(secondarys),
             true
           )
-        : secondary[0],
+        : secondarys[0],
     },
   });
 }

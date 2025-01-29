@@ -1,8 +1,10 @@
-import { ColumnVisistedMap } from "./ColumnVisistedMap";
+import { Vec3Array } from "@amodx/math";
+import { SectorVisistedMap } from "./SectorVisistedMap";
+import { Sector } from "World";
 
 class TaskSegment {
   queue: number[] = [];
-  vistedMap = new ColumnVisistedMap();
+  vistedMap = new SectorVisistedMap();
   waitingFor = 0;
   clear() {
     this.waitingFor = 0;
@@ -11,12 +13,36 @@ class TaskSegment {
   }
 }
 
+class SecotrQueueNode {
+  time = 0;
+  constructor(public position: Vec3Array) {}
+}
+
+class SectorQueue {
+  nodes: SecotrQueueNode[] = [];
+  private addedMap = new SectorVisistedMap();
+  removeIndex(index: number) {
+    const sector = this.nodes.splice(index, 1)[0];
+    this.addedMap.remove(...sector.position);
+  }
+  inMap(sector: Sector) {
+    return this.addedMap.has(...sector.position);
+  }
+  addSector(sector: Sector) {
+    this.addedMap.add(...sector.position);
+    this.nodes.push(new SecotrQueueNode([...sector.position]));
+  }
+}
+
 export class DimensionSegment {
   tasks = new Map<string, TaskSegment>();
   queue: number[] = [];
-  vistedMap = new ColumnVisistedMap();
-  rendered = new ColumnVisistedMap();
-  inProgress = new ColumnVisistedMap();
+  vistedMap = new SectorVisistedMap();
+  rendered = new SectorVisistedMap();
+  inProgress = new SectorVisistedMap();
+
+  unRenderQueue = new SectorQueue();
+  unLoadQueue = new SectorQueue();
 
   constructor(public id: string) {}
 

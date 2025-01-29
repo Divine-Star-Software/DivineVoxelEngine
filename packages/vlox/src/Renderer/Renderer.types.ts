@@ -1,25 +1,25 @@
 import { CompactMeshData } from "../Mesher/Types/Mesher.types"
 import type { LocationData } from "../Math/index"
-export type SetChunkMeshTask = [
+export type SetSectionMeshTask = [
   location: LocationData,
   meshes: CompactMeshData,
-  effects: ChunkEffectData[],
+  effects: SectionEffectData[],
   priority: number,
 ];
 
-export type ChunkEffectData = [id: string, data: any];
+export type SectionEffectData = [id: string, data: any];
 
-export type ChunkMeshData = [
+export type SectionMeshData = [
   substanceType: string,
   meshData: [location: LocationData, mesh: CompactMeshData],
 ];
 
-export type RemoveChunkMeshTasks = [
+export type RemoveSectionMeshTasks = [
   location: LocationData,
   substanceType: string,
 ];
 
-export type RemoveChunksOutsideDistance = [
+export type RemoveSectionsOutsideDistance = [
   location: LocationData,
   distance: number,
 ];

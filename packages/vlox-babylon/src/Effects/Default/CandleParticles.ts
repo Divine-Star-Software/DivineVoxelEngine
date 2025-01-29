@@ -16,6 +16,8 @@ export class CandleParticles extends VoxelEffect {
 
   init(): void {
     const scene = DVEBabylonRenderer.instance.scene;
+    const meshPositoin = this.mesh.getPositon();
+
     {
       const particles = new ParticleSystem("", 1000, scene);
       particles.isAnimationSheetEnabled = true;
@@ -53,11 +55,9 @@ export class CandleParticles extends VoxelEffect {
       particles.startPositionFunction = (worldMatrix, positionToUpdate) => {
         const randomEmitter =
           Math.floor(Math.random() * (this.points.length / 3)) * 3;
-        positionToUpdate.x = this.points[randomEmitter] + this.mesh.location[0];
-        positionToUpdate.y =
-          this.points[randomEmitter + 1] + this.mesh.location[1];
-        positionToUpdate.z =
-          this.points[randomEmitter + 2] + this.mesh.location[2];
+        positionToUpdate.x = this.points[randomEmitter] + meshPositoin[0];
+        positionToUpdate.y = this.points[randomEmitter + 1] + meshPositoin[1];
+        positionToUpdate.z = this.points[randomEmitter + 2] + meshPositoin[2];
       };
 
       particles.start();
@@ -88,11 +88,9 @@ export class CandleParticles extends VoxelEffect {
       particles.startPositionFunction = (worldMatrix, positionToUpdate) => {
         const randomEmitter =
           Math.floor(Math.random() * (this.points.length / 3)) * 3;
-        positionToUpdate.x = this.points[randomEmitter] + this.mesh.location[0];
-        positionToUpdate.y =
-          this.points[randomEmitter + 1] + this.mesh.location[1];
-        positionToUpdate.z =
-          this.points[randomEmitter + 2] + this.mesh.location[2];
+        positionToUpdate.x = this.points[randomEmitter] + meshPositoin[0];
+        positionToUpdate.y = this.points[randomEmitter + 1] + meshPositoin[1];
+        positionToUpdate.z = this.points[randomEmitter + 2] + meshPositoin[2];
       };
 
       particles.start();

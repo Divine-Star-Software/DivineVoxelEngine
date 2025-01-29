@@ -1,18 +1,18 @@
 import { WorldRegister } from "../../../World/WorldRegister";
 import { IWGDimensions } from "../Internal/IWGDimensions";
 import { IWGTools } from "../Internal/IWGTools";
-/**# Save All Columns
+/**# Save All Sectors
  * ---
- * Save all columns that are loaded.
+ * Save all sectors that are loaded.
  */
-export default async function SaveAllColumns() {
+export default async function SaveAllSectors() {
   const worldStorage = IWGTools.worldStorage;
   if (!worldStorage) return;
   const proms: Promise<any>[] = [];
   for (const [dimensionId] of IWGDimensions._dimensions) {
     const dimension = WorldRegister.dimensions.get(dimensionId)!;
-    for (const [key, column] of dimension.columns) {
-      proms.push(worldStorage.saveColumn([dimensionId, ...column.position]));
+    for (const [key, sector] of dimension.sectors) {
+      proms.push(worldStorage.saveSector([dimensionId, ...sector.position]));
     }
   }
   await Promise.all(proms);

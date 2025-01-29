@@ -1,7 +1,7 @@
 import { WorldSpaces } from "../../../World/WorldSpaces";
 import { UpdateTask } from "../../../Tasks/Update/UpdateTask";
 import { WorldRegister } from "../../../World/WorldRegister";
-import { ChunkHeightMap } from "../../../World/Chunk/ChunkHeightMap";
+import { SectionHeightMap } from "../../../World/Section/SectionHeightMap";
 import { EngineSettings } from "../../../Settings/EngineSettings";
 import { Vec3Array } from "@amodx/math";
 import { SunRemove, SunUpdate } from "../Illumanation/SunUpdate";
@@ -118,29 +118,29 @@ function Flood(task: UpdateTask, voxel: WorldVoxelCursor) {
 export function WorldFlow(task: UpdateTask) {
   if (!EngineSettings.doFlow()) return false;
   WorldRegister.setDimension(task.origin[0]);
-  const column = WorldRegister.column.get(
+  const sector = WorldRegister.sectors.get(
     task.origin[1],
     task.origin[2],
     task.origin[3]
   );
 
-  if (!column) {
+  if (!sector) {
     console.error(
-      `Tried running world flow on a column that does not exist ${task.origin.toString()}`
+      `Tried running world flow on a sector that does not exist ${task.origin.toString()}`
     );
     return false;
   }
 
-  let maxX = WorldSpaces.chunk.bounds.x + column.position[0];
-  let maxZ = WorldSpaces.chunk.bounds.z + column.position[2];
-  for (let i = column.chunks.length - 1; i >= 0; i--) {
-    const chunk = column.chunks[i];
-    if (!chunk) continue;
+  let maxX = WorldSpaces.section.bounds.x + sector.position[0];
+  let maxZ = WorldSpaces.section.bounds.z + sector.position[2];
+  for (let i = sector.sections.length - 1; i >= 0; i--) {
+    const section = sector.sections[i];
+    if (!section) continue;
 
-    let [minY, maxY] = ChunkHeightMap.setChunk(chunk).getMinMax();
-    const cx = column.position[0];
-    const cy = column.position[1] + i * WorldSpaces.chunk.getHeight();
-    const cz = column.position[2];
+    let [minY, maxY] = SectionHeightMap.setSection(section).getMinMax();
+    const cx = sector.position[0];
+    const cy = sector.position[1] + i * WorldSpaces.section.getHeight();
+    const cz = sector.position[2];
     if (Math.abs(minY) == Infinity && Math.abs(maxY) == Infinity) continue;
     for (let y = cy + maxY; y >= cy + minY; y--) {
       for (let z = cz; z < maxZ; z++) {

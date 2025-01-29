@@ -1,25 +1,25 @@
 import { Thread, Threads } from "@amodx/threads";
-import { ArchivedColumnData } from "./Archive.types";
-import ArchiveColumn from "./Functions/ArchiveColumn";
+import { ArchivedSectorData } from "./Archive.types";
+import ArchiveSector from "./Functions/ArchiveSector";
 import { WorldRegister } from "../WorldRegister";
-import ImportColumn from "./Functions/ImportColumn";
+import ImportSector from "./Functions/ImportSector";
 import { LocationData } from "../../Math";
 import { compressBinaryObject, expandBinaryObject } from "../../Util/BinaryObject";
 
-function runArchiveColumn(
+function runArchiveSector(
   location: LocationData
-): [ArchivedColumnData, transfers: any[]] {
+): [ArchivedSectorData, transfers: any[]] {
   WorldRegister.setDimension(location[0]);
 
-  const column = WorldRegister.column.get(
+  const sector = WorldRegister.sectors.get(
     location[1],
     location[2],
     location[3]
   );
-  if (!column)
-    throw new Error(`Column at location ${location.toString()} does not exist`);
+  if (!sector)
+    throw new Error(`Sector at location ${location.toString()} does not exist`);
 
-  const archived = ArchiveColumn({
+  const archived = ArchiveSector({
     location: location,
   });
   const transfers: any[] = [];
@@ -27,60 +27,60 @@ function runArchiveColumn(
   if (archived.palettes.state) transfers.push(archived.palettes.state.buffer);
   if (archived.palettes.secondaryState)
     transfers.push(archived.palettes.secondaryState.buffer);
-  for (const chunk of archived.chunks) {
-    if (typeof chunk.buffers.id != "number")
-      transfers.push(chunk.buffers.id.buffer);
-    if (typeof chunk.buffers.light != "number")
-      transfers.push(chunk.buffers.light.buffer);
-    if (typeof chunk.buffers.state != "number")
-      transfers.push(chunk.buffers.state.buffer);
-    if (typeof chunk.buffers.secondary != "number")
-      transfers.push(chunk.buffers.secondary.buffer);
-    if (typeof chunk.buffers.mod != "number")
-      transfers.push(chunk.buffers.mod.buffer);
-    if (chunk.palettes.id) transfers.push(chunk.palettes.id.buffer);
-    if (chunk.palettes.light) transfers.push(chunk.palettes.light.buffer);
-    if (chunk.palettes.state) transfers.push(chunk.palettes.state.buffer);
-    if (chunk.palettes.mod) transfers.push(chunk.palettes.mod.buffer);
-    if (chunk.palettes.secondaryState)
-      transfers.push(chunk.palettes.secondaryState.buffer);
-    if (chunk.palettes.secondaryId)
-      transfers.push(chunk.palettes.secondaryId.buffer);
+  for (const section of archived.sections) {
+    if (typeof section.buffers.id != "number")
+      transfers.push(section.buffers.id.buffer);
+    if (typeof section.buffers.light != "number")
+      transfers.push(section.buffers.light.buffer);
+    if (typeof section.buffers.state != "number")
+      transfers.push(section.buffers.state.buffer);
+    if (typeof section.buffers.secondary != "number")
+      transfers.push(section.buffers.secondary.buffer);
+    if (typeof section.buffers.mod != "number")
+      transfers.push(section.buffers.mod.buffer);
+    if (section.palettes.id) transfers.push(section.palettes.id.buffer);
+    if (section.palettes.light) transfers.push(section.palettes.light.buffer);
+    if (section.palettes.state) transfers.push(section.palettes.state.buffer);
+    if (section.palettes.mod) transfers.push(section.palettes.mod.buffer);
+    if (section.palettes.secondaryState)
+      transfers.push(section.palettes.secondaryState.buffer);
+    if (section.palettes.secondaryId)
+      transfers.push(section.palettes.secondaryId.buffer);
   }
 
   return [archived, transfers] as const;
 }
 
 export default function InitTasks(props: { worldThread: Thread }) {
-  Threads.registerTask<LocationData>("archive-column", async (location) => {
-    return runArchiveColumn(location);
+  Threads.registerTask<LocationData>("archive-sector", async (location) => {
+    return runArchiveSector(location);
   });
   Threads.registerTask<LocationData>(
-    "archive-column-binary",
+    "archive-sector-binary",
     async (location) => {
-      const [archived] = runArchiveColumn(location);
+      const [archived] = runArchiveSector(location);
       const compressed = await compressBinaryObject(archived);
       return [compressed, [compressed]];
     }
   );
-  Threads.registerTask<ArchivedColumnData>(
-    "import-column",
+  Threads.registerTask<ArchivedSectorData>(
+    "import-sector",
     async (archived) => {
-      const importedColumn = ImportColumn(archived, {});
-      await props.worldThread.runTaskAsync("load-column", [
+      const importedSector = ImportSector(archived, {});
+      await props.worldThread.runTaskAsync("load-sector", [
         archived.location,
-        importedColumn,
+        importedSector,
       ]);
     }
   );
   Threads.registerTask<[LocationData, ArrayBuffer]>(
-    "import-column-binary",
+    "import-sector-binary",
     async ([location, archived]) => {
-      const archivedColumn = await expandBinaryObject(archived, true);
-      const importedColumn = ImportColumn(archivedColumn, {});
-      await props.worldThread.runTaskAsync("load-column", [
+      const archivedSector = await expandBinaryObject(archived, true);
+      const importedSector = ImportSector(archivedSector, {});
+      await props.worldThread.runTaskAsync("load-sector", [
         location,
-        importedColumn,
+        importedSector,
       ]);
     }
   );

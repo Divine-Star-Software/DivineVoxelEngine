@@ -2,13 +2,13 @@ import { Vector3Like } from "@amodx/math";
 import { VoxelSpace } from "./VoxelSpace.js";
 
 class RegionSpace extends VoxelSpace {
-  chunkBounds = Vector3Like.Create();
-  columnBounds = Vector3Like.Create();
-  getChunkVolume() {
-    return this.chunkBounds.x * this.chunkBounds.y * this.chunkBounds.z;
+  sectionBounds = Vector3Like.Create();
+  sectorBounds = Vector3Like.Create();
+  getSectionVolume() {
+    return this.sectionBounds.x * this.sectionBounds.y * this.sectionBounds.z;
   }
-  getColumnVolume() {
-    return this.columnBounds.x * this.columnBounds.y * this.columnBounds.z;
+  getSectorVolume() {
+    return this.sectorBounds.x * this.sectorBounds.y * this.sectorBounds.z;
   }
   getPosition() {
     return VoxelSpace.simpleCubeHash(this);
@@ -20,7 +20,7 @@ class RegionSpace extends VoxelSpace {
     return this._position;
   }
 }
-class ColumnSpace extends VoxelSpace {
+class SectorSpace extends VoxelSpace {
   constructor(public region: RegionSpace) {
     super();
   }
@@ -36,14 +36,14 @@ class ColumnSpace extends VoxelSpace {
         ),
         this.bounds
       ),
-      this.region.columnBounds
+      this.region.sectorBounds
     );
   }
   getPositionFromIndex(index: number) {
     Vector3Like.MultiplyToRef(
       VoxelSpace.getPositionFromIndex(
         this._position,
-        this.region.columnBounds,
+        this.region.sectorBounds,
         index
       ),
       this.bounds,
@@ -52,7 +52,7 @@ class ColumnSpace extends VoxelSpace {
     return this._position;
   }
 }
-class ChunkSpace extends VoxelSpace {
+class SectionSpace extends VoxelSpace {
   constructor(public region: RegionSpace) {
     super();
   }
@@ -65,7 +65,7 @@ class ChunkSpace extends VoxelSpace {
     return this.setXYZ(x, y, z).getRegionPositonx();
   }
   getRegionIndex() {
-    return VoxelSpace.getIndex(this._hashedPosition, this.region.chunkBounds);
+    return VoxelSpace.getIndex(this._hashedPosition, this.region.sectionBounds);
   }
   getRegionIndexXYZ(x: number, y: number, z: number) {
     this.getRegionPositonxXYZ(x, y, z);
@@ -86,7 +86,7 @@ class ChunkSpace extends VoxelSpace {
     Vector3Like.MultiplyToRef(
       VoxelSpace.getPositionFromIndex(
         this._position,
-        this.region.chunkBounds,
+        this.region.sectionBounds,
         index
       ),
       this.bounds,
@@ -97,11 +97,11 @@ class ChunkSpace extends VoxelSpace {
 }
 
 class FinalVoxelSpace extends VoxelSpace {
-  constructor(public chunk: ChunkSpace) {
+  constructor(public section: SectionSpace) {
     super();
   }
   getPosition() {
-    VoxelSpace.spatialHash(this, this.chunk);
+    VoxelSpace.spatialHash(this, this.section);
     this._position.x = this._hashedPosition.x;
     this._position.y = this._hashedPosition.y;
     this._position.z = this._hashedPosition.z;
@@ -113,7 +113,7 @@ class FinalVoxelSpace extends VoxelSpace {
   getPositionFromIndex(index: number) {
     return VoxelSpace.getPositionFromIndex(
       this._position,
-      this.chunk.bounds,
+      this.section.bounds,
       index
     );
   }
@@ -121,32 +121,32 @@ class FinalVoxelSpace extends VoxelSpace {
 
 export class VoxelSpaces {
   region: RegionSpace;
-  column: ColumnSpace;
-  chunk: ChunkSpace;
+  sector: SectorSpace;
+  section: SectionSpace;
   voxel: FinalVoxelSpace;
   constructor() {
     this.region = new RegionSpace();
-    this.column = new ColumnSpace(this.region);
+    this.sector = new SectorSpace(this.region);
 
-    this.chunk = new ChunkSpace(this.region);
+    this.section = new SectionSpace(this.region);
 
-    this.voxel = new FinalVoxelSpace(this.chunk);
+    this.voxel = new FinalVoxelSpace(this.section);
   }
 
   setDimensions(data: {
     regions: Vector3Like;
-    columns: Vector3Like;
-    chunks: Vector3Like;
+    sectors: Vector3Like;
+    sections: Vector3Like;
   }) {
     this.region.setCubeBounds(data.regions);
-    this.column.setCubeBounds(data.columns);
-    this.chunk.setCubeBounds(data.chunks);
-    this.voxel.setCubeBounds(data.chunks);
-    this.region.chunkBounds.x = this.region.bounds.x / this.chunk.bounds.x;
-    this.region.chunkBounds.y = this.region.bounds.y / this.chunk.bounds.y;
-    this.region.chunkBounds.z = this.region.bounds.z / this.chunk.bounds.z;
-    this.region.columnBounds.x = this.region.bounds.x / this.column.bounds.x;
-    this.region.columnBounds.y = this.region.bounds.y / this.column.bounds.y;
-    this.region.columnBounds.z = this.region.bounds.z / this.column.bounds.z;
+    this.sector.setCubeBounds(data.sectors);
+    this.section.setCubeBounds(data.sections);
+    this.voxel.setCubeBounds(data.sections);
+    this.region.sectionBounds.x = this.region.bounds.x / this.section.bounds.x;
+    this.region.sectionBounds.y = this.region.bounds.y / this.section.bounds.y;
+    this.region.sectionBounds.z = this.region.bounds.z / this.section.bounds.z;
+    this.region.sectorBounds.x = this.region.bounds.x / this.sector.bounds.x;
+    this.region.sectorBounds.y = this.region.bounds.y / this.sector.bounds.y;
+    this.region.sectorBounds.z = this.region.bounds.z / this.sector.bounds.z;
   }
 }

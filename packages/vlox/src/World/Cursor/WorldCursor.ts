@@ -1,56 +1,56 @@
 import { Vector3Like } from "@amodx/math";
-import { ColumnCursor } from "./ColumnCursor";
+import { SectorCursor } from "./SectorCursor";
 import { WorldSpaces } from "../WorldSpaces";
 import { DataCursorInterface } from "../../Data/Cursor/DataCursor.interface";
 import { WorldBounds } from "../WorldBounds";
 
-let cursorCache: ColumnCursor[] = [];
+let cursorCache: SectorCursor[] = [];
 
 export class WorldCursor extends DataCursorInterface {
-  columnCursors = new Map<number, Map<number, ColumnCursor>>();
+  sectorCursors = new Map<number, Map<number, SectorCursor>>();
 
   origin: Vector3Like = { x: 0, y: 0, z: 0 };
   dimension: string = "";
 
   setFocalPoint(dimension: string, x: number, y: number, z: number) {
-    const columnPos = WorldSpaces.column.getPositionXYZ(x, y, z);
+    const sectorPos = WorldSpaces.sector.getPositionXYZ(x, y, z);
 
-    for (const [cx, row] of this.columnCursors) {
+    for (const [cx, row] of this.sectorCursors) {
       for (const [cz, col] of row) {
         cursorCache.push(col);
       }
     }
 
-    this.columnCursors.clear();
+    this.sectorCursors.clear();
     this.dimension = dimension;
-    this.origin.x = columnPos.x / WorldSpaces.column.bounds.x;
-    this.origin.y = columnPos.y / WorldSpaces.column.bounds.y;
-    this.origin.z = columnPos.z / WorldSpaces.column.bounds.z;
+    this.origin.x = sectorPos.x / WorldSpaces.sector.bounds.x;
+    this.origin.y = sectorPos.y / WorldSpaces.sector.bounds.y;
+    this.origin.z = sectorPos.z / WorldSpaces.sector.bounds.z;
   }
 
   inBounds(x: number, y: number, z: number) {
     return WorldBounds.inBounds(x, y, z);
   }
 
-  getColumn(x: number, y: number, z: number) {
-    const columnPos = WorldSpaces.column.getPositionXYZ(x, y, z);
+  getSector(x: number, y: number, z: number) {
+    const sectorPos = WorldSpaces.sector.getPositionXYZ(x, y, z);
 
-    const cx = columnPos.x / WorldSpaces.column.bounds.x - this.origin.x;
-    const cz = columnPos.z / WorldSpaces.column.bounds.z - this.origin.z;
+    const cx = sectorPos.x / WorldSpaces.sector.bounds.x - this.origin.x;
+    const cz = sectorPos.z / WorldSpaces.sector.bounds.z - this.origin.z;
 
-    let row = this.columnCursors.get(cx);
+    let row = this.sectorCursors.get(cx);
     let cursor = row?.get(cz);
 
     if (!cursor) {
-      cursor = cursorCache.length ? cursorCache.shift()! : new ColumnCursor();
+      cursor = cursorCache.length ? cursorCache.shift()! : new SectorCursor();
       if (
-        !cursor.setColumn(this.dimension, columnPos.x, columnPos.y, columnPos.z)
+        !cursor.setSector(this.dimension, sectorPos.x, sectorPos.y, sectorPos.z)
       )
         return null;
 
       if (!row) {
         row = new Map();
-        this.columnCursors.set(cx, row);
+        this.sectorCursors.set(cx, row);
       }
       row.set(cz, cursor);
     }
@@ -58,7 +58,7 @@ export class WorldCursor extends DataCursorInterface {
   }
 
   getVoxel(x: number, y: number, z: number) {
-    const section = this.getColumn(x, y, z);
+    const section = this.getSector(x, y, z);
     if (!section) return null;
     return section.getVoxel(x, y, z);
   }

@@ -1,8 +1,8 @@
 import { Vector3Like } from "@amodx/math";
-import type { Chunk } from "../Chunk/index";
+import type { Section } from "../Section/index";
 
 export interface WorldSectionCursorInterface {
-  _chunk: Chunk | null;
+  _section: Section | null;
   _voxelIndex: number;
   _voxelPosition: Vector3Like;
 }

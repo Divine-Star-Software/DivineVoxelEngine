@@ -1,16 +1,16 @@
 import { Generator } from "../Classes/Generator";
 import { Circle, Square } from "@amodx/math";
-import { getColumnState } from "./getColumnState";
-import { ColumnState } from "../Classes/ColumnState";
+import { getSectorState } from "./getSectorState";
+import { SectorState } from "../Classes/SectorState";
 import { WorldRegister } from "../../../../World/WorldRegister";
-import { Column } from "../../../../World";
-import { ColumnStructIds } from "../../../../World/Column/ColumnStructIds";
+import { Sector } from "../../../../World";
+import { SectorStateStructIds } from "../../../../World/Sector/SectorStructIds";
 import { WorldLock } from "../../../../World/Lock/WorldLock";
 import { IWGTasks } from "../IWGTasks";
 import { IWGDimensions } from "../IWGDimensions";
 import { WorldSpaces } from "../../../../World/WorldSpaces";
-const stateCursor = new ColumnState();
-const columnSquare = new Square();
+const stateCursor = new SectorState();
+const sectorSquare = new Square();
 export function runWorldUpdate(generators: Generator[]) {
   for (const generator of generators) {
     const segment = IWGDimensions._dimensions.get(generator._dimension);
@@ -22,11 +22,11 @@ export function runWorldUpdate(generators: Generator[]) {
     const queue = segment.queue;
     const vistedMap = segment.vistedMap;
 
-    const columnPosition = generator._columnPosition;
-    queue.push(columnPosition.x, columnPosition.y, columnPosition.z);
+    const sectorPosition = generator._sectorPosition;
+    queue.push(sectorPosition.x, sectorPosition.y, sectorPosition.z);
 
-    generator._genCircle.center.x = columnPosition.x;
-    generator._genCircle.center.y = columnPosition.z;
+    generator._genCircle.center.x = sectorPosition.x;
+    generator._genCircle.center.y = sectorPosition.z;
 
     while (queue.length) {
       const cx = queue.shift()!;
@@ -42,32 +42,32 @@ export function runWorldUpdate(generators: Generator[]) {
 
       vistedMap.add(cx, cy, cz);
 
-      columnSquare.sideLength = WorldSpaces.column.bounds.x;
-      columnSquare.center.x = cx;
-      columnSquare.center.y = cz;
+      sectorSquare.sideLength = WorldSpaces.sector.bounds.x;
+      sectorSquare.center.x = cx + WorldSpaces.sector.bounds.x / 2;
+      sectorSquare.center.y = cz + WorldSpaces.sector.bounds.z / 2;
 
       if (
         !Circle.IsSquareInsideOrTouchingCircle(
-          columnSquare,
+          sectorSquare,
           generator._genCircle
         )
       )
         continue;
 
       WorldRegister.setDimension(generator._dimension);
-      const column = WorldRegister.column.get(cx, cy, cz);
-      if (!column) {
+      const sector = WorldRegister.sectors.get(cx, cy, cz);
+      if (!sector) {
         IWGTasks.worldLoadTasks.add(generator._dimension, cx, cy, cz);
         continue;
       }
 
-      const state = getColumnState(column, stateCursor, segment);
+      const state = getSectorState(sector, stateCursor, segment);
 
-      Column.StateStruct.setBuffer(column.stateBuffer);
+      Sector.StateStruct.setBuffer(sector.buffer);
 
       if (
         state.allLoaded &&
-        !Column.StateStruct.getProperty(ColumnStructIds.isWorldGenDone)
+        !Sector.StateStruct.getProperty(SectorStateStructIds.isWorldGenDone)
       ) {
         IWGTasks.worldGenTasks.add(generator._dimension, cx, cy, cz);
         continue;
@@ -75,7 +75,7 @@ export function runWorldUpdate(generators: Generator[]) {
 
       if (
         state.nWorldGenAllDone &&
-        !Column.StateStruct.getProperty(ColumnStructIds.isWorldDecorDone)
+        !Sector.StateStruct.getProperty(SectorStateStructIds.isWorldDecorDone)
       ) {
         IWGTasks.worldDecorateTasks.add(generator._dimension, cx, cy, cz);
         continue;
@@ -83,7 +83,7 @@ export function runWorldUpdate(generators: Generator[]) {
 
       if (
         state.nDecorAllDone &&
-        !Column.StateStruct.getProperty(ColumnStructIds.isWorldPropagationDone)
+        !Sector.StateStruct.getProperty(SectorStateStructIds.isWorldPropagationDone)
       ) {
         IWGTasks.worldPropagationTasks.add(generator._dimension, cx, cy, cz);
         continue;
@@ -91,7 +91,7 @@ export function runWorldUpdate(generators: Generator[]) {
 
       if (
         state.nPropagtionAllDone &&
-        !Column.StateStruct.getProperty(ColumnStructIds.isWorldSunDone)
+        !Sector.StateStruct.getProperty(SectorStateStructIds.isWorldSunDone)
       ) {
         IWGTasks.worldSunTasks.add(generator._dimension, cx, cy, cz);
         continue;

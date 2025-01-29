@@ -6,4 +6,5 @@ export class IWGTools {
   static taskTool: TaskTool;
   static worldStorage: WorldStorageInterface | null = null;
   static parent: Thread;
+
 }

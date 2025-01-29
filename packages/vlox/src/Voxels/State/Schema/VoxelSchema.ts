@@ -1,11 +1,9 @@
 import { BinarySchema } from "./BinarySchema";
 
-export class VoxelSceham {
+export class VoxelSchema {
   constructor(
-    public id:string,
-    public shapeState: BinarySchema,
-    public modState: BinarySchema
+    public id: string,
+    public state: BinarySchema,
+    public mod: BinarySchema
   ) {}
-
-
 }

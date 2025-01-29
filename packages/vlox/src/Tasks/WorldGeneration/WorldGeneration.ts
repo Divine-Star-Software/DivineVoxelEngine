@@ -43,7 +43,7 @@ export class WorldGeneration {
 
     if (!WorldGenRegister.attemptRequestFullFill(requestsId)) {
       const inte = new SafeInterval().setInterval(100).setOnRun(() => {
-        console.warn("do the check",data,mode)
+   //     console.warn("do the check",data,mode)
         if (WorldGenRegister.attemptRequestFullFill(requestsId)) {
           onDone();
           inte.stop();

@@ -13,12 +13,12 @@ export type DimensionOptions = {
 
 export type RichDataSchema = Record<string, Record<string, any>>;
 
-export type RichColumn =  {
+export type RichSector =  {
  data: RichDataSchema
 }
 
 export type RichRegion = {
- columns: Map<string, RichColumn>;
+ sectors: Map<string, RichSector>;
 };
 export type RichWorldDimensions = Map<string, Map<string, RichRegion>>;
 

@@ -85,7 +85,7 @@ export class VoxelGeometryLookUp {
     //no ao
     this.noCastAO[hashed] = voxel.isLightSource() || voxel.noAO();
     //state
-    const shapeState = voxel.getShapeState();
+    const shapeState = voxel.getState();
     const state = voxelConstructor.shapeStateTree.getState(shapeState);
     this.stateCache[hashed] = state;
     //mod

@@ -1,103 +1,88 @@
 import { Vec3Array } from "@amodx/math";
 import { LocationData } from "../../Math";
 
-
 /**
- * Interface for an archived column.
+ * Interface for an archived sector.
  */
-export interface ArchivedColumnData {
-  /** Number representing the version of the archiver used. */
-  archiverVersion: number;
-  /** Number representing the version of the column data. */
-  version: number;
-  /** The location of the column in the world. */
+export interface ArchivedSectorData {
+  /** The version of vlox the data was stored in. */
+  version: string;
+  /** The location of the sector in the world. */
   location: LocationData;
-  /** Record of the column's state, storing dynamic or user-defined data. */
-  columnState: Record<string, any>;
-  /** The palette data used within the column. */
-  palettes: ArchivedColumnPaletteData;
+  /** Record of the sector's state, storing dynamic or user-defined data. */
+  sectorState: Record<string, any>;
+  /** The palette data used within the sector. */
+  palettes: ArchivedSectorPaletteData;
   /** Placeholder for future buffer data. */
-  buffers: ArchivedColumnBuffersData;
-  /** Keys associated with chunk states and other objects. */
-  keys: ArchivedColumnKeysData;
-  /** Array of archived chunk data within the column. */
-  chunks: ArchivedChunkData[];
+  buffers: ArchivedSectorBuffersData;
+  /** Keys associated with section states and other objects. */
+  keys: ArchivedSectorKeysData;
+  /** Array of archived section data within the sector. */
+  sections: ArchivedSectionData[];
 }
 
 /**
- * Interface for the palettes of an archived column.
+ * Interface for the palettes of an archived sector.
  */
-export interface ArchivedColumnPaletteData {
-  /** Array of strings representing the unique identifiers for the primary voxel types in the column. */
+export interface ArchivedSectorPaletteData {
   id: string[];
-  /** Optional array of strings for the secondary voxel types, providing additional data for complex structures. */
   secondaryId?: string[];
-  /** Optional Uint16Array representing the state of voxels, indicating specific conditions or variations. */
-  state?: Uint16Array;
-  /** Optional Uint16Array representing the mod state of voxels, indicating specific conditions or variations. */
-  mod?: Uint16Array;
-  /** Optional Uint16Array representing light levels for each voxel in the column. */
+  level?: Uint8Array;
+  stateMap: Record<number,any[]>;
+  modMap: Record<number,any[]>;
+  state: Uint16Array;
+  mod: Uint16Array;
   light?: Uint16Array;
-  /** Optional Uint16Array representing the state of secondary voxels. */
   secondaryState?: Uint16Array;
 }
 
 /**
- * Interface for the keys of an archived column.
+ * Interface for the keys of an archived sector.
  */
-export interface ArchivedColumnKeysData {
-  /** Array of strings that are the keys for the chunk state struct.  */
-  chunkState: string[];
+export interface ArchivedSectorKeysData {
+  /** Array of strings that are the keys for the section state struct.  */
+  sectionState: string[];
 }
 
 /**
- * Placeholder interface for future buffer data in a column.
+ * Placeholder interface for future buffer data in a sector.
  */
-export interface ArchivedColumnBuffersData {}
+export interface ArchivedSectorBuffersData {}
 
 /**
- * Interface for an archived chunk.
+ * Interface for an archived section.
  */
-export interface ArchivedChunkData {
-  /** Array representing the chunk's state, holding dynamic or user-defined data. */
+export interface ArchivedSectionData {
+  /** Array representing the section's state, holding dynamic or user-defined data. */
   state: any[];
-  /** Palette data used within the chunk. */
-  palettes: ArchivedChunkPaletteData;
-  /** Buffer data for the chunk, holding voxel type identifiers, light data, state, and secondary state. */
-  buffers: ArchivedChunkBuffers;
+  /** Palette data used within the section. */
+  palettes: ArchivedSectionPaletteData;
+  /** Buffer data for the section, holding voxel type identifiers, light data, state, and secondary state. */
+  buffers: ArchivedSectionBuffers;
 }
 
 /**
- * Interface representing the palette data for a single chunk in the voxel engine.
+ * Interface representing the palette data for a single section in the voxel engine.
  */
-export interface ArchivedChunkPaletteData {
-  /** Optional Uint16Array representing the voxel type identifiers within the chunk. */
+export interface ArchivedSectionPaletteData {
   id?: Uint16Array;
-  /** Optional Uint16Array for storing light data. */
   light?: Uint16Array;
-  /** Optional Uint16Array for secondary voxel type identifiers. */
+  level?: Uint8Array;
   secondaryId?: Uint16Array;
-  /** Optional Uint16Array for storing voxel states within the chunk. */
   state?: Uint16Array;
-  /** Optional Uint16Array for storing mod data. */
   mod?: Uint16Array;
-  /** Optional Uint16Array for storing states of secondary voxels. */
   secondaryState?: Uint16Array;
 }
 
 /**
- * Interface representing the buffer data for a chunk.
+ * Interface representing the buffer data for a section.
  */
-export interface ArchivedChunkBuffers {
-  /** The buffer for voxel type identifiers, which could be a Uint16Array, Uint8Array, or a single number if all voxels are the same. */
+export interface ArchivedSectionBuffers {
   id: Uint16Array | Uint8Array | number;
-  /** The buffer for light data, which could be a Uint16Array, Uint8Array, or a single number if all light values are the same. */
   light: Uint16Array | Uint8Array | number;
-  /** The buffer for voxel states, which could be a Uint16Array, Uint8Array, or a single number if all states are the same. */
+  level: Uint8Array | number;
   state: Uint16Array | Uint8Array | number;
-  /** The buffer for voxel mod states, which could be a Uint16Array, Uint8Array, or a single number if all states are the same. */
   mod: Uint16Array | Uint8Array | number;
-  /** The buffer for secondary voxel data, which could be a Uint16Array, Uint8Array, or a single number if all secondary data is the same. */
   secondary: Uint16Array | Uint8Array | number;
 }
 
@@ -105,18 +90,16 @@ export interface ArchivedChunkBuffers {
  * Interface for an archived area.
  */
 export interface ArchivedAreaData {
-  /** Number representing the version of the archiver used. */
-  archiverVersion: number;
-  /** Number representing the version of the area data. */
-  version: number;
+  /** The version of vlox the data was stored in. */
+  version: string;
   /** String representing the dimension or world type the area belongs to. */
   dimension: string;
   /** The palette maps for the area, including voxel, light, and state data. */
   maps: ArchivedAreaMapData;
-  /** Keys associated with column and chunk states and other objects. */
+  /** Keys associated with sector and section states and other objects. */
   keys: ArchivedAreaKeysData;
-  /** Array of archived column data within the area. */
-  columns: ArchivedAreaColumnData[];
+  /** Array of archived sector data within the area. */
+  sectors: ArchivedAreaSectorData[];
 }
 
 /**
@@ -127,62 +110,61 @@ export interface ArchivedAreaMapData {
   id: Record<string, string>;
   /** Record mapping string IDs to arrays of voxel identifiers. */
   idPalette: Record<string, string[]>;
-  /** Record mapping string IDs to arrays of secondary voxel identifiers. */
-  secondaryIdPalette: Record<string, string[]>;
   /** Record mapping string IDs to Uint16Arrays of light data. */
   lightPalette: Record<string, Uint16Array>;
+  /** Record mapping string IDs to Uint8Arrays of level data. */
+  levelPalette: Record<string, Uint8Array>;
   /** Record mapping string IDs to Uint16Arrays of voxel states. */
   statePalette: Record<string, Uint16Array>;
   /** Record mapping string IDs to Uint16Arrays of voxel mods. */
   modPalette: Record<string, Uint16Array>;
+  /** Record mapping string IDs to arrays of secondary voxel identifiers. */
+  secondaryIdPalette: Record<string, string[]>;
   /** Record mapping string IDs to Uint16Arrays of secondary voxel states. */
   secondaryStatePalette: Record<string, Uint16Array>;
-  /** Record mapping chunk identifiers to `ArchivedChunkData`. */
-  chunk: Record<string, ArchivedChunkData>;
-  /** Record mapping column state identifiers to arrays of state data. */
-  columnState: Record<string, any[]>;
+  /** Record mapping section identifiers to `ArchivedSectionData`. */
+  section: Record<string, ArchivedSectionData>;
+  /** Record mapping sector state identifiers to arrays of state data. */
+  sectorState: Record<string, any[]>;
 }
 
 /**
- * Interface representing the keys associated with column and chunk states within an area.
+ * Interface representing the keys associated with sector and section states within an area.
  */
 export interface ArchivedAreaKeysData {
-  /** Array of strings that are the keys for the column state struct.  */
-  columnState: string[];
-  /** Array of strings that are the keys for the chunk state struct.  */
-  chunkState: string[];
+  /** Array of strings that are the keys for the sector state struct.  */
+  sectorState: string[];
+  /** Array of strings that are the keys for the section state struct.  */
+  sectionState: string[];
 }
 
 /**
- * Interface representing the palette data for a column within an area.
+ * Interface representing the palette data for a sector.
  */
-export interface ArchivedAreaColumnPaletteData {
-  /** Array of strings representing the unique identifiers for the primary voxel types in the column. */
+export interface ArchivedAreaSectorPaletteData {
   id: string[];
-  /** Optional array of strings for secondary voxel types. */
-  secondary?: string[];
-  /** Optional Uint16Array representing the state of voxels in the column. */
-  state?: Uint16Array;
-  /** Optional Uint16Array representing the mod of voxels in the column. */
-  mod?: Uint16Array;
-  /** Optional Uint16Array representing light levels for each voxel in the column. */
   light?: Uint16Array;
-  /** Optional Uint16Array representing the state of secondary voxels. */
+  level?: Uint8Array;
+  state?: Uint16Array;
+  mod?: Uint16Array;
+  stateMap: Record<number,any[]>;
+  modMap: Record<number,any[]>;
+  secondaryId?: string[];
   secondaryState?: Uint16Array;
 }
 
 /**
- * Interface representing the archived data for a column within an area.
+ * Interface representing the archived data for a sector within an area.
  */
-export interface ArchivedAreaColumnData {
-  /** A Vec3Array representing the position of the column within the area. */
+export interface ArchivedAreaSectorData {
+  /** A Vec3Array representing the position of the sector within the area. */
   position: Vec3Array;
-  /** The state data for the column, either as an array or a reference string. */
-  columnState: any[] | string;
-  /** Buffer data for the column. */
-  buffers: ArchivedColumnBuffersData;
-  /** The palette data used within the column. */
-  palettes: ArchivedAreaColumnPaletteData;
-  /** Array of archived chunk data or references to chunk data. */
-  chunks: (ArchivedChunkData | string)[];
+  /** The state data for the sector, either as an array or a reference string. */
+  sectorState: any[] | string;
+  /** Buffer data for the sector. */
+  buffers: ArchivedSectorBuffersData;
+  /** The palette data used within the sector. */
+  palettes: ArchivedAreaSectorPaletteData;
+  /** Array of archived section data or references to section data. */
+  sections: (ArchivedSectionData | string)[];
 }

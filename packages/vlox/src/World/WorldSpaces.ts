@@ -12,15 +12,15 @@ export function InitWorldSpaces(settings: EngineSettingsData) {
       y: settings.regions.regionYPow2,
       z: settings.regions.regionZPow2,
     },
-    columns: {
-      x: settings.chunks.chunkXPow2,
+    sectors: {
+      x: settings.sections.sectionXPow2,
       y: settings.regions.regionYPow2,
-      z: settings.chunks.chunkZPow2,
+      z: settings.sections.sectionZPow2,
     },
-    chunks: {
-      x: settings.chunks.chunkXPow2,
-      y: settings.chunks.chunkYPow2,
-      z: settings.chunks.chunkZPow2,
+    sections: {
+      x: settings.sections.sectionXPow2,
+      y: settings.sections.sectionYPow2,
+      z: settings.sections.sectionZPow2,
     },
   });
 }

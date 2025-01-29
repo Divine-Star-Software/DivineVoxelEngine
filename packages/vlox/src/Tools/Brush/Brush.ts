@@ -7,15 +7,13 @@ import { WorldCursor } from "../../World/Cursor/WorldCursor.js";
 import { SubstanceDataTool } from "../../Tools/Data/SubstanceDataTool.js";
 import { VoxelCursor } from "../../Voxels/Cursor/VoxelCursor.js";
 import { WorldRegister } from "../../World/WorldRegister.js";
-import { VoxelStruct } from "Voxels/Structs/VoxelStruct.js";
 const airId = "dve_air";
-
-const air: RawVoxelData = [0, 0, 0, 0, 0];
+const air: RawVoxelData = [0, 0, 0, 0, 0, 0];
 
 export class BrushTool {
   data: PaintVoxelData = {
     id: airId,
-    shapeState: 0,
+    state: 0,
     secondaryVoxelId: "",
     level: 0,
     levelState: 0,
@@ -38,14 +36,14 @@ export class BrushTool {
     return this;
   }
 
-  fillColumn() {
+  newSector() {
     WorldRegister.setDimension(this.dimension);
-    WorldRegister.column.fill(this.x, this.y, this.z);
+    WorldRegister.sectors.new(this.x, this.y, this.z);
   }
 
   setData(data: Partial<PaintVoxelData>) {
     this.data.id = data.id ? data.id : airId;
-    this.data.shapeState = data.shapeState ? data.shapeState : 0;
+    this.data.state = data.state ? data.state : 0;
     this.data.secondaryVoxelId = data.secondaryVoxelId
       ? data.secondaryVoxelId
       : airId;
@@ -60,7 +58,7 @@ export class BrushTool {
   setRaw(data: RawVoxelData) {
     this.voxelCursor.copyRaw(data).process();
     this.data.id = this.voxelCursor.getStringId();
-    this.data.shapeState = this.voxelCursor.getShapeState();
+    this.data.state = this.voxelCursor.getState();
     this.data.levelState = this.voxelCursor.getLevelState();
     this.data.level = this.voxelCursor.getLevel();
     this.voxelCursor.setSecondary(true);
@@ -93,7 +91,7 @@ export class BrushTool {
   }
 
   setShapeState(state: number) {
-    this.data.shapeState = state;
+    this.data.state = state;
     return this;
   }
 
@@ -117,7 +115,7 @@ export class BrushTool {
     this.data.secondaryVoxelId = "";
     this.data.level = 0;
     this.data.levelState = 0;
-    this.data.shapeState = 0;
+    this.data.state = 0;
     this.data.mod = 0;
     this.x = 0;
     this.y = 0;
@@ -133,7 +131,7 @@ export class BrushTool {
     if (id < 0) return false;
     voxel.setId(id);
 
-    voxel.setShapeState(this.data.shapeState ? this.data.shapeState : 0);
+    voxel.setState(this.data.state ? this.data.state : 0);
 
     voxel.setLevel(this.data.level);
 

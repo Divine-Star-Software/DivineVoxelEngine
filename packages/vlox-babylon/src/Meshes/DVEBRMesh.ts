@@ -1,6 +1,6 @@
 import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import { Observable } from "@amodx/core/Observers/Observable";
-import { ChunkMeshInterface } from "@divinevoxel/vlox/Renderer/DVEChunkMeshInterface";
+import { DVESectionMeshInterface } from "@divinevoxel/vlox/Renderer";
 
 class DVEBRMeshObservers {
   updated = new Observable();
@@ -8,7 +8,7 @@ class DVEBRMeshObservers {
 import { VertexBuffer } from "@babylonjs/core/Meshes/buffer.js";
 import { Engine } from "@babylonjs/core";
 import { CompactSubMesh } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
-export class DVEBRMesh implements ChunkMeshInterface {
+export class DVEBRMesh implements DVESectionMeshInterface {
   observers = new DVEBRMeshObservers();
   static UpdateVertexData(mesh: Mesh, engine: Engine, data: CompactSubMesh) {
     for (let i = 0; i < data[1].length; i++) {

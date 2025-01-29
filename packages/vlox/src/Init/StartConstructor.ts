@@ -5,7 +5,6 @@ import { CreatePromiseCheck } from "@amodx/core/Intervals/CreatePromiseCheck";
 import { VoxelGeometryLookUp } from "../Mesher/Models/VoxelGeometryLookUp";
 import { Environment } from "@amodx/core/Environment/Environment";
 import { WorldRegister } from "../World/WorldRegister";
-import InitAnalyzerTasks from "../Tasks/Analyzer/InitTasks";
 import InitUpdateTasks from "../Tasks/Update/InitTasks";
 import InitPropagationTasks from "../Tasks/Propagation/InitTasks";
 import InitMesherTasks from "../Mesher/InitTask";
@@ -47,14 +46,13 @@ export async function StartContrusctor(data: {} = {}) {
 
   InitArchiveTasks({ worldThread: DVEC.threads.world });
   InitWorldDataSync();
-  InitAnalyzerTasks();
   InitPropagationTasks();
   InitMesherTasks(DVEC.threads.parent);
   InitUpdateTasks({
     onDone(tasks) {
       DVEC.threads.world.runTask("build-queue", [
         tasks.origin[0],
-        tasks.bounds.getChunks(),
+        tasks.bounds.getSections(),
       ]);
     },
   });

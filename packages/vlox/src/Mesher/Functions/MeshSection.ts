@@ -1,19 +1,19 @@
 import { LocationData } from "../../Math";
-import type { SetChunkMeshTask } from "../../Renderer/Renderer.types.js";
+import type { SetSectionMeshTask } from "../../Renderer/Renderer.types.js";
 //data
 import { WorldSpaces } from "../../World/WorldSpaces.js";
 //tools
-import { VoxelGeometryLookUp } from "../Models//VoxelGeometryLookUp.js";
-import { CompactVoxelMesh } from "../Functions/CompactVoxelMesh.js";
+import { VoxelGeometryLookUp } from "../Models/VoxelGeometryLookUp.js";
+import { CompactVoxelMesh } from "./CompactVoxelMesh.js";
 import { WorldCursor } from "../../World/Cursor/WorldCursor.js";
-import { ChunkCursor } from "../../World/Cursor/ChunkCursor.js";
-import { RenderedMaterials } from "../RenderedMaterials"
+import { SectionCursor } from "../../World/Cursor/SectionCursor.js";
+import { RenderedMaterials } from "../RenderedMaterials";
 import { VoxelMesherDataTool } from "../Tools/VoxelMesherDataTool.js";
 import { VoxelModelConstructorRegister } from "../Models/VoxelModelConstructorRegister.js";
-import { ChunkHeightMap } from "../../World/Chunk/ChunkHeightMap.js";
+import { SectionHeightMap } from "../../World/Section/SectionHeightMap.js";
 import { WorldRegister } from "../../World/WorldRegister.js";
 
-const chunkCursor = new ChunkCursor();
+const sectionCursor = new SectionCursor();
 const worldCursor = new WorldCursor();
 
 function process(
@@ -22,7 +22,7 @@ function process(
   z: number,
   doSecondCheck = false
 ): boolean {
-  const voxel = chunkCursor.getVoxel(x, y, z);
+  const voxel = sectionCursor.getVoxel(x, y, z);
   if (!voxel) return false;
   if (!voxel.isRenderable()) return false;
 
@@ -52,9 +52,9 @@ function process(
     );
   }
 
-  mesher.origin.x = chunkCursor._voxelPosition.x;
-  mesher.origin.y = chunkCursor._voxelPosition.y;
-  mesher.origin.z = chunkCursor._voxelPosition.z;
+  mesher.origin.x = sectionCursor._voxelPosition.x;
+  mesher.origin.y = sectionCursor._voxelPosition.y;
+  mesher.origin.z = sectionCursor._voxelPosition.z;
   mesher.position.x = x;
   mesher.position.y = y;
   mesher.position.z = z;
@@ -67,23 +67,22 @@ function process(
   return true;
 }
 
-export function MeshChunk(
+export function MeshSection(
   location: LocationData
-): [task: SetChunkMeshTask, transfers: any[]] | null {
+): [task: SetSectionMeshTask, transfers: any[]] | null {
   const [dimension, cx, cy, cz] = location;
   WorldRegister.setDimension(dimension);
-  const chunk = WorldRegister.chunk.get(cx, cy, cz);
-
-  if (!chunk) return null;
-
-  ChunkHeightMap.setChunk(chunk);
+  const sector = WorldRegister.sectors.get(cx, cy, cz);
+  if (!sector) return null;
+  const section = sector.getSection(cy);
+  SectionHeightMap.setSection(section);
 
   worldCursor.setFocalPoint(...location);
-  chunkCursor.setChunk(...location);
+  sectionCursor.setSection(...location);
 
-  let [minY, maxY] = ChunkHeightMap.getMinMax();
-  const maxX = WorldSpaces.chunk.bounds.x;
-  const maxZ = WorldSpaces.chunk.bounds.z;
+  let [minY, maxY] = SectionHeightMap.getMinMax();
+  const maxX = WorldSpaces.section.bounds.x;
+  const maxZ = WorldSpaces.section.bounds.z;
 
   if (Math.abs(minY) == Infinity && Math.abs(maxY) == Infinity) return null;
   VoxelGeometryLookUp.start(dimension, location[1], location[2], location[3]);
@@ -99,21 +98,21 @@ export function MeshChunk(
         }
       }
     }
-    ChunkHeightMap.setVoxel(y, foundVoxels);
-    ChunkHeightMap.setDirty(y, false);
+    SectionHeightMap.setVoxel(y, foundVoxels);
+    SectionHeightMap.setDirty(y, false);
   }
   VoxelGeometryLookUp.stop();
   const transfers: any[] = [];
-  const chunkEffects: SetChunkMeshTask[2] = [];
+  const sectionEffects: SetSectionMeshTask[2] = [];
 
-  const chunks = <SetChunkMeshTask>[location, [] as any, chunkEffects, 0];
+  const sections = <SetSectionMeshTask>[location, [] as any, sectionEffects, 0];
 
   const meshed: VoxelMesherDataTool[] = [];
   for (const [substance, mesher] of RenderedMaterials.meshers) {
     for (const e in mesher.effects) {
       const float = Float32Array.from(mesher.effects[e]);
       transfers.push(float.buffer);
-      chunkEffects.push([e, float]);
+      sectionEffects.push([e, float]);
     }
     if (mesher.mesh!.positions.length == 0) {
       mesher.resetAll();
@@ -133,10 +132,10 @@ export function MeshChunk(
           compactMesh[4].buffer,
         ])
   );
-  chunks[1] = compactMesh;
+  sections[1] = compactMesh;
   for (const mesher of meshed) {
     mesher.resetAll();
   }
 
-  return [chunks, transfers];
+  return [sections, transfers];
 }

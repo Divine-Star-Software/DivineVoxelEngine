@@ -4,14 +4,19 @@ import { Vector3 } from "@babylonjs/core/Maths/";
 import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo.js";
 import { EngineSettingsData } from "@divinevoxel/vlox/Settings/EngineSettings.types";
-import { DVEChunkMeshes } from "@divinevoxel/vlox/Renderer/DVEChunkMeshes";
+import { DVESectionMeshes } from "@divinevoxel/vlox/Renderer";
 import { DVEBabylonRenderer } from "../Renderer/DVEBabylonRenderer";
 import { DVEBRMesh } from "./DVEBRMesh";
 import { CompactMeshData } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
 import { EngineSettings } from "@divinevoxel/vlox/Settings/EngineSettings";
-import { ChunkMesh } from "@divinevoxel/vlox/Renderer/Classes/ChunkMesh";
+import { SectionMesh } from "@divinevoxel/vlox/Renderer";
 
-export class DVEBRChunkMeshes extends DVEChunkMeshes {
+const min = Vector3.Zero();
+const max = new Vector3(16, 16, 16);
+const empty = new Float32Array(1);
+const emptyIndice = new Uint16Array(1);
+export class DVEBRSectionMeshes extends DVESectionMeshes {
+  static meshCache: Mesh[] = [];
   pickable = false;
   checkCollisions = false;
   serialize = false;
@@ -33,7 +38,7 @@ export class DVEBRChunkMeshes extends DVEChunkMeshes {
   }
 
   updateVertexData(
-    chunk: ChunkMesh,
+    chunk: SectionMesh,
     location: Vec3Array,
     data: CompactMeshData
   ) {
@@ -48,24 +53,23 @@ export class DVEBRChunkMeshes extends DVEChunkMeshes {
       if (chunk.meshes.has(subMeshMaterial)) {
         mesh = chunk.meshes.get(subMeshMaterial) as Mesh;
       } else {
-        mesh = new Mesh("", this.scene);
-        mesh.doNotSyncBoundingInfo = true;
+        if (!DVEBRSectionMeshes.meshCache.length) {
+          mesh = new Mesh("", this.scene);
+          mesh.doNotSyncBoundingInfo = true;
+   
+          mesh.cullingStrategy = Mesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY;
+        } else {
+          mesh = DVEBRSectionMeshes.meshCache.shift()!;
+        }
       }
+
       mesh.unfreezeWorldMatrix();
       mesh.position.set(location[0], location[1], location[2]);
-
       DVEBRMesh.UpdateVertexData(mesh, this.engine, subMeshes[i]);
+      mesh.getBoundingInfo().reConstruct(min, max, mesh.getWorldMatrix());
+      mesh.freezeWorldMatrix();
 
       mesh.material = this.renderer.materials.get(subMeshMaterial)!._material;
-      mesh
-        .getBoundingInfo()
-        .reConstruct(
-          Vector3.Zero(),
-          new Vector3(16, 16, 16),
-          mesh.getWorldMatrix()
-        );
-
-      mesh.freezeWorldMatrix();
 
       chunk.meshes.set(subMeshMaterial, mesh);
 
@@ -79,9 +83,15 @@ export class DVEBRChunkMeshes extends DVEChunkMeshes {
       }
     }
 
-    for (const [key, mesh] of chunk.meshes) {
+    for (const [key, mesh] of chunk.meshes as Map<string, Mesh>) {
       if (!found[key]) {
-        (mesh as Mesh).dispose();
+        mesh.dispose();
+        for (const bufferKind in mesh.getVerticesDataKinds()) {
+          mesh.setVerticesData(bufferKind, empty);
+        }
+        mesh.setIndices(emptyIndice);
+        mesh.setEnabled(false);
+        DVEBRSectionMeshes.meshCache.push(mesh as any);
         chunk.meshes.delete(key);
       }
     }

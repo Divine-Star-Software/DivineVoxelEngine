@@ -26,7 +26,7 @@ export class PaintVoxelData {
     return new PaintVoxelData(
       data.id,
       data.mod,
-      data.shapeState,
+      data.state,
       data.level,
       data.levelState,
       data.secondaryVoxelId
@@ -35,7 +35,7 @@ export class PaintVoxelData {
   private constructor(
     public id: string = "dve_air",
     public mod: number = 0,
-    public shapeState: number = 0,
+    public state: number = 0,
     public level: number = 0,
     public levelState: number = 0,
     public secondaryVoxelId: string = "dve_air"
@@ -50,12 +50,14 @@ export type RawVoxelData = [
   id: number,
   /**The light of the voxel */
   light: number,
+  /**The level of the voxel */
+  level: number,
   /**The state of the voxel */
   state: number,
-  /**The secondary id of the voxel */
-  secondaryId: number,
   /**The mod of the voxel */
   mod: number,
+  /**The secondary id of the voxel */
+  secondary: number,
 ];
 
 export enum VoxelStructIds {

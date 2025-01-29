@@ -7,8 +7,7 @@ import { DVEQRFOManager } from "./DVEQRFOManger";
 import { DivineVoxelEngineRender } from "@divinevoxel/vlox/Contexts/Render/DivineVoxelEngineRender.js";
 import { Observable } from "@amodx/core/Observers/Observable.js";
 import { DVEQRMesh } from "./Nodes/Meshes/DVEQRMesh.js";
-import { DVEChunkMeshes } from "@divinevoxel/vlox/Renderer/DVEChunkMeshes";
-import { DVEQRNodeMesh } from "./Nodes/Meshes/DVEQRNodeMesh";
+import { DVEQRSectorMeshes } from "./Nodes/Meshes/DVEQRSectorMeshes";
 import { DVEQRMaterialsRegister } from "./Nodes/Materials/DVEQRNodeMaterialsManager";
 
 export interface DVEBabylonRendererInitData {
@@ -23,7 +22,7 @@ export class DVEQuantumRenderer extends DVERenderer {
 
   foManager: DVEQRFOManager;
   meshCuller: DVEQRMeshCuller;
-  chunkMeshes:  DVEQRNodeMesh;
+  sectorMeshes:  DVEQRSectorMeshes;
   materials = new DVEQRMaterialsRegister();
 
 
@@ -31,7 +30,7 @@ export class DVEQuantumRenderer extends DVERenderer {
     super();
 
 
-    this.chunkMeshes = new DVEQRNodeMesh(data.scene);
+    this.sectorMeshes = new DVEQRSectorMeshes(data.scene);
 
     if (!DVEQuantumRenderer.instance) DVEQuantumRenderer.instance = this;
 

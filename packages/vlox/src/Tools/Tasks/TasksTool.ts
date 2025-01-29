@@ -88,11 +88,11 @@ class VoxelTasks {
 }
 
 class BuildTask {
-  chunk: TaskToolTask<LocationData>;
-  column: TaskToolTask<LocationData>;
+  section: TaskToolTask<LocationData>;
+  sector: TaskToolTask<LocationData>;
   constructor(public tool: TaskTool) {
-    this.chunk = new TaskToolTask(TasksIds.BuildChunk, tool.threads);
-    this.column = new TaskToolTask(TasksIds.BuildColumn, tool.threads);
+    this.section = new TaskToolTask(TasksIds.BuildSection, tool.threads);
+    this.sector = new TaskToolTask(TasksIds.BuildSector, tool.threads);
   }
 }
 export class TaskTool {

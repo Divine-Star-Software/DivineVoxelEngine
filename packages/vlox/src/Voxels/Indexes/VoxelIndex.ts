@@ -23,7 +23,7 @@ export class VoxelNamedState {
       if (this.data.state == "*") {
         this.compiled.shapeStateAny = true;
       } else if (this.data.state) {
-        this.compiled.shapeState = schema.shapeState.readString(
+        this.compiled.shapeState = schema.state.readString(
           this.data.state
         );
       }
@@ -31,7 +31,7 @@ export class VoxelNamedState {
       if (this.data.mod == "*") {
         this.compiled.modAny = true;
       } else if (this.data.mod) {
-        this.compiled.mod = schema.modState.readString(this.data.mod);
+        this.compiled.mod = schema.mod.readString(this.data.mod);
       }
     } else {
       this.compiled.modAny = true;
@@ -45,7 +45,7 @@ export class VoxelNamedState {
       id: this.voxelId,
       level: 0,
       levelState: 0,
-      shapeState: this.compiled.shapeState,
+      state: this.compiled.shapeState,
       mod: this.compiled.mod,
     });
   }
@@ -114,7 +114,7 @@ export class VoxelIndex {
   getStateFromPaintData(data: PaintVoxelData): VoxelNamedState | false {
     const conatiner = this.states.get(data.id);
     if (!conatiner) return false;
-    const { mod, shapeState } = data;
+    const { mod, state: shapeState } = data;
     for (const state of conatiner?.stateArray) {
       if (
         (mod == state.compiled.mod || state.compiled.modAny) &&

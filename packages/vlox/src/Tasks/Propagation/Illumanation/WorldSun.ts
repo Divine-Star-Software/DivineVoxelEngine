@@ -7,7 +7,7 @@ import { WorldSpaces } from "../../../World/WorldSpaces.js";
 
 import { Vec3Array } from "@amodx/math";
 import { UpdateTask } from "../../Update/UpdateTask.js";
-import { ColumnHeightMap } from "../../../World/Column/ColumnHeightMap.js";
+import { SectorHeightMap } from "../../../World/Sector/SectorHeightMap.js";
 import { VoxelLightData } from "../../../Voxels/Cursor/VoxelLightData.js";
 import {
   getMinusOneForSun,
@@ -31,21 +31,21 @@ export function RunWorldSun(tasks: UpdateTask) {
 
   const [dimension, cx, cy, cz] = tasks.origin;
 
-  const RmaxY = ColumnHeightMap.getRelative(tasks.origin);
-  const AmaxY = ColumnHeightMap.getAbsolute(tasks.origin);
+  const RmaxY = SectorHeightMap.getRelative(tasks.origin);
+  const AmaxY = SectorHeightMap.getAbsolute(tasks.origin);
 
-  const maxX = cx + WorldSpaces.column.bounds.x;
+  const maxX = cx + WorldSpaces.sector.bounds.x;
   const maxY = WorldBounds.bounds.MaxY;
-  const maxZ = cz + WorldSpaces.column.bounds.z;
+  const maxZ = cz + WorldSpaces.sector.bounds.z;
 
-  const columnCursor = tasks.nDataCursor.getColumn(
+  const sectorCursor = tasks.nDataCursor.getSector(
     tasks.origin[1],
     tasks.origin[2],
     tasks.origin[3]
   );
-  if (!columnCursor) {
+  if (!sectorCursor) {
     console.warn(
-      "Could not load column when running world sun at ",
+      "Could not load sector when running world sun at ",
       tasks.origin.toString()
     );
     return;
@@ -55,7 +55,7 @@ export function RunWorldSun(tasks: UpdateTask) {
   for (let iy = minY; iy < maxY; iy++) {
     for (let iz = cz; iz < maxZ; iz++) {
       for (let ix = cx; ix < maxX; ix++) {
-        const voxel = columnCursor.getVoxel(ix, iy, iz);
+        const voxel = sectorCursor.getVoxel(ix, iy, iz);
         if (!voxel) continue;
         const l = voxel.getLight();
         if (l < 0) continue;
@@ -70,7 +70,7 @@ export function RunWorldSun(tasks: UpdateTask) {
   for (let iy = minY; iy <= maxAcculamteY; iy++) {
     for (let iz = cz; iz < maxZ; iz++) {
       for (let ix = cx; ix < maxX; ix++) {
-        const l = columnCursor.getVoxel(ix, iy, iz)?.getLight();
+        const l = sectorCursor.getVoxel(ix, iy, iz)?.getLight();
         if (l && l < 0 && lightData.getS(l) != 0xf) continue;
         for (let i = 0; i < $3dCardinalNeighbors.length; i++) {
           const n = $3dCardinalNeighbors[i];

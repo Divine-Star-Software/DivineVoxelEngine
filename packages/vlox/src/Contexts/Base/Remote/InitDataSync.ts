@@ -8,7 +8,7 @@ import { EngineSettings } from "../../../Settings/EngineSettings";
 
 //objects
 import { MaterialPalette } from "../../../Voxels/Palettes/MaterialPalette";
-import { Chunk, Column } from "../../../World";
+import { Section, Sector } from "../../../World";
 import { SubstanceStruct } from "../../../Voxels/Structs/SubstanceStruct";
 
 export default function InitDataSync(props: {
@@ -51,8 +51,8 @@ export default function InitDataSync(props: {
 
     SubstanceStruct.init(data.voxels.substances.struct);
 
-    Chunk.StateStruct.init(data.worldData.chunkStruct);
-    Column.StateStruct.init(data.worldData.columnStruct);
+    Section.StateStruct.init(data.worldData.sectionStruct);
+    Sector.StateStruct.init(data.worldData.sectorStruct);
 
     props.onSync(data);
   });

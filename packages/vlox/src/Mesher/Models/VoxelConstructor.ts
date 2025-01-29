@@ -172,7 +172,7 @@ export class VoxelConstructor {
     }
 
     this.effects.addEffects(
-      tool.voxel.getShapeState(),
+      tool.voxel.getState(),
       tool.origin,
       tool.effects
     );

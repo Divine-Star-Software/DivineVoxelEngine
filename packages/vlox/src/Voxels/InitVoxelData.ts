@@ -52,7 +52,6 @@ import { BuildStateData } from "./Functions/BuildStateData";
 import { BuildFinalInputs } from "../Models/Rules/Functions/BuildFinalInputs";
 import {
   CompiledVoxelData,
-  CompiledVoxelModelData,
   FinalCompiledVoxelModelData,
 } from "./Types/VoxelModelCompiledData.types";
 import { SchemaRegister } from "../Voxels/State/SchemaRegister";
@@ -364,12 +363,6 @@ export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
   const voxels: VoxelData[] = [
     {
       id: "dve_air",
-      properties: {
-        dve_substance: "dve_air",
-      },
-    },
-    {
-      id: "dve_barrier",
       properties: {
         dve_substance: "dve_air",
       },

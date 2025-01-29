@@ -1,24 +1,27 @@
-import { Chunk } from "../Chunk/index";
-import { ChunkStructProperties } from "../Chunk/ChunkStructProperties";
+import { Section } from "../Section/index";
+import { SectionStructProperties } from "../Section/SectionStructProperties";
 import { VoxelCursorInterface } from "../../Voxels/Cursor/VoxelCursor.interface";
 import { WorldSectionCursorInterface } from "./WorldSectionCursor.interface";
 export class WorldVoxelCursor extends VoxelCursorInterface {
-  private _chunk: Chunk;
+  private _section: Section;
 
   get ids() {
-    return this._chunk.ids;
+    return this._section.ids;
   }
   get light() {
-    return this._chunk.light;
+    return this._section.light;
+  }
+  get level() {
+    return this._section.level;
   }
   get state() {
-    return this._chunk.state;
+    return this._section.state;
   }
   get secondary() {
-    return this._chunk.secondary;
+    return this._section.secondary;
   }
   get mod() {
-    return this._chunk.mod;
+    return this._section.mod;
   }
 
   constructor(public dataCursor: WorldSectionCursorInterface) {
@@ -26,8 +29,8 @@ export class WorldVoxelCursor extends VoxelCursorInterface {
   }
 
   loadIn() {
-    if (!this.dataCursor._chunk) return;
-    this._chunk = this.dataCursor._chunk;
+    if (!this.dataCursor._section) return;
+    this._section = this.dataCursor._section;
     this._index = this.dataCursor._voxelIndex;
     this.process();
   }
@@ -41,25 +44,25 @@ export class WorldVoxelCursor extends VoxelCursorInterface {
    * @returns
    */
   updateHeightMap(mode: 0 | 1) {
-    Chunk.StateStruct.setData(this._chunk.chunkState);
+    Section.StateStruct.setData(this._section.sectionState);
 
     const voxelPos = this.dataCursor._voxelPosition;
     if (mode == 0) {
-      Chunk.StateStruct.setArrayPropertyValue(
-        ChunkStructProperties.heightMap,
+      Section.StateStruct.setArrayPropertyValue(
+        SectionStructProperties.heightMap,
         voxelPos.y,
         1
       );
       return true;
     }
     if (mode == 1) {
-      Chunk.StateStruct.setArrayPropertyValue(
-        ChunkStructProperties.dirtyMap,
+      Section.StateStruct.setArrayPropertyValue(
+        SectionStructProperties.dirtyMap,
         voxelPos.y,
         1
       );
-      Chunk.StateStruct.setArrayPropertyValue(
-        ChunkStructProperties.heightMap,
+      Section.StateStruct.setArrayPropertyValue(
+        SectionStructProperties.heightMap,
         voxelPos.y,
         0
       );

@@ -107,7 +107,7 @@ export const PerlinGen = {
     brush.stop();
   },
   generateForest(chunkX: number, chunkZ: number) {
-    const columnCursor = this.worldCursor.getColumn(chunkX, 0, chunkZ)!;
+    const columnCursor = this.worldCursor.getSector(chunkX, 0, chunkZ)!;
     voxelCursor.setStringId("dve_dread_stone").process();
     //  return this.generateBlankChunk(chunkX, chunkZ);
     let totalTrees = 0;
@@ -167,7 +167,7 @@ export const PerlinGen = {
     brush.stop();
   },
   generateTest(chunkX: number, chunkZ: number, includeWater = false) {
-    const columnCursor = this.worldCursor.getColumn(chunkX, 0, chunkZ)!;
+    const columnCursor = this.worldCursor.getSector(chunkX, 0, chunkZ)!;
 
     for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
       for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {

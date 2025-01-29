@@ -7,6 +7,9 @@ export class TemplateVoxelCursor extends VoxelCursorInterface {
   get ids() {
     return this._template.ids
   }
+  get level() {
+    return this._template.level 
+  }
   get light() {
     return this._template.light 
   }

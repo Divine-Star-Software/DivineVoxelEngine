@@ -1,4 +1,4 @@
-export enum ChunkStructProperties {
+export enum SectionStructProperties {
   minHeight = "dve_min_height",
   maxHeight = "dve_max_height",
   heightMap = "dve_height_map",

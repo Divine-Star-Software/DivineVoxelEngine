@@ -12,8 +12,8 @@ export type DataSyncData = {
     nexus: boolean;
   };
   worldData: {
-    chunkStruct: BinaryStructData;
-    columnStruct: BinaryStructData;
+    sectionStruct: BinaryStructData;
+    sectorStruct: BinaryStructData;
   };
 };
 export type WorldDataSync = [location: LocationData, buffer: SharedArrayBuffer];

@@ -1,8 +1,8 @@
-import { Column } from "../Column";
+import { Sector } from "../Sector";
 
 export interface DimensionData {
   id: string;
-  columns: Map<string, Column>;
+  sectors: Map<string, Sector>;
 }
 export interface Dimension extends DimensionData {}
 
@@ -10,20 +10,20 @@ export class Dimension {
   static CreateNew(id: string) {
     return new Dimension({
       id,
-      columns: new Map<string, Column>(),
+      sectors: new Map<string, Sector>(),
     });
   }
   constructor(data: DimensionData) {
     return Object.assign(this, data);
   }
 
-  set(columnId: string, region: Column) {
-    this.columns.set(columnId, region);
+  set(sectorId: string, region: Sector) {
+    this.sectors.set(sectorId, region);
   }
-  delete(columnId: string) {
-    this.columns.delete(columnId);
+  delete(sectorId: string) {
+    this.sectors.delete(sectorId);
   }
-  get(columnId: string) {
-    return this.columns.get(columnId);
+  get(sectorId: string) {
+    return this.sectors.get(sectorId);
   }
 }

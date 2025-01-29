@@ -3,7 +3,7 @@ import { WorldDataSyncIds } from "../../../World/Types/WorldDataSyncIds.js";
 import { WorldRegister } from "../../../World/WorldRegister.js";
 import type { LocationData } from "../../../Math/index.js";
 import { DimensionData } from "../../../World/Types/WorldData.types.js";
-import { ChunkData, ColumnData } from "../../../World/index.js";
+import { SectorData } from "../../../World/index.js";
 export default function () {
   Threads.registerTask<DimensionData>(
     WorldDataSyncIds.SyncDimension,
@@ -11,34 +11,21 @@ export default function () {
       WorldRegister.dimensions.add(data.id);
     }
   );
-  Threads.registerTask<[LocationData, ChunkData]>(
+  Threads.registerTask<[LocationData]>(
     WorldDataSyncIds.UnSyncDimension,
     (data) => {
       //  register.dimensions.re(data.id);
     }
   );
-
-  Threads.registerTask<[LocationData, ChunkData]>(
-    WorldDataSyncIds.SyncChunk,
+  Threads.registerTask<[LocationData, SectorData]>(
+    WorldDataSyncIds.SyncSector,
     (data) => {
       WorldRegister.setDimension(data[0][0]);
-      WorldRegister.chunk.add(data[0][1], data[0][2], data[0][3], data[1]);
+      WorldRegister.sectors.add(data[0][1], data[0][2], data[0][3], data[1]);
     }
   );
-  Threads.registerTask<LocationData>(WorldDataSyncIds.UnSyncChunk, (data) => {
+  Threads.registerTask<LocationData>(WorldDataSyncIds.UnSyncSector, (data) => {
     WorldRegister.setDimension(data[0]);
-    WorldRegister.chunk.remove(data[1], data[2], data[3]);
-  });
-
-  Threads.registerTask<[LocationData, ColumnData]>(
-    WorldDataSyncIds.SyncColumn,
-    (data) => {
-      WorldRegister.setDimension(data[0][0]);
-      WorldRegister.column.add(data[0][1], data[0][2], data[0][3], data[1]);
-    }
-  );
-  Threads.registerTask<LocationData>(WorldDataSyncIds.UnSyncColumn, (data) => {
-    WorldRegister.setDimension(data[0]);
-    WorldRegister.column.remove(data[1], data[2], data[3]);
+    WorldRegister.sectors.remove(data[1], data[2], data[3]);
   });
 }

@@ -2,8 +2,7 @@ import { GeneratorData } from "../Internal/Classes/Generator";
 import { IWG } from "../IWG";
 import { IWGDimensions } from "../Internal/IWGDimensions";
 import { IWGTools } from "../Internal/IWGTools";
-import SaveAllColumns from "./SaveAllColumns";
-
+import SaveAllSectors from "./SaveAllSectors";
 /**# InitalLoad
  * ---
  * Load the world without building.
@@ -17,13 +16,13 @@ export async function InitalLoad(props: {
     const generator = IWG.createGenerator({
       ...props.genData,
       building: false,
+      culling: false
     });
     if (!IWGDimensions._dimensions.has(generator._dimension)) {
       IWGDimensions.addDimension(generator._dimension);
     }
     const dimension = IWGDimensions.getDimension(props.dimension || "main");
     let done = false;
-    let allDoneCount = 0;
     generator._building = false;
     IWG.addGenerator(generator);
 
@@ -44,14 +43,14 @@ export async function InitalLoad(props: {
           break;
         }
       }
-      if(!allDone) return;
+      if (!allDone) return;
       done = true;
       clearInterval(inte);
       clearTimeout(timeOut);
       IWG.removeGenerator(generator);
       (async () => {
         if (IWGTools.worldStorage) {
-          await SaveAllColumns();
+          await SaveAllSectors();
         }
 
         resolve(true);

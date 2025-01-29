@@ -2,17 +2,17 @@ import { Observable } from "@amodx/core/Observers/Observable";
 class DVEQRMeshObservers {
   updated = new Observable();
 }
-import { ChunkMeshInterface } from "@divinevoxel/vlox/Renderer/DVEChunkMeshInterface";
+import { DVESectionMeshInterface } from "@divinevoxel/vlox/Renderer";
 
-export class DVEQRMesh implements ChunkMeshInterface {
+export class DVEQRMesh implements DVESectionMeshInterface {
   observers = new DVEQRMeshObservers();
 
   dispose(): void {
-  //  this._mesh.dispose();
+    //  this._mesh.dispose();
   }
   isVisible: boolean;
   setEnabled(enabled: boolean): void {
-   // this._mesh.setEnabled(enabled);
+    // this._mesh.setEnabled(enabled);
   }
   setIndicies(indices: ArrayLike<number>): void {
     throw new Error("Method not implemented.");

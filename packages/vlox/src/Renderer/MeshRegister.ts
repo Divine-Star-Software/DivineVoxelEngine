@@ -1,152 +1,54 @@
 import { type LocationData } from "../Math/index.js";
 import { Vector3Like } from "@amodx/math";
 import { WorldSpaces } from "../World/WorldSpaces.js";
-import { MeshRegisterColumn } from "./Classes/MeshRegisterColumn.js";
-import { ChunkMesh } from "./Classes/ChunkMesh.js";
-import { ChunkMeshInterface } from "./DVEChunkMeshInterface.js";
+import { SectorMesh } from "./Classes/SectorMesh.js";
+import { DVESectionMeshInterface } from "./Classes/DVESectionMeshInterface.js";
 
 export type MeshRegisterDimensions = Map<
   string,
-  Map<string, MeshRegisterColumn>
+  Map<string, SectorMesh>
 >;
 
-class Chunk {
-  static addMesh(
-    location: LocationData,
-    mesh: ChunkMeshInterface,
-    substance: string
-  ) {
-    let column = MeshRegister.column.get(location);
-    if (!column) {
-      column = MeshRegister.column.add(location);
-    }
-    const index = WorldSpaces.chunk.getIndexXYZ(
-      location[1],
-      location[2],
-      location[3]
-    );
-    let chunk = column.chunks[index];
-    if (!chunk) {
-      chunk = new ChunkMesh([location[1], location[2], location[3]]);
-      column.chunks[index] = chunk;
-    }
-    chunk?.meshes.set(substance, mesh);
-    return chunk;
-  }
-  static add(location: LocationData) {
-    let column = MeshRegister.column.get(location);
-    if (!column) {
-      column = MeshRegister.column.add(location);
-    }
-    const index = WorldSpaces.chunk.getIndexXYZ(
-      location[1],
-      location[2],
-      location[3]
-    );
-    let chunk = column.chunks[index];
-    if (!chunk) {
-      chunk = new ChunkMesh([location[1], location[2], location[3]]);
-      column.chunks[index] = chunk;
-    }
-    return chunk;
-  }
-  static removeMesh(location: LocationData, substance: string) {
-    const column = MeshRegister.column.get(location);
-    if (!column) return false;
-    const index = WorldSpaces.chunk.getIndexXYZ(
-      location[1],
-      location[2],
-      location[3]
-    );
-    const chunk = column.chunks[index];
-    if (!chunk) return false;
-    const chunkMesh = chunk.meshes.get(substance);
-    if (!chunkMesh) return false;
-    chunk.meshes.delete(substance);
-    if (chunk.meshes.size == 0) {
-      (column.chunks as any)[index] = undefined;
-    }
-    return chunkMesh;
-  }
-
-  static getMesh(location: LocationData, substance: string) {
-    const column = MeshRegister.column.get(location);
-
-    if (!column) return false;
-    const chunk =
-      column.chunks[
-        WorldSpaces.chunk.getIndexXYZ(location[1], location[2], location[3])
-      ];
-    if (!chunk) return false;
-    const chunkMesh = chunk.meshes.get(substance);
-    if (!chunkMesh) return false;
-    return chunkMesh;
-  }
-  static remove(location: LocationData) {
-    const column = MeshRegister.column.get(location);
-    if (!column) return false;
-    const index = WorldSpaces.chunk.getIndexXYZ(
-      location[1],
-      location[2],
-      location[3]
-    );
-    const chunk = column.chunks[index];
-    if (!chunk) return false;
-    (column.chunks as any)[index] = undefined;
-    return chunk;
-  }
-  static get(location: LocationData) {
-    const column = MeshRegister.column.get(location);
-    if (!column) return false;
-    const chunk =
-      column.chunks[
-        WorldSpaces.chunk.getIndexXYZ(location[1], location[2], location[3])
-      ];
-    if (!chunk) return false;
-    return chunk;
-  }
-}
-
-class Column {
-  static add(location: LocationData): MeshRegisterColumn {
+class Sectors {
+  static add(location: LocationData): SectorMesh {
     let dimension = MeshRegister.dimensions.get(location[0]);
     if (!dimension) dimension = MeshRegister.dimensions.add(location[0]);
 
-    const column = new MeshRegisterColumn([
+    const sector = new SectorMesh([
       location[0],
       ...Vector3Like.ToArray(
-        WorldSpaces.column.getPositionXYZ(location[1], location[2], location[3])
+        WorldSpaces.sector.getPositionXYZ(location[1], location[2], location[3])
       ),
     ] as LocationData);
     dimension.set(
-      WorldSpaces.column.getKeyXYZ(location[1], location[2], location[3]),
-      column
+      WorldSpaces.sector.getKeyXYZ(location[1], location[2], location[3]),
+      sector
     );
-    return column;
+    return sector;
   }
 
   static remove(location: LocationData) {
     let dimension = MeshRegister.dimensions.get(location[0]);
     if (!dimension) return false;
-    const index = WorldSpaces.column.getKeyXYZ(
+    const index = WorldSpaces.sector.getKeyXYZ(
       location[1],
       location[2],
       location[3]
     );
-    const column = dimension.get(index);
-    if (!column) return false;
+    const sector = dimension.get(index);
+    if (!sector) return false;
     dimension.delete(index);
     if (dimension.size == 0) {
       MeshRegister.dimensions.remove(location[0]);
     }
-    return column;
+    return sector;
   }
 
   static get(location: LocationData) {
     let dimension = MeshRegister.dimensions.get(location[0]);
     if (!dimension) return false;
     return dimension.get(
-      WorldSpaces.column.getKeyXYZ(location[1], location[2], location[3])
+      WorldSpaces.sector.getKeyXYZ(location[1], location[2], location[3])
     );
   }
 }
@@ -165,19 +67,19 @@ class Dimensions {
   static *getAllMeshes(
     id: string
   ): Generator<
-    [location: LocationData, substance: string, mesh: ChunkMeshInterface]
+    [location: LocationData, substance: string, mesh: DVESectionMeshInterface]
   > {
     const dimension = MeshRegister._dimensions.get(id);
     if (!dimension) return;
-    for (const [key, column] of dimension) {
-      for (let i = 0; i < column.chunks.length; i++) {
-        for (const [substance, mesh] of column.chunks[i].meshes) {
+    for (const [key, sector] of dimension) {
+      for (let i = 0; i < sector.sections.length; i++) {
+        for (const [substance, mesh] of sector.sections[i].meshes) {
           yield [
             [
-              column.location[0],
-              column.location[1],
-              column.location[2] + i * WorldSpaces.chunk.bounds.y,
-              column.location[3],
+              sector.location[0],
+              sector.location[1],
+              sector.location[2] + i * WorldSpaces.section.bounds.y,
+              sector.location[3],
             ],
             substance,
             mesh,
@@ -190,10 +92,10 @@ class Dimensions {
   static remove(id: string) {
     const dimension = MeshRegister._dimensions.get(id);
     if (!dimension) return false;
-    dimension.forEach((column) => {
-      column.chunks.forEach((chunk) => {
-        chunk.meshes.forEach((chunkMeshes) => {
-          chunkMeshes.dispose();
+    dimension.forEach((sector) => {
+      sector.sections.forEach((section) => {
+        section.meshes.forEach((sectionMeshes) => {
+          sectionMeshes.dispose();
         });
       });
     });
@@ -203,11 +105,9 @@ class Dimensions {
 }
 
 export class MeshRegister {
-  // Main dimensions data store
   static _dimensions: MeshRegisterDimensions = new Map([["main", new Map()]]);
   static dimensions = Dimensions;
-  static column = Column;
-  static chunk = Chunk;
+  static sectors = Sectors;
 
   static clearAll() {
     for (const [dkey, dim] of this._dimensions) {

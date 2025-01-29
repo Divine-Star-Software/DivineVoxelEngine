@@ -1,4 +1,4 @@
-export class ColumnState {
+export class SectorState {
   isLoaded = true;
   isGenerated = true;
 
