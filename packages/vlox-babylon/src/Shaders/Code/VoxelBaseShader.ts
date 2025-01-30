@@ -50,12 +50,10 @@ uniform float dve_voxel_texture_animations[${props.textureLength}];
 in vec3 position;
 in vec3 normal;
 in float indices;
-in float voxelData;
 in vec3 textureIndex;
 in vec2 uv;
 in vec3 colors;
-in float faceData;
-
+in float voxelData;
 
 //varying
 out mat4 VOXEL;

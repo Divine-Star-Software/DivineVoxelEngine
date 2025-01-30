@@ -66,7 +66,7 @@ export const DVEVoxelData: VoxelData[] = [
       },
     },
   },
-  /*
+
   {
     id: "dve_liquid_dream_ether",
     properties: {
@@ -565,7 +565,6 @@ export const DVEVoxelData: VoxelData[] = [
       },
     },
   },
-*/
 
   //util
   /* 

@@ -46,19 +46,19 @@ export class SectorCursor
 
   getVoxel(x: number, y: number, z: number) {
     if (!this._current) return null;
-    const section = this._current.sections[WorldSpaces.section.getIndexXYZ(x, y, z)];
+    const section =
+      this._current.sections[WorldSpaces.section.getIndex(x, y, z)];
     if (!section) {
+      if (!section)
+        throw new Error(
+          `Could not load section at ${x}-${y}-${z} | ${WorldSpaces.section.getIndex(x, y, z)}`
+        );
       this._section = null;
       return null;
     }
-    const voxelIndex = WorldSpaces.voxel.getIndexXYZ(x, y, z);
-    Vector3Like.Copy(
-      this._voxelPosition,
-      WorldSpaces.voxel.getPositionXYZ(x, y, z)
-    );
-
     this._section = section;
-    this._voxelIndex = voxelIndex;
+    this._voxelIndex = WorldSpaces.voxel.getIndex(x, y, z);
+    WorldSpaces.voxel.getPosition(x, y, z, this._voxelPosition);
     this.voxel.loadIn();
     return this.voxel;
   }

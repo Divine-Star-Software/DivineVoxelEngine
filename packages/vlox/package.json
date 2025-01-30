@@ -20,8 +20,6 @@
     "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
   },
   "dependencies": {
-    "@amodx/meshing": "latest",
-    "@amodx/core": "latest",
     "@amodx/math": "latest",
     "@amodx/binary": "latest",
     "@amodx/threads": "latest"

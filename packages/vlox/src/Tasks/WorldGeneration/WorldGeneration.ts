@@ -4,7 +4,6 @@ import { WorldBounds } from "../../World/WorldBounds.js";
 import { WorldGenRegister } from "./WorldGenRegister.js";
 //tools
 import { WorldGenBrush } from "./WorldGenBrush.js";
-import { SafeInterval } from "@amodx/core/Intervals/SafeInterval.js";
 import { WorldGenInterface } from "./WorldGen.types.js";
 import { GenerateTasks } from "../Tasks.types.js";
 
@@ -42,19 +41,17 @@ export class WorldGeneration {
     }
 
     if (!WorldGenRegister.attemptRequestFullFill(requestsId)) {
-      const inte = new SafeInterval().setInterval(100).setOnRun(() => {
-   //     console.warn("do the check",data,mode)
+      const readyCheck = () => {
         if (WorldGenRegister.attemptRequestFullFill(requestsId)) {
           onDone();
-          inte.stop();
+          return;
         }
-      });
-      inte.start();
+        setTimeout(readyCheck, 10);
+      };
+      readyCheck();
     } else {
       onDone();
     }
-
-
   }
 
   static getBrush() {

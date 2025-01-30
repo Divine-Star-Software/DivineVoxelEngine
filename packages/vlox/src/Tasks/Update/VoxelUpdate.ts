@@ -1,5 +1,5 @@
 import { EngineSettings as ES } from "../../Settings/EngineSettings.js";
-import { $3dCardinalNeighbors } from "../../Math/Constants/CardinalNeighbors.js";
+import { $3dCardinalNeighbors } from "../../Math/CardinalNeighbors.js";
 
 import { VoxelUpdateTasks } from "../Tasks.types.js";
 import { UpdateTask } from "./UpdateTask.js";

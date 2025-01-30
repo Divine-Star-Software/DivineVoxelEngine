@@ -1,8 +1,7 @@
-import { MesherDataTool } from "@amodx/meshing/Tools/MesherDataTools.js";
+import { MesherDataTool } from "../Geomtry/Tools/MesherDataTools"
 import { BinaryNumberTypes } from "@amodx/binary";
-import { Quad } from "@amodx/meshing/Primitives/Quad.js";
-import { QuadVerticies } from "@amodx/meshing/Geometry.types.js";
-import { GeometryBuilder } from "@amodx/meshing";
+import { Quad } from "../Geomtry/Primitives/Quad"
+import { QuadVerticies } from "../Geomtry/Geometry.types"
 import { Flat2DIndex, Vec2Array, Vector3Like } from "@amodx/math";
 import { CompactMesh } from "../Functions/CompactMesh.js";
 
@@ -29,11 +28,11 @@ const Quads = {
 
 const tool = new MesherDataTool();
 tool.startNewMesh();
-tool.mesh!.attributes.set("uv", [[], 2, BinaryNumberTypes.Float32]);
-tool.mesh!.attributes.set("textureIndex", [[], 3, BinaryNumberTypes.Float32]);
+//tool.mesh!.attributes.set("uv", [[], 2, BinaryNumberTypes.Float32]);
+//tool.mesh!.attributes.set("textureIndex", [[], 3, BinaryNumberTypes.Float32]);
 export function MeshTexture(textureId: number, textureData: number[]) {
-  tool.setVar("texture", textureId);
 
+/* 
   const width = Math.sqrt(textureData.length / 4);
   const height = Math.sqrt(textureData.length / 4);
   const factor = 1 / width;
@@ -288,8 +287,6 @@ export function MeshTexture(textureId: number, textureData: number[]) {
   }
 
   const compacted = CompactMesh("dve_node", tool);
-  tool.resetVars();
-  tool.mesh!.clear();
-
-  return compacted;
+ */
+  return tool.mesh;
 }

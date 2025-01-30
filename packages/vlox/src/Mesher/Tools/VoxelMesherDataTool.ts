@@ -1,22 +1,33 @@
 //tools
-import { MesherDataTool } from "@amodx/meshing/Tools/MesherDataTools";
-
+import { MesherDataTool } from "../Geomtry/Tools/MesherDataTools";
 //data
-import { QuadScalarVertexData } from "@amodx/meshing/Primitives/QuadVertexData";
-import { VoxelTemplateDataTool } from "./VoxelTemplateDataTool.js";
+import { QuadScalarVertexData } from "../Geomtry/Primitives/QuadVertexData";
 import { BinaryNumberTypes } from "@amodx/binary";
 import { VoxelFaces, VoxelFacesArray } from "../../Math";
-import { QuadVerticies } from "@amodx/meshing/Geometry.types";
-import { FaceDataCalc } from "../Models/Common/Calc/FaceDataCalc.js"
-import { Mesh } from "@amodx/meshing/Mesh/Mesh";
+import { QuadVerticies } from "../Geomtry/Geometry.types";
+import { FaceDataCalc } from "../Models/Common/Calc/FaceDataCalc.js";
+import { Mesh } from "../Geomtry/Mesh";
 import { VoxelMeshBVHBuilder } from "./VoxelMeshBVHBuilder";
 import { Vec3Array, Vector3Like } from "@amodx/math";
-import { WorldSpaces } from "../../World/WorldSpaces.js";
 import { VoxelCursorInterface } from "../../Voxels/Cursor/VoxelCursor.interface.js";
 import { DataCursorInterface } from "../../Data/Cursor/DataCursor.interface.js";
 
+class VoxelVars {
+  faceFlipped = false;
+  textureIndex = 0;
+  light = new QuadScalarVertexData();
+  ao = new QuadScalarVertexData();
+  animation = new QuadScalarVertexData();
+  level = new QuadScalarVertexData();
+  overlayTextures = new QuadScalarVertexData();
+
+  reset() {
+    this.faceFlipped = false;
+    this.textureIndex = 0;
+  }
+}
+
 export class VoxelMesherDataTool extends MesherDataTool {
-  template = new VoxelTemplateDataTool();
   voxel: VoxelCursorInterface;
   nVoxel: DataCursorInterface;
   /**The current world position */
@@ -24,7 +35,10 @@ export class VoxelMesherDataTool extends MesherDataTool {
   /**The current local origin  */
   origin = Vector3Like.Create();
 
-  bvhTool = new VoxelMeshBVHBuilder();
+  mesh = new Mesh();
+  bvhTool: VoxelMeshBVHBuilder | null = null;
+
+  vars = new VoxelVars();
 
   dataCalculated: Record<VoxelFaces, boolean>;
 
@@ -35,7 +49,10 @@ export class VoxelMesherDataTool extends MesherDataTool {
   lightData: Record<VoxelFaces, Record<QuadVerticies, number>>;
   effects: Record<string, number[]>;
 
-  constructor(public id: string) {
+  constructor(
+    public id: string,
+    public materialIndex: number
+  ) {
     super();
     //  this.faceDataOverride.currentVoxel = this.voxel;
     //  this.faceDataOverride.neighborVoxel = this.nVoxel;
@@ -71,32 +88,6 @@ export class VoxelMesherDataTool extends MesherDataTool {
     }
 
     this.startNewMesh(new Mesh(true));
-
-    (
-      [
-        ["voxelData", [[], 1, BinaryNumberTypes.Float32]],
-        ["uv", [[], 2, BinaryNumberTypes.Float32]],
-        ["textureIndex", [[], 3, BinaryNumberTypes.Float32]],
-        ["colors", [[], 3, BinaryNumberTypes.Float32]],
-      ] as const
-    ).forEach(([key, data]) => this.mesh!.attributes.set(key, data as any));
-
-    (
-      [
-        ["light", new QuadScalarVertexData()],
-        ["ao", new QuadScalarVertexData()],
-        ["animation", new QuadScalarVertexData()],
-        ["level", new QuadScalarVertexData()],
-        ["overlay-uvs", new QuadScalarVertexData()],
-      ] as const
-    ).forEach(([key, data]) => this.quadVertexData.set(key, data as any));
-
-    (
-      [
-        ["face-flipped", 0],
-        ["texture-index", 0],
-      ] as const
-    ).forEach(([key, data]) => this.vars.set(key, data as any));
   }
 
   bounds: { min: Vec3Array; max: Vec3Array } = {
@@ -116,29 +107,28 @@ export class VoxelMesherDataTool extends MesherDataTool {
   }
 
   endConstruction() {
-    const position = WorldSpaces.voxel.getPositionXYZ(
-      this.position.x,
-      this.position.y,
-      this.position.z
-    );
     if (
       this.bounds.min.includes(Infinity) ||
       this.bounds.max.includes(-Infinity)
     )
       return false;
-    this.bvhTool.updateVoxel(
-      position.x,
-      position.y,
-      position.z,
-      this._indexStart,
-      this.mesh!.indices.length,
-      this.bounds.min[0],
-      this.bounds.min[1],
-      this.bounds.min[2],
-      this.bounds.max[0],
-      this.bounds.max[1],
-      this.bounds.max[2]
-    );
+    if (this.bvhTool) {
+      this.bvhTool.updateVoxel(
+        this.position.x,
+        this.position.y,
+        this.position.z,
+        this._indexStart,
+        this.materialIndex,
+        this.mesh!.indices.length,
+        this.bounds.min[0],
+        this.bounds.min[1],
+        this.bounds.min[2],
+        this.bounds.max[0],
+        this.bounds.max[1],
+        this.bounds.max[2]
+      );
+    }
+
     return true;
   }
 
@@ -157,36 +147,7 @@ export class VoxelMesherDataTool extends MesherDataTool {
     this.dataCalculated[VoxelFaces.West] = false;
   }
 
-  getAnimationData() {
-    return this.quadVertexData.get("animation")!;
+  reset() {
+    this.vars.reset();
   }
-
-  getWorldLight() {
-    if (this.template.isAcive()) {
-      return this.template._light;
-    }
-    return this.quadVertexData.get("light")!;
-  }
-
-  getWorldAO() {
-    if (this.template.isAcive()) {
-      return this.template._ao;
-    }
-    return this.quadVertexData.get("ao")!;
-  }
-
-  getOverlayTextures() {
-    return this.quadVertexData.get("overlay-uvs")!;
-  }
-
-  setTexture(uv: number) {
-    this.vars.set("texture-index", uv)!;
-    return this;
-  }
-
-  getTexture() {
-    return this.vars.get("texture-index")!;
-  }
-
-
 }

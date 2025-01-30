@@ -1,4 +1,4 @@
-import { MeshDefaultAttributes } from "@amodx/meshing/MeshData.types";
+import { MeshDefaultAttributes } from "../Geomtry/MeshData.types";
 import { EngineSettings } from "../../Settings/EngineSettings";
 import {
   BinaryNumberTypes,
@@ -12,7 +12,7 @@ import { VoxelMesherDataTool } from "Mesher/Tools/VoxelMesherDataTool";
 import { VoxelMeshVertexStructCursor } from "../Tools/VoxelMeshVertexStructCursor";
 
 const structCursor = new VoxelMeshVertexStructCursor();
-
+/* 
 function MakeWebGPUMesh(tool: VoxelMesherDataTool): CompactMeshData {
   const mesh = tool.mesh!;
 
@@ -71,66 +71,34 @@ function MakeWebGPUMesh(tool: VoxelMesherDataTool): CompactMeshData {
     Vector3Like.ToArray(mesh.minBounds),
     Vector3Like.ToArray(mesh.maxBounds),
   ];
-}
+} */
 
 export function CompactVoxelMesh(
   tools: VoxelMesherDataTool[]
-): CompactMeshData {
-  if (EngineSettings.settings.rendererSettings.mode == "webgpu") {
-    return MakeWebGPUMesh(tools[0]);
-  }
-  const dataMap: CompactSubMesh[] = [];
-  const byteRanges: [
-    byteStart: number,
-    length: number,
-    type: BinaryNumberTypes,
-  ][] = [];
-  let totalSize = 0;
+): [data: CompactMeshData, tranfers: ArrayBuffer[]] {
+  const data: CompactMeshData = [0, []];
+  const transfers: any[] = [];
   for (let i = 0; i < tools.length; i++) {
     const tool = tools[i];
-    const mesh = tool.mesh!;
+    if (!tool.mesh!.buffer.length) continue;
+    const dataBuffer = new Float32Array(tool.mesh.buffer);
+    const indiciesBuffer =
+      tool.mesh.indicieIndex > 65535
+        ? new Uint32Array(tool.mesh.indices)
+        : new Uint16Array(tool.mesh.indices);
 
-    const subMesh: CompactSubMesh = [tool.id, []];
+    const minBounds = tool.mesh.minBounds;
+    const maxBounds = tool.mesh.maxBounds;
 
-    for (let [key, [array, stride, type]] of mesh.attributes) {
-      if (key == MeshDefaultAttributes.Indices) {
-        if (array.length > 60_000) {
-          type = BinaryNumberTypes.Uint32;
-        }
-      }
-      byteRanges.push([totalSize, array.length, type]);
-      subMesh[1].push([key, array as any, stride]);
-      totalSize += MappedByteCounts[type] * array.length;
-    }
-
-    for (let i = 0; i < tool.bvhTool.tree.length; i++) {
-      if (tool.bvhTool.tree[i] == -Infinity) tool.bvhTool.tree[i] = -1;
-    }
-
-    dataMap.push(subMesh);
+    data[1].push([
+      tool.id,
+      dataBuffer,
+      indiciesBuffer,
+      [minBounds.x, minBounds.y, minBounds.z],
+      [maxBounds.x, maxBounds.y, maxBounds.z],
+    ]);
+    transfers.push(dataBuffer.buffer, indiciesBuffer.buffer);
   }
 
-  const finalBuffer = new ArrayBuffer(totalSize);
-
-  let b = 0;
-  for (let s = 0; s < dataMap.length; s++) {
-    const attributes = dataMap[s][1];
-    for (let i = 0; i < attributes.length; i++) {
-      const startByte = byteRanges[b][0];
-      const length = byteRanges[b][1];
-      const type = byteRanges[b][2];
-      const newArray = new TypedArrayClassMap[type](
-        finalBuffer,
-        //@ts-ignore
-        startByte,
-        length
-      ) as Float32Array;
-
-      newArray.set(attributes[i][1] as any as number[]);
-      attributes[i][1] = newArray;
-      b++;
-    }
-  }
-
-  return [0, finalBuffer, dataMap];
+  return [data, transfers];
 }

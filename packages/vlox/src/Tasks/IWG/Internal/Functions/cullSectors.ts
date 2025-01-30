@@ -8,8 +8,10 @@ import { WorldLock } from "../../../../World/Lock/WorldLock";
 
 const sectorSquare = new Square();
 
-export function cullSectors(generatos: Generator[], cullGenerators: Generator[]) {
-  if (!cullGenerators.length) return;
+export function cullSectors(
+  generatos: Generator[],
+  cullGenerators: Generator[]
+) {
   const time = performance.now();
   for (const [, dimension] of IWGDimensions._dimensions) {
     for (let i = dimension.unRenderQueue.nodes.length - 1; i > -1; i--) {
@@ -83,6 +85,7 @@ export function cullSectors(generatos: Generator[], cullGenerators: Generator[])
       }
     }
 
+    if (!cullGenerators.length) continue;
     WorldRegister.setDimension(dimension.id);
     const worldDimension = WorldRegister.dimensions.get(dimension.id)!;
 

@@ -1,13 +1,13 @@
 import { Vec3Array, Vec4Array, Vector3Like } from "@amodx/math";
 import { VoxelFaces } from "../../../../Math";
 
-import { QuadScalarVertexData } from "@amodx/meshing";
-import { QuadVerticies } from "@amodx/meshing/Geometry.types";
+import { QuadScalarVertexData } from "../../../Geomtry/Primitives/QuadVertexData"
+import { QuadVerticies } from "../../../Geomtry/Geometry.types"
 import { VoxelQuadGeometryNode } from "../../../../Models/VoxelModel.types";
 
-import { Quad } from "@amodx/meshing/Primitives/Quad";
+import { Quad } from "../../../Geomtry/Primitives/Quad"
 import { VoxelMesherDataTool } from "../../../../Mesher/Tools/VoxelMesherDataTool";
-import { VoxelGeometry } from "../../VoxelGeometry";
+import { VoxelGeometryBuilder } from "../../../Geomtry/VoxelGeometryBuilder";
 
 import { VoxelGeometryLookUp } from "../../VoxelGeometryLookUp";
 import { GeoemtryNode } from "../GeometryNode";
@@ -252,8 +252,8 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
     this.tool = tool;
     this.origin = tool.position;
 
-    this.worldAO = tool.getWorldAO();
-    this.worldLight = tool.getWorldLight();
+    this.worldAO = tool.vars.ao;
+    this.worldLight = tool.vars.light;
 
     if (args[ArgIndexes.Enabled] && this.isExposed()) {
       tool.calculateFaceData(this.closestFace);
@@ -261,7 +261,7 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
 
       const quad = this.quad;
       quad.flip = this.shouldFlip() || args[ArgIndexes.Fliped];
-      tool.setTexture(args[ArgIndexes.Texture]);
+      tool.vars.textureIndex = args[ArgIndexes.Texture];
 
       quad.doubleSided = args[ArgIndexes.DoubleSided];
       const uvs = args[ArgIndexes.UVs];
@@ -277,7 +277,7 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
       //4
       quad.uvs.vertices[3].x = uvs[3][0];
       quad.uvs.vertices[3].y = uvs[3][1];
-      VoxelGeometry.addQuad(tool, origin, quad);
+      VoxelGeometryBuilder.addQuad(tool, origin, quad);
 
       UpdateBounds(tool, origin, this.quadBounds);
     }

@@ -1,5 +1,5 @@
 import { UpdateTask } from "../../Update/UpdateTask";
-import { $3dCardinalNeighbors } from "../../../Math/Constants/CardinalNeighbors";
+import { $3dCardinalNeighbors } from "../../../Math/CardinalNeighbors";
 import {
   getMinusOneForRGB,
   isGreaterOrEqualThanForRGBRemove,

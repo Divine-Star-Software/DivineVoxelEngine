@@ -37,7 +37,8 @@ const buildMesh = (
 ) => {
   const meshedVoxel = MeshVoxel(voxelData);
   if (!meshedVoxel) return false;
-  if (meshedVoxel[0] == 1) throw new Error(`Not in right mode`);
+
+  if (meshedVoxel[0][0] == 1) throw new Error(`Not in right mode`);
   dataTool.copyRaw(voxelData).process();
   const renderedMaterial = dataTool.getRenderedMaterialStringId();
 
@@ -68,12 +69,16 @@ const buildMesh = (
   VoxelModelIndex.registerModel(
     voxelId,
     stateID,
-    meshedVoxel,
+    meshedVoxel[0],
     renderedMaterial,
     material._material
   );
 
-  DVEBRMesh.UpdateVertexData(mesh, scene.getEngine() as any, meshedVoxel[2][0]);
+  DVEBRMesh.UpdateVertexData(
+    mesh,
+    scene.getEngine() as any,
+    meshedVoxel[0][1][0]
+  );
 
   return mesh;
 };

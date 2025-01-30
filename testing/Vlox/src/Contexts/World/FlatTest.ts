@@ -3,6 +3,7 @@ import { TaskTool } from "@divinevoxel/vlox/Tools/Tasks/TasksTool";
 import { WorldGen } from "./Gen/WorldGen";
 import { DivineVoxelEngineWorld } from "@divinevoxel/vlox/Contexts/World/DivineVoxelEngineWorld";
 import { BrushTool } from "@divinevoxel/vlox/Tools/Brush/Brush";
+import { WorldSpaces } from "@divinevoxel/vlox/World/WorldSpaces";
 export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
   const tStart = performance.now();
   const numChunks = 2;
@@ -19,7 +20,7 @@ export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
 
   PerlinGen.worldCursor.setFocalPoint("main", 0, 0, 0);
   WorldGen.worldCursor.setFocalPoint("main", 0, 0, 0);
-  let genOne = true;
+  let genOne = false;
   for (let x = startX - 32; x < endX + 32; x += 16) {
     for (let z = startZ - 32; z < endZ + 32; z += 16) {
       brush.setXYZ(x, 0, z).newSector();
@@ -34,7 +35,7 @@ export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
   } else {
     for (let x = startX; x < endX; x += 16) {
       for (let z = startZ; z < endZ; z += 16) {
-        PerlinGen.generateTest(x, z, x == 0 && z == 0);
+        PerlinGen.generateTest(x, z, true);
       }
     }
   }

@@ -1,6 +1,6 @@
 import type { VoxelMesherDataTool } from "../../../../../Mesher/Tools/VoxelMesherDataTool";
-import { QuadScalarVertexData } from "@amodx/meshing/Primitives/QuadVertexData";
-import { QuadVerticies } from "@amodx/meshing/Geometry.types";
+import { QuadScalarVertexData } from "../../../../Geomtry/Primitives/QuadVertexData"
+import { QuadVerticies } from "../../../../Geomtry/Geometry.types"
 import { CompassAngles } from "@amodx/math";
 enum FlowStates {
   None = 0,

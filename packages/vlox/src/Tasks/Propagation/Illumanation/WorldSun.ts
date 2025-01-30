@@ -2,7 +2,7 @@
 //data
 import { WorldBounds } from "../../../World/WorldBounds.js";
 import { WorldRegister } from "../../../World/WorldRegister.js";
-import { $3dCardinalNeighbors } from "../../../Math/Constants/CardinalNeighbors.js";
+import { $3dCardinalNeighbors } from "../../../Math/CardinalNeighbors.js";
 import { WorldSpaces } from "../../../World/WorldSpaces.js";
 
 import { Vec3Array } from "@amodx/math";
@@ -53,8 +53,8 @@ export function RunWorldSun(tasks: UpdateTask) {
   const minY = AmaxY - 1 < 0 ? 0 : AmaxY;
   //fill
   for (let iy = minY; iy < maxY; iy++) {
-    for (let iz = cz; iz < maxZ; iz++) {
-      for (let ix = cx; ix < maxX; ix++) {
+    for (let ix = cx; ix < maxX; ix++) {
+      for (let iz = cz; iz < maxZ; iz++) {
         const voxel = sectorCursor.getVoxel(ix, iy, iz);
         if (!voxel) continue;
         const l = voxel.getLight();
@@ -68,8 +68,8 @@ export function RunWorldSun(tasks: UpdateTask) {
   let index = queue.length;
   //accumulate
   for (let iy = minY; iy <= maxAcculamteY; iy++) {
-    for (let iz = cz; iz < maxZ; iz++) {
-      for (let ix = cx; ix < maxX; ix++) {
+    for (let ix = cx; ix < maxX; ix++) {
+      for (let iz = cz; iz < maxZ; iz++) {
         const l = sectorCursor.getVoxel(ix, iy, iz)?.getLight();
         if (l && l < 0 && lightData.getS(l) != 0xf) continue;
         for (let i = 0; i < $3dCardinalNeighbors.length; i++) {

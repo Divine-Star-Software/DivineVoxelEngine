@@ -1,5 +1,5 @@
 //data
-import { $3dCardinalNeighbors } from "../../../Math/Constants/CardinalNeighbors.js";
+import { $3dCardinalNeighbors } from "../../../Math/CardinalNeighbors.js";
 //objects
 
 

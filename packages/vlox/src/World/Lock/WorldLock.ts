@@ -3,7 +3,6 @@ import type { LocationData } from "../../Math";
 
 import { WorldRegister } from "../../World/WorldRegister.js";
 import { WorldSpaces } from "../../World/WorldSpaces.js";
-import { SafeInterval } from "@amodx/core/Intervals/SafeInterval.js";
 import { WorldStorageInterface } from "../../World/Storage/WorldStorage.interface";
 
 export class WorldLock {
@@ -21,12 +20,12 @@ export class WorldLock {
         x: sx,
         y: sy,
         z: sz,
-      } = WorldSpaces.sector.getPositionXYZ(ssx, ssy, ssz);
+      } = WorldSpaces.sector.getPosition(ssx, ssy, ssz);
       const {
         x: ex,
         y: ey,
         z: ez,
-      } = WorldSpaces.sector.getPositionXYZ(esx, esy, esz);
+      } = WorldSpaces.sector.getPosition(esx, esy, esz);
       const run = async () => {
         let allFound = true;
         for (
@@ -36,7 +35,7 @@ export class WorldLock {
         ) {
           for (let x = sx; x <= ex; x += WorldSpaces.sector.bounds.x) {
             for (let z = sz; z <= ez; z += WorldSpaces.sector.bounds.z) {
-              const sectorPos = WorldSpaces.sector.getPositionXYZ(x, y, z);
+              const sectorPos = WorldSpaces.sector.getPosition(x, y, z);
               const location: LocationData = [
                 taskData[0],
                 sectorPos.x,
@@ -88,14 +87,15 @@ export class WorldLock {
       const didRun = await run();
       if (didRun) return resolve(true);
 
-      const inte = new SafeInterval().setInterval(100).setOnRun(async () => {
+      const readyCheck = async () => {
         const didRun = await run();
         if (didRun) {
-          inte.stop();
           resolve(true);
+          return;
         }
-      });
-      inte.start();
+        setTimeout(readyCheck, 10);
+      };
+      readyCheck();
     });
   }
 

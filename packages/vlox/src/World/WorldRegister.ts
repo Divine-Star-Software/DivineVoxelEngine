@@ -3,6 +3,7 @@ import { Dimension } from "./Dimension/Dimension";
 import { Sector, SectorData } from "./Sector/Sector.js";
 import type { LocationData } from "../Math/index.js";
 import { DimensionData } from "./Types/WorldData.types.js";
+import { Vector3Like } from "@amodx/math";
 
 class WorldDataHooks {
   static dimension = {
@@ -26,15 +27,31 @@ class WorldRegisterDimensions {
   }
 }
 
+const tempPosition = Vector3Like.Create();
+
+class SectorPool {
+  static _secotrs: Sector[] = [];
+  static _enabled = false;
+  static getSector() {
+    if (!this._enabled) return Sector.CreateNew();
+    if (this._secotrs.length) return this._secotrs.shift()!;
+    return Sector.CreateNew();
+  }
+  static returnSector(secotr: Sector) {
+    secotr.bufferView.fill(0);
+  }
+}
+
 class WorldRegisterSectors {
+  static setSecotrPool(enabled: boolean) {
+    SectorPool._enabled = enabled;
+    SectorPool._secotrs.length = 0;
+  }
   static add(x: number, y: number, z: number, sector: SectorData) {
-    const positon = WorldSpaces.sector.getPositionXYZ(x, y, z);
+    WorldSpaces.sector.getPositionVec3Array(x, y, z, sector.position);
     const newSector = new Sector(sector);
-    newSector.position[0] = positon.x;
-    newSector.position[1] = positon.y;
-    newSector.position[2] = positon.z;
     WorldRegister._currentDimension.sectors.set(
-      WorldSpaces.sector.getKeyXYZ(positon.x, positon.y, positon.z),
+      WorldSpaces.hash.hashVec3Array(newSector.position),
       newSector
     );
     return newSector;
@@ -49,27 +66,25 @@ class WorldRegisterSectors {
     return true;
   }
   static get(x: number, y: number, z: number): false | Sector {
-    const positon = WorldSpaces.sector.getPositionXYZ(x, y, z);
     const sector = WorldRegister._currentDimension.sectors.get(
-      WorldSpaces.sector.getKeyXYZ(positon.x, positon.y, positon.z)
+      WorldSpaces.hash.hashVec3(
+        WorldSpaces.sector.getPosition(x, y, z, tempPosition)
+      )
     );
     return sector || false;
   }
   static remove(x: number, y: number, z: number) {
-    const positon = WorldSpaces.sector.getPositionXYZ(x, y, z);
-    const sectorKey = WorldSpaces.sector.getKeyXYZ(
-      positon.x,
-      positon.y,
-      positon.z
-    );
+    const position = WorldSpaces.sector.getPosition(x, y, z, tempPosition);
+    const sectorKey = WorldSpaces.hash.hashVec3(position);
     const sector = WorldRegister._currentDimension.sectors.get(sectorKey);
     if (!sector) return false;
+    if (SectorPool._enabled) SectorPool.returnSector(sector);
     WorldRegister._currentDimension.sectors.delete(sectorKey);
     WorldDataHooks.sectors.onRemove(
-      [WorldRegister._currentDimension.id, positon.x, positon.y, positon.z],
+      [WorldRegister._currentDimension.id, position.x, position.y, position.z],
       sector
     );
-    return sector;
+    return true;
   }
 }
 

@@ -139,7 +139,7 @@ export function WorldFlow(task: UpdateTask) {
 
     let [minY, maxY] = SectionHeightMap.setSection(section).getMinMax();
     const cx = sector.position[0];
-    const cy = sector.position[1] + i * WorldSpaces.section.getHeight();
+    const cy = sector.position[1] + i * WorldSpaces.section.bounds.y;
     const cz = sector.position[2];
     if (Math.abs(minY) == Infinity && Math.abs(maxY) == Infinity) continue;
     for (let y = cy + maxY; y >= cy + minY; y--) {

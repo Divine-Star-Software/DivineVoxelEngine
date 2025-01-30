@@ -6,6 +6,7 @@ import { FullVoxelTemplate } from "../../Templates/FullVoxelTemplate.js";
 import { CompactVoxelMesh } from "../Functions/CompactVoxelMesh.js";
 import { VoxelModelConstructorRegister } from "../Models/VoxelModelConstructorRegister.js";
 import { RawVoxelData } from "../../Voxels/Types/Voxel.types.js";
+import { CompactMeshData } from "Mesher/Types";
 
 const templateCursor = new TemplateCursor();
 const voxelCursor = new VoxelCursor();
@@ -13,8 +14,9 @@ templateCursor.setTemplate(
   new FullVoxelTemplate(FullVoxelTemplate.CreateNew([3, 3, 3], 0xf))
 );
 
-export function MeshVoxel(rawVoxelData: RawVoxelData) {
-    
+export function MeshVoxel(
+  rawVoxelData: RawVoxelData
+): [mesh: CompactMeshData, tranfers: any[]] | false {
   const voxel = templateCursor.getVoxel(1, 1, 1)!;
   voxel.copyRaw(rawVoxelData);
   voxel.process();
@@ -30,7 +32,7 @@ export function MeshVoxel(rawVoxelData: RawVoxelData) {
     );
   }
 
-  const mesher = RenderedMaterials.meshers.get(
+  const mesher = RenderedMaterials.meshersMap.get(
     voxel.getRenderedMaterialStringId()
   );
   if (!mesher) {
@@ -38,6 +40,7 @@ export function MeshVoxel(rawVoxelData: RawVoxelData) {
       `Could not find material mesh for voxel [id:${voxel.getStringId()} name:${voxel.getName()}] `
     );
   }
+  mesher.bvhTool = null;
   mesher.resetAll();
   VoxelGeometryLookUp.start("main", 0, 0, 0);
   mesher.origin.x = -0.5;
@@ -51,12 +54,12 @@ export function MeshVoxel(rawVoxelData: RawVoxelData) {
   mesher.nVoxel = templateCursor;
 
   constructor.process(mesher);
-  mesher.resetVars();
+  mesher.reset();
 
   VoxelGeometryLookUp.stop();
 
   const compacted = CompactVoxelMesh([mesher]);
-  mesher.resetVars();
+  mesher.reset();
   mesher.mesh!.clear();
 
   return compacted;

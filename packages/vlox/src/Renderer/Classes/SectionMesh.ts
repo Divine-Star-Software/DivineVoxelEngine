@@ -13,7 +13,7 @@ export class SectionMesh {
     public index: number
   ) {}
 
-  getPositon(): Vec3Array {
+  getPosition(): Vec3Array {
     return [
       this.sector.location[1],
       this.sector.location[1] + WorldSpaces.section.bounds.y * this.index,

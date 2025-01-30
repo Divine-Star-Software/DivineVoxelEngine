@@ -1,26 +1,22 @@
 import { EngineSettingsData } from "./EngineSettings.types.js";
-import { WorldBounds } from "../World/WorldBounds.js"
-import { InitWorldSpaces, WorldSpaces } from "../World/WorldSpaces.js"
-import { Environment } from "@amodx/core/Environment/Environment.js";
-import { Observable } from "@amodx/core/Observers/Observable.js";
+import { Environment } from "../Util/Environment";
+import { TypedEventTarget } from "../Util/TypedEventTarget.js";
+type EngineSettingsEvents = {
+  synced: { settings: EngineSettingsClass };
+};
 
 /**# Engine Settings
  * ---
  * Handles common settings for all contexts
  */
-export class EngineSettings {
-  static observers = {
-    updated: new Observable<EngineSettingsData>(),
-  };
-  static enviorment: "node" | "browser" = Environment.nodeJS.isNode
-    ? "node"
-    : "browser";
-  static settings = new EngineSettingsData();
-  static getSettings() {
+class EngineSettingsClass extends TypedEventTarget<EngineSettingsEvents> {
+  enviorment: "node" | "browser" = Environment.isNode() ? "node" : "browser";
+  settings = new EngineSettingsData();
+  getSettings() {
     return this.settings;
   }
 
-  static syncSettings(data: EngineSettingsData) {
+  syncSettings(data: EngineSettingsData) {
     //safetly set data without prototype pollution
     for (const settingsKey of Object.keys(data)) {
       if (settingsKey.includes("__")) {
@@ -44,62 +40,31 @@ export class EngineSettings {
         }
       }
     }
-    InitWorldSpaces(this.settings);
-    if (this.settings.world) {
-      WorldBounds.setWorldBounds(
-        this.settings.world.minX,
-        this.settings.world.maxX,
-        this.settings.world.minZ,
-        this.settings.world.maxZ,
-        this.settings.world.minY,
-        this.settings.world.maxY
-      );
-    }
-    this.observers.updated.notify(this.settings);
+
+    this.dispatch("synced", { settings: this });
   }
 
-  static getSettingsCopy() {
+  getSettingsCopy() {
     return JSON.parse(JSON.stringify(this.settings));
   }
 
-  static syncSectionInRichWorldThread() {
-    return (
-      this.settings.richWorld.enabled && this.settings.richWorld.autoSyncSections
-    );
-  }
-
-  static richDataEnabled() {
-    return this.settings.richWorld.enabled;
-  }
-
-  static syncSectionInDataThread() {
-    return this.settings.dataLoader.enabled && this.settings.dataLoader.autoSyncSections;
-  }
-
-  static syncSectionsInNexusThread() {
-    return this.settings.nexus.enabled && this.settings.nexus.autoSyncSections;
-  }
-
-  static doSunPropagation() {
+  doSunPropagation() {
     return this.settings.lighting.autoSunLight == true;
   }
-  static doRGBPropagation() {
+  doRGBPropagation() {
     return this.settings.lighting.autoRGBLight == true;
   }
 
-  static doLight() {
+  doLight() {
     return this.doRGBPropagation() || this.doSunPropagation();
   }
-  static doFlow() {
+  doFlow() {
     return this.settings.flow.enable;
   }
-  static saveWorldData() {
-    return this.settings.dataLoader.enabled;
-  }
-  static isServer() {
-    return this.settings.server.enabled && this.enviorment == "node";
-  }
-  static isClient() {
+
+  isClient() {
     return this.enviorment != "browser";
   }
 }
+
+export const EngineSettings = new EngineSettingsClass();

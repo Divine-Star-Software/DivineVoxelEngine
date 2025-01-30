@@ -5,12 +5,118 @@ import { DVESectionMeshInterface } from "@divinevoxel/vlox/Renderer";
 class DVEBRMeshObservers {
   updated = new Observable();
 }
-import { VertexBuffer } from "@babylonjs/core/Meshes/buffer.js";
+import { Buffer, VertexBuffer } from "@babylonjs/core/Meshes/buffer.js";
 import { Engine } from "@babylonjs/core";
 import { CompactSubMesh } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
+import { VoxelMeshVertexStructCursor } from "@divinevoxel/vlox/Mesher/Tools/VoxelMeshVertexStructCursor";
 export class DVEBRMesh implements DVESectionMeshInterface {
   observers = new DVEBRMeshObservers();
   static UpdateVertexData(mesh: Mesh, engine: Engine, data: CompactSubMesh) {
+    const buffer = new Buffer(engine, data[1], false);
+
+    mesh.setVerticesBuffer(
+      new VertexBuffer(
+        engine,
+        buffer,
+        VertexBuffer.PositionKind,
+        false,
+        undefined,
+        VoxelMeshVertexStructCursor.VertexFloatSize,
+        undefined,
+        VoxelMeshVertexStructCursor.PositionOffset,
+        3,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        true
+      )
+    );
+    mesh.setVerticesBuffer(
+      new VertexBuffer(
+        engine,
+        buffer,
+        VertexBuffer.NormalKind,
+        false,
+        undefined,
+        VoxelMeshVertexStructCursor.VertexFloatSize,
+        undefined,
+        VoxelMeshVertexStructCursor.NormalOffset,
+        3
+      ),
+      true
+    );
+    mesh.setVerticesBuffer(
+      new VertexBuffer(
+        engine,
+        buffer,
+        VertexBuffer.NormalKind,
+        false,
+        undefined,
+        VoxelMeshVertexStructCursor.VertexFloatSize,
+        undefined,
+        VoxelMeshVertexStructCursor.NormalOffset,
+        3
+      ),
+      true
+    );
+    mesh.setVerticesBuffer(
+      new VertexBuffer(
+        engine,
+        buffer,
+        "textureIndex",
+        false,
+        undefined,
+        VoxelMeshVertexStructCursor.VertexFloatSize,
+        undefined,
+        VoxelMeshVertexStructCursor.TextureIndexOffset,
+        3
+      ),
+      true
+    );
+    mesh.setVerticesBuffer(
+      new VertexBuffer(
+        engine,
+        buffer,
+        "uv",
+        false,
+        undefined,
+        VoxelMeshVertexStructCursor.VertexFloatSize,
+        undefined,
+        VoxelMeshVertexStructCursor.UVOffset,
+        2
+      )
+    );
+    mesh.setVerticesBuffer(
+      new VertexBuffer(
+        engine,
+        buffer,
+        "color",
+        false,
+        undefined,
+        VoxelMeshVertexStructCursor.VertexFloatSize,
+        undefined,
+        VoxelMeshVertexStructCursor.ColorOffset,
+        3
+      )
+    );
+    mesh.setVerticesBuffer(
+      new VertexBuffer(
+        engine,
+        buffer,
+        "voxelData",
+        false,
+        undefined,
+        VoxelMeshVertexStructCursor.VertexFloatSize,
+        undefined,
+        VoxelMeshVertexStructCursor.VoxelDataOFfset,
+        1
+      )
+    );
+    mesh.setIndices(data[2]);
+  }
+  /*   static UpdateVertexDataO(mesh: Mesh, engine: Engine, data: CompactSubMesh) {
+ 
     for (let i = 0; i < data[1].length; i++) {
       const subMesh = data[1][i];
       const id = subMesh[0];
@@ -20,11 +126,13 @@ export class DVEBRMesh implements DVESectionMeshInterface {
         mesh.setIndices(array as any);
         continue;
       }
+
+      const buffer = new Buffer(engine, array,false,)
       mesh.setVerticesBuffer(
         new VertexBuffer(engine, array, id, false, undefined, stride)
       );
     }
-  }
+  } */
   constructor(public _mesh: Mesh) {}
   dispose(): void {
     this._mesh.dispose();

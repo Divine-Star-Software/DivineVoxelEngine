@@ -216,6 +216,7 @@ export class VoxelMeshBVHBuilder {
     voxelX: number,
     voxelY: number,
     voxelZ: number,
+    meshIndex : number,
     indicesStart: number,
     indicesEnd: number,
     minX: number,
@@ -225,7 +226,7 @@ export class VoxelMeshBVHBuilder {
     maxY: number,
     maxZ: number
   ) {
-    const voxelIndex = WorldSpaces.voxel.getIndexXYZ(voxelX, voxelY, voxelZ);
+    const voxelIndex = WorldSpaces.voxel.getIndex(voxelX, voxelY, voxelZ);
     const leafIndex = this.treeIndex.getIndexAtLevel(12, voxelIndex);
     this.indices[voxelIndex * 2] = indicesStart;
     this.indices[voxelIndex * 2 + 1] = indicesEnd;

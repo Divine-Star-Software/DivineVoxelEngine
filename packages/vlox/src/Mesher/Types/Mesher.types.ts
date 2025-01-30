@@ -1,14 +1,20 @@
 import { TypedArrays } from "@amodx/binary";
 import { Vec3Array } from "@amodx/math";
-export type CompactMeshIndex = [
+/* export type CompactMeshIndex = [
   id: string,
   array: TypedArrays,
   stride: number,
 ][];
-
-export type CompactSubMesh = [materialId: string, index: CompactMeshIndex];
+ */
+export type CompactSubMesh = [
+  materialId: string,
+  vertexBuffer: Float32Array,
+  indexBuffer: Uint32Array | Uint16Array,
+  minBounds: Vec3Array,
+  maxBounds: Vec3Array,
+];
 export type CompactMeshData =
-  | [type: 0, buffer: ArrayBuffer, meshes: CompactSubMesh[]]
+  | [type: 0, meshes: CompactSubMesh[]]
   | [
       type: 1,
       vertexBuffer: ArrayBuffer,

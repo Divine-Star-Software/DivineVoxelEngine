@@ -1,5 +1,5 @@
 import { Vec3Array, Vector3Like } from "@amodx/math";
-import { Quad } from "@amodx/meshing/Primitives/Quad";
+import { Quad } from "../../../Mesher/Geomtry/Primitives/Quad"
 import { VoxelFaceNames } from "../../../Math";
 
 export abstract class OcclusionFace {

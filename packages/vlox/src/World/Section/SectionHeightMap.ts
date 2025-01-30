@@ -7,7 +7,7 @@ export class SectionHeightMap {
   private static _sectionState: ReturnType<
     typeof Section.StateStruct.instantiate<SectionStruct>
   >;
-  
+
   static setSection(section: Section) {
     if (!this._sectionState)
       this._sectionState = Section.StateStruct.instantiate<SectionStruct>();
@@ -18,10 +18,15 @@ export class SectionHeightMap {
   static setVoxel(y: number, hasVoxel: boolean) {
     this._sectionState[SectionStructProperties.heightMap][y] = hasVoxel ? 1 : 0;
   }
+  static getVoxel(y: number): boolean {
+    return this._sectionState[SectionStructProperties.heightMap][y] == 1;
+  }
   static setDirty(y: number, dirty: boolean) {
     this._sectionState[SectionStructProperties.dirtyMap][y] = dirty ? 1 : 0;
   }
-
+  static getDirty(y: number) : boolean {
+  return  this._sectionState[SectionStructProperties.dirtyMap][y] == 1;
+  }
   static getMinMax() {
     let min = Infinity;
     let max = -Infinity;

@@ -27,7 +27,7 @@ function forceMultipleOf2(n: number): number {
 const position: Vec3Array = [0, 0, 0];
 export class Section {
   static GetBufferSize() {
-    const voxelSize = WorldSpaces.section.getVolume();
+    const voxelSize = WorldSpaces.section.volumne;
     return forceMultipleOf2(
       forceMultipleOf2(Section.StateStruct.structSize) +
         //ids
@@ -56,7 +56,7 @@ export class Section {
     index: number,
     sectorBuffer: ArrayBufferLike
   ): VoxelDataArrays {
-    const voxelSize = WorldSpaces.section.getVolume();
+    const voxelSize = WorldSpaces.section.volumne;
     let bufferStart = this.GetArrayStartIndex(index);
     const ids = new Uint16Array(sectorBuffer, bufferStart, voxelSize);
     bufferStart += voxelSize * 2;

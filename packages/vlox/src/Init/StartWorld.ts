@@ -1,9 +1,8 @@
 import InitDataSync from "../Contexts/Base/Remote/InitDataSync";
 import { DivineVoxelEngineWorld } from "../Contexts/World/DivineVoxelEngineWorld";
 import { Thread, Threads } from "@amodx/threads/";
-import { CreatePromiseCheck } from "@amodx/core/Intervals/CreatePromiseCheck.js";
 import InitWorldTasks from "../World/InitTasks";
-import { Environment } from "@amodx/core/Environment/Environment";
+import { Environment } from "../Util/Environment";
 import { VoxelTagStates } from "../Voxels/State/VoxelTagStates";
 import { SchemaRegister } from "../Voxels/State/SchemaRegister";
 import { WorldStorageInterface } from "World/Storage/WorldStorage.interface";
@@ -13,7 +12,7 @@ type StartWorldProps = {
 export async function StartWorld(props: StartWorldProps = {}) {
   const DVEW = new DivineVoxelEngineWorld();
 
-  DivineVoxelEngineWorld.environment = Environment.nodeJS.isNode
+  DivineVoxelEngineWorld.environment = Environment.isNode()
     ? "node"
     : "browser";
   Threads.threadName = "world";
@@ -47,9 +46,12 @@ export async function StartWorld(props: StartWorldProps = {}) {
     },
   });
 
-  await CreatePromiseCheck({
-    check: () => ready,
-    checkInterval: 1,
+  await new Promise((resolve) => {
+    const readyCheck = () => {
+      if (ready) return resolve(true);
+      setTimeout(readyCheck, 10);
+    };
+    readyCheck();
   });
 
   const threads: Thread[] = [

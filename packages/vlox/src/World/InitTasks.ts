@@ -18,6 +18,7 @@ export default function ({
   threads: Thread[];
   worldStorage?: WorldStorageInterface;
 }) {
+  WorldRegister.sectors.setSecotrPool(true);
   const loadInMap: Map<string, boolean> = new Map();
   /*
 [sectors]
@@ -63,7 +64,7 @@ export default function ({
     }
 
     if (worldStorage) {
-      const sectorPos = WorldSpaces.sector.getPositionXYZ(
+      const sectorPos = WorldSpaces.sector.getPosition(
         location[1],
         location[2],
         location[3]

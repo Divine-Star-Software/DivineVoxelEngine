@@ -144,7 +144,7 @@ export class OutlinedVoxelTool {
     this._currentTexts = textures;
   }
 
-  static addTo = {
+/*   static addTo = {
     top: (tool: VoxelMesherDataTool) => {
       const normal = VoxelFaceDirections[VoxelFaces.Up];
       const set = CheckSets[VoxelFaces.Up];
@@ -217,7 +217,7 @@ export class OutlinedVoxelTool {
           generateCheck("right", tool, normal, set.right)
         );
     },
-  };
+  }; */
 
   static getOutlineUVs(
     texture: TextureId,

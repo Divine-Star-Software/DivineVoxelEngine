@@ -1,14 +1,12 @@
-import { type Scene, type Engine } from "@babylonjs/core";
+import { type Scene, type Engine, VertexBuffer } from "@babylonjs/core";
 import type { Vec3Array } from "@amodx/math";
 import { Vector3 } from "@babylonjs/core/Maths/";
 import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo.js";
-import { EngineSettingsData } from "@divinevoxel/vlox/Settings/EngineSettings.types";
 import { DVESectionMeshes } from "@divinevoxel/vlox/Renderer";
 import { DVEBabylonRenderer } from "../Renderer/DVEBabylonRenderer";
 import { DVEBRMesh } from "./DVEBRMesh";
 import { CompactMeshData } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
-import { EngineSettings } from "@divinevoxel/vlox/Settings/EngineSettings";
 import { SectionMesh } from "@divinevoxel/vlox/Renderer";
 
 const min = Vector3.Zero();
@@ -45,7 +43,7 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
     if (data[0] == 1) return chunk;
 
     const found: Record<string, true> = {};
-    const subMeshes = data[2];
+    const subMeshes = data[1];
     for (let i = 0; i < subMeshes.length; i++) {
       const subMeshMaterial = subMeshes[i][0];
       found[subMeshMaterial] = true;
@@ -56,24 +54,33 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
         if (!DVEBRSectionMeshes.meshCache.length) {
           mesh = new Mesh("", this.scene);
           mesh.doNotSyncBoundingInfo = true;
-   
+          mesh.isPickable = false;
+          mesh.checkCollisions = false;
+          mesh.doNotSerialize = true;
           mesh.cullingStrategy = Mesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY;
         } else {
           mesh = DVEBRSectionMeshes.meshCache.shift()!;
         }
       }
-
+      mesh.getVertexBuffer(VertexBuffer.PositionKind)?.dispose();
       mesh.unfreezeWorldMatrix();
       mesh.position.set(location[0], location[1], location[2]);
       DVEBRMesh.UpdateVertexData(mesh, this.engine, subMeshes[i]);
-      mesh.getBoundingInfo().reConstruct(min, max, mesh.getWorldMatrix());
+      min.x = subMeshes[i][3][0];
+      min.y = subMeshes[i][3][1];
+      min.z = subMeshes[i][3][2];
+      max.x = subMeshes[i][4][0];
+      max.y = subMeshes[i][4][1];
+      max.z = subMeshes[i][4][2];
+      this.defaultBb.reConstruct(min, max, mesh.getWorldMatrix());
+      mesh.setBoundingInfo(this.defaultBb);
       mesh.freezeWorldMatrix();
 
       mesh.material = this.renderer.materials.get(subMeshMaterial)!._material;
 
       chunk.meshes.set(subMeshMaterial, mesh);
 
-      if (EngineSettings.settings.meshes.clearChachedGeometry) {
+      if (this.clearCachedGeometry) {
         mesh.geometry!.clearCachedData();
         if (mesh.subMeshes) {
           for (const sm of mesh.subMeshes) {
@@ -85,29 +92,18 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
 
     for (const [key, mesh] of chunk.meshes as Map<string, Mesh>) {
       if (!found[key]) {
-        mesh.dispose();
+        mesh.geometry?.clearCachedData();
+        mesh.getVertexBuffer(VertexBuffer.PositionKind)?.dispose();
         for (const bufferKind in mesh.getVerticesDataKinds()) {
-          mesh.setVerticesData(bufferKind, empty);
+          mesh.removeVerticesData(bufferKind);
         }
         mesh.setIndices(emptyIndice);
         mesh.setEnabled(false);
-        DVEBRSectionMeshes.meshCache.push(mesh as any);
+        DVEBRSectionMeshes.meshCache.push(mesh);
         chunk.meshes.delete(key);
       }
     }
 
     return chunk;
-  }
-
-  syncSettings(settings: EngineSettingsData) {
-    if (settings.meshes.pickable) {
-      this.pickable = true;
-    }
-    if (typeof settings.meshes.clearChachedGeometry != "undefined") {
-      this.clearCachedGeometry = settings.meshes.clearChachedGeometry;
-    }
-    if (settings.meshes.serialize) {
-      this.serialize = true;
-    }
   }
 }

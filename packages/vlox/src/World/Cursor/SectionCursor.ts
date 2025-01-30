@@ -59,12 +59,8 @@ export class SectionCursor
 
   getVoxel(x: number, y: number, z: number) {
     if (!this._section) return null;
-    const voxelIndex = WorldSpaces.voxel.getIndexXYZ(x, y, z);
-    Vector3Like.Copy(
-      this._voxelPosition,
-      WorldSpaces.voxel.getPositionXYZ(x, y, z)
-    );
-    this._voxelIndex = voxelIndex;
+    this._voxelIndex = WorldSpaces.voxel.getIndex(x, y, z);
+    WorldSpaces.voxel.getPosition(x, y, z, this._voxelPosition);
     this.voxel.loadIn();
     return this.voxel;
   }

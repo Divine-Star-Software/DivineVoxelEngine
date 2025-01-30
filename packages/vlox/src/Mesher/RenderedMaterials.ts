@@ -1,9 +1,14 @@
 import { VoxelMesherDataTool } from "./Tools/VoxelMesherDataTool";
 
 export class RenderedMaterials {
-  static meshers = new Map<string, VoxelMesherDataTool>();
+  static meshersMap = new Map<string, VoxelMesherDataTool>();
+  static meshers: VoxelMesherDataTool[] = [];
 
-  static add(id: string) {
-    this.meshers.set(id, new VoxelMesherDataTool(id));
+  static register(materials: string[]) {
+    for (let i = 0; i < materials.length; i++) {
+      const newTool = new VoxelMesherDataTool(materials[i], i);
+      this.meshersMap.set(materials[i], newTool);
+      this.meshers[i] = newTool;
+    }
   }
 }

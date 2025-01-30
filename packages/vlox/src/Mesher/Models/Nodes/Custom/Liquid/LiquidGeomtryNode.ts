@@ -3,17 +3,17 @@ import { VoxelMesherDataTool } from "Mesher/Tools/VoxelMesherDataTool";
 import { GeoemtryNode } from "../../GeometryNode";
 import { VoxelCustomGeomtryNode } from "../../../../../Models/VoxelModel.types";
 import { CompassAngles } from "@amodx/math";
-import { Quad } from "@amodx/meshing/Primitives/Quad.js";
-import { QuadUVData, QuadVerticies } from "@amodx/meshing/Geometry.types.js";
-import { QuadScalarVertexData } from "@amodx/meshing/Primitives/QuadVertexData";
+import { Quad } from "../../../../Geomtry/Primitives/Quad";
+import { QuadUVData, QuadVerticies } from "../../../../Geomtry/Geometry.types";
+import { QuadScalarVertexData } from "../../../../Geomtry/Primitives/QuadVertexData";
 import { VoxelFaceDirections, VoxelFaces } from "../../../../../Math";
 import { UpdateBounds } from "../../../Common/BoundsFunctions";
-import { VoxelGeometry } from "../../../VoxelGeometry";
 import { shouldCauseFlip } from "../../../Common/Calc/CalcConstants";
 import type { LiquidVoxelModelArgs } from "../../../../../Models/Defaults/LiquidVoxelModel";
 import { getFlowAngle, getFlowGradient, FlowVerticies } from "./FlowGradient";
 import { GetBoxGeometryNodeData } from "../../../Common/BoxGeometryNode";
 import { VoxelLightData } from "../../../../../Voxels/Cursor/VoxelLightData";
+import { VoxelGeometryBuilder } from "../../../../Geomtry/VoxelGeometryBuilder";
 const vertexValue = new QuadScalarVertexData();
 const vertexLevel = new QuadScalarVertexData();
 
@@ -74,7 +74,6 @@ export class LiquidGeometryNode extends GeoemtryNode<
   init(): void {
     this.faceCount = 1;
     this.vertexCount = 0;
-
   }
 
   isExposed(face: VoxelFaces) {
@@ -131,7 +130,7 @@ export class LiquidGeometryNode extends GeoemtryNode<
     this.tool = tool;
     this.origin = tool.position;
 
-    this.worldLight = tool.getWorldLight();
+    this.worldLight = tool.vars.light;
 
     let upFaceExposed = false;
     if (this.isExposed(VoxelFaces.Up)) {
@@ -141,7 +140,7 @@ export class LiquidGeometryNode extends GeoemtryNode<
       tool.calculateFaceData(VoxelFaces.Up);
       this.determineShading(VoxelFaces.Up);
       quad.flip = this.shouldFlip();
-      tool.setTexture(args.flowTexture);
+      tool.vars.textureIndex = args.stillTexture;
       vertexValue.set(
         vertexLevel.vertices[0] / 7,
         vertexLevel.vertices[1] / 7,
@@ -150,7 +149,7 @@ export class LiquidGeometryNode extends GeoemtryNode<
       );
       const flowData = getFlowAngle(vertexLevel);
       const uvSet = quadRotations[flowData[0]];
-      tool.getAnimationData().setAll(flowData[1]);
+      tool.vars.animation.setAll(flowData[1]);
 
       quad.uvs.vertices[QuadVerticies.TopRight].x = uvSet[0][0];
       quad.uvs.vertices[QuadVerticies.TopRight].y = uvSet[0][1];
@@ -169,25 +168,24 @@ export class LiquidGeometryNode extends GeoemtryNode<
       quad.positions.vertices[2].y = vertexValue.vertices[2] * waterHeight;
       quad.positions.vertices[3].y = vertexValue.vertices[3] * waterHeight;
 
+      VoxelGeometryBuilder.addQuad(tool, origin, quad);
       UpdateBounds(tool, origin, quadBounds[VoxelFaces.Up]);
-      VoxelGeometry.addQuad(tool, origin, quad);
     }
     if (this.isExposed(VoxelFaces.Down)) {
-      tool.setTexture(args.flowTexture);
+      tool.vars.textureIndex = args.stillTexture;
       const quad = Quads[VoxelFaces.Down];
       tool.calculateFaceData(VoxelFaces.Down);
       this.determineShading(VoxelFaces.Down);
       quad.flip = this.shouldFlip();
-      tool.setTexture(args.flowTexture);
-
+      tool.vars.textureIndex = args.stillTexture;
+      VoxelGeometryBuilder.addQuad(tool, origin, quad);
       UpdateBounds(tool, origin, quadBounds[VoxelFaces.Down]);
-      VoxelGeometry.addQuad(tool, origin, quad);
     }
 
     if (this.isExposed(VoxelFaces.North)) {
-      tool.setTexture(args.flowTexture);
+      tool.vars.textureIndex = args.stillTexture;
       const quad = Quads[VoxelFaces.North];
-      tool.getAnimationData().setAll(1);
+      tool.vars.animation.setAll(1);
       tool.calculateFaceData(VoxelFaces.North);
       this.determineShading(VoxelFaces.North);
       quad.flip = this.shouldFlip();
@@ -207,14 +205,14 @@ export class LiquidGeometryNode extends GeoemtryNode<
         quad.setUVs(uvs);
       }
 
-      VoxelGeometry.addQuad(tool, origin, quad);
+      VoxelGeometryBuilder.addQuad(tool, origin, quad);
       UpdateBounds(tool, origin, quadBounds[VoxelFaces.North]);
     }
 
     if (this.isExposed(VoxelFaces.South)) {
-      tool.setTexture(args.flowTexture);
+      tool.vars.textureIndex = args.stillTexture;
       const quad = Quads[VoxelFaces.South];
-      tool.getAnimationData().setAll(1);
+      tool.vars.animation.setAll(1);
       tool.calculateFaceData(VoxelFaces.South);
       this.determineShading(VoxelFaces.South);
       quad.flip = this.shouldFlip();
@@ -233,14 +231,14 @@ export class LiquidGeometryNode extends GeoemtryNode<
         quad.positions.vertices[QuadVerticies.TopRight].y = 1;
         quad.setUVs(uvs);
       }
-      VoxelGeometry.addQuad(tool, origin, quad);
+      VoxelGeometryBuilder.addQuad(tool, origin, quad);
       UpdateBounds(tool, origin, quadBounds[VoxelFaces.South]);
     }
 
     if (this.isExposed(VoxelFaces.East)) {
-      tool.setTexture(args.flowTexture);
+      tool.vars.textureIndex = args.stillTexture;
       const quad = Quads[VoxelFaces.East];
-      tool.getAnimationData().setAll(1);
+      tool.vars.animation.setAll(1);
       tool.calculateFaceData(VoxelFaces.East);
       this.determineShading(VoxelFaces.East);
       //  quad.flip = this.shouldFlip();
@@ -259,14 +257,14 @@ export class LiquidGeometryNode extends GeoemtryNode<
         quad.positions.vertices[QuadVerticies.TopRight].y = 1;
         quad.setUVs(uvs);
       }
-      VoxelGeometry.addQuad(tool, origin, quad);
+      VoxelGeometryBuilder.addQuad(tool, origin, quad);
       UpdateBounds(tool, origin, quadBounds[VoxelFaces.East]);
     }
 
     if (this.isExposed(VoxelFaces.West)) {
-      tool.setTexture(args.flowTexture);
+      tool.vars.textureIndex = args.stillTexture;
       const quad = Quads[VoxelFaces.West];
-      tool.getAnimationData().setAll(1);
+      tool.vars.animation.setAll(1);
       tool.calculateFaceData(VoxelFaces.West);
       this.determineShading(VoxelFaces.West);
       quad.flip = this.shouldFlip();
@@ -285,7 +283,7 @@ export class LiquidGeometryNode extends GeoemtryNode<
         quad.positions.vertices[QuadVerticies.TopRight].y = 1;
         quad.setUVs(uvs);
       }
-      VoxelGeometry.addQuad(tool, origin, quad);
+      VoxelGeometryBuilder.addQuad(tool, origin, quad);
       UpdateBounds(tool, origin, quadBounds[VoxelFaces.West]);
     }
 

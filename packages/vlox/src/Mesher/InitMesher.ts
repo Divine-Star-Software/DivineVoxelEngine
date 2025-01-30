@@ -10,9 +10,8 @@ export default function (
   materials: string[],
   modelData: FinalCompiledVoxelModelData
 ) {
-  for (const mat of materials) {
-    RenderedMaterials.add(mat);
-  }
+  RenderedMaterials.register(materials);
+
   VoxelModelConstructorRegister.registerCustomNode(
     "liquid",
     LiquidGeometryNode

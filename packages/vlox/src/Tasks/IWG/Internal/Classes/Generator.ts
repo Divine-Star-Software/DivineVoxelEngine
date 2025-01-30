@@ -40,13 +40,11 @@ export class Generator {
   update() {
     this._positonChanged = false;
 
-    Vector3Like.Copy(
-      this._sectorPosition,
-      WorldSpaces.sector.getPositionXYZ(
-        this.position.x,
-        this.position.y,
-        this.position.z
-      )
+    WorldSpaces.section.getPosition(
+      this.position.x,
+      this.position.y,
+      this.position.z,
+      this._sectorPosition
     );
 
     if (!Vector3Like.Equals(this._sectorPosition, this._cachedPosition)) {

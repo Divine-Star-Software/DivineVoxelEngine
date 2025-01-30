@@ -1,3 +1,5 @@
+import { EngineSettings } from "../Settings/EngineSettings";
+
 export class WorldBounds {
   static bounds = {
     MinZ: -Number.MAX_SAFE_INTEGER,
@@ -58,3 +60,21 @@ export class WorldBounds {
     };
   }
 }
+
+EngineSettings.addEventListener(
+  "synced",
+  ({
+    detail: {
+      settings: { settings },
+    },
+  }) => {
+    WorldBounds.setWorldBounds(
+      settings.world.minX,
+      settings.world.maxX,
+      settings.world.minZ,
+      settings.world.maxZ,
+      settings.world.minY,
+      settings.world.maxY
+    );
+  }
+);

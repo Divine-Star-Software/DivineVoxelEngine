@@ -1,5 +1,5 @@
 import { Vec2Array, Vec3Array } from "@amodx/math";
-import { QuadUVData } from "@amodx/meshing/Geometry.types";
+import { QuadUVData } from "../Mesher/Geomtry/Geometry.types"
 import { VoxelFaceNames } from "../Math";
 import { TextureId } from "../Textures/Texture.types";
 import {

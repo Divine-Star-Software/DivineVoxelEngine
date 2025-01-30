@@ -182,21 +182,21 @@ export const PerlinGen = {
           }
 
           if (this.inNoiseRange(x, y, z)) {
-            voxelCursor.setStringId("dve_debug_box").process();
+            voxelCursor.setStringId("dve_dread_stone").process();
             columnCursor
               .getVoxel(x, y, z)!
               .setId(voxelCursor.id)
               .updateHeightMap(0);
-
+/* 
             if (!this.inNoiseRange(x, y + 1, z) && Math.random() > 0.9) {
               voxelCursor.setStringId("dve_dream_grass").process();
               columnCursor
                 .getVoxel(x, y, z)!
                 .setId(voxelCursor.id)
                 .updateHeightMap(0);
-            }
+            } */
           } else {
-            if (y < 30 && includeWater) {
+            if (y < 30 ) {
               voxelCursor.setStringId("dve_liquid_dream_ether").process();
               columnCursor
                 .getVoxel(x, y, z)!

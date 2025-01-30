@@ -16,7 +16,7 @@ export class CandleParticles extends VoxelEffect {
 
   init(): void {
     const scene = DVEBabylonRenderer.instance.scene;
-    const meshPositoin = this.mesh.getPositon();
+    const meshPositoin = this.mesh.getPosition();
 
     {
       const particles = new ParticleSystem("", 1000, scene);

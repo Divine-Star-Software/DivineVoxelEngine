@@ -3,7 +3,7 @@ import { Vec3Array, Vector3Like } from "@amodx/math";
 import { WorldSpaces } from "../../World/WorldSpaces";
 import { LocationData } from "../../Math";
 
- export class TaskMap {
+export class TaskMap {
   _map: boolean[] = [];
   get size() {
     return this._map.length;
@@ -48,7 +48,7 @@ import { LocationData } from "../../Math";
   clear() {
     this._map.length = 0;
   }
-} 
+}
 
 const NegativeInfinityVec3 = Vector3Like.Create(
   -Infinity,
@@ -57,6 +57,7 @@ const NegativeInfinityVec3 = Vector3Like.Create(
 );
 const InfinityVec3 = Vector3Like.Create(Infinity, Infinity, Infinity);
 
+const tempPosition = Vector3Like.Create();
 class UpdatedBounds {
   min = Vector3Like.Clone(InfinityVec3);
   max = Vector3Like.Clone(NegativeInfinityVec3);
@@ -78,18 +79,20 @@ class UpdatedBounds {
   }
 
   getSections() {
-    const minSectionPos = WorldSpaces.section.getPositionXYZ(
+    const minSectionPos = WorldSpaces.section.getPosition(
       this.min.x - 1,
       this.min.y - 1,
-      this.min.z - 1
+      this.min.z - 1,
+      tempPosition
     );
     const minX = minSectionPos.x;
     const minY = minSectionPos.y;
     const minZ = minSectionPos.z;
-    const maxSectionPos = WorldSpaces.section.getPositionXYZ(
+    const maxSectionPos = WorldSpaces.section.getPosition(
       this.max.x + 1,
       this.max.y + 1,
-      this.max.z + 1
+      this.max.z + 1,
+      tempPosition
     );
     const maxX = maxSectionPos.x;
     const maxY = maxSectionPos.y;

@@ -1,13 +1,12 @@
 import { Vec3Array, Vec4Array, Vector3Like } from "@amodx/math";
 import { VoxelFaceNameArray, VoxelFaces } from "../../../../Math";
 
-import { QuadScalarVertexData } from "@amodx/meshing";
-import { QuadVerticies } from "@amodx/meshing/Geometry.types";
+import { QuadScalarVertexData } from "../../../Geomtry/Primitives/QuadVertexData";
+import { QuadVerticies } from "../../../Geomtry/Geometry.types";
 import { VoxelBoxGeometryNode } from "../../../../Models/VoxelModel.types";
 
-import { Quad } from "@amodx/meshing/Primitives/Quad";
+import { Quad } from "../../../Geomtry/Primitives/Quad";
 import { VoxelMesherDataTool } from "../../../../Mesher/Tools/VoxelMesherDataTool";
-import { VoxelGeometry } from "../../VoxelGeometry";
 import {
   BoxVoxelGometryArgs,
   BoxVoxelGometryInputs,
@@ -22,6 +21,7 @@ import { VoxelRelativeCubeIndexPositionMap } from "../../../../Models/Indexing/V
 import { GetBoxGeometryNodeData } from "../../Common/BoxGeometryNode";
 import { UpdateBounds } from "../../Common/BoundsFunctions";
 import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData";
+import { VoxelGeometryBuilder } from "../../../Geomtry/VoxelGeometryBuilder";
 
 const ArgIndexes = BoxVoxelGometryInputs.ArgIndexes;
 
@@ -252,14 +252,11 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
     this.tool = tool;
     this.origin = tool.position;
 
-    this.worldAO = tool.getWorldAO();
-    this.worldLight = tool.getWorldLight();
-
+    this.worldAO = tool.vars.ao;
+    this.worldLight = tool.vars.light;
 
     for (let face = 0 as VoxelFaces; face < 6; face++) {
       if (args[face][ArgIndexes.Enabled] && this.isExposed(face)) {
-
-
         tool.calculateFaceData(face);
         this.determineShading(face);
         const faceArgs = args[face];
@@ -267,7 +264,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
 
         quad.flip = this.shouldFlip() || faceArgs[ArgIndexes.Fliped];
 
-        tool.setTexture(faceArgs[ArgIndexes.Texture]);
+        tool.vars.textureIndex = faceArgs[ArgIndexes.Texture];
 
         const uvs = faceArgs[ArgIndexes.UVs];
         //1
@@ -282,7 +279,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
         //4
         quad.uvs.vertices[3].x = uvs[3][0];
         quad.uvs.vertices[3].y = uvs[3][1];
-        VoxelGeometry.addQuad(tool, origin, quad);
+        VoxelGeometryBuilder.addQuad(tool, origin, quad);
 
         UpdateBounds(tool, origin, this.quadBounds[face]);
       }

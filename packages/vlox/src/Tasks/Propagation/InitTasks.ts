@@ -22,7 +22,7 @@ export default function InitTasks() {
 
   Threads.registerTask<ExplosionTasks>(TasksIds.Explosion, async (data) => {
     const location = data[0];
-    const sectorPositon = WorldSpaces.sector.getPositionXYZ(
+    const sectorPosition = WorldSpaces.sector.getPosition(
       location[1],
       location[2],
       location[3]
@@ -30,15 +30,15 @@ export default function InitTasks() {
     const task = new UpdateTask();
     task.setOrigin([
       location[0],
-      sectorPositon.x,
-      sectorPositon.y,
-      sectorPositon.z,
+      sectorPosition.x,
+      sectorPosition.y,
+      sectorPosition.z,
     ]);
     ExplosionManager.runExplosion(task, data[1]);
   });
 
   Threads.registerTask<LocationData>(TasksIds.WorldSun, (location) => {
-    const sectorPositon = WorldSpaces.sector.getPositionXYZ(
+    const sectorPosition = WorldSpaces.sector.getPosition(
       location[1],
       location[2],
       location[3]
@@ -46,9 +46,9 @@ export default function InitTasks() {
     const task = new UpdateTask();
     task.setOrigin([
       location[0],
-      sectorPositon.x,
-      sectorPositon.y,
-      sectorPositon.z,
+      sectorPosition.x,
+      sectorPosition.y,
+      sectorPosition.z,
     ]);
     RunWorldSun(task);
   });

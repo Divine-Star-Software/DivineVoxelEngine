@@ -8,7 +8,7 @@ import { VoxelRuleGeometry } from "../Classes/VoxelRulesGeometry";
 import { VoxelFaces } from "../../../Math";
 import { CompiledVoxelGeometryNodes } from "../../../Voxels/Types/VoxelModelCompiledData.types";
 import { TransformBox, TransformQuad } from "../../Shared/Transform";
-import { Quad } from "@amodx/meshing/Primitives/Quad";
+import { Quad } from "../../../Mesher/Geomtry/Primitives/Quad"
 
 export function GetOcclusionFaces(
   parentId: string,

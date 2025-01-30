@@ -12,40 +12,37 @@ import { VoxelMesherDataTool } from "../Tools/VoxelMesherDataTool.js";
 import { VoxelModelConstructorRegister } from "../Models/VoxelModelConstructorRegister.js";
 import { SectionHeightMap } from "../../World/Section/SectionHeightMap.js";
 import { WorldRegister } from "../../World/WorldRegister.js";
+import { WorldVoxelCursor } from "../../World/Cursor/WorldVoxelCursor";
+import { VoxelMeshBVHBuilder } from "../Tools/VoxelMeshBVHBuilder";
 
 const sectionCursor = new SectionCursor();
 const worldCursor = new WorldCursor();
 
-function process(
-  x: number,
-  y: number,
-  z: number,
-  doSecondCheck = false
-): boolean {
+const bvhTool = new VoxelMeshBVHBuilder();
+function process(x: number, y: number, z: number): boolean {
   const voxel = sectionCursor.getVoxel(x, y, z);
   if (!voxel) return false;
   if (!voxel.isRenderable()) return false;
 
-  let hasVoxel = false;
-  voxel.setSecondary(doSecondCheck);
-  if (!doSecondCheck) {
-    if (voxel.hasSecondaryVoxel()) {
-      hasVoxel = process(x, y, z, true);
-    }
+  if (voxel.hasSecondaryVoxel()) {
+    voxel.setSecondary(true);
+    meshVoxel(x, y, z, voxel);
+    voxel.setSecondary(false);
   }
-  const constructor = VoxelModelConstructorRegister.getConstructor(
-    voxel.getStringId()
-  );
+
+  meshVoxel(x, y, z, voxel);
+  return true;
+}
+
+function meshVoxel(x: number, y: number, z: number, voxel: WorldVoxelCursor) {
+  const constructor =
+    VoxelModelConstructorRegister.constructorsPaltte[voxel.getId()];
   if (!constructor) {
     throw new Error(
       `Could not find constructor ${voxel.getId()} | ${voxel.getName()} `
     );
   }
-
-  const mesher = RenderedMaterials.meshers.get(
-    voxel.getRenderedMaterialStringId()
-  );
-
+  const mesher = RenderedMaterials.meshers[voxel.getRenderedMaterial()];
   if (!mesher) {
     throw new Error(
       `Could not find material for ${voxel.getId()} | ${voxel.getName()} | ${constructor?.id} | ${voxel.getMaterial()} | ${voxel.getRenderedMaterialStringId()}`
@@ -63,8 +60,7 @@ function process(
   mesher.startConstruction();
   constructor.process(mesher);
   mesher.endConstruction();
-  mesher.resetVars();
-  return true;
+  mesher.reset();
 }
 
 export function MeshSection(
@@ -74,9 +70,10 @@ export function MeshSection(
   WorldRegister.setDimension(dimension);
   const sector = WorldRegister.sectors.get(cx, cy, cz);
   if (!sector) return null;
+  // console.log("mesh section", dimension, cx, cy, cz);
+  const meshStart = performance.now();
   const section = sector.getSection(cy);
   SectionHeightMap.setSection(section);
-
   worldCursor.setFocalPoint(...location);
   sectionCursor.setSection(...location);
 
@@ -86,56 +83,50 @@ export function MeshSection(
 
   if (Math.abs(minY) == Infinity && Math.abs(maxY) == Infinity) return null;
   VoxelGeometryLookUp.start(dimension, location[1], location[2], location[3]);
-  for (const [substance, mesher] of RenderedMaterials.meshers) {
-    mesher.bvhTool.reset();
+  bvhTool.reset();
+  for (let i = 0; i < RenderedMaterials.meshers.length; i++) {
+    RenderedMaterials.meshers[i].bvhTool = bvhTool;
   }
+
   for (let y = minY; y <= maxY; y++) {
     let foundVoxels = false;
+    if (!SectionHeightMap.getVoxel(y) && !SectionHeightMap.getDirty(y))
+      continue;
     for (let x = 0; x < maxX; x++) {
       for (let z = 0; z < maxZ; z++) {
-        if (process(x + cx, y + cy, z + cz)) {
-          foundVoxels = true;
-        }
+        let found = process(x + cx, y + cy, z + cz);
+        if (found) foundVoxels = true;
       }
     }
     SectionHeightMap.setVoxel(y, foundVoxels);
     SectionHeightMap.setDirty(y, false);
   }
+
   VoxelGeometryLookUp.stop();
+  const compactStart = performance.now();
   const transfers: any[] = [];
   const sectionEffects: SetSectionMeshTask[2] = [];
-
   const sections = <SetSectionMeshTask>[location, [] as any, sectionEffects, 0];
-
   const meshed: VoxelMesherDataTool[] = [];
-  for (const [substance, mesher] of RenderedMaterials.meshers) {
+  for (let i = 0; i < RenderedMaterials.meshers.length; i++) {
+    const mesher = RenderedMaterials.meshers[i];
     for (const e in mesher.effects) {
       const float = Float32Array.from(mesher.effects[e]);
       transfers.push(float.buffer);
       sectionEffects.push([e, float]);
     }
-    if (mesher.mesh!.positions.length == 0) {
+    if (!mesher.mesh.buffer.length) {
       mesher.resetAll();
       continue;
     }
     meshed.push(mesher);
   }
 
-  const compactMesh = CompactVoxelMesh(meshed);
-  transfers.push(
-    ...(compactMesh[0] == 0
-      ? [compactMesh[1]]
-      : [
-          compactMesh[1],
-          compactMesh[2].buffer,
-          compactMesh[3].buffer,
-          compactMesh[4].buffer,
-        ])
-  );
+  const [compactMesh, buffers] = CompactVoxelMesh(meshed);
   sections[1] = compactMesh;
-  for (const mesher of meshed) {
-    mesher.resetAll();
+  for (let i = 0; i < meshed.length; i++) {
+    meshed[i].resetAll();
   }
 
-  return [sections, transfers];
+  return [sections, [...transfers, ...buffers]];
 }

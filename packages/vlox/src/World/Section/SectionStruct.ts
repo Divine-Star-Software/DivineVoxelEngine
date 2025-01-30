@@ -30,12 +30,12 @@ export function InitalizeSectionTags() {
     {
       id: SectionStructProperties.heightMap,
       type: "bit-array",
-      length: WorldSpaces.section.getHeight(),
+      length: WorldSpaces.section.bounds.y,
     },
     {
       id: SectionStructProperties.dirtyMap,
       type: "bit-array",
-      length: WorldSpaces.section.getHeight(),
+      length: WorldSpaces.section.bounds.y,
     }
   );
 

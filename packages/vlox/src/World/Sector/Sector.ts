@@ -40,6 +40,7 @@ export class Sector {
   }
 
   sections: Section[] = [];
+  bufferView: Uint8Array;
   sectorState: DataView;
   position: Vec3Array;
 
@@ -47,6 +48,7 @@ export class Sector {
     this.position = data.position;
     this.sectorState = new DataView(data.buffer);
     this.buffer = data.buffer;
+    this.bufferView = new Uint8Array(data.buffer);
     for (let i = 0; i < data.sections.length; i++) {
       this.sections[i] = new Section(this, i, data.sections[i]);
     }

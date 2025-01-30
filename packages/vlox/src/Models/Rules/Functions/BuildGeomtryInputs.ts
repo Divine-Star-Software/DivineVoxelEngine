@@ -1,14 +1,9 @@
-import { Observable } from "@amodx/core/Observers";
 import { BoxVoxelGometryInputs } from "../../Input/BoxVoxelGometryInputs";
 import { VoxelRuleGeometry } from "../Classes/VoxelRulesGeometry";
-import {
-  VoxelFaceNameArray,
-  VoxelFaceNameRecord,
-  VoxelFaces,
-} from "../../../Math";
+import { VoxelFaceNameArray, VoxelFaces } from "../../../Math";
 import { TextureManager } from "../../../Textures/TextureManager";
 import { Matrix2x2Like, Mat2Array, Vec4Array, AMath } from "@amodx/math";
-import { QuadUVData } from "@amodx/meshing/Geometry.types";
+import { QuadUVData } from "../../../Mesher/Geomtry/Geometry.types"
 import { QuadVoxelGometryInputs } from "../../Input/QuadVoxelGometryInputs";
 import { VoxelGeometryTransform } from "../../../Voxels/Types/VoxelModelCompiledData.types";
 
@@ -84,15 +79,15 @@ const mapQuadUvs = (
 };
 
 export function BuildGeomtryInputs(geomtry: VoxelRuleGeometry) {
-  const inputObservers = new Map<string, Observable<any>>();
+  const inputObservers = new Map<string, ((data: any) => void)[]>();
 
   const onInput = (id: string, subscribe: (data: any) => any) => {
     let obs = inputObservers.get(id);
     if (!obs) {
-      obs = new Observable<any>();
+      obs = [];
       inputObservers.set(id, obs);
     }
-    return obs.subscribe(subscribe);
+    return obs.push(subscribe);
   };
 
   let faceTransparentIndex: boolean[] = [];
@@ -331,7 +326,9 @@ export function BuildGeomtryInputs(geomtry: VoxelRuleGeometry) {
         if (data.type == "texture") {
           value = TextureManager.getTextureIndex(value);
         }
-        obs.notify(value);
+        for (const func of obs) {
+          func(value);
+        }
       },
     });
   }

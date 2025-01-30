@@ -1,6 +1,5 @@
 import { VoxelFaces, VoxelFacesArray } from "../../Math";
-import { QuadUVData } from "@amodx/meshing/Geometry.types";
-
+import { QuadUVData } from "../../Mesher/Geomtry/Geometry.types"
 export type BoxFaceArags = [
   //upp
   enabled: boolean,

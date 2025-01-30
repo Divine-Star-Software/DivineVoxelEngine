@@ -126,7 +126,7 @@ export function App() {
       viwer.yAxis.position.z -= 2;
       viwer.zAxis.position.z -= 2;
 
-      const camera = new FreeCamera("", new Vector3(-2, 4, -2), scene);
+      const camera = new FreeCamera("", new Vector3(-30, 40, -30), scene);
 
       camera.setTarget(new Vector3(0, 0, 0));
 

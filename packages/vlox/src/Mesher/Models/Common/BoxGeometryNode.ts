@@ -1,7 +1,7 @@
 import { Vec3Array, Vec4Array, Vector3Like } from "@amodx/math";
 import { VoxelFaces } from "../../../Math";
 
-import { Quad } from "@amodx/meshing/Primitives/Quad";
+import { Quad } from "../../Geomtry/Primitives/Quad"
 
 import { addQuadWeights, QuadVertexWeights } from "./Calc/CalcConstants";
 

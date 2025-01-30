@@ -6,6 +6,7 @@ import { WorldBounds } from "../WorldBounds";
 
 let cursorCache: SectorCursor[] = [];
 
+const tempPosition = Vector3Like.Create();
 export class WorldCursor extends DataCursorInterface {
   sectorCursors = new Map<number, Map<number, SectorCursor>>();
 
@@ -13,7 +14,7 @@ export class WorldCursor extends DataCursorInterface {
   dimension: string = "";
 
   setFocalPoint(dimension: string, x: number, y: number, z: number) {
-    const sectorPos = WorldSpaces.sector.getPositionXYZ(x, y, z);
+    const sectorPos = WorldSpaces.sector.getPosition(x, y, z, tempPosition);
 
     for (const [cx, row] of this.sectorCursors) {
       for (const [cz, col] of row) {
@@ -33,7 +34,7 @@ export class WorldCursor extends DataCursorInterface {
   }
 
   getSector(x: number, y: number, z: number) {
-    const sectorPos = WorldSpaces.sector.getPositionXYZ(x, y, z);
+    const sectorPos = WorldSpaces.sector.getPosition(x, y, z, tempPosition);
 
     const cx = sectorPos.x / WorldSpaces.sector.bounds.x - this.origin.x;
     const cz = sectorPos.z / WorldSpaces.sector.bounds.z - this.origin.z;

@@ -1,18 +1,18 @@
-import { MeshDefaultAttributes } from "@amodx/meshing/MeshData.types";
+import { MeshDefaultAttributes } from "../Geomtry/MeshData.types"
 import { EngineSettings } from "../../Settings/EngineSettings";
-import { MesherDataTool } from "@amodx/meshing";
+import { MesherDataTool } from "../Geomtry/Tools/MesherDataTools"
 import {
   BinaryNumberTypes,
   TypedArrayClassMap,
   MappedByteCounts,
 } from "@amodx/binary";
-import { CompactMeshData, CompactSubMesh } from "../Types/Mesher.types";
+import {  CompactSubMesh } from "../Types/Mesher.types";
 
 export function CompactMesh(
   materialId: string,
   tool: MesherDataTool
-): CompactMeshData {
-  let webGPU = EngineSettings.settings.rendererSettings.mode == "webgpu";
+) {
+/*   let webGPU = EngineSettings.settings.rendererSettings.mode == "webgpu";
 
   const mesh = tool.mesh!;
   const byteRanges: [
@@ -51,5 +51,5 @@ export function CompactMesh(
     dataMap[1][i][1] = newArray;
   }
 
-  return [0, finalBuffer, [dataMap]];
+  return [0, finalBuffer, [dataMap]]; */
 }

@@ -4,10 +4,7 @@ import { WorldSpaces } from "../World/WorldSpaces.js";
 import { SectorMesh } from "./Classes/SectorMesh.js";
 import { DVESectionMeshInterface } from "./Classes/DVESectionMeshInterface.js";
 
-export type MeshRegisterDimensions = Map<
-  string,
-  Map<string, SectorMesh>
->;
+export type MeshRegisterDimensions = Map<string, Map<string, SectorMesh>>;
 
 class Sectors {
   static add(location: LocationData): SectorMesh {
@@ -16,12 +13,14 @@ class Sectors {
 
     const sector = new SectorMesh([
       location[0],
-      ...Vector3Like.ToArray(
-        WorldSpaces.sector.getPositionXYZ(location[1], location[2], location[3])
+      ...WorldSpaces.sector.getPositionVec3Array(
+        location[1],
+        location[2],
+        location[3]
       ),
     ] as LocationData);
     dimension.set(
-      WorldSpaces.sector.getKeyXYZ(location[1], location[2], location[3]),
+      WorldSpaces.hash.hashXYZ(location[1], location[2], location[3]),
       sector
     );
     return sector;
@@ -30,14 +29,12 @@ class Sectors {
   static remove(location: LocationData) {
     let dimension = MeshRegister.dimensions.get(location[0]);
     if (!dimension) return false;
-    const index = WorldSpaces.sector.getKeyXYZ(
-      location[1],
-      location[2],
-      location[3]
+    const key = WorldSpaces.hash.hashVec3(
+      WorldSpaces.sector.getPosition(location[1], location[2], location[3])
     );
-    const sector = dimension.get(index);
+    const sector = dimension.get(key);
     if (!sector) return false;
-    dimension.delete(index);
+    dimension.delete(key);
     if (dimension.size == 0) {
       MeshRegister.dimensions.remove(location[0]);
     }
@@ -48,7 +45,9 @@ class Sectors {
     let dimension = MeshRegister.dimensions.get(location[0]);
     if (!dimension) return false;
     return dimension.get(
-      WorldSpaces.sector.getKeyXYZ(location[1], location[2], location[3])
+      WorldSpaces.hash.hashVec3(
+        WorldSpaces.sector.getPosition(location[1], location[2], location[3])
+      )
     );
   }
 }

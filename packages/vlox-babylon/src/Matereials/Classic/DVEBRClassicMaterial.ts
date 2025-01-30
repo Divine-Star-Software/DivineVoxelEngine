@@ -65,7 +65,7 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
     if (data.backFaceCulling !== undefined) {
       shaderMaterial.backFaceCulling = data.backFaceCulling;
     }
-
+    shaderMaterial.needDepthPrePass = true;
     let liquid = false;
     if (this.id.includes("liquid")) {
       liquid = true;
@@ -75,7 +75,7 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
       //   shaderMaterial.needDepthPrePass = true;
       //   shaderMaterial.separateCullingPass = false;
       shaderMaterial.forceDepthWrite = true;
-      shaderMaterial.needDepthPrePass = true;
+
       shaderMaterial.backFaceCulling = false;
       // shaderMaterial.transparencyMode = 0;
       // shaderMaterial.alphaMode = 0;

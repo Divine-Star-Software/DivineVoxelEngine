@@ -51,7 +51,7 @@ export async function StartRenderer(initData: StartRendererProps) {
     materials: initData.materials || [],
   });
 
-  InitRendererTasks();
+  InitRendererTasks(DVER.threads.construcotrs);
   InitWorldDataSync();
 
   InitMesher(syncData.voxels.materials.palette, syncData.voxels.models);

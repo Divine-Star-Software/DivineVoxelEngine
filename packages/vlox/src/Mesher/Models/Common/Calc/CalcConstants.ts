@@ -1,11 +1,11 @@
 import {
   QuadVerticies,
   QuadVerticiesArray,
-} from "@amodx/meshing/Geometry.types";
+} from "../../../Geomtry/Geometry.types"
 import { VoxelFaces, VoxelFacesArray } from "../../../../Math";
 import { Vec3Array, Vec4Array, Vector2Like } from "@amodx/math";
 import { VoxelRelativeCubeIndex } from "../../../../Models/Indexing/VoxelRelativeCubeIndex";
-import { Quad } from "@amodx/meshing/Primitives/Quad";
+import { Quad } from "../../../Geomtry/Primitives/Quad"
 import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData";
 
 const lightData = new VoxelLightData();

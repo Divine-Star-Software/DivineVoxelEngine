@@ -1,25 +1,28 @@
 import { SectorState } from "../Classes/SectorState";
 import { WorldRegister } from "../../../../World/WorldRegister";
 import { SectorStateStructIds } from "../../../../World/Sector/SectorStructIds";
-import { $2dMooreNeighborhood } from "../../../../Math/Constants/CardinalNeighbors";
+import { $2dMooreNeighborhood } from "../../../../Math/CardinalNeighbors";
 import { WorldSpaces } from "../../../../World/WorldSpaces";
 import { Sector } from "../../../../World/index";
 import { DimensionSegment } from "../Classes/DimensionSegment";
+import { Vector3Like } from "@amodx/math";
+const tempPosition = Vector3Like.Create();
 export function getSectorState(
-  sector:Sector,
+  sector: Sector,
   state: SectorState,
   segment: DimensionSegment
 ): SectorState {
   state.resset();
 
-  const [cx,cy,cz] = sector.position;
+  const [cx, cy, cz] = sector.position;
 
   Sector.StateStruct.setData(sector.sectorState);
   for (let i = 0; i < $2dMooreNeighborhood.length; i++) {
-    const sectorPOS = WorldSpaces.sector.getPositionXYZ(
+    const sectorPOS = WorldSpaces.sector.getPosition(
       cx + $2dMooreNeighborhood[i][0] * WorldSpaces.sector.bounds.x,
       cy,
-      cz + $2dMooreNeighborhood[i][1] * WorldSpaces.sector.bounds.z
+      cz + $2dMooreNeighborhood[i][1] * WorldSpaces.sector.bounds.z,
+      tempPosition
     );
     if (!segment.vistedMap.has(sectorPOS.x, cy, sectorPOS.z)) {
       segment.queue.push(sectorPOS.x, cy, sectorPOS.z);
@@ -39,14 +42,18 @@ export function getSectorState(
     if (!Sector.StateStruct.getProperty(SectorStateStructIds.isWorldGenDone)) {
       state.nWorldGenAllDone = false;
     }
-    if (!Sector.StateStruct.getProperty(SectorStateStructIds.isWorldDecorDone)) {
+    if (
+      !Sector.StateStruct.getProperty(SectorStateStructIds.isWorldDecorDone)
+    ) {
       state.nDecorAllDone = false;
     }
     if (!Sector.StateStruct.getProperty(SectorStateStructIds.isWorldSunDone)) {
       state.nSunAllDone = false;
     }
     if (
-      !Sector.StateStruct.getProperty(SectorStateStructIds.isWorldPropagationDone)
+      !Sector.StateStruct.getProperty(
+        SectorStateStructIds.isWorldPropagationDone
+      )
     ) {
       state.nPropagtionAllDone = false;
     }

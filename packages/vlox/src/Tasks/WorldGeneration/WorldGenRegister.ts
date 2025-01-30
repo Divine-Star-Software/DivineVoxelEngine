@@ -54,23 +54,23 @@ export class WorldGenRegister {
       location[3]
     );
     if (!sector) {
-      const sectorPos = WorldSpaces.sector.getPositionXYZ(
+      const sectorPos = WorldSpaces.sector.getPosition(
         location[1],
         location[2],
         location[3]
       );
-      const sectorKey = WorldSpaces.sector.getKeyXYZ(
-        location[1],
-        location[2],
-        location[3]
-      );
+      const sectorKey = WorldSpaces.hash.hashVec3(sectorPos);
 
       if (!requests.sections.has(sectorKey)) {
         DivineVoxelEngineConstructor.instance.threads.world.runTask(
           "add-sector",
           [requests.dimension, sectorPos.x, sectorPos.y, sectorPos.z]
         );
-        requests.sections.set(sectorKey, [sectorPos.x, sectorPos.y, sectorPos.z]);
+        requests.sections.set(sectorKey, [
+          sectorPos.x,
+          sectorPos.y,
+          sectorPos.z,
+        ]);
       }
     }
     const [dim, x, y, z] = location;

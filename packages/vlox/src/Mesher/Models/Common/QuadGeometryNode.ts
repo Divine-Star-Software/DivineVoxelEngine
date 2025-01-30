@@ -2,7 +2,7 @@ import { Vec3Array, Vector3Like } from "@amodx/math";
 import { VoxelFaces } from "../../../Math";
 import { VoxelQuadGeometryNode } from "../../../Models/VoxelModel.types";
 
-import { Quad } from "@amodx/meshing/Primitives/Quad";
+import { Quad } from "../../Geomtry/Primitives/Quad"
 
 import {
   addQuadWeights,

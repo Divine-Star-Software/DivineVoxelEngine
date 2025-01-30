@@ -1,5 +1,5 @@
 import type { VoxelMesherDataTool } from "../../../../Mesher/Tools/VoxelMesherDataTool.js";
-import { QuadVerticies } from "@amodx/meshing/Geometry.types";
+import { QuadVerticies } from "../../../Geomtry/Geometry.types.js"
 import { VoxelFaces, VoxelFaceDirections } from "../../../../Math/index.js";
 import { GradientCheckSets } from "./CalcConstants.js";
 import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData.js";

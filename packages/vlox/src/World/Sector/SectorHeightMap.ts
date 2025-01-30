@@ -1,6 +1,6 @@
 import { Vec3Array } from "@amodx/math";
 import { LocationData } from "../../Math";
-import { $2dMooreNeighborhood } from "../../Math/Constants/CardinalNeighbors";
+import { $2dMooreNeighborhood } from "../../Math/CardinalNeighbors";
 import { SectionHeightMap } from "../Section/SectionHeightMap";
 import { WorldBounds } from "../WorldBounds";
 import { WorldRegister } from "../WorldRegister";

@@ -1,5 +1,5 @@
 import { Mesh } from "@babylonjs/core";
-import { MatrixArray } from "@divinevoxel/vlox/Math/Classes/MatrixArray.js";
+import { MatrixArray } from "./MatrixArray"
 import { EntityInstance } from "./EntityInstance.js";
 import "@babylonjs/core/Meshes/thinInstanceMesh";
 export class EntityTool {

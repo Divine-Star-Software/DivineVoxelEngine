@@ -1,4 +1,4 @@
-import { $3dCardinalNeighbors } from "../../../Math/Constants/CardinalNeighbors.js";
+import { $3dCardinalNeighbors } from "../../../Math/CardinalNeighbors.js";
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
 
 import { SunRemove, SunUpdate } from "../Illumanation/SunUpdate.js";

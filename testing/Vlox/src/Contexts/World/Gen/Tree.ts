@@ -1,4 +1,4 @@
-import { VisitAll } from "@divinevoxel/vlox/Math";
+import { VisitAll } from "@divinevoxel/vlox/Math/VisitAll";
 
 import { BrushTool } from "@divinevoxel/vlox/Tools/Brush/Brush";
 import { GenerateCircle } from "./Circle";

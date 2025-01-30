@@ -1,9 +1,8 @@
 import InitDataSync from "../Contexts/Base/Remote/InitDataSync";
 import { DivineVoxelEngineConstructor } from "../Contexts/Constructor/DivineVoxelEngineConstructor";
 import { Threads } from "@amodx/threads";
-import { CreatePromiseCheck } from "@amodx/core/Intervals/CreatePromiseCheck";
 import { VoxelGeometryLookUp } from "../Mesher/Models/VoxelGeometryLookUp";
-import { Environment } from "@amodx/core/Environment/Environment";
+import { Environment } from "../Util/Environment";
 import { WorldRegister } from "../World/WorldRegister";
 import InitUpdateTasks from "../Tasks/Update/InitTasks";
 import InitPropagationTasks from "../Tasks/Propagation/InitTasks";
@@ -15,7 +14,7 @@ import InitArchiveTasks from "../World/Archive/InitTasks";
 export async function StartContrusctor(data: {} = {}) {
   const DVEC = new DivineVoxelEngineConstructor();
 
-  DivineVoxelEngineConstructor.environment = Environment.nodeJS.isNode
+  DivineVoxelEngineConstructor.environment = Environment.isNode()
     ? "node"
     : "browser";
   let parent = "render";
@@ -39,9 +38,12 @@ export async function StartContrusctor(data: {} = {}) {
     WorldRegister.clearAll();
   });
 
-  await CreatePromiseCheck({
-    check: () => ready,
-    checkInterval: 1,
+  await new Promise((resolve) => {
+    const readyCheck = () => {
+      if (ready) return resolve(true);
+      setTimeout(readyCheck, 10);
+    };
+    readyCheck();
   });
 
   InitArchiveTasks({ worldThread: DVEC.threads.world });

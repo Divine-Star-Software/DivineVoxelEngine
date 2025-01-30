@@ -1,26 +1,5 @@
 export class EngineSettingsData {
   rendererSettings = { mode: "webgl" as "webgl" | "webgpu" };
-  floatingOrigi = {
-    enable: false,
-  };
-  nexus = {
-    enabled: false,
-    autoSyncSections: true,
-    autoSyncVoxelPalette: true,
-  };
-  dataLoader = {
-    enabled: false,
-    autoSyncSections: true,
-    mode: "indexdb",
-  };
-  server = {
-    enabled: false,
-  };
-  richWorld = {
-    enabled: false,
-    autoSyncSections: true,
-    autoSyncVoxelPalette: true,
-  };
   textures = {
     animationTime: 20,
     textureSize: 16,
@@ -37,10 +16,10 @@ export class EngineSettingsData {
     maxY: 256,
     minY: 0,
   };
-  regions = {
-    regionXPow2: 9,
-    regionYPow2: 8,
-    regionZPow2: 9,
+  sectors = {
+    sectorXPow2: 4,
+    sectorYPow2: 8,
+    sectorZPow2: 4,
   };
   sections = {
     autoHeightMap: true,
@@ -61,11 +40,5 @@ export class EngineSettingsData {
     doRGBLight: true,
     autoRGBLight: true,
     autoSunLight: true,
-  };
-  meshes = {
-    clearChachedGeometry: true,
-    checkCollisions: false,
-    serialize: false,
-    pickable: false,
   };
 }

@@ -8,8 +8,6 @@ export class VoxelMeshVertexStructCursor {
   static ColorOffset = 14;
   static VoxelDataOFfset = 18;
 
-
-
   // position
   get positionX() {
     return this.data[
@@ -160,7 +158,7 @@ export class VoxelMeshVertexStructCursor {
 
   trueIndex = 0;
   _index = 0;
-  data: Float32Array;
+  data: Float32Array | number[];
   get index() {
     return this._index;
   }

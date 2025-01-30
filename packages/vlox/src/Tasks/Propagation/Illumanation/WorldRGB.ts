@@ -30,12 +30,12 @@ export function WorldRGB(task: UpdateTask) {
     sectionCursor.setSection(section);
     let [minY, maxY] = SectionHeightMap.setSection(section).getMinMax();
     const cx = sector.position[0];
-    const cy = sector.position[1] + i * WorldSpaces.section.getHeight();
+    const cy = sector.position[1] + i * WorldSpaces.section.bounds.y;
     const cz = sector.position[2];
     if (Math.abs(minY) == Infinity && Math.abs(maxY) == Infinity) continue;
     for (let y = cy + minY; y <= cy + maxY; y++) {
-      for (let z = cz; z < maxZ; z++) {
-        for (let x = cx; x < maxX; x++) {
+      for (let x = cx; x < maxX; x++) {
+        for (let z = cz; z < maxZ; z++) {
           const voxel = sectionCursor.getVoxel(x, y, z);
           if (!voxel || voxel.isAir()) continue;
           if (voxel.isLightSource()) {
