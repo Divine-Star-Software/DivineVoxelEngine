@@ -2,11 +2,10 @@
 import { MesherDataTool } from "../Geomtry/Tools/MesherDataTools";
 //data
 import { QuadScalarVertexData } from "../Geomtry/Primitives/QuadVertexData";
-import { BinaryNumberTypes } from "@amodx/binary";
 import { VoxelFaces, VoxelFacesArray } from "../../Math";
 import { QuadVerticies } from "../Geomtry/Geometry.types";
 import { FaceDataCalc } from "../Models/Common/Calc/FaceDataCalc.js";
-import { Mesh } from "../Geomtry/Mesh";
+import { VoxelMesh } from "../Geomtry/VoxelMesh";
 import { VoxelMeshBVHBuilder } from "./VoxelMeshBVHBuilder";
 import { Vec3Array, Vector3Like } from "@amodx/math";
 import { VoxelCursorInterface } from "../../Voxels/Cursor/VoxelCursor.interface.js";
@@ -35,7 +34,7 @@ export class VoxelMesherDataTool extends MesherDataTool {
   /**The current local origin  */
   origin = Vector3Like.Create();
 
-  mesh = new Mesh();
+  mesh = new VoxelMesh();
   bvhTool: VoxelMeshBVHBuilder | null = null;
 
   vars = new VoxelVars();
@@ -87,7 +86,7 @@ export class VoxelMesherDataTool extends MesherDataTool {
       this.lightData[face][QuadVerticies.BottomRight] = 0;
     }
 
-    this.startNewMesh(new Mesh(true));
+    this.startNewMesh(new VoxelMesh());
   }
 
   bounds: { min: Vec3Array; max: Vec3Array } = {

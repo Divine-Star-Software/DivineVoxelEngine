@@ -80,13 +80,12 @@ export function cullSectors(
               dimension.inProgress.remove(cx, cy, cz);
             });
         } else {
-          WorldRegister.sectors.remove(cx, cy, cz);
+          WorldRegister.sectors.remove(dimension.id, cx, cy, cz);
         }
       }
     }
 
     if (!cullGenerators.length) continue;
-    WorldRegister.setDimension(dimension.id);
     const worldDimension = WorldRegister.dimensions.get(dimension.id)!;
 
     for (const [, sector] of worldDimension.sectors) {

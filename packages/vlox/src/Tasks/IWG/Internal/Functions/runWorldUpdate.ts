@@ -54,8 +54,12 @@ export function runWorldUpdate(generators: Generator[]) {
       )
         continue;
 
-      WorldRegister.setDimension(generator._dimension);
-      const sector = WorldRegister.sectors.get(cx, cy, cz);
+      const sector = WorldRegister.sectors.get(
+        generator._dimension,
+        cx,
+        cy,
+        cz
+      );
       if (!sector) {
         IWGTasks.worldLoadTasks.add(generator._dimension, cx, cy, cz);
         continue;
@@ -83,7 +87,9 @@ export function runWorldUpdate(generators: Generator[]) {
 
       if (
         state.nDecorAllDone &&
-        !Sector.StateStruct.getProperty(SectorStateStructIds.isWorldPropagationDone)
+        !Sector.StateStruct.getProperty(
+          SectorStateStructIds.isWorldPropagationDone
+        )
       ) {
         IWGTasks.worldPropagationTasks.add(generator._dimension, cx, cy, cz);
         continue;

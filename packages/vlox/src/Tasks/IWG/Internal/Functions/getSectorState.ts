@@ -27,7 +27,12 @@ export function getSectorState(
     if (!segment.vistedMap.has(sectorPOS.x, cy, sectorPOS.z)) {
       segment.queue.push(sectorPOS.x, cy, sectorPOS.z);
     }
-    const sector = WorldRegister.sectors.get(sectorPOS.x, cy, sectorPOS.z);
+    const sector = WorldRegister.sectors.get(
+      segment.id,
+      sectorPOS.x,
+      cy,
+      sectorPOS.z
+    );
     if (!sector) {
       state.genAlldone = false;
       state.nWorldGenAllDone = false;

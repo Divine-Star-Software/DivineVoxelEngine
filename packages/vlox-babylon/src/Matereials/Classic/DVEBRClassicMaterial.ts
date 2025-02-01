@@ -111,6 +111,8 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
     if (data.mipMapBias) {
       shaderMaterial.setFloat("mipMapBias", data.mipMapBias);
     }
+    this._material.blockDirtyMechanism = true;
+  //  this._material.markDirty()
     this._material.onBind = (mesh) => {
       if (!this._material) return;
       const effect = this._material.getEffect();

@@ -55,6 +55,10 @@ export class MeshManager {
     for (const section of sector.sections) {
       if (!section) continue;
       section.dispose();
+      for (const [, mesh] of section.meshes) {
+        this.sectorMeshes.returnMesh(mesh);
+      }
+      section.meshes.clear();
     }
   }
 }

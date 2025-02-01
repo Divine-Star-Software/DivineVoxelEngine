@@ -4,14 +4,16 @@ import ArchiveSector from "./Functions/ArchiveSector";
 import { WorldRegister } from "../WorldRegister";
 import ImportSector from "./Functions/ImportSector";
 import { LocationData } from "../../Math";
-import { compressBinaryObject, expandBinaryObject } from "../../Util/BinaryObject";
+import {
+  compressBinaryObject,
+  expandBinaryObject,
+} from "../../Util/BinaryObject";
 
 function runArchiveSector(
   location: LocationData
 ): [ArchivedSectorData, transfers: any[]] {
-  WorldRegister.setDimension(location[0]);
-
   const sector = WorldRegister.sectors.get(
+    location[0],
     location[1],
     location[2],
     location[3]

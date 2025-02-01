@@ -1,11 +1,10 @@
-import { DVESectionMeshInterface } from "./DVESectionMeshInterface";
 import { VoxelEffect } from "../../Voxels/Effects/VoxelEffect";
 import { SectorMesh } from "./SectorMesh";
 import { WorldSpaces } from "../../World/WorldSpaces";
 import { Vec3Array } from "@amodx/math";
 
 export class SectionMesh {
-  meshes = new Map<string, DVESectionMeshInterface>();
+  meshes = new Map<string, any>();
   effects = new Map<string, VoxelEffect>();
 
   constructor(
@@ -24,9 +23,6 @@ export class SectionMesh {
   dispose() {
     for (const [key, effect] of this.effects) {
       effect.dispose();
-    }
-    for (const [key, mesh] of this.meshes) {
-      mesh.dispose();
     }
   }
 }

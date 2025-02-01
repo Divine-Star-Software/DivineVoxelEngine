@@ -103,12 +103,12 @@ export class VoxelGeometryBuilder {
     const bottomRightNor = quad.normals.vertices[3];
 
     const indices = tool.mesh!.indices;
-    let indIndex = indices.length;
+    let indIndex = tool.mesh.indicieCount;
     let sides = quad.doubleSided ? 2 : 1;
     const flip = quad.flip;
     let orientation = quad.orientation;
     while (sides--) {
-      const baseIndex = tool.mesh.indicieIndex;
+      const baseIndex = tool.mesh.vertexCount;
       if (!flip) {
         //1
         structCursor.index = baseIndex;
@@ -310,7 +310,8 @@ export class VoxelGeometryBuilder {
         indices[indIndex++] = baseIndex;
       }
 
-      tool.mesh.indicieIndex += 4;
+      
+      tool.mesh.addVerticies(4, 6);
     }
     structCursor.data = empty;
   }

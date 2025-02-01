@@ -1,5 +1,5 @@
 import { WorldSpaces } from "../../World/WorldSpaces";
-
+const MAX_FLOAT32 = new Float32Array([Infinity])[0];
 /**
  * A class to help with indexing a full flat binary tree defined by the number of levels it has.
  */
@@ -154,7 +154,7 @@ export class StructCursor {
   setActive() {
     this.data[this.trueIndex + 3] = 1;
   }
-  setVoxelIndex(value:number) {
+  setVoxelIndex(value: number) {
     this.data[this.trueIndex + 3] = value;
   }
   setInnerNode() {
@@ -167,23 +167,29 @@ export class StructCursor {
     const ix = this.trueIndex;
     const iy = this.trueIndex + 1;
     const iz = this.trueIndex + 2;
-    this.data[ix] =
-      this.data[ix] == -Infinity || x < this.data[ix] ? x : this.data[ix];
-    this.data[iy] =
-      this.data[iy] == -Infinity || y < this.data[iy] ? y : this.data[iy];
-    this.data[iz] =
-      this.data[iz] == -Infinity || z < this.data[iz] ? z : this.data[iz];
+    if (x < this.data[ix] || this.data[ix] == -MAX_FLOAT32) {
+      this.data[ix] = x;
+    }
+    if (y < this.data[iy] || this.data[iy] == -MAX_FLOAT32) {
+      this.data[iy] = y;
+    }
+    if (z < this.data[iz] || this.data[iz] == -MAX_FLOAT32) {
+      this.data[iz] = z;
+    }
   }
   updateMax(x: number, y: number, z: number) {
     const ix = this.trueIndex + 4;
     const iy = this.trueIndex + 5;
     const iz = this.trueIndex + 6;
-    this.data[ix] =
-      this.data[ix] == -Infinity || x > this.data[ix] ? x : this.data[ix];
-    this.data[iy] =
-      this.data[iy] == -Infinity || y > this.data[iy] ? y : this.data[iy];
-    this.data[iz] =
-      this.data[iz] == -Infinity || z > this.data[iz] ? z : this.data[iz];
+    if (x > this.data[ix] || this.data[ix] == -MAX_FLOAT32) {
+      this.data[ix] = x;
+    }
+    if (y > this.data[iy] || this.data[iy] == -MAX_FLOAT32) {
+      this.data[iy] = y;
+    }
+    if (z > this.data[iz] || this.data[iz] == -MAX_FLOAT32) {
+      this.data[iz] = z;
+    }
   }
 
   toJSON() {
@@ -208,7 +214,7 @@ export class VoxelMeshBVHBuilder {
   indices = new Uint32Array(this.treeIndex.getLevelSize(12) * 2);
 
   reset() {
-    this.tree.fill(-Infinity);
+    this.tree.fill(-MAX_FLOAT32);
     this.indices.fill(0);
   }
 
@@ -216,7 +222,7 @@ export class VoxelMeshBVHBuilder {
     voxelX: number,
     voxelY: number,
     voxelZ: number,
-    meshIndex : number,
+    meshIndex: number,
     indicesStart: number,
     indicesEnd: number,
     minX: number,
@@ -247,15 +253,3 @@ export class VoxelMeshBVHBuilder {
     }
   }
 }
-/*  
-console.warn(
-  [voxelX, voxelY, voxelZ],
-  "add gometry",
-     [minX, minY, minZ],
-  [maxX, maxY, maxZ],
-  [voxelX, voxelY, voxelZ],
-  [indicesStart, indicesEnd],
-  indicesEnd - indicesStart,
-  (indicesEnd - indicesStart) / 3 
-);
-*/

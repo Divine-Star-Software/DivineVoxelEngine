@@ -2,7 +2,6 @@ import { Vector3Like } from "@amodx/math";
 import { SectorCursor } from "./SectorCursor";
 import { WorldSpaces } from "../WorldSpaces";
 import { DataCursorInterface } from "../../Data/Cursor/DataCursor.interface";
-import { WorldBounds } from "../WorldBounds";
 
 let cursorCache: SectorCursor[] = [];
 
@@ -30,7 +29,7 @@ export class WorldCursor extends DataCursorInterface {
   }
 
   inBounds(x: number, y: number, z: number) {
-    return WorldBounds.inBounds(x, y, z);
+    return WorldSpaces.world.inBounds(x, y, z);
   }
 
   getSector(x: number, y: number, z: number) {

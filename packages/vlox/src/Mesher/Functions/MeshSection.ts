@@ -3,7 +3,10 @@ import type { SetSectionMeshTask } from "../../Renderer/Renderer.types.js";
 //data
 import { WorldSpaces } from "../../World/WorldSpaces.js";
 //tools
-import { VoxelGeometryLookUp } from "../Models/VoxelGeometryLookUp.js";
+import {
+  VoxelGeometryLookUp,
+  VoxelGeometryLookUpSpace,
+} from "../Models/VoxelGeometryLookUp.js";
 import { CompactVoxelMesh } from "./CompactVoxelMesh.js";
 import { WorldCursor } from "../../World/Cursor/WorldCursor.js";
 import { SectionCursor } from "../../World/Cursor/SectionCursor.js";
@@ -14,10 +17,11 @@ import { SectionHeightMap } from "../../World/Section/SectionHeightMap.js";
 import { WorldRegister } from "../../World/WorldRegister.js";
 import { WorldVoxelCursor } from "../../World/Cursor/WorldVoxelCursor";
 import { VoxelMeshBVHBuilder } from "../Tools/VoxelMeshBVHBuilder";
+import { Vector3Like } from "@amodx/math";
 
 const sectionCursor = new SectionCursor();
 const worldCursor = new WorldCursor();
-
+let space: VoxelGeometryLookUpSpace;
 const bvhTool = new VoxelMeshBVHBuilder();
 function process(x: number, y: number, z: number): boolean {
   const voxel = sectionCursor.getVoxel(x, y, z);
@@ -63,15 +67,21 @@ function meshVoxel(x: number, y: number, z: number, voxel: WorldVoxelCursor) {
   mesher.reset();
 }
 
+const padding = Vector3Like.Create(5, 5, 5);
 export function MeshSection(
   location: LocationData
 ): [task: SetSectionMeshTask, transfers: any[]] | null {
+  if (!space)
+    space = VoxelGeometryLookUp.createSpace(
+      WorldSpaces.section.bounds.x + padding.x,
+      WorldSpaces.section.bounds.y + padding.y,
+      WorldSpaces.section.bounds.z + padding.z
+    );
+
   const [dimension, cx, cy, cz] = location;
-  WorldRegister.setDimension(dimension);
-  const sector = WorldRegister.sectors.get(cx, cy, cz);
+
+  const sector = WorldRegister.sectors.get(dimension, cx, cy, cz);
   if (!sector) return null;
-  // console.log("mesh section", dimension, cx, cy, cz);
-  const meshStart = performance.now();
   const section = sector.getSection(cy);
   SectionHeightMap.setSection(section);
   worldCursor.setFocalPoint(...location);
@@ -82,7 +92,9 @@ export function MeshSection(
   const maxZ = WorldSpaces.section.bounds.z;
 
   if (Math.abs(minY) == Infinity && Math.abs(maxY) == Infinity) return null;
-  VoxelGeometryLookUp.start(dimension, location[1], location[2], location[3]);
+  space.start(cx - padding.x, cy - padding.y, cz - padding.z);
+  VoxelGeometryLookUp.start(space);
+
   bvhTool.reset();
   for (let i = 0; i < RenderedMaterials.meshers.length; i++) {
     RenderedMaterials.meshers[i].bvhTool = bvhTool;
@@ -103,7 +115,6 @@ export function MeshSection(
   }
 
   VoxelGeometryLookUp.stop();
-  const compactStart = performance.now();
   const transfers: any[] = [];
   const sectionEffects: SetSectionMeshTask[2] = [];
   const sections = <SetSectionMeshTask>[location, [] as any, sectionEffects, 0];
@@ -115,8 +126,9 @@ export function MeshSection(
       transfers.push(float.buffer);
       sectionEffects.push([e, float]);
     }
-    if (!mesher.mesh.buffer.length) {
+    if (!mesher.mesh.vertexCount) {
       mesher.resetAll();
+      mesher.bvhTool = null;
       continue;
     }
     meshed.push(mesher);
@@ -126,6 +138,7 @@ export function MeshSection(
   sections[1] = compactMesh;
   for (let i = 0; i < meshed.length; i++) {
     meshed[i].resetAll();
+    meshed[i].bvhTool = null;
   }
 
   return [sections, [...transfers, ...buffers]];

@@ -158,7 +158,7 @@ export class VoxelMeshVertexStructCursor {
 
   trueIndex = 0;
   _index = 0;
-  data: Float32Array | number[];
+  data: { [index: number]: number };
   get index() {
     return this._index;
   }

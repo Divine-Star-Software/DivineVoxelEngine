@@ -18,13 +18,13 @@ export default function (rendererThread: Thread) {
   });
 
   Threads.registerTask<LocationData>(TasksIds.BuildSector, (location) => {
-    WorldRegister.setDimension(location[0]);
     const sectorPosition = WorldSpaces.sector.getPosition(
       location[1],
       location[2],
       location[3]
     );
     const sector = WorldRegister.sectors.get(
+      location[0],
       sectorPosition.x,
       sectorPosition.y,
       sectorPosition.z
@@ -60,7 +60,6 @@ export default function (rendererThread: Thread) {
         sectionMesh[0],
         sectionMesh[1]
       );
-   
     }
   });
 }

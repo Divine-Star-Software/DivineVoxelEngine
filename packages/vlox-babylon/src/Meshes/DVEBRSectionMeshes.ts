@@ -18,7 +18,7 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
   pickable = false;
   checkCollisions = false;
   serialize = false;
-  clearCachedGeometry = true;
+  // clearCachedGeometry = false;
   defaultBb: BoundingInfo;
 
   constructor(
@@ -30,9 +30,23 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
     this.defaultBb = new BoundingInfo(Vector3.Zero(), new Vector3(16, 16, 16));
   }
 
-  returnMesh(mesh: DVEBRMesh) {
-    mesh.dispose();
-    DVEBabylonRenderer.instance.observers.meshDisposed.notify(mesh);
+  returnMesh(mesh: Mesh) {
+    mesh.geometry?.clearCachedData();
+    mesh.getVertexBuffer(VertexBuffer.PositionKind)?.dispose();
+    for (const bufferKind in mesh.getVerticesDataKinds()) {
+      mesh.removeVerticesData(bufferKind);
+    }
+    mesh.setIndices(emptyIndice);
+    if (mesh.isEnabled()) {
+      mesh.isEnabled(false);
+      for (let i = this.scene.meshes.length - 1; i > -1; i--) {
+        if (this.scene.meshes[i] == mesh) {
+          this.scene.meshes.splice(i, 1);
+          break;
+        }
+      }
+    }
+    DVEBRSectionMeshes.meshCache.push(mesh);
   }
 
   updateVertexData(
@@ -48,6 +62,7 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
       const subMeshMaterial = subMeshes[i][0];
       found[subMeshMaterial] = true;
       let mesh: Mesh;
+
       if (chunk.meshes.has(subMeshMaterial)) {
         mesh = chunk.meshes.get(subMeshMaterial) as Mesh;
       } else {
@@ -58,10 +73,22 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
           mesh.checkCollisions = false;
           mesh.doNotSerialize = true;
           mesh.cullingStrategy = Mesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY;
+          mesh.metadata = { sector: true };
+          mesh.alwaysSelectAsActiveMesh = true;
+          mesh.setEnabled(false);
+
+          for (let i = this.scene.meshes.length - 1; i > -1; i--) {
+            if (this.scene.meshes[i] == mesh) {
+              this.scene.meshes.splice(i, 1);
+              break;
+            }
+          }
         } else {
           mesh = DVEBRSectionMeshes.meshCache.shift()!;
+          mesh.setEnabled(false);
         }
       }
+
       mesh.getVertexBuffer(VertexBuffer.PositionKind)?.dispose();
       mesh.unfreezeWorldMatrix();
       mesh.position.set(location[0], location[1], location[2]);
@@ -80,26 +107,17 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
 
       chunk.meshes.set(subMeshMaterial, mesh);
 
-      if (this.clearCachedGeometry) {
-        mesh.geometry!.clearCachedData();
-        if (mesh.subMeshes) {
-          for (const sm of mesh.subMeshes) {
-            sm.setBoundingInfo(this.defaultBb);
-          }
+      mesh.geometry!.clearCachedData();
+      if (mesh.subMeshes) {
+        for (const sm of mesh.subMeshes) {
+          sm.setBoundingInfo(this.defaultBb);
         }
       }
     }
 
     for (const [key, mesh] of chunk.meshes as Map<string, Mesh>) {
       if (!found[key]) {
-        mesh.geometry?.clearCachedData();
-        mesh.getVertexBuffer(VertexBuffer.PositionKind)?.dispose();
-        for (const bufferKind in mesh.getVerticesDataKinds()) {
-          mesh.removeVerticesData(bufferKind);
-        }
-        mesh.setIndices(emptyIndice);
-        mesh.setEnabled(false);
-        DVEBRSectionMeshes.meshCache.push(mesh);
+        this.returnMesh(mesh);
         chunk.meshes.delete(key);
       }
     }

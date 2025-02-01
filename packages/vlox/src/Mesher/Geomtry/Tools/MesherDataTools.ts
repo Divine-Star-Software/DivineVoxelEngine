@@ -1,13 +1,13 @@
 import { QuadScalarVertexData } from "../Primitives/QuadVertexData.js";
-import { Mesh } from "../Mesh.js";
+import { VoxelMesh } from "../VoxelMesh.js";
 
 export class MesherDataTool {
   segments = new Map<string, number[]>();
 
-  mesh: Mesh | null = null;
+  mesh: VoxelMesh | null = null;
 
-  startNewMesh(mesh?: Mesh) {
-    this.mesh = mesh ? mesh : new Mesh();
+  startNewMesh(mesh?: VoxelMesh) {
+    this.mesh = mesh ? mesh : new VoxelMesh();
   }
 
   resetAll() {

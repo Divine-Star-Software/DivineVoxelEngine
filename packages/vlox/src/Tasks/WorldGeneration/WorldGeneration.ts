@@ -1,6 +1,5 @@
 //types
 //objects
-import { WorldBounds } from "../../World/WorldBounds.js";
 import { WorldGenRegister } from "./WorldGenRegister.js";
 //tools
 import { WorldGenBrush } from "./WorldGenBrush.js";
@@ -11,7 +10,6 @@ export class WorldGeneration {
   static worldGen: WorldGenInterface | null = null;
 
   static register = WorldGenRegister;
-  static worldBounds = WorldBounds;
 
   static _brushes: any[] = [];
 

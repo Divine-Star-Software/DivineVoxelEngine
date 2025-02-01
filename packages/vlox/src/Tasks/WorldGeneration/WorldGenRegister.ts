@@ -3,7 +3,6 @@ import type { LocationData } from "../../Math";
 import { WorldSpaces } from "../../World/WorldSpaces.js";
 import { BrushTool } from "../../Tools/Brush/Brush";
 
-import { WorldBounds } from "../../World/WorldBounds";
 import { RawVoxelData } from "../../Voxels/Types/Voxel.types";
 import { DivineVoxelEngineConstructor } from "../../Contexts/Constructor";
 import { WorldRegister } from "../../World/WorldRegister";
@@ -40,15 +39,14 @@ export class WorldGenRegister {
     rawData: RawVoxelData
   ) {
     if (
-      location[2] < WorldBounds.bounds.MinY ||
-      location[2] >= WorldBounds.bounds.MaxY
+      location[2] < WorldSpaces.world.bounds.MinY ||
+      location[2] >= WorldSpaces.world.bounds.MaxY
     )
       return false;
     const requests = this._requests.get(registerId);
     if (!requests) return;
-
-    WorldRegister.setDimension(location[0]);
     const sector = WorldRegister.sectors.get(
+      location[0],
       location[1],
       location[2],
       location[3]
@@ -80,11 +78,15 @@ export class WorldGenRegister {
   static attemptRequestFullFill(registerId: string) {
     const requests = this._requests.get(registerId);
     if (!requests || !requests.voxels.length) return true;
-    WorldRegister.setDimension(requests.dimension);
     let done = true;
     for (const [key, pos] of requests.sections) {
-      if (!WorldBounds.inBounds(pos[0], pos[1], pos[2])) continue;
-      const sector = WorldRegister.sectors.get(pos[0], pos[1], pos[2]);
+      if (!WorldSpaces.world.inBounds(pos[0], pos[1], pos[2])) continue;
+      const sector = WorldRegister.sectors.get(
+        requests.dimension,
+        pos[0],
+        pos[1],
+        pos[2]
+      );
       if (!sector) {
         done = false;
         DivineVoxelEngineConstructor.instance.threads.world.runTask(

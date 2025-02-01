@@ -8,4 +8,6 @@ export abstract class DVESectionMeshes {
     position: Vec3Array,
     data: CompactMeshData
   ): SectionMesh;
+
+  abstract returnMesh(mesh: any): void;
 }

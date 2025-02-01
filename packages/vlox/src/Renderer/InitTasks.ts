@@ -5,12 +5,22 @@ import { MeshManager } from "./MeshManager";
 import { MeshRegister } from "./MeshRegister";
 import { RunBuildQueue } from "Tasks/Tasks.types";
 import { TaskTool } from "../Tools/Tasks/TasksTool";
+import { CompactSubMesh } from "Mesher/Types";
 
 export default function RendererTasks(threads: Thread | ThreadPool) {
   const tasks = new TaskTool(threads);
-  Threads.registerTask<SetSectionMeshTask>("set-section", (data) =>
-    MeshManager.updateSection(data)
-  );
+  Threads.registerTask<SetSectionMeshTask>("set-section", (data, origin) => {
+    MeshManager.updateSection(data);
+    const tranfers: any[] = [];
+    for (const comp of data[1]) {
+      if ((comp as any)[0] !== 0) continue;
+      for (const mesh of (comp as any)[1] as CompactSubMesh[]) {
+        tranfers.push(mesh[1]);
+        tranfers.push(mesh[2]);
+      }
+    }
+    origin.sendMessage(data, tranfers);
+  });
   Threads.registerTask<LocationData>("remove-sector", (data) => {
     MeshManager.removeSector(data);
   });

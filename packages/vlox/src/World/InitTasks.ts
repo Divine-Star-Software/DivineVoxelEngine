@@ -44,8 +44,8 @@ export default function ({
   };
 
   Threads.registerTask("add-sector", async (location: LocationData) => {
-    WorldRegister.setDimension(location[0]);
     const sector = WorldRegister.sectors.get(
+      location[0],
       location[1],
       location[2],
       location[3]
@@ -59,8 +59,12 @@ export default function ({
     }
 
     if (!sector && !worldStorage) {
-      WorldRegister.setDimension(location[0]);
-      WorldRegister.sectors.new(location[1], location[2], location[3]);
+      WorldRegister.sectors.new(
+        location[0],
+        location[1],
+        location[2],
+        location[3]
+      );
     }
 
     if (worldStorage) {
@@ -82,8 +86,8 @@ export default function ({
       const success = await worldStorage.loadSector(sectorLocation);
       loadInMap.delete(sectorId);
       if (!success) {
-        WorldRegister.setDimension(sectorLocation[0]);
         WorldRegister.sectors.new(
+          sectorLocation[0],
           sectorLocation[1],
           sectorLocation[2],
           sectorLocation[3]
@@ -101,8 +105,12 @@ export default function ({
   });
   Threads.registerTask<LocationData>("unload-sector", (location) => {
     if (WorldLock.isLocked(location)) return [false];
-    WorldRegister.setDimension(location[0]);
-    WorldRegister.sectors.remove(location[1], location[2], location[3]);
+    WorldRegister.sectors.remove(
+      location[0],
+      location[1],
+      location[2],
+      location[3]
+    );
     for (const thread of threads) {
       thread.runTask(WorldDataSyncIds.UnSyncSector, location);
     }
@@ -112,8 +120,13 @@ export default function ({
   Threads.registerTask<LoadSectorDataTasks>(
     "load-sector",
     ([location, sector]) => {
-      WorldRegister.setDimension(location[0]);
-      WorldRegister.sectors.add(location[1], location[2], location[3], sector);
+      WorldRegister.sectors.add(
+        location[0],
+        location[1],
+        location[2],
+        location[3],
+        sector
+      );
       for (const thread of threads) {
         thread.runTask(WorldDataSyncIds.SyncSector, [location, sector]);
       }

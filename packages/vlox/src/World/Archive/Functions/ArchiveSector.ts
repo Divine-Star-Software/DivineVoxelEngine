@@ -176,11 +176,11 @@ function GetArchivedSection(
 type ArchiveColumnProps = {
   location: LocationData;
 };
-export default function ArchiveColumn(
+export default function ArchiveSector(
   archiveData: ArchiveColumnProps
 ): ArchivedSectorData {
-  WorldRegister.setDimension(archiveData.location[0]);
   const sector = WorldRegister.sectors.get(
+    archiveData.location[0],
     archiveData.location[1],
     archiveData.location[2],
     archiveData.location[3]

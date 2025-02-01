@@ -2,7 +2,6 @@ import { type LocationData } from "../Math/index.js";
 import { Vector3Like } from "@amodx/math";
 import { WorldSpaces } from "../World/WorldSpaces.js";
 import { SectorMesh } from "./Classes/SectorMesh.js";
-import { DVESectionMeshInterface } from "./Classes/DVESectionMeshInterface.js";
 
 export type MeshRegisterDimensions = Map<string, Map<string, SectorMesh>>;
 
@@ -65,9 +64,7 @@ class Dimensions {
 
   static *getAllMeshes(
     id: string
-  ): Generator<
-    [location: LocationData, substance: string, mesh: DVESectionMeshInterface]
-  > {
+  ): Generator<[location: LocationData, substance: string, mesh: any]> {
     const dimension = MeshRegister._dimensions.get(id);
     if (!dimension) return;
     for (const [key, sector] of dimension) {

@@ -8,8 +8,8 @@ import { RGBUpdate } from "./RGBUpdate";
 const sectionCursor = new SectionCursor();
 export function WorldRGB(task: UpdateTask) {
   if (!EngineSettings.doLight()) return false;
-  WorldRegister.setDimension(task.origin[0]);
   const sector = WorldRegister.sectors.get(
+    task.origin[0],
     task.origin[1],
     task.origin[2],
     task.origin[3]

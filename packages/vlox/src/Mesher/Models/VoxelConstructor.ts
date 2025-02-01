@@ -115,8 +115,8 @@ export class VoxelConstructor {
       tool.position.z
     );
 
-    const treeState = VoxelGeometryLookUp.stateCache[hashed];
-    const modState = VoxelGeometryLookUp.modCache[hashed];
+    const treeState = VoxelGeometryLookUp.space!.stateCache[hashed];
+    const modState = VoxelGeometryLookUp.space!.modCache[hashed];
 
     if (treeState !== undefined && treeState > -1) {
       const geoLinks = this.data.shapeStateMap[treeState];
@@ -141,7 +141,7 @@ export class VoxelConstructor {
     }
 
     const conditonalTreeState =
-      VoxelGeometryLookUp.conditonalStateCache[hashed];
+      VoxelGeometryLookUp.space!.conditonalStateCache[hashed];
 
     if (conditonalTreeState !== undefined && conditonalTreeState > -1) {
       const condiotnalNodes =

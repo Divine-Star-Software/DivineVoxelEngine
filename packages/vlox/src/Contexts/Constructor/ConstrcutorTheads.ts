@@ -10,7 +10,6 @@ export class ConstructorThreadManager extends ThreadManager {
     super();
     ConstructorThreadManager.instnace = this;
     this.addThread(this.world);
-
     this.addThread(this.parent);
   }
 }

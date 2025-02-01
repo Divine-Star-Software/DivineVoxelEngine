@@ -34,8 +34,7 @@ export class SectorCursor
   }
 
   setSector(dimension: string, x: number, y: number, z: number) {
-    WorldRegister.setDimension(dimension);
-    const sector = WorldRegister.sectors.get(x, y, z);
+    const sector = WorldRegister.sectors.get(dimension, x, y, z);
     if (!sector) return false;
     this._current = sector;
     this._sectorPosition.x = sector.position[0];

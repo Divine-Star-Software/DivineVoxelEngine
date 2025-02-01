@@ -107,9 +107,9 @@ export function GetYXZOrderArrayPositionVec3Array(
   boundsZ: number,
   positionRef: Vec3Array = [0, 0, 0]
 ) {
-  positionRef[1] = Math.floor(index / (boundsX * boundsZ)); // Y (most significant)
-  positionRef[0] = Math.floor((index % (boundsX * boundsZ)) / boundsZ); // X (middle)
-  positionRef[2] = index % boundsZ; // Z (least significant)
+  positionRef[1] = index / (boundsX * boundsZ);
+  positionRef[0] = (index % (boundsX * boundsZ)) / boundsZ;
+  positionRef[2] = index % boundsZ;
   return positionRef;
 }
 
@@ -120,9 +120,9 @@ export function GetYXZOrderArrayPositionVec3(
   boundsZ: number,
   positionRef = Vector3Like.Create()
 ) {
-  positionRef.y = Math.floor(index / (boundsX * boundsZ)); // Y
-  positionRef.x = Math.floor((index % (boundsX * boundsZ)) / boundsZ); // X
-  positionRef.z = index % boundsZ; // Z
+  positionRef.y = index / (boundsX * boundsZ);
+  positionRef.x = (index % (boundsX * boundsZ)) / boundsZ;
+  positionRef.z = index % boundsZ;
   return positionRef;
 }
 

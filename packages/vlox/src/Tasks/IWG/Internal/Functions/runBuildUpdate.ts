@@ -45,8 +45,12 @@ export function runBuildUpdate(generators: Generator[]) {
       )
         continue;
 
-      WorldRegister.setDimension(generator._dimension);
-      const sector = WorldRegister.sectors.get(cx, cy, cz);
+      const sector = WorldRegister.sectors.get(
+        generator._dimension,
+        cx,
+        cy,
+        cz
+      );
 
       if (!sector) continue;
 
@@ -58,7 +62,7 @@ export function runBuildUpdate(generators: Generator[]) {
         state.nPropagtionAllDone
       ) {
         if (segment.rendered.has(cx, cy, cz)) continue;
-   
+
         IWGTasks.buildTasks.add(generator._dimension, cx, cy, cz);
       }
     }

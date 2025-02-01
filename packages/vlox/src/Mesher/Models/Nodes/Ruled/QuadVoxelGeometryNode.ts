@@ -1,11 +1,11 @@
 import { Vec3Array, Vec4Array, Vector3Like } from "@amodx/math";
 import { VoxelFaces } from "../../../../Math";
 
-import { QuadScalarVertexData } from "../../../Geomtry/Primitives/QuadVertexData"
-import { QuadVerticies } from "../../../Geomtry/Geometry.types"
+import { QuadScalarVertexData } from "../../../Geomtry/Primitives/QuadVertexData";
+import { QuadVerticies } from "../../../Geomtry/Geometry.types";
 import { VoxelQuadGeometryNode } from "../../../../Models/VoxelModel.types";
 
-import { Quad } from "../../../Geomtry/Primitives/Quad"
+import { Quad } from "../../../Geomtry/Primitives/Quad";
 import { VoxelMesherDataTool } from "../../../../Mesher/Tools/VoxelMesherDataTool";
 import { VoxelGeometryBuilder } from "../../../Geomtry/VoxelGeometryBuilder";
 
@@ -76,9 +76,9 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
         tool.position.z + p[2]
       );
 
-      const offsetBaseGometry = VoxelGeometryLookUp.geometryCache[hashed];
+      const offsetBaseGometry = VoxelGeometryLookUp.space!.getGeomtry(hashed);
       const offsetConditonalGeometry =
-        VoxelGeometryLookUp.conditionalGeometryCache[hashed];
+        VoxelGeometryLookUp.space!.getConditionalGeomtry(hashed);
 
       if (offsetBaseGometry) {
         for (let i = 0; i < offsetBaseGometry.length; i++) {
@@ -89,9 +89,11 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
           );
           if (
             faceIndex > -1 &&
-            !VoxelGeometryLookUp.voxelHash[hashed].isShapeStateFaceTransparent(
-              VoxelGeometryLookUp.modCache[hashed],
-              VoxelGeometryLookUp.stateCache[hashed],
+            !VoxelGeometryLookUp.space!.getConstructor(
+              hashed
+            )?.isShapeStateFaceTransparent(
+              VoxelGeometryLookUp.space!.modCache[hashed],
+              VoxelGeometryLookUp.space!.stateCache[hashed],
               offsetBaseGometry[i],
               faceIndex
             )
@@ -112,11 +114,11 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
           );
           if (
             faceIndex > -1 &&
-            !VoxelGeometryLookUp.voxelHash[
+            !VoxelGeometryLookUp.space!.getConstructor(
               hashed
-            ].isCondtionalStateFaceTransparent(
-              VoxelGeometryLookUp.modCache[hashed],
-              VoxelGeometryLookUp.stateCache[hashed],
+            )?.isCondtionalStateFaceTransparent(
+              VoxelGeometryLookUp.space!.modCache[hashed],
+              VoxelGeometryLookUp.space!.stateCache[hashed],
               cond[i],
               faceIndex
             )
@@ -168,10 +170,10 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
           tool.position.z + p[2]
         );
 
-        if (VoxelGeometryLookUp.noCastAO[hashed] === true) continue;
-        const baseGeo = VoxelGeometryLookUp.geometryCache[hashed];
+        if (VoxelGeometryLookUp.space!.noCastAO[hashed] === 1) continue;
+        const baseGeo = VoxelGeometryLookUp.space!.getGeomtry(hashed);
         const conditonalGeo =
-          VoxelGeometryLookUp.conditionalGeometryCache[hashed];
+          VoxelGeometryLookUp.space!.getConditionalGeomtry(hashed);
 
         if (!baseGeo && !conditonalGeo) continue;
 

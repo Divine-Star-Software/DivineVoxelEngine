@@ -1,6 +1,6 @@
 import { DivineVoxelEngineRender, DVERInitData } from "../Contexts/Render";
 import InitDataGenerator from "../Contexts/Base/Main/InitDataGenerator";
-import { Thread, ThreadPool } from "@amodx/threads";
+import { Threads, Thread, ThreadPool } from "@amodx/threads";
 import InitWorldDataSync from "../Contexts/Base/Remote/InitWorldDataSync";
 import InitRendererTasks from "../Renderer/InitTasks";
 import InitMesher from "../Mesher/InitMesher";
@@ -9,7 +9,7 @@ import { MeshManager } from "../Renderer/MeshManager";
 type StartRendererProps = {} & DVERInitData & InitVoxelDataProps;
 export async function StartRenderer(initData: StartRendererProps) {
   const DVER = new DivineVoxelEngineRender();
-  await DVER.TC.init("render", window, "window");
+  await Threads.init("render", window, "window");
 
   DivineVoxelEngineRender.initialized = true;
   DVER.renderer = initData.renderer;
@@ -33,7 +33,7 @@ export async function StartRenderer(initData: StartRendererProps) {
     initData.constructorWorkers[0] instanceof Worker
   ) {
     DVER.threads.setThreadPort(
-      DVER.threads.construcotrs.name,
+      DVER.threads.constructors.name,
       initData.constructorWorkers
     );
   } else {
@@ -51,7 +51,7 @@ export async function StartRenderer(initData: StartRendererProps) {
     materials: initData.materials || [],
   });
 
-  InitRendererTasks(DVER.threads.construcotrs);
+  InitRendererTasks(DVER.threads.constructors);
   InitWorldDataSync();
 
   InitMesher(syncData.voxels.materials.palette, syncData.voxels.models);
@@ -71,7 +71,7 @@ export async function StartRenderer(initData: StartRendererProps) {
       await thread.runTaskAsync("sync-data", syncData);
     }
   }
-  DVER.threads.world.waitTillTaskExist("sync-data");
+  await DVER.threads.world.waitTillTaskExist("sync-data");
   await DVER.threads.world.runTaskAsync("sync-data", syncData);
   await DVER.renderer.init(DVER);
 

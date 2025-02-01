@@ -1,7 +1,5 @@
 //types
 //data
-import { WorldBounds } from "../../../World/WorldBounds.js";
-import { WorldRegister } from "../../../World/WorldRegister.js";
 import { $3dCardinalNeighbors } from "../../../Math/CardinalNeighbors.js";
 import { WorldSpaces } from "../../../World/WorldSpaces.js";
 
@@ -27,15 +25,13 @@ const queue: number[] = [];
 
 const lightData = new VoxelLightData();
 export function RunWorldSun(tasks: UpdateTask) {
-  WorldRegister.setDimension(tasks.origin[0]);
-
   const [dimension, cx, cy, cz] = tasks.origin;
 
   const RmaxY = SectorHeightMap.getRelative(tasks.origin);
   const AmaxY = SectorHeightMap.getAbsolute(tasks.origin);
 
   const maxX = cx + WorldSpaces.sector.bounds.x;
-  const maxY = WorldBounds.bounds.MaxY;
+  const maxY = WorldSpaces.world.bounds.MaxY;
   const maxZ = cz + WorldSpaces.sector.bounds.z;
 
   const sectorCursor = tasks.nDataCursor.getSector(

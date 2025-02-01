@@ -37,8 +37,7 @@ export class BrushTool {
   }
 
   newSector() {
-    WorldRegister.setDimension(this.dimension);
-    WorldRegister.sectors.new(this.x, this.y, this.z);
+    WorldRegister.sectors.new(this.dimension, this.x, this.y, this.z);
   }
 
   setData(data: Partial<PaintVoxelData>) {

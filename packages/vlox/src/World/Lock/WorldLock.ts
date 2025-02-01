@@ -43,9 +43,14 @@ export class WorldLock {
                 sectorPos.z,
               ] as LocationData;
               location[0] = dim;
-              WorldRegister.setDimension(location[0]);
+
               if (
-                WorldRegister.sectors.get(location[1], location[2], location[3])
+                WorldRegister.sectors.get(
+                  location[0],
+                  location[1],
+                  location[2],
+                  location[3]
+                )
               )
                 continue;
               allFound = false;
@@ -56,6 +61,7 @@ export class WorldLock {
               if (!this.worldStorage) {
                 if (
                   WorldRegister.sectors.get(
+                    location[0],
                     location[1],
                     location[2],
                     location[3]
@@ -69,11 +75,17 @@ export class WorldLock {
 
               this._loadMap.delete(key);
               if (
-                WorldRegister.sectors.get(location[1], location[2], location[3])
+                WorldRegister.sectors.get(
+                  location[0],
+                  location[1],
+                  location[2],
+                  location[3]
+                )
               )
                 return;
               if (!success) {
                 WorldRegister.sectors.new(
+                  location[0],
                   location[1],
                   location[2],
                   location[3]

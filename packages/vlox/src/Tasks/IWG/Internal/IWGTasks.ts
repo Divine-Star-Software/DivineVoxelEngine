@@ -13,11 +13,10 @@ export class IWGTasks {
     propagationBlocking: true,
     async run(location, onDone) {
       const [dimension, x, y, z] = location;
-      WorldRegister.setDimension(location[0]);
-      const sector = WorldRegister.sectors.get(x, y, z);
+      const sector = WorldRegister.sectors.get(location[0], x, y, z);
       if (sector) return onDone();
       if (!IWGTools.worldStorage) {
-        WorldRegister.sectors.new(x, y, z);
+        WorldRegister.sectors.new(location[0], x, y, z);
         return onDone();
       }
       const loaded = await IWGTools.worldStorage.loadSector([
@@ -27,8 +26,7 @@ export class IWGTasks {
         z,
       ]);
       if (!loaded) {
-        WorldRegister.setDimension(location[0]);
-        WorldRegister.sectors.new(x, y, z);
+        WorldRegister.sectors.new(location[0], x, y, z);
       }
       onDone();
     },
@@ -40,8 +38,8 @@ export class IWGTasks {
     id: "generate",
     propagationBlocking: true,
     async run(location, onDone) {
-      WorldRegister.setDimension(location[0]);
       const sector = WorldRegister.sectors.get(
+        location[0],
         location[1],
         location[2],
         location[3]
@@ -69,8 +67,8 @@ export class IWGTasks {
     id: "decorate",
     propagationBlocking: true,
     async run(location, onDone) {
-      WorldRegister.setDimension(location[0]);
       const sector = WorldRegister.sectors.get(
+        location[0],
         location[1],
         location[2],
         location[3]
@@ -86,7 +84,10 @@ export class IWGTasks {
 
       IWGTools.taskTool.decorate.run([location, []], null, () => {
         Sector.StateStruct.setBuffer(sector.buffer);
-        Sector.StateStruct.setProperty(SectorStateStructIds.isWorldDecorDone, 1);
+        Sector.StateStruct.setProperty(
+          SectorStateStructIds.isWorldDecorDone,
+          1
+        );
         onDone();
       });
     },
@@ -98,8 +99,8 @@ export class IWGTasks {
     id: "wolrd_sun",
     propagationBlocking: true,
     async run(location, onDone) {
-      WorldRegister.setDimension(location[0]);
       const sector = WorldRegister.sectors.get(
+        location[0],
         location[1],
         location[2],
         location[3]
@@ -127,8 +128,8 @@ export class IWGTasks {
     id: "propagation",
     propagationBlocking: true,
     async run(location, onDone) {
-      WorldRegister.setDimension(location[0]);
       const sector = WorldRegister.sectors.get(
+        location[0],
         location[1],
         location[2],
         location[3]
@@ -140,7 +141,9 @@ export class IWGTasks {
 
       Sector.StateStruct.setBuffer(sector.buffer);
       if (
-        Sector.StateStruct.getProperty(SectorStateStructIds.isWorldPropagationDone)
+        Sector.StateStruct.getProperty(
+          SectorStateStructIds.isWorldPropagationDone
+        )
       )
         return onDone();
 

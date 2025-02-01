@@ -14,6 +14,7 @@ templateCursor.setTemplate(
   new FullVoxelTemplate(FullVoxelTemplate.CreateNew([3, 3, 3], 0xf))
 );
 
+const space = VoxelGeometryLookUp.createSpace(3, 3, 3);
 export function MeshVoxel(
   rawVoxelData: RawVoxelData
 ): [mesh: CompactMeshData, tranfers: any[]] | false {
@@ -42,7 +43,7 @@ export function MeshVoxel(
   }
   mesher.bvhTool = null;
   mesher.resetAll();
-  VoxelGeometryLookUp.start("main", 0, 0, 0);
+  VoxelGeometryLookUp.start(space);
   mesher.origin.x = -0.5;
   mesher.origin.y = -0.5;
   mesher.origin.z = -0.5;

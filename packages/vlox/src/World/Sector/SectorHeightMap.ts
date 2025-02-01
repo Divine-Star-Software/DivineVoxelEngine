@@ -2,7 +2,6 @@ import { Vec3Array } from "@amodx/math";
 import { LocationData } from "../../Math";
 import { $2dMooreNeighborhood } from "../../Math/CardinalNeighbors";
 import { SectionHeightMap } from "../Section/SectionHeightMap";
-import { WorldBounds } from "../WorldBounds";
 import { WorldRegister } from "../WorldRegister";
 import { WorldSpaces } from "../WorldSpaces";
 
@@ -24,15 +23,15 @@ export class SectorHeightMap {
     return maxHeight;
   }
   static getAbsolute(location: LocationData) {
-    WorldRegister.setDimension(location[0]);
     const sector = WorldRegister.sectors.get(
+      location[0],
       location[1],
       location[2],
       location[3]
     );
-    if (!sector) return WorldBounds.bounds.MinY;
-    if (sector.sections.length == 0) return WorldBounds.bounds.MinY;
-    let maxHeight = WorldBounds.bounds.MinY;
+    if (!sector) return WorldSpaces.world.bounds.MinY;
+    if (sector.sections.length == 0) return WorldSpaces.world.bounds.MinY;
+    let maxHeight = WorldSpaces.world.bounds.MinY;
     const positon: Vec3Array = [location[1], location[2], location[3]];
     let y = positon[1];
     for (let i = 0; i < sector.sections.length; i++) {

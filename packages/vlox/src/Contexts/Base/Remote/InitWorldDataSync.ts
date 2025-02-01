@@ -20,12 +20,16 @@ export default function () {
   Threads.registerTask<[LocationData, SectorData]>(
     WorldDataSyncIds.SyncSector,
     (data) => {
-      WorldRegister.setDimension(data[0][0]);
-      WorldRegister.sectors.add(data[0][1], data[0][2], data[0][3], data[1]);
+      WorldRegister.sectors.add(
+        data[0][0],
+        data[0][1],
+        data[0][2],
+        data[0][3],
+        data[1]
+      );
     }
   );
   Threads.registerTask<LocationData>(WorldDataSyncIds.UnSyncSector, (data) => {
-    WorldRegister.setDimension(data[0]);
-    WorldRegister.sectors.remove(data[1], data[2], data[3]);
+    WorldRegister.sectors.remove(data[0], data[1], data[2], data[3]);
   });
 }

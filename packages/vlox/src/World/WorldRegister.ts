@@ -47,43 +47,59 @@ class WorldRegisterSectors {
     SectorPool._enabled = enabled;
     SectorPool._secotrs.length = 0;
   }
-  static add(x: number, y: number, z: number, sector: SectorData) {
+  static add(
+    dimensionId: string,
+    x: number,
+    y: number,
+    z: number,
+    sector: SectorData
+  ) {
+    let dimension = WorldRegister.dimensions.get(dimensionId);
+    if (!dimension) dimension = WorldRegister.dimensions.add(dimensionId);
     WorldSpaces.sector.getPositionVec3Array(x, y, z, sector.position);
     const newSector = new Sector(sector);
-    WorldRegister._currentDimension.sectors.set(
+    dimension.sectors.set(
       WorldSpaces.hash.hashVec3Array(newSector.position),
       newSector
     );
     return newSector;
   }
-  static new(x: number, y: number, z: number) {
-    if (this.get(x, y, z)) return false;
-    const sector = this.add(x, y, z, Sector.CreateNew())!;
-    WorldDataHooks.sectors.onNew(
-      [WorldRegister._currentDimension.id, x, y, z],
-      sector
-    );
+  static new(dimensionId: string, x: number, y: number, z: number) {
+    if (this.get(dimensionId, x, y, z)) return false;
+    let dimension = WorldRegister.dimensions.get(dimensionId);
+    if (!dimension) dimension = WorldRegister.dimensions.add(dimensionId);
+    const sector = this.add(dimensionId, x, y, z, Sector.CreateNew())!;
+    WorldDataHooks.sectors.onNew([dimensionId, x, y, z], sector);
     return true;
   }
-  static get(x: number, y: number, z: number): false | Sector {
-    const sector = WorldRegister._currentDimension.sectors.get(
+  static get(
+    dimensionId: string,
+    x: number,
+    y: number,
+    z: number
+  ): false | Sector {
+    let dimension = WorldRegister.dimensions.get(dimensionId);
+    if (!dimension) return false;
+    const sector = dimension.sectors.get(
       WorldSpaces.hash.hashVec3(
         WorldSpaces.sector.getPosition(x, y, z, tempPosition)
       )
     );
     return sector || false;
   }
-  static remove(x: number, y: number, z: number) {
+  static remove(dimensionId: string, x: number, y: number, z: number) {
+    let dimension = WorldRegister.dimensions.get(dimensionId);
+    if (!dimension) return false;
     const position = WorldSpaces.sector.getPosition(x, y, z, tempPosition);
     const sectorKey = WorldSpaces.hash.hashVec3(position);
-    const sector = WorldRegister._currentDimension.sectors.get(sectorKey);
+    const sector = dimension.sectors.get(sectorKey);
     if (!sector) return false;
     if (SectorPool._enabled) SectorPool.returnSector(sector);
-    WorldRegister._currentDimension.sectors.delete(sectorKey);
     WorldDataHooks.sectors.onRemove(
-      [WorldRegister._currentDimension.id, position.x, position.y, position.z],
+      [dimensionId, position.x, position.y, position.z],
       sector
     );
+    dimension.sectors.delete(sectorKey);
     return true;
   }
 }
@@ -93,15 +109,6 @@ export class WorldRegister {
   static _hooks = WorldDataHooks;
   static dimensions = WorldRegisterDimensions;
   static sectors = WorldRegisterSectors;
-
-  static _currentDimension: Dimension;
-  static setDimension(dimensionId: string) {
-    let dimension = this.dimensions.get(dimensionId);
-    if (!dimension) {
-      dimension = this.dimensions.add(dimensionId);
-    }
-    this._currentDimension = dimension;
-  }
 
   static clearAll() {
     this._dimensions.clear();

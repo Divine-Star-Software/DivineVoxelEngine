@@ -81,23 +81,56 @@ export function CompactVoxelMesh(
   for (let i = 0; i < tools.length; i++) {
     const tool = tools[i];
     if (!tool.mesh!.buffer.length) continue;
-    const dataBuffer = new Float32Array(tool.mesh.buffer);
-    const indiciesBuffer =
-      tool.mesh.indicieIndex > 65535
-        ? new Uint32Array(tool.mesh.indices)
-        : new Uint16Array(tool.mesh.indices);
 
+    const totalVerticies =
+      tool.mesh.vertexCount * VoxelMeshVertexStructCursor.VertexFloatSize;
+    const vertexArray = new Float32Array(totalVerticies);
+    const vertexBuffers = tool.mesh.buffer._buffers;
+    let start = 0;
+    let done = false;
+    for (let i = 0; i < vertexBuffers.length; i++) {
+      const buffer = vertexBuffers[i];
+      for (let j = 0; j < buffer.length; j++) {
+        vertexArray[start] = buffer[j];
+        start++;
+        if (start > totalVerticies) {
+          done = true;
+          break;
+        }
+      }
+      if (done) break;
+    }
+    const indiciesArray =
+      tool.mesh.indicieCount > 65535
+        ? new Uint32Array(tool.mesh.indicieCount)
+        : new Uint16Array(tool.mesh.indicieCount);
+
+    const indiceBuffers = tool.mesh.indices._buffers;
+    start = 0;
+    done = false;
+    for (let i = 0; i < indiceBuffers.length; i++) {
+      const buffer = indiceBuffers[i];
+      for (let j = 0; j < buffer.length; j++) {
+        indiciesArray[start] = buffer[j];
+        start++;
+        if (start > tool.mesh.indicieCount) {
+          done = true;
+          break;
+        }
+      }
+      if (done) break;
+    }
     const minBounds = tool.mesh.minBounds;
     const maxBounds = tool.mesh.maxBounds;
 
     data[1].push([
       tool.id,
-      dataBuffer,
-      indiciesBuffer,
+      vertexArray,
+      indiciesArray,
       [minBounds.x, minBounds.y, minBounds.z],
       [maxBounds.x, maxBounds.y, maxBounds.z],
     ]);
-    transfers.push(dataBuffer.buffer, indiciesBuffer.buffer);
+    transfers.push(vertexArray.buffer, indiciesArray.buffer);
   }
 
   return [data, transfers];

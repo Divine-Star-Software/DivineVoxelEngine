@@ -46,8 +46,8 @@ export class SectionCursor
       this._sectionPosition.z = sectionPos[2];
       return;
     }
-    WorldRegister.setDimension(sectionOrDimension);
-    const sector = WorldRegister.sectors.get(x! || 0, y! || 0, z! || 0);
+
+    const sector = WorldRegister.sectors.get(sectionOrDimension,x! || 0, y! || 0, z! || 0);
     if (!sector) return false;
     this._section = sector.getSection(y || 0);
     const sectionPos = this._section!.getPosition();

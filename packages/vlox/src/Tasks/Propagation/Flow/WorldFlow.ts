@@ -7,7 +7,6 @@ import { Vec3Array } from "@amodx/math";
 import { SunRemove, SunUpdate } from "../Illumanation/SunUpdate";
 import { RGBRemove, RGBUpdate } from "../Illumanation/RGBUpdate";
 import { WorldVoxelCursor } from "../../../World/Cursor/WorldVoxelCursor";
-import { WorldBounds } from "../../../World/WorldBounds";
 const flowUpdateChecks: Vec3Array[] = [
   [0, -1, 0],
   [1, 0, 0],
@@ -81,7 +80,7 @@ function Flood(task: UpdateTask, voxel: WorldVoxelCursor) {
       }
       continue;
     }
-    if (!WorldBounds.inBounds(x, y - 1, z) && levelState != 1) continue;
+    if (!WorldSpaces.world.inBounds(x, y - 1, z) && levelState != 1) continue;
     let nVoxel = task.nDataCursor.getVoxel(x, y - 1, z)!;
     const nLevel = nVoxel.isAir()
       ? 0
@@ -117,8 +116,8 @@ function Flood(task: UpdateTask, voxel: WorldVoxelCursor) {
 
 export function WorldFlow(task: UpdateTask) {
   if (!EngineSettings.doFlow()) return false;
-  WorldRegister.setDimension(task.origin[0]);
   const sector = WorldRegister.sectors.get(
+    task.origin[0],
     task.origin[1],
     task.origin[2],
     task.origin[3]

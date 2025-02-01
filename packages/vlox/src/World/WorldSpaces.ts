@@ -10,7 +10,66 @@ import {
 } from "../Math/Indexing.js";
 const tempPosition = Vector3Like.Create();
 const tempPosition2 = Vector3Like.Create();
+class WorldBounds {
+  static bounds = {
+    MinZ: -Number.MAX_SAFE_INTEGER,
+    MaxZ: Number.MAX_SAFE_INTEGER,
+    MinX: -Number.MAX_SAFE_INTEGER,
+    MaxX: Number.MAX_SAFE_INTEGER,
+    MinY: 0,
+    MaxY: 256,
+  };
 
+  static setWorldBounds(
+    minX: number,
+    maxX: number,
+    minZ: number,
+    maxZ: number,
+    minY: number,
+    maxY: number
+  ) {
+    this.bounds.MinX = minX;
+    this.bounds.MaxX = maxX;
+    this.bounds.MinX = minZ;
+    this.bounds.MaxZ = maxZ;
+    this.bounds.MinY = minY;
+    this.bounds.MaxY = maxY;
+  }
+
+  static inBounds(x: number, y: number, z: number) {
+    if (x < this.bounds.MinX) return false;
+    if (y < this.bounds.MinY) return false;
+    if (z < this.bounds.MinZ) return false;
+    if (x > this.bounds.MaxX) return false;
+    if (y > this.bounds.MaxY) return false;
+    if (z > this.bounds.MaxZ) return false;
+    return true;
+  }
+
+  static getWorldWidth(): number {
+    return this.bounds.MaxX - this.bounds.MinX;
+  }
+
+  static getWorldDepth(): number {
+    return this.bounds.MaxZ - this.bounds.MinZ;
+  }
+
+  static getWorldHeightY(): number {
+    return this.bounds.MaxY - this.bounds.MinY;
+  }
+
+  static getWorldDimensions(): {
+    width: number;
+    depth: number;
+    height: number;
+  } {
+    return {
+      width: this.getWorldWidth(),
+      depth: this.getWorldDepth(),
+      height: this.getWorldHeightY(),
+    };
+  }
+}
 class SectorSpace {
   static power2Axes = Vector3Like.Create();
   static bounds = Vector3Like.Create();
@@ -167,24 +226,33 @@ class Hash {
 
 export class WorldSpaces {
   static hash = Hash;
+  static world = WorldBounds;
   static sector = SectorSpace;
   static section = SectionSpace;
   static voxel = VoxelSpace;
 }
 
 EngineSettings.addEventListener("synced", (event) => {
-  event.detail.settings;
+  const { settings } = event.detail.settings;
+  WorldBounds.setWorldBounds(
+    settings.world.minX,
+    settings.world.maxX,
+    settings.world.minZ,
+    settings.world.maxZ,
+    settings.world.minY,
+    settings.world.maxY
+  );
 
-  SectorSpace.power2Axes.x = EngineSettings.settings.sectors.sectorXPow2;
-  SectorSpace.power2Axes.y = EngineSettings.settings.sectors.sectorYPow2;
-  SectorSpace.power2Axes.z = EngineSettings.settings.sectors.sectorZPow2;
+  SectorSpace.power2Axes.x = settings.sectors.sectorXPow2;
+  SectorSpace.power2Axes.y = settings.sectors.sectorYPow2;
+  SectorSpace.power2Axes.z = settings.sectors.sectorZPow2;
   SectorSpace.bounds.x = 1 << SectorSpace.power2Axes.x;
   SectorSpace.bounds.y = 1 << SectorSpace.power2Axes.y;
   SectorSpace.bounds.z = 1 << SectorSpace.power2Axes.z;
 
-  SectionSpace.power2Axes.x = EngineSettings.settings.sections.sectionXPow2;
-  SectionSpace.power2Axes.y = EngineSettings.settings.sections.sectionYPow2;
-  SectionSpace.power2Axes.z = EngineSettings.settings.sections.sectionZPow2;
+  SectionSpace.power2Axes.x = settings.sections.sectionXPow2;
+  SectionSpace.power2Axes.y = settings.sections.sectionYPow2;
+  SectionSpace.power2Axes.z = settings.sections.sectionZPow2;
   SectionSpace.bounds.x = 1 << SectionSpace.power2Axes.x;
   SectionSpace.bounds.y = 1 << SectionSpace.power2Axes.y;
   SectionSpace.bounds.z = 1 << SectionSpace.power2Axes.z;

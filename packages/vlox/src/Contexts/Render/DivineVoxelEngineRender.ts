@@ -46,7 +46,7 @@ export class DivineVoxelEngineRender {
     await this.threads.world.runTaskAsync("clear-all", "");
 
     await Promise.all(
-      this.threads.construcotrs
+      this.threads.constructors
         .getThreads()
         .map((_) => _.runTaskAsync("clear-all", ""))
     );
