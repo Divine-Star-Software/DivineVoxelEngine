@@ -1,7 +1,11 @@
-import { PaintVoxelData } from "../Types/Voxel.types"
-import { VoxelData, RawVoxelData, VoxelNamedStateData } from "../Types/Voxel.types";
+import { PaintVoxelData } from "../Types/Voxel.types";
+import {
+  VoxelData,
+  RawVoxelData,
+  VoxelNamedStateData,
+} from "../Types/Voxel.types";
 import { SchemaRegister } from "../State/SchemaRegister";
-import { VoxelPalette } from "../Palettes/VoxelPalette";
+import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister";
 export class VoxelNamedState {
   tags = new Map<string, any>();
 
@@ -23,9 +27,7 @@ export class VoxelNamedState {
       if (this.data.state == "*") {
         this.compiled.shapeStateAny = true;
       } else if (this.data.state) {
-        this.compiled.shapeState = schema.state.readString(
-          this.data.state
-        );
+        this.compiled.shapeState = schema.state.readString(this.data.state);
       }
 
       if (this.data.mod == "*") {
@@ -86,13 +88,14 @@ export class VoxelIndex {
     if (!VoxelIndex.instance) VoxelIndex.instance = this;
 
     for (const voxelData of data) {
+      this.dataMap.set(voxelData.id, voxelData);
       const namedStates = voxelData.properties["dve_named_states"];
       if (!namedStates) continue;
       const states = new VoxelNamedStateContainer(
         voxelData.id,
         namedStates.map((_) => new VoxelNamedState(voxelData.id, _))
       );
-      this.dataMap.set(voxelData.id, voxelData);
+
       this.stateArray.push(states);
       this.states.set(voxelData.id, states);
       for (const [id, state] of states.states) {
@@ -127,7 +130,9 @@ export class VoxelIndex {
   }
   getStateFromRawData(data: RawVoxelData): VoxelNamedState | false {
     const [id, light, shapeState, secondary, mod] = data;
-    const conatiner = this.states.get(VoxelPalette.ids.getStringId(id));
+    const conatiner = this.states.get(
+      VoxelPalettesRegister.voxels.getStringId(id)
+    );
     if (!conatiner) return false;
     for (const state of conatiner?.stateArray) {
       if (

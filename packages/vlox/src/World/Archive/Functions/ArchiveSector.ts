@@ -2,13 +2,12 @@ import { StringPalette } from "../../../Util/StringPalette";
 import { NumberPalette } from "../../../Util/NumberPalette";
 import { LocationData } from "../../../Math";
 import { WorldRegister } from "../../../World/WorldRegister";
-import { VoxelPalette } from "../../../Voxels/Palettes/VoxelPalette";
-import { VoxelStruct } from "../../../Voxels/Structs/VoxelStruct";
-import { VoxelStructIds } from "../../../Voxels/Types/Voxel.types";
-import { Section, VoxelDataArrays, Sector } from "../../../World/index";
+import { Section } from "../../../World/index";
 import { ArchivedSectionData, ArchivedSectorData } from "../Archive.types";
-import { convertToPaletteBuffer } from "../../../Data/Functions/Palettes";
+import { convertToPaletteBuffer } from "../../../Util/Binary/Palettes";
 import { SchemaRegister } from "../../../Voxels/State/SchemaRegister";
+import { VoxelPalettesRegister } from "../../../Voxels/Data/VoxelPalettesRegister";
+import { VoxelTagsRegister } from "../../../Voxels/Data/VoxelTagsRegister";
 
 type ProcessedSection = ReturnType<typeof getProcessedSection>;
 const getProcessedSection = (section: Section) => {
@@ -47,9 +46,6 @@ const getProcessedSection = (section: Section) => {
   };
 };
 
-let sectorStructInstance: ReturnType<typeof Sector.StateStruct.instantiate>;
-let sectionStructInstance: ReturnType<typeof Section.StateStruct.instantiate>;
-
 function getSectionPalettes() {
   return {
     ids: new NumberPalette(),
@@ -80,7 +76,6 @@ function GetArchivedSection(
   archiveSection: ProcessedSection,
   sectorPalettes: ColumnPalettes
 ): ArchivedSectionData {
-  sectionStructInstance.setData(archiveSection.section.sectionState);
   const palettes: ArchivedSectionData["palettes"] = {};
   if (archiveSection.remappedIds)
     palettes.id = Uint16Array.from(archiveSection.palettes.ids._palette);
@@ -101,9 +96,7 @@ function GetArchivedSection(
     );
   }
   return {
-    state: Object.values(
-      sectionStructInstance.serialize() as Record<string, any>
-    ),
+    state: {} as any,
     palettes,
     buffers: {
       id: archiveSection.idsAllTheSame
@@ -191,15 +184,7 @@ export default function ArchiveSector(
       `Column at location ${location} does not exist when trying to arhicve it.`
     );
 
-  if (!sectorStructInstance)
-    sectorStructInstance = Sector.StateStruct.instantiate();
-  if (!sectionStructInstance)
-    sectionStructInstance = Section.StateStruct.instantiate();
-
   const sectorPalettes = getColumnPalettes();
-
-  sectorStructInstance.setData(sector.sectorState);
-  const sectorState = sectorStructInstance.serialize() as any;
 
   const processedSections: ProcessedSection[] = [];
   for (const section of sector.sections) {
@@ -214,8 +199,7 @@ export default function ArchiveSector(
     const processedSection = getProcessedSection(section);
 
     for (let i = 0; i < length; i++) {
-      const stringId = VoxelPalette.ids.getStringId(section.ids[i]);
-      VoxelStruct.setStringVoxel(stringId);
+      const stringId = VoxelPalettesRegister.voxels.getStringId(section.ids[i]);
 
       const voxelId = !sectorPalettes.ids.isRegistered(stringId)
         ? sectorPalettes.ids.register(stringId)
@@ -226,8 +210,8 @@ export default function ArchiveSector(
       if (firstId == -1) firstId = voxelId;
 
       const secondaryId =
-        VoxelStruct.instance[VoxelStructIds.canHaveSecondary] == 1 &&
-        VoxelPalette.ids.getStringId(section.secondary[i]);
+        VoxelTagsRegister.VoxelTags[section.ids[i]]["dve_can_have_secondary"] &&
+        VoxelPalettesRegister.voxels.getStringId(section.secondary[i]);
 
       const voxelSecondary = secondaryId
         ? !sectorPalettes.secondaryId.isRegistered(secondaryId)
@@ -361,7 +345,6 @@ export default function ArchiveSector(
     if (!reMapIds && !reMapLight && !reMapSecondary && !reMapState) continue;
     const length = section.section.ids.length;
     for (let i = 0; i < length; i++) {
-      VoxelStruct.setVoxel(section.ids[i]);
       if (reMapIds) section.ids[i] = section.palettes.ids.getId(section.ids[i]);
       if (reMapLight)
         section.light[i] = section.palettes.light.getId(
@@ -381,17 +364,20 @@ export default function ArchiveSector(
         );
 
       if (reMapSecondary)
-        section.secondary[i] =
-          VoxelStruct.instance[VoxelStructIds.canHaveSecondary] == 1
-            ? section.palettes.secondaryId.getId(section.secondary[i])
-            : section.palettes.secondaryState.getId(section.secondary[i]);
+        section.secondary[i] = VoxelTagsRegister.VoxelTags[section.ids[i]][
+          "dve_can_have_secondary"
+        ]
+          ? section.palettes.secondaryId.getId(section.secondary[i])
+          : section.palettes.secondaryState.getId(section.secondary[i]);
     }
   }
 
   const stateMap: ArchivedSectorData["palettes"]["stateMap"] = {};
   for (let i = 0; i < sectorPalettes.state._palette.length; i++) {
     const state = sectorPalettes.state._palette[i];
-    const voxelId = VoxelPalette.ids.getStringId(sectorPalettes.stateIdMap[i]);
+    const voxelId = VoxelPalettesRegister.voxels.getStringId(
+      sectorPalettes.stateIdMap[i]
+    );
     if (!SchemaRegister.hasVoxelSchema(voxelId)) continue;
     const schema = SchemaRegister.getVoxelSchemas(voxelId);
     stateMap[i] = schema.state.getStateObject(state);
@@ -400,7 +386,9 @@ export default function ArchiveSector(
   const modMap: ArchivedSectorData["palettes"]["modMap"] = {};
   for (let i = 0; i < sectorPalettes.mod._palette.length; i++) {
     const mod = sectorPalettes.mod._palette[i];
-    const voxelId = VoxelPalette.ids.getStringId(sectorPalettes.modIdMap[i]);
+    const voxelId = VoxelPalettesRegister.voxels.getStringId(
+      sectorPalettes.modIdMap[i]
+    );
     if (!SchemaRegister.hasVoxelSchema(voxelId)) continue;
     const schema = SchemaRegister.getVoxelSchemas(voxelId);
     modMap[i] = schema.mod.getStateObject(mod);
@@ -435,10 +423,10 @@ export default function ArchiveSector(
   return {
     version: "",
     location: [...archiveData.location],
-    sectorState,
+    sectorState: {},
     buffers: {},
     keys: {
-      sectionState: [...sectionStructInstance.getKeys()],
+      sectionState: [],
     },
     palettes,
     sections,

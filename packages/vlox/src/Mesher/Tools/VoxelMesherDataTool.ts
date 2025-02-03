@@ -4,29 +4,34 @@ import { MesherDataTool } from "../Geomtry/Tools/MesherDataTools";
 import { QuadScalarVertexData } from "../Geomtry/Primitives/QuadVertexData";
 import { VoxelFaces, VoxelFacesArray } from "../../Math";
 import { QuadVerticies } from "../Geomtry/Geometry.types";
-import { FaceDataCalc } from "../Models/Common/Calc/FaceDataCalc.js";
+import calculateFaceData from "../Models/Common/Calc/FaceDataCalc.js";
 import { VoxelMesh } from "../Geomtry/VoxelMesh";
 import { VoxelMeshBVHBuilder } from "./VoxelMeshBVHBuilder";
-import { Vec3Array, Vector3Like } from "@amodx/math";
+import { Vec3Array, Vector3Like, Vector4Like } from "@amodx/math";
 import { VoxelCursorInterface } from "../../Voxels/Cursor/VoxelCursor.interface.js";
-import { DataCursorInterface } from "../../Data/Cursor/DataCursor.interface.js";
+import { DataCursorInterface } from "../../Tools/DataCursor.interface.js";
+import { VoxelGeometryBuilderCacheSpace } from "../Models/VoxelGeometryBuilderCacheSpace";
 
 class VoxelVars {
   faceFlipped = false;
   textureIndex = 0;
+  overlayTextures = Vector4Like.Create();
   light = new QuadScalarVertexData();
   ao = new QuadScalarVertexData();
   animation = new QuadScalarVertexData();
   level = new QuadScalarVertexData();
-  overlayTextures = new QuadScalarVertexData();
 
   reset() {
     this.faceFlipped = false;
     this.textureIndex = 0;
+    this.overlayTextures.x = 0;
+    this.overlayTextures.y = 0;
+    this.overlayTextures.z = 0;
   }
 }
 
 export class VoxelMesherDataTool extends MesherDataTool {
+  space: VoxelGeometryBuilderCacheSpace;
   voxel: VoxelCursorInterface;
   nVoxel: DataCursorInterface;
   /**The current world position */
@@ -96,29 +101,29 @@ export class VoxelMesherDataTool extends MesherDataTool {
   _indexStart = 0;
 
   startConstruction() {
-    this._indexStart = this.mesh!.indices.length;
+    this._indexStart = this.mesh!.indicieCount;
     this.bounds.min[0] = Infinity;
     this.bounds.min[1] = Infinity;
     this.bounds.min[2] = Infinity;
     this.bounds.max[0] = -Infinity;
     this.bounds.max[1] = -Infinity;
     this.bounds.max[2] = -Infinity;
+    this._boundsUpdate = true;
   }
 
   endConstruction() {
-    if (
-      this.bounds.min.includes(Infinity) ||
-      this.bounds.max.includes(-Infinity)
-    )
-      return false;
+    this.vars.reset();
+
     if (this.bvhTool) {
+      if (!this._boundsUpdate) return false;
+
       this.bvhTool.updateVoxel(
         this.position.x,
         this.position.y,
         this.position.z,
         this._indexStart,
         this.materialIndex,
-        this.mesh!.indices.length,
+        this.mesh!.indicieCount,
         this.bounds.min[0],
         this.bounds.min[1],
         this.bounds.min[2],
@@ -131,9 +136,30 @@ export class VoxelMesherDataTool extends MesherDataTool {
     return true;
   }
 
+  _boundsUpdate = false;
+  updateBounds(bounds: [Vec3Array, Vec3Array]) {
+    const origin = this.origin;
+    //min
+    if (origin.x + bounds[0][0] < this.bounds.min[0])
+      this.bounds.min[0] = origin.x + bounds[0][0];
+    if (origin.y + bounds[0][1] < this.bounds.min[1])
+      this.bounds.min[1] = origin.y + bounds[0][1];
+    if (origin.z + bounds[0][2] < this.bounds.min[2])
+      this.bounds.min[2] = origin.z + bounds[0][2];
+    //max
+    if (origin.x + bounds[1][0] > this.bounds.max[0])
+      this.bounds.max[0] = origin.x + bounds[1][0];
+    if (origin.y + bounds[1][1] > this.bounds.max[1])
+      this.bounds.max[1] = origin.y + bounds[1][1];
+    if (origin.z + bounds[1][2] > this.bounds.max[2])
+      this.bounds.max[2] = origin.z + bounds[1][2];
+
+    this._boundsUpdate = true;
+  }
+
   calculateFaceData(direction: VoxelFaces) {
     if (this.dataCalculated[direction]) return true;
-    FaceDataCalc.calculate(direction, this);
+    calculateFaceData(direction, this);
     this.dataCalculated[direction] = true;
   }
 
@@ -146,7 +172,9 @@ export class VoxelMesherDataTool extends MesherDataTool {
     this.dataCalculated[VoxelFaces.West] = false;
   }
 
-  reset() {
+  clear() {
     this.vars.reset();
+    this.mesh.clear();
+    return this;
   }
 }

@@ -1,28 +1,33 @@
 import { BinaryArrays } from "@amodx/binary/Util/BinaryArrays";
 import { VoxelRelativeCubeIndex } from "./VoxelRelativeCubeIndex";
 export type VoxelAOResultsIndexData = {
-  buffer: SharedArrayBuffer;
+  buffer: ArrayBufferLike;
   vertexByteCount: number;
 };
+const flatIndexSize = VoxelRelativeCubeIndex.flatIndex.size;
+
+function getByteIndex(
+  otherId: number,
+  directionIndex: number,
+  vertexByteCount: number
+) {
+  return (
+    otherId * vertexByteCount * flatIndexSize + directionIndex * vertexByteCount
+  );
+}
 
 export class VoxelAOResultsIndex {
-  view: DataView;
-
-  constructor(public data: VoxelAOResultsIndexData) {
-    this.view = new DataView(data.buffer);
-  }
-
-  getByteIndex(otherId: number, directionIndex: number) {
-    return (
-      otherId * this.data.vertexByteCount * VoxelRelativeCubeIndex.flatIndex.size +
-      directionIndex * this.data.vertexByteCount
-    );
+  view: Uint8Array;
+  readonly vertexByteCount: number;
+  constructor(data: VoxelAOResultsIndexData) {
+    this.vertexByteCount = data.vertexByteCount;
+    this.view = new Uint8Array(data.buffer);
   }
 
   getValue(otherId: number, directionIndex: number, vertexIndex: number) {
     return BinaryArrays.getBitArrayIndex(
       this.view,
-      this.getByteIndex(otherId, directionIndex),
+      getByteIndex(otherId, directionIndex, this.vertexByteCount),
       vertexIndex
     );
   }
@@ -35,9 +40,15 @@ export class VoxelAOResultsIndex {
   ) {
     BinaryArrays.setBitArrayIndex(
       this.view,
-      this.getByteIndex(otherId, directionIndex),
+      getByteIndex(otherId, directionIndex, this.vertexByteCount),
       vertexIndex,
       value
     );
+  }
+  getData(): VoxelAOResultsIndexData {
+    return {
+      buffer: this.view.buffer,
+      vertexByteCount: this.vertexByteCount,
+    };
   }
 }

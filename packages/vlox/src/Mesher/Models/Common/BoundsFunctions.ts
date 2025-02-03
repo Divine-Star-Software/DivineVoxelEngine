@@ -1,26 +1,7 @@
 import { Vec3Array, Vector3Like } from "@amodx/math";
 import { VoxelMesherDataTool } from "../../../Mesher/Tools/VoxelMesherDataTool";
 
-export function UpdateBounds(
-  tool: VoxelMesherDataTool,
-  origin: Vector3Like,
-  bounds: [Vec3Array, Vec3Array]
-) {
-  //min
-  if (origin.x + bounds[0][0] < tool.bounds.min[0])
-    tool.bounds.min[0] = origin.x + bounds[0][0];
-  if (origin.y + bounds[0][1] < tool.bounds.min[1])
-    tool.bounds.min[1] = origin.y + bounds[0][1];
-  if (origin.z + bounds[0][2] < tool.bounds.min[2])
-    tool.bounds.min[2] = origin.z + bounds[0][2];
-  //max
-  if (origin.x + bounds[1][0] > tool.bounds.max[0])
-    tool.bounds.max[0] = origin.x + bounds[1][0];
-  if (origin.y + bounds[1][1] > tool.bounds.max[1])
-    tool.bounds.max[1] = origin.y + bounds[1][1];
-  if (origin.z + bounds[1][2] > tool.bounds.max[2])
-    tool.bounds.max[2] = origin.z + bounds[1][2];
-}
+
 
 export function GetBounds(vectors: Vec3Array[]): [Vec3Array, Vec3Array] {
   let minX = Infinity;

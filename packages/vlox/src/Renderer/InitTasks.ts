@@ -6,6 +6,7 @@ import { MeshRegister } from "./MeshRegister";
 import { RunBuildQueue } from "Tasks/Tasks.types";
 import { TaskTool } from "../Tools/Tasks/TasksTool";
 import { CompactSubMesh } from "Mesher/Types";
+import { EngineSettings } from "../Settings/EngineSettings";
 
 export default function RendererTasks(threads: Thread | ThreadPool) {
   const tasks = new TaskTool(threads);
@@ -19,8 +20,10 @@ export default function RendererTasks(threads: Thread | ThreadPool) {
         tranfers.push(mesh[2]);
       }
     }
-    origin.sendMessage(data, tranfers);
-  });
+    if (!EngineSettings.settings.rendererSettings.cpuBound) {
+      origin.sendMessage(data, tranfers);
+    }
+  }); 
   Threads.registerTask<LocationData>("remove-sector", (data) => {
     MeshManager.removeSector(data);
   });

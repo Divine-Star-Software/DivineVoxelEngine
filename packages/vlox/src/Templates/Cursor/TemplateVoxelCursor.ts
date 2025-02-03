@@ -5,16 +5,16 @@ export class TemplateVoxelCursor extends VoxelCursorInterface {
   private _template: FullVoxelTemplate;
 
   get ids() {
-    return this._template.ids
+    return this._template.ids;
   }
   get level() {
-    return this._template.level 
+    return this._template.level;
   }
   get light() {
-    return this._template.light 
+    return this._template.light;
   }
   get state() {
-    return this._template.state 
+    return this._template.state;
   }
   get secondary() {
     return this._template.secondary;
@@ -34,4 +34,5 @@ export class TemplateVoxelCursor extends VoxelCursorInterface {
     this.process();
   }
 
+  updateVoxel(mode: 0 | 1) {}
 }

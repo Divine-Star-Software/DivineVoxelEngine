@@ -9,7 +9,7 @@ const brush = new BrushTool();
 import { GenerateTree } from "./Tree";
 
 perlin.noiseSeed(13129301280);
-
+const [xOffSet, yOffset, zOffSet] = [1000, 100, 10000];
 export const PerlinGen = {
   chunkDepth: 16,
   chunkWidth: 16,
@@ -18,7 +18,7 @@ export const PerlinGen = {
   worldCursor,
   inNoiseRange(x: number, y: number, z: number) {
     const p1 = perlin;
-    const [xOffSet, yOffset, zOffSet] = [1000, 100, 10000];
+
     const scale = 30; // Adjust for smoother or more rugged terrain
 
     // Basic terrain height based on x and z
@@ -177,7 +177,7 @@ export const PerlinGen = {
             columnCursor
               .getVoxel(x, y, z)!
               .setId(voxelCursor.id)
-              .updateHeightMap(0);
+              .updateVoxel(0);
             continue;
           }
 
@@ -186,23 +186,23 @@ export const PerlinGen = {
             columnCursor
               .getVoxel(x, y, z)!
               .setId(voxelCursor.id)
-              .updateHeightMap(0);
+              .updateVoxel(0);
 /* 
             if (!this.inNoiseRange(x, y + 1, z) && Math.random() > 0.9) {
               voxelCursor.setStringId("dve_dream_grass").process();
               columnCursor
                 .getVoxel(x, y, z)!
                 .setId(voxelCursor.id)
-                .updateHeightMap(0);
+                .updateVoxel(0);
             } */
           } else {
-            if (y < 30 ) {
+            if (y < 30 && includeWater ) {
               voxelCursor.setStringId("dve_liquid_dream_ether").process();
               columnCursor
                 .getVoxel(x, y, z)!
                 .setId(voxelCursor.id)
                 .setLevel(7)
-                .updateHeightMap(0);
+                .updateVoxel(0);
             }
           }
         }

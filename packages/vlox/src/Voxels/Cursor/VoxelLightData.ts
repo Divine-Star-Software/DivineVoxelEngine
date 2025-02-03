@@ -90,13 +90,14 @@ export class VoxelLightData {
     if (sl < 0) return 0;
     return (sl & ~0xfff0) | (value << 4);
   }
+  createLightValue(s: number, r: number, g: number, b: number) {
+    let v = 0;
+    v = this.setS(s, v);
+    v = this.setR(r, v);
+    v = this.setG(r, v);
+    return this.setB(r, v);
+  }
 
-  decodeLightFromVoxelData(voxelData: number) {
-    return (voxelData & (0xffff << 0)) >> 0;
-  }
-  encodeLightIntoVoxelData(voxelData: number, encodedLight: number) {
-    return (voxelData & ~(0xffff << 0)) | (encodedLight << 0);
-  }
   /**# Set Light Values
    * ---
    * Give an array of light values it will return an encoded light number.
@@ -117,14 +118,14 @@ export class VoxelLightData {
    * - 3: Blue Light
    * @param value
    */
-  getLightValues(value: number) {
+  getLightValuesArray(value: number) {
     this._lightValues[0] = this.getS(value);
     this._lightValues[1] = this.getR(value);
     this._lightValues[2] = this.getG(value);
     this._lightValues[3] = this.getB(value);
     return this._lightValues;
   }
-  getLightValuesToRef(value: number, values: AllLight) {
+  getLightValuesArrayToRef(value: number, values: AllLight) {
     values[0] = this.getS(value);
     values[1] = this.getR(value);
     values[2] = this.getG(value);

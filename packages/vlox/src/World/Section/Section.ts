@@ -3,6 +3,10 @@ import { RemoteBinaryStruct } from "@amodx/binary/";
 import { WorldSpaces } from "../WorldSpaces.js";
 import { Sector } from "../Sector/Sector.js";
 import { Vec3Array } from "@amodx/math";
+import {
+  getBitArrayIndex,
+  setBitArrayIndex,
+} from "../../Util/Binary/BitArray.js";
 export interface VoxelDataArrays {
   /**The runtime numeric voxel ids */
   ids: Uint16Array;
@@ -20,7 +24,16 @@ export interface VoxelDataArrays {
   secondary: Uint16Array;
 }
 
-export interface Section extends VoxelDataArrays {}
+export interface SectionData extends VoxelDataArrays {
+  /**Y slice of the section to tell if there is voxels or not. Used for height maps. */
+  voxelMap: Uint8Array;
+  /**Y slice of the section to tell if the slice is dirty and voxelMap needs to be re-checked. */
+  dirtyMap: Uint8Array;
+  /**A bit array used to cache if a voxel is exposed or not. */
+  buried: Uint8Array;
+}
+export interface Section extends SectionData {}
+
 function forceMultipleOf2(n: number): number {
   return n % 2 === 0 ? n : n + 1;
 }
@@ -28,8 +41,21 @@ const position: Vec3Array = [0, 0, 0];
 export class Section {
   static GetBufferSize() {
     const voxelSize = WorldSpaces.section.volumne;
+    const height = WorldSpaces.section.bounds.y;
     return forceMultipleOf2(
-      forceMultipleOf2(Section.StateStruct.structSize) +
+      //-----
+      //voxelMap
+      height / 8 +
+        //dirtyMap
+        height / 8 +
+        //-----
+        //cache
+        voxelSize / 8 +
+        //exposed
+        voxelSize * 2 +
+        //-----
+        //voxel data
+
         //ids
         voxelSize * 2 +
         //light
@@ -45,19 +71,19 @@ export class Section {
     );
   }
   static GetArrayStartIndex(index: number) {
-    return (
-      index * Section.GetBufferSize() +
-      Sector.GetHeaderSize() +
-      forceMultipleOf2(Section.StateStruct.structSize)
-    );
+    return index * Section.GetBufferSize() + Sector.GetHeaderSize();
   }
 
-  static CreateNew(
-    index: number,
-    sectorBuffer: ArrayBufferLike
-  ): VoxelDataArrays {
+  static CreateNew(index: number, sectorBuffer: ArrayBufferLike): SectionData {
     const voxelSize = WorldSpaces.section.volumne;
     let bufferStart = this.GetArrayStartIndex(index);
+    const height = WorldSpaces.section.bounds.y;
+    const voxelMap = new Uint8Array(sectorBuffer, bufferStart, height / 8);
+    bufferStart += height / 8;
+    const dirtyMap = new Uint8Array(sectorBuffer, bufferStart, height / 8);
+    bufferStart += height / 8;
+    const buried = new Uint8Array(sectorBuffer, bufferStart, voxelSize / 8);
+    bufferStart += voxelSize / 8;
     const ids = new Uint16Array(sectorBuffer, bufferStart, voxelSize);
     bufferStart += voxelSize * 2;
     const light = new Uint16Array(sectorBuffer, bufferStart, voxelSize);
@@ -71,6 +97,9 @@ export class Section {
     const level = new Uint8Array(sectorBuffer, bufferStart, voxelSize);
     bufferStart += voxelSize;
     return {
+      voxelMap,
+      dirtyMap,
+      buried,
       ids,
       light,
       level,
@@ -80,22 +109,18 @@ export class Section {
     };
   }
 
-  static toObject(sector: Sector, index: number, data: VoxelDataArrays) {
+  static toObject(sector: Sector, index: number, data: SectionData) {
     return new Section(sector, index, data);
   }
-  static StateStruct = new RemoteBinaryStruct("section-tags");
-  sectionState: DataView;
 
   constructor(
     public sector: Sector,
     public index: number,
-    data: VoxelDataArrays
+    data: SectionData
   ) {
-    this.sectionState = new DataView(
-      sector.buffer,
-      index * Section.GetBufferSize() + Sector.GetHeaderSize(),
-      Section.StateStruct.structSize
-    );
+    this.voxelMap = data.voxelMap;
+    this.dirtyMap = data.dirtyMap;
+    this.buried = data.buried;
     this.ids = data.ids;
     this.level = data.level;
     this.light = data.light;
@@ -112,8 +137,43 @@ export class Section {
     return position;
   }
 
-  serialize(): VoxelDataArrays {
+  getBuried(index: number) {
+    return getBitArrayIndex(this.buried, index) == 1;
+  }
+  setBuried(index: number, value: boolean) {
+    return setBitArrayIndex(this.buried, index, value ? 1 : 0);
+  }
+
+  setHasVoxel(y: number, hasVoxel: boolean) {
+    return setBitArrayIndex(this.voxelMap, y, hasVoxel ? 1 : 0);
+  }
+  getHasVoxel(y: number): boolean {
+    return getBitArrayIndex(this.voxelMap, y) == 1;
+  }
+  setHasVoxelDirty(y: number, dirty: boolean) {
+    return setBitArrayIndex(this.dirtyMap, y, dirty ? 1 : 0);
+  }
+  getHasVoxelDirty(y: number): boolean {
+    return getBitArrayIndex(this.dirtyMap, y) == 1;
+  }
+  getMinMax() {
+    let min = Infinity;
+    let max = -Infinity;
+    let i = WorldSpaces.section.bounds.y;
+    while (i--) {
+      if (this.getHasVoxel(i) || this.getHasVoxelDirty(i)) {
+        if (i < min) min = i;
+        if (i > max) max = i;
+      }
+    }
+    return [min, max];
+  }
+
+  toJSON(): SectionData {
     return {
+      voxelMap: this.voxelMap,
+      dirtyMap: this.dirtyMap,
+      buried: this.buried,
       ids: this.ids,
       light: this.light,
       level: this.level,

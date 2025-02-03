@@ -22,12 +22,12 @@ const FloodOutPositions: Vec3Array[] = [
   [0, 1, 0],
 ];
 const queue: number[] = [];
-
 const lightData = new VoxelLightData();
 export function RunWorldSun(tasks: UpdateTask) {
   const [dimension, cx, cy, cz] = tasks.origin;
 
   const RmaxY = SectorHeightMap.getRelative(tasks.origin);
+
   const AmaxY = SectorHeightMap.getAbsolute(tasks.origin);
 
   const maxX = cx + WorldSpaces.sector.bounds.x;
@@ -47,8 +47,13 @@ export function RunWorldSun(tasks: UpdateTask) {
     return;
   }
   const minY = AmaxY - 1 < 0 ? 0 : AmaxY;
+
+  const section = sectorCursor.getSection(cx, minY, cz)!;
+
+  const sectionY = section.getPosition()[1] + WorldSpaces.section.bounds.y;
+
   //fill
-  for (let iy = minY; iy < maxY; iy++) {
+  for (let iy = minY; iy < sectionY; iy++) {
     for (let ix = cx; ix < maxX; ix++) {
       for (let iz = cz; iz < maxZ; iz++) {
         const voxel = sectorCursor.getVoxel(ix, iy, iz);
@@ -57,6 +62,13 @@ export function RunWorldSun(tasks: UpdateTask) {
         if (l < 0) continue;
         voxel.setLight(lightData.setS(0xf, l));
       }
+    }
+  }
+  for (let iy = sectionY; iy < maxY; iy += WorldSpaces.section.bounds.y) {
+    const section = sectorCursor.getSection(cx, iy, cz)!;
+    const length = section.light.length;
+    for (let i = 0; i < length; i++) {
+      section.light[i] = lightData.setS(0xf, section.light[i]);
     }
   }
 

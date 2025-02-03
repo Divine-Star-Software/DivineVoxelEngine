@@ -1,5 +1,3 @@
-import { Vector3Like } from "@amodx/math";
-import { VoxelMesherDataTool } from "Mesher/Tools/VoxelMesherDataTool";
 import { GeoemtryNode } from "../../GeometryNode";
 import { VoxelCustomGeomtryNode } from "../../../../../Models/VoxelModel.types";
 import { CompassAngles } from "@amodx/math";
@@ -7,7 +5,6 @@ import { Quad } from "../../../../Geomtry/Primitives/Quad";
 import { QuadUVData, QuadVerticies } from "../../../../Geomtry/Geometry.types";
 import { QuadScalarVertexData } from "../../../../Geomtry/Primitives/QuadVertexData";
 import { VoxelFaceDirections, VoxelFaces } from "../../../../../Math";
-import { UpdateBounds } from "../../../Common/BoundsFunctions";
 import { shouldCauseFlip } from "../../../Common/Calc/CalcConstants";
 import type { LiquidVoxelModelArgs } from "../../../../../Models/Defaults/LiquidVoxelModel";
 import { getFlowAngle, getFlowGradient, FlowVerticies } from "./FlowGradient";
@@ -70,71 +67,63 @@ export class LiquidGeometryNode extends GeoemtryNode<
   VoxelCustomGeomtryNode,
   LiquidVoxelModelArgs
 > {
-  worldLight: QuadScalarVertexData;
   init(): void {
     this.faceCount = 1;
     this.vertexCount = 0;
   }
 
   isExposed(face: VoxelFaces) {
-    const nv = this.tool.nVoxel.getVoxel(
-      VoxelFaceDirections[face][0] + this.tool.position.x,
-      VoxelFaceDirections[face][1] + this.tool.position.y,
-      VoxelFaceDirections[face][2] + this.tool.position.z
+    const nv = this.builder.nVoxel.getVoxel(
+      VoxelFaceDirections[face][0] + this.builder.position.x,
+      VoxelFaceDirections[face][1] + this.builder.position.y,
+      VoxelFaceDirections[face][2] + this.builder.position.z
     );
     if (
       !nv ||
       nv.isAir() ||
-      (!this.tool.voxel.isSameVoxel(nv) && face == VoxelFaces.Up)
+      (!this.builder.voxel.isSameVoxel(nv) && face == VoxelFaces.Up)
     )
       return true;
     return false;
   }
 
   determineShading(face: VoxelFaces) {
-    const tool = this.tool;
+    const tool = this.builder;
     const lightData = tool.lightData[face];
-    const worldLight = this.worldLight;
+    const worldLight = this.builder.vars.light;
     for (let v = 0 as QuadVerticies; v < 4; v++) {
       worldLight.vertices[v] = lightData[v];
     }
   }
 
   shouldFlip() {
+    const worldLight = this.builder.vars.light;
     return (
       shouldCauseFlip(
-        lightData.getS(this.worldLight.vertices[0]),
-        lightData.getS(this.worldLight.vertices[1]),
-        lightData.getS(this.worldLight.vertices[2]),
-        lightData.getS(this.worldLight.vertices[3])
+        lightData.getS(worldLight.vertices[0]),
+        lightData.getS(worldLight.vertices[1]),
+        lightData.getS(worldLight.vertices[2]),
+        lightData.getS(worldLight.vertices[3])
       ) ||
       shouldCauseFlip(
-        lightData.sumRGB(this.worldLight.vertices[0]),
-        lightData.sumRGB(this.worldLight.vertices[1]),
-        lightData.sumRGB(this.worldLight.vertices[2]),
-        lightData.sumRGB(this.worldLight.vertices[3])
+        lightData.sumRGB(worldLight.vertices[0]),
+        lightData.sumRGB(worldLight.vertices[1]),
+        lightData.sumRGB(worldLight.vertices[2]),
+        lightData.sumRGB(worldLight.vertices[3])
       )
     );
   }
 
-  add(
-    tool: VoxelMesherDataTool,
-    originHash: number,
-    origin: Vector3Like,
-    args: LiquidVoxelModelArgs
-  ): void {
+  add(args: LiquidVoxelModelArgs) {
     vertexLevel.setAll(15);
     vertexValue.setAll(0);
-    this.tool = tool;
+    const tool = this.builder;
 
-    this.tool = tool;
-    this.origin = tool.position;
-
-    this.worldLight = tool.vars.light;
-
+    let added = false;
     let upFaceExposed = false;
     if (this.isExposed(VoxelFaces.Up)) {
       upFaceExposed = true;
+      added = true;
       getFlowGradient(tool, vertexLevel);
       const quad = Quads[VoxelFaces.Up];
       tool.calculateFaceData(VoxelFaces.Up);
@@ -168,21 +157,23 @@ export class LiquidGeometryNode extends GeoemtryNode<
       quad.positions.vertices[2].y = vertexValue.vertices[2] * waterHeight;
       quad.positions.vertices[3].y = vertexValue.vertices[3] * waterHeight;
 
-      VoxelGeometryBuilder.addQuad(tool, origin, quad);
-      UpdateBounds(tool, origin, quadBounds[VoxelFaces.Up]);
+      VoxelGeometryBuilder.addQuad(tool, tool.origin, quad);
+      tool.updateBounds(quadBounds[VoxelFaces.Up]);
     }
     if (this.isExposed(VoxelFaces.Down)) {
+      added = true;
       tool.vars.textureIndex = args.stillTexture;
       const quad = Quads[VoxelFaces.Down];
       tool.calculateFaceData(VoxelFaces.Down);
       this.determineShading(VoxelFaces.Down);
       quad.flip = this.shouldFlip();
       tool.vars.textureIndex = args.stillTexture;
-      VoxelGeometryBuilder.addQuad(tool, origin, quad);
-      UpdateBounds(tool, origin, quadBounds[VoxelFaces.Down]);
+      VoxelGeometryBuilder.addQuad(tool, tool.origin, quad);
+      tool.updateBounds(quadBounds[VoxelFaces.Down]);
     }
 
     if (this.isExposed(VoxelFaces.North)) {
+      added = true;
       tool.vars.textureIndex = args.stillTexture;
       const quad = Quads[VoxelFaces.North];
       tool.vars.animation.setAll(1);
@@ -205,11 +196,12 @@ export class LiquidGeometryNode extends GeoemtryNode<
         quad.setUVs(uvs);
       }
 
-      VoxelGeometryBuilder.addQuad(tool, origin, quad);
-      UpdateBounds(tool, origin, quadBounds[VoxelFaces.North]);
+      VoxelGeometryBuilder.addQuad(tool, tool.origin, quad);
+      tool.updateBounds(quadBounds[VoxelFaces.North]);
     }
 
     if (this.isExposed(VoxelFaces.South)) {
+      added = true;
       tool.vars.textureIndex = args.stillTexture;
       const quad = Quads[VoxelFaces.South];
       tool.vars.animation.setAll(1);
@@ -231,13 +223,15 @@ export class LiquidGeometryNode extends GeoemtryNode<
         quad.positions.vertices[QuadVerticies.TopRight].y = 1;
         quad.setUVs(uvs);
       }
-      VoxelGeometryBuilder.addQuad(tool, origin, quad);
-      UpdateBounds(tool, origin, quadBounds[VoxelFaces.South]);
+      VoxelGeometryBuilder.addQuad(tool, tool.origin, quad);
+      tool.updateBounds(quadBounds[VoxelFaces.South]);
     }
 
     if (this.isExposed(VoxelFaces.East)) {
+      added = true;
       tool.vars.textureIndex = args.stillTexture;
       const quad = Quads[VoxelFaces.East];
+
       tool.vars.animation.setAll(1);
       tool.calculateFaceData(VoxelFaces.East);
       this.determineShading(VoxelFaces.East);
@@ -257,11 +251,12 @@ export class LiquidGeometryNode extends GeoemtryNode<
         quad.positions.vertices[QuadVerticies.TopRight].y = 1;
         quad.setUVs(uvs);
       }
-      VoxelGeometryBuilder.addQuad(tool, origin, quad);
-      UpdateBounds(tool, origin, quadBounds[VoxelFaces.East]);
+      VoxelGeometryBuilder.addQuad(tool, tool.origin, quad);
+      tool.updateBounds(quadBounds[VoxelFaces.East]);
     }
 
     if (this.isExposed(VoxelFaces.West)) {
+      added = true;
       tool.vars.textureIndex = args.stillTexture;
       const quad = Quads[VoxelFaces.West];
       tool.vars.animation.setAll(1);
@@ -283,10 +278,12 @@ export class LiquidGeometryNode extends GeoemtryNode<
         quad.positions.vertices[QuadVerticies.TopRight].y = 1;
         quad.setUVs(uvs);
       }
-      VoxelGeometryBuilder.addQuad(tool, origin, quad);
-      UpdateBounds(tool, origin, quadBounds[VoxelFaces.West]);
+      VoxelGeometryBuilder.addQuad(tool, tool.origin, quad);
+      tool.updateBounds(quadBounds[VoxelFaces.West]);
     }
 
-    this.worldLight.setAll(0);
+    this.builder.vars.light.setAll(0);
+
+    return added;
   }
 }

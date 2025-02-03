@@ -1,14 +1,14 @@
 import {
   QuadVerticies,
   QuadVerticiesArray,
-} from "../../../Geomtry/Geometry.types"
+} from "../../../Geomtry/Geometry.types";
 import { VoxelFaces, VoxelFacesArray } from "../../../../Math";
 import { Vec3Array, Vec4Array, Vector2Like } from "@amodx/math";
 import { VoxelRelativeCubeIndex } from "../../../../Models/Indexing/VoxelRelativeCubeIndex";
-import { Quad } from "../../../Geomtry/Primitives/Quad"
+import { Quad } from "../../../Geomtry/Primitives/Quad";
 import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData";
 
-const lightData = new VoxelLightData();
+
 export const GradientCheckSets: Record<
   VoxelFaces,
   Record<QuadVerticies, number[]>
@@ -364,40 +364,26 @@ export function getVertexWeights(
   return getInterpolationWeights(u, v, flip);
 }
 
-const lightValues1: Vec4Array = [0, 0, 0, 0];
-const lightValues2: Vec4Array = [0, 0, 0, 0];
-const lightValues3: Vec4Array = [0, 0, 0, 0];
-const lightValues4: Vec4Array = [0, 0, 0, 0];
-const lightValues5: Vec4Array = [0, 0, 0, 0];
-
+const lightData = new VoxelLightData();
 export function getInterpolationValue(value: Vec4Array, weights: Vec4Array) {
-  lightData.getLightValuesToRef(value[0], lightValues1);
-  lightData.getLightValuesToRef(value[1], lightValues2);
-  lightData.getLightValuesToRef(value[2], lightValues3);
-  lightData.getLightValuesToRef(value[3], lightValues4);
-
-  lightValues5[0] =
-    lightValues1[0] * weights[0] +
-    lightValues2[0] * weights[1] +
-    lightValues3[0] * weights[2] +
-    lightValues4[0] * weights[3];
-  lightValues5[1] =
-    lightValues1[1] * weights[0] +
-    lightValues2[1] * weights[1] +
-    lightValues3[1] * weights[2] +
-    lightValues4[1] * weights[3];
-  lightValues5[2] =
-    lightValues1[2] * weights[0] +
-    lightValues2[2] * weights[1] +
-    lightValues3[2] * weights[2] +
-    lightValues4[2] * weights[3];
-  lightValues5[3] =
-    lightValues1[3] * weights[0] +
-    lightValues2[3] * weights[1] +
-    lightValues3[3] * weights[2] +
-    lightValues4[3] * weights[3];
-
-  return lightData.setLightValues(lightValues5);
+  return lightData.createLightValue(
+    lightData.getS(value[0]) * weights[0] +
+      lightData.getS(value[1]) * weights[1] +
+      lightData.getS(value[2]) * weights[2] +
+      lightData.getS(value[3]) * weights[3],
+    lightData.getR(value[0]) * weights[0] +
+      lightData.getR(value[1]) * weights[1] +
+      lightData.getR(value[2]) * weights[2] +
+      lightData.getR(value[3]) * weights[3],
+    lightData.getG(value[0]) * weights[0] +
+      lightData.getG(value[1]) * weights[1] +
+      lightData.getG(value[2]) * weights[2] +
+      lightData.getG(value[3]) * weights[3],
+    lightData.getB(value[0]) * weights[0] +
+      lightData.getB(value[1]) * weights[1] +
+      lightData.getB(value[2]) * weights[2] +
+      lightData.getB(value[3]) * weights[3]
+  );
 }
 
 export type QuadVertexWeights = [Vec4Array, Vec4Array, Vec4Array, Vec4Array];

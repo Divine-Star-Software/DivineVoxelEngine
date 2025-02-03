@@ -74,13 +74,14 @@ function MakeWebGPUMesh(tool: VoxelMesherDataTool): CompactMeshData {
 } */
 
 export function CompactVoxelMesh(
-  tools: VoxelMesherDataTool[]
-): [data: CompactMeshData, tranfers: ArrayBuffer[]] {
+  tools: VoxelMesherDataTool[],
+  transfers: any[] = []
+): CompactMeshData {
   const data: CompactMeshData = [0, []];
-  const transfers: any[] = [];
+
   for (let i = 0; i < tools.length; i++) {
     const tool = tools[i];
-    if (!tool.mesh!.buffer.length) continue;
+    if (!tool.mesh!.vertexCount) continue;
 
     const totalVerticies =
       tool.mesh.vertexCount * VoxelMeshVertexStructCursor.VertexFloatSize;
@@ -122,7 +123,7 @@ export function CompactVoxelMesh(
     }
     const minBounds = tool.mesh.minBounds;
     const maxBounds = tool.mesh.maxBounds;
-
+    
     data[1].push([
       tool.id,
       vertexArray,
@@ -133,5 +134,5 @@ export function CompactVoxelMesh(
     transfers.push(vertexArray.buffer, indiciesArray.buffer);
   }
 
-  return [data, transfers];
+  return data;
 }

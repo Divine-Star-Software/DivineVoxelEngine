@@ -17,10 +17,7 @@ export abstract class GeoemtryNode<Data = any, Args = any> {
 
   faceCount = -1;
   vertexCount = -1;
-
-  tool: VoxelMesherDataTool;
-  origin: Vector3Like;
-
+   builder: VoxelMesherDataTool;
   constructor(
     public geometryPaletteId: number,
     public geomtry: VoxelGeometryConstructor,
@@ -30,10 +27,5 @@ export abstract class GeoemtryNode<Data = any, Args = any> {
 
   abstract init(): void;
 
-  abstract add(
-    tool: VoxelMesherDataTool,
-    originHash: number,
-    origin: Vector3Like,
-    args: Args
-  ): void;
+  abstract add(args: Args): boolean;
 }

@@ -8,12 +8,13 @@ import { SetSectionMeshTask } from "../Renderer/Renderer.types";
 
 export default function (rendererThread: Thread) {
   Threads.registerTask<LocationData>(TasksIds.BuildSection, (location) => {
-    const section = MeshSection(location);
+    const transfers: any[] = [];
+    const section = MeshSection(location, transfers);
     if (!section) return;
     rendererThread.runTask<SetSectionMeshTask>(
       "set-section",
-      section[0],
-      section[1]
+      section,
+      transfers
     );
   });
 
@@ -45,20 +46,27 @@ export default function (rendererThread: Thread) {
       return;
     }
 
+    const transfers: any[] = [];
     for (let i = 0; i < sector.sections.length; i++) {
       const section = sector.sections[i];
       if (!section) continue;
-      const sectionMesh = MeshSection([
-        location[0],
-        sector.position[0],
-        sector.position[1] + i * WorldSpaces.section.bounds.y,
-        sector.position[2],
-      ]);
+      let [minY, maxY] = section.getMinMax();
+      if (Math.abs(minY) == Infinity && Math.abs(maxY) == Infinity) continue;
+      transfers.length = 0;
+      const sectionMesh = MeshSection(
+        [
+          location[0],
+          sector.position[0],
+          sector.position[1] + i * WorldSpaces.section.bounds.y,
+          sector.position[2],
+        ],
+        transfers
+      );
       if (!sectionMesh) continue;
       rendererThread.runTask<SetSectionMeshTask>(
         "set-section",
-        sectionMesh[0],
-        sectionMesh[1]
+        sectionMesh,
+        transfers
       );
     }
   });

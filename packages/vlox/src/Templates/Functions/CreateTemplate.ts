@@ -2,7 +2,7 @@ import { Flat3DIndex, Traverse, Vec3Array } from "@amodx/math";
 import { StringPalette } from "../../Util/StringPalette";
 import { VoxelTemplate } from "../VoxelTemplate";
 import { NumberPalette } from "../../Util/NumberPalette";
-import { convertToPaletteBuffer } from "../../Data/Functions/Palettes";
+import { convertToPaletteBuffer } from "../../Util/Binary/Palettes";
 import { WorldCursor } from "../../World";
 
 export default function CreateTemplate(

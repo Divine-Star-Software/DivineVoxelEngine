@@ -3,11 +3,11 @@ import { VoxelTemplateData } from "./VoxelTemplates.types";
 import type { RawVoxelData } from "../Voxels/Types/Voxel.types";
 import { StringPalette } from "../Util/StringPalette";
 import { NumberPalette } from "../Util/NumberPalette";
-import { VoxelPalette } from "../Voxels/Palettes/VoxelPalette";
-import { VoxelStruct } from "../Voxels/Structs/VoxelStruct";
-import { VoxelStructIds } from "../Voxels/Types/Voxel.types";
-import { getPaletteArray } from "../Data/Functions/Palettes";
+
+import { getPaletteArray } from "../Util/Binary/Palettes";
 import { NibbleArray } from "@amodx/binary/Arrays/NibbleArray";
+import { VoxelPalettesRegister } from "../Voxels/Data/VoxelPalettesRegister";
+import { VoxelTagsRegister } from "../Voxels/Data/VoxelTagsRegister";
 
 type TemplateCursor = { position: Vec3Array; raw: RawVoxelData };
 
@@ -83,7 +83,7 @@ export class VoxelTemplate {
   }
   getId(index: number) {
     const ids = this.ids;
-    return VoxelPalette.ids.getNumberId(
+    return VoxelPalettesRegister.voxels.getNumberId(
       this.idPalette.getStringId(typeof ids == "number" ? ids : ids[index])
     )!;
   }
@@ -103,9 +103,9 @@ export class VoxelTemplate {
   }
   getSecondary(id: number, index: number) {
     const secondary = this.secondary;
-    VoxelStruct.setVoxel(id);
-    if (VoxelStruct.instance[VoxelStructIds.canHaveSecondary] == 1) {
-      return VoxelPalette.ids.getNumberId(
+
+    if (VoxelTagsRegister.VoxelTags[id]["dve_can_have_secondary"]) {
+      return VoxelPalettesRegister.voxels.getNumberId(
         this.secondaryIdPalette.getStringId(
           typeof secondary == "number" ? secondary : secondary[index]
         )

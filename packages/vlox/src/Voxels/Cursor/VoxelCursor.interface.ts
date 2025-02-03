@@ -1,14 +1,14 @@
-import { VoxelStructIds } from "../Types/Voxel.types";
 import { VoxelLightData } from "./VoxelLightData";
-import { MappedDataRegister } from "../../Data/Register/MappedDataRegister";
-import { VoxelStruct } from "../Structs/VoxelStruct";
-import { VoxelStateReader } from "../VoxelStateReader";
-import { VoxelTagStates } from "../State/VoxelTagStates";
-import { VoxelPalette } from "../Palettes/VoxelPalette";
-import { SubstancePalette } from "../Palettes/SubstancePalette";
+import { VoxelLevelReader } from "./VoxelLevelReader";
+import { VoxelTagStates } from "../Data/VoxelTagStates";
 import { RawVoxelData } from "../Types/Voxel.types";
-import { MaterialPalette } from "../Palettes/MaterialPalette";
-import { SubstanceDataTool } from "../../Tools/Data/SubstanceDataTool";
+import {
+  VoxelSubstanceTags,
+  VoxelTagIds,
+  VoxelTags,
+} from "../../Voxels/Data/VoxelTag.types";
+import { VoxelTagsRegister } from "../../Voxels/Data/VoxelTagsRegister";
+import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister";
 interface WritableArrayLike<T> {
   length: number;
   [index: number]: T;
@@ -18,7 +18,8 @@ export abstract class VoxelCursorInterface {
   id = 0;
   secondaryId = 0;
 
-  __struct: VoxelStruct;
+  _tags: VoxelTags;
+  _substanceTags: VoxelSubstanceTags;
   __secondary = false;
 
   // private _section: Section;
@@ -31,12 +32,14 @@ export abstract class VoxelCursorInterface {
   abstract secondary: WritableArrayLike<number>;
   abstract mod: WritableArrayLike<number>;
 
+  /**
+   *
+   * @param mode 0 for add 1 for remove 2 for the voxel needs a buried check only
+   */
+  abstract updateVoxel(mode: 0 | 1 | 2): void;
   _lightData = new VoxelLightData();
 
-  _substanceData = new SubstanceDataTool();
-
   process() {
-    if (!this.__struct) this.__struct = VoxelStruct.clone();
     this.id = this.ids[this._index];
     this.secondaryId = this.secondary[this._index];
 
@@ -45,63 +48,51 @@ export abstract class VoxelCursorInterface {
     } else {
       this.secondaryId = 0;
     }
-    this.__struct.setIndex(VoxelStruct.voxelIndex[this.id]);
+
     this._loadedId = this.getId();
+
+    this._tags = VoxelTagsRegister.VoxelTags[this._loadedId];
+
+    this._substanceTags =
+      VoxelTagsRegister.SubstanceStags[
+        VoxelPalettesRegister.substance.getNumberId(
+          this._tags["dve_substance"]!
+        )
+      ];
   }
 
   abstract loadIn(): void;
 
   setSecondary(enable: boolean) {
     this.__secondary = enable;
-    if (enable) {
-      this.__struct.setIndex(VoxelStruct.voxelIndex[this.secondaryId]);
-    } else {
-      this.__struct.setIndex(VoxelStruct.voxelIndex[this.id]);
-    }
+    VoxelTagIds;
+    VoxelTagsRegister;
     this._loadedId = this.getId();
     return this;
   }
   getRenderedMaterial() {
-    return this.__struct[VoxelStructIds.renderedMaterial];
+    return this._tags[VoxelTagIds.renderedMaterial];
   }
-  getRenderedMaterialStringId() {
-    return MaterialPalette.id.stringFromNumber(
-      this.__struct[VoxelStructIds.renderedMaterial]
-    );
-  }
+
   getMaterial() {
-    return this.__struct[VoxelStructIds.voxelMaterial];
+    return this._tags[VoxelTagIds.voxelMaterial];
   }
-  getMaterialStringId() {
-    return MaterialPalette.id.stringFromNumber(
-      this.__struct[VoxelStructIds.voxelMaterial]
-    );
-  }
+
   checkCollisions() {
-    return this.__struct[VoxelStructIds.checkCollisions] == 1;
+    return this._tags[VoxelTagIds.checkCollisions];
   }
   getCollider() {
-    return this.__struct[VoxelStructIds.colliderID];
-  }
-  getColliderStringId() {
-    return MappedDataRegister.stringMaps.get(
-      "voxel",
-      VoxelStructIds.colliderID,
-      this.__struct[VoxelStructIds.colliderID]
-    );
+    return this._tags[VoxelTagIds.colliderID];
   }
 
   getSubstance() {
-    return this.__struct[VoxelStructIds.substance];
+    return this._tags[VoxelTagIds.substance];
   }
   getSubstanceData() {
-    return this._substanceData.setSubstance(this.getSubstance());
-  }
-  getSubstanceStringId() {
-    return SubstancePalette.id.stringFromNumber(this.getSubstance());
+    return this._substanceTags;
   }
   isOpaque() {
-    return this.__struct[VoxelStructIds.isTransparent] == 0;
+    return this._tags[VoxelTagIds.isTransparent];
   }
   getMod() {
     return this.mod[this._index];
@@ -111,20 +102,20 @@ export abstract class VoxelCursorInterface {
     return this;
   }
   getLevel() {
-    return VoxelStateReader.getLevel(this.level[this._index]);
+    return VoxelLevelReader.getLevel(this.level[this._index]);
   }
   setLevel(level: number) {
-    this.level[this._index] = VoxelStateReader.setLevel(
+    this.level[this._index] = VoxelLevelReader.setLevel(
       this.level[this._index],
       level
     );
     return this;
   }
   getLevelState() {
-    return VoxelStateReader.getLevelState(this.level[this._index]);
+    return VoxelLevelReader.getLevelState(this.level[this._index]);
   }
   setLevelState(state: number) {
-    this.level[this._index] = VoxelStateReader.setLevelState(
+    this.level[this._index] = VoxelLevelReader.setLevelState(
       this.level[this._index],
       state
     );
@@ -141,7 +132,7 @@ export abstract class VoxelCursorInterface {
     return this.secondaryId > 1;
   }
   canHaveSecondaryVoxel() {
-    return this.__struct[VoxelStructIds.canHaveSecondary] == 1;
+    return this._tags[VoxelTagIds.canHaveSecondary];
   }
   hasRGBLight() {
     const light = this.getLight();
@@ -155,7 +146,7 @@ export abstract class VoxelCursorInterface {
   }
   getLight() {
     if (this._loadedId == 0) return this.light[this._index];
-    const lightValue = this.__struct[VoxelStructIds.lightValue];
+    const lightValue = this._tags[VoxelTagIds.lightValue] as number;
     if (this.isOpaque()) {
       if (this.isLightSource() && lightValue) {
         return lightValue;
@@ -176,22 +167,22 @@ export abstract class VoxelCursorInterface {
     if (this._loadedId <= 0) return false;
     return VoxelTagStates.isRegistered(
       this._loadedId,
-      VoxelStructIds.isLightSource
+      VoxelTagIds.isLightSource
     )
       ? VoxelTagStates.getValue(
           this._loadedId,
-          VoxelStructIds.isLightSource,
+          VoxelTagIds.isLightSource,
           this.getState()
         ) === true
-      : this.__struct[VoxelStructIds.isLightSource] == 1;
+      : this._tags[VoxelTagIds.isLightSource];
   }
   getLightSourceValue() {
     if (this._loadedId <= 0) return 0;
-    return this.__struct[VoxelStructIds.lightValue];
+    return this._tags[VoxelTagIds.lightValue] as number;
   }
   noAO() {
     if (this._loadedId <= 0) return false;
-    return this.__struct[VoxelStructIds.noAO] == 1;
+    return this._tags[VoxelTagIds.noAO];
   }
   isRenderable() {
     if (this.id > 0) return true;
@@ -221,17 +212,17 @@ export abstract class VoxelCursorInterface {
     return this;
   }
   setStringId(id: string) {
-    return this.setId(VoxelPalette.ids.getNumberId(id)!);
+    return this.setId(VoxelPalettesRegister.voxels.getNumberId(id)!);
   }
   getStringId() {
     if (this.__secondary) {
-      return VoxelPalette.ids.getStringId(this.secondaryId);
+      return VoxelPalettesRegister.voxels.getStringId(this.secondaryId);
     }
-    return VoxelPalette.ids.getStringId(this.id);
+    return VoxelPalettesRegister.voxels.getStringId(this.id);
   }
 
   setName(name: string) {
-    this.setStringId(VoxelPalette.name.getId(name));
+    this.setStringId(VoxelPalettesRegister.voxelName.getId(name));
   }
 
   getName() {

@@ -42,7 +42,7 @@ export class Generator {
 
     WorldSpaces.section.getPosition(
       this.position.x,
-      this.position.y,
+      0,
       this.position.z,
       this._sectorPosition
     );

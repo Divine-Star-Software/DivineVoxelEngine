@@ -2,11 +2,10 @@ import type {
   PaintVoxelData,
   RawVoxelData,
 } from "../../Voxels/Types/Voxel.types.js";
-import { VoxelPalette } from "../../Voxels/Palettes/VoxelPalette.js";
 import { WorldCursor } from "../../World/Cursor/WorldCursor.js";
-import { SubstanceDataTool } from "../../Tools/Data/SubstanceDataTool.js";
 import { VoxelCursor } from "../../Voxels/Cursor/VoxelCursor.js";
 import { WorldRegister } from "../../World/WorldRegister.js";
+import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister.js";
 const airId = "dve_air";
 const air: RawVoxelData = [0, 0, 0, 0, 0, 0];
 
@@ -28,7 +27,6 @@ export class BrushTool {
 
   voxelCursor = new VoxelCursor();
   dataCursor = new WorldCursor();
-  substanceData = new SubstanceDataTool();
   setXYZ(x: number, y: number, z: number) {
     this.x = x;
     this.y = y;
@@ -79,7 +77,7 @@ export class BrushTool {
   }
 
   setName(name: string) {
-    this.data.id = VoxelPalette.name.getId(name);
+    this.data.id = VoxelPalettesRegister.voxelName.getId(name);
     this.name = name;
     return this;
   }
@@ -120,24 +118,31 @@ export class BrushTool {
     this.y = 0;
     this.z = 0;
   }
+  _debug = false;
 
   _paint() {
     if (!this.dataCursor.inBounds(this.x, this.y, this.z)) return false;
 
     const voxel = this.dataCursor.getVoxel(this.x, this.y, this.z);
     if (!voxel) return;
-    const id = VoxelPalette.ids.getNumberId(this.data.id);
+    const id = VoxelPalettesRegister.voxels.getNumberId(this.data.id);
     if (id < 0) return false;
     voxel.setId(id);
 
-    voxel.setState(this.data.state ? this.data.state : 0);
+    if (this._debug) {
+      console.warn(this.x, this.y, this.z, this.data.state);
+    }
+
+    voxel.setState(this.data.state);
 
     voxel.setLevel(this.data.level);
 
     voxel.setMod(this.data.mod);
 
     if (this.data.secondaryVoxelId) {
-      const vid = VoxelPalette.ids.getNumberId(this.data.secondaryVoxelId);
+      const vid = VoxelPalettesRegister.voxels.getNumberId(
+        this.data.secondaryVoxelId
+      );
       if (vid > 0) {
         voxel.setSecondary(true);
         voxel.setId(vid);
@@ -145,23 +150,17 @@ export class BrushTool {
       }
     }
 
+    voxel.process();
     if (voxel.isLightSource() && voxel.getLightSourceValue()) {
       voxel.setLight(voxel.getLightSourceValue());
     }
 
-    /*    if (this.voxelCursor.isRich()) {
-      DataHooks.paint.onRichVoxelPaint.notify([
-        this.voxelCursor.getStringId(),
-        [this.dimenion, x, y, z],
-      ]);
-    } */
-
-    voxel.updateHeightMap(0);
+    voxel.updateVoxel(0);
   }
   _erase() {
     const voxel = this.dataCursor.getVoxel(this.x, this.y, this.z);
     if (!voxel) return;
-    voxel.copyRaw(air).updateHeightMap(1);
+    voxel.copyRaw(air).updateVoxel(1);
   }
 
   paint() {

@@ -6,7 +6,7 @@ import { BrushTool } from "@divinevoxel/vlox/Tools/Brush/Brush";
 import { WorldSpaces } from "@divinevoxel/vlox/World/WorldSpaces";
 export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
   const tStart = performance.now();
-  const numChunks = 2;
+  const numChunks = 4;
   let startX = -16 * numChunks;
   let startZ = -16 * numChunks;
   let endX = 16 * numChunks;
@@ -29,13 +29,12 @@ export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
     }
   }
   if (genOne) {
-    brush.setId("dve_debug_box").setXYZ(0, 1, 0).paint();
-    // WorldGen.pyramidColumn(0, 0);
-    //  PerlinGen.generateTest(0, 0);
+    PerlinGen.generateTest(0, 0);
   } else {
     for (let x = startX; x < endX; x += 16) {
       for (let z = startZ; z < endZ; z += 16) {
-        PerlinGen.generateTest(x, z, true);
+        PerlinGen.generateTest(x, z);
+        //   WorldGen.flatColumn(x,z);
       }
     }
   }

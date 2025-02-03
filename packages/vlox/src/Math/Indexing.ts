@@ -28,6 +28,51 @@ export function CubeHashVec3(
   return positionRef;
 }
 
+/**
+ * YXZ order
+ */
+
+export function GetYXZOrderArrayPositionVec3Array(
+  index: number,
+  boundsX: number,
+  boundsY: number,
+  boundsZ: number,
+  positionRef: Vec3Array = [0, 0, 0]
+) {
+  positionRef[1] = Math.floor(index / (boundsX * boundsZ));
+  positionRef[0] = Math.floor((index % (boundsX * boundsZ)) / boundsZ);
+  positionRef[2] = index % boundsZ;
+  return positionRef;
+}
+
+export function GetYXZOrderArrayPositionVec3(
+  index: number,
+  boundsX: number,
+  boundsY: number,
+  boundsZ: number,
+  positionRef = Vector3Like.Create()
+) {
+  positionRef.y = Math.floor(index / (boundsX * boundsZ));
+  positionRef.x = Math.floor((index % (boundsX * boundsZ)) / boundsZ);
+  positionRef.z = index % boundsZ;
+  return positionRef;
+}
+
+export function GetYXZOrderArrayIndex(
+  positionX: number,
+  positionY: number,
+  positionZ: number,
+  boundsX: number,
+  boundsY: number,
+  boundsZ: number
+) {
+  return Math.floor(positionZ + boundsZ * (positionX + boundsX * positionY));
+}
+
+/**
+ * XYZ order
+ */
+
 export function GetXYZOrderArrayPositionVec3Array(
   index: number,
   boundsX: number,
@@ -76,6 +121,11 @@ export function GetXZYOrderArrayPositionVec3Array(
   positionRef[0] = index % boundsX;
   return positionRef;
 }
+
+/**
+ * XZY order
+ */
+
 export function GetXZYOrderArrayPositionVec3(
   index: number,
   boundsX: number,
@@ -98,41 +148,4 @@ export function GetXZYOrderArrayIndex(
   boundsZ: number
 ) {
   return positionX + positionY * boundsX + positionZ * boundsX * boundsZ;
-}
-
-export function GetYXZOrderArrayPositionVec3Array(
-  index: number,
-  boundsX: number,
-  boundsY: number,
-  boundsZ: number,
-  positionRef: Vec3Array = [0, 0, 0]
-) {
-  positionRef[1] = index / (boundsX * boundsZ);
-  positionRef[0] = (index % (boundsX * boundsZ)) / boundsZ;
-  positionRef[2] = index % boundsZ;
-  return positionRef;
-}
-
-export function GetYXZOrderArrayPositionVec3(
-  index: number,
-  boundsX: number,
-  boundsY: number,
-  boundsZ: number,
-  positionRef = Vector3Like.Create()
-) {
-  positionRef.y = index / (boundsX * boundsZ);
-  positionRef.x = (index % (boundsX * boundsZ)) / boundsZ;
-  positionRef.z = index % boundsZ;
-  return positionRef;
-}
-
-export function GetYXZOrderArrayIndex(
-  positionX: number,
-  positionY: number,
-  positionZ: number,
-  boundsX: number,
-  boundsY: number,
-  boundsZ: number
-) {
-  return positionZ + boundsZ * (positionX + boundsX * positionY);
 }

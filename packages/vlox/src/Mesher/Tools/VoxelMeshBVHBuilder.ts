@@ -142,12 +142,9 @@ export class StructCursor {
 
   trueIndex = 0;
 
-  _index = 0;
-  get index() {
-    return this._index;
-  }
-  set index(index: number) {
-    this._index = index;
+  private index = 0;
+
+  setIndex(index: number) {
     this.trueIndex = index * 8;
   }
   constructor(public data: Float32Array) {}
@@ -191,15 +188,6 @@ export class StructCursor {
       this.data[iz] = z;
     }
   }
-
-  toJSON() {
-    return {
-      min: [this.minX, this.minY, this.minZ],
-      max: [this.maxX, this.maxY, this.maxZ],
-      active: this.active,
-      nodeType: this.nodeType,
-    };
-  }
 }
 
 export class VoxelMeshBVHBuilder {
@@ -236,7 +224,7 @@ export class VoxelMeshBVHBuilder {
     const leafIndex = this.treeIndex.getIndexAtLevel(12, voxelIndex);
     this.indices[voxelIndex * 2] = indicesStart;
     this.indices[voxelIndex * 2 + 1] = indicesEnd;
-    this.structCursor.index = leafIndex;
+    this.structCursor.setIndex(leafIndex);
     this.structCursor.updateMin(minX, minY, minZ);
     this.structCursor.updateMax(maxX, maxY, maxZ);
     this.structCursor.setVoxelIndex(voxelIndex);
@@ -244,7 +232,7 @@ export class VoxelMeshBVHBuilder {
     let current = leafIndex;
     for (let level = 1; level < 13; level++) {
       let parentNode = this.treeIndex.getParent(current);
-      this.structCursor.index = parentNode;
+      this.structCursor.setIndex(parentNode);
       this.structCursor.updateMin(minX, minY, minZ);
       this.structCursor.updateMax(maxX, maxY, maxZ);
       this.structCursor.setActive();

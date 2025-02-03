@@ -1,12 +1,9 @@
-import { TextureRegister } from "../../Textures/TextureRegister";
 import { VoxelMesherDataTool } from "../../Mesher/Tools/VoxelMesherDataTool";
-
 import {
   CompiledVoxelModelInputData,
   CompiledVoxelModelData,
 } from "../../Voxels/Types/VoxelModelCompiledData.types";
 import { VoxelModelConstructorRegister } from "./VoxelModelConstructorRegister";
-import { VoxelGeometryLookUp } from "./VoxelGeometryLookUp";
 import { StateSchema } from "../../Voxels/State/Schema/StateSchema";
 import { StateTreeReader } from "../../Voxels/State/StateTreeReader";
 import { VoxelFaceTransparentResultsIndex } from "../../Models/Indexing/VoxelFaceTransparentResultsIndex";
@@ -34,6 +31,7 @@ export class VoxelConstructor {
 
   constructor(
     public id: string,
+    public builder: VoxelMesherDataTool,
     public data: CompiledVoxelModelData,
     voxleData: CompiledVoxelModelInputData
   ) {
@@ -42,6 +40,18 @@ export class VoxelConstructor {
     this.transparentIndex = new VoxelFaceTransparentResultsIndex(
       voxleData.transparentFaceIndex
     );
+    this.schema = new StateSchema(data.schema);
+    this.shapeStateTree = new StateTreeReader(
+      this.schema,
+      0,
+      data.shapeStateTree
+    );
+
+    this.condtioanlShapeStateTree = new CondtionalTreeReader(
+      this.schema,
+      data.condiotnalStatements,
+      data.condiotnalStateTree
+    );
 
     this.modSchema = new StateSchema(voxleData.modSchema);
     this.modTree = new StateTreeReader(
@@ -49,34 +59,10 @@ export class VoxelConstructor {
       0,
       voxleData.modStateTree
     );
-    this.schema = new StateSchema(data.schema);
-    this.shapeStateTree = new StateTreeReader(
-      this.schema,
-      0,
-      data.shapeStateTree
-    );
-    this.condtioanlShapeStateTree = new CondtionalTreeReader(
-      this.schema,
-      data.condiotnalStatements,
-      data.condiotnalStateTree
-    );
 
     this.effects = new VoxelModelEffect(this);
   }
 
-  getShapeStateTransaprentByteIndex(shapeState: number, geomtryId: number) {
-    return this.data.relativeGeometryByteIndexMap[
-      this.data.shapeStateRelativeGeometryMap[shapeState][geomtryId]
-    ];
-  }
-  getCondtionalStateTransaprentByteIndex(
-    shapeState: number,
-    geomtryId: number
-  ) {
-    return this.data.relativeGeometryByteIndexMap[
-      this.data.condiotnalShapeStateRelativeGeometryMap[shapeState][geomtryId]
-    ];
-  }
   isShapeStateFaceTransparent(
     modState: number,
     shapeState: number,
@@ -86,7 +72,9 @@ export class VoxelConstructor {
     return (
       this.transparentIndex.getValue(
         modState,
-        this.getShapeStateTransaprentByteIndex(shapeState, geoId),
+        this.data.relativeGeometryByteIndexMap[
+          this.data.shapeStateRelativeGeometryMap[shapeState][geoId]
+        ],
         faceIndex
       ) == 1
     );
@@ -101,28 +89,30 @@ export class VoxelConstructor {
     return (
       this.transparentIndex.getValue(
         modState,
-        this.getCondtionalStateTransaprentByteIndex(shapeState, geoId),
+        this.data.relativeGeometryByteIndexMap[
+          this.data.condiotnalShapeStateRelativeGeometryMap[shapeState][geoId]
+        ],
         faceIndex
       ) == 1
     );
   }
 
-  process(tool: VoxelMesherDataTool) {
-    const hashed = VoxelGeometryLookUp.getHash(
-      tool.nVoxel,
-      tool.position.x,
-      tool.position.y,
-      tool.position.z
+  process(): boolean {
+    let added = false;
+    const builder = this.builder;
+    const hashed = builder.space.getHash(
+      builder.nVoxel,
+      builder.position.x,
+      builder.position.y,
+      builder.position.z
     );
 
-    const treeState = VoxelGeometryLookUp.space!.stateCache[hashed];
-    const modState = VoxelGeometryLookUp.space!.modCache[hashed];
+    const treeState = builder.space!.stateCache[hashed];
+    const modState = builder.space!!.modCache[hashed];
 
-    if (treeState !== undefined && treeState > -1) {
+    if (treeState > -1) {
       const geoLinks = this.data.shapeStateMap[treeState];
-
       const geometries = this.data.shapeStateGeometryMap[treeState];
-
       const geometriesLength = geoLinks.length;
 
       const inputs = this.baseInputMap[modState][treeState];
@@ -135,15 +125,17 @@ export class VoxelConstructor {
 
         const nodesLength = geomtry.nodes.length;
         for (let k = 0; k < nodesLength; k++) {
-          geomtry.nodes[k].add(tool, hashed, tool.origin, geoInputs[k]);
+          const geo = geomtry.nodes[k];
+          geo.builder = this.builder;
+          const addedGeo = geo.add(geoInputs[k]);
+          if (addedGeo) added = true;
         }
       }
     }
 
-    const conditonalTreeState =
-      VoxelGeometryLookUp.space!.conditonalStateCache[hashed];
+    const conditonalTreeState = builder!.space!.conditonalStateCache[hashed];
 
-    if (conditonalTreeState !== undefined && conditonalTreeState > -1) {
+    if (conditonalTreeState > -1) {
       const condiotnalNodes =
         this.data.condiotnalShapeStateMap[conditonalTreeState];
 
@@ -165,20 +157,23 @@ export class VoxelConstructor {
 
           const nodesLength = geomtry.nodes.length;
           for (let k = 0; k < nodesLength; k++) {
-            geomtry.nodes[k].add(tool, hashed, tool.origin, geoInputs[k]);
+            const geo = geomtry.nodes[k];
+            geo.builder = this.builder;
+            const addedGeo = geo.add(geoInputs[k]);
+            if (addedGeo) added = true;
           }
         }
       }
     }
 
     this.effects.addEffects(
-      tool.voxel.getState(),
-      tool.origin,
-      tool.effects
+      builder.voxel.getState(),
+      builder.origin,
+      builder.effects
     );
 
-    tool.clearCalculatedData();
-  }
+    builder.clearCalculatedData();
 
-  onTexturesRegistered(textureManager: typeof TextureRegister): void {}
+    return added;
+  }
 }

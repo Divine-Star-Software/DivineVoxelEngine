@@ -1,7 +1,5 @@
-import { RenderedMaterials } from "../RenderedMaterials";
-import { VoxelGeometryLookUp } from "../Models/VoxelGeometryLookUp.js";
+import { VoxelGeometryBuilderCacheSpace } from "../Models/VoxelGeometryBuilderCacheSpace.js";
 import { TemplateCursor } from "../../Templates/Cursor/TemplateCursor.js";
-import { VoxelCursor } from "../../Voxels/Cursor/VoxelCursor.js";
 import { FullVoxelTemplate } from "../../Templates/FullVoxelTemplate.js";
 import { CompactVoxelMesh } from "../Functions/CompactVoxelMesh.js";
 import { VoxelModelConstructorRegister } from "../Models/VoxelModelConstructorRegister.js";
@@ -9,12 +7,11 @@ import { RawVoxelData } from "../../Voxels/Types/Voxel.types.js";
 import { CompactMeshData } from "Mesher/Types";
 
 const templateCursor = new TemplateCursor();
-const voxelCursor = new VoxelCursor();
 templateCursor.setTemplate(
   new FullVoxelTemplate(FullVoxelTemplate.CreateNew([3, 3, 3], 0xf))
 );
 
-const space = VoxelGeometryLookUp.createSpace(3, 3, 3);
+const space = new VoxelGeometryBuilderCacheSpace({ x: 3, y: 3, z: 3 });
 export function MeshVoxel(
   rawVoxelData: RawVoxelData
 ): [mesh: CompactMeshData, tranfers: any[]] | false {
@@ -33,35 +30,27 @@ export function MeshVoxel(
     );
   }
 
-  const mesher = RenderedMaterials.meshersMap.get(
-    voxel.getRenderedMaterialStringId()
-  );
-  if (!mesher) {
-    throw new Error(
-      `Could not find material mesh for voxel [id:${voxel.getStringId()} name:${voxel.getName()}] `
-    );
-  }
-  mesher.bvhTool = null;
-  mesher.resetAll();
-  VoxelGeometryLookUp.start(space);
-  mesher.origin.x = -0.5;
-  mesher.origin.y = -0.5;
-  mesher.origin.z = -0.5;
-  mesher.position.x = 1;
-  mesher.position.y = 1;
-  mesher.position.z = 1;
+  const builder = constructor.builder;
+  builder.space = space;
+  builder.bvhTool = null;
+  builder.clear();
+  space.start(0, 0, 0);
 
-  mesher.voxel = voxelCursor.copy(voxel);
-  mesher.nVoxel = templateCursor;
+  builder.effects = {};
+  builder.origin.x = -0.5;
+  builder.origin.y = -0.5;
+  builder.origin.z = -0.5;
+  builder.position.x = 1;
+  builder.position.y = 1;
+  builder.position.z = 1;
 
-  constructor.process(mesher);
-  mesher.reset();
+  builder.voxel = voxel;
+  builder.nVoxel = templateCursor;
+  constructor.process();
 
-  VoxelGeometryLookUp.stop();
+  const transfers: any[] = [];
+  const compacted = CompactVoxelMesh([builder], transfers);
+  builder.clear();
 
-  const compacted = CompactVoxelMesh([mesher]);
-  mesher.reset();
-  mesher.mesh!.clear();
-
-  return compacted;
+  return [compacted, transfers];
 }

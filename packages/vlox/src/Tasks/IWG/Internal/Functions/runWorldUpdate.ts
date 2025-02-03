@@ -4,7 +4,6 @@ import { getSectorState } from "./getSectorState";
 import { SectorState } from "../Classes/SectorState";
 import { WorldRegister } from "../../../../World/WorldRegister";
 import { Sector } from "../../../../World";
-import { SectorStateStructIds } from "../../../../World/Sector/SectorStructIds";
 import { WorldLock } from "../../../../World/Lock/WorldLock";
 import { IWGTasks } from "../IWGTasks";
 import { IWGDimensions } from "../IWGDimensions";
@@ -67,11 +66,11 @@ export function runWorldUpdate(generators: Generator[]) {
 
       const state = getSectorState(sector, stateCursor, segment);
 
-      Sector.StateStruct.setBuffer(sector.buffer);
+      sector.getBitFlag(Sector.FlagIds.isWorldGenDone);
 
       if (
         state.allLoaded &&
-        !Sector.StateStruct.getProperty(SectorStateStructIds.isWorldGenDone)
+        !sector.getBitFlag(Sector.FlagIds.isWorldGenDone)
       ) {
         IWGTasks.worldGenTasks.add(generator._dimension, cx, cy, cz);
         continue;
@@ -79,7 +78,7 @@ export function runWorldUpdate(generators: Generator[]) {
 
       if (
         state.nWorldGenAllDone &&
-        !Sector.StateStruct.getProperty(SectorStateStructIds.isWorldDecorDone)
+        !sector.getBitFlag(Sector.FlagIds.isWorldDecorDone)
       ) {
         IWGTasks.worldDecorateTasks.add(generator._dimension, cx, cy, cz);
         continue;
@@ -87,9 +86,7 @@ export function runWorldUpdate(generators: Generator[]) {
 
       if (
         state.nDecorAllDone &&
-        !Sector.StateStruct.getProperty(
-          SectorStateStructIds.isWorldPropagationDone
-        )
+        !sector.getBitFlag(Sector.FlagIds.isWorldPropagationDone)
       ) {
         IWGTasks.worldPropagationTasks.add(generator._dimension, cx, cy, cz);
         continue;
@@ -97,7 +94,7 @@ export function runWorldUpdate(generators: Generator[]) {
 
       if (
         state.nPropagtionAllDone &&
-        !Sector.StateStruct.getProperty(SectorStateStructIds.isWorldSunDone)
+        !sector.getBitFlag(Sector.FlagIds.isWorldSunDone)
       ) {
         IWGTasks.worldSunTasks.add(generator._dimension, cx, cy, cz);
         continue;

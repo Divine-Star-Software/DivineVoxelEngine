@@ -245,8 +245,8 @@ export function BuildRules(main: VoxelRuleGeometry, geoPalette: StringPalette) {
   }
 
   return {
-    aoIndex: aoIndex.data,
-    cullIndex: cullIndex.data,
+    aoIndex: aoIndex.getData(),
+    cullIndex: cullIndex.getData(),
     faceCullMap,
     vertexHitMap,
   };

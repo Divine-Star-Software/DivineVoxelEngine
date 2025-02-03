@@ -17,6 +17,15 @@ export class StringPalette {
     return this._count;
   }
 
+  load(palette: string[]) {
+    this._palette = [];
+    this._map = {};
+    const length = palette.length;
+    for (let i = 0; i < length; i++) {
+      this.register(palette[i]);
+    }
+  }
+
   register(string: string) {
     const id = this._count;
     this._count++;

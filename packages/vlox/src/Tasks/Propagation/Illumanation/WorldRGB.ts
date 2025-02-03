@@ -2,12 +2,11 @@ import { WorldSpaces } from "../../../World/WorldSpaces";
 import { UpdateTask } from "../../../Tasks/Update/UpdateTask";
 import { WorldRegister } from "../../../World/WorldRegister";
 import { SectionCursor } from "../../../World/Cursor/SectionCursor";
-import { SectionHeightMap } from "../../../World/Section/SectionHeightMap";
 import { EngineSettings } from "../../../Settings/EngineSettings";
 import { RGBUpdate } from "./RGBUpdate";
 const sectionCursor = new SectionCursor();
 export function WorldRGB(task: UpdateTask) {
-  if (!EngineSettings.doLight()) return false;
+  if (!EngineSettings.doLight) return false;
   const sector = WorldRegister.sectors.get(
     task.origin[0],
     task.origin[1],
@@ -28,7 +27,7 @@ export function WorldRGB(task: UpdateTask) {
     const section = sector.sections[i];
     if (!section) continue;
     sectionCursor.setSection(section);
-    let [minY, maxY] = SectionHeightMap.setSection(section).getMinMax();
+    let [minY, maxY] = section.getMinMax();
     const cx = sector.position[0];
     const cy = sector.position[1] + i * WorldSpaces.section.bounds.y;
     const cz = sector.position[2];

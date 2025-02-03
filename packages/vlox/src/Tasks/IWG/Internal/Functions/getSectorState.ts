@@ -1,6 +1,5 @@
 import { SectorState } from "../Classes/SectorState";
 import { WorldRegister } from "../../../../World/WorldRegister";
-import { SectorStateStructIds } from "../../../../World/Sector/SectorStructIds";
 import { $2dMooreNeighborhood } from "../../../../Math/CardinalNeighbors";
 import { WorldSpaces } from "../../../../World/WorldSpaces";
 import { Sector } from "../../../../World/index";
@@ -16,7 +15,6 @@ export function getSectorState(
 
   const [cx, cy, cz] = sector.position;
 
-  Sector.StateStruct.setData(sector.sectorState);
   for (let i = 0; i < $2dMooreNeighborhood.length; i++) {
     const sectorPOS = WorldSpaces.sector.getPosition(
       cx + $2dMooreNeighborhood[i][0] * WorldSpaces.sector.bounds.x,
@@ -42,24 +40,17 @@ export function getSectorState(
       state.allLoaded = false;
       break;
     }
-    Sector.StateStruct.setData(sector.sectorState);
 
-    if (!Sector.StateStruct.getProperty(SectorStateStructIds.isWorldGenDone)) {
+    if (!sector.getBitFlag(Sector.FlagIds.isWorldGenDone)) {
       state.nWorldGenAllDone = false;
     }
-    if (
-      !Sector.StateStruct.getProperty(SectorStateStructIds.isWorldDecorDone)
-    ) {
+    if (!sector.getBitFlag(Sector.FlagIds.isWorldDecorDone)) {
       state.nDecorAllDone = false;
     }
-    if (!Sector.StateStruct.getProperty(SectorStateStructIds.isWorldSunDone)) {
+    if (!sector.getBitFlag(Sector.FlagIds.isWorldSunDone)) {
       state.nSunAllDone = false;
     }
-    if (
-      !Sector.StateStruct.getProperty(
-        SectorStateStructIds.isWorldPropagationDone
-      )
-    ) {
+    if (!sector.getBitFlag(Sector.FlagIds.isWorldPropagationDone)) {
       state.nPropagtionAllDone = false;
     }
   }

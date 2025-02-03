@@ -1,5 +1,5 @@
 import { TemplateVoxelCursor } from "./TemplateVoxelCursor";
-import { DataCursorInterface } from "../../Data/Cursor/DataCursor.interface";
+import { DataCursorInterface } from "../../Tools/DataCursor.interface";
 import { FullVoxelTemplate } from "Templates/FullVoxelTemplate";
 
 export class TemplateCursor extends DataCursorInterface {

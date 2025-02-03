@@ -26,7 +26,7 @@ export class TextureManager {
   static async init() {
     TextureBuilder.defineTextureDimensions(
       EngineSettings.settings.textures.textureSize,
-      EngineSettings.settings.textures.mipMapSizes
+  
     );
     for (const [key, type] of this.textureTypes) {
       await type.build();

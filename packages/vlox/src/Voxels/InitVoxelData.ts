@@ -45,7 +45,7 @@ import {
 } from "../Models/Defaults/LiquidVoxelModel";
 import { VoxelModelManager } from "../Models/Rules/VoxelModelManager";
 import { VoxelGeometryData, VoxelModelData } from "../Models/VoxelModel.types";
-import { VoxelData, VoxelStructIds } from "./Types/Voxel.types";
+import { VoxelData } from "./Types/Voxel.types";
 
 import { BuildRules } from "../Models/Rules/Functions/BuildRules";
 import { BuildStateData } from "./Functions/BuildStateData";
@@ -59,21 +59,15 @@ import {
   simpleCrossedPannel,
   simpleThinPannel,
 } from "../Models/Defaults/PanelVoxelModels";
-import { VoxelTagStates } from "../Voxels/State/VoxelTagStates";
+import { VoxelTagStates } from "./Data/VoxelTagStates";
 import { VoxelIndex } from "../Voxels/Indexes/VoxelIndex";
 import { CacheManager } from "../Cache/CacheManager";
 import { VoxelLightData } from "./Cursor/VoxelLightData";
 import { VoxelMaterialData } from "./Types/VoxelMaterial.types";
 import { VoxelSubstanceData } from "./Types/VoxelSubstances.types";
-import { MaterialDataGenerator } from "./Segments/MaterialDataGenerator";
-import { SubstanceDataGenerator } from "./Segments/SubstanceDataGenerator";
-import { VoxelDataGenerator } from "./Segments/VoxelDataGenerator";
-import { SubstanceStructBuilder } from "./Structs/Builder/SubstanceStructBuilder";
-import { MappedDataRegister } from "../Data/Register/MappedDataRegister";
-import { MaterialPalette } from "./Palettes/MaterialPalette";
-import { VoxelStruct } from "./Structs/VoxelStruct";
-import { SubstanceStruct } from "./Structs/SubstanceStruct";
-import { VoxelStructBuilder } from "./Structs/Builder/VoxelStructBuilder";
+import { VoxelTagIds } from "./Data/VoxelTag.types";
+import { BuildTagAndPaletteData } from "./Functions/BuildTagAndPaletteData";
+import { VoxelPalettesRegister } from "./Data/VoxelPalettesRegister";
 
 export type InitVoxelDataProps = {
   geometry?: VoxelGeometryData[];
@@ -230,8 +224,13 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
     for (const v in shapeStateVoxelInputs) {
       const stateData = model.voxelModData.get(v)!;
       SchemaRegister.registerVoxel(v, mainKey, stateData.modSchema);
+
       syncData.voxels.push({
         id: v,
+        materialId:
+          VoxelIndex.instance.dataMap.get(v)?.properties[
+            "dve_rendered_material"
+          ] || "dve_solid",
         modelId: mainKey,
         transparentFaceIndex: transparentVoxelFaceIndexes[v].data,
         modSchema: stateData.modSchema,
@@ -253,6 +252,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
 export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
   const lightData = new VoxelLightData();
   const voxelIndex = new VoxelIndex(data.voxels);
+  console.warn(voxelIndex, voxelIndex.dataMap);
 
   const materials: VoxelMaterialData[] = [
     { id: "dve_solid", properties: {} },
@@ -272,7 +272,6 @@ export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
     },
     ...(data.materials || []),
   ];
-  MaterialDataGenerator.generate(materials);
 
   const substances: VoxelSubstanceData[] = [
     {
@@ -358,7 +357,6 @@ export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
     },
     ...(data.substances || []),
   ];
-  SubstanceDataGenerator.generate(substances);
 
   const voxels: VoxelData[] = [
     {
@@ -369,72 +367,28 @@ export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
     },
     ...data.voxels,
   ];
-  VoxelDataGenerator.overrides.set(VoxelStructIds.lightValue, (tags, value) => {
-    const v = <number[]>value;
-    let sl = 0;
-    sl = lightData.setR(v[0], sl);
-    sl = lightData.setG(v[1], sl);
-    sl = lightData.setB(v[2], sl);
-    tags.setProperty(VoxelStructIds.lightValue, sl);
-  });
-  VoxelDataGenerator.overrides.set(
-    VoxelStructIds.renderedMaterial,
-    (tags, value) => {
-      tags.setProperty(
-        VoxelStructIds.renderedMaterial,
-        MaterialDataGenerator.palette._map[value as string]
-      );
-    }
-  );
 
-  VoxelDataGenerator.overrides.set(VoxelStructIds.substance, (tags, value) => {
-    tags.setProperty(
-      VoxelStructIds.substance,
-      SubstanceDataGenerator.palette._map[value as string]
-    );
+  const voxelData = BuildTagAndPaletteData({
+    voxels,
+    voxelsOverrides: {
+      [VoxelTagIds.lightValue]: (value) => {
+        const v = <number[]>value;
+        let sl = 0;
+        sl = lightData.setR(v[0], sl);
+        sl = lightData.setG(v[1], sl);
+        sl = lightData.setB(v[2], sl);
+        return sl;
+      },
+    },
+    substances,
+    materials,
   });
 
-  VoxelDataGenerator.generate(voxels);
 
   let models = GetModelData(data);
-  const voxelMaps = VoxelStructBuilder.getMaps();
-  const voxelStringMaps = MappedDataRegister.stringMaps.getSegment("voxel");
-  for (const key in voxelMaps.stringMaps) {
-    voxelStringMaps.add(key, voxelMaps.stringMaps[key]);
-  }
-  const voxelObjectMaps = MappedDataRegister.objectMaps.getSegment("voxel");
-  for (const key in voxelMaps.objectMaps) {
-    voxelObjectMaps.add(key, voxelMaps.objectMaps[key]);
-  }
-  const substanceMaps = SubstanceStructBuilder.getMaps();
 
-  const substanceStringMaps =
-    MappedDataRegister.stringMaps.getSegment("substance");
-  for (const key in substanceMaps.stringMaps) {
-    substanceStringMaps.add(key, substanceMaps.stringMaps[key]);
-  }
-  const substanceObjectMaps =
-    MappedDataRegister.objectMaps.getSegment("substance");
-  for (const key in substanceMaps.objectMaps) {
-    substanceObjectMaps.add(key, substanceMaps.objectMaps[key]);
-  }
   return {
-    materials: {
-      palette: MaterialPalette.palette._palette,
-    },
     models,
-    data: {
-      palette: VoxelDataGenerator.palette._palette,
-      nameToIdMap: VoxelDataGenerator.nameToIdMap,
-      idToNameMap: VoxelDataGenerator.idToNameMap,
-      ...voxelMaps,
-      struct: VoxelStruct.initData,
-      index: VoxelStruct.voxelIndex,
-    },
-    substances: {
-      palette: SubstanceDataGenerator.palette._palette,
-      ...substanceMaps,
-      struct: SubstanceStruct.initData,
-    },
+    ...voxelData,
   };
 }

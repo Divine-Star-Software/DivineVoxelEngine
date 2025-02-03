@@ -40,7 +40,7 @@ const buildMesh = (
 
   if (meshedVoxel[0][0] == 1) throw new Error(`Not in right mode`);
   dataTool.copyRaw(voxelData).process();
-  const renderedMaterial = dataTool.getRenderedMaterialStringId();
+  const renderedMaterial = dataTool.getRenderedMaterial()!;
 
   const material = DVEBabylonRenderer.instance.materials.get(renderedMaterial);
   if (!material) throw new Error(`Could not load material ${renderedMaterial}`);

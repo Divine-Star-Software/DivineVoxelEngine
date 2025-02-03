@@ -10,7 +10,7 @@ export class MesherDataTool {
     this.mesh = mesh ? mesh : new VoxelMesh();
   }
 
-  resetAll() {
+  clear() {
     this.mesh?.clear();
     return this;
   }

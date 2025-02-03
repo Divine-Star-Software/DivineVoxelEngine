@@ -6,7 +6,7 @@ import { WorldVoxelCursor } from "./WorldVoxelCursor";
 import { WorldSpaces } from "../WorldSpaces";
 
 import { Vector3Like } from "@amodx/math";
-import { DataCursorInterface } from "../../Data/Cursor/DataCursor.interface";
+import { DataCursorInterface } from "../../Tools/DataCursor.interface";
 import { WorldSectionCursorInterface } from "./WorldSectionCursor.interface";
 
 export class SectorCursor
@@ -43,7 +43,7 @@ export class SectorCursor
     return true;
   }
 
-  getVoxel(x: number, y: number, z: number) {
+  getSection(x: number, y: number, z: number) {
     if (!this._current) return null;
     const section =
       this._current.sections[WorldSpaces.section.getIndex(x, y, z)];
@@ -55,10 +55,25 @@ export class SectorCursor
       this._section = null;
       return null;
     }
+    return section;
+  }
+
+  getVoxel(x: number, y: number, z: number) {
+    if (!this._current) return null;
+    const section = this.getSection(x,y,z);
     this._section = section;
-    this._voxelIndex = WorldSpaces.voxel.getIndex(x, y, z);
     WorldSpaces.voxel.getPosition(x, y, z, this._voxelPosition);
+    this._voxelIndex = WorldSpaces.voxel.getIndexFromPosition(
+      this._voxelPosition.x,
+      this._voxelPosition.y,
+      this._voxelPosition.z
+    );
+  
     this.voxel.loadIn();
     return this.voxel;
+  }
+
+  getVoxelAtIndex(index: number) {
+    this._voxelIndex = index;
   }
 }

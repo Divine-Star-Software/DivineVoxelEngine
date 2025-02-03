@@ -4,7 +4,6 @@ import { $3dCardinalNeighbors } from "../../Math/CardinalNeighbors.js";
 import { VoxelUpdateTasks } from "../Tasks.types.js";
 import { UpdateTask } from "./UpdateTask.js";
 
-import { SubstanceDataTool } from "../../Tools/Data/SubstanceDataTool.js";
 import { LocationData } from "../../Math/index.js";
 import { RGBRemove, RGBUpdate } from "../Propagation/Illumanation/RGBUpdate.js";
 import { SunRemove, SunUpdate } from "../Propagation/Illumanation/SunUpdate.js";
@@ -12,11 +11,10 @@ import { FlowUpdate } from "../Propagation/Flow/FlowUpdate.js";
 import { FlowRemove } from "../Propagation/Flow/FlowRemove.js";
 
 const tasks = new UpdateTask();
-const substanceData = new SubstanceDataTool();
 
 const updateLightTask = (tasks: UpdateTask) => {
-  let doRGB = ES.doRGBPropagation();
-  let doSun = ES.doSunPropagation();
+  let doRGB = ES.doRGBPropagation;
+  let doSun = ES.doSunPropagation;
   const [dimension, x, y, z] = tasks.origin;
   tasks.nDataCursor.setFocalPoint(dimension, x, y, z);
   for (const n of $3dCardinalNeighbors) {
@@ -43,9 +41,10 @@ export async function EreaseAndUpdate(location: LocationData) {
   tasks.setOrigin(location);
   let voxel = tasks.sDataCursor.getVoxel(x, y, z);
   if (!voxel) return false;
-  substanceData.setSubstance(voxel.getSubstance());
-  if (!voxel.isAir() && ES.doFlow() && voxel.isRenderable()) {
-    if (substanceData.isLiquid()) {
+  const substanceData = voxel.getSubstanceData();
+
+  if (!voxel.isAir() && ES.doFlow && voxel.isRenderable()) {
+    if (substanceData["dve_is_liquid"]) {
       FlowRemove(tasks);
       return tasks;
     }
@@ -61,19 +60,28 @@ export async function EreaseAndUpdate(location: LocationData) {
     .setLevelState(0)
     .setState(0)
     .setMod(0)
-    .updateHeightMap(1);
-  if (ES.doLight()) {
-    if (ES.doRGBPropagation() && isLightSource) {
+    .updateVoxel(1);
+  if (ES.doLight) {
+    if (ES.doRGBPropagation && isLightSource) {
       tasks.rgb.remove.push(x, y, z);
       RGBRemove(tasks);
     }
     updateLightTask(tasks);
-    if (ES.doRGBPropagation()) {
+    if (ES.doRGBPropagation) {
       RGBUpdate(tasks);
     }
-    if (ES.doSunPropagation()) {
+    if (ES.doSunPropagation) {
       SunUpdate(tasks);
     }
+  }
+  for (let i = 0; i < $3dCardinalNeighbors.length; i++) {
+    tasks.sDataCursor
+      .getVoxel(
+        $3dCardinalNeighbors[i][0] + x,
+        $3dCardinalNeighbors[i][1] + y,
+        $3dCardinalNeighbors[i][2] + z
+      )
+      ?.updateVoxel(2);
   }
   return tasks;
 }
@@ -86,10 +94,10 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
   const raw = data[1];
 
   const isOpaque = voxel.isOpaque();
-  let doRGB = ES.doRGBPropagation();
-  let doSun = ES.doSunPropagation();
+  let doRGB = ES.doRGBPropagation;
+  let doSun = ES.doSunPropagation;
 
-  lighttest: if (ES.doLight()) {
+  lighttest: if (ES.doLight) {
     const light = voxel.getLight();
     if (light <= 0) break lighttest;
     if (doSun) {
@@ -109,22 +117,14 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
   const id = raw[0];
   if (id < 0) return false;
   voxel.setId(id);
-
-  voxel.setState(raw[2]);
-
-  const substance = voxel.getSubstance();
-  if (
-    substance > -1 && !voxel.isAir()
-      ? substanceData.setSubstance(voxel.getSubstance()).isLiquid()
-      : false
-  ) {
-    voxel.setLevel(7);
-  }
+  voxel.setLevel(raw[2]);
+  voxel.setState(raw[3]);
   voxel.setMod(raw[4]);
+  voxel.process();
 
   if (raw[3] > 0 && voxel.canHaveSecondaryVoxel()) {
     voxel.setSecondary(true);
-    voxel.setId(raw[3]);
+    voxel.setId(raw[5]);
     voxel.setSecondary(false);
   }
 
@@ -132,8 +132,8 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
     voxel.setLight(voxel.getLightSourceValue());
   }
 
-  voxel.updateHeightMap(0);
-  if (ES.doLight()) {
+  voxel.updateVoxel(0);
+  if (ES.doLight) {
     updateLightTask(tasks);
     if (doRGB) {
       tasks.rgb.update.push(x, y, z);
@@ -144,13 +144,20 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
     }
   }
   voxel = tasks.sDataCursor.getVoxel(x, y, z)!;
-  if (ES.doFlow()) {
-    if (
-      !voxel.isAir() &&
-      substanceData.setSubstance(voxel.getSubstance()).isLiquid()
-    ) {
+  if (ES.doFlow) {
+    if (!voxel.isAir() && voxel.getSubstanceData()["dve_is_liquid"]) {
       FlowUpdate(tasks);
     }
+  }
+
+  for (let i = 0; i < $3dCardinalNeighbors.length; i++) {
+    tasks.sDataCursor
+      .getVoxel(
+        $3dCardinalNeighbors[i][0] + x,
+        $3dCardinalNeighbors[i][1] + y,
+        $3dCardinalNeighbors[i][2] + z
+      )
+      ?.updateVoxel(2);
   }
 
   return tasks;
@@ -162,10 +169,10 @@ export async function VoxelUpdate(data: VoxelUpdateTasks) {
   const voxel = tasks.sDataCursor.getVoxel(x, y, z);
   if (!voxel) return false;
 
-  let doRGB = ES.doRGBPropagation();
-  let doSun = ES.doSunPropagation();
+  let doRGB = ES.doRGBPropagation;
+  let doSun = ES.doSunPropagation;
 
-  if (ES.doLight()) {
+  if (ES.doLight) {
     updateLightTask(tasks);
     if (doRGB) {
       tasks.rgb.update.push(x, y, z);
@@ -177,8 +184,8 @@ export async function VoxelUpdate(data: VoxelUpdateTasks) {
     }
   }
 
-  if (ES.doFlow()) {
-    if (substanceData.setSubstance(voxel.getSubstance()).isLiquid()) {
+  if (ES.doFlow) {
+    if (voxel.getSubstanceData()["dve_is_solid"]) {
       FlowUpdate(tasks);
     }
   }

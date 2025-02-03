@@ -89,7 +89,6 @@ export function App() {
       const light = new HemisphericLight("", new Vector3(0, 0, 0), scene);
       light.specular.set(0, 0, 0);
 
-
       const renderer = await InitDVErenderer({
         textureTypes: [],
         substances: [],
@@ -98,6 +97,7 @@ export function App() {
       });
 
       const DVER = await StartRenderer({
+
         renderer,
         worldWorker,
         constructorWorkers,
@@ -182,8 +182,6 @@ export function App() {
       }, 1_000);
  */
       //  await InitRenderPlayer(DVER, nodes);
-
-
 
       DVER.threads.world.runTask("start-world", []);
     })();

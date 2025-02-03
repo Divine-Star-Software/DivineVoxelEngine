@@ -1,22 +1,20 @@
-import { VoxelPalette } from "../../../Voxels/Palettes/VoxelPalette";
 import { Section, VoxelDataArrays, Sector, SectorData } from "../../index";
 import { ArchivedSectionData, ArchivedSectorData } from "../Archive.types";
-import { VoxelStruct } from "../../../Voxels/Structs/VoxelStruct";
-import { VoxelStructIds } from "../../../Voxels/Types/Voxel.types";
 import { NumberPalette } from "../../../Util/NumberPalette";
 import { StringPalette } from "../../../Util/StringPalette";
-import { getPaletteArray } from "../../../Data/Functions/Palettes";
+import { getPaletteArray } from "../../../Util/Binary/Palettes";
 import { SchemaRegister } from "../../../Voxels/State/SchemaRegister";
-
-let sectorStructInstance: ReturnType<typeof Sector.StateStruct.instantiate>;
-let sectionStructInstance: ReturnType<
-  typeof Section.StateStruct.instantiate<any>
->;
+import { VoxelPalettesRegister } from "../../../Voxels/Data/VoxelPalettesRegister";
+import { VoxelTagsRegister } from "../../../Voxels/Data/VoxelTagsRegister";
 
 type RunData = {
   version?: number;
   loadColumnState?: (data: Record<string, any>, sector: SectorData) => void;
-  loadSectionState?: (keys: string[], data: any[], section: VoxelDataArrays) => void;
+  loadSectionState?: (
+    keys: string[],
+    data: any[],
+    section: VoxelDataArrays
+  ) => void;
 };
 
 const updateSectionBuffers = (
@@ -83,7 +81,8 @@ const updateSectionBuffers = (
       section.palettes.secondaryState.length <= 15) ||
       (sector.palettes.secondaryState &&
         sector.palettes.secondaryState.length <= 15)) &&
-    ((section.palettes.secondaryId && section.palettes.secondaryId.length <= 15) ||
+    ((section.palettes.secondaryId &&
+      section.palettes.secondaryId.length <= 15) ||
       (sector.palettes.secondaryId &&
         sector.palettes.secondaryId.length <= 15)) &&
     ArrayBuffer.isView(section.buffers.secondary)
@@ -155,22 +154,23 @@ const getId = (
   importedColumn: ImportedColumnData,
   importedSection: ImportedSectionData
 ): number => {
-  if (importedSection.section.buffers.state instanceof Uint16Array) return value;
+  if (importedSection.section.buffers.state instanceof Uint16Array)
+    return value;
 
   if (typeof importedSection.section.buffers.id == "number") {
-    return VoxelPalette.ids.getNumberId(
+    return VoxelPalettesRegister.voxels.getNumberId(
       importedColumn.sector.palettes.id[importedSection.section.buffers.id]
     );
   }
   if (importedSection.idPalette) {
-    return VoxelPalette.ids.getNumberId(
+    return VoxelPalettesRegister.voxels.getNumberId(
       importedColumn.idPalette.getStringId(
         importedSection.idPalette.getValue(value)
       )
     );
   }
 
-  return VoxelPalette.ids.getNumberId(
+  return VoxelPalettesRegister.voxels.getNumberId(
     importedColumn.idPalette.getStringId(value)
   );
 };
@@ -179,7 +179,8 @@ const getLight = (
   importedColumn: ImportedColumnData,
   importedSection: ImportedSectionData
 ): number => {
-  if (importedSection.section.buffers.light instanceof Uint16Array) return value;
+  if (importedSection.section.buffers.light instanceof Uint16Array)
+    return value;
   if (typeof importedSection.section.buffers.light == "number") {
     return value;
   }
@@ -199,7 +200,7 @@ const getState = (
   importedColumn: ImportedColumnData,
   importedSection: ImportedSectionData
 ): number => {
-  const voxelStringId = VoxelPalette.ids.getStringId(voxelId);
+  const voxelStringId = VoxelPalettesRegister.voxels.getStringId(voxelId);
   if (!SchemaRegister.hasVoxelSchema(voxelStringId)) return value;
   let stateId = -1;
   if (
@@ -231,7 +232,7 @@ const getMod = (
   importedColumn: ImportedColumnData,
   importedSection: ImportedSectionData
 ): number => {
-  const voxelStringId = VoxelPalette.ids.getStringId(voxelId);
+  const voxelStringId = VoxelPalettesRegister.voxels.getStringId(voxelId);
   if (!SchemaRegister.hasVoxelSchema(voxelStringId)) return value;
   let modId = -1;
   if (
@@ -262,23 +263,22 @@ const getSecondary = (
   importedColumn: ImportedColumnData,
   importedSection: ImportedSectionData
 ): number => {
-  VoxelStruct.setVoxel(voxelId);
-  if (VoxelStruct.instance[VoxelStructIds.canHaveSecondary] == 1) {
+  if (VoxelTagsRegister.VoxelTags[voxelId]["dve_can_have_secondary"]) {
     if (typeof importedSection.section.buffers.secondary == "number") {
-      return VoxelPalette.ids.getNumberId(
+      return VoxelPalettesRegister.voxels.getNumberId(
         importedColumn.sector.palettes.secondaryId![
           importedSection.section.buffers.secondary
         ]
       );
     }
     if (importedSection.secondaryId) {
-      return VoxelPalette.ids.getNumberId(
+      return VoxelPalettesRegister.voxels.getNumberId(
         importedColumn.secondaryId!.getStringId(
           importedSection.secondaryId.getValue(value)
         )
       );
     }
-    return VoxelPalette.ids.getNumberId(
+    return VoxelPalettesRegister.voxels.getNumberId(
       importedColumn.sector.palettes.secondaryId![value]
     );
   }
@@ -301,19 +301,13 @@ export default function ImportSector(
   sector: ArchivedSectorData,
   archiveData: RunData
 ): SectorData {
-  if (!sectorStructInstance)
-    sectorStructInstance = Sector.StateStruct.instantiate();
-  if (!sectionStructInstance)
-    sectionStructInstance = Section.StateStruct.instantiate();
-
   const newSector = new Sector(Sector.CreateNew());
   newSector.position[0] = sector.location[1];
   newSector.position[1] = sector.location[2];
   newSector.position[2] = sector.location[3];
 
   if (!archiveData.loadColumnState) {
-    sectorStructInstance.setData(newSector.sectorState);
-    sectorStructInstance.deserialize(sector.sectorState);
+    //sectorStructInstance.deserialize(sector.sectorState);
   } else {
     archiveData.loadColumnState(sector.sectorState, newSector);
   }
@@ -337,7 +331,7 @@ export default function ImportSector(
     }
 
     updateSectionBuffers(sector, section);
-    if (!archiveData.loadSectionState) {
+    /* if (!archiveData.loadSectionState) {
       sectionStructInstance.setData(newSection.sectionState);
       sectionStructInstance.deserialize(sectionState);
     } else {
@@ -346,7 +340,7 @@ export default function ImportSector(
         section.state,
         newSection
       );
-    }
+    } */
 
     for (let i = 0; i < newSection.ids.length; i++) {
       newSection.ids[i] = getId(
@@ -374,10 +368,10 @@ export default function ImportSector(
         importedSection
       );
 
-      VoxelStruct.setVoxel(newSection.ids[i]);
       let secondary =
-        VoxelStruct.instance[VoxelStructIds.canHaveSecondary] &&
-        newSection.secondary[i] > 0;
+        VoxelTagsRegister.VoxelTags[newSection.ids[i]][
+          "dve_can_have_secondary"
+        ] && newSection.secondary[i] > 0;
 
       newSection.state[i] = getState(
         secondary ? newSection.secondary[i] : newSection.ids[i],

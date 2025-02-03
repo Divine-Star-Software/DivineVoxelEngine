@@ -1,6 +1,5 @@
 import { WorldRegister } from "../../../World/WorldRegister";
 import { Sector } from "../../../World/index";
-import { SectorStateStructIds } from "../../../World/Sector/SectorStructIds";
 import { IWGTools } from "./IWGTools";
 import { TaskRegister } from "./TaskRegister";
 
@@ -38,24 +37,15 @@ export class IWGTasks {
     id: "generate",
     propagationBlocking: true,
     async run(location, onDone) {
-      const sector = WorldRegister.sectors.get(
-        location[0],
-        location[1],
-        location[2],
-        location[3]
-      );
+      const sector = WorldRegister.sectors.get(...location);
       if (!sector)
         throw new Error(
           `Sector at ${location.toString()} does not exist when attempting generation.`
         );
 
-      Sector.StateStruct.setBuffer(sector.buffer);
-      if (Sector.StateStruct.getProperty(SectorStateStructIds.isWorldGenDone))
-        return onDone();
-
+      if (sector.getBitFlag(Sector.FlagIds.isWorldGenDone)) return onDone();
       IWGTools.taskTool.generate.run([location, []], null, () => {
-        Sector.StateStruct.setBuffer(sector.buffer);
-        Sector.StateStruct.setProperty(SectorStateStructIds.isWorldGenDone, 1);
+        sector.setBitFlag(Sector.FlagIds.isWorldGenDone, true);
         onDone();
       });
     },
@@ -67,27 +57,15 @@ export class IWGTasks {
     id: "decorate",
     propagationBlocking: true,
     async run(location, onDone) {
-      const sector = WorldRegister.sectors.get(
-        location[0],
-        location[1],
-        location[2],
-        location[3]
-      );
+      const sector = WorldRegister.sectors.get(...location);
       if (!sector)
         throw new Error(
           `Sector at ${location.toString()} does not exist when attempting decoration.`
         );
 
-      Sector.StateStruct.setBuffer(sector.buffer);
-      if (Sector.StateStruct.getProperty(SectorStateStructIds.isWorldDecorDone))
-        return onDone();
-
+      if (sector.getBitFlag(Sector.FlagIds.isWorldDecorDone)) return onDone();
       IWGTools.taskTool.decorate.run([location, []], null, () => {
-        Sector.StateStruct.setBuffer(sector.buffer);
-        Sector.StateStruct.setProperty(
-          SectorStateStructIds.isWorldDecorDone,
-          1
-        );
+        sector.setBitFlag(Sector.FlagIds.isWorldDecorDone, true);
         onDone();
       });
     },
@@ -99,24 +77,15 @@ export class IWGTasks {
     id: "wolrd_sun",
     propagationBlocking: true,
     async run(location, onDone) {
-      const sector = WorldRegister.sectors.get(
-        location[0],
-        location[1],
-        location[2],
-        location[3]
-      );
+      const sector = WorldRegister.sectors.get(...location);
       if (!sector)
         throw new Error(
           `Sector at ${location.toString()} does not exist when attempting world sun.`
         );
 
-      Sector.StateStruct.setBuffer(sector.buffer);
-      if (Sector.StateStruct.getProperty(SectorStateStructIds.isWorldSunDone))
-        return onDone();
-
+      if (sector.getBitFlag(Sector.FlagIds.isWorldSunDone)) return onDone();
       IWGTools.taskTool.worldSun.run(location, null, () => {
-        Sector.StateStruct.setBuffer(sector.buffer);
-        Sector.StateStruct.setProperty(SectorStateStructIds.isWorldSunDone, 1);
+        sector.setBitFlag(Sector.FlagIds.isWorldSunDone, true);
         onDone();
       });
     },
@@ -128,31 +97,16 @@ export class IWGTasks {
     id: "propagation",
     propagationBlocking: true,
     async run(location, onDone) {
-      const sector = WorldRegister.sectors.get(
-        location[0],
-        location[1],
-        location[2],
-        location[3]
-      );
+      const sector = WorldRegister.sectors.get(...location);
       if (!sector)
         throw new Error(
           `Sector at ${location.toString()} does not exist when attempting propagation.`
         );
 
-      Sector.StateStruct.setBuffer(sector.buffer);
-      if (
-        Sector.StateStruct.getProperty(
-          SectorStateStructIds.isWorldPropagationDone
-        )
-      )
+      if (sector.getBitFlag(Sector.FlagIds.isWorldPropagationDone))
         return onDone();
-
       IWGTools.taskTool.propagation.run(location, null, () => {
-        Sector.StateStruct.setBuffer(sector.buffer);
-        Sector.StateStruct.setProperty(
-          SectorStateStructIds.isWorldPropagationDone,
-          1
-        );
+        sector.setBitFlag(Sector.FlagIds.isWorldPropagationDone, true);
         onDone();
       });
     },

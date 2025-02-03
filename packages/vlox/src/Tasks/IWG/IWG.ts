@@ -18,6 +18,9 @@ interface IWGInitData {
   worldStorage?: WorldStorageInterface;
 }
 let initalized = false;
+/**# Infinite World Generation IWG
+ * Object to handle the loading and generating the world around a created generator. 
+ */
 export class IWG {
   private static _cullGenerators: Generator[] = [];
   static readonly _generators: Generator[] = [];

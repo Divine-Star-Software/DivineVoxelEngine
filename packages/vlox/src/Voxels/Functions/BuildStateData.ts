@@ -14,8 +14,8 @@ import {
   VoxelModelRelationsSchemaData,
 } from "../State/State.types";
 import { VoxelEffectSyncData } from "../Effects/VoxelEffects.types";
-import { VoxelTagStates } from "../State/VoxelTagStates";
-import { VoxelPalette } from "../Palettes/VoxelPalette";
+import { VoxelTagStates } from "../Data/VoxelTagStates";
+import { VoxelPalettesRegister } from "../Data/VoxelPalettesRegister";
 import { StateSchema } from "../State/Schema/StateSchema";
 function bitsNeeded(n: number): number {
   if (n < 0) throw new Error("Input must be a non-negative integer.");
@@ -494,7 +494,7 @@ export function BuildStateData(
 
     for (const tag of tagEffects) {
       VoxelTagStates.register(
-        VoxelPalette.ids.getNumberId(voxelId),
+        VoxelPalettesRegister.voxels.getNumberId(voxelId),
         (tag as any).tagId,
         schema,
         tag.tree,

@@ -1,6 +1,6 @@
 {
   "name": "@divinevoxel/vlox",
-  "version": "0.0.05",
+  "version": "0.0.72",
   "description": "Vlox a block style voxel engine.",
   "main": "index.js",
   "types": "index.d.ts",

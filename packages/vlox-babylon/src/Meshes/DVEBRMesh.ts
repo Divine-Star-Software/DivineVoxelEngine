@@ -1,6 +1,5 @@
 import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import { Observable } from "@amodx/core/Observers/Observable";
-import { DVESectionMeshInterface } from "@divinevoxel/vlox/Renderer";
 
 class DVEBRMeshObservers {
   updated = new Observable();
@@ -9,7 +8,7 @@ import { Buffer, VertexBuffer } from "@babylonjs/core/Meshes/buffer.js";
 import { Engine } from "@babylonjs/core";
 import { CompactSubMesh } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
 import { VoxelMeshVertexStructCursor } from "@divinevoxel/vlox/Mesher/Tools/VoxelMeshVertexStructCursor";
-export class DVEBRMesh implements DVESectionMeshInterface {
+export class DVEBRMesh {
   observers = new DVEBRMeshObservers();
   static UpdateVertexData(mesh: Mesh, engine: Engine, data: CompactSubMesh) {
     const buffer = new Buffer(engine, data[1], false);

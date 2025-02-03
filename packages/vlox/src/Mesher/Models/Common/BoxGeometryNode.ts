@@ -1,7 +1,7 @@
 import { Vec3Array, Vec4Array, Vector3Like } from "@amodx/math";
 import { VoxelFaces } from "../../../Math";
 
-import { Quad } from "../../Geomtry/Primitives/Quad"
+import { Quad } from "../../Geomtry/Primitives/Quad";
 
 import { addQuadWeights, QuadVertexWeights } from "./Calc/CalcConstants";
 
@@ -66,7 +66,7 @@ export function GetBoxGeometryNodeData(
     [start.x, start.y, start.z],
   ]);
 
- // TransformBox(quads as any, transform);
+  TransformBox(quads as any, transform);
   const quadBounds: [Vec3Array, Vec3Array][] = new Array(quads.length);
   for (let i = 0; i < quads.length; i++) {
     const positions: Vec3Array[] = [];

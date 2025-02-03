@@ -1,25 +1,35 @@
 import { VoxelRelativeCubeIndex } from "./VoxelRelativeCubeIndex";
 export type VoxelFaceCullResultsIndexData = {
-  buffer: SharedArrayBuffer;
+  buffer: ArrayBufferLike;
   faceByteCount: number;
 };
 
+const flatIndexSize = VoxelRelativeCubeIndex.flatIndex.size;
+
+function getByteIndex(
+  otherId: number,
+  directionIndex: number,
+  faceByteCount: number
+) {
+  return (
+    otherId * faceByteCount * flatIndexSize + directionIndex * faceByteCount
+  );
+}
 export class VoxelFaceCullResultsIndex {
   view: Uint16Array;
 
-  constructor(public data: VoxelFaceCullResultsIndexData) {
-    this.view = new Uint16Array(data.buffer);
-  }
+  readonly faceByteCount: number;
 
-  getByteIndex(otherId: number, directionIndex: number) {
-    return (
-      otherId * this.data.faceByteCount * VoxelRelativeCubeIndex.flatIndex.size +
-      directionIndex * this.data.faceByteCount
-    );
+  constructor(data: VoxelFaceCullResultsIndexData) {
+    this.view = new Uint16Array(data.buffer);
+    this.faceByteCount = data.faceByteCount;
   }
 
   getValue(otherId: number, directionIndex: number, faceIndex: number) {
-    const v = this.view[this.getByteIndex(otherId, directionIndex) + faceIndex];
+    const v =
+      this.view[
+        getByteIndex(otherId, directionIndex, this.faceByteCount) + faceIndex
+      ];
     return v == 65535 ? -1 : v;
   }
 
@@ -29,7 +39,14 @@ export class VoxelFaceCullResultsIndex {
     faceIndex: number,
     value = -1
   ) {
-    return (this.view[this.getByteIndex(otherId, directionIndex) + faceIndex] =
-      value);
+    return (this.view[
+      getByteIndex(otherId, directionIndex, this.faceByteCount) + faceIndex
+    ] = value);
+  }
+  getData(): VoxelFaceCullResultsIndexData {
+    return {
+      buffer: this.view.buffer,
+      faceByteCount: this.faceByteCount,
+    };
   }
 }

@@ -1,7 +1,7 @@
 import { Vector3Like } from "@amodx/math";
 import { SectorCursor } from "./SectorCursor";
 import { WorldSpaces } from "../WorldSpaces";
-import { DataCursorInterface } from "../../Data/Cursor/DataCursor.interface";
+import { DataCursorInterface } from "../../Tools/DataCursor.interface";
 
 let cursorCache: SectorCursor[] = [];
 
@@ -33,6 +33,7 @@ export class WorldCursor extends DataCursorInterface {
   }
 
   getSector(x: number, y: number, z: number) {
+    if (!this.inBounds(x, y, z)) return null;
     const sectorPos = WorldSpaces.sector.getPosition(x, y, z, tempPosition);
 
     const cx = sectorPos.x / WorldSpaces.sector.bounds.x - this.origin.x;
@@ -45,8 +46,10 @@ export class WorldCursor extends DataCursorInterface {
       cursor = cursorCache.length ? cursorCache.shift()! : new SectorCursor();
       if (
         !cursor.setSector(this.dimension, sectorPos.x, sectorPos.y, sectorPos.z)
-      )
+      ) {
+        cursorCache.push(cursor);
         return null;
+      }
 
       if (!row) {
         row = new Map();

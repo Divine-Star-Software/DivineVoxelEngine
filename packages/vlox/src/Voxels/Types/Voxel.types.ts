@@ -1,5 +1,6 @@
 import { TextureId } from "../../Textures/index";
 import { VoxelModelConstructorData } from "../../Models/VoxelModel.types";
+import { VoxelTags } from "../Data/VoxelTag.types";
 
 export type VoxelNamedStateData = {
   id: string;
@@ -60,61 +61,8 @@ export type RawVoxelData = [
   secondary: number,
 ];
 
-export enum VoxelStructIds {
-  substance = "dve_substance",
-  renderedMaterial = "dve_rendered_material",
-  voxelMaterial = "dve_voxel_material",
-  hardness = "dve_hardness",
-  colliderID = "dve_collider_id",
-  checkCollisions = "dve_check_collisions",
-  isLightSource = "dve_is_light_source",
-  noAO = "dve_no_ao",
-  isTransparent = "dve_is_transparent",
-  lightValue = "dve_light_value",
-  isRich = "dve_is_rich",
-  canHaveSecondary = "dve_can_have_secondary",
-}
-
-interface VoxelProperties {
+interface VoxelProperties extends Partial<VoxelTags> {
   [key: string]: any;
-  /** The material used to render the voxel. Used by the engine to assign meshes to the proper material. */
-  [VoxelStructIds.renderedMaterial]?: string;
-
-  /** A description of the material used for the voxel. Not used by the engine directly. */
-  [VoxelStructIds.voxelMaterial]?: string;
-
-  /** Specifies the substance of the voxel.
-   * The voxel will inherit properties from the substance and change how it acts in the world.
-   * Properties include being solid or liquid.
-   * */
-  [VoxelStructIds.substance]?: string;
-
-  /** Indicates whether the voxel is a light source. */
-  [VoxelStructIds.isLightSource]?: boolean;
-
-  /** Indicates if the voxel lets light through */
-  [VoxelStructIds.isTransparent]?: boolean;
-
-  /** Disables ambient occlusion for this voxel if set to true. */
-  [VoxelStructIds.noAO]?: boolean;
-
-  /** Defines the light value emitted by the voxel (r, g, z). */
-  [VoxelStructIds.lightValue]?: [r: number, g: number, z: number];
-
-  /** The collider ID for the voxel, used for collision detection. */
-  [VoxelStructIds.colliderID]?: string;
-
-  /** Specifies if the voxel participates in collision checks. */
-  [VoxelStructIds.checkCollisions]?: boolean;
-
-  /** Indicates if the voxel can have a secondary voxel. */
-  [VoxelStructIds.canHaveSecondary]?: boolean;
-
-  /** The hardness level of the voxel, affecting how it is broken or interacted with. */
-  [VoxelStructIds.hardness]?: number;
-
-  /** Marks the voxel as "rich" for specialized interactions or rendering. */
-  [VoxelStructIds.isRich]?: boolean;
 
   /** Named states associated with the voxel. */
   dve_named_states?: VoxelNamedStateData[];

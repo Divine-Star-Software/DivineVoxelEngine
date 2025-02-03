@@ -1,7 +1,6 @@
 import InitDataSync from "../Contexts/Base/Remote/InitDataSync";
 import { DivineVoxelEngineConstructor } from "../Contexts/Constructor/DivineVoxelEngineConstructor";
 import { Threads } from "@amodx/threads";
-import { VoxelGeometryLookUp } from "../Mesher/Models/VoxelGeometryLookUp";
 import { Environment } from "../Util/Environment";
 import { WorldRegister } from "../World/WorldRegister";
 import InitUpdateTasks from "../Tasks/Update/InitTasks";
@@ -25,7 +24,6 @@ export async function StartContrusctor(data: {} = {}) {
   await Threads.init("constructor", self, parent);
 
   let ready = false;
-  VoxelGeometryLookUp.init();
 
   InitDataSync({
     onSync(data) {
@@ -51,8 +49,8 @@ export async function StartContrusctor(data: {} = {}) {
   InitPropagationTasks();
   InitMesherTasks(DVEC.threads.parent);
   InitUpdateTasks({
-    onDone(tasks) {
-      DVEC.threads.world.runTask("build-queue", [
+    onDone(tasks, origin) {
+      origin.runTask("build-queue", [
         tasks.origin[0],
         tasks.bounds.getSections(),
       ]);

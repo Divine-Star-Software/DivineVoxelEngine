@@ -261,14 +261,24 @@ export const WorldGen = {
   },
 
   flatColumn(chunkX: number, chunkZ: number) {
-    for (let y = 1; y < 2; y++) {
-      for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
-        for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
-          //   if (Math.random() > 0.85) continue;
-          brush.setId("dve_dread_stone").setXYZ(x, y, z).paint();
+    const columnCursor = this.worldCursor.getSector(chunkX, 0, chunkZ)!;
+    voxelCursor.setStringId("dve_dread_stone").process();
+    for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
+      for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
+        for (let y = 0; y < 10; y++) {
+          columnCursor.getVoxel(x, y, z)!.setId(voxelCursor.id).updateVoxel(0);
         }
       }
     }
+    voxelCursor.setStringId("dve_dread_stone_slab").process();
+    columnCursor.getVoxel(2, 10, 2)!.setId(voxelCursor.id).updateVoxel(0);
+    voxelCursor.setStringId("dve_dream_fence").process();
+    columnCursor.getVoxel(0, 10, 0)!.setId(voxelCursor.id).updateVoxel(0);
+    columnCursor.getVoxel(1, 10, 0)!.setId(voxelCursor.id).updateVoxel(0);
+    columnCursor.getVoxel(0, 10, 1)!.setId(voxelCursor.id).updateVoxel(0);
+    columnCursor.getVoxel(-1, 10, 0)!.setId(voxelCursor.id).updateVoxel(0);
+    columnCursor.getVoxel(0, 10, -1)!.setId(voxelCursor.id).updateVoxel(0);
+
   },
 
   pyramidColumn(chunkX: number, chunkZ: number) {
@@ -284,10 +294,7 @@ export const WorldGen = {
           z < this.chunkDepth + chunkZ - minus;
           z++
         ) {
-          columnCursor
-            .getVoxel(x, y, z)!
-            .setId(voxelCursor.id)
-            .updateHeightMap(0);
+          columnCursor.getVoxel(x, y, z)!.setId(voxelCursor.id).updateVoxel(0);
         }
       }
       minus++;

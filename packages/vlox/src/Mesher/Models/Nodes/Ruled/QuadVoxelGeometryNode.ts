@@ -1,17 +1,12 @@
-import { Vec3Array, Vec4Array, Vector3Like } from "@amodx/math";
+import { Vec3Array, Vec4Array } from "@amodx/math";
 import { VoxelFaces } from "../../../../Math";
-
-import { QuadScalarVertexData } from "../../../Geomtry/Primitives/QuadVertexData";
 import { QuadVerticies } from "../../../Geomtry/Geometry.types";
 import { VoxelQuadGeometryNode } from "../../../../Models/VoxelModel.types";
 
 import { Quad } from "../../../Geomtry/Primitives/Quad";
-import { VoxelMesherDataTool } from "../../../../Mesher/Tools/VoxelMesherDataTool";
 import { VoxelGeometryBuilder } from "../../../Geomtry/VoxelGeometryBuilder";
 
-import { VoxelGeometryLookUp } from "../../VoxelGeometryLookUp";
 import { GeoemtryNode } from "../GeometryNode";
-import { VoxelGeometryConstructor } from "../VoxelGeometryConstructor";
 import {
   getInterpolationValue,
   shouldCauseFlip,
@@ -22,9 +17,7 @@ import {
   QuadVoxelGometryArgs,
   QuadVoxelGometryInputs,
 } from "../../../../Models/Input/QuadVoxelGometryInputs";
-import { VoxelGeometryTransform } from "../../../../Voxels/Types/VoxelModelCompiledData.types";
 import { GetQuadGeometryData } from "../../Common/QuadGeometryNode";
-import { UpdateBounds } from "../../Common/BoundsFunctions";
 import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData";
 
 const ArgIndexes = QuadVoxelGometryInputs.ArgIndexes;
@@ -39,8 +32,6 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
     [0, 0, 0],
   ];
   vertexWeights: [Vec4Array, Vec4Array, Vec4Array, Vec4Array];
-  worldLight: QuadScalarVertexData;
-  worldAO: QuadScalarVertexData;
   closestFace: VoxelFaces;
   lightData = new VoxelLightData();
 
@@ -60,7 +51,7 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
     const faceIndexes = this.geomtry.faceCullMap![trueFaceIndex];
     if (!faceIndexes) return true;
 
-    const tool = this.tool;
+    const tool = this.builder;
 
     for (
       let positionIndex = 0;
@@ -69,16 +60,16 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
     ) {
       const currentIndex = faceIndexes[positionIndex];
       const p = VoxelRelativeCubeIndexPositionMap[currentIndex];
-      const hashed = VoxelGeometryLookUp.getHash(
+      const hashed = this.builder.space.getHash(
         tool.nVoxel,
         tool.position.x + p[0],
         tool.position.y + p[1],
         tool.position.z + p[2]
       );
 
-      const offsetBaseGometry = VoxelGeometryLookUp.space!.getGeomtry(hashed);
+      const offsetBaseGometry = this.builder.space!.getGeomtry(hashed);
       const offsetConditonalGeometry =
-        VoxelGeometryLookUp.space!.getConditionalGeomtry(hashed);
+        this.builder.space!.getConditionalGeomtry(hashed);
 
       if (offsetBaseGometry) {
         for (let i = 0; i < offsetBaseGometry.length; i++) {
@@ -89,14 +80,14 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
           );
           if (
             faceIndex > -1 &&
-            !VoxelGeometryLookUp.space!.getConstructor(
-              hashed
-            )?.isShapeStateFaceTransparent(
-              VoxelGeometryLookUp.space!.modCache[hashed],
-              VoxelGeometryLookUp.space!.stateCache[hashed],
-              offsetBaseGometry[i],
-              faceIndex
-            )
+            !this.builder
+              .space!.getConstructor(hashed)
+              ?.isShapeStateFaceTransparent(
+                this.builder.space!.modCache[hashed],
+                this.builder.space!.stateCache[hashed],
+                offsetBaseGometry[i],
+                faceIndex
+              )
           ) {
             return false;
           }
@@ -114,14 +105,14 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
           );
           if (
             faceIndex > -1 &&
-            !VoxelGeometryLookUp.space!.getConstructor(
-              hashed
-            )?.isCondtionalStateFaceTransparent(
-              VoxelGeometryLookUp.space!.modCache[hashed],
-              VoxelGeometryLookUp.space!.stateCache[hashed],
-              cond[i],
-              faceIndex
-            )
+            !this.builder
+              .space!.getConstructor(hashed)
+              ?.isCondtionalStateFaceTransparent(
+                this.builder.space!.modCache[hashed],
+                this.builder.space!.stateCache[hashed],
+                cond[i],
+                faceIndex
+              )
           )
             return false;
         }
@@ -132,13 +123,14 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
   }
 
   determineShading() {
-    const tool = this.tool;
+    const tool = this.builder;
 
     const lightData = tool.lightData[VoxelFaces.Up];
-    const noAO = this.tool.voxel.isLightSource() || this.tool.voxel.noAO();
+    const noAO =
+      this.builder.voxel.isLightSource() || this.builder.voxel.noAO();
 
-    const worldLight = this.worldLight;
-    const worldAO = this.worldAO;
+    const worldLight = tool.vars.light;
+    const worldAO = tool.vars.ao;
     for (let v = 0 as QuadVerticies; v < 4; v++) {
       worldAO.vertices[v] = 0;
 
@@ -163,17 +155,16 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
         const currentIndex = aoIndexes[positionIndex];
         const p = VoxelRelativeCubeIndexPositionMap[currentIndex];
 
-        const hashed = VoxelGeometryLookUp.getHash(
+        const hashed = this.builder.space.getHash(
           tool.nVoxel,
           tool.position.x + p[0],
           tool.position.y + p[1],
           tool.position.z + p[2]
         );
 
-        if (VoxelGeometryLookUp.space!.noCastAO[hashed] === 1) continue;
-        const baseGeo = VoxelGeometryLookUp.space!.getGeomtry(hashed);
-        const conditonalGeo =
-          VoxelGeometryLookUp.space!.getConditionalGeomtry(hashed);
+        if (this.builder.space!.noCastAO[hashed] === 1) continue;
+        const baseGeo = this.builder.space!.getGeomtry(hashed);
+        const conditonalGeo = this.builder.space!.getConditionalGeomtry(hashed);
 
         if (!baseGeo && !conditonalGeo) continue;
 
@@ -220,71 +211,63 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
     }
   }
   shouldFlip() {
+    const worldAO = this.builder.vars.ao;
+    const worldLight = this.builder.vars.light;
     if (
       shouldCauseFlip(
-        this.worldAO.vertices[0],
-        this.worldAO.vertices[1],
-        this.worldAO.vertices[2],
-        this.worldAO.vertices[3]
+        worldAO.vertices[0],
+        worldAO.vertices[1],
+        worldAO.vertices[2],
+        worldAO.vertices[3]
       )
     )
       return true;
     return (
       shouldCauseFlip(
-        this.lightData.getS(this.worldLight.vertices[0]),
-        this.lightData.getS(this.worldLight.vertices[1]),
-        this.lightData.getS(this.worldLight.vertices[2]),
-        this.lightData.getS(this.worldLight.vertices[3])
+        this.lightData.getS(worldLight.vertices[0]),
+        this.lightData.getS(worldLight.vertices[1]),
+        this.lightData.getS(worldLight.vertices[2]),
+        this.lightData.getS(worldLight.vertices[3])
       ) ||
       shouldCauseFlip(
-        this.lightData.sumRGB(this.worldLight.vertices[0]),
-        this.lightData.sumRGB(this.worldLight.vertices[1]),
-        this.lightData.sumRGB(this.worldLight.vertices[2]),
-        this.lightData.sumRGB(this.worldLight.vertices[3])
+        this.lightData.sumRGB(worldLight.vertices[0]),
+        this.lightData.sumRGB(worldLight.vertices[1]),
+        this.lightData.sumRGB(worldLight.vertices[2]),
+        this.lightData.sumRGB(worldLight.vertices[3])
       )
     );
   }
 
-  add(
-    tool: VoxelMesherDataTool,
-    originHash: number,
-    origin: Vector3Like,
-    args: QuadVoxelGometryArgs
-  ) {
-    this.tool = tool;
-    this.origin = tool.position;
+  add(args: QuadVoxelGometryArgs) {
+    if (!args[ArgIndexes.Enabled]) return false;
+    if (!this.isExposed()) return false;
+    this.builder.calculateFaceData(this.closestFace);
+    this.determineShading();
 
-    this.worldAO = tool.vars.ao;
-    this.worldLight = tool.vars.light;
+    const quad = this.quad;
+    quad.flip = this.shouldFlip() || args[ArgIndexes.Fliped];
+    this.builder.vars.textureIndex = args[ArgIndexes.Texture];
 
-    if (args[ArgIndexes.Enabled] && this.isExposed()) {
-      tool.calculateFaceData(this.closestFace);
-      this.determineShading();
+    quad.doubleSided = args[ArgIndexes.DoubleSided];
+    const uvs = args[ArgIndexes.UVs];
+    //1
+    quad.uvs.vertices[0].x = uvs[0][0];
+    quad.uvs.vertices[0].y = uvs[0][1];
+    //2
+    quad.uvs.vertices[1].x = uvs[1][0];
+    quad.uvs.vertices[1].y = uvs[1][1];
+    //3
+    quad.uvs.vertices[2].x = uvs[2][0];
+    quad.uvs.vertices[2].y = uvs[2][1];
+    //4
+    quad.uvs.vertices[3].x = uvs[3][0];
+    quad.uvs.vertices[3].y = uvs[3][1];
+    VoxelGeometryBuilder.addQuad(this.builder, this.builder.origin, quad);
 
-      const quad = this.quad;
-      quad.flip = this.shouldFlip() || args[ArgIndexes.Fliped];
-      tool.vars.textureIndex = args[ArgIndexes.Texture];
+    this.builder.updateBounds(this.quadBounds);
+    this.builder.vars.light.setAll(0);
+    this.builder.vars.ao.setAll(0);
 
-      quad.doubleSided = args[ArgIndexes.DoubleSided];
-      const uvs = args[ArgIndexes.UVs];
-      //1
-      quad.uvs.vertices[0].x = uvs[0][0];
-      quad.uvs.vertices[0].y = uvs[0][1];
-      //2
-      quad.uvs.vertices[1].x = uvs[1][0];
-      quad.uvs.vertices[1].y = uvs[1][1];
-      //3
-      quad.uvs.vertices[2].x = uvs[2][0];
-      quad.uvs.vertices[2].y = uvs[2][1];
-      //4
-      quad.uvs.vertices[3].x = uvs[3][0];
-      quad.uvs.vertices[3].y = uvs[3][1];
-      VoxelGeometryBuilder.addQuad(tool, origin, quad);
-
-      UpdateBounds(tool, origin, this.quadBounds);
-    }
-
-    this.worldLight.setAll(0);
-    this.worldAO.setAll(0);
+    return true;
   }
 }

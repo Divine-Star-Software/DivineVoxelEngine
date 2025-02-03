@@ -5,7 +5,7 @@ import {
   isGreaterOrEqualThanForRGBRemove,
   isLessThanForRGBAdd,
   isLessThanForRGBRemove,
-  removeSunLight,
+  removeRGBLight,
 } from "./CommonFunctions";
 //@todo change array to not use push and shift
 export function RGBUpdate(tasks: UpdateTask) {
@@ -81,7 +81,7 @@ export function RGBRemove(tasks: UpdateTask) {
     }
 
     tasks.bounds.update(x, y, z);
-    voxel.setLight(removeSunLight(sl));
+    voxel.setLight(removeRGBLight(sl));
   }
   removeMap.clear();
 }

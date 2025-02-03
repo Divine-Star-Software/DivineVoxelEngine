@@ -1,4 +1,3 @@
-import { VoxelPalette } from "../../Voxels/Palettes/VoxelPalette";
 import { StringPalette } from "../../Util/StringPalette";
 import {
   CompiledVoxelGeometryRulessData,
@@ -8,6 +7,7 @@ import {
 import { GeoemtryNodeConstructor } from "./Nodes/GeometryNode";
 import { VoxelConstructor } from "./VoxelConstructor";
 import { VoxelGeometryConstructor } from "./Nodes/VoxelGeometryConstructor";
+import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister";
 
 export class VoxelModelConstructorRegister {
   static geometryPalette: StringPalette;
@@ -46,15 +46,22 @@ export class VoxelModelConstructorRegister {
     if (Array.isArray(voxel)) {
       for (const vox of voxel) {
         this.constructors.set(vox.id, vox);
-        this.constructorsPaltte[VoxelPalette.ids.getNumberId(vox.id)] = vox;
+        this.constructorsPaltte[
+          VoxelPalettesRegister.voxels.getNumberId(vox.id)
+        ] = vox;
       }
       return;
     }
-    this.constructorsPaltte[VoxelPalette.ids.getNumberId(voxel.id)] = voxel;
+    this.constructorsPaltte[
+      VoxelPalettesRegister.voxels.getNumberId(voxel.id)
+    ] = voxel;
     this.constructors.set(voxel.id, voxel);
   }
   static registerGeometry(
-    geometries: (CompiledVoxelGeometrySyncData | CompiledVoxelGeometryRulessData)[]
+    geometries: (
+      | CompiledVoxelGeometrySyncData
+      | CompiledVoxelGeometryRulessData
+    )[]
   ) {
     for (const geometry of geometries) {
       const paletteId = this.geometryPalette.getNumberId(geometry.id);

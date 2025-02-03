@@ -11,29 +11,28 @@ import {
   VoxelGeometryNodes,
 } from "../../Models/VoxelModel.types";
 import { VoxelEffectSyncData } from "../Effects/VoxelEffects.types";
-import { VoxelTagStatesData } from "../State/VoxelTagStates";
-import { BinaryStructData } from "@amodx/binary";
-export type CompiledVoxelData = {
-  models: FinalCompiledVoxelModelData;
+import { VoxelTagStatesData } from "../Data/VoxelTagStates";
+import { VoxelSubstanceTags, VoxelTags } from "../Data/VoxelTag.types";
+
+export type CompiledVoxelTagAndPaletteData = {
   data: {
-    struct: BinaryStructData;
-    index: Uint16Array;
+    tags: VoxelTags[];
     palette: string[];
-    nameToIdMap: Record<string, string>;
-    idToNameMap: Record<string, string>;
-    stringMaps: Record<string, string[]>;
-    objectMaps: Record<string, any[]>;
+    nameToIdMap: [string,string][]
+    idToNameMap: [string,string][];
   };
   substances: {
-    struct: BinaryStructData;
+    tags: VoxelSubstanceTags[];
     palette: string[];
-    stringMaps: Record<string, string[]>;
-    objectMaps: Record<string, any[]>;
   };
   materials: {
     palette: string[];
   };
 };
+
+export type CompiledVoxelData = {
+  models: FinalCompiledVoxelModelData;
+} & CompiledVoxelTagAndPaletteData;
 
 export interface CompiledVoxelGeometryNodes {
   node: VoxelGeometryNodes;
@@ -96,6 +95,7 @@ export interface CompiledVoxelModelData {
 
 export interface CompiledVoxelModelInputData {
   id: string;
+  materialId: string;
   modelId: string;
 
   transparentFaceIndex: VoxelFaceTransparentResultsIndexData;

@@ -1,3 +1,13 @@
+export const VoxelMeshVertexConstants = {
+  VertexFloatSize: 24,
+  VertexByteSize: 24 * 4,
+  PositionOffset: 0,
+  NormalOffset: 4,
+  TextureIndexOffset: 8,
+  UVOffset: 12,
+  ColorOffset: 14,
+  VoxelDataOFfset: 18,
+};
 export class VoxelMeshVertexStructCursor {
   static VertexFloatSize = 24;
   static VertexByteSize = this.VertexFloatSize * 4;

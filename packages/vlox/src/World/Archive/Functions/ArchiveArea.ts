@@ -31,8 +31,6 @@ function uint16To4CharString(value: number): string {
   return result;
 }
 
-let sectorStructInstance: ReturnType<typeof Sector.StateStruct.instantiate>;
-
 const processPalettes = (archiveData: RunData) => {
   const allRegistered = new Set<string>();
   for (const sector of archiveData.sectors) {
@@ -131,7 +129,7 @@ const buildSectorState = (archiveData: RunData) => {
   const maped = new Map<string, string>();
   const binaryObjects = new Map<any, ArrayBuffer>();
   let count = 0;
-  const sectorStateKeys = sectorStructInstance.getKeys();
+  const sectorStateKeys: string[] = [];
   const created = new Map<string, number>();
 
   const processSectorState = (
@@ -308,10 +306,7 @@ function SectorToArchivedAreaSector(
 export default function CreateArchiveArea(
   archiveData: RunData
 ): ArchivedAreaData {
-  if (!sectorStructInstance)
-    sectorStructInstance = Sector.StateStruct.instantiate();
-
-  const sectorStateKeys = sectorStructInstance.getKeys();
+  const sectorStateKeys: string[] = [];
 
   const sectors: ArchivedAreaSectorData[] = [];
   for (const sector of archiveData.sectors) {

@@ -7,7 +7,7 @@ export class TextureBuilder {
 
   static _canvas: HTMLCanvasElement = document.createElement("canvas");
 
-  static defineTextureDimensions(textureSize: number, mipMapSizes: number[]) {
+  static defineTextureDimensions(textureSize: number) {
     this.finalImagWidth = textureSize < 256 ? 256 : textureSize;
     this.finalImageHeight = textureSize < 256 ? 256 : textureSize;
     this._textureSize = textureSize;

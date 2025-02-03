@@ -1,7 +1,7 @@
-import { VoxelPalette } from "../Palettes/VoxelPalette";
-import { StateSchema } from "./Schema/StateSchema";
-import { StateTreeReader } from "./StateTreeReader";
-import { SchemaRegister } from "./SchemaRegister";
+import { VoxelPalettesRegister } from "./VoxelPalettesRegister";
+import { StateSchema } from "../State/Schema/StateSchema";
+import { StateTreeReader } from "../State/StateTreeReader";
+import { SchemaRegister } from "../State/SchemaRegister";
 
 export type VoxelTagStatesData = Record<
   string,
@@ -32,7 +32,7 @@ export class VoxelTagStates {
       if(!v) return;
       const stateSceham = new StateSchema(
         SchemaRegister.modelStaeBaseSchemaData.get(
-          SchemaRegister.voxelModelMap.get(VoxelPalette.ids.getStringId(index))!
+          SchemaRegister.voxelModelMap.get(VoxelPalettesRegister.voxels.getStringId(index))!
         )!
       );
 

@@ -304,7 +304,7 @@ function VoxelMeshIntersect(
   );
 
   do {
-    currentNode.index = currentNodeIndex;
+    currentNode.setIndex(currentNodeIndex);
 
     // Check if current node is a leaf
     if (currentNode.nodeType == 2.0) {
@@ -338,8 +338,8 @@ function VoxelMeshIntersect(
     let leftChildId = 2 * currentNodeIndex + 1;
     let rightChildId = 2 * currentNodeIndex + 2;
     // Fetch left and right child nodes
-    leftChild.index = leftChildId;
-    rightChild.index = rightChildId;
+    leftChild.setIndex(leftChildId);
+    rightChild.setIndex(rightChildId);
 
     // Initialize intersection distances to INFINITY
     let leftChildT = Infinity;
@@ -531,7 +531,7 @@ export class BVHViewer {
     const struct = this.tool.structCursor;
     const meshes: InstancedMesh[] = [];
     if (level == 0) {
-      struct.index = 0;
+      struct.setIndex(0);
       const mesh = BVHViewer._box.createInstance(`${0}`);
 
       mesh.scaling.set(
@@ -551,7 +551,7 @@ export class BVHViewer {
 
       for (let i = 0; i < levelSize; i++) {
         const nodeIndex = this.tool.treeIndex.getIndexAtLevel(level, i);
-        struct.index = nodeIndex;
+        struct.setIndex(nodeIndex);
 
         let mesh: InstancedMesh;
         if (ro && rd) {

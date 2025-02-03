@@ -8,7 +8,7 @@ import { DVEBabylonRenderer } from "../Renderer/DVEBabylonRenderer";
 import { DVEBRMesh } from "./DVEBRMesh";
 import { CompactMeshData } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
 import { SectionMesh } from "@divinevoxel/vlox/Renderer";
-
+import { EngineSettings } from "@divinevoxel/vlox/Settings/EngineSettings";
 const min = Vector3.Zero();
 const max = new Vector3(16, 16, 16);
 const empty = new Float32Array(1);
@@ -107,10 +107,12 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
 
       chunk.meshes.set(subMeshMaterial, mesh);
 
-      mesh.geometry!.clearCachedData();
-      if (mesh.subMeshes) {
-        for (const sm of mesh.subMeshes) {
-          sm.setBoundingInfo(this.defaultBb);
+      if (!EngineSettings.settings.rendererSettings.cpuBound) {
+        mesh.geometry!.clearCachedData();
+        if (mesh.subMeshes) {
+          for (const sm of mesh.subMeshes) {
+            sm.setBoundingInfo(this.defaultBb);
+          }
         }
       }
     }

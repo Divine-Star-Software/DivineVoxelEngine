@@ -1,18 +1,13 @@
 import { $3dCardinalNeighbors } from "../../../Math/CardinalNeighbors.js";
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
 
-import { SunRemove, SunUpdate } from "../Illumanation/SunUpdate.js";
-import { RGBRemove, RGBUpdate } from "../Illumanation/RGBUpdate.js";
-import { SubstanceDataTool } from "../../../Tools/Data/SubstanceDataTool.js";
-import { UpdateTask } from "../../Update/UpdateTask.js"
+import { UpdateTask } from "../../Update/UpdateTask.js";
 import { WorldCursor } from "../../../World/index.js";
 
 export class FlowManager {
-  static _brush= new BrushTool();
-  static _sDataTool= new WorldCursor();
-  static _nDataTool = new  WorldCursor();
-  static _substanceTool = new  SubstanceDataTool()
-
+  static _brush = new BrushTool();
+  static _sDataTool = new WorldCursor();
+  static _nDataTool = new WorldCursor();
 
   static setVoxel(
     tasks: UpdateTask,
@@ -23,7 +18,7 @@ export class FlowManager {
     y: number,
     z: number
   ) {
- /*    this.sunCheck(tasks, x, y, z);
+    /*    this.sunCheck(tasks, x, y, z);
     SunRemove(tasks);
     this._brush.setId(vox).setXYZ(x, y, z).paint();
     this._sDataTool.loadInAt(x, y, z);
@@ -37,14 +32,14 @@ export class FlowManager {
   }
 
   static setDimension(dimension: string) {
-   // this._sDataTool.setDimension(dimension);
-  //  this._nDataTool.setDimension(dimension);
- //   this._brush.setDimension(dimension);
-   // IlluminationManager.setDimension(dimension);
+    // this._sDataTool.setDimension(dimension);
+    //  this._nDataTool.setDimension(dimension);
+    //   this._brush.setDimension(dimension);
+    // IlluminationManager.setDimension(dimension);
   }
 
   static removeVoxel(tasks: UpdateTask, x: number, y: number, z: number) {
-/*     for (const n of $3dCardinalNeighbors) {
+    /*     for (const n of $3dCardinalNeighbors) {
       const nx = x + n[0];
       const ny = y + n[1];
       const nz = z + n[2];
@@ -74,12 +69,13 @@ export class FlowManager {
   }
 
   static getFlowRate(substance: string) {
-    this._substanceTool.setSubstanceFromString(substance);
-    return this._substanceTool.getFlowRate();
+    //  this._substanceTool.setSubstanceFromString(substance);
+    //  return this._substanceTool.getFlowRate();
+    return 0;
   }
 
   static getVoxel(x: number, y: number, z: number) {
- /*    if (!this._sDataTool.loadInAt(x, y, z)) return false;
+    /*    if (!this._sDataTool.loadInAt(x, y, z)) return false;
     if (!this._sDataTool.isRenderable()) return false;
 
     const substance = this._sDataTool.getSubstnaceData();
@@ -88,12 +84,12 @@ export class FlowManager {
   }
 
   static setLevel(level: number, x: number, y: number, z: number) {
- //   this._nDataTool.loadInAt(x, y, z);
- //   this._nDataTool.setLevel(level).commit();
+    //   this._nDataTool.loadInAt(x, y, z);
+    //   this._nDataTool.setLevel(level).commit();
   }
 
   static getLevel(vox: string, x: number, y: number, z: number) {
- /*    if (!this._nDataTool.loadInAt(x, y, z)) return -2;
+    /*    if (!this._nDataTool.loadInAt(x, y, z)) return -2;
     const voxel = this._nDataTool.getStringId();
     if (this._nDataTool.isAir()) {
       return 0;
@@ -105,7 +101,7 @@ export class FlowManager {
   }
 
   static getLevelState(vox: string, x: number, y: number, z: number) {
-/*     if (!this._nDataTool.loadInAt(x, y, z)) return -2;
+    /*     if (!this._nDataTool.loadInAt(x, y, z)) return -2;
     const voxel = this._nDataTool.getStringId();
     if (voxel == vox) {
       return this._nDataTool.getLevelState();
@@ -117,7 +113,7 @@ export class FlowManager {
   }
 
   static canFlowOutwardTest(vox: string, x: number, y: number, z: number) {
- /*    const level = this.getLevel(vox, x, y - 1, z);
+    /*    const level = this.getLevel(vox, x, y - 1, z);
     if (level == -1) {
       return true;
     }
@@ -125,7 +121,7 @@ export class FlowManager {
   }
 
   static flowDownTest(vox: string, x: number, y: number, z: number) {
-/*     const level = this.getLevel(vox, x, y - 1, z);
+    /*     const level = this.getLevel(vox, x, y - 1, z);
     if (level >= 0) {
       return true;
     }
@@ -140,7 +136,7 @@ export class FlowManager {
     0, 0, 0, 0,
   ];
   static getAbsorbLight(x: number, y: number, z: number) {
-/*     for (const n of $3dCardinalNeighbors) {
+    /*     for (const n of $3dCardinalNeighbors) {
       if (!n[0] && !n[1] && !n[2]) continue;
       if (!this._nDataTool.loadInAt(x + n[0], y + n[1], z + n[2])) continue;
       let l = this._nDataTool.getLight();
@@ -156,11 +152,11 @@ export class FlowManager {
     for (let i = 0; i < 4; i++) {
       this._lightValues[i] = 0;
     } */
-   // return this.lightData.minusOneForAll(2);
+    // return this.lightData.minusOneForAll(2);
   }
 
   static sunCheck(tasks: UpdateTask, x: number, y: number, z: number) {
-/*     if (!this._nDataTool.loadInAt(x, y - 1, z)) return;
+    /*     if (!this._nDataTool.loadInAt(x, y - 1, z)) return;
     if (!this._nDataTool.isAir()) return;
     const l = this._nDataTool.getLight();
     if (this.lightData.getS(l) == 0xf) {

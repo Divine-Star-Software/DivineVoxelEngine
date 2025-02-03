@@ -1,12 +1,9 @@
-import { Vec3Array, Vec4Array, Vector3Like } from "@amodx/math";
+import { Vec3Array, Vec4Array } from "@amodx/math";
 import { VoxelFaces } from "../../../../Math";
-
-import { QuadScalarVertexData } from "../../../Geomtry/Primitives/QuadVertexData";
 import { QuadVerticies } from "../../../Geomtry/Geometry.types";
 import { VoxelBoxGeometryNode } from "../../../../Models/VoxelModel.types";
 
 import { Quad } from "../../../Geomtry/Primitives/Quad";
-import { VoxelMesherDataTool } from "../../../../Mesher/Tools/VoxelMesherDataTool";
 import { VoxelGeometryBuilder } from "../../../Geomtry/VoxelGeometryBuilder";
 
 import {
@@ -22,7 +19,6 @@ import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData";
 
 import { GeoemtryNode } from "../GeometryNode";
 import { GetBoxGeometryNodeData } from "../../Common/BoxGeometryNode";
-import { UpdateBounds } from "../../Common/BoundsFunctions";
 
 const ArgIndexes = BoxVoxelGometryInputs.ArgIndexes;
 
@@ -36,8 +32,7 @@ export class RulelessBoxVoxelGeometryNode extends GeoemtryNode<
     VoxelFaces,
     [Vec4Array, Vec4Array, Vec4Array, Vec4Array]
   >;
-  worldLight: QuadScalarVertexData;
-  worldAO: QuadScalarVertexData;
+
   lightData = new VoxelLightData();
 
   init(): void {
@@ -53,13 +48,13 @@ export class RulelessBoxVoxelGeometryNode extends GeoemtryNode<
     this.vertexWeights = vertexWeights;
   }
   determineShading(face: VoxelFaces) {
-    const tool = this.tool;
+    const tool = this.builder;
 
     const lightData = tool.lightData[face];
-    const noAO = this.tool.voxel.isLightSource() || this.tool.voxel.noAO();
+    const noAO = this.builder.voxel.isLightSource() || this.builder.voxel.noAO();
 
-    const worldLight = this.worldLight;
-    const worldAO = this.worldAO;
+    const worldLight = this.builder.vars.light;
+    const worldAO = this.builder.vars.ao;
     for (let v = 0 as QuadVerticies; v < 4; v++) {
       worldAO.vertices[v] = 0;
 
@@ -72,45 +67,39 @@ export class RulelessBoxVoxelGeometryNode extends GeoemtryNode<
     }
   }
   shouldFlip() {
+    const worldLight = this.builder.vars.light;
+    const worldAO = this.builder.vars.ao;
     if (
       shouldCauseFlip(
-        this.worldAO.vertices[0],
-        this.worldAO.vertices[1],
-        this.worldAO.vertices[2],
-        this.worldAO.vertices[3]
+        worldAO.vertices[0],
+        worldAO.vertices[1],
+        worldAO.vertices[2],
+        worldAO.vertices[3]
       )
     )
       return true;
     return (
       shouldCauseFlip(
-        this.lightData.getS(this.worldLight.vertices[0]),
-        this.lightData.getS(this.worldLight.vertices[1]),
-        this.lightData.getS(this.worldLight.vertices[2]),
-        this.lightData.getS(this.worldLight.vertices[3])
+        this.lightData.getS(worldLight.vertices[0]),
+        this.lightData.getS(worldLight.vertices[1]),
+        this.lightData.getS(worldLight.vertices[2]),
+        this.lightData.getS(worldLight.vertices[3])
       ) ||
       shouldCauseFlip(
-        this.lightData.sumRGB(this.worldLight.vertices[0]),
-        this.lightData.sumRGB(this.worldLight.vertices[1]),
-        this.lightData.sumRGB(this.worldLight.vertices[2]),
-        this.lightData.sumRGB(this.worldLight.vertices[3])
+        this.lightData.sumRGB(worldLight.vertices[0]),
+        this.lightData.sumRGB(worldLight.vertices[1]),
+        this.lightData.sumRGB(worldLight.vertices[2]),
+        this.lightData.sumRGB(worldLight.vertices[3])
       )
     );
   }
 
-  add(
-    tool: VoxelMesherDataTool,
-    originHash: number,
-    origin: Vector3Like,
-    args: BoxVoxelGometryArgs
-  ) {
-    this.tool = tool;
-    this.origin = tool.position;
-
-    this.worldAO = tool.vars.ao;
-    this.worldLight = tool.vars.light;
-
+  add(args: BoxVoxelGometryArgs) {
+    const tool = this.builder;
+    let added = false;
     for (let face = 0 as VoxelFaces; face < 6; face++) {
       if (args[face][ArgIndexes.Enabled]) {
+        added = true;
         tool.calculateFaceData(face);
         this.determineShading(face);
         const faceArgs = args[face];
@@ -131,13 +120,14 @@ export class RulelessBoxVoxelGeometryNode extends GeoemtryNode<
         //4
         quad.uvs.vertices[3].x = uvs[3][0];
         quad.uvs.vertices[3].y = uvs[3][1];
-        VoxelGeometryBuilder.addQuad(tool, origin, quad);
+        VoxelGeometryBuilder.addQuad(tool, tool.position, quad);
 
-        UpdateBounds(tool, origin, this.quadBounds[face]);
+        this.builder.updateBounds(this.quadBounds[face]);
       }
     }
 
-    this.worldLight.setAll(0);
-    this.worldAO.setAll(0);
+    this.builder.vars.light.setAll(0);
+    this.builder.vars.ao.setAll(0);
+    return added;
   }
 }

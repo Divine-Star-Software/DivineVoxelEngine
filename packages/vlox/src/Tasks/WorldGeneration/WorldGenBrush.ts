@@ -84,6 +84,7 @@ export class WorldGenBrush extends BrushTool {
     let voxel = this.dataCursor.getVoxel(this.x, this.y, this.z);
     if (!voxel) return false;
     const sl = voxel.getLight();
+    voxel.updateVoxel(2);
     if (lightData.hasRGBLight(sl)) {
       this.tasks.rgb.update.push(this.x, this.y, this.z);
       //    Propagation.instance.rgbUpdate(this.tasks);

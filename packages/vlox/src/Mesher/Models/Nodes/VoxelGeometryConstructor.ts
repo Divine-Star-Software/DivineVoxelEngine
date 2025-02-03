@@ -94,7 +94,7 @@ export class VoxelGeometryConstructor {
     for (const node of this.nodes) {
       node.faceIndex = faceCount;
       node.vertexIndex = vertexCount;
-      faceCount += node.faceCount - 1;
+      faceCount += node.faceCount;
       vertexCount += node.vertexCount;
     }
   }

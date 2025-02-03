@@ -1,28 +1,15 @@
 import { Section } from "../Section/index";
-import { SectionStructProperties } from "../Section/SectionStructProperties";
 import { VoxelCursorInterface } from "../../Voxels/Cursor/VoxelCursor.interface";
 import { WorldSectionCursorInterface } from "./WorldSectionCursor.interface";
 export class WorldVoxelCursor extends VoxelCursorInterface {
   private _section: Section;
 
-  get ids() {
-    return this._section.ids;
-  }
-  get light() {
-    return this._section.light;
-  }
-  get level() {
-    return this._section.level;
-  }
-  get state() {
-    return this._section.state;
-  }
-  get secondary() {
-    return this._section.secondary;
-  }
-  get mod() {
-    return this._section.mod;
-  }
+  ids: Uint16Array;
+  light: Uint16Array;
+  level: Uint8Array;
+  state: Uint16Array;
+  mod: Uint16Array;
+  secondary: Uint16Array;
 
   constructor(public dataCursor: WorldSectionCursorInterface) {
     super();
@@ -31,6 +18,13 @@ export class WorldVoxelCursor extends VoxelCursorInterface {
   loadIn() {
     if (!this.dataCursor._section) return;
     this._section = this.dataCursor._section;
+    this.ids = this._section.ids;
+    this.light = this._section.light;
+    this.level = this._section.level;
+    this.state = this._section.state;
+    this.mod = this._section.mod;
+    this.secondary = this._section.secondary;
+
     this._index = this.dataCursor._voxelIndex;
     this.process();
   }
@@ -38,35 +32,22 @@ export class WorldVoxelCursor extends VoxelCursorInterface {
   /**
    *
    * @param mode 0 for add 1 for remove
-   * @param x
-   * @param y
-   * @param z
-   * @returns
    */
-  updateHeightMap(mode: 0 | 1) {
-    Section.StateStruct.setData(this._section.sectionState);
-
+  updateVoxel(mode: 0 | 1 | 2) {
     const voxelPos = this.dataCursor._voxelPosition;
     if (mode == 0) {
-      Section.StateStruct.setArrayPropertyValue(
-        SectionStructProperties.heightMap,
-        voxelPos.y,
-        1
-      );
+      this.dataCursor._section?.setBuried(this.dataCursor._voxelIndex, false);
+      this.dataCursor._section?.setHasVoxel(voxelPos.y, true);
       return true;
     }
     if (mode == 1) {
-      Section.StateStruct.setArrayPropertyValue(
-        SectionStructProperties.dirtyMap,
-        voxelPos.y,
-        1
-      );
-      Section.StateStruct.setArrayPropertyValue(
-        SectionStructProperties.heightMap,
-        voxelPos.y,
-        0
-      );
+      this.dataCursor._section?.setBuried(this.dataCursor._voxelIndex, false);
+      this.dataCursor._section?.setHasVoxelDirty(voxelPos.y, true);
+      this.dataCursor._section?.setHasVoxel(voxelPos.y, false);
       return true;
+    }
+    if (mode == 2) {
+      this.dataCursor._section?.setBuried(this.dataCursor._voxelIndex, false);
     }
     return false;
   }

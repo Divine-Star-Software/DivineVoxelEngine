@@ -1,17 +1,12 @@
-import { Vec3Array, Vec4Array, Vector3Like } from "@amodx/math";
-import { VoxelFaceNameArray, VoxelFaces } from "../../../../Math";
-
-import { QuadScalarVertexData } from "../../../Geomtry/Primitives/QuadVertexData";
+import { Vec3Array, Vec4Array } from "@amodx/math";
+import { VoxelFaces } from "../../../../Math";
 import { QuadVerticies } from "../../../Geomtry/Geometry.types";
 import { VoxelBoxGeometryNode } from "../../../../Models/VoxelModel.types";
-
 import { Quad } from "../../../Geomtry/Primitives/Quad";
-import { VoxelMesherDataTool } from "../../../../Mesher/Tools/VoxelMesherDataTool";
 import {
   BoxVoxelGometryArgs,
   BoxVoxelGometryInputs,
 } from "../../../../Models/Input/BoxVoxelGometryInputs";
-import { VoxelGeometryLookUp } from "../../VoxelGeometryLookUp";
 import { GeoemtryNode } from "../GeometryNode";
 import {
   getInterpolationValue,
@@ -19,9 +14,9 @@ import {
 } from "../../Common/Calc/CalcConstants";
 import { VoxelRelativeCubeIndexPositionMap } from "../../../../Models/Indexing/VoxelRelativeCubeIndex";
 import { GetBoxGeometryNodeData } from "../../Common/BoxGeometryNode";
-import { UpdateBounds } from "../../Common/BoundsFunctions";
 import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData";
 import { VoxelGeometryBuilder } from "../../../Geomtry/VoxelGeometryBuilder";
+import { VoxelModelConstructorRegister } from "../../../Models/VoxelModelConstructorRegister";
 
 const ArgIndexes = BoxVoxelGometryInputs.ArgIndexes;
 
@@ -35,8 +30,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
     VoxelFaces,
     [Vec4Array, Vec4Array, Vec4Array, Vec4Array]
   >;
-  worldLight: QuadScalarVertexData;
-  worldAO: QuadScalarVertexData;
+
   lightData = new VoxelLightData();
 
   init(): void {
@@ -56,7 +50,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
     const faceIndexes = this.geomtry.faceCullMap![trueFaceIndex];
     if (!faceIndexes) return true;
 
-    const tool = this.tool;
+    const tool = this.builder;
 
     for (
       let positionIndex = 0;
@@ -65,21 +59,23 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
     ) {
       const currentIndex = faceIndexes[positionIndex];
       const p = VoxelRelativeCubeIndexPositionMap[currentIndex];
-      const hashed = VoxelGeometryLookUp.getHash(
+      const hashed = this.builder.space.getHash(
         tool.nVoxel,
         tool.position.x + p[0],
         tool.position.y + p[1],
         tool.position.z + p[2]
       );
+      if (this.builder.space!.foundHash[hashed] < 2) continue;
 
-      const offsetBaseGometry = VoxelGeometryLookUp.space!.getGeomtry(hashed);
+      const offsetBaseGometry = this.builder.space!.getGeomtry(hashed);
       const offsetConditonalGeometry =
-        VoxelGeometryLookUp.space!.getConditionalGeomtry(hashed);
+        this.builder.space!.getConditionalGeomtry(hashed);
 
       if (offsetBaseGometry) {
         for (let i = 0; i < offsetBaseGometry.length; i++) {
           const geoId = offsetBaseGometry[i];
-          if (VoxelGeometryLookUp.isRulesless(geoId)) continue;
+
+          if (VoxelModelConstructorRegister.rulesless[geoId]) continue;
           const faceIndex = this.geomtry.cullIndex.getValue(
             geoId,
             currentIndex,
@@ -87,14 +83,14 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
           );
           if (
             faceIndex > -1 &&
-            !VoxelGeometryLookUp.space!.getConstructor(
-              hashed
-            )?.isShapeStateFaceTransparent(
-              VoxelGeometryLookUp.space!.modCache[hashed],
-              VoxelGeometryLookUp.space!.stateCache[hashed],
-              geoId,
-              faceIndex
-            )
+            !this.builder
+              .space!.getConstructor(hashed)
+              ?.isShapeStateFaceTransparent(
+                this.builder.space!.modCache[hashed],
+                this.builder.space!.stateCache[hashed],
+                geoId,
+                faceIndex
+              )
           ) {
             return false;
           }
@@ -106,7 +102,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
         const cond = offsetConditonalGeometry[i];
         for (let k = 0; k < cond.length; k++) {
           const geoId = cond[k];
-          if (VoxelGeometryLookUp.isRulesless(geoId)) continue;
+          if (VoxelModelConstructorRegister.rulesless[geoId]) continue;
           const faceIndex = this.geomtry.cullIndex.getValue(
             geoId,
             currentIndex,
@@ -114,14 +110,14 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
           );
           if (
             faceIndex > -1 &&
-            !VoxelGeometryLookUp.space!.getConstructor(
-              hashed
-            )?.isCondtionalStateFaceTransparent(
-              VoxelGeometryLookUp.space!.modCache[hashed],
-              VoxelGeometryLookUp.space!.stateCache[hashed],
-              geoId,
-              faceIndex
-            )
+            !this.builder
+              .space!.getConstructor(hashed)
+              ?.isCondtionalStateFaceTransparent(
+                this.builder.space!.modCache[hashed],
+                this.builder.space!.stateCache[hashed],
+                geoId,
+                faceIndex
+              )
           )
             return false;
         }
@@ -132,13 +128,14 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
   }
 
   determineShading(face: VoxelFaces) {
-    const tool = this.tool;
+    const tool = this.builder;
 
     const lightData = tool.lightData[face];
-    const noAO = this.tool.voxel.isLightSource() || this.tool.voxel.noAO();
+    const noAO =
+      this.builder.voxel.isLightSource() || this.builder.voxel.noAO();
 
-    const worldLight = this.worldLight;
-    const worldAO = this.worldAO;
+    const worldLight = this.builder.vars.light;
+    const worldAO = this.builder.vars.ao;
     for (let v = 0 as QuadVerticies; v < 4; v++) {
       worldAO.vertices[v] = 0;
 
@@ -163,17 +160,20 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
         const currentIndex = aoIndexes[positionIndex];
         const p = VoxelRelativeCubeIndexPositionMap[currentIndex];
 
-        const hashed = VoxelGeometryLookUp.getHash(
+        const hashed = this.builder.space.getHash(
           tool.nVoxel,
           tool.position.x + p[0],
           tool.position.y + p[1],
           tool.position.z + p[2]
         );
 
-        if (VoxelGeometryLookUp.space!.noCastAO[hashed] === 1) continue;
-        const baseGeo = VoxelGeometryLookUp.space!.getGeomtry(hashed);
-        const conditonalGeo =
-          VoxelGeometryLookUp.space!.getConditionalGeomtry(hashed);
+        if (
+          this.builder.space!.foundHash[hashed] < 2 ||
+          this.builder.space!.noCastAO[hashed] === 1
+        )
+          continue;
+        const baseGeo = this.builder.space!.getGeomtry(hashed);
+        const conditonalGeo = this.builder.space!.getConditionalGeomtry(hashed);
 
         if (!baseGeo && !conditonalGeo) continue;
 
@@ -220,45 +220,40 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
     }
   }
   shouldFlip() {
+    const worldAO = this.builder.vars.ao;
+    const worldLight = this.builder.vars.light;
     if (
       shouldCauseFlip(
-        this.worldAO.vertices[0],
-        this.worldAO.vertices[1],
-        this.worldAO.vertices[2],
-        this.worldAO.vertices[3]
+        worldAO.vertices[0],
+        worldAO.vertices[1],
+        worldAO.vertices[2],
+        worldAO.vertices[3]
       )
     )
       return true;
     return (
       shouldCauseFlip(
-        this.lightData.getS(this.worldLight.vertices[0]),
-        this.lightData.getS(this.worldLight.vertices[1]),
-        this.lightData.getS(this.worldLight.vertices[2]),
-        this.lightData.getS(this.worldLight.vertices[3])
+        this.lightData.getS(worldLight.vertices[0]),
+        this.lightData.getS(worldLight.vertices[1]),
+        this.lightData.getS(worldLight.vertices[2]),
+        this.lightData.getS(worldLight.vertices[3])
       ) ||
       shouldCauseFlip(
-        this.lightData.sumRGB(this.worldLight.vertices[0]),
-        this.lightData.sumRGB(this.worldLight.vertices[1]),
-        this.lightData.sumRGB(this.worldLight.vertices[2]),
-        this.lightData.sumRGB(this.worldLight.vertices[3])
+        this.lightData.sumRGB(worldLight.vertices[0]),
+        this.lightData.sumRGB(worldLight.vertices[1]),
+        this.lightData.sumRGB(worldLight.vertices[2]),
+        this.lightData.sumRGB(worldLight.vertices[3])
       )
     );
   }
 
-  add(
-    tool: VoxelMesherDataTool,
-    originHash: number,
-    origin: Vector3Like,
-    args: BoxVoxelGometryArgs
-  ) {
-    this.tool = tool;
-    this.origin = tool.position;
-
-    this.worldAO = tool.vars.ao;
-    this.worldLight = tool.vars.light;
+  add(args: BoxVoxelGometryArgs) {
+    let added = false;
+    const tool = this.builder;
 
     for (let face = 0 as VoxelFaces; face < 6; face++) {
       if (args[face][ArgIndexes.Enabled] && this.isExposed(face)) {
+        added = true;
         tool.calculateFaceData(face);
         this.determineShading(face);
         const faceArgs = args[face];
@@ -281,13 +276,14 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
         //4
         quad.uvs.vertices[3].x = uvs[3][0];
         quad.uvs.vertices[3].y = uvs[3][1];
-        VoxelGeometryBuilder.addQuad(tool, origin, quad);
+        VoxelGeometryBuilder.addQuad(tool, this.builder.origin, quad);
 
-        UpdateBounds(tool, origin, this.quadBounds[face]);
+        tool.updateBounds(this.quadBounds[face]);
       }
     }
 
-    this.worldLight.setAll(0);
-    this.worldAO.setAll(0);
+    this.builder.vars.ao.setAll(0);
+    this.builder.vars.light.setAll(0);
+    return added;
   }
 }

@@ -7,6 +7,7 @@ import {
   GetXYZOrderArrayIndex,
   GetXZYOrderArrayIndex,
   GetYXZOrderArrayIndex,
+  GetYXZOrderArrayPositionVec3,
 } from "../Math/Indexing.js";
 const tempPosition = Vector3Like.Create();
 const tempPosition2 = Vector3Like.Create();
@@ -22,11 +23,11 @@ class WorldBounds {
 
   static setWorldBounds(
     minX: number,
-    maxX: number,
-    minZ: number,
-    maxZ: number,
     minY: number,
-    maxY: number
+    minZ: number,
+    maxX: number,
+    maxY: number,
+    maxZ: number
   ) {
     this.bounds.MinX = minX;
     this.bounds.MaxX = maxX;
@@ -199,12 +200,34 @@ class VoxelSpace {
     refPosition[2] = z - refPosition[2];
     return refPosition;
   }
+  static getPositionFromIndex(
+    index: number,
+    refPosition = Vector3Like.Create()
+  ) {
+    return GetYXZOrderArrayPositionVec3(
+      index,
+      SectionSpace.bounds.x,
+      SectionSpace.bounds.y,
+      SectionSpace.bounds.z,
+      refPosition
+    );
+  }
   static getIndex(x: number, y: number, z: number): number {
     const position = this.getPosition(x, y, z, tempPosition);
     return GetYXZOrderArrayIndex(
       position.x,
       position.y,
       position.z,
+      SectionSpace.bounds.x,
+      SectionSpace.bounds.y,
+      SectionSpace.bounds.z
+    );
+  }
+  static getIndexFromPosition(x: number, y: number, z: number): number {
+    return GetYXZOrderArrayIndex(
+      x,
+      y,
+      z,
       SectionSpace.bounds.x,
       SectionSpace.bounds.y,
       SectionSpace.bounds.z
@@ -235,24 +258,24 @@ export class WorldSpaces {
 EngineSettings.addEventListener("synced", (event) => {
   const { settings } = event.detail.settings;
   WorldBounds.setWorldBounds(
-    settings.world.minX,
-    settings.world.maxX,
-    settings.world.minZ,
-    settings.world.maxZ,
-    settings.world.minY,
-    settings.world.maxY
+    settings.world.min.x,
+    settings.world.min.y,
+    settings.world.min.z,
+    settings.world.max.x,
+    settings.world.max.y,
+    settings.world.max.z
   );
 
-  SectorSpace.power2Axes.x = settings.sectors.sectorXPow2;
-  SectorSpace.power2Axes.y = settings.sectors.sectorYPow2;
-  SectorSpace.power2Axes.z = settings.sectors.sectorZPow2;
+  SectorSpace.power2Axes.x = settings.sectors.power2Size.x;
+  SectorSpace.power2Axes.y = settings.sectors.power2Size.y;
+  SectorSpace.power2Axes.z = settings.sectors.power2Size.z;
   SectorSpace.bounds.x = 1 << SectorSpace.power2Axes.x;
   SectorSpace.bounds.y = 1 << SectorSpace.power2Axes.y;
   SectorSpace.bounds.z = 1 << SectorSpace.power2Axes.z;
 
-  SectionSpace.power2Axes.x = settings.sections.sectionXPow2;
-  SectionSpace.power2Axes.y = settings.sections.sectionYPow2;
-  SectionSpace.power2Axes.z = settings.sections.sectionZPow2;
+  SectionSpace.power2Axes.x = settings.sections.power2Size.x;
+  SectionSpace.power2Axes.y = settings.sections.power2Size.y;
+  SectionSpace.power2Axes.z = settings.sections.power2Size.z;
   SectionSpace.bounds.x = 1 << SectionSpace.power2Axes.x;
   SectionSpace.bounds.y = 1 << SectionSpace.power2Axes.y;
   SectionSpace.bounds.z = 1 << SectionSpace.power2Axes.z;

@@ -12,6 +12,24 @@ type EngineSettingsEvents = {
 class EngineSettingsClass extends TypedEventTarget<EngineSettingsEvents> {
   enviorment: "node" | "browser" = Environment.isNode() ? "node" : "browser";
   settings = new EngineSettingsData();
+
+  get doSunPropagation() {
+    return this.settings.lighting.autoSunLight == true;
+  }
+  get doRGBPropagation() {
+    return this.settings.lighting.autoRGBLight == true;
+  }
+
+  get doLight() {
+    return this.doRGBPropagation || this.doSunPropagation;
+  }
+  get doFlow() {
+    return this.settings.flow.enable;
+  }
+
+  get isClient() {
+    return this.enviorment != "browser";
+  }
   getSettings() {
     return this.settings;
   }
@@ -46,24 +64,6 @@ class EngineSettingsClass extends TypedEventTarget<EngineSettingsEvents> {
 
   getSettingsCopy() {
     return JSON.parse(JSON.stringify(this.settings));
-  }
-
-  doSunPropagation() {
-    return this.settings.lighting.autoSunLight == true;
-  }
-  doRGBPropagation() {
-    return this.settings.lighting.autoRGBLight == true;
-  }
-
-  doLight() {
-    return this.doRGBPropagation() || this.doSunPropagation();
-  }
-  doFlow() {
-    return this.settings.flow.enable;
-  }
-
-  isClient() {
-    return this.enviorment != "browser";
   }
 }
 

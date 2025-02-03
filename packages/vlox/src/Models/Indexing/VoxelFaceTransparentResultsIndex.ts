@@ -6,10 +6,10 @@ export type VoxelFaceTransparentResultsIndexData = {
 };
 
 export class VoxelFaceTransparentResultsIndex {
-  view: DataView;
+  view: Uint8Array;
 
   constructor(public data: VoxelFaceTransparentResultsIndexData) {
-    this.view = new DataView(data.buffer);
+    this.view = new Uint8Array(data.buffer);
   }
 
   getValue(modState: number, faceByteIndex: number, faceIndex: number) {

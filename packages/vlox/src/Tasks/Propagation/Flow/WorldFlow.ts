@@ -1,7 +1,6 @@
 import { WorldSpaces } from "../../../World/WorldSpaces";
 import { UpdateTask } from "../../../Tasks/Update/UpdateTask";
 import { WorldRegister } from "../../../World/WorldRegister";
-import { SectionHeightMap } from "../../../World/Section/SectionHeightMap";
 import { EngineSettings } from "../../../Settings/EngineSettings";
 import { Vec3Array } from "@amodx/math";
 import { SunRemove, SunUpdate } from "../Illumanation/SunUpdate";
@@ -59,12 +58,12 @@ function Flood(task: UpdateTask, voxel: WorldVoxelCursor) {
         ) {
           if (downAir && !downSameVoxel) {
             nVoxel.setId(voxelId);
-            nVoxel.updateHeightMap(0);
+            nVoxel.updateVoxel(0);
             nVoxel.setLevel(7);
             nVoxel.setLevelState(1);
           } else if (!downSameVoxel) {
             nVoxel.setId(voxelId);
-            nVoxel.updateHeightMap(0);
+            nVoxel.updateVoxel(0);
             nVoxel.setLevel(level - 1);
             nVoxel.setLevelState(0);
           }
@@ -107,7 +106,7 @@ function Flood(task: UpdateTask, voxel: WorldVoxelCursor) {
     }
 
     nVoxel.setId(voxelId);
-    nVoxel.updateHeightMap(0);
+    nVoxel.updateVoxel(0);
     nVoxel.setLevel(7);
     nVoxel.setLevelState(state);
     queue.push(x, y - 1, z);
@@ -115,7 +114,7 @@ function Flood(task: UpdateTask, voxel: WorldVoxelCursor) {
 }
 
 export function WorldFlow(task: UpdateTask) {
-  if (!EngineSettings.doFlow()) return false;
+  if (!EngineSettings.doFlow) return false;
   const sector = WorldRegister.sectors.get(
     task.origin[0],
     task.origin[1],
@@ -136,7 +135,7 @@ export function WorldFlow(task: UpdateTask) {
     const section = sector.sections[i];
     if (!section) continue;
 
-    let [minY, maxY] = SectionHeightMap.setSection(section).getMinMax();
+    let [minY, maxY] = section.getMinMax();
     const cx = sector.position[0];
     const cy = sector.position[1] + i * WorldSpaces.section.bounds.y;
     const cz = sector.position[2];
@@ -146,7 +145,7 @@ export function WorldFlow(task: UpdateTask) {
         for (let x = cx; x < maxX; x++) {
           const voxel = task.nDataCursor.getVoxel(x, y, z);
           if (!voxel || voxel.isAir()) continue;
-          if (voxel.getSubstanceData().isLiquid()) {
+          if (voxel.getSubstanceData()["dve_is_liquid"]) {
             for (let i = 0; i < 5; i++) {
               const nVoxel = task.nDataCursor.getVoxel(
                 x + flowUpdateChecks[i][0],

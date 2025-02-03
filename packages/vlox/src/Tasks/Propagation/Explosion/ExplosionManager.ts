@@ -115,7 +115,7 @@ export const ExplosionManager = {
           ) {
             continue;
           } */
-            voxel.setAir().updateHeightMap(1);
+            voxel.setAir().updateVoxel(1);
         }
       }
     }

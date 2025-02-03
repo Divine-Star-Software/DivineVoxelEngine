@@ -1,4 +1,4 @@
-import { VoxelCursorInterface } from "../../Voxels/Cursor/VoxelCursor.interface";
+import { VoxelCursorInterface } from "../Voxels/Cursor/VoxelCursor.interface";
 export abstract class DataCursorInterface {
   abstract getVoxel(
     x: number,

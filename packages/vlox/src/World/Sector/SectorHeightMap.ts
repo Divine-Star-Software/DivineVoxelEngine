@@ -1,7 +1,6 @@
 import { Vec3Array } from "@amodx/math";
 import { LocationData } from "../../Math";
 import { $2dMooreNeighborhood } from "../../Math/CardinalNeighbors";
-import { SectionHeightMap } from "../Section/SectionHeightMap";
 import { WorldRegister } from "../WorldRegister";
 import { WorldSpaces } from "../WorldSpaces";
 
@@ -38,11 +37,9 @@ export class SectorHeightMap {
       const section = sector.sections[i];
       if (!section) continue;
 
-      SectionHeightMap.setSection(section);
-
       const sectionPOS = y + i * WorldSpaces.section.bounds.y;
 
-      let [sectionMin, sectionMax] = SectionHeightMap.getMinMax();
+      let [sectionMin, sectionMax] = section.getMinMax();
       if (Math.abs(sectionMax) == Infinity) continue;
       sectionMax = sectionPOS + sectionMax;
       if (maxHeight < sectionMax) {
