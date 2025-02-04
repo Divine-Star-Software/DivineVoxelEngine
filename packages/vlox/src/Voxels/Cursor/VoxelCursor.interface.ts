@@ -92,7 +92,7 @@ export abstract class VoxelCursorInterface {
     return this._substanceTags;
   }
   isOpaque() {
-    return this._tags[VoxelTagIds.isTransparent];
+    return !this._tags[VoxelTagIds.isTransparent];
   }
   getMod() {
     return this.mod[this._index];
@@ -146,16 +146,17 @@ export abstract class VoxelCursorInterface {
   }
   getLight() {
     if (this._loadedId == 0) return this.light[this._index];
-    const lightValue = this._tags[VoxelTagIds.lightValue] as number;
     if (this.isOpaque()) {
-      if (this.isLightSource() && lightValue) {
-        return lightValue;
-      } else {
-        return -1;
+      if (this.isLightSource()) {
+        return this._tags[VoxelTagIds.lightValue] as number;
       }
+      return -1;
     }
-    if (this.isLightSource() && lightValue) {
-      return this._lightData.mixLight(this.light[this._index], lightValue);
+    if (this.isLightSource()) {
+      return this._lightData.mixLight(
+        this.light[this._index],
+        this._tags[VoxelTagIds.lightValue] as number
+      );
     }
     return this.light[this._index];
   }

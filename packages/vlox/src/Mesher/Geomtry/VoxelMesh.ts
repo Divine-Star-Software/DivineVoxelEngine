@@ -1,6 +1,6 @@
 import { Vector3Like } from "@amodx/math";
-import { VoxelVertexBuffer, VoxelIndiceBuffer } from "./Buffers";
-import { VoxelMeshVertexStructCursor } from "../Tools/VoxelMeshVertexStructCursor";
+import { VoxelVertexBuffer, VoxelIndiceBuffer } from "./VoxelMeshBuffers";
+import { VoxelMeshVertexStructCursor } from "./VoxelMeshVertexStructCursor";
 
 export class VoxelMesh {
   indicieCount = 0;

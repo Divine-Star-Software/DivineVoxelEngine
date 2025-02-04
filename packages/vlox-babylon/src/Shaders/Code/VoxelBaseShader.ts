@@ -16,7 +16,7 @@ const uint gVLIndex = uint(8);
 const uint bVLIndex = uint(12);
 const uint aoIndex = uint(16);
 const uint animIndex = uint(20);
-const float aoValue =  pow( .5, 2.2);
+const float aoValue =  pow( .65, 2.2);
 const uint textureIndexMask = uint(0xffff);
 const uint mainTexutreIndex =uint(0);
 const uint secondaryTextureIndex = uint(0xf + 0x1);
@@ -89,7 +89,7 @@ int greenValue = int(((lightMask << gVLIndex) & vUID) >> gVLIndex);
 int blueValue = int(((lightMask << bVLIndex) & vUID) >> bVLIndex);
 float AOVL = float(((aoMask << aoIndex) & vUID) >> aoIndex);
 if(AOVL > 0.) {
-    vAO = aoValue;
+    vAO = pow( 1. - .2 * AOVL, 2.2);
 } else {
     vAO = 1.;
 }
@@ -243,12 +243,12 @@ vec4 rgb = texture(dve_voxel,vec3(vec2(vUV.x,vUV.y + time * .01 * -1. * vFlow),v
   rgb.rgb *=  vLight;
 
   vec3 finalColor = doFog(rgb);
-
-  FragColor = vec4(finalColor.rgb, rgb.a);
+  //FragColor = vec4(vec3(1.) * vAO,1.);
+ FragColor = vec4(finalColor.rgb, rgb.a);
 
   if (FragColor.a < 0.5) { 
     discard;
-  }
+  } 
 
   `;
 

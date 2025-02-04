@@ -1,216 +1,40 @@
-import { EngineSettings } from "../Settings/EngineSettings.js";
-import type { TextureData, TextureTypeUVMap, TextureId } from "./Texture.types";
-import { TextureBuilder } from "./TextureBuilder.js";
-import { TextureArray } from "./TextureArray.js";
-import { TextureRegister } from "./TextureRegister.js";
+import { CompiledTexture } from "./Classes/CompiledTexture.js";
+import {
+  BuildTextureData,
+  BuildTextureDataProps,
+} from "./Functions/BuildTextureData.js";
+import type { TextureData } from "./Texture.types";
 
 export class TextureManager {
-  static defaultTexturePath = "assets/textures";
-
-  static textureTypes = new Map<string, TextureArray>();
-
-  static getTextureIndex(data: TextureId): number {
-    const [textureType, textureId, varation] = data;
-
-    const type = this.getTextureType(textureType);
-    if (!type) return NaN;
-
-    return type.getTextureIndex(textureId, varation);
-  }
-
-  static _ready = false;
-  static isReady() {
-    return this._ready;
-  }
-
-  static async init() {
-    TextureBuilder.defineTextureDimensions(
-      EngineSettings.settings.textures.textureSize,
-  
-    );
-    for (const [key, type] of this.textureTypes) {
-      await type.build();
-    }
-    TextureRegister.setTextureIndex(this.generateTextureUVMap());
-    this._ready = true;
-  }
-
-  static generateTextureUVMap() {
-    const uvMap: TextureTypeUVMap = {};
-    for (const [key, type] of this.textureTypes) {
-      uvMap[key] = type.getTextureIndexMap();
-    }
-    return uvMap;
-  }
-
-  static defineDefaultTexturePath(path: string) {
-    this.defaultTexturePath = path;
-  }
-
-  static getTextureData([type, id, segment]: TextureId):
-    | TextureData
-    | undefined {
-    const t = this.getTextureType(type);
-    if (!t) return undefined;
-
-    return t.textureMap.get(id);
-  }
-
-  static getTextureType(id: string) {
-    const texture = this.textureTypes.get(id);
-    if (!texture) return false;
-    return texture;
-  }
-
-  static getOrAddTextureType(id: string) {
-    const texture = this.textureTypes.get(id);
-    if (!texture) return this.addTextureType(id);
-    return texture;
-  }
-  static addTextureType(id: string) {
-    const newType = new TextureArray(id);
-    this.textureTypes.set(id, newType);
-    return newType;
-  }
-
-  static clearTextureData() {
-    //
-    //  this.textureTypes.forEach((_) => _.clearSegmentData());
-  }
-
-  static registerTexture(textureData: TextureData | TextureData[]) {
-    if (Array.isArray(textureData)) {
-      for (const texture of textureData) {
-        const type = this.getOrAddTextureType(texture.type);
-        if (!type) continue;
-        type.addTexture(texture);
-        continue;
+  static _textureTypes = new Map<string, TextureData[]>();
+  static _compiledTextures = new Map<string, CompiledTexture>();
+  static registerTexture(textureData: TextureData[]) {
+    for (const texture of textureData) {
+      const typeId = texture.type || "dve_voxel";
+      let type = this._textureTypes.get(typeId);
+      if (!type) {
+        type = [];
+        this._textureTypes.set(typeId, type);
       }
-      return;
+      type.push(texture);
     }
-    const type = this.getOrAddTextureType(textureData.type);
-    if (!type) return;
-    type.addTexture(textureData);
+  }
+  static getTexture(id: string) {
+    const type = this._compiledTextures.get(id);
+    if (!type) throw new Error(`Compiled texture with id ${id} does not exist`);
+    return type;
   }
 
-  static getTexturePath(
-    textureType: string,
-    id: string,
-    varation: string,
-    segment = "main",
-    frames?: number
+  static async compiledTextures(
+    props: Omit<BuildTextureDataProps, "textures" | "type"> = {}
   ) {
-    const data = this.getTextureData([textureType, id, segment])!;
-    if (!data)
-      throw new Error(
-        `Could not find data for ${textureType} ${id} ${varation}`
-      );
-    let path =
-      data.base64 &&
-      (Array.isArray(data.base64) ? data.base64[0] : data.base64);
-    if (path) return path;
-
-    const type = this.textureTypes.get(textureType)!;
-
-    return type._getPath(data, varation, type.extension);
-  }
-  static async createCached() {
-    const cachedTextureData: TextureData[] = [];
-    for (const [typeKey, type] of this.textureTypes) {
-      for (const baseData of type.textures) {
-        const data = structuredClone(baseData);
-        const id = baseData.id;
-        if (data.frames) {
-          const images: string[] = [];
-          for (let i = 1; i <= data.frames; i++) {
-            images.push(
-              await TextureBuilder.getBase64(
-                type._getPath(data, `${id}-${i}`, type.extension)
-              )
-            );
-          }
-          data.base64 = images;
-        } else {
-          data.base64 = await TextureBuilder.getBase64(
-            type._getPath(data, "default", type.extension)
-          );
-        }
-        if (data.variations) {
-          for (const varId in data.variations) {
-            const varation = data.variations[varId];
-            if (varation.frames) {
-              const images: string[] = [];
-              for (let i = 1; i <= varation.frames; i++) {
-                images.push(
-                  await TextureBuilder.getBase64(
-                    type._getPath(data, `${varId}-${i}`, type.extension)
-                  )
-                );
-              }
-              varation.base64 = images;
-            } else {
-              varation.base64 = await TextureBuilder.getBase64(
-                type._getPath(data, varId, type.extension)
-              );
-            }
-          }
-        }
-        cachedTextureData.push(data);
-      }
+    for (const [type, data] of this._textureTypes) {
+      const compiled = await BuildTextureData({
+        type,
+        textures: data,
+        ...props,
+      });
+      this._compiledTextures.set(type, compiled);
     }
-    return cachedTextureData;
-  }
-  static async createRawDataMap() {
-    const map: Map<string, Uint8ClampedArray> = new Map();
-    for (const [typeKey, type] of this.textureTypes) {
-      for (const data of type.textures) {
-        if (!data.includeInRawDataMap) continue;
-        if (!data.path && !data.rawData) continue;
-        const key = `${type.id}|${data.id}|default`;
-        if (data.frames) {
-          for (let i = 1; i <= data.frames; i++) {
-            const rawData = await TextureBuilder.getRawData(
-              type._getPath(data, `${key}-${i}`, type.extension)
-            );
-
-            data.rawData = rawData;
-            map.set(`${key}-${i}`, rawData);
-          }
-        } else {
-          const rawData = await TextureBuilder.getRawData(
-            type._getPath(data, "default", type.extension)
-          );
-
-          data.rawData = rawData;
-
-          map.set(key, rawData);
-        }
-        if (data.variations) {
-          for (const varId in data.variations) {
-            const varation = data.variations[varId];
-            if (!varation.includeInRawDataMap) continue;
-            const key = `${type.id}|${data.id}|${varId}`;
-            if (data.frames) {
-              for (let i = 1; i <= data.frames; i++) {
-                const rawData = await TextureBuilder.getRawData(
-                  type._getPath(data, `${key}-${i}`, type.extension)
-                );
-                data.rawData = rawData;
-                map.set(`${key}-${i}`, rawData);
-              }
-            } else {
-              const rawData = await TextureBuilder.getRawData(
-                type._getPath(data, varId, type.extension)
-              );
-              data.rawData = rawData;
-              map.set(key, rawData);
-            }
-          }
-        }
-      }
-    }
-    return map;
   }
 }
-TextureManager.getOrAddTextureType("dve_voxel");
-TextureManager.getOrAddTextureType("dve_node");

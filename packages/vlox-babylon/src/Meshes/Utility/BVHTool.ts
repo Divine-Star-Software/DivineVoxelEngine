@@ -8,11 +8,11 @@ import {
 import {
   VoxelMeshBVHBuilder,
   StructCursor,
-} from "@divinevoxel/vlox/Mesher/Tools/VoxelMeshBVHBuilder";
+} from "@divinevoxel/vlox/Mesher/Geomtry/VoxelMeshBVHBuilder";
 import { Vector2, Vector3, Vector4 } from "@babylonjs/core/Maths/";
 import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 
-import { VoxelMeshVertexStructCursor } from "@divinevoxel/vlox/Mesher/Tools/VoxelMeshVertexStructCursor";
+import { VoxelMeshVertexStructCursor } from "@divinevoxel/vlox/Mesher/Geomtry/VoxelMeshVertexStructCursor";
 
 const vertexCursor = new VoxelMeshVertexStructCursor();
 const v1Position = new Vector3();

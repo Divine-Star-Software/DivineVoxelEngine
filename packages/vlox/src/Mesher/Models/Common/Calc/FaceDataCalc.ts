@@ -1,75 +1,51 @@
-import type { VoxelMesherDataTool } from "../../../../Mesher/Tools/VoxelMesherDataTool.js";
+import type { VoxelModelBuilder } from "../../VoxelModelBuilder.js";
 import { QuadVerticies } from "../../../Geomtry/Geometry.types.js";
-import { VoxelFaces, VoxelFaceDirections } from "../../../../Math/index.js";
+import { VoxelFaces } from "../../../../Math/index.js";
 import { GradientCheckSets } from "./CalcConstants.js";
 import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData.js";
-
-type AllLight = [s: number, r: number, g: number, b: number];
-
 const lightData = new VoxelLightData();
-const currentLightValues = new Uint16Array([0, 0, 0, 0]) as any as AllLight;
-const loadedLightValues = new Uint16Array([0, 0, 0, 0]) as any as AllLight;
 export default function calculateFaceData(
   face: VoxelFaces,
-  builder: VoxelMesherDataTool
+  builder: VoxelModelBuilder
 ) {
-  let light = builder.voxel.getLight();
-
-  const faceNormal = VoxelFaceDirections[face];
-
   const x = builder.position.x;
   const y = builder.position.y;
   const z = builder.position.z;
   const vertexData = builder.lightData[face];
   const nVoxel = builder.nVoxel;
   const checkSet = GradientCheckSets[face];
-  const otherLight =
-    builder.space.getLight(
-      builder.nVoxel,
-      x + faceNormal[0],
-      y + faceNormal[1],
-      z + faceNormal[2]
-    ) || 0;
-  light = otherLight >= 0 ? otherLight : light >= 0 ? light : 0;
-
+  const startLight = builder.voxel.isLightSource()
+    ? builder.voxel.getLightSourceValue()
+    : 0;
+  const startS = lightData.getS(startLight);
+  const startR = lightData.getR(startLight);
+  const startG = lightData.getG(startLight);
+  const startB = lightData.getB(startLight);
   for (let vertex: QuadVerticies = <QuadVerticies>0; vertex < 4; vertex++) {
-    vertexData[vertex] = light;
-    lightData.getLightValuesArrayToRef(light, currentLightValues);
-
+    vertexData[vertex] = startLight;
+    let s = startS;
+    let r = startR;
+    let g = startG;
+    let b = startB;
     for (let i = 0; i < 9; i += 3) {
-      const nl = builder.space.getLight(
-        nVoxel,
-        checkSet[vertex][i] + x,
-        checkSet[vertex][i + 1] + y,
-        checkSet[vertex][i + 2] + z
-      );
+      const nl =
+        nVoxel
+          .getVoxel(
+            checkSet[vertex][i] + x,
+            checkSet[vertex][i + 1] + y,
+            checkSet[vertex][i + 2] + z
+          )
+          ?.getLight() || -1;
       if (nl <= 0) continue;
-      /*
-      Do Light
-      */
-      lightData.getLightValuesArrayToRef(nl, loadedLightValues);
-
-      currentLightValues[0] =
-        currentLightValues[0] < loadedLightValues[0]
-          ? loadedLightValues[0]
-          : currentLightValues[0];
-
-      currentLightValues[1] =
-        currentLightValues[1] < loadedLightValues[1]
-          ? loadedLightValues[1]
-          : currentLightValues[1];
-
-      currentLightValues[2] =
-        currentLightValues[2] < loadedLightValues[2]
-          ? loadedLightValues[2]
-          : currentLightValues[2];
-
-      currentLightValues[3] =
-        currentLightValues[3] < loadedLightValues[3]
-          ? loadedLightValues[3]
-          : currentLightValues[3];
+      let ns = lightData.getS(nl);
+      let nr = lightData.getR(nl);
+      let ng = lightData.getG(nl);
+      let nb = lightData.getB(nl);
+      if (s < ns) s = ns;
+      if (r < nr) r = nr;
+      if (g < ng) g = ng;
+      if (b < nb) b = nb;
     }
-
-    vertexData[vertex] = lightData.setLightValues(currentLightValues);
+    vertexData[vertex] = lightData.createLightValue(s, r, g, b);
   }
 }

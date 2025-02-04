@@ -8,7 +8,6 @@ import {
 import type { Material, Scene } from "@babylonjs/core";
 import { NodeMaterialData } from "@divinevoxel/vlox/Renderer/DVERenderNode.types";
 
-import { TextureBuilder } from "@divinevoxel/vlox/Textures/TextureBuilder";
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
 import { SceneTool } from "../Tools/SceneTool.js";
 import InitDefaultEffects from "../Effects/InitDefaultEffects.js";
@@ -25,25 +24,17 @@ const defaultSubstances = [
 ];
 
 export async function CreateTextures(scene: Scene, textureData: TextureData[]) {
-  TextureManager.getOrAddTextureType("dve_voxel");
-  TextureManager.getOrAddTextureType("dve_node");
-
-  await TextureBuilder.setUpImageCreation();
-
   if (CacheManager.cacheLoadEnabled && CacheManager.cachedData?.textures) {
     TextureManager.registerTexture(CacheManager.cachedData.textures);
   } else {
     TextureManager.registerTexture(textureData);
   }
 
-  await TextureManager.init();
-  await TextureManager.createRawDataMap();
+  await TextureManager.compiledTextures({
+    createCache: CacheManager.cacheStoreEnabled,
+  });
 
-  if (CacheManager.cacheStoreEnabled) {
-    CacheManager.cachedTextureData = await TextureManager.createCached();
-  }
-
-  for (const [key, type] of TextureManager.textureTypes) {
+  for (const [key, type] of TextureManager._compiledTextures) {
     if (!type.images!.length) continue;
     type.shaderTexture = new ImageArrayTexture(type.images!, scene);
   }
@@ -101,13 +92,13 @@ export function CreateDefaultRenderer(
     }
 
     materials.push(
-      {
+ /*      {
         id: "dve_node",
         shaderId: "dve_node",
         textureTypeId: "dve_node",
         alphaBlending: false,
         alphaTesting: true,
-      },
+      }, */
       {
         id: "dve_skybox",
         shaderId: "dve_skybox",
@@ -125,16 +116,15 @@ export function CreateDefaultRenderer(
     }
     DefaultMaterialManager.init();
     initData.scene.registerBeforeRender(() => {
+      for (const [key, type] of TextureManager._compiledTextures) {
+        for (const anim of type.animations) {
+          anim.tick(initData.scene.deltaTime);
+        }
+      }
+      DefaultMaterialManager.runEffects();
       DefaultMaterialManager.updateUniforms();
     });
-    setInterval(() => {
-      DefaultMaterialManager.runEffects();
-    }, 20);
-    setInterval(() => {
-      for (const [key, type] of TextureManager.textureTypes) {
-        type.runAnimations();
-      }
-    }, 50);
+
     const sceneTool = DefaultMaterialManager.sceneTool;
 
     sceneTool.levels

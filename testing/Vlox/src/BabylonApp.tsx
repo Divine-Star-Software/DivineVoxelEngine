@@ -22,7 +22,7 @@ let ran = false;
 import { GUI } from "dat.gui";
 import { BinaryObject } from "@amodx/binary";
 import { Compressor } from "@amodx/core/Compression/Compression";
-import { TextureRegister } from "@divinevoxel/vlox/Textures/TextureRegister";
+
 export function App() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   useEffect(() => {
@@ -97,7 +97,9 @@ export function App() {
       });
 
       const DVER = await StartRenderer({
-
+/*         rendererSettings: {
+          cpuBound: true,
+        }, */
         renderer,
         worldWorker,
         constructorWorkers,
@@ -126,7 +128,7 @@ export function App() {
       viwer.yAxis.position.z -= 2;
       viwer.zAxis.position.z -= 2;
 
-      const camera = new FreeCamera("", new Vector3(-30, 40, -30), scene);
+      const camera = new FreeCamera("", new Vector3(-20, 40, -20), scene);
 
       camera.setTarget(new Vector3(0, 0, 0));
 

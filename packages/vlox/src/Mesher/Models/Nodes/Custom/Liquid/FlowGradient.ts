@@ -1,4 +1,4 @@
-import type { VoxelMesherDataTool } from "../../../../../Mesher/Tools/VoxelMesherDataTool";
+import type { VoxelModelBuilder } from "../../../VoxelModelBuilder";
 import { QuadScalarVertexData } from "../../../../Geomtry/Primitives/QuadVertexData"
 import { QuadVerticies } from "../../../../Geomtry/Geometry.types"
 import { CompassAngles } from "@amodx/math";
@@ -50,7 +50,7 @@ const checkSets = {
   ],
 };
 
-function getLevel(tool: VoxelMesherDataTool, x: number, y: number, z: number) {
+function getLevel(tool: VoxelModelBuilder, x: number, y: number, z: number) {
   const voxel = tool.nVoxel.getVoxel(x, y, z);
   if (!voxel || !voxel.isRenderable()) return -1;
   if (!tool.voxel.isSameVoxel(voxel)) return -1;
@@ -148,7 +148,7 @@ export function getFlowAngle(vertexLevel: QuadScalarVertexData) {
 }
 
 export function getFlowGradient(
-  tool: VoxelMesherDataTool,
+  tool: VoxelModelBuilder,
   flowStates: QuadScalarVertexData
 ) {
   const cl = tool.voxel.getLevel();

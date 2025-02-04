@@ -3,9 +3,10 @@ import { VoxelRuleGeometry } from "../Classes/VoxelRulesGeometry";
 import { VoxelFaceNameArray, VoxelFaces } from "../../../Math";
 import { TextureManager } from "../../../Textures/TextureManager";
 import { Matrix2x2Like, Mat2Array, Vec4Array, AMath } from "@amodx/math";
-import { QuadUVData } from "../../../Mesher/Geomtry/Geometry.types"
+import { QuadUVData } from "../../../Mesher/Geomtry/Geometry.types";
 import { QuadVoxelGometryInputs } from "../../Input/QuadVoxelGometryInputs";
 import { VoxelGeometryTransform } from "../../../Voxels/Types/VoxelModelCompiledData.types";
+import { TextureId } from "Textures";
 
 const isArgString = (data: any) => {
   if (typeof data !== "string") return false;
@@ -82,6 +83,7 @@ export function BuildGeomtryInputs(geomtry: VoxelRuleGeometry) {
   const inputObservers = new Map<string, ((data: any) => void)[]>();
 
   const onInput = (id: string, subscribe: (data: any) => any) => {
+    id = id.replace("@", "");
     let obs = inputObservers.get(id);
     if (!obs) {
       obs = [];
@@ -138,6 +140,7 @@ export function BuildGeomtryInputs(geomtry: VoxelRuleGeometry) {
           );
         }
         if (isArgString(faceData.transparent)) {
+          faceTransparentIndex[relativeFaceCount + face] = false;
           onInput(String(faceData.transparent!), (value) => {
             args[argsIndex][face][
               BoxVoxelGometryInputs.ArgIndexes.Transparent
@@ -317,14 +320,15 @@ export function BuildGeomtryInputs(geomtry: VoxelRuleGeometry) {
   };
 
   for (const arg in geomtry.data.ogData.arguments) {
-    const argKey = `@${arg}`;
-    if (!inputObservers.has(argKey)) continue;
-    const obs = inputObservers.get(argKey)!;
+    if (!inputObservers.has(arg)) continue;
+    const obs = inputObservers.get(arg)!;
     const data = geomtry.data.ogData.arguments[arg];
-    Object.defineProperty(finalGeoInputs, argKey, {
+    Object.defineProperty(finalGeoInputs, arg, {
       set(value) {
         if (data.type == "texture") {
-          value = TextureManager.getTextureIndex(value);
+          const textureId = value as TextureId;
+          value =
+            TextureManager.getTexture("dve_voxel")?.getTextureIndex(textureId);
         }
         for (const func of obs) {
           func(value);

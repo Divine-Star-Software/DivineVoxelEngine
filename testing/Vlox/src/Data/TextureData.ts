@@ -1,184 +1,256 @@
 import { TextureData } from "@divinevoxel/vlox/Textures/Texture.types";
-
 export const Textures: TextureData[] = [
   {
-    type: "dve_voxel",
     id: "dve_debug_box",
-    frames: 0,
-    variations: {
-      top: { frames: 0 },
-      bottom: { frames: 0 },
-      north: { frames: 0 },
-      south: { frames: 0 },
-      east: { frames: 0 },
-      west: { frames: 0 },
+    atlas: {
+      tiles: [2, 3],
+      namedTiles: [
+        {
+          id: "top",
+          index: [0, 0],
+        },
+        {
+          id: "bottom",
+          index: [1, 0],
+        },
+        {
+          id: "north",
+          index: [0, 1],
+        },
+        {
+          id: "south",
+          index: [1, 1],
+        },
+        {
+          id: "east",
+          index: [0, 2],
+        },
+        {
+          id: "west",
+          index: [1, 2],
+        },
+      ],
     },
   },
   {
-    type: "dve_voxel",
     id: "dve_candle",
-    frames: 0,
-    variations: {
-      lit: { frames: 0 },
+    atlas: {
+      tiles: [2, 2],
+      namedTiles: [
+        {
+          id: "default",
+          index: [0, 0],
+        },
+        {
+          id: "lit",
+          index: [1, 0],
+        },
+      ],
     },
   },
   {
-    type: "dve_voxel",
-    id: "dve_light_debug",
-    frames: 0,
-    variations: {
-      "light-level-0": { frames: 0 },
-      "light-level-1": { frames: 0 },
-      "light-level-2": { frames: 0 },
-      "light-level-3": { frames: 0 },
-      "light-level-4": { frames: 0 },
-      "light-level-5": { frames: 0 },
-      "light-level-6": { frames: 0 },
-      "light-level-7": { frames: 0 },
-      "light-level-8": { frames: 0 },
-      "light-level-9": { frames: 0 },
-      "light-level-10": { frames: 0 },
-      "light-level-11": { frames: 0 },
-      "light-level-12": { frames: 0 },
-      "light-level-13": { frames: 0 },
-      "light-level-14": { frames: 0 },
-      "light-level-15": { frames: 0 },
-    },
-  },
-  {
-    type: "dve_voxel",
     id: "dve_dream_stone",
-    frames: 0,
-    variations: {
-      "grassy-top": { frames: 0 },
-      "grassy-side": { frames: 0 },
+    atlas: {
+      tiles: [2, 2],
+      namedTiles: [
+        {
+          id: "default",
+          index: [0, 0],
+        },
+        {
+          id: "grassy-side",
+          index: [1, 0],
+        },
+        {
+          id: "grassy-top",
+          index: [1, 0],
+        },
+      ],
     },
   },
   {
-    type: "dve_voxel",
     id: "dve_lever",
-    frames: 0,
   },
   {
-    type: "dve_voxel",
     id: "dve_dread_stone",
-    frames: 0,
-    variations: {
-      "grassy-top": { frames: 0 },
-      "grassy-side": { frames: 0 },
+    atlas: {
+      tiles: [2, 2],
+      namedTiles: [
+        {
+          id: "default",
+          index: [0, 0],
+        },
+        {
+          id: "grassy-side",
+          index: [1, 0],
+        },
+        {
+          id: "grassy-top",
+          index: [1, 0],
+        },
+      ],
     },
   },
   {
-    type: "dve_voxel",
     id: "dve_data_holder",
-    frames: 0,
-    variations: {
-      front: { frames: 0 },
+    atlas: {
+      tiles: [2, 2],
+      namedTiles: [
+        {
+          id: "default",
+          index: [0, 0],
+        },
+        {
+          id: "font",
+          index: [1, 0],
+        },
+      ],
     },
   },
   {
-    type: "dve_voxel",
     id: "dve_dream_grass_block",
-    frames: 0,
-    variations: {
-      "grassy-top": { frames: 0 },
-    },
   },
   {
-    type: "dve_voxel",
     id: "dve_dream_stone_pillar",
-    frames: 0,
-    variations: {
-      "side-bottom": { frames: 0 },
-      "side-top": { frames: 0 },
-      top: { frames: 0 },
+    atlas: {
+      tiles: [2, 2],
+      namedTiles: [
+        {
+          id: "top",
+          index: [0, 0],
+        },
+        {
+          id: "default",
+          index: [1, 0],
+        },
+        {
+          id: "side-top",
+          index: [0, 1],
+        },
+        {
+          id: "side-bottom",
+          index: [1, 1],
+        },
+      ],
     },
   },
   {
-    type: "dve_voxel",
     id: "dve_dread_stone_pillar",
-    frames: 0,
-    variations: {
-      "side-bottom": { frames: 0 },
-      "side-top": { frames: 0 },
-      top: { frames: 0 },
+    atlas: {
+      tiles: [2, 2],
+      namedTiles: [
+        {
+          id: "top",
+          index: [0, 0],
+        },
+        {
+          id: "default",
+          index: [1, 0],
+        },
+        {
+          id: "side-top",
+          index: [0, 1],
+        },
+        {
+          id: "side-bottom",
+          index: [1, 1],
+        },
+      ],
     },
   },
   {
-    type: "dve_voxel",
     id: "dve_dream_lamp",
-    frames: 0,
   },
   {
-    type: "dve_voxel",
     id: "dve_dread_lamp",
-    frames: 0,
   },
   {
-    type: "dve_voxel",
     id: "dve_dream_log",
-    frames: 0,
   },
   {
-    type: "dve_voxel",
     id: "dve_dream_grass",
-    frames: 0,
   },
   {
-    type: "dve_voxel",
     id: "dve_dread_grass",
-    frames: 0,
   },
   {
-    type: "dve_voxel",
     id: "dve_dream_vine",
-    frames: 0,
   },
   {
-    type: "dve_voxel",
     id: "dve_dream_leaves",
-    frames: 0,
   },
   {
-    type: "dve_voxel",
     id: "dve_liquid_dream_ether",
-    frames: 0,
-    variations: {
-      still: {
-        frames: 6,
-        animKeys: [1, 2, 3, 4, 5, 6, 5, 4, 3, 2],
-        globalFrameTime: 2,
+    variations: [
+      {
+        id: "still",
+        atlas: {
+          tiles: [1, 6],
+        },
+        animated: {
+          frameTime: 2,
+          frames: [1, 2, 3, 4, 5, 6, 5, 4, 3, 2],
+        },
       },
-    },
+    ],
   },
   {
-    type: "dve_voxel",
     id: "dve_liquid_dread_ether",
-    frames: 0,
-    variations: {
-      still: {
-        frames: 6,
-        animKeys: [1, 2, 3, 4, 5, 6, 5, 4, 3, 2],
-        globalFrameTime: 2,
+    variations: [
+      {
+        id: "still",
+        atlas: {
+          tiles: [1, 6],
+        },
+        animated: {
+          frameTime: 2,
+          frames: [1, 2, 3, 4, 5, 6, 5, 4, 3, 2],
+        },
       },
-    },
+    ],
   },
   {
-    type: "dve_voxel",
-    id: "foam",
-    frames: 0,
-    variations: {
-      top: { frames: 0 },
-      "corner-top-right": { frames: 0 },
-      "corner-top-left": { frames: 0 },
-      "corner-top-left-top-right": { frames: 0 },
-      bottom: { frames: 0 },
-      "corner-bottom-right": { frames: 0 },
-      "corner-bottom-left": { frames: 0 },
-      "corner-bottom-left-bottom-right": { frames: 0 },
-      right: { frames: 0 },
-      left: { frames: 0 },
+    id: "dve_foam",
+    atlas: {
+      tiles: [4, 3],
+      namedTiles: [
+        {
+          id: "top",
+          index: [0, 0],
+        },
+        {
+          id: "corner-top-right",
+          index: [1, 0],
+        },
+        {
+          id: "corner-top-left",
+          index: [2, 0],
+        },
+        {
+          id: "corner-top-left-top-right",
+          index: [3, 1],
+        },
+        {
+          id: "corner-bottom-right",
+          index: [0, 1],
+        },
+        {
+          id: "corner-bottom-left",
+          index: [1, 1],
+        },
+        {
+          id: "corner-bottom-left-bottom-right",
+          index: [2, 1],
+        },
+        {
+          id: "right",
+          index: [0, 2],
+        },
+        {
+          id: "left",
+          index: [1, 2],
+        },
+      ],
     },
-
   },
 ];

@@ -26,7 +26,7 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
 
   afterCreate: ((material: ShaderMaterial) => void)[] = [];
 
-  createMaterial(scene: Scene)  {
+  createMaterial(scene: Scene) {
     this.scene = scene;
     this._create(this.data);
     return this;
@@ -38,14 +38,17 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
       this.textures = this.data.data.textures;
       return this._material;
     }
-    const texture = TextureManager.getTextureType(
-      data.data.textureTypeId ? data.data.textureTypeId : this.id
-    );
-
-    if (!texture && data.data.textureTypeId) {
-      throw new Error(
-        `Could find the texture type for material ${this.id}. Texture typeid:  ${data.data.textureTypeId}`
+    let texture;
+    if (data.data.textureTypeId) {
+      texture = TextureManager.getTexture(
+        data.data.textureTypeId ? data.data.textureTypeId : this.id
       );
+
+      if (!texture && data.data.textureTypeId) {
+        throw new Error(
+          `Could find the texture type for material ${this.id}. Texture typeid:  ${data.data.textureTypeId}`
+        );
+      }
     }
 
     const shaderData = DVEBRShaderStore.getShaderData(this.data.data.effectId);
@@ -65,7 +68,7 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
     if (data.backFaceCulling !== undefined) {
       shaderMaterial.backFaceCulling = data.backFaceCulling;
     }
- //   shaderMaterial.needDepthPrePass = true;
+    //   shaderMaterial.needDepthPrePass = true;
     let liquid = false;
     if (this.id.includes("liquid")) {
       liquid = true;
@@ -112,7 +115,7 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
       shaderMaterial.setFloat("mipMapBias", data.mipMapBias);
     }
     this._material.blockDirtyMechanism = true;
-  //  this._material.markDirty()
+    //  this._material.markDirty()
     this._material.onBind = (mesh) => {
       if (!this._material) return;
       const effect = this._material.getEffect();
@@ -130,7 +133,7 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
     };
 
     if (texture) {
-      this.setTexture(texture.textureID, texture.shaderTexture);
+      this.setTexture(texture.id, texture.shaderTexture);
     }
 
     this.afterCreate.forEach((_) => _(this._material));

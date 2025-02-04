@@ -44,8 +44,8 @@ export const liquidModel: VoxelModelData = {
         id: "liquid",
         geometryId: "dve_liquid",
         inputs: {
-          "@stillTexture": "@stillTexture",
-          "@flowTexture": "@flowTexture",
+          stillTexture: "@stillTexture",
+          flowTexture: "@flowTexture",
         },
       },
     ],

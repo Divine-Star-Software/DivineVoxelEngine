@@ -1,5 +1,5 @@
 import { Vec2Array, Vec3Array } from "@amodx/math";
-import { QuadUVData } from "../Mesher/Geomtry/Geometry.types"
+import { QuadUVData } from "../Mesher/Geomtry/Geometry.types";
 import { VoxelFaceNames } from "../Math";
 import { TextureId } from "../Textures/Texture.types";
 import {
@@ -47,6 +47,8 @@ export interface VoxelCustomGeomtryNode {
 //box
 export interface VoxelBoxGeometryNode {
   type: "box";
+  /**Divisor used for transform of this specific node.*/
+  divisor?: Vec3Array;
   noShade?: boolean;
   points: [start: Vec3Array, end: Vec3Array];
   rotation?: Vec3Array;
@@ -65,6 +67,8 @@ export interface VoxelBoxFaceData {
 //quad
 export interface VoxelQuadGeometryNode {
   type: "quad";
+  /**Divisor used for transform of this specific node.*/
+  divisor?: Vec3Array;
   doubleSided?: boolean | string;
   points: [p1: Vec3Array, p2: Vec3Array, p3: Vec3Array, p4: Vec3Array];
   transparent?: boolean | string;
@@ -76,6 +80,8 @@ export interface VoxelQuadGeometryNode {
 //triangle
 export interface VoxelTriangleGeometryNode {
   type: "triangle";
+  /**Divisor used for transform of this specific node.*/
+  divisor?: Vec3Array;
   orientation?: 0 | 1;
   doubleSided?: boolean;
   points: [p1: Vec3Array, p2: Vec3Array, p3: Vec3Array];
@@ -133,6 +139,8 @@ export type VoxelGeometryNodes =
 export interface VoxelGeometryData {
   id: string;
   nodes: VoxelGeometryNodes[];
+  /* The divisor used for all the geomtry node values like positions and uvs.  */
+  divisor?: Vec3Array;
   /**
    * If this is set the voxel geometry will not be included in the
    * geometry rules and will be fall back to custom inputs.
@@ -150,7 +158,11 @@ export interface VoxelGeometryData {
   >;
 }
 
-export interface VoxelGeometryBaseLinkData {
+export interface VoxelGeometryLinkData {
+  id: string;
+  geometryId: string;
+  /**Divisor used for transform of this specific node.*/
+  divisor?: Vec3Array;
   inputs: Record<string, any>;
   scale?: Vec3Array;
   position?: Vec3Array;
@@ -159,13 +171,10 @@ export interface VoxelGeometryBaseLinkData {
   flip?: [flipX: 0 | 1, flipY: 0 | 1, flipZ: 0 | 1];
 }
 
-export interface VoxelGeometryLinkData extends VoxelGeometryBaseLinkData {
-  id: string;
-  geometryId: string;
-}
-
 export interface VoxelModelData {
   id: string;
+  /**Divisor used all transforms of geometry nodes. */
+  divisor?: Vec3Array;
   arguments: Record<
     string,
     | VoxelGeometryTextureArgument

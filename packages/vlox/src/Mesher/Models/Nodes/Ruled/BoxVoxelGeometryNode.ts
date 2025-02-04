@@ -31,6 +31,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
     [Vec4Array, Vec4Array, Vec4Array, Vec4Array]
   >;
 
+  _wasAOShaded = false;
   lightData = new VoxelLightData();
 
   init(): void {
@@ -65,11 +66,11 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
         tool.position.y + p[1],
         tool.position.z + p[2]
       );
-      if (this.builder.space!.foundHash[hashed] < 2) continue;
+      if (this.builder.space.foundHash[hashed] < 2) continue;
 
-      const offsetBaseGometry = this.builder.space!.getGeomtry(hashed);
+      const offsetBaseGometry = this.builder.space.getGeomtry(hashed);
       const offsetConditonalGeometry =
-        this.builder.space!.getConditionalGeomtry(hashed);
+        this.builder.space.getConditionalGeomtry(hashed);
 
       if (offsetBaseGometry) {
         for (let i = 0; i < offsetBaseGometry.length; i++) {
@@ -83,11 +84,11 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
           );
           if (
             faceIndex > -1 &&
-            !this.builder
-              .space!.getConstructor(hashed)
+            !this.builder.space
+              .getConstructor(hashed)
               ?.isShapeStateFaceTransparent(
-                this.builder.space!.modCache[hashed],
-                this.builder.space!.stateCache[hashed],
+                this.builder.space.modCache[hashed],
+                this.builder.space.stateCache[hashed],
                 geoId,
                 faceIndex
               )
@@ -110,11 +111,11 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
           );
           if (
             faceIndex > -1 &&
-            !this.builder
-              .space!.getConstructor(hashed)
+            !this.builder.space
+              .getConstructor(hashed)
               ?.isCondtionalStateFaceTransparent(
-                this.builder.space!.modCache[hashed],
-                this.builder.space!.stateCache[hashed],
+                this.builder.space.modCache[hashed],
+                this.builder.space.stateCache[hashed],
                 geoId,
                 faceIndex
               )
@@ -168,12 +169,12 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
         );
 
         if (
-          this.builder.space!.foundHash[hashed] < 2 ||
-          this.builder.space!.noCastAO[hashed] === 1
+          this.builder.space.foundHash[hashed] < 2 ||
+          this.builder.space.noCastAO[hashed] === 1
         )
           continue;
-        const baseGeo = this.builder.space!.getGeomtry(hashed);
-        const conditonalGeo = this.builder.space!.getConditionalGeomtry(hashed);
+        const baseGeo = this.builder.space.getGeomtry(hashed);
+        const conditonalGeo = this.builder.space.getConditionalGeomtry(hashed);
 
         if (!baseGeo && !conditonalGeo) continue;
 
@@ -189,13 +190,16 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
                 trueVertexIndex
               )
             ) {
-              worldAO.vertices[v] = 1;
-              shaded = true;
-              break;
+              this._wasAOShaded = true;
+              worldAO.vertices[v]++;
+              if (worldAO.vertices[v] > 4) {
+                shaded = true;
+                break;
+              }
             }
           }
         }
-        if (!conditonalGeo) continue;
+        if (!conditonalGeo || shaded) continue;
         length = conditonalGeo.length;
         for (
           let condtionsIndex = 0;
@@ -211,8 +215,12 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
                 trueVertexIndex
               )
             ) {
-              worldAO.vertices[v] = 1;
-              break;
+              this._wasAOShaded = true;
+              worldAO.vertices[v]++;
+              if (worldAO.vertices[v] > 4) {
+                shaded = true;
+                break;
+              }
             }
           }
         }
@@ -221,16 +229,18 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
   }
   shouldFlip() {
     const worldAO = this.builder.vars.ao;
-    const worldLight = this.builder.vars.light;
     if (
       shouldCauseFlip(
         worldAO.vertices[0],
         worldAO.vertices[1],
         worldAO.vertices[2],
         worldAO.vertices[3]
-      )
+      ) &&
+      this._wasAOShaded
     )
       return true;
+    if (this._wasAOShaded) return false;
+    const worldLight = this.builder.vars.light;
     return (
       shouldCauseFlip(
         this.lightData.getS(worldLight.vertices[0]),
@@ -284,6 +294,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
 
     this.builder.vars.ao.setAll(0);
     this.builder.vars.light.setAll(0);
+    this._wasAOShaded = false;
     return added;
   }
 }

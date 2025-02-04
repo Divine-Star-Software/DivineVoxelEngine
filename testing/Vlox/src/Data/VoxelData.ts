@@ -1,118 +1,6 @@
 import { VoxelData } from "@divinevoxel/vlox/Voxels";
 export const DVEVoxelData: VoxelData[] = [
   {
-    id: "dve_debug_box",
-    properties: {
-      dve_substance: "dve_solid",
-      dve_rendered_material: "dve_solid",
-      dve_collider_id: "dve_cube",
-      dve_check_collisions: true,
-      dve_voxel_material: "stone",
-      dve_model_data: {
-        id: "dve_oriented_cube",
-        modRelationSchema: [],
-        inputs: {
-          "*": {
-            "@upTex": ["dve_voxel", "dve_debug_box", "top"],
-            "@downTex": ["dve_voxel", "dve_debug_box", "bottom"],
-            "@northTex": ["dve_voxel", "dve_debug_box", "north"],
-            "@southTex": ["dve_voxel", "dve_debug_box", "south"],
-            "@eastTex": ["dve_voxel", "dve_debug_box", "east"],
-            "@westTex": ["dve_voxel", "dve_debug_box", "west"],
-          },
-        },
-      },
-      /*       dve_model_data: {
-        id: "dve_simple_cube",
-        inputs: {
-          "*": { "@texture": ["dve_voxel", "dve_debug_box","west"] },
-        },
-      }, */
-    },
-  },
-  {
-    id: "dve_dream_grass",
-    properties: {
-      dve_substance: "dve_flora",
-      dve_collider_id: "dve_cube",
-      dve_check_collisions: true,
-      dve_no_ao: true,
-      dve_is_transparent: true,
-      dve_voxel_material: "grass",
-
-      dve_named_states: [
-        {
-          id: "dve_dream_grass",
-          name: "Dream Grass",
-          mod: "*",
-          state: "*",
-          properties: [],
-          display: {
-            type: "model",
-            mod: "*",
-            state: "*",
-          },
-        },
-      ],
-
-      dve_model_data: {
-        id: "dve_simple_crossed_panels",
-        inputs: {
-          "*": {
-            "@texture": ["dve_voxel", "dve_dream_grass"],
-            "@doubleSided": true,
-          },
-        },
-      },
-    },
-  },
-
-  {
-    id: "dve_liquid_dream_ether",
-    properties: {
-      dve_is_transparent: true,
-      dve_substance: "dve_liquid",
-      dve_rendered_material: "dve_liquid",
-      dve_collider_id: "dve_cube",
-      dve_check_collisions: true,
-      dve_voxel_material: "water",
-      dve_model_data: {
-        id: "dve_liquid",
-        inputs: {
-          "*": {
-            "@flowTexture": ["dve_voxel", "dve_liquid_dream_ether", "still-1"],
-            "@stillTexture": ["dve_voxel", "dve_liquid_dream_ether", "still-1"],
-          },
-        },
-      },
-    },
-  },
-  {
-    id: "dve_dream_fence",
-    properties: {
-      dve_is_transparent: true,
-      dve_substance: "dve_solid",
-      dve_rendered_material: "dve_solid",
-      dve_collider_id: "dve_cube",
-      dve_check_collisions: true,
-      dve_voxel_material: "wood",
-
-      dve_model_data: {
-        id: "dve_fence",
-        inputs: {
-          "*": {
-            "@upTex": ["dve_voxel", "dve_dream_log"],
-            "@downTex": ["dve_voxel", "dve_dream_log"],
-            "@northTex": ["dve_voxel", "dve_dream_log"],
-            "@southTex": ["dve_voxel", "dve_dream_log"],
-            "@eastTex": ["dve_voxel", "dve_dream_log"],
-            "@westTex": ["dve_voxel", "dve_dream_log"],
-          },
-        },
-      },
-    },
-  },
-  {
     id: "dve_dream_leaves",
     properties: {
       dve_substance: "dve_flora",
@@ -140,199 +28,8 @@ export const DVEVoxelData: VoxelData[] = [
         id: "dve_simple_cube",
         inputs: {
           "*": {
-            "@texture": ["dve_voxel", "dve_dream_leaves"],
-            "@transparent": true,
-          },
-        },
-      },
-    },
-  },
-  {
-    id: "dve_dream_log",
-    properties: {
-      dve_substance: "dve_solid",
-      dve_rendered_material: "dve_solid",
-      dve_collider_id: "dve_cube",
-      dve_check_collisions: true,
-      dve_voxel_material: "wood",
-      dve_named_states: [
-        {
-          id: "dve_dream_log",
-          name: "Dream Log",
-          mod: "*",
-          state: "*",
-          properties: {},
-          display: {
-            type: "model",
-            mod: "*",
-            state: "*",
-          },
-        },
-      ],
-
-      dve_model_data: {
-        id: "dve_oriented_cube",
-        modRelationSchema: [],
-        inputs: {
-          "*": {
-            "@upTex": ["dve_voxel", "dve_dream_log"],
-            "@downTex": ["dve_voxel", "dve_dream_log"],
-            "@northTex": ["dve_voxel", "dve_dream_log"],
-            "@southTex": ["dve_voxel", "dve_dream_log"],
-            "@eastTex": ["dve_voxel", "dve_dream_log"],
-            "@westTex": ["dve_voxel", "dve_dream_log"],
-          },
-        },
-      },
-    },
-  },
-  {
-    id: "dve_dream_stone",
-    properties: {
-      dve_substance: "dve_solid",
-      dve_rendered_material: "dve_solid",
-      dve_collider_id: "dve_cube",
-      dve_check_collisions: true,
-      dve_voxel_material: "grassy-stone",
-      dve_named_states: [
-        {
-          id: "dve_dream_stone",
-          name: "Dream Stone",
-          mod: "*",
-          state: "*",
-          properties: [],
-          display: {
-            type: "model",
-            mod: "grassy=false",
-            state: "*",
-          },
-        },
-        {
-          id: "dve_grassy_dream_stone",
-          name: "Grassy Dream Stone",
-          mod: "*",
-          state: "*",
-          properties: [],
-          display: {
-            type: "model",
-            mod: "grassy=true",
-            state: "*",
-          },
-        },
-      ],
-
-      dve_model_data: {
-        id: "dve_simple_cube",
-        modSchema: [
-          {
-            name: "grassy",
-            type: "string",
-            values: {
-              0: "false",
-              1: "true",
-            },
-          },
-        ],
-        modRelationSchema: [],
-        inputs: {
-          "grassy=false": { "@texture": ["dve_voxel", "dve_dream_stone"] },
-          "grassy=true": {
-            "@texture": ["dve_voxel", "dve_dream_stone", "grassy-top"],
-          },
-        },
-      },
-    },
-  },
-  {
-    id: "dve_dream_lever",
-    properties: {
-      dve_substance: "dve_solid",
-      dve_rendered_material: "dve_solid",
-
-      dve_is_transparent: true,
-      dve_voxel_material: "wax",
-      dve_collider_id: "dve_cube",
-      dve_check_collisions: true,
-      dve_named_states: [
-        {
-          id: "dve_dream_lever",
-          name: "Lever",
-          mod: "*",
-          state: "*",
-          properties: [],
-          display: {
-            type: "model",
-            mod: "*",
-            state: "placement=north,direction=north,state=on",
-          },
-        },
-      ],
-      dve_model_data: {
-        id: "dve_lever",
-        inputs: {
-          "*": {
-            "@baseTexture": ["dve_voxel", "dve_dream_stone"],
-            "@leverTexture": ["dve_voxel", "dve_lever"],
-          },
-        },
-      },
-    },
-  },
-  {
-    id: "dve_dream_candle",
-    properties: {
-      dve_substance: "dve_solid",
-      dve_rendered_material: "dve_solid",
-      dve_voxel_material: "wax",
-      dve_collider_id: "dve_cube",
-      dve_check_collisions: true,
-      dve_is_light_source: false,
-      dve_light_value: [15, 15, 15],
-
-      dve_model_data: {
-        id: "dve_candle",
-        inputs: {
-          "*": {
-            "@candleTexture": ["dve_voxel", "dve_candle"],
-            "@candleLitTexture": ["dve_voxel", "dve_candle", "lit"],
-          },
-        },
-      },
-    },
-  },
-  {
-    id: "dve_dread_grass",
-    properties: {
-      dve_substance: "dve_flora",
-      dve_voxel_material: "grass",
-      dve_collider_id: "dve_climable_box",
-      dve_check_collisions: true,
-
-      dve_model_data: {
-        id: "dve_simple_crossed_panels",
-        inputs: {
-          "*": {
-            "@texture": ["dve_voxel", "dve_dread_grass"],
-          },
-        },
-      },
-    },
-  },
-  {
-    id: "dve_dread_stone_thin_panel",
-    properties: {
-      dve_substance: "dve_solid",
-      dve_rendered_material: "dve_solid",
-      dve_collider_id: "dve_cube",
-      dve_check_collisions: true,
-      dve_voxel_material: "grassy-stone",
-
-      dve_model_data: {
-        id: "dve_simple_thin_panel",
-        inputs: {
-          "*": {
-            "@upDownTextures": ["dve_voxel", "dve_dread_stone"],
-            "@sideTextures": ["dve_voxel", "dve_dread_stone"],
+            texture: "dve_dream_leaves",
+            transparent: true,
           },
         },
       },
@@ -388,14 +85,314 @@ export const DVEVoxelData: VoxelData[] = [
         ],
         modRelationSchema: [],
         inputs: {
-          "grassy=false": { "@texture": ["dve_voxel", "dve_dread_stone"] },
+          "grassy=false": { texture: "dve_dread_stone:default" },
           "grassy=true": {
-            "@texture": ["dve_voxel", "dve_dread_stone", "grassy-top"],
+            texture: "dve_dread_stone:grassy-top",
           },
         },
       },
     },
   },
+
+  {
+    id: "dve_debug_box",
+    properties: {
+      dve_substance: "dve_solid",
+      dve_rendered_material: "dve_solid",
+      dve_collider_id: "dve_cube",
+      dve_check_collisions: true,
+      dve_voxel_material: "stone",
+      dve_model_data: {
+        id: "dve_oriented_cube",
+        modRelationSchema: [],
+        inputs: {
+          "*": {
+            upTex: "dve_debug_box:top",
+            downTex: "dve_debug_box:bottom",
+            northTex: "dve_debug_box:north",
+            southTex: "dve_debug_box:south",
+            eastTex: "dve_debug_box:east",
+            westTex: "dve_debug_box:west",
+          },
+        },
+      },
+    },
+  },
+  {
+    id: "dve_dream_grass",
+    properties: {
+      dve_substance: "dve_flora",
+      dve_collider_id: "dve_cube",
+      dve_check_collisions: true,
+      dve_no_ao: true,
+      dve_is_transparent: true,
+      dve_voxel_material: "grass",
+
+      dve_named_states: [
+        {
+          id: "dve_dream_grass",
+          name: "Dream Grass",
+          mod: "*",
+          state: "*",
+          properties: [],
+          display: {
+            type: "model",
+            mod: "*",
+            state: "*",
+          },
+        },
+      ],
+
+      dve_model_data: {
+        id: "dve_simple_crossed_panels",
+        inputs: {
+          "*": {
+            texture: "dve_dream_grass",
+            doubleSided: true,
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: "dve_liquid_dream_ether",
+    properties: {
+      dve_is_transparent: true,
+      dve_substance: "dve_liquid",
+      dve_rendered_material: "dve_liquid",
+      dve_collider_id: "dve_cube",
+      dve_check_collisions: true,
+      dve_voxel_material: "water",
+      dve_model_data: {
+        id: "dve_liquid",
+        inputs: {
+          "*": {
+            flowTexture: "dve_liquid_dream_ether:still",
+            stillTexture: "dve_liquid_dream_ether:still",
+          },
+        },
+      },
+    },
+  },
+  {
+    id: "dve_dream_fence",
+    properties: {
+      dve_is_transparent: true,
+      dve_substance: "dve_solid",
+      dve_rendered_material: "dve_solid",
+      dve_collider_id: "dve_cube",
+      dve_check_collisions: true,
+      dve_voxel_material: "wood",
+
+      dve_model_data: {
+        id: "dve_fence",
+        inputs: {
+          "*": {
+            upTex: "dve_dream_log",
+            downTex: "dve_dream_log",
+            northTex: "dve_dream_log",
+            southTex: "dve_dream_log",
+            eastTex: "dve_dream_log",
+            westTex: "dve_dream_log",
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: "dve_dream_log",
+    properties: {
+      dve_substance: "dve_solid",
+      dve_rendered_material: "dve_solid",
+      dve_collider_id: "dve_cube",
+      dve_check_collisions: true,
+      dve_voxel_material: "wood",
+      dve_named_states: [
+        {
+          id: "dve_dream_log",
+          name: "Dream Log",
+          mod: "*",
+          state: "*",
+          properties: {},
+          display: {
+            type: "model",
+            mod: "*",
+            state: "*",
+          },
+        },
+      ],
+
+      dve_model_data: {
+        id: "dve_oriented_cube",
+        modRelationSchema: [],
+        inputs: {
+          "*": {
+            upTex: "dve_dream_log",
+            downTex: "dve_dream_log",
+            northTex: "dve_dream_log",
+            southTex: "dve_dream_log",
+            eastTex: "dve_dream_log",
+            westTex: "dve_dream_log",
+          },
+        },
+      },
+    },
+  },
+  {
+    id: "dve_dream_stone",
+    properties: {
+      dve_substance: "dve_solid",
+      dve_rendered_material: "dve_solid",
+      dve_collider_id: "dve_cube",
+      dve_check_collisions: true,
+      dve_voxel_material: "grassy-stone",
+      dve_named_states: [
+        {
+          id: "dve_dream_stone",
+          name: "Dream Stone",
+          mod: "*",
+          state: "*",
+          properties: [],
+          display: {
+            type: "model",
+            mod: "grassy=false",
+            state: "*",
+          },
+        },
+        {
+          id: "dve_grassy_dream_stone",
+          name: "Grassy Dream Stone",
+          mod: "*",
+          state: "*",
+          properties: [],
+          display: {
+            type: "model",
+            mod: "grassy=true",
+            state: "*",
+          },
+        },
+      ],
+
+      dve_model_data: {
+        id: "dve_simple_cube",
+        modSchema: [
+          {
+            name: "grassy",
+            type: "string",
+            values: {
+              0: "false",
+              1: "true",
+            },
+          },
+        ],
+        modRelationSchema: [],
+        inputs: {
+          "grassy=false": { texture: "dve_dream_stone:default" },
+          "grassy=true": {
+            texture: "dve_dream_stone:grassy-top",
+          },
+        },
+      },
+    },
+  },
+  {
+    id: "dve_dream_lever",
+    properties: {
+      dve_substance: "dve_solid",
+      dve_rendered_material: "dve_solid",
+
+      dve_is_transparent: true,
+      dve_voxel_material: "wax",
+      dve_collider_id: "dve_cube",
+      dve_check_collisions: true,
+      dve_named_states: [
+        {
+          id: "dve_dream_lever",
+          name: "Lever",
+          mod: "*",
+          state: "*",
+          properties: [],
+          display: {
+            type: "model",
+            mod: "*",
+            state: "placement=north,direction=north,state=on",
+          },
+        },
+      ],
+      dve_model_data: {
+        id: "dve_lever",
+        inputs: {
+          "*": {
+            baseTexture: "dve_dream_stone:default",
+            leverTexture: "dve_lever",
+          },
+        },
+      },
+    },
+  },
+  {
+    id: "dve_dream_candle",
+    properties: {
+      dve_substance: "dve_solid",
+      dve_rendered_material: "dve_solid",
+      dve_voxel_material: "wax",
+      dve_collider_id: "dve_cube",
+      dve_check_collisions: true,
+      dve_is_light_source: false,
+      dve_light_value: [15, 15, 15],
+
+      dve_model_data: {
+        id: "dve_candle",
+        inputs: {
+          "*": {
+            candleTexture: "dve_candle:default",
+            candleLitTexture: "dve_candle:lit",
+          },
+        },
+      },
+    },
+  },
+  {
+    id: "dve_dread_grass",
+    properties: {
+      dve_substance: "dve_flora",
+      dve_voxel_material: "grass",
+      dve_collider_id: "dve_climable_box",
+      dve_check_collisions: true,
+
+      dve_model_data: {
+        id: "dve_simple_crossed_panels",
+        inputs: {
+          "*": {
+            texture: "dve_dread_grass",
+          },
+        },
+      },
+    },
+  },
+  {
+    id: "dve_dread_stone_thin_panel",
+    properties: {
+      dve_substance: "dve_solid",
+      dve_rendered_material: "dve_solid",
+      dve_collider_id: "dve_cube",
+      dve_check_collisions: true,
+      dve_voxel_material: "grassy-stone",
+
+      dve_model_data: {
+        id: "dve_simple_thin_panel",
+        inputs: {
+          "*": {
+            upDownTextures: "dve_dread_stone:default",
+            sideTextures: "dve_dread_stone:default",
+          },
+        },
+      },
+    },
+  },
+
   {
     id: "dve_dread_stone_slab",
     properties: {
@@ -448,12 +445,12 @@ export const DVEVoxelData: VoxelData[] = [
         modRelationSchema: [],
         inputs: {
           "grassy=false": {
-            "@upDownTextures": ["dve_voxel", "dve_dread_stone"],
-            "@sideTextures": ["dve_voxel", "dve_dread_stone"],
+            upDownTextures: "dve_dread_stone:default",
+            sideTextures: "dve_dread_stone:default",
           },
           "grassy=true": {
-            "@upDownTextures": ["dve_solid", "dve_dread_stone", "grassy-top"],
-            "@sideTextures": ["dve_voxel", "dve_dread_stone", "grassy-top"],
+            upDownTextures: "dve_dread_stone:grassy-top",
+            sideTextures: "dve_dread_stone:grassy-top",
           },
         },
       },
@@ -487,7 +484,7 @@ export const DVEVoxelData: VoxelData[] = [
         id: "dve_simple_stair",
         inputs: {
           "*": {
-            "@texture": ["dve_voxel", "dve_dread_stone"],
+            texture: "dve_dread_stone:default",
           },
         },
       },
@@ -522,7 +519,7 @@ export const DVEVoxelData: VoxelData[] = [
       dve_model_data: {
         id: "dve_simple_cube",
         inputs: {
-          "*": { "@texture": ["dve_voxel", "dve_dream_lamp"] },
+          "*": { texture: "dve_dream_lamp" },
         },
       },
     },
@@ -554,12 +551,12 @@ export const DVEVoxelData: VoxelData[] = [
         modRelationSchema: [],
         inputs: {
           "*": {
-            "@upTex": ["dve_voxel", "dve_dream_stone_pillar"],
-            "@downTex": ["dve_voxel", "dve_dream_stone_pillar"],
-            "@northTex": ["dve_voxel", "dve_dream_stone_pillar"],
-            "@southTex": ["dve_voxel", "dve_dream_stone_pillar"],
-            "@eastTex": ["dve_voxel", "dve_dream_stone_pillar"],
-            "@westTex": ["dve_voxel", "dve_dream_stone_pillar"],
+            upTex: "dve_dream_stone_pillar:default",
+            downTex: "dve_dream_stone_pillar:default",
+            northTex: "dve_dream_stone_pillar:default",
+            southTex: "dve_dream_stone_pillar:default",
+            eastTex: "dve_dream_stone_pillar:default",
+            westTex: "dve_dream_stone_pillar:default",
           },
         },
       },
@@ -639,24 +636,24 @@ export const DVEVoxelData: VoxelData[] = [
           id: "dve_pillar_cube",
           inputs: {
             "*": {
-              "@sideConnectedTex": ["dve_voxel", "dve_dream_stone_pillar"],
-              "@sideDisconnectedTex": [
+              "sideConnectedTex": ["dve_voxel", "dve_dream_stone_pillar"],
+              "sideDisconnectedTex": [
                 "dve_solid",
                 "dve_dream_stone_pillar",
                 "top",
               ],
-              "@sideUpTex": [
+              "sideUpTex": [
                 "dve_solid",
                 "dve_dream_stone_pillar",
                 "side-top",
               ],
-              "@sideDownTex": [
+              "sideDownTex": [
                 "dve_solid",
                 "dve_dream_stone_pillar",
                 "side-bottom",
               ],
-              "@upTex": ["dve_voxel", "dve_dream_stone_pillar", "top"],
-              "@downTex": ["dve_voxel", "dve_dream_stone_pillar", "top"],
+              "upTex": ["dve_voxel", "dve_dream_stone_pillar", "top"],
+              "downTex": ["dve_voxel", "dve_dream_stone_pillar", "top"],
             },
           },
         },

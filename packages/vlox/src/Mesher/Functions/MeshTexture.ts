@@ -1,9 +1,4 @@
-import { MesherDataTool } from "../Geomtry/Tools/MesherDataTools"
-import { BinaryNumberTypes } from "@amodx/binary";
 import { Quad } from "../Geomtry/Primitives/Quad"
-import { QuadVerticies } from "../Geomtry/Geometry.types"
-import { Flat2DIndex, Vec2Array, Vector3Like } from "@amodx/math";
-import { CompactMesh } from "../Functions/CompactMesh.js";
 
 const Quads = {
   north: Quad.Create(
@@ -26,8 +21,8 @@ const Quads = {
   ),
 };
 
-const tool = new MesherDataTool();
-tool.startNewMesh();
+//const tool = new MesherDataTool();
+//tool.startNewMesh();
 //tool.mesh!.attributes.set("uv", [[], 2, BinaryNumberTypes.Float32]);
 //tool.mesh!.attributes.set("textureIndex", [[], 3, BinaryNumberTypes.Float32]);
 export function MeshTexture(textureId: number, textureData: number[]) {
@@ -288,5 +283,5 @@ export function MeshTexture(textureId: number, textureData: number[]) {
 
   const compacted = CompactMesh("dve_node", tool);
  */
-  return tool.mesh;
+//  return tool.mesh;
 }

@@ -191,11 +191,8 @@ export default async function CreateDisplayIndex(data: VoxelData[]) {
       }
       if (state.data.display.type == "texture") {
         const { source } = state.data.display;
-        const path = TextureManager.getTexturePath(
-          source[0],
-          source[1],
-          source[2] || "default"
-        );
+        const path =
+          TextureManager.getTexture("dve_voxel").getTexturePath(source);
         VoxelTextureIndex.registerImage(voxelId, stateId, path);
         continue;
       }

@@ -74,6 +74,10 @@ export async function EreaseAndUpdate(location: LocationData) {
       SunUpdate(tasks);
     }
   }
+
+  tasks.bounds.update(x, y, z);
+  tasks.bounds.update(x + 1, y + 1, z + 1);
+
   for (let i = 0; i < $3dCardinalNeighbors.length; i++) {
     tasks.sDataCursor
       .getVoxel(
@@ -149,6 +153,8 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
       FlowUpdate(tasks);
     }
   }
+  tasks.bounds.update(x, y, z);
+  tasks.bounds.update(x + 1, y + 1, z + 1);
 
   for (let i = 0; i < $3dCardinalNeighbors.length; i++) {
     tasks.sDataCursor
@@ -189,6 +195,8 @@ export async function VoxelUpdate(data: VoxelUpdateTasks) {
       FlowUpdate(tasks);
     }
   }
+  tasks.bounds.update(x, y, z);
+  tasks.bounds.update(x + 1, y + 1, z + 1);
 
   return tasks;
 }

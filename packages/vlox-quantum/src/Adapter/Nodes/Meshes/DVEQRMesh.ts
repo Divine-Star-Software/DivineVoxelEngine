@@ -2,9 +2,8 @@ import { Observable } from "@amodx/core/Observers/Observable";
 class DVEQRMeshObservers {
   updated = new Observable();
 }
-import { DVESectionMeshInterface } from "@divinevoxel/vlox/Renderer";
 
-export class DVEQRMesh implements DVESectionMeshInterface {
+export class DVEQRMesh {
   observers = new DVEQRMeshObservers();
 
   dispose(): void {

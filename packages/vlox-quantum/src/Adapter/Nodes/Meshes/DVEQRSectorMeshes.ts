@@ -52,17 +52,6 @@ export class DVEQRSectorMeshes extends DVESectionMeshes {
     return chunk;
   }
 
-  syncSettings(settings: EngineSettingsData) {
-    if (settings.meshes.pickable) {
-      this.pickable = true;
-    }
-    if (typeof settings.meshes.clearChachedGeometry != "undefined") {
-      this.clearCachedGeometry = settings.meshes.clearChachedGeometry;
-    }
-    if (settings.meshes.serialize) {
-      this.serialize = true;
-    }
-  }
 
   _clearCached(dveMesh: DVEQRMesh) {
     if (!this.clearCachedGeometry) return;

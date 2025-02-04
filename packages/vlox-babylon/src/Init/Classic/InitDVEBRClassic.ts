@@ -57,13 +57,12 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
     ],
     ["position", "normal", "indices"]
   );
-  const nodeTexture = TextureManager.getOrAddTextureType("dve_node");
-  const nodeTextureLength = nodeTexture.animationUniform.length;
-  DVEBRShaderStore.storeShader(
+
+/*   DVEBRShaderStore.storeShader(
     "dve_node",
     "vertex",
     NodeShader.GetVertex({
-      textureLength: nodeTextureLength,
+      textureLength: 0,
     })
   );
 
@@ -85,9 +84,9 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
       "cameraDirection",
     ],
     ["position", "normal", "indices"]
-  );
-  const voxelTexture = TextureManager.getOrAddTextureType("dve_voxel");
-  const voxelTextureLength = voxelTexture.animationUniform.length;
+  ); */
+  const voxelTexture = TextureManager.getTexture("dve_voxel");
+  const voxelTextureLength = voxelTexture.animations.length;
   for (const material of defaultMaterials) {
     DVEBRShaderStore.setShaderData(
       material,

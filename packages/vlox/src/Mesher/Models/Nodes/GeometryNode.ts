@@ -1,4 +1,4 @@
-import { VoxelMesherDataTool } from "../../../Mesher/Tools/VoxelMesherDataTool";
+import { VoxelModelBuilder } from "../VoxelModelBuilder";
 import { Vector3Like } from "@amodx/math";
 import { VoxelGeometryConstructor } from "./VoxelGeometryConstructor";
 import { VoxelGeometryTransform } from "../../../Voxels/Types/VoxelModelCompiledData.types";
@@ -17,7 +17,7 @@ export abstract class GeoemtryNode<Data = any, Args = any> {
 
   faceCount = -1;
   vertexCount = -1;
-   builder: VoxelMesherDataTool;
+   builder: VoxelModelBuilder;
   constructor(
     public geometryPaletteId: number,
     public geomtry: VoxelGeometryConstructor,

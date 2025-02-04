@@ -44,6 +44,10 @@ export const cube: VoxelGeometryData = {
       type: "int",
       default: 0,
     },
+    northTexTransparent: {
+      type: "boolean",
+      default: false,
+    },
     southTex: {
       type: "texture",
     },

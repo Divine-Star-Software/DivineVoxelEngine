@@ -4,7 +4,6 @@ import {
   NodeSubstanceData,
 } from "../Materials/DVEQRDefaultMaterial.types";
 import { NodeMaterialData } from "@divinevoxel/vlox/Renderer/DVERenderNode.types";
-import { TextureBuilder } from "@divinevoxel/vlox/Textures/TextureBuilder";
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
 import { DVEQuantumRenderer } from "../Adapter/DVEQuantumRenderer.js";
 import { DVEQMaterial } from "../Materials/DVEQMaterial";
@@ -22,15 +21,10 @@ const defaultSubstances = [
   "dve_liquid",
 ];
 export async function CreateTextures(scene: Scene, textureData: TextureData[]) {
-  TextureManager.getOrAddTextureType("dve_voxel");
-  TextureManager.getOrAddTextureType("dve_node");
-
-  await TextureBuilder.setUpImageCreation();
   TextureManager.registerTexture(textureData);
-  await TextureManager.init();
-  await TextureManager.createRawDataMap();
+  await TextureManager.compiledTextures();
 
-  for (const [key, type] of TextureManager.textureTypes) {
+  for (const [key, type] of TextureManager._compiledTextures) {
     if (!type.images!.length) continue;
     type.shaderTexture = new ImageArrayTexture(type.images!, scene);
   }
@@ -52,8 +46,7 @@ export default async function CreateDefaultRenderer(
         alphaBlending:
           id == "dve_liquid" || id == "dve_transparent" ? true : false,
         alphaTesting: true,
-        backFaceCulling:
-          id == "dve_liquid" || id == "dve_flora" ? false : true,
+        backFaceCulling: id == "dve_liquid" || id == "dve_flora" ? false : true,
         stencil: id == "dve_liquid" ? true : undefined,
         mipMapBias: -0.6,
       },
@@ -73,7 +66,6 @@ export default async function CreateDefaultRenderer(
   scene.voxelScene.setCamera(scene.activeCamera!);
   scene._isReady = true;
   renderer.init = async (dver) => {
-
     const materials: NodeMaterialData[] = [];
     for (const substance of DefaultSubstances) {
       const newMaterial = {
@@ -84,7 +76,6 @@ export default async function CreateDefaultRenderer(
       };
 
       materials.push(newMaterial);
-
     }
 
     materials.push(
@@ -104,7 +95,6 @@ export default async function CreateDefaultRenderer(
       }
     );
 
- 
     for (const mat of materials) {
       renderer.materials.register(mat.id, new DVEQMaterial(mat.id, mat));
     }
@@ -119,7 +109,7 @@ export default async function CreateDefaultRenderer(
     }, 20);
  */
 
- //   TextureManager.$START_ANIMATIONS();
+    //   TextureManager.$START_ANIMATIONS();
 
     // initData.afterCreate && (await initData.afterCreate({} as any));
   };

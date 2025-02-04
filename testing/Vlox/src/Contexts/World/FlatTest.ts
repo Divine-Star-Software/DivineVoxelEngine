@@ -29,12 +29,23 @@ export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
     }
   }
   if (genOne) {
-    PerlinGen.generateTest(0, 0);
+    //WorldGen.flatColumn(0,0);
+    WorldGen.pyramidColumn(0, 0);
+    // brush.setId("dve_dream_leaves").setXYZ(0, 1, -2).paint();
+    // brush.setId("dve_dread_stone").setXYZ(0, 1, -1).paint();
+
+    //  PerlinGen.generateTest(0, 0);
   } else {
     for (let x = startX; x < endX; x += 16) {
       for (let z = startZ; z < endZ; z += 16) {
-        PerlinGen.generateTest(x, z);
-        //   WorldGen.flatColumn(x,z);
+        WorldGen.flat(x, z);
+     //   PerlinGen.generateTest(x, z,true);
+        /*        if (Math.random() > 0.5) {
+          WorldGen.pyramidColumn(x, z);
+          continue;
+        } 
+        WorldGen.upsideDownPyramid(x, z); */
+        //  WorldGen.flatColumn(x, z);
       }
     }
   }

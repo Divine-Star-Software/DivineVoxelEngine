@@ -1,15 +1,7 @@
-import { MeshDefaultAttributes } from "../Geomtry/MeshData.types";
-import { EngineSettings } from "../../Settings/EngineSettings";
-import {
-  BinaryNumberTypes,
-  TypedArrayClassMap,
-  MappedByteCounts,
-} from "@amodx/binary";
+
 import { CompactMeshData, CompactSubMesh } from "../Types/Mesher.types";
-import { VoxelMeshTypes } from "../../Mesher/Types/VoxelMesh.types";
-import { Vector3Like } from "@amodx/math";
-import { VoxelMesherDataTool } from "Mesher/Tools/VoxelMesherDataTool";
-import { VoxelMeshVertexStructCursor } from "../Tools/VoxelMeshVertexStructCursor";
+import { VoxelModelBuilder } from "Mesher/Models/VoxelModelBuilder";
+import { VoxelMeshVertexStructCursor } from "../Geomtry/VoxelMeshVertexStructCursor";
 
 const structCursor = new VoxelMeshVertexStructCursor();
 /* 
@@ -74,7 +66,7 @@ function MakeWebGPUMesh(tool: VoxelMesherDataTool): CompactMeshData {
 } */
 
 export function CompactVoxelMesh(
-  tools: VoxelMesherDataTool[],
+  tools: VoxelModelBuilder[],
   transfers: any[] = []
 ): CompactMeshData {
   const data: CompactMeshData = [0, []];

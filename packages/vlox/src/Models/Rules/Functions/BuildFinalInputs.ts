@@ -1,6 +1,6 @@
 import { VoxelFaceTransparentResultsIndex } from "../../Indexing/VoxelFaceTransparentResultsIndex";
 import { VoxelRulesModoel } from "../Classes/VoxelRulesModel";
-import { VoxelModelManager } from "../VoxelModelManager";
+import { VoxelModelRuleBuilderRegister } from "../VoxelModelRuleBuilderRegister";
 
 const isArgString = (data: any) => {
   if (typeof data !== "string") return;
@@ -33,13 +33,14 @@ export function BuildFinalInputs(model: VoxelRulesModoel) {
         const geoNodes: any[] = [];
         const shapeStateNodes = model.data.shapeStatesNodes[state];
         for (const node of shapeStateNodes) {
-          const geo = VoxelModelManager.getGeomtryFromLink(node);
+          const geo = VoxelModelRuleBuilderRegister.getGeomtryFromLink(node);
           if (!geo) throw new Error(`Geometry does not exist`);
           geo.inputs.resetDefaults();
           for (const geoArg in node.inputs) {
             const constructorArg = node.inputs[geoArg];
             if (isArgString(constructorArg)) {
-              geo.inputs[geoArg] = modVoxelInput[constructorArg];
+              geo.inputs[geoArg] =
+                modVoxelInput[constructorArg.replace("@", "")];
               continue;
             }
             geo.inputs[geoArg] = constructorArg;
@@ -53,8 +54,8 @@ export function BuildFinalInputs(model: VoxelRulesModoel) {
               model.stateData.shapeStateRelativeGeometryMap[
                 model.stateData.shapeStateRecord[state]
               ][
-                VoxelModelManager.geometryPalette.getNumberId(
-                  VoxelModelManager.getGeometryLinkId(node)
+                VoxelModelRuleBuilderRegister.geometryPalette.getNumberId(
+                  VoxelModelRuleBuilderRegister.getGeometryLinkId(node)
                 )
               ]
             ];
@@ -82,14 +83,15 @@ export function BuildFinalInputs(model: VoxelRulesModoel) {
         const shapeStateNodes = model.data.shapeStatesConditonalNodes[state];
         for (let i = 0; i < shapeStateNodes.length; i++) {
           const node = shapeStateNodes[i];
-          const geo = VoxelModelManager.getGeomtryFromLink(node);
+          const geo = VoxelModelRuleBuilderRegister.getGeomtryFromLink(node);
           if (!geo) throw new Error(`Geometry does not exist`);
           //   geo.inputs.resetDefaults();
           for (const geoArg in node.inputs) {
             const constructorArg = node.inputs[geoArg];
 
             if (isArgString(constructorArg)) {
-              geo.inputs[geoArg] = modVoxelInput[constructorArg];
+              geo.inputs[geoArg] =
+                modVoxelInput[constructorArg.replace("@", "")];
               continue;
             }
             geo.inputs[geoArg] = constructorArg;
@@ -101,8 +103,8 @@ export function BuildFinalInputs(model: VoxelRulesModoel) {
               model.stateData.condiotnalShapeStateRelativeGeometryMap[
                 model.stateData.condiotnalShapeStateRecord[state]
               ][
-                VoxelModelManager.geometryPalette.getNumberId(
-                  VoxelModelManager.getGeometryLinkId(node)
+                VoxelModelRuleBuilderRegister.geometryPalette.getNumberId(
+                  VoxelModelRuleBuilderRegister.getGeometryLinkId(node)
                 )
               ]
             ];

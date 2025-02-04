@@ -7,7 +7,7 @@ import { GetYXZOrderArrayIndex } from "../../Math/Indexing";
 export class VoxelGeometryBuilderCacheSpace {
   foundHash: Uint8Array;
   voxelCache: Uint16Array;
-  lightCache: Int32Array;
+
   modCache: Int32Array;
   stateCache: Int32Array;
   conditonalStateCache: Int32Array;
@@ -18,7 +18,7 @@ export class VoxelGeometryBuilderCacheSpace {
   constructor(public bounds: Vector3Like) {
     const volume = bounds.x * bounds.y * bounds.z;
     this.foundHash = new Uint8Array(volume);
-    this.lightCache = new Int32Array(volume);
+
     this.voxelCache = new Uint16Array(volume);
     this.modCache = new Int32Array(volume);
     this.stateCache = new Int32Array(volume);
@@ -29,7 +29,7 @@ export class VoxelGeometryBuilderCacheSpace {
     this.offset[0] = x;
     this.offset[1] = y;
     this.offset[2] = z;
-    this.lightCache.fill(-1);
+
     this.foundHash.fill(0);
     this.voxelCache.fill(0);
     this.modCache.fill(-1);
@@ -75,20 +75,6 @@ export class VoxelGeometryBuilderCacheSpace {
     }
     return hashed;
   }
-  getLight(dataCursor: DataCursorInterface, x: number, y: number, z: number) {
-    const index = this.getIndex(x, y, z);
-    if (this.lightCache[index] == -1) {
-      this.lightCache[index] = 0;
-      const voxel = dataCursor.getVoxel(x, y, z);
-      if (voxel) {
-        const light = voxel.getLight();
-        if (light > 0) {
-          this.lightCache[index] = light;
-        }
-      }
-    }
-    return this.lightCache[index];
-  }
 
   private hashState(
     dataCursor: DataCursorInterface,
@@ -101,12 +87,6 @@ export class VoxelGeometryBuilderCacheSpace {
     if (this.foundHash[index] == 2) return this.stateCache[index];
 
     const voxel = dataCursor.getVoxel(x, y, z);
-    if (voxel) {
-      const light = voxel.getLight();
-      if (light > 0) {
-        this.lightCache[index] = light;
-      }
-    }
 
     if (!voxel || !voxel.isRenderable()) {
       this.foundHash[index] = 1;

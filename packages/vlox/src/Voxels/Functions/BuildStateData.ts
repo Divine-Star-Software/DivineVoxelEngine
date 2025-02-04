@@ -7,7 +7,7 @@ import {
 } from "../State/State.types";
 import { VoxelRulesModoel } from "../../Models/Rules/Classes/VoxelRulesModel";
 import { StringPalette } from "../../Util/StringPalette";
-import { VoxelModelManager } from "../../Models/Rules/VoxelModelManager";
+import { VoxelModelRuleBuilderRegister } from "../../Models/Rules/VoxelModelRuleBuilderRegister";
 import {
   VoxelStateStringSchemaData,
   VoxelStateNumberSchemaData,
@@ -263,7 +263,7 @@ export function BuildStateData(
       if (geometryLinkPalette.isRegistered(node.id)) continue;
       const linkId = geometryLinkPalette.register(node.id);
       geometryLinkStateMap[linkId] = geoPalette.getNumberId(
-        VoxelModelManager.getGeometryLinkId(node)
+        VoxelModelRuleBuilderRegister.getGeometryLinkId(node)
       );
     }
   }
@@ -276,7 +276,7 @@ export function BuildStateData(
       if (geometryLinkPalette.isRegistered(node.id)) continue;
       const linkId = geometryLinkPalette.register(node.id);
       geometryLinkStateMap[linkId] = geoPalette.getNumberId(
-        VoxelModelManager.getGeometryLinkId(node)
+        VoxelModelRuleBuilderRegister.getGeometryLinkId(node)
       );
     }
   }
@@ -300,7 +300,7 @@ export function BuildStateData(
     );
     shapeStateGeometryPalette.push(
       data.shapeStatesNodes[key].map((_) =>
-        geoPalette.getNumberId(VoxelModelManager.getGeometryLinkId(_))
+        geoPalette.getNumberId(VoxelModelRuleBuilderRegister.getGeometryLinkId(_))
       )
     );
     shapeStateRecord[key] = shapeStateGeometryPalette.length - 1;
@@ -309,12 +309,12 @@ export function BuildStateData(
 
     for (const node of nodeData) {
       shapeStateRelativeGeometryMap[shapeStateRecord[key]][
-        geoPalette.getNumberId(VoxelModelManager.getGeometryLinkId(node))
+        geoPalette.getNumberId(VoxelModelRuleBuilderRegister.getGeometryLinkId(node))
       ] = relativeGeoId;
       relativeGeometryByteIndexMap[relativeGeoId] = relativeByteCount;
       relativeGeoId++;
       relativeByteCount += Math.ceil(
-        VoxelModelManager.getGeomtryFromLink(node)!.faceCount / 8
+        VoxelModelRuleBuilderRegister.getGeomtryFromLink(node)!.faceCount / 8
       );
     }
 
@@ -344,7 +344,7 @@ export function BuildStateData(
     );
     condiotnalShapeStateGeometryPalette.push(
       data.shapeStatesConditonalNodes[key].map((_) =>
-        geoPalette.getNumberId(VoxelModelManager.getGeometryLinkId(_))
+        geoPalette.getNumberId(VoxelModelRuleBuilderRegister.getGeometryLinkId(_))
       )
     );
     condiotnalShapeStateNodeRecord[key] =
@@ -357,12 +357,12 @@ export function BuildStateData(
     for (const node of nodeData) {
       condiotnalShapeStateRelativeGeometryMap[
         condiotnalShapeStateNodeRecord[key]
-      ][geoPalette.getNumberId(VoxelModelManager.getGeometryLinkId(node))] =
+      ][geoPalette.getNumberId(VoxelModelRuleBuilderRegister.getGeometryLinkId(node))] =
         relativeGeoId;
       relativeGeometryByteIndexMap[relativeGeoId] = relativeByteCount;
       relativeGeoId++;
       relativeByteCount += Math.ceil(
-        VoxelModelManager.getGeomtryFromLink(node)!.faceCount / 8
+        VoxelModelRuleBuilderRegister.getGeomtryFromLink(node)!.faceCount / 8
       );
     }
     const statement: StateLogicStatement = [];

@@ -1,5 +1,5 @@
 import {
-  VoxelSubstanceTagIdds,
+  VoxelSubstanceTagIdds as VoxelSubstanceTagIds,
   VoxelSubstanceTags,
   VoxelTagIds,
   VoxelTags,
@@ -20,12 +20,12 @@ export class VoxelTagsRegister {
     VoxelTagIds.canHaveSecondary,
   ];
   static IncludedSubstnacesTags: string[] = [
-    VoxelSubstanceTagIdds.parent,
-    VoxelSubstanceTagIdds.isSolid,
-    VoxelSubstanceTagIdds.isTransparent,
-    VoxelSubstanceTagIdds.isLiquid,
-    VoxelSubstanceTagIdds.flowRate,
-    VoxelSubstanceTagIdds.isWindAffected,
+    VoxelSubstanceTagIds.parent,
+    VoxelSubstanceTagIds.isSolid,
+    VoxelSubstanceTagIds.isTransparent,
+    VoxelSubstanceTagIds.isLiquid,
+    VoxelSubstanceTagIds.flowRate,
+    VoxelSubstanceTagIds.isWindAffected,
   ];
   static VoxelTagDefaults: Record<string, any> = {
     [VoxelTagIds.renderedMaterial]: "dve_solid",

@@ -43,7 +43,7 @@ import {
   liquidGeometry,
   liquidModel,
 } from "../Models/Defaults/LiquidVoxelModel";
-import { VoxelModelManager } from "../Models/Rules/VoxelModelManager";
+import { VoxelModelRuleBuilderRegister } from "../Models/Rules/VoxelModelRuleBuilderRegister";
 import { VoxelGeometryData, VoxelModelData } from "../Models/VoxelModel.types";
 import { VoxelData } from "./Types/Voxel.types";
 
@@ -95,7 +95,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
     return syncData;
   }
 
-  VoxelModelManager.registerGeometry(
+  VoxelModelRuleBuilderRegister.registerGeometry(
     cube,
     halfDownCube,
     halfSouthCube,
@@ -129,7 +129,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
     ...(data.geometry || [])
   );
 
-  VoxelModelManager.registerModels(
+  VoxelModelRuleBuilderRegister.registerModels(
     simpleCube,
     orientedCube,
     simpleHalfCube,
@@ -152,7 +152,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
   );
 
   const syncData: FinalCompiledVoxelModelData = {
-    geometryPalette: VoxelModelManager.geometryPalette._palette,
+    geometryPalette: VoxelModelRuleBuilderRegister.geometryPalette._palette,
     geometry: [],
     models: [],
     voxels: [],
@@ -162,14 +162,14 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
   for (const voxel of data.voxels) {
     const voxelData = voxel.properties["dve_model_data"];
     if (!voxelData) continue;
-    VoxelModelManager.registerVoxel(voxel.id, voxelData);
-    const model = VoxelModelManager.models.get(voxelData.id)!;
+    VoxelModelRuleBuilderRegister.registerVoxel(voxel.id, voxelData);
+    const model = VoxelModelRuleBuilderRegister.models.get(voxelData.id)!;
     if (!model)
       throw new Error(`Voxel model with id ${voxelData.id} does not exist.`);
     model!.voxels.set(voxel.id, voxelData);
   }
 
-  for (const [mainKey, mainGeo] of VoxelModelManager.geometry) {
+  for (const [mainKey, mainGeo] of VoxelModelRuleBuilderRegister.geometry) {
     if (mainGeo.data.ogData.doNotBuildRules) {
       syncData.geometry.push({
         id: mainKey,
@@ -178,7 +178,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
       });
       continue;
     }
-    const output = BuildRules(mainGeo, VoxelModelManager.geometryPalette);
+    const output = BuildRules(mainGeo, VoxelModelRuleBuilderRegister.geometryPalette);
     syncData.geometry.push({
       id: mainKey,
       nodes: mainGeo.data.nodes,
@@ -186,8 +186,8 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
     });
   }
 
-  for (const [mainKey, model] of VoxelModelManager.models) {
-    const stateData = BuildStateData(model, VoxelModelManager.geometryPalette);
+  for (const [mainKey, model] of VoxelModelRuleBuilderRegister.models) {
+    const stateData = BuildStateData(model, VoxelModelRuleBuilderRegister.geometryPalette);
     model.stateData = stateData;
     SchemaRegister.registerModel(mainKey, stateData.schema);
     syncData.models.push({
@@ -214,7 +214,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
     BuildGeomtryInputs(geometry);
   } */
 
-  for (const [mainKey, model] of VoxelModelManager.models) {
+  for (const [mainKey, model] of VoxelModelRuleBuilderRegister.models) {
     const {
       shapeStateVoxelInputs,
       conditionalShapeStateVoxelInputs,
@@ -251,8 +251,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
 
 export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
   const lightData = new VoxelLightData();
-  const voxelIndex = new VoxelIndex(data.voxels);
-  console.warn(voxelIndex, voxelIndex.dataMap);
+  new VoxelIndex(data.voxels);
 
   const materials: VoxelMaterialData[] = [
     { id: "dve_solid", properties: {} },
@@ -383,7 +382,6 @@ export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
     substances,
     materials,
   });
-
 
   let models = GetModelData(data);
 

@@ -67,9 +67,9 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
         tool.position.z + p[2]
       );
 
-      const offsetBaseGometry = this.builder.space!.getGeomtry(hashed);
+      const offsetBaseGometry = this.builder.space.getGeomtry(hashed);
       const offsetConditonalGeometry =
-        this.builder.space!.getConditionalGeomtry(hashed);
+        this.builder.space.getConditionalGeomtry(hashed);
 
       if (offsetBaseGometry) {
         for (let i = 0; i < offsetBaseGometry.length; i++) {
@@ -81,10 +81,10 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
           if (
             faceIndex > -1 &&
             !this.builder
-              .space!.getConstructor(hashed)
+              .space.getConstructor(hashed)
               ?.isShapeStateFaceTransparent(
-                this.builder.space!.modCache[hashed],
-                this.builder.space!.stateCache[hashed],
+                this.builder.space.modCache[hashed],
+                this.builder.space.stateCache[hashed],
                 offsetBaseGometry[i],
                 faceIndex
               )
@@ -106,10 +106,10 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
           if (
             faceIndex > -1 &&
             !this.builder
-              .space!.getConstructor(hashed)
+              .space.getConstructor(hashed)
               ?.isCondtionalStateFaceTransparent(
-                this.builder.space!.modCache[hashed],
-                this.builder.space!.stateCache[hashed],
+                this.builder.space.modCache[hashed],
+                this.builder.space.stateCache[hashed],
                 cond[i],
                 faceIndex
               )
@@ -162,9 +162,9 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
           tool.position.z + p[2]
         );
 
-        if (this.builder.space!.noCastAO[hashed] === 1) continue;
-        const baseGeo = this.builder.space!.getGeomtry(hashed);
-        const conditonalGeo = this.builder.space!.getConditionalGeomtry(hashed);
+        if (this.builder.space.noCastAO[hashed] === 1) continue;
+        const baseGeo = this.builder.space.getGeomtry(hashed);
+        const conditonalGeo = this.builder.space.getConditionalGeomtry(hashed);
 
         if (!baseGeo && !conditonalGeo) continue;
 

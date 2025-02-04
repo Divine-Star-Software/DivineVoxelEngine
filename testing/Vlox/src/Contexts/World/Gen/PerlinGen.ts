@@ -1,13 +1,11 @@
 import { PerlinNoise3d } from "@amodx/rng/perlin/index";
-const perlin = new PerlinNoise3d();
 import { BrushTool } from "@divinevoxel/vlox/Tools/Brush/Brush";
 import { WorldCursor } from "@divinevoxel/vlox/World/Cursor/WorldCursor";
 import { VoxelCursor } from "@divinevoxel/vlox/Voxels/Cursor/VoxelCursor";
+const perlin = new PerlinNoise3d();
 const worldCursor = new WorldCursor();
 const voxelCursor = new VoxelCursor();
 const brush = new BrushTool();
-import { GenerateTree } from "./Tree";
-
 perlin.noiseSeed(13129301280);
 const [xOffSet, yOffset, zOffSet] = [1000, 100, 10000];
 export const PerlinGen = {
@@ -187,16 +185,20 @@ export const PerlinGen = {
               .getVoxel(x, y, z)!
               .setId(voxelCursor.id)
               .updateVoxel(0);
-/* 
-            if (!this.inNoiseRange(x, y + 1, z) && Math.random() > 0.9) {
+
+            if (
+              !this.inNoiseRange(x, y + 1, z) &&
+              Math.random() > 0.9 &&
+              y >= 30
+            ) {
               voxelCursor.setStringId("dve_dream_grass").process();
               columnCursor
                 .getVoxel(x, y, z)!
                 .setId(voxelCursor.id)
                 .updateVoxel(0);
-            } */
+            }
           } else {
-            if (y < 30 && includeWater ) {
+            if (y < 30 && includeWater) {
               voxelCursor.setStringId("dve_liquid_dream_ether").process();
               columnCursor
                 .getVoxel(x, y, z)!

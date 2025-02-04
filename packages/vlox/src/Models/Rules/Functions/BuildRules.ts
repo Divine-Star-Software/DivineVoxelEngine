@@ -4,7 +4,7 @@ import { VoxelRelativeCubeIndex } from "../../Indexing/VoxelRelativeCubeIndex";
 import { Vec3Array, Vector3Like } from "@amodx/math";
 import { StringPalette } from "../../../Util/StringPalette";
 import { VoxelAOResultsIndex } from "../../Indexing/VoxelAOResultsIndex";
-import { VoxelModelManager } from "../VoxelModelManager";
+import { VoxelModelRuleBuilderRegister } from "../VoxelModelRuleBuilderRegister";
 import { VoxelFaceCullResultsIndex } from "../../Indexing/VoxelFaceCullResultsIndex";
 
 class OcculsionBox {
@@ -174,7 +174,7 @@ export function BuildRules(main: VoxelRuleGeometry, geoPalette: StringPalette) {
     otherNumberId < geoPalette.size;
     otherNumberId++
   ) {
-    let other = VoxelModelManager.geometry.get(
+    let other = VoxelModelRuleBuilderRegister.geometry.get(
       geoPalette._palette[otherNumberId]
     )!;
     if (other.data.ogData.doNotBuildRules !== undefined) continue;

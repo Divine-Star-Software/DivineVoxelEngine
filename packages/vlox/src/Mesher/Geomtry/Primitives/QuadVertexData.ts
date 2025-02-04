@@ -1,7 +1,9 @@
 import { QuadVerticies } from "../Geometry.types.js";
 import { Vector3Like, Vector2Like, Vec3Array } from "@amodx/math";
+type QuadDataType<Data> = [Data, Data, Data, Data];
+
 export class QuadVertexData<Data> {
-  constructor(public vertices: Record<QuadVerticies, Data>) {}
+  constructor(public vertices: QuadDataType<Data>) {}
 
   getAsArray() {
     return [
@@ -66,30 +68,22 @@ export class QuadVertexData<Data> {
   }
 
   clone() {
-    return new QuadVertexData<Data>({
-      [QuadVerticies.TopRight]: structuredClone(
-        this.vertices[QuadVerticies.TopRight]
-      ),
-      [QuadVerticies.TopLeft]: structuredClone(
-        this.vertices[QuadVerticies.TopLeft]
-      ),
-      [QuadVerticies.BottomLeft]: structuredClone(
-        this.vertices[QuadVerticies.BottomLeft]
-      ),
-      [QuadVerticies.BottomRight]: structuredClone(
-        this.vertices[QuadVerticies.BottomRight]
-      ),
-    });
+    return new QuadVertexData<Data>([
+      structuredClone(this.vertices[QuadVerticies.TopRight]),
+      structuredClone(this.vertices[QuadVerticies.TopLeft]),
+      structuredClone(this.vertices[QuadVerticies.BottomLeft]),
+      structuredClone(this.vertices[QuadVerticies.BottomRight]),
+    ]);
   }
 }
 export class QuadVec3ArrayVertexData extends QuadVertexData<Vec3Array> {
   constructor(
-    public vertices: Record<QuadVerticies, Vec3Array> = {
-      [QuadVerticies.TopRight]: [0, 0, 0],
-      [QuadVerticies.TopLeft]: [0, 0, 0],
-      [QuadVerticies.BottomLeft]: [0, 0, 0],
-      [QuadVerticies.BottomRight]: [0, 0, 0],
-    }
+    public vertices: QuadDataType<Vec3Array> = [
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+    ]
   ) {
     super(vertices);
   }
@@ -153,25 +147,23 @@ export class QuadVec3ArrayVertexData extends QuadVertexData<Vec3Array> {
     );
   }
   clone() {
-    return new QuadVec3ArrayVertexData({
-      [QuadVerticies.TopRight]: [...this.vertices[QuadVerticies.TopRight]],
-      [QuadVerticies.TopLeft]: [...this.vertices[QuadVerticies.TopLeft]],
-      [QuadVerticies.BottomLeft]: [...this.vertices[QuadVerticies.BottomLeft]],
-      [QuadVerticies.BottomRight]: [
-        ...this.vertices[QuadVerticies.BottomRight],
-      ],
-    });
+    return new QuadVec3ArrayVertexData([
+      [...this.vertices[QuadVerticies.TopRight]],
+      [...this.vertices[QuadVerticies.TopLeft]],
+      [...this.vertices[QuadVerticies.BottomLeft]],
+      [...this.vertices[QuadVerticies.BottomRight]],
+    ]);
   }
 }
 
 export class QuadVector3VertexData extends QuadVertexData<Vector3Like> {
   constructor(
-    public vertices: Record<QuadVerticies, Vector3Like> = {
-      [QuadVerticies.TopRight]: Vector3Like.Create(),
-      [QuadVerticies.TopLeft]: Vector3Like.Create(),
-      [QuadVerticies.BottomLeft]: Vector3Like.Create(),
-      [QuadVerticies.BottomRight]: Vector3Like.Create(),
-    }
+    public vertices: QuadDataType<Vector3Like> = [
+      Vector3Like.Create(),
+      Vector3Like.Create(),
+      Vector3Like.Create(),
+      Vector3Like.Create(),
+    ]
   ) {
     super(vertices);
   }
@@ -240,31 +232,23 @@ export class QuadVector3VertexData extends QuadVertexData<Vector3Like> {
     );
   }
   clone() {
-    return new QuadVector3VertexData({
-      [QuadVerticies.TopRight]: Vector3Like.Clone(
-        this.vertices[QuadVerticies.TopRight]
-      ),
-      [QuadVerticies.TopLeft]: Vector3Like.Clone(
-        this.vertices[QuadVerticies.TopLeft]
-      ),
-      [QuadVerticies.BottomLeft]: Vector3Like.Clone(
-        this.vertices[QuadVerticies.BottomLeft]
-      ),
-      [QuadVerticies.BottomRight]: Vector3Like.Clone(
-        this.vertices[QuadVerticies.BottomRight]
-      ),
-    });
+    return new QuadVector3VertexData([
+      Vector3Like.Clone(this.vertices[QuadVerticies.TopRight]),
+      Vector3Like.Clone(this.vertices[QuadVerticies.TopLeft]),
+      Vector3Like.Clone(this.vertices[QuadVerticies.BottomLeft]),
+      Vector3Like.Clone(this.vertices[QuadVerticies.BottomRight]),
+    ]);
   }
 }
 
 export class QuadVector2VertexData extends QuadVertexData<Vector2Like> {
   constructor(
-    public vertices: Record<QuadVerticies, Vector2Like> = {
-      [QuadVerticies.TopRight]: Vector2Like.Create(),
-      [QuadVerticies.TopLeft]: Vector2Like.Create(),
-      [QuadVerticies.BottomLeft]: Vector2Like.Create(),
-      [QuadVerticies.BottomRight]: Vector2Like.Create(),
-    }
+    public vertices: QuadDataType<Vector2Like> = [
+      Vector2Like.Create(),
+      Vector2Like.Create(),
+      Vector2Like.Create(),
+      Vector2Like.Create(),
+    ]
   ) {
     super(vertices);
   }
@@ -332,32 +316,17 @@ export class QuadVector2VertexData extends QuadVertexData<Vector2Like> {
     );
   }
   clone() {
-    return new QuadVector2VertexData({
-      [QuadVerticies.TopRight]: Vector2Like.Clone(
-        this.vertices[QuadVerticies.TopRight]
-      ),
-      [QuadVerticies.TopLeft]: Vector2Like.Clone(
-        this.vertices[QuadVerticies.TopLeft]
-      ),
-      [QuadVerticies.BottomLeft]: Vector2Like.Clone(
-        this.vertices[QuadVerticies.BottomLeft]
-      ),
-      [QuadVerticies.BottomRight]: Vector2Like.Clone(
-        this.vertices[QuadVerticies.BottomRight]
-      ),
-    });
+    return new QuadVector2VertexData([
+      Vector2Like.Clone(this.vertices[QuadVerticies.TopRight]),
+      Vector2Like.Clone(this.vertices[QuadVerticies.TopLeft]),
+      Vector2Like.Clone(this.vertices[QuadVerticies.BottomLeft]),
+      Vector2Like.Clone(this.vertices[QuadVerticies.BottomRight]),
+    ]);
   }
 }
 
 export class QuadScalarVertexData extends QuadVertexData<number> {
-  constructor(
-    public vertices: Record<QuadVerticies, number> = {
-      [QuadVerticies.TopRight]: 0,
-      [QuadVerticies.TopLeft]: 0,
-      [QuadVerticies.BottomLeft]: 0,
-      [QuadVerticies.BottomRight]: 0,
-    }
-  ) {
+  constructor(public vertices: QuadDataType<number> = [0, 0, 0, 0]) {
     super(vertices);
   }
 
@@ -437,11 +406,11 @@ export class QuadScalarVertexData extends QuadVertexData<number> {
   }
 
   clone() {
-    return new QuadScalarVertexData({
-      [QuadVerticies.TopRight]: this.vertices[QuadVerticies.TopRight],
-      [QuadVerticies.TopLeft]: this.vertices[QuadVerticies.TopLeft],
-      [QuadVerticies.BottomLeft]: this.vertices[QuadVerticies.BottomLeft],
-      [QuadVerticies.BottomRight]: this.vertices[QuadVerticies.BottomRight],
-    });
+    return new QuadScalarVertexData([
+      this.vertices[QuadVerticies.TopRight],
+      this.vertices[QuadVerticies.TopLeft],
+      this.vertices[QuadVerticies.BottomLeft],
+      this.vertices[QuadVerticies.BottomRight],
+    ]);
   }
 }

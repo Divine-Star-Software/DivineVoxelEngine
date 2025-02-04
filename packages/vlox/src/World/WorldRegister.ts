@@ -64,6 +64,9 @@ class WorldRegisterSectors {
     );
     return newSector;
   }
+  static addAt(location: LocationData, sector: SectorData) {
+    return this.add(...location, sector);
+  }
   static new(dimensionId: string, x: number, y: number, z: number) {
     if (this.get(dimensionId, x, y, z)) return false;
     let dimension = WorldRegister.dimensions.get(dimensionId);
@@ -71,6 +74,9 @@ class WorldRegisterSectors {
     const sector = this.add(dimensionId, x, y, z, Sector.CreateNew())!;
     WorldDataHooks.sectors.onNew([dimensionId, x, y, z], sector);
     return true;
+  }
+  static newAt(location: LocationData) {
+    return this.new(...location);
   }
   static get(
     dimensionId: string,
@@ -87,6 +93,9 @@ class WorldRegisterSectors {
     );
     return sector || false;
   }
+  static getAt(location: LocationData) {
+    return this.get(...location);
+  }
   static remove(dimensionId: string, x: number, y: number, z: number) {
     let dimension = WorldRegister.dimensions.get(dimensionId);
     if (!dimension) return false;
@@ -101,6 +110,9 @@ class WorldRegisterSectors {
     );
     dimension.sectors.delete(sectorKey);
     return true;
+  }
+  static removeAt(location: LocationData) {
+    return this.remove(...location);
   }
 }
 

@@ -7,7 +7,7 @@ class DVEBRMeshObservers {
 import { Buffer, VertexBuffer } from "@babylonjs/core/Meshes/buffer.js";
 import { Engine } from "@babylonjs/core";
 import { CompactSubMesh } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
-import { VoxelMeshVertexStructCursor } from "@divinevoxel/vlox/Mesher/Tools/VoxelMeshVertexStructCursor";
+import { VoxelMeshVertexStructCursor } from "@divinevoxel/vlox/Mesher/Geomtry/VoxelMeshVertexStructCursor";
 export class DVEBRMesh {
   observers = new DVEBRMeshObservers();
   static UpdateVertexData(mesh: Mesh, engine: Engine, data: CompactSubMesh) {

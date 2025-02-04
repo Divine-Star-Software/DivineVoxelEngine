@@ -7,13 +7,13 @@ import { VoxelGeometryBuilderCacheSpace } from "../Models/VoxelGeometryBuilderCa
 import { CompactVoxelMesh } from "./CompactVoxelMesh.js";
 import { WorldCursor } from "../../World/Cursor/WorldCursor.js";
 import { SectionCursor } from "../../World/Cursor/SectionCursor.js";
-import { VoxelMesherDataTool } from "../Tools/VoxelMesherDataTool.js";
+import { VoxelModelBuilder } from "../Models/VoxelModelBuilder.js";
 import { VoxelModelConstructorRegister } from "../Models/VoxelModelConstructorRegister.js";
 import { WorldRegister } from "../../World/WorldRegister.js";
 import { WorldVoxelCursor } from "../../World/Cursor/WorldVoxelCursor";
-import { VoxelMeshBVHBuilder } from "../Tools/VoxelMeshBVHBuilder";
+import { VoxelMeshBVHBuilder } from "../Geomtry/VoxelMeshBVHBuilder";
 import { Vector3Like } from "@amodx/math";
-import { RenderedMaterials } from "../../Mesher/RenderedMaterials";
+import { RenderedMaterials } from "../Models/RenderedMaterials";
 
 const sectionCursor = new SectionCursor();
 const worldCursor = new WorldCursor();
@@ -86,16 +86,17 @@ export function MeshSection(
     if (!(i % slice)) {
       const y = i / slice;
       if (!section.getHasVoxel(y) && !section.getHasVoxelDirty(y)) {
-        i += slice;
+        i += slice - 1;
         continue;
       }
     }
-
+    if (!section.ids[i]) continue;
     if (!section.ids[i] || section.getBuried(i)) continue;
     const voxel = sectionCursor.getVoxelAtIndex(i);
     const x = cx + sectionCursor._voxelPosition.x;
     const y = cy + sectionCursor._voxelPosition.y;
     const z = cz + sectionCursor._voxelPosition.z;
+
     let addedVoxel = false;
     if (meshVoxel(x, y, z, voxel)) addedVoxel = true;
     if (voxel.hasSecondaryVoxel()) {
@@ -103,14 +104,15 @@ export function MeshSection(
       if (meshVoxel(x, y, z, voxel)) addedVoxel = true;
       voxel.setSecondary(false);
     }
+
     section.setBuried(i, !addedVoxel);
   }
 
- // console.log(performance.now() - t);
+  // console.log(performance.now() - t);
 
   const sectionEffects: SetSectionMeshTask[2] = [];
   const sections = <SetSectionMeshTask>[location, [] as any, sectionEffects, 0];
-  const meshed: VoxelMesherDataTool[] = [];
+  const meshed: VoxelModelBuilder[] = [];
   for (let i = 0; i < RenderedMaterials.meshers.length; i++) {
     const mesher = RenderedMaterials.meshers[i];
     for (const e in mesher.effects) {

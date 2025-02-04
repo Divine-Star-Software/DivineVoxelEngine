@@ -5,15 +5,15 @@ import {
   Vector2Like,
   Vector4Like,
 } from "@amodx/math";
-import { VoxelShaderData } from "../VoxelShaderData";
-import { VoxelMesherDataTool } from "../Tools/VoxelMesherDataTool";
+import { VoxelShaderData } from "./VoxelShaderData";
+import { VoxelModelBuilder } from "../Models/VoxelModelBuilder";
 
 import { Quad } from "./Primitives/Quad";
 import { QuadVerticies } from "./Geometry.types";
 import {
   VoxelMeshVertexConstants,
   VoxelMeshVertexStructCursor,
-} from "../../Mesher/Tools/VoxelMeshVertexStructCursor";
+} from "./VoxelMeshVertexStructCursor";
 
 const empty: number[] = [];
 const structCursor = new VoxelMeshVertexStructCursor();
@@ -94,7 +94,7 @@ export class VoxelGeometryBuilder {
     }
   } */
 
-  static addQuad(tool: VoxelMesherDataTool, origin: Vector3Like, quad: Quad) {
+  static addQuad(tool: VoxelModelBuilder, origin: Vector3Like, quad: Quad) {
     if (!tool.mesh) return;
 
     const worldLight = tool.vars.light;

@@ -88,12 +88,13 @@ export class LiquidGeometryNode extends GeoemtryNode<
   }
 
   determineShading(face: VoxelFaces) {
-    const tool = this.builder;
-    const lightData = tool.lightData[face];
+    this.builder.calculateFaceData(face);
+    const lightData = this.builder.lightData[face];
     const worldLight = this.builder.vars.light;
-    for (let v = 0 as QuadVerticies; v < 4; v++) {
-      worldLight.vertices[v] = lightData[v];
-    }
+    worldLight.vertices[0] = lightData[0];
+    worldLight.vertices[1] = lightData[1];
+    worldLight.vertices[2] = lightData[2];
+    worldLight.vertices[3] = lightData[3];
   }
 
   shouldFlip() {
@@ -126,7 +127,6 @@ export class LiquidGeometryNode extends GeoemtryNode<
       added = true;
       getFlowGradient(tool, vertexLevel);
       const quad = Quads[VoxelFaces.Up];
-      tool.calculateFaceData(VoxelFaces.Up);
       this.determineShading(VoxelFaces.Up);
       quad.flip = this.shouldFlip();
       tool.vars.textureIndex = args.stillTexture;
@@ -164,7 +164,6 @@ export class LiquidGeometryNode extends GeoemtryNode<
       added = true;
       tool.vars.textureIndex = args.stillTexture;
       const quad = Quads[VoxelFaces.Down];
-      tool.calculateFaceData(VoxelFaces.Down);
       this.determineShading(VoxelFaces.Down);
       quad.flip = this.shouldFlip();
       tool.vars.textureIndex = args.stillTexture;
@@ -177,7 +176,6 @@ export class LiquidGeometryNode extends GeoemtryNode<
       tool.vars.textureIndex = args.stillTexture;
       const quad = Quads[VoxelFaces.North];
       tool.vars.animation.setAll(1);
-      tool.calculateFaceData(VoxelFaces.North);
       this.determineShading(VoxelFaces.North);
       quad.flip = this.shouldFlip();
       if (upFaceExposed) {
@@ -205,7 +203,6 @@ export class LiquidGeometryNode extends GeoemtryNode<
       tool.vars.textureIndex = args.stillTexture;
       const quad = Quads[VoxelFaces.South];
       tool.vars.animation.setAll(1);
-      tool.calculateFaceData(VoxelFaces.South);
       this.determineShading(VoxelFaces.South);
       quad.flip = this.shouldFlip();
       if (upFaceExposed) {
@@ -233,7 +230,6 @@ export class LiquidGeometryNode extends GeoemtryNode<
       const quad = Quads[VoxelFaces.East];
 
       tool.vars.animation.setAll(1);
-      tool.calculateFaceData(VoxelFaces.East);
       this.determineShading(VoxelFaces.East);
       //  quad.flip = this.shouldFlip();
       if (upFaceExposed) {
@@ -260,7 +256,6 @@ export class LiquidGeometryNode extends GeoemtryNode<
       tool.vars.textureIndex = args.stillTexture;
       const quad = Quads[VoxelFaces.West];
       tool.vars.animation.setAll(1);
-      tool.calculateFaceData(VoxelFaces.West);
       this.determineShading(VoxelFaces.West);
       quad.flip = this.shouldFlip();
       if (upFaceExposed) {

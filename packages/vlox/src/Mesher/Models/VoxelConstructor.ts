@@ -1,4 +1,4 @@
-import { VoxelMesherDataTool } from "../../Mesher/Tools/VoxelMesherDataTool";
+import { VoxelModelBuilder } from "./VoxelModelBuilder";
 import {
   CompiledVoxelModelInputData,
   CompiledVoxelModelData,
@@ -31,7 +31,7 @@ export class VoxelConstructor {
 
   constructor(
     public id: string,
-    public builder: VoxelMesherDataTool,
+    public builder: VoxelModelBuilder,
     public data: CompiledVoxelModelData,
     voxleData: CompiledVoxelModelInputData
   ) {
