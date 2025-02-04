@@ -58,7 +58,7 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
     ["position", "normal", "indices"]
   );
 
-/*   DVEBRShaderStore.storeShader(
+  /*   DVEBRShaderStore.storeShader(
     "dve_node",
     "vertex",
     NodeShader.GetVertex({
@@ -107,8 +107,9 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
         "worldOrigin",
         "cameraPosition",
         "lightGradient",
-        `dve_voxel_texture_animations`,
-        "dve_texture",
+        "dve_voxel",
+        "dve_voxel_animation",
+        "dve_voxel_animation_size",
       ],
       [
         "position",
@@ -125,7 +126,6 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
       "vertex",
       VoxelBaseShader.GetVertex({
         doAO: true,
-        textureLength: voxelTextureLength,
       })
     );
     DVEBRShaderStore.storeShader(

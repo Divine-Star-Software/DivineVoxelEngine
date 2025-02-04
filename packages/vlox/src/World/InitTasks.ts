@@ -9,7 +9,7 @@ import { WorldLockTasks, LoadSectorDataTasks } from "../Tasks/Tasks.types.js";
 import { WorldSpaces } from "./WorldSpaces.js";
 import { WorldLock } from "./Lock/WorldLock.js";
 import { WorldDataSyncIds } from "./Types/WorldDataSyncIds.js";
-import { WorldStorageInterface } from "./Storage/WorldStorage.interface.js";
+import { WorldStorageInterface } from "./Types/WorldStorage.interface.js";
 
 export default function ({
   threads,

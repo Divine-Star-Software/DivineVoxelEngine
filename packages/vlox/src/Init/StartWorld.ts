@@ -3,7 +3,7 @@ import { DivineVoxelEngineWorld } from "../Contexts/World/DivineVoxelEngineWorld
 import { Thread, Threads } from "@amodx/threads/";
 import InitWorldTasks from "../World/InitTasks";
 import { Environment } from "../Util/Environment";
-import { WorldStorageInterface } from "World/Storage/WorldStorage.interface";
+import { WorldStorageInterface } from "World/Types/WorldStorage.interface";
 type StartWorldProps = {
   worldStorage?: WorldStorageInterface;
 };

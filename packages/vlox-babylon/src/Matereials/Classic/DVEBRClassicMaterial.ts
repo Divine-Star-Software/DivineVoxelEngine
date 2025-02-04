@@ -1,4 +1,10 @@
-import { AssetContainer, Scene, Texture, Vector4 } from "@babylonjs/core";
+import {
+  AssetContainer,
+  RawTexture,
+  Scene,
+  Texture,
+  Vector4,
+} from "@babylonjs/core";
 import { ShaderMaterial } from "@babylonjs/core/Materials/shaderMaterial.js";
 import { Matrix, Vector2, Vector3 } from "@babylonjs/core/Maths/";
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager.js";
@@ -12,7 +18,7 @@ type MatData = MaterialData<{
   textureTypeId: string;
   effectId: string;
   material?: ShaderMaterial;
-  textures?: Map<string, ImageArrayTexture>;
+  textures?: Map<string, ImageArrayTexture | Texture>;
 }>;
 
 export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
@@ -39,6 +45,7 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
       return this._material;
     }
     let texture;
+    let animationTexture;
     if (data.data.textureTypeId) {
       texture = TextureManager.getTexture(
         data.data.textureTypeId ? data.data.textureTypeId : this.id
@@ -49,6 +56,7 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
           `Could find the texture type for material ${this.id}. Texture typeid:  ${data.data.textureTypeId}`
         );
       }
+      animationTexture = texture.animatedTexture;
     }
 
     const shaderData = DVEBRShaderStore.getShaderData(this.data.data.effectId);
@@ -134,6 +142,16 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
 
     if (texture) {
       this.setTexture(texture.id, texture.shaderTexture);
+      console.warn(animationTexture?.shaderTexture);
+      this.setTexture(
+        `${texture.id}_animation`,
+        animationTexture!.shaderTexture
+      );
+
+      this._material.setInt(
+        `${texture.id}_animation_size`,
+        animationTexture!._size
+      );
     }
 
     this.afterCreate.forEach((_) => _(this._material));
@@ -142,27 +160,51 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
   setTextureArray(samplerId: string, sampler: Texture[]): void {
     this._material.setTextureArray(samplerId, sampler);
   }
-  textures = new Map<string, ImageArrayTexture>();
+  textures = new Map<string, ImageArrayTexture | Texture>();
   //@ts-ignore
-  setTexture(samplerId: string, sampler: ImageArrayTexture): void {
+  setTexture(samplerId: string, sampler: ImageArrayTexture | Texture): void {
     this._material.setTexture(samplerId, sampler!);
 
     this.textures.set(samplerId, sampler);
   }
 
   clone(scene: Scene) {
-    const textures = new Map<string, ImageArrayTexture>();
+    const textures = new Map<string, ImageArrayTexture | Texture>();
     for (const [textId, texture] of this.textures) {
       this._material.removeTexture(textId);
     }
 
     const newMat = ShaderMaterial.Parse(this._material.serialize(), scene, "/");
-
     for (const [textId, texture] of this.textures) {
-      const newTexture = texture.copy(scene)!;
-      textures.set(textId, newTexture);
-      newMat.setTexture(textId, newTexture!);
-      this._material.setTexture(textId, texture!);
+      if (texture instanceof ImageArrayTexture) {
+        const newTexture = texture.copy(scene)!;
+        textures.set(textId, newTexture);
+        newMat.setTexture(textId, newTexture!);
+        this._material.setTexture(textId, texture!);
+      }
+      if (texture instanceof RawTexture) {
+        console.warn(
+          texture.metadata.buffer,
+          texture.getSize().width,
+          texture.getSize().height,
+          [texture.format, texture.textureType]
+        );
+
+        const newTexture = new RawTexture(
+          texture.metadata.buffer || new ArrayBuffer(4),
+          texture.getSize().width,
+          texture.getSize().height,
+          texture.format,
+          scene,
+          false,
+          false,
+          Texture.NEAREST_NEAREST,
+          texture.textureType
+        );
+        textures.set(textId, newTexture);
+        newMat.setTexture(textId, newTexture!);
+        this._material.setTexture(textId, texture!);
+      }
     }
 
     const mat = new DVEBRClassicMaterial(this.id, {

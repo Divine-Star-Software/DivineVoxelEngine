@@ -3,7 +3,7 @@ import type { LocationData } from "../../Math";
 
 import { WorldRegister } from "../../World/WorldRegister.js";
 import { WorldSpaces } from "../../World/WorldSpaces.js";
-import { WorldStorageInterface } from "../../World/Storage/WorldStorage.interface";
+import { WorldStorageInterface } from "../Types/WorldStorage.interface";
 
 export class WorldLock {
   static locks = new Map<string, WorldLockTasks>();

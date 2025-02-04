@@ -1,6 +1,6 @@
 import { Thread } from "@amodx/threads";
 import { TaskTool } from "../../../Tools/Tasks/TasksTool";
-import { WorldStorageInterface } from "../../../World/Storage/WorldStorage.interface";
+import { WorldStorageInterface } from "../../../World/Types/WorldStorage.interface";
 
 export class IWGTools {
   static taskTool: TaskTool;

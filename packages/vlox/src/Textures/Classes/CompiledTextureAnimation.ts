@@ -1,25 +1,25 @@
 export class CompiledTextureAnimation {
-  frames: number[] = [];
-  times: number[] = [];
+  _frames: number[] = [];
+  _times: number[] = [];
   _currentTime = 0;
   _frameIndex = 0;
-  _lastDelta = -1;
+  _current: number = Infinity;
+  _animatedTextureIndex = -1;
   constructor(public textureIndex: number) {}
 
   tick(delta: number) {
-    if (this._lastDelta == -1) {
-      this._lastDelta = delta;
-      return false;
-    }
-    const d = delta - this._lastDelta;
-    if (d > this.times[this._frameIndex]) {
+    if (this._current == Infinity) this._current = this._times[0];
+    this._current -= delta;
+    if (this._current <= 0) {
       this._frameIndex++;
-      this._frameIndex %= this.frames.length;
+      this._frameIndex %= this._frames.length;
+      this._current = this._times[this._frameIndex];
       return true;
     }
+    return false;
   }
 
   getIndex() {
-    return this.frames[this._frameIndex] + this.textureIndex;
+    return this._frames[this._frameIndex] + this.textureIndex;
   }
 }

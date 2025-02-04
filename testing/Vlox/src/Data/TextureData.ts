@@ -188,8 +188,8 @@ export const Textures: TextureData[] = [
           tiles: [1, 6],
         },
         animated: {
-          frameTime: 2,
-          frames: [1, 2, 3, 4, 5, 6, 5, 4, 3, 2],
+          frameTime: 100,
+          pingPong: true,
         },
       },
     ],
@@ -203,8 +203,8 @@ export const Textures: TextureData[] = [
           tiles: [1, 6],
         },
         animated: {
-          frameTime: 2,
-          frames: [1, 2, 3, 4, 5, 6, 5, 4, 3, 2],
+          frameTime: 100,
+          pingPong: true,
         },
       },
     ],

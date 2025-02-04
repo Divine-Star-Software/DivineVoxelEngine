@@ -1,5 +1,5 @@
 import { Thread, ThreadPool } from "@amodx/threads";
-import { WorldStorageInterface } from "../../World/Storage/WorldStorage.interface";
+import { WorldStorageInterface } from "../../World/Types/WorldStorage.interface";
 import { TaskTool } from "../../Tools/Tasks/TasksTool";
 import { Generator, GeneratorData } from "./Internal/Classes/Generator";
 import { runWorldUpdate } from "./Internal/Functions/runWorldUpdate";

@@ -5,7 +5,7 @@ import {
   NodeSubstanceData,
 } from "../Matereials/Types/DVEBRDefaultMaterial.types.js";
 
-import type { Material, Scene } from "@babylonjs/core";
+import { Engine, RawTexture, type Material, type Scene } from "@babylonjs/core";
 import { NodeMaterialData } from "@divinevoxel/vlox/Renderer/DVERenderNode.types";
 
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
@@ -37,10 +37,26 @@ export async function CreateTextures(scene: Scene, textureData: TextureData[]) {
   for (const [key, type] of TextureManager._compiledTextures) {
     if (!type.images!.length) continue;
     type.shaderTexture = new ImageArrayTexture(type.images!, scene);
+    const animatedTexture = type.animatedTexture;
+    animatedTexture.build();
+    animatedTexture.shaderTexture = new RawTexture(
+      animatedTexture._buffer,
+      animatedTexture._size,
+      animatedTexture._size,
+      Engine.TEXTUREFORMAT_RED_INTEGER,
+      null,
+      false,
+      undefined,
+      Engine.TEXTURE_NEAREST_NEAREST,
+      Engine.TEXTURETYPE_UNSIGNED_SHORT
+    );
+    (animatedTexture.shaderTexture as RawTexture).metadata = {
+      buffer: animatedTexture._buffer,
+    };
   }
 }
 
-export function CreateDefaultRenderer(
+export async function CreateDefaultRenderer(
   initData: DVEBRDefaultMaterialBaseData & {
     scene: Scene;
     createMaterial: (
@@ -49,11 +65,12 @@ export function CreateDefaultRenderer(
     ) => MaterialInterface;
     afterCreate?: (sceneTool: SceneTool) => Promise<void>;
   }
-): DVEBabylonRenderer {
+): Promise<DVEBabylonRenderer> {
+  const { scene } = initData;
   const renderer = DVEBabylonRenderer.instance
     ? DVEBabylonRenderer.instance
     : new DVEBabylonRenderer({
-        scene: initData.scene,
+        scene,
       });
 
   const DefaultSubstances: NodeSubstanceData[] = defaultSubstances.map((id) => {
@@ -75,73 +92,69 @@ export function CreateDefaultRenderer(
       },
     };
   });
+  const substances = [...DefaultSubstances, ...initData.substances];
 
-  renderer.init = async (dver) => {
-    const substances = [...DefaultSubstances, ...initData.substances];
+  const materials: NodeMaterialData[] = [];
+  for (const substance of substances) {
+    const newMaterial = {
+      id: substance.id,
+      shaderId: substance.id,
+      textureTypeId: "dve_voxel",
+      ...substance.material,
+    };
 
-    const materials: NodeMaterialData[] = [];
-    for (const substance of substances) {
-      const newMaterial = {
-        id: substance.id,
-        shaderId: substance.id,
-        textureTypeId: "dve_voxel",
-        ...substance.material,
-      };
+    materials.push(newMaterial);
+  }
 
-      materials.push(newMaterial);
+  materials.push(
+    /*      {
+      id: "dve_node",
+      shaderId: "dve_node",
+      textureTypeId: "dve_node",
+      alphaBlending: false,
+      alphaTesting: true,
+    }, */
+    {
+      id: "dve_skybox",
+      shaderId: "dve_skybox",
+      textureTypeId: "",
+      alphaBlending: false,
+      alphaTesting: false,
     }
+  );
 
-    materials.push(
- /*      {
-        id: "dve_node",
-        shaderId: "dve_node",
-        textureTypeId: "dve_node",
-        alphaBlending: false,
-        alphaTesting: true,
-      }, */
-      {
-        id: "dve_skybox",
-        shaderId: "dve_skybox",
-        textureTypeId: "",
-        alphaBlending: false,
-        alphaTesting: false,
+  for (const mat of materials) {
+    renderer.materials.register(mat.id, initData.createMaterial(scene, mat));
+  }
+  DefaultMaterialManager.init();
+  scene.registerBeforeRender(() => {
+    for (const [key, type] of TextureManager._compiledTextures) {
+      if (type.animatedTexture.tick(scene.deltaTime)) {
+        (type.animatedTexture.shaderTexture as RawTexture).update(
+          type.animatedTexture._buffer
+        );
       }
-    );
-
-    for (const mat of materials) {
-      renderer.materials.register(
-        mat.id,
-        initData.createMaterial(initData.scene, mat)
-      );
     }
-    DefaultMaterialManager.init();
-    initData.scene.registerBeforeRender(() => {
-      for (const [key, type] of TextureManager._compiledTextures) {
-        for (const anim of type.animations) {
-          anim.tick(initData.scene.deltaTime);
-        }
-      }
-      DefaultMaterialManager.runEffects();
-      DefaultMaterialManager.updateUniforms();
-    });
+    DefaultMaterialManager.runEffects();
+    DefaultMaterialManager.updateUniforms();
+  });
 
-    const sceneTool = DefaultMaterialManager.sceneTool;
+  const sceneTool = DefaultMaterialManager.sceneTool;
 
-    sceneTool.levels
-      .setSun(0)
-      .levels.setBase(0)
+  sceneTool.levels
+    .setSun(0)
+    .levels.setBase(0)
+    .fog.setColor(0.1)
+    .fog.setMode("volumetric")
+    .fog.setDensity(0.0)
+    .fog.setHeightFactor(10.1)
+    .options.doAO(true)
+    .doEffects(false)
+    .doSun(false)
+    .doRGB(true);
 
-      .fog.setColor(0.1)
-      .fog.setMode("volumetric")
-      .fog.setDensity(0.0)
-      .fog.setHeightFactor(10.1)
-      .options.doAO(true)
-      .doEffects(false)
-      .doSun(false)
-      .doRGB(true);
-
-    InitDefaultEffects();
-    initData.afterCreate && (await initData.afterCreate(sceneTool));
-  };
+  InitDefaultEffects();
+  initData.afterCreate && (await initData.afterCreate(sceneTool));
+  renderer.init = async (dver) => {};
   return renderer;
 }

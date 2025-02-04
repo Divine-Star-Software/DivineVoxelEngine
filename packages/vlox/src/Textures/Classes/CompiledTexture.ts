@@ -1,13 +1,19 @@
 import { Vec2Array } from "@amodx/math";
 import { TextureId } from "../../Textures/Texture.types";
 import { CompiledTextureAnimation } from "./CompiledTextureAnimation";
+import { TextureAnimationTexture } from "./TextureAnimationTexture";
 
 export class CompiledTexture {
   static GetAtlasIndex = (x: number, y: number, boundsX: number) =>
     x + y * boundsX;
-  GetAtlasPosition = (index: number, boundsX: number, position: Vec2Array) => {
+  static GetAtlasPosition = (
+    index: number,
+    boundsX: number,
+    position: Vec2Array = [0, 0]
+  ) => {
     position[1] = Math.floor(index / boundsX);
     position[0] = Math.floor(index % boundsX);
+    return position;
   };
 
   images: HTMLImageElement[] = [];
@@ -16,8 +22,11 @@ export class CompiledTexture {
   textureMap: Record<string, number> = {};
   animations: CompiledTextureAnimation[] = [];
   shaderTexture: any;
+  animatedTexture: TextureAnimationTexture;
 
-  constructor(public id: string) {}
+  constructor(public id: string) {
+    this.animatedTexture = new TextureAnimationTexture(this);
+  }
 
   getTextureIndex(id: TextureId) {
     let finalId: string = "";
@@ -47,9 +56,10 @@ export class CompiledTexture {
     }
     const index = this.textureMap[finalId];
     if (index === undefined) {
-      throw new Error(
-        `Texture with id [passed in: ${id.toString()}] [final: ${finalId}] does not exist on compiled texture`
+      console.warn(
+        `Texture with id [passed in: ${id.toString()}] [final: ${finalId}] does not exist on compiled texture [${this.id}]`
       );
+      return 0;
     }
     return index + frameIndex;
   }

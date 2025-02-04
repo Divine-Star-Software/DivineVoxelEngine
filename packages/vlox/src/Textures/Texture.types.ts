@@ -25,8 +25,13 @@ export type TextureDataBase = {
    * If the texture is an atlas specify it here.
    */
   atlas?: {
-    spacing?: [pixelX: number, pixelY: number];
     tiles: [tilesX: number, tilesY: number];
+    /**To make it eaiser to use specifc tiles from an atlas you can name tiles.
+     * 
+     *  To use the name just at it to the end of the id with a colon ":". 
+     * 
+     * dve_dream_stone:grassy-top
+     */
     namedTiles?: {
       id: string;
       index: [tileX: number, tileY: number] | number;
@@ -38,6 +43,7 @@ export type TextureDataBase = {
    */
   animated?: {
     frameTime: number;
+    pingPong?:boolean;
     interpolate?: boolean;
     frames?: (number | { index: number; time: number })[];
   };

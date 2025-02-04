@@ -1,10 +1,11 @@
 import { SharedShaders } from "./SharedShaders";
 
 export class VoxelBaseShader {
-  static GetVertex(props: { textureLength: number; doAO: boolean }) {
+  static GetVertex(props: { doAO: boolean }) {
     return /* glsl */ `#version 300 es
 precision highp float;
-
+precision highp usampler2D; 
+precision highp sampler2DArray;
 
          
 const uint lightMask = uint(0xf);
@@ -23,8 +24,12 @@ const uint secondaryTextureIndex = uint(0xf + 0x1);
         
 
 
-//uniforms
+//texture animations
+uniform sampler2DArray dve_voxel;
+uniform usampler2D dve_voxel_animation; 
+uniform int dve_voxel_animation_size;
 
+//uniforms
 uniform float time;
 uniform vec4 fogOptions;
 uniform vec3 vFogColor;
@@ -42,9 +47,7 @@ uniform mat4 viewProjection;
 uniform vec3 worldOrigin;
 uniform vec3 cameraPosition;
 uniform float lightGradient[16];
-
-uniform float dve_voxel_texture_animations[${props.textureLength}];
-        
+  
 
 //attributes
 in vec3 position;
@@ -67,6 +70,17 @@ out vec3 vUV;
 out vec4 vOverlayTextureIndex;
 out vec3 vLight;
 out float vAO;
+
+
+
+float getTextureIndex(int index) {
+  uint tInt = texelFetch(dve_voxel_animation, 
+  ivec2( index % dve_voxel_animation_size,  index / dve_voxel_animation_size), 0).r;
+  if(tInt == 0u) return float(index);
+  return float(tInt);
+}
+
+
 
 ${SharedShaders.FBMNoiseFunctions}
   #ifdef INSTANCES
@@ -119,44 +133,15 @@ if(doColor == 1.0) {
 
 vUV.x = uv.x;
 vUV.y = uv.y;
-int index = int(uint(textureIndex.x) & textureIndexMask);
-float animatedIndex = dve_voxel_texture_animations[index];
-if(animatedIndex == 0.) {
-    vUV.z = float(index);
-}
-if(animatedIndex != 0.) {
-    vUV.z = float(animatedIndex);
-}
-
-vec4 frames = vec4(0., 0., 0., 0.);
-int texture1Index = int(((textureIndexMask << secondaryTextureIndex) & uint(textureIndex.x)) >> secondaryTextureIndex);
-if(dve_voxel_texture_animations[texture1Index] != 0.) {
-    frames.x = dve_voxel_texture_animations[texture1Index];
-} else {
-    frames.x = float(texture1Index);
-}
-
-int texture2Index = int(((textureIndexMask << mainTexutreIndex) & uint(textureIndex.y)) >> mainTexutreIndex);
-if(dve_voxel_texture_animations[texture2Index] != 0.) {
-    frames.y = dve_voxel_texture_animations[texture2Index];
-} else {
-    frames.y = float(texture2Index);
-}
-
-int texture3Index = int(((textureIndexMask << secondaryTextureIndex) & uint(textureIndex.y)) >> secondaryTextureIndex);
-if(dve_voxel_texture_animations[texture3Index] != 0.) {
-    frames.z = dve_voxel_texture_animations[texture3Index];
-} else {
-    frames.z = float(texture3Index);
-}
-
-int texture4Index = int(((textureIndexMask << mainTexutreIndex) & uint(textureIndex.z)) >> mainTexutreIndex);
-if(dve_voxel_texture_animations[texture4Index] != 0.) {
-    frames.w = dve_voxel_texture_animations[texture4Index];
-} else {
-    frames.w = float(texture4Index);
-}
-vOverlayTextureIndex = frames;
+vUV.z = getTextureIndex(int(uint(textureIndex.x) & textureIndexMask));
+vOverlayTextureIndex.x = getTextureIndex(
+    int(((textureIndexMask << secondaryTextureIndex) & uint(textureIndex.x)) >> secondaryTextureIndex)
+);
+vOverlayTextureIndex.y = getTextureIndex(int(uint(textureIndex.y) & textureIndexMask));
+vOverlayTextureIndex.z = getTextureIndex(  
+    int(((textureIndexMask << secondaryTextureIndex) & uint(textureIndex.y)) >> secondaryTextureIndex)
+);
+vOverlayTextureIndex.w = getTextureIndex( int(uint(textureIndex.z) & textureIndexMask));
 
 #ifdef INSTANCES
 mat4 finalWorld = mat4(world0, world1, world2, world3);
@@ -175,7 +160,7 @@ gl_Position = viewProjection * world * vec4(position, 1.0);
 }
 `;
   }
-  static DefaultLiquidFragmentMain = (doAO: boolean) => /* glsl */`
+  static DefaultLiquidFragmentMain = (doAO: boolean) => /* glsl */ `
   
 vec4 rgb = texture(dve_voxel,vec3(vec2(vUV.x,vUV.y + time * .01 * -1. * vFlow),vUV.z));
     
@@ -213,7 +198,7 @@ vec4 rgb = texture(dve_voxel,vec3(vec2(vUV.x,vUV.y + time * .01 * -1. * vFlow),v
 
   `;
 
-  static DefaultFragmentMain = (doAO: boolean) => /* glsl */`
+  static DefaultFragmentMain = (doAO: boolean) => /* glsl */ `
   
       vec4 rgb = texture(dve_voxel,vec3(vUV.xy,vUV.z));
     
@@ -252,10 +237,12 @@ vec4 rgb = texture(dve_voxel,vec3(vec2(vUV.x,vUV.y + time * .01 * -1. * vFlow),v
 
   `;
 
-  static GetFragment(main: string,top = "") {
+  static GetFragment(main: string, top = "") {
     const shader = /* glsl */ `#version 300 es
 precision highp float;
+precision highp usampler2D; 
 precision highp sampler2DArray;
+
 
 //uniforms
 uniform float time;
@@ -272,7 +259,8 @@ uniform float mipMapBias;
 uniform vec3 cameraPosition;
 uniform vec3 cameraDirection;
 uniform sampler2DArray dve_voxel;
-      
+uniform usampler2D dve_voxel_animation; 
+uniform int dve_voxel_animation_size;   
 
 //varying
 in vec3 worldPOS;

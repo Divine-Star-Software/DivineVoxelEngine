@@ -116,23 +116,35 @@ function createAnimationData(
   if (!data?.frames) {
     const maxFrames = atlas!.tiles[0] * atlas!.tiles[1];
     for (let i = 0; i < maxFrames; i++) {
-      compiled!.frames[i] = i;
-      compiled.times[i] = data!.frameTime!;
+      compiled!._frames[i] = i;
+      compiled._times[i] = data!.frameTime!;
     }
-    return compiled;
+  } else {
+    for (let i = 0; i < data.frames.length; i++) {
+      const frameData = data.frames[i];
+      if (typeof frameData == "number") {
+        compiled!._frames[i] = frameData;
+        compiled._times[i] = data!.frameTime!;
+        continue;
+      }
+      compiled!._frames[i] = frameData.index;
+      compiled._times[i] = frameData.time;
+    }
   }
 
-  for (let i = 0; i < data.frames.length; i++) {
-    const frameData = data.frames[i];
-    if (typeof frameData == "number") {
-      compiled!.frames[i] = frameData;
-      compiled.times[i] = data!.frameTime!;
-      continue;
-    }
-    compiled!.frames[i] = frameData.index;
-    compiled.times[i] = frameData.time;
+  if (data?.pingPong) {
+    compiled!._frames = [
+      ...compiled._frames,
+      ...compiled._frames.toReversed().slice(
+        1,
+        compiled._frames.length - 1
+      ),
+    ];
+    compiled!._times = [
+      ...compiled._times,
+      ...compiled._times.toReversed().slice(1, compiled._times.length - 1),
+    ];
   }
-
   return compiled;
 }
 
