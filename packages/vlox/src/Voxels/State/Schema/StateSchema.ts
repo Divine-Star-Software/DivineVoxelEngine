@@ -1,7 +1,7 @@
 import { ShapeStateRelationsNode } from "./ShapeStateRelationsNode";
 import { BinarySchemaNode } from "./BinarySchemaNode";
 import { VoxelModelStateSchemaData } from "../State.types";
-import { DataCursorInterface } from "../../../Tools/DataCursor.interface";
+import { DataCursorInterface } from "../../Cursor/DataCursor.interface";
 import { Vector3Like } from "@amodx/math";
 import { VoxelCursorInterface } from "../../Cursor/VoxelCursor.interface";
 export class StateSchema {

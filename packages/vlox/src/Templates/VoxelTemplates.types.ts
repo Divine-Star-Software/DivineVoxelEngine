@@ -1,5 +1,5 @@
 import { Vec3Array } from "@amodx/math";
-import { VoxelDataArrays } from "../World";
+import { VoxelDataArrays } from "../Voxels";
 
 export interface VoxelTemplateBuffers {
   ids: Uint16Array | Uint8Array | number;

@@ -1,24 +1,34 @@
 import { Vec3Array } from "@amodx/math";
 import { LocationData } from "../../Math";
+import { BinaryBufferData } from "../../Util/Binary/BinaryBuffer";
 
+export type ArchivedLightSegments = "sun" | "red" | "green" | "blue";
 /**
  * Interface for an archived sector.
  */
 export interface ArchivedSectorData {
-  /** The version of vlox the data was stored in. */
+  /** A user provided version of the data. */
   version: string;
+  /** The version of vlox the data was stored in. */
+  vloxVersion: string;
   /** The location of the sector in the world. */
   location: LocationData;
-  /** Record of the sector's state, storing dynamic or user-defined data. */
-  sectorState: Record<string, any>;
+  /** Record of the sector's bit flags.  */
+  flags: Record<string, boolean>;
+  /** Record of the sector's timestamps. */
+  timestamps: Record<string, number>;
   /** The palette data used within the sector. */
   palettes: ArchivedSectorPaletteData;
   /** Placeholder for future buffer data. */
   buffers: ArchivedSectorBuffersData;
-  /** Keys associated with section states and other objects. */
-  keys: ArchivedSectorKeysData;
+
+  duplicates: ArchivedSectorDuplicteData;
+
   /** Array of archived section data within the sector. */
-  sections: ArchivedSectionData[];
+  sections: (ArchivedSectionData | string)[];
+}
+export interface ArchivedSectorDuplicteData {
+  sections?: Record<string, ArchivedSectionData>;
 }
 
 /**
@@ -26,22 +36,14 @@ export interface ArchivedSectorData {
  */
 export interface ArchivedSectorPaletteData {
   id: string[];
-  secondaryId?: string[];
-  level?: Uint8Array;
-  stateMap: Record<number,any[]>;
-  modMap: Record<number,any[]>;
+  secondaryId: string[];
   state: Uint16Array;
+  stateMap: Record<number, any[]>;
   mod: Uint16Array;
-  light?: Uint16Array;
+  modMap: Record<number, any[]>;
+  level?: Uint8Array;
+  light: Partial<Record<ArchivedLightSegments, Uint8Array>>;
   secondaryState?: Uint16Array;
-}
-
-/**
- * Interface for the keys of an archived sector.
- */
-export interface ArchivedSectorKeysData {
-  /** Array of strings that are the keys for the section state struct.  */
-  sectionState: string[];
 }
 
 /**
@@ -53,10 +55,10 @@ export interface ArchivedSectorBuffersData {}
  * Interface for an archived section.
  */
 export interface ArchivedSectionData {
-  /** Array representing the section's state, holding dynamic or user-defined data. */
-  state: any[];
+  /** Record of the sections's bit flags.  */
+  flags?: Record<string, boolean>;
   /** Palette data used within the section. */
-  palettes: ArchivedSectionPaletteData;
+  palettes?: ArchivedSectionPaletteData;
   /** Buffer data for the section, holding voxel type identifiers, light data, state, and secondary state. */
   buffers: ArchivedSectionBuffers;
 }
@@ -66,7 +68,7 @@ export interface ArchivedSectionData {
  */
 export interface ArchivedSectionPaletteData {
   id?: Uint16Array;
-  light?: Uint16Array;
+  light?: Partial<Record<ArchivedLightSegments, Uint8Array>>;
   level?: Uint8Array;
   secondaryId?: Uint16Array;
   state?: Uint16Array;
@@ -78,12 +80,17 @@ export interface ArchivedSectionPaletteData {
  * Interface representing the buffer data for a section.
  */
 export interface ArchivedSectionBuffers {
-  id: Uint16Array | Uint8Array | number;
-  light: Uint16Array | Uint8Array | number;
-  level: Uint8Array | number;
-  state: Uint16Array | Uint8Array | number;
-  mod: Uint16Array | Uint8Array | number;
-  secondary: Uint16Array | Uint8Array | number;
+  //state
+  buried?: Uint8Array | number;
+  voxelMap?: Uint8Array | number;
+  dirtyMap?: Uint8Array | number;
+  //voxel buffers
+  id?: BinaryBufferData | number;
+  light?: Partial< Record<ArchivedLightSegments, BinaryBufferData | number>>;
+  level?: BinaryBufferData | number;
+  state?: BinaryBufferData | number;
+  mod?: BinaryBufferData | number;
+  secondary?: BinaryBufferData | number;
 }
 
 /**
@@ -143,14 +150,14 @@ export interface ArchivedAreaKeysData {
  */
 export interface ArchivedAreaSectorPaletteData {
   id: string[];
-  light?: Uint16Array;
-  level?: Uint8Array;
-  state?: Uint16Array;
-  mod?: Uint16Array;
-  stateMap: Record<number,any[]>;
-  modMap: Record<number,any[]>;
-  secondaryId?: string[];
-  secondaryState?: Uint16Array;
+  light: Uint16Array;
+  level: Uint8Array;
+  state: Uint16Array;
+  mod: Uint16Array;
+  stateMap: Record<number, any[]>;
+  modMap: Record<number, any[]>;
+  secondaryId: string[];
+  secondaryState: Uint16Array;
 }
 
 /**

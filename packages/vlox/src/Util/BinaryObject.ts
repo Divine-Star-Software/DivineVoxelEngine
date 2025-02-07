@@ -19,6 +19,5 @@ export async function expandBinaryObject<T = any>(
   BinaryObject.setUseSharedMemory(useSharedMemory);
   const object = BinaryObject.bufferToObject<T>(decompressedBuffer);
   BinaryObject.setUseSharedMemory(false);
-
   return object;
 }

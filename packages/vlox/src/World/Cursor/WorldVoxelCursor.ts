@@ -1,6 +1,7 @@
 import { Section } from "../Section/index";
 import { VoxelCursorInterface } from "../../Voxels/Cursor/VoxelCursor.interface";
 import { WorldSectionCursorInterface } from "./WorldSectionCursor.interface";
+import { SectionStateDefaultFlags } from "../Section/SectionState";
 export class WorldVoxelCursor extends VoxelCursorInterface {
   private _section: Section;
 
@@ -35,6 +36,7 @@ export class WorldVoxelCursor extends VoxelCursorInterface {
    */
   updateVoxel(mode: 0 | 1 | 2) {
     const voxelPos = this.dataCursor._voxelPosition;
+    this.dataCursor._section?.sector.setStored(false);
     if (mode == 0) {
       this.dataCursor._section?.setBuried(this.dataCursor._voxelIndex, false);
       this.dataCursor._section?.setHasVoxel(voxelPos.y, true);

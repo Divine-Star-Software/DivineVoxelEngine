@@ -1,11 +1,12 @@
-import { Section, VoxelDataArrays, Sector, SectorData } from "../../index";
+import { SectionData, Sector, SectorData } from "../../index";
 import { ArchivedSectionData, ArchivedSectorData } from "../Archive.types";
 import { NumberPalette } from "../../../Util/NumberPalette";
 import { StringPalette } from "../../../Util/StringPalette";
-import { getPaletteArray } from "../../../Util/Binary/Palettes";
 import { SchemaRegister } from "../../../Voxels/State/SchemaRegister";
 import { VoxelPalettesRegister } from "../../../Voxels/Data/VoxelPalettesRegister";
 import { VoxelTagsRegister } from "../../../Voxels/Data/VoxelTagsRegister";
+import { BinaryBuffer } from "../../../Util/Binary/BinaryBuffer";
+import { lightSegments, lightSemgnetSet } from "./Shared";
 
 type RunData = {
   version?: number;
@@ -13,182 +14,191 @@ type RunData = {
   loadSectionState?: (
     keys: string[],
     data: any[],
-    section: VoxelDataArrays
+    section: SectionData
   ) => void;
 };
 
-const updateSectionBuffers = (
-  sector: ArchivedSectorData,
-  section: ArchivedSectionData
-) => {
-  if (
-    (sector.palettes.id.length <= 15 ||
-      (section.palettes.id && section.palettes.id.length <= 15)) &&
-    ArrayBuffer.isView(section.buffers.id)
-  ) {
-    section.buffers.id = getPaletteArray(
-      Math.min(
-        section.palettes.id?.length || Infinity,
-        sector.palettes.id?.length || 0
-      ),
-      section.buffers.id as any
-    ) as any;
-  }
-  if (
-    ((section.palettes.light && section.palettes.light.length <= 15) ||
-      (sector.palettes.light && sector.palettes.light.length <= 15)) &&
-    ArrayBuffer.isView(section.buffers.light)
-  ) {
-    section.buffers.light = getPaletteArray(
-      Math.min(
-        section.palettes.light?.length || Infinity,
-        sector.palettes.light?.length || 0
-      ),
-      section.buffers.light as any
-    ) as any;
-  }
-
-  if (
-    ((section.palettes.state && section.palettes.state.length <= 15) ||
-      (sector.palettes.state && sector.palettes.state.length <= 15)) &&
-    ArrayBuffer.isView(section.buffers.state)
-  ) {
-    section.buffers.state = getPaletteArray(
-      Math.min(
-        section.palettes.state?.length || Infinity,
-        sector.palettes.state?.length || 0
-      ),
-      section.buffers.state as any
-    ) as any;
-  }
-
-  if (
-    ((section.palettes.mod && section.palettes.mod.length <= 15) ||
-      (sector.palettes.mod && sector.palettes.mod.length <= 15)) &&
-    ArrayBuffer.isView(section.buffers.mod)
-  ) {
-    section.buffers.mod = getPaletteArray(
-      Math.min(
-        section.palettes.mod?.length || Infinity,
-        sector.palettes.mod?.length || 0
-      ),
-      section.buffers.mod as any
-    ) as any;
-  }
-
-  if (
-    ((section.palettes.secondaryState &&
-      section.palettes.secondaryState.length <= 15) ||
-      (sector.palettes.secondaryState &&
-        sector.palettes.secondaryState.length <= 15)) &&
-    ((section.palettes.secondaryId &&
-      section.palettes.secondaryId.length <= 15) ||
-      (sector.palettes.secondaryId &&
-        sector.palettes.secondaryId.length <= 15)) &&
-    ArrayBuffer.isView(section.buffers.secondary)
-  ) {
-    section.buffers.secondary = getPaletteArray(
-      Math.max(
-        Math.min(
-          section.palettes.secondaryId?.length || Infinity,
-          sector.palettes.secondaryId?.length || 0
-        ),
-        Math.min(
-          section.palettes.secondaryState?.length || Infinity,
-          sector.palettes.secondaryState?.length || 0
-        )
-      ),
-      section.buffers.secondary as any
-    ) as any;
-  }
-};
-type ImportedColumnData = ReturnType<typeof getImportedColumnData>;
+type ImportedSectorData = ReturnType<typeof getImportedSectorData>;
 type ImportedSectionData = ReturnType<typeof getImportedSectionData>;
 
-const getImportedColumnData = (sector: ArchivedSectorData) => {
+const getImportedSectorData = (sector: ArchivedSectorData) => {
   return {
     sector,
     idPalette: new StringPalette(sector.palettes.id),
-    secondaryId: sector.palettes.secondaryId
-      ? new StringPalette(sector.palettes.secondaryId)
+    secondaryId: new StringPalette(sector.palettes.secondaryId),
+    levelPalette: sector.palettes.level
+      ? new NumberPalette(sector.palettes.level)
       : undefined,
-    lightPalette: sector.palettes.light
-      ? new NumberPalette(sector.palettes.light)
-      : undefined,
-    statePalette: sector.palettes.state
-      ? new NumberPalette(sector.palettes.state)
-      : undefined,
-    modPalette: sector.palettes.mod
-      ? new NumberPalette(sector.palettes.mod)
-      : undefined,
-    secondaryState: sector.palettes.secondaryState
-      ? new NumberPalette(sector.palettes.secondaryState)
-      : undefined,
+    lightPalette: {
+      sun: sector.palettes.light.sun
+        ? new NumberPalette(sector.palettes.light.sun)
+        : null,
+      red: sector.palettes.light.red
+        ? new NumberPalette(sector.palettes.light.red)
+        : null,
+      green: sector.palettes.light.green
+        ? new NumberPalette(sector.palettes.light.green)
+        : null,
+      blue: sector.palettes.light.blue
+        ? new NumberPalette(sector.palettes.light.blue)
+        : null,
+    },
+    statePalette: new NumberPalette(sector.palettes.state),
+    modPalette: new NumberPalette(sector.palettes.mod),
+    secondaryState: new NumberPalette(sector.palettes.secondaryState),
   };
 };
 const getImportedSectionData = (section: ArchivedSectionData) => {
   return {
     section,
-    idPalette: section.palettes.id
-      ? new NumberPalette(section.palettes.id)
+    buffers: {
+      ids: !section.buffers.id
+        ? new BinaryBuffer({ buffer: 0 })
+        : typeof section.buffers.id == "number"
+          ? new BinaryBuffer({ buffer: section.buffers.id })
+          : new BinaryBuffer(section.buffers.id),
+      level: !section.buffers.level
+        ? new BinaryBuffer({ buffer: 0 })
+        : typeof section.buffers.level == "number"
+          ? new BinaryBuffer({ buffer: section.buffers.level })
+          : new BinaryBuffer(section.buffers.level),
+
+      light: {
+        sun: !section.buffers.light?.sun
+          ? new BinaryBuffer({ buffer: 0 })
+          : typeof section.buffers.light.sun == "number"
+            ? new BinaryBuffer({ buffer: section.buffers.light.sun })
+            : new BinaryBuffer(section.buffers.light.sun),
+        red: !section.buffers.light?.red
+          ? new BinaryBuffer({ buffer: 0 })
+          : typeof section.buffers.light.red == "number"
+            ? new BinaryBuffer({ buffer: section.buffers.light.red })
+            : new BinaryBuffer(section.buffers.light.red),
+        green: !section.buffers.light?.green
+          ? new BinaryBuffer({ buffer: 0 })
+          : typeof section.buffers.light.green == "number"
+            ? new BinaryBuffer({ buffer: section.buffers.light.green })
+            : new BinaryBuffer(section.buffers.light.green),
+        blue: !section.buffers.light?.blue
+          ? new BinaryBuffer({ buffer: 0 })
+          : typeof section.buffers.light.blue == "number"
+            ? new BinaryBuffer({ buffer: section.buffers.light.blue })
+            : new BinaryBuffer(section.buffers.light.blue),
+      },
+      state: !section.buffers.state
+        ? new BinaryBuffer({ buffer: 0 })
+        : typeof section.buffers.state == "number"
+          ? new BinaryBuffer({ buffer: section.buffers.state })
+          : new BinaryBuffer(section.buffers.state),
+      mod: !section.buffers.mod
+        ? new BinaryBuffer({ buffer: 0 })
+        : typeof section.buffers.mod == "number"
+          ? new BinaryBuffer({ buffer: section.buffers.mod })
+          : new BinaryBuffer(section.buffers.mod),
+      secondary: !section.buffers.secondary
+        ? new BinaryBuffer({ buffer: 0 })
+        : typeof section.buffers.secondary == "number"
+          ? new BinaryBuffer({ buffer: section.buffers.secondary })
+          : new BinaryBuffer(section.buffers.secondary),
+    },
+    idPalette: section.palettes?.id
+      ? new NumberPalette(section.palettes?.id)
       : undefined,
-    lightPalette: section.palettes.light
-      ? new NumberPalette(section.palettes.light)
+    lightPalette: {
+      sun: section.palettes?.light?.sun
+        ? new NumberPalette(section.palettes?.light?.sun)
+        : null,
+      red: section.palettes?.light?.red
+        ? new NumberPalette(section.palettes?.light?.red)
+        : null,
+      green: section.palettes?.light?.green
+        ? new NumberPalette(section.palettes?.light?.green)
+        : null,
+      blue: section.palettes?.light?.blue
+        ? new NumberPalette(section.palettes?.light?.blue)
+        : null,
+    },
+    levelPalette: section.palettes?.level
+      ? new NumberPalette(section.palettes?.level)
       : undefined,
-    statePalette: section.palettes.state
-      ? new NumberPalette(section.palettes.state)
+    statePalette: section.palettes?.state
+      ? new NumberPalette(section.palettes?.state)
       : undefined,
-    modPalette: section.palettes.mod
-      ? new NumberPalette(section.palettes.mod)
+    modPalette: section.palettes?.mod
+      ? new NumberPalette(section.palettes?.mod)
       : undefined,
-    secondaryState: section.palettes.secondaryState
-      ? new NumberPalette(section.palettes.secondaryState)
+    secondaryState: section.palettes?.secondaryState
+      ? new NumberPalette(section.palettes?.secondaryState)
       : undefined,
-    secondaryId: section.palettes.secondaryId
-      ? new NumberPalette(section.palettes.secondaryId)
+    secondaryId: section.palettes?.secondaryId
+      ? new NumberPalette(section.palettes?.secondaryId)
       : undefined,
   };
 };
 const getId = (
   value: number,
-  importedColumn: ImportedColumnData,
+  importedSector: ImportedSectorData,
   importedSection: ImportedSectionData
 ): number => {
-  if (importedSection.section.buffers.state instanceof Uint16Array)
-    return value;
-
-  if (typeof importedSection.section.buffers.id == "number") {
+  if (importedSection.buffers.ids.type == "value") {
     return VoxelPalettesRegister.voxels.getNumberId(
-      importedColumn.sector.palettes.id[importedSection.section.buffers.id]
+      importedSector.idPalette.getStringId(value)
     );
   }
   if (importedSection.idPalette) {
     return VoxelPalettesRegister.voxels.getNumberId(
-      importedColumn.idPalette.getStringId(
+      importedSector.idPalette.getStringId(
         importedSection.idPalette.getValue(value)
       )
     );
   }
-
   return VoxelPalettesRegister.voxels.getNumberId(
-    importedColumn.idPalette.getStringId(value)
+    importedSector.idPalette.getStringId(value)
   );
 };
+
 const getLight = (
-  value: number,
-  importedColumn: ImportedColumnData,
+  index: number,
+  importedSector: ImportedSectorData,
   importedSection: ImportedSectionData
 ): number => {
-  if (importedSection.section.buffers.light instanceof Uint16Array)
-    return value;
-  if (typeof importedSection.section.buffers.light == "number") {
-    return value;
+  let finalLight = 0;
+  for (let l = 0; l < lightSegments.length; l++) {
+    const segment = lightSegments[l];
+    let value = 0;
+    if (importedSection.buffers.light[segment].type == "value") {
+      value = importedSection.buffers.light[segment].getValue(index);
+    } else {
+      if (importedSection.buffers.light[segment].type == "4-bit") {
+        value = importedSection.buffers.light[segment].getValue(index);
+      } else {
+        if (importedSection.lightPalette[segment]) {
+          value = importedSection.lightPalette[segment].getValue(
+            importedSection.buffers.light[segment].getValue(index)
+          );
+        } else if (importedSector.lightPalette[segment]) {
+          value = importedSector.lightPalette[segment].getValue(
+            importedSection.buffers.light[segment].getValue(index)
+          );
+        }
+      }
+    }
+
+    finalLight = lightSemgnetSet[segment](value, finalLight);
   }
-  if (importedSection.lightPalette) {
-    return importedSection.lightPalette.getValue(value);
+
+  return finalLight;
+};
+const getLevel = (
+  value: number,
+  importedSector: ImportedSectorData,
+  importedSection: ImportedSectionData
+): number => {
+  if (importedSection.levelPalette) {
+    return importedSection.levelPalette.getValue(value);
   }
-  if (importedColumn.lightPalette) {
-    return importedColumn.lightPalette.getValue(value);
+  if (importedSector.levelPalette) {
+    return importedSector.levelPalette.getValue(value);
   }
   return value;
 };
@@ -197,7 +207,7 @@ const getState = (
   voxelId: number,
   value: number,
   processedState: Record<number, number>,
-  importedColumn: ImportedColumnData,
+  importedSector: ImportedSectorData,
   importedSection: ImportedSectionData
 ): number => {
   const voxelStringId = VoxelPalettesRegister.voxels.getStringId(voxelId);
@@ -212,14 +222,14 @@ const getState = (
 
   if (importedSection.statePalette) {
     stateId = importedSection.statePalette.getValue(value);
-  } else if (importedColumn.statePalette) {
+  } else if (importedSector.statePalette) {
     stateId = value;
   }
 
   if (processedState[stateId] !== undefined) return processedState[stateId];
 
   value = SchemaRegister.getVoxelSchemas(voxelStringId)!.state.fromStateObject(
-    importedColumn.sector.palettes.stateMap[stateId]
+    importedSector.sector.palettes.stateMap[stateId]
   );
   processedState[stateId] = value;
   return value;
@@ -229,7 +239,7 @@ const getMod = (
   voxelId: number,
   value: number,
   processedMod: Record<number, number>,
-  importedColumn: ImportedColumnData,
+  importedSector: ImportedSectorData,
   importedSection: ImportedSectionData
 ): number => {
   const voxelStringId = VoxelPalettesRegister.voxels.getStringId(voxelId);
@@ -244,14 +254,14 @@ const getMod = (
 
   if (importedSection.modPalette) {
     modId = importedSection.modPalette.getValue(value);
-  } else if (importedColumn.modPalette) {
+  } else if (importedSector.modPalette) {
     modId = value;
   }
 
   if (processedMod[modId] !== undefined) return processedMod[modId];
 
   value = SchemaRegister.getVoxelSchemas(voxelStringId)!.mod.fromStateObject(
-    importedColumn.sector.palettes.modMap[modId]
+    importedSector.sector.palettes.modMap[modId]
   );
   processedMod[modId] = value;
   return value;
@@ -260,142 +270,141 @@ const getMod = (
 const getSecondary = (
   voxelId: number,
   value: number,
-  importedColumn: ImportedColumnData,
+  importedSector: ImportedSectorData,
   importedSection: ImportedSectionData
 ): number => {
   if (VoxelTagsRegister.VoxelTags[voxelId]["dve_can_have_secondary"]) {
-    if (typeof importedSection.section.buffers.secondary == "number") {
-      return VoxelPalettesRegister.voxels.getNumberId(
-        importedColumn.sector.palettes.secondaryId![
-          importedSection.section.buffers.secondary
-        ]
-      );
-    }
     if (importedSection.secondaryId) {
       return VoxelPalettesRegister.voxels.getNumberId(
-        importedColumn.secondaryId!.getStringId(
+        importedSector.secondaryId!.getStringId(
           importedSection.secondaryId.getValue(value)
         )
       );
     }
     return VoxelPalettesRegister.voxels.getNumberId(
-      importedColumn.sector.palettes.secondaryId![value]
+      importedSector.sector.palettes.secondaryId![value]
     );
   }
 
   if (typeof importedSection.section.buffers.secondary == "number") {
     return value;
   }
-  if (importedSection.secondaryState && importedColumn.secondaryState) {
-    return importedColumn.secondaryState.getValue(
+  if (importedSection.secondaryState && importedSector.secondaryState) {
+    return importedSector.secondaryState.getValue(
       importedSection.secondaryState.getValue(value)
     );
   }
-  if (importedColumn.secondaryState) {
-    return importedColumn.secondaryState.getId(value);
+  if (importedSector.secondaryState) {
+    return importedSector.secondaryState.getId(value);
   }
   return value;
 };
 
 export default function ImportSector(
-  sector: ArchivedSectorData,
+  archivedSector: ArchivedSectorData,
   archiveData: RunData
 ): SectorData {
-  const newSector = new Sector(Sector.CreateNew());
-  newSector.position[0] = sector.location[1];
-  newSector.position[1] = sector.location[2];
-  newSector.position[2] = sector.location[3];
+  const sector = new Sector(Sector.CreateNew(), [
+    archivedSector.location[1],
+    archivedSector.location[2],
+    archivedSector.location[3],
+  ]);
 
-  if (!archiveData.loadColumnState) {
-    //sectorStructInstance.deserialize(sector.sectorState);
-  } else {
-    archiveData.loadColumnState(sector.sectorState, newSector);
-  }
+  sector.loadFlags(archivedSector.flags);
+  sector.loadTimestamps(archivedSector.timestamps);
 
-  const importedSector = getImportedColumnData(sector);
+  const importedSector = getImportedSectorData(archivedSector);
   const processedState: Record<number, number> = {};
   const processedMod: Record<number, number> = {};
 
   for (
     let sectionIndex = 0;
-    sectionIndex < sector.sections.length;
+    sectionIndex < archivedSector.sections.length;
     sectionIndex++
   ) {
+    const archivedSectionValue = archivedSector.sections[sectionIndex];
+    const archivedSection =
+      typeof archivedSectionValue == "string"
+        ? archivedSector.duplicates?.sections?.[archivedSectionValue]!
+        : archivedSectionValue;
+    const importedSection = getImportedSectionData(archivedSection);
     const section = sector.sections[sectionIndex];
-    const importedSection = getImportedSectionData(section);
-    const newSection = newSector.sections[sectionIndex];
+    archivedSection.flags && section.loadFlags(archivedSection.flags);
 
-    const sectionState: Record<string, any> = {};
-    for (let i = 0; i < sector.keys.sectionState.length; i++) {
-      sectionState[sector.keys.sectionState[i]] = section.state[i];
+    if (!ArrayBuffer.isView(archivedSection.buffers.buried)) {
+      for (let i = 0; i < section.buried.length; i++) {
+        section.buried[i] = archivedSection.buffers.buried || 0;
+      }
+    } else {
+      for (let i = 0; i < section.buried.length; i++) {
+        section.buried[i] = archivedSection.buffers.buried[i];
+      }
+    }
+    if (!ArrayBuffer.isView(archivedSection.buffers.voxelMap)) {
+      for (let i = 0; i < section.voxelMap.length; i++) {
+        section.voxelMap[i] = archivedSection.buffers.voxelMap || 0;
+      }
+    } else {
+      for (let i = 0; i < section.voxelMap.length; i++) {
+        section.voxelMap[i] = archivedSection.buffers.voxelMap[i];
+      }
+    }
+    if (!ArrayBuffer.isView(archivedSection.buffers.dirtyMap)) {
+      for (let i = 0; i < section.dirtyMap.length; i++) {
+        section.dirtyMap[i] = archivedSection.buffers.dirtyMap || 0;
+      }
+    } else {
+      for (let i = 0; i < section.dirtyMap.length; i++) {
+        section.dirtyMap[i] = archivedSection.buffers.dirtyMap[i];
+      }
     }
 
-    updateSectionBuffers(sector, section);
-    /* if (!archiveData.loadSectionState) {
-      sectionStructInstance.setData(newSection.sectionState);
-      sectionStructInstance.deserialize(sectionState);
-    } else {
-      archiveData.loadSectionState(
-        sector.keys.sectionState,
-        section.state,
-        newSection
-      );
-    } */
-
-    for (let i = 0; i < newSection.ids.length; i++) {
-      newSection.ids[i] = getId(
-        typeof section.buffers.id == "number"
-          ? section.buffers.id
-          : section.buffers.id[i],
-        importedSector,
-        importedSection
-      );
-      newSection.light[i] = getLight(
-        typeof section.buffers.light == "number"
-          ? section.buffers.light
-          : section.buffers.light[i],
-
+    for (let i = 0; i < section.ids.length; i++) {
+      section.ids[i] = getId(
+        importedSection.buffers.ids.getValue(i),
         importedSector,
         importedSection
       );
 
-      newSection.secondary[i] = getSecondary(
-        newSection.ids[i],
-        typeof section.buffers.secondary == "number"
-          ? section.buffers.secondary
-          : section.buffers.secondary[i],
+      section.level[i] = getLevel(
+        importedSection.buffers.level.getValue(i),
+        importedSector,
+        importedSection
+      );
+
+      section.light[i] = getLight(i, importedSector, importedSection);
+
+      section.secondary[i] = getSecondary(
+        section.ids[i],
+        importedSection.buffers.secondary.getValue(i),
         importedSector,
         importedSection
       );
 
       let secondary =
-        VoxelTagsRegister.VoxelTags[newSection.ids[i]][
-          "dve_can_have_secondary"
-        ] && newSection.secondary[i] > 0;
+        VoxelTagsRegister.VoxelTags[section.ids[i]]["dve_can_have_secondary"] &&
+        section.secondary[i] > 0;
 
-      newSection.state[i] = getState(
-        secondary ? newSection.secondary[i] : newSection.ids[i],
-        typeof section.buffers.state == "number"
-          ? section.buffers.state
-          : section.buffers.state[i],
+      section.state[i] = getState(
+        secondary ? section.secondary[i] : section.ids[i],
+        importedSection.buffers.state.getValue(i),
         processedState,
         importedSector,
         importedSection
       );
 
-      newSection.mod[i] = getMod(
-        secondary ? newSection.secondary[i] : newSection.ids[i],
-        typeof section.buffers.mod == "number"
-          ? section.buffers.mod
-          : section.buffers.mod[i],
+      section.mod[i] = getMod(
+        secondary ? section.secondary[i] : section.ids[i],
+        importedSection.buffers.mod.getValue(i),
         processedMod,
         importedSector,
         importedSection
       );
     }
 
-    newSector.sections[sectionIndex] = newSection;
+    sector.sections[sectionIndex] = section;
   }
 
-  return newSector;
+  sector.setBitFlag(Sector.FlagIds.isStored, true);
+  return sector;
 }

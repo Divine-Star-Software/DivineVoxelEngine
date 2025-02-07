@@ -3,13 +3,12 @@ import { WorldVoxelCursor } from "./WorldVoxelCursor";
 import { WorldSpaces } from "../WorldSpaces";
 
 import { Vector3Like } from "@amodx/math";
-import { DataCursorInterface } from "../../Tools/DataCursor.interface";
+import { DataCursorInterface } from "../../Voxels/Cursor/DataCursor.interface";
 import { WorldSectionCursorInterface } from "./WorldSectionCursor.interface";
 import type { Section } from "../Section/index";
 
 export class SectionCursor
-  extends DataCursorInterface
-  implements WorldSectionCursorInterface
+  implements DataCursorInterface, WorldSectionCursorInterface
 {
   _section: Section | null;
   private voxel = new WorldVoxelCursor(this);
@@ -54,7 +53,7 @@ export class SectionCursor
       z! || 0
     );
     if (!sector) return false;
-    this._section = sector.getSection(y || 0);
+    this._section = sector.getSection(x||0,y || 0,z||0);
     const sectionPos = this._section!.getPosition();
     this._sectionPosition.x = sectionPos[0];
     this._sectionPosition.y = sectionPos[1];

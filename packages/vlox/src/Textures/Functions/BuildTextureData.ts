@@ -74,8 +74,9 @@ async function loadImageForShader(
   if (!context) throw new Error("");
   canvas.width = finalSize[0];
   canvas.height = finalSize[1];
-  const prom: Promise<HTMLImageElement> = new Promise((resolve) => {
+  const prom: Promise<HTMLImageElement> = new Promise((resolve, reject) => {
     const image = typeof imgSrcData == "string" ? new Image() : imgSrcData;
+    image.onerror = (error) => reject(error);
     if (typeof imgSrcData == "string") image.src = imgSrcData;
     image.onload = () => {
       context.clearRect(0, 0, canvas.width, canvas.height);
@@ -135,10 +136,7 @@ function createAnimationData(
   if (data?.pingPong) {
     compiled!._frames = [
       ...compiled._frames,
-      ...compiled._frames.toReversed().slice(
-        1,
-        compiled._frames.length - 1
-      ),
+      ...compiled._frames.toReversed().slice(1, compiled._frames.length - 1),
     ];
     compiled!._times = [
       ...compiled._times,
@@ -226,8 +224,14 @@ export async function BuildTextureData({
   let count = 0;
   for (const texture of textures) {
     if (!texture.variations?.length) {
-      count = await process(compiled, texture, count, null, createCache);
-      continue;
+      try {
+        count = await process(compiled, texture, count, null, createCache);
+        continue;
+      } catch (error) {
+        console.warn(`Could not load texture ${texture.id}`);
+        console.error(error);
+        continue;
+      }
     }
 
     if (texture.variations) {
@@ -235,17 +239,29 @@ export async function BuildTextureData({
         const vara = texture.variations[i];
         if (typeof vara == "string") {
           const newData: TextureData = { type: texture.type, id: vara };
-          count = await process(
-            compiled,
-            newData,
-            count,
-            texture.id,
-            createCache
-          );
-          if (createCache) texture.variations[i] = newData;
+          try {
+            count = await process(
+              compiled,
+              newData,
+              count,
+              texture.id,
+              createCache
+            );
+            if (createCache) texture.variations[i] = newData;
+            continue;
+          } catch (error) {
+            console.warn(`Could not load texture ${texture.id}`);
+            console.error(error);
+            continue;
+          }
+        }
+        try {
+          count = await process(compiled, vara, count, texture.id, createCache);
+        } catch (error) {
+          console.warn(`Could not load texture ${texture.id}`);
+          console.error(error);
           continue;
         }
-        count = await process(compiled, vara, count, texture.id, createCache);
       }
     }
   }

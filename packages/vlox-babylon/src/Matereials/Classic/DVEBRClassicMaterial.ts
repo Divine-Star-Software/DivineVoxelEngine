@@ -142,7 +142,7 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
 
     if (texture) {
       this.setTexture(texture.id, texture.shaderTexture);
-      console.warn(animationTexture?.shaderTexture);
+ 
       this.setTexture(
         `${texture.id}_animation`,
         animationTexture!.shaderTexture
@@ -183,13 +183,6 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
         this._material.setTexture(textId, texture!);
       }
       if (texture instanceof RawTexture) {
-        console.warn(
-          texture.metadata.buffer,
-          texture.getSize().width,
-          texture.getSize().height,
-          [texture.format, texture.textureType]
-        );
-
         const newTexture = new RawTexture(
           texture.metadata.buffer || new ArrayBuffer(4),
           texture.getSize().width,

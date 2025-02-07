@@ -135,13 +135,13 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
         if (!camera) return;
         probe.position.copyFrom(camera.position);
       });
-
+        /*  
       renderer.observers.meshCreated.subscribe(InitDVEPBR, (mesh) => {
         if (!probe.renderList) probe.renderList = [];
-        /*    if (mesh._mesh.id.includes("glow")) {
+  if (mesh._mesh.id.includes("glow")) {
 
           glow.referenceMeshToUseItsOwnMaterial(mesh._mesh);
-        } */
+        }
         shadows.addShadowCaster(mesh._mesh);
 
         mesh._mesh.receiveShadows = true;
@@ -156,7 +156,7 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
       renderer.materials.materials.forEach((material, key) => {
         (material as DVEBRPBRMaterial)._material.disableLighting = false;
       });
-
+ */
       initData.scene.ambientColor.set(0, 0, 0);
 
       const skybox = CreateBox("skyBox", { size: 300.0 }, initData.scene);

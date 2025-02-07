@@ -1,30 +1,17 @@
-import { RemoteBinaryStruct } from "@amodx/binary/";
-
 import { WorldSpaces } from "../WorldSpaces.js";
 import { Sector } from "../Sector/Sector.js";
 import { Vec3Array } from "@amodx/math";
 import {
   getBitArrayIndex,
   setBitArrayIndex,
-} from "../../Util/Binary/BitArray.js";
-export interface VoxelDataArrays {
-  /**The runtime numeric voxel ids */
-  ids: Uint16Array;
-  /**The light data for voxels stored as 4 nibbles. 0 -> sun light 1 -> red light 2 -> green light 3 -> blue light */
-  light: Uint16Array;
-  /**The levels of the voxel. Used mainly for waterflow now. */
-  level: Uint8Array;
-  /**The state of the voxel. Used mainly be the voxel model system to get the model shape. */
-  state: Uint16Array;
-  /**The mod state of the voxel. Used mainly by the voxel model system to change model inputs. */
-  mod: Uint16Array;
-  /**The secondary state of the voxel. Can be set to a voxel id to make things like water logged voxels.
-   * But the main voxel itself must not use state or mod because the secondary voxel will use the same state and mod.
-   */
-  secondary: Uint16Array;
-}
+} from "../../Util/Binary/BinaryArrays.js";
+import { VoxelDataArrays } from "Voxels/index.js";
+import { SectionState, SectionStateDefaultFlags } from "./SectionState.js";
+import { forceMultipleOf2 } from "../../Util/Binary/BinaryFunctions.js";
 
 export interface SectionData extends VoxelDataArrays {
+  /**Array of bit flags for the sector*/
+  flagArray: Uint8Array;
   /**Y slice of the section to tell if there is voxels or not. Used for height maps. */
   voxelMap: Uint8Array;
   /**Y slice of the section to tell if the slice is dirty and voxelMap needs to be re-checked. */
@@ -34,28 +21,21 @@ export interface SectionData extends VoxelDataArrays {
 }
 export interface Section extends SectionData {}
 
-function forceMultipleOf2(n: number): number {
-  return n % 2 === 0 ? n : n + 1;
-}
-const position: Vec3Array = [0, 0, 0];
 export class Section {
   static GetBufferSize() {
     const voxelSize = WorldSpaces.section.volumne;
     const height = WorldSpaces.section.bounds.y;
     return forceMultipleOf2(
-      //-----
-      //voxelMap
-      height / 8 +
+      //----- state
+      //2 bytes for flags
+      2 +
+        //voxelMap
+        height / 8 +
         //dirtyMap
         height / 8 +
-        //-----
-        //cache
+        //bureid
         voxelSize / 8 +
-        //exposed
-        voxelSize * 2 +
-        //-----
-        //voxel data
-
+        //---- voxel data arrays
         //ids
         voxelSize * 2 +
         //light
@@ -76,8 +56,11 @@ export class Section {
 
   static CreateNew(index: number, sectorBuffer: ArrayBufferLike): SectionData {
     const voxelSize = WorldSpaces.section.volumne;
-    let bufferStart = this.GetArrayStartIndex(index);
     const height = WorldSpaces.section.bounds.y;
+    let bufferStart = this.GetArrayStartIndex(index);
+
+    const flagArray = new Uint8Array(sectorBuffer, bufferStart, 2);
+    bufferStart += 2;
     const voxelMap = new Uint8Array(sectorBuffer, bufferStart, height / 8);
     bufferStart += height / 8;
     const dirtyMap = new Uint8Array(sectorBuffer, bufferStart, height / 8);
@@ -97,6 +80,7 @@ export class Section {
     const level = new Uint8Array(sectorBuffer, bufferStart, voxelSize);
     bufferStart += voxelSize;
     return {
+      flagArray,
       voxelMap,
       dirtyMap,
       buried,
@@ -113,11 +97,23 @@ export class Section {
     return new Section(sector, index, data);
   }
 
+  readonly position: Vec3Array;
+
   constructor(
     public sector: Sector,
     public index: number,
     data: SectionData
   ) {
+    this.position = WorldSpaces.section.getPositionFromIndexVec3Array(
+      this.index
+    );
+    this.position[0] =
+      this.position[0] * WorldSpaces.section.bounds.x + this.sector.position[0];
+    this.position[1] =
+      this.position[1] * WorldSpaces.section.bounds.y + this.sector.position[1];
+    this.position[2] =
+      this.position[2] * WorldSpaces.section.bounds.z + this.sector.position[2];
+    this.flagArray = data.flagArray;
     this.voxelMap = data.voxelMap;
     this.dirtyMap = data.dirtyMap;
     this.buried = data.buried;
@@ -130,11 +126,29 @@ export class Section {
   }
 
   getPosition(): Readonly<Vec3Array> {
-    position[0] = this.sector.position[0];
-    position[1] =
-      this.sector.position[1] + this.index * WorldSpaces.section.bounds.y;
-    position[2] = this.sector.position[2];
-    return position;
+    return this.position;
+  }
+
+  setBitFlag(index: number, value: boolean) {
+    setBitArrayIndex(this.flagArray, index, value ? 1 : 0);
+  }
+  getBitFlag(index: number) {
+    return getBitArrayIndex(this.flagArray, index) == 1;
+  }
+
+  isDirty() {
+    return this.getBitFlag(SectionStateDefaultFlags.isDirty);
+  }
+  setDirty(dirty: boolean) {
+    this.setBitFlag(SectionStateDefaultFlags.isDirty, dirty);
+    if (dirty) this.sector.setStored(false);
+  }
+
+  isInProgress() {
+    return this.getBitFlag(SectionStateDefaultFlags.inProgress);
+  }
+  setInProgress(inProgress: boolean) {
+    this.setBitFlag(SectionStateDefaultFlags.inProgress, inProgress);
   }
 
   getBuried(index: number) {
@@ -156,6 +170,7 @@ export class Section {
   getHasVoxelDirty(y: number): boolean {
     return getBitArrayIndex(this.dirtyMap, y) == 1;
   }
+
   getMinMax() {
     let min = Infinity;
     let max = -Infinity;
@@ -169,8 +184,26 @@ export class Section {
     return [min, max];
   }
 
+  storeFlags() {
+    const stored: Record<string, boolean> = {};
+    for (const key in SectionState.StoredFlags) {
+      stored[key] = this.getBitFlag(SectionState.StoredFlags[key]);
+    }
+    return stored;
+  }
+  loadFlags(flags: Record<string, boolean>) {
+    for (const flag in flags) {
+      const storedIndex = SectionState.StoredFlags[flag];
+      if (storedIndex === undefined) {
+        console.warn(`${flag} does not exist on stored flags for section`);
+        continue;
+      }
+      this.setBitFlag(storedIndex, flags[flag]);
+    }
+  }
   toJSON(): SectionData {
     return {
+      flagArray: this.flagArray,
       voxelMap: this.voxelMap,
       dirtyMap: this.dirtyMap,
       buried: this.buried,

@@ -6,30 +6,13 @@ import {
   ArchivedSectionData,
   ArchivedSectorData,
 } from "../Archive.types";
+import { uint16To4CharString } from "./Shared";
 
 type RunData = {
   dimension: string;
   sectors: ArchivedSectorData[];
   version?: number;
 };
-const charset = "0123456789ABCDEF";
-
-function uint16To4CharString(value: number): string {
-  if (value < 0 || value > 0xffff) {
-    throw new RangeError("Value must be a 16-bit unsigned integer.");
-  }
-
-  const chars: string[] = [];
-
-  for (let i = 0; i < 4; i++) {
-    const charCode = (value >> (i * 4)) & 0x0f;
-    chars.unshift(charset[charCode]);
-  }
-
-  const result = chars.join("").replace(/^0+(?!$)/, "");
-
-  return result;
-}
 
 const processPalettes = (archiveData: RunData) => {
   const allRegistered = new Set<string>();
@@ -286,7 +269,9 @@ function SectorToArchivedAreaSector(
   if (sector.palettes.secondaryId)
     palettes.secondaryId = sector.palettes.secondaryId;
 
-  if (sector.palettes.light) palettes.light = sector.palettes.light;
+ // if (sector.palettes.light) palettes.light = sector.palettes.light;
+
+
   if (sector.palettes.secondaryState)
     palettes.secondaryState = sector.palettes.secondaryState;
   if (sector.palettes.state) palettes.state = sector.palettes.state;
@@ -296,7 +281,7 @@ function SectorToArchivedAreaSector(
 
   return {
     position: [sector.location[1], sector.location[2], sector.location[3]],
-    sectorState: sector.sectorState as any,
+    sectorState: sector.flags as any,
     buffers: sector.buffers,
     palettes,
     sections: sector.sections,
@@ -318,7 +303,8 @@ export default function CreateArchiveArea(
     version: "",
     keys: {
       sectorState: sectorStateKeys,
-      sectionState: archiveData.sectors[0].keys.sectionState,
+      sectionState: []
+   //   sectionState: archiveData.sectors[0].keys.sectionState,
     },
     maps: {
       sectorState: buildSectorState(archiveData),
@@ -356,11 +342,11 @@ export function CreateSectorFromArea(
   }
   palettes.id = id;
 
-  palettes.light =
+/*   palettes.light =
     typeof sector.palettes.light == "string"
       ? area.maps.lightPalette[sector.palettes.light]
       : sector.palettes.light;
-
+ */
   palettes.level =
     typeof sector.palettes.level == "string"
       ? area.maps.levelPalette[sector.palettes.level]
@@ -405,11 +391,14 @@ export function CreateSectorFromArea(
 
   return {
     version: area.version,
+    vloxVersion: area.version,
     location: [area.dimension, ...sector.position],
-    sectorState,
-    keys: {
+    flags: sectorState,
+    timestamps:{},
+/*     keys: {
       sectionState: area.keys.sectionState,
-    },
+    }, */
+    duplicates: {},
     palettes,
     buffers: sector.buffers,
     sections,

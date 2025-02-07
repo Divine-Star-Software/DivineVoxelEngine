@@ -19,7 +19,7 @@ interface IWGInitData {
 }
 let initalized = false;
 /**# Infinite World Generation IWG
- * Object to handle the loading and generating the world around a created generator. 
+ * Object to handle the loading and generating the world around a created generator.
  */
 export class IWG {
   private static _cullGenerators: Generator[] = [];
@@ -38,13 +38,13 @@ export class IWG {
     initalized = true;
     IWGTools.parent = data.parent;
     IWGTools.taskTool = new TaskTool(data.threads);
-
     if (data.worldStorage) IWGTools.worldStorage = data.worldStorage;
-    console.warn("load the thing", IWGTools.worldStorage, data.worldStorage);
   }
 
   static createGenerator(data: Partial<GeneratorData>) {
-    return new Generator({
+    if (!initalized)
+      throw new Error(`IWG must be initalized first before creating generator`);
+    return new Generator(IWGTools.taskTool, {
       dimension: data.dimension ? data.dimension : "main",
       position: data.position ? data.position : Vector3Like.Create(),
       renderRadius: data.renderRadius ? data.renderRadius : 150,
@@ -68,6 +68,12 @@ export class IWG {
     return false;
   }
 
+  static tick() {
+    for (const gen of this._generators) {
+      gen.tick();
+    }
+  }
+
   static update() {
     if (!initalized) {
       throw new Error(`IWG must be initalized.`);
@@ -89,7 +95,7 @@ export class IWG {
       }
     }
     runBuildUpdate(this._generators);
-    IWGTasks.buildTasks.runTask();
+    //  IWGTasks.buildTasks.runTask();
 
     runWorldUpdate(this._generators);
     IWGTasks.worldLoadTasks.runTask();
@@ -99,7 +105,6 @@ export class IWG {
     IWGTasks.worldPropagationTasks.runTask();
     IWGTasks.saveTasks.runTask();
     IWGTasks.saveAndUnloadTasks.runTask();
-
 
     cullSectors(this._generators, this._cullGenerators);
   }

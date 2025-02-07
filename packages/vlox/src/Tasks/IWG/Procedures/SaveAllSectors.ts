@@ -12,6 +12,7 @@ export default async function SaveAllSectors() {
   for (const [dimensionId] of IWGDimensions._dimensions) {
     const dimension = WorldRegister.dimensions.get(dimensionId)!;
     for (const [key, sector] of dimension.sectors) {
+      if (sector.isStored()) continue;
       proms.push(worldStorage.saveSector([dimensionId, ...sector.position]));
     }
   }

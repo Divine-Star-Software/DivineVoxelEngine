@@ -56,17 +56,22 @@ export function MeshSection(
       z: WorldSpaces.section.bounds.z + padding.z,
     });
 
-  const [dimension, cx, cy, cz] = location;
-
-  const sector = WorldRegister.sectors.get(dimension, cx, cy, cz);
+  const sector = WorldRegister.sectors.getAt(location);
 
   if (!sector) return null;
-  const section = sector.getSection(cy);
+
+  const section = sector.getSection(location[1], location[2], location[3]);
+  const [cx, cy, cz] = section.getPosition();
   worldCursor.setFocalPoint(...location);
   sectionCursor.setSection(...location);
 
   let [minY, maxY] = section.getMinMax();
-  if (Math.abs(minY) == Infinity && Math.abs(maxY) == Infinity) return null;
+  if (minY == Infinity && maxY == -Infinity) {
+
+    section.setDirty(false);
+    section.setInProgress(false);
+    return null;
+  }
   space.start(cx - (padding.x - 1), cy - (padding.y - 1), cz - (padding.z - 1));
 
   bvhTool.reset();
@@ -111,7 +116,12 @@ export function MeshSection(
   // console.log(performance.now() - t);
 
   const sectionEffects: SetSectionMeshTask[2] = [];
-  const sections = <SetSectionMeshTask>[location, [] as any, sectionEffects, 0];
+  const sections = <SetSectionMeshTask>[
+    [location[0], ...section.getPosition()],
+    [] as any,
+    sectionEffects,
+    0,
+  ];
   const meshed: VoxelModelBuilder[] = [];
   for (let i = 0; i < RenderedMaterials.meshers.length; i++) {
     const mesher = RenderedMaterials.meshers[i];
@@ -134,6 +144,9 @@ export function MeshSection(
     meshed[i].clear();
     meshed[i].bvhTool = null;
   }
+
+  section.setDirty(false);
+  section.setInProgress(false);
 
   return sections;
 }

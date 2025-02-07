@@ -1,6 +1,8 @@
 import { Vector3Like } from "@amodx/math";
 import { Circle } from "@amodx/math/Shapes";
 import { WorldSpaces } from "../../../../World/WorldSpaces";
+import { BuildQueue } from "./BuildQueue";
+import { TaskTool } from "../../../../Tools/Tasks/TasksTool";
 
 export interface GeneratorData {
   dimension: string;
@@ -25,8 +27,9 @@ export class Generator {
   _genCircle = new Circle({ x: 0, y: 0 }, 0);
   _renderCircle = new Circle({ x: 0, y: 0 }, 0);
   _maxCircle = new Circle({ x: 0, y: 0 }, 10);
-
-  constructor(data: GeneratorData) {
+  buildQueue : BuildQueue;
+  constructor(public taskTool: TaskTool, data: GeneratorData) {
+    console.warn("make generator",taskTool);
     this._dimension = data.dimension;
     this.position = data.position;
     this._building =
@@ -35,6 +38,7 @@ export class Generator {
     this._renderCircle.radius = data.renderRadius;
     this._genCircle.radius = data.generationRadius;
     this._maxCircle.radius = data.maxRadius;
+    this.buildQueue = new BuildQueue(taskTool);
   }
 
   update() {
@@ -60,5 +64,12 @@ export class Generator {
 
     this._maxCircle.center.x = this._sectorPosition.x;
     this._maxCircle.center.y = this._sectorPosition.z;
+  }
+
+  tick() {
+    if (this._building) {
+      this.buildQueue.sort(this.position.x, this.position.y, this.position.z);
+      this.buildQueue.run(25);
+    }
   }
 }

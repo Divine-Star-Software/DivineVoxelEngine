@@ -4,10 +4,11 @@ import { WorldSpaces } from "../WorldSpaces";
 import {
   getBitArrayIndex,
   setBitArrayIndex,
-} from "../../Util/Binary/BitArray.js";
-import { SectorStateFlags, SectorTimestampFlags } from "./SectorState.js";
+} from "../../Util/Binary/BinaryArrays.js";
+import { SectorState, SectorStateDefaultBitFlags } from "./SectorState.js";
+import { forceMultipleOf2 } from "../../Util/Binary/BinaryFunctions.js";
+
 export interface SectorData {
-  position: Vec3Array;
   buffer: ArrayBufferLike;
   /**Array of timestamps for the sector */
   timeStampArray: Uint32Array;
@@ -16,12 +17,10 @@ export interface SectorData {
   sections: SectionData[];
 }
 export interface Sector extends SectorData {}
-function forceMultipleOf2(n: number): number {
-  return n % 2 === 0 ? n : n + 1;
-}
+
 export class Sector {
-  static FlagIds = SectorStateFlags;
-  static TimeStampIds = SectorTimestampFlags;
+  static FlagIds = SectorState.Flags;
+  static TimeStampIds = SectorState.TimeStamps;
   static GetHeaderSize() {
     return forceMultipleOf2(
       //12 bytes fot flags
@@ -38,16 +37,15 @@ export class Sector {
   static CreateNew(): SectorData {
     const buffer = new SharedArrayBuffer(this.GetBufferSize());
     const flagArray = new Uint8Array(buffer, 0, 12);
-    const timeStampArray = new Uint32Array(buffer, 12, 12 * 4);
+    const timeStampArray = new Uint32Array(buffer, 12, 12);
     const sections: SectionData[] = [];
-    const totalSections =
-      WorldSpaces.sector.bounds.y / WorldSpaces.section.bounds.y;
+    const totalSections = WorldSpaces.sector.sectionVolumne;
+
     for (let i = 0; i < totalSections; i++) {
       sections[i] = Section.CreateNew(i, buffer);
     }
 
     return {
-      position: [0, 0, 0],
       buffer,
       flagArray,
       timeStampArray,
@@ -58,8 +56,10 @@ export class Sector {
   sections: Section[] = [];
   bufferView: Uint8Array;
 
-  constructor(data: SectorData) {
-    this.position = data.position;
+  constructor(
+    data: SectorData,
+    public position: Vec3Array
+  ) {
     this.flagArray = data.flagArray;
     this.timeStampArray = data.timeStampArray;
     this.buffer = data.buffer;
@@ -69,10 +69,8 @@ export class Sector {
     }
   }
 
-  getSection(y: number) {
-    const ry = y - this.position[1];
-    const index = ry / WorldSpaces.section.bounds.y;
-    return this.sections[index];
+  getSection(x: number, y: number, z: number) {
+    return this.sections[WorldSpaces.section.getIndex(x, y, z)];
   }
 
   setBitFlag(index: number, value: boolean) {
@@ -83,6 +81,14 @@ export class Sector {
     return getBitArrayIndex(this.flagArray, index) == 1;
   }
 
+  setStored(stored: boolean) {
+    this.setBitFlag(SectorStateDefaultBitFlags.isStored, stored);
+  }
+
+  isStored() {
+    return this.getBitFlag(SectorStateDefaultBitFlags.isStored);
+  }
+
   setTimeStamp(index: number, value: number) {
     this.timeStampArray[index] = value;
   }
@@ -90,13 +96,64 @@ export class Sector {
     return this.timeStampArray[index];
   }
 
+  *getRenerableSections(): Generator<Section> {
+    for (const section of this.sections) {
+      const [min, max] = section.getMinMax();
+      if (min == Infinity || max == -Infinity) continue;
+      yield section;
+    }
+  }
+
+  anySectionDirty() {
+    for (let i = 0; i < this.sections.length; i++) {
+      if (this.sections[i].isDirty() && !this.sections[i].isInProgress())
+        return true;
+    }
+    return false;
+  }
+
+  storeFlags() {
+    const stored: Record<string, boolean> = {};
+    for (const key in SectorState.StoredFlags) {
+      stored[key] = this.getBitFlag(SectorState.StoredFlags[key]);
+    }
+    return stored;
+  }
+  loadFlags(flags: Record<string, boolean>) {
+    for (const flag in flags) {
+      const storedIndex = SectorState.StoredFlags[flag];
+      if (storedIndex === undefined) {
+        console.warn(`${flag} does not exist on stored flags for sector`);
+        continue;
+      }
+      this.setBitFlag(storedIndex, flags[flag]);
+    }
+  }
+  storeTimestamps() {
+    const stored: Record<string, number> = {};
+    for (const key in SectorState.StoredTimeStamps) {
+      stored[key] = this.getTimeStamp(SectorState.StoredTimeStamps[key]);
+    }
+    return stored;
+  }
+  loadTimestamps(stored: Record<string, number>) {
+    for (const timeStamp in stored) {
+      const storedIndex = SectorState.StoredTimeStamps[timeStamp];
+      if (storedIndex === undefined) {
+        console.warn(
+          `${timeStamp} does not exist on stored timestamps for sector`
+        );
+        continue;
+      }
+      this.setTimeStamp(storedIndex, stored[timeStamp]);
+    }
+  }
   toJSON(): SectorData {
     const sections: SectionData[] = [];
     for (const section of this.sections) {
       sections.push(section.toJSON());
     }
     return {
-      position: this.position,
       buffer: this.buffer,
       flagArray: this.flagArray,
       timeStampArray: this.timeStampArray,

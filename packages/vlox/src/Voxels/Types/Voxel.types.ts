@@ -1,6 +1,22 @@
 import { TextureId } from "../../Textures/index";
 import { VoxelModelConstructorData } from "../../Models/VoxelModel.types";
 import { VoxelTags } from "../Data/VoxelTag.types";
+export interface VoxelDataArrays {
+  /**The runtime numeric voxel ids */
+  ids: Uint16Array;
+  /**The light data for voxels stored as 4 nibbles. 0 -> sun light 1 -> red light 2 -> green light 3 -> blue light */
+  light: Uint16Array;
+  /**The levels of the voxel. Used mainly for waterflow now. */
+  level: Uint8Array;
+  /**The state of the voxel. Used mainly be the voxel model system to get the model shape. */
+  state: Uint16Array;
+  /**The mod state of the voxel. Used mainly by the voxel model system to change model inputs. */
+  mod: Uint16Array;
+  /**The secondary state of the voxel. Can be set to a voxel id to make things like water logged voxels.
+   * But the main voxel itself must not use state or mod because the secondary voxel will use the same state and mod.
+   */
+  secondary: Uint16Array;
+}
 
 export type VoxelNamedStateData = {
   id: string;
@@ -26,20 +42,24 @@ export class PaintVoxelData {
   static Create(data: Partial<PaintVoxelData>) {
     return new PaintVoxelData(
       data.id,
+      data.name,
       data.mod,
       data.state,
       data.level,
       data.levelState,
-      data.secondaryVoxelId
+      data.secondaryVoxelId,
+      data.secondaryVoxeName
     );
   }
   private constructor(
     public id: string = "dve_air",
+    public name: string = "",
     public mod: number = 0,
     public state: number = 0,
     public level: number = 0,
     public levelState: number = 0,
-    public secondaryVoxelId: string = "dve_air"
+    public secondaryVoxelId: string = "dve_air",
+    public secondaryVoxeName: string = ""
   ) {}
 }
 

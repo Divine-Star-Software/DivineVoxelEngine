@@ -38,8 +38,8 @@ export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
   } else {
     for (let x = startX; x < endX; x += 16) {
       for (let z = startZ; z < endZ; z += 16) {
-     //   WorldGen.flat(x, z);
-  PerlinGen.generateTest(x, z,true);
+        //   WorldGen.flat(x, z);
+        PerlinGen.generateTest(x, z);
         /*        if (Math.random() > 0.5) {
           WorldGen.pyramidColumn(x, z);
           continue;

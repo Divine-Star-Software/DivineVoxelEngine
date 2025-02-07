@@ -15,9 +15,9 @@ export class MeshManager {
     if (!sector) {
       sector = MeshRegister.sectors.add(location);
     }
-    let section = sector.getSection(location[2]);
+    let section = sector.getSection(location[1], location[2], location[3]);
     if (!section) {
-      section = sector.addSection(location[2]);
+      section = sector.addSection(location[1], location[2], location[3]);
     }
 
     added.clear();

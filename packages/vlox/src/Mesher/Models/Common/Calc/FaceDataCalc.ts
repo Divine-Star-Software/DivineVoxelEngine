@@ -1,6 +1,6 @@
 import type { VoxelModelBuilder } from "../../VoxelModelBuilder.js";
 import { QuadVerticies } from "../../../Geomtry/Geometry.types.js";
-import { VoxelFaces } from "../../../../Math/index.js";
+import { VoxelFaces, VoxelFaceDirections } from "../../../../Math/index.js";
 import { GradientCheckSets } from "./CalcConstants.js";
 import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData.js";
 const lightData = new VoxelLightData();
@@ -14,9 +14,22 @@ export default function calculateFaceData(
   const vertexData = builder.lightData[face];
   const nVoxel = builder.nVoxel;
   const checkSet = GradientCheckSets[face];
-  const startLight = builder.voxel.isLightSource()
-    ? builder.voxel.getLightSourceValue()
-    : 0;
+  let startLight = 0;
+
+  if (builder.voxel.isLightSource()) {
+    startLight = builder.voxel.getLightSourceValue();
+  } else {
+    startLight =
+      nVoxel
+        .getVoxel(
+          x + VoxelFaceDirections[face][0],
+          y + VoxelFaceDirections[face][1],
+          z + VoxelFaceDirections[face][2]
+        )
+        ?.getLight() || 0;
+  }
+  if (startLight < 0) startLight = 0;
+
   const startS = lightData.getS(startLight);
   const startR = lightData.getR(startLight);
   const startG = lightData.getG(startLight);

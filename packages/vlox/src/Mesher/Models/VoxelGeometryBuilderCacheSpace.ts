@@ -1,4 +1,4 @@
-import { DataCursorInterface } from "../../Tools/DataCursor.interface";
+import { DataCursorInterface } from "../../Voxels/Cursor/DataCursor.interface";
 import { VoxelModelConstructorRegister } from "./VoxelModelConstructorRegister";
 import { Vec3Array, Vector3Like } from "@amodx/math";
 import { VoxelCursor } from "../../Voxels/Cursor/VoxelCursor";

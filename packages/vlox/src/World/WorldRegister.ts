@@ -30,7 +30,7 @@ class WorldRegisterDimensions {
 const tempPosition = Vector3Like.Create();
 
 class SectorPool {
-  static _secotrs: Sector[] = [];
+  static _secotrs: SectorData[] = [];
   static _enabled = false;
   static getSector() {
     if (!this._enabled) return Sector.CreateNew();
@@ -39,6 +39,7 @@ class SectorPool {
   }
   static returnSector(secotr: Sector) {
     secotr.bufferView.fill(0);
+    this._secotrs.push(secotr.toJSON());
   }
 }
 
@@ -56,8 +57,11 @@ class WorldRegisterSectors {
   ) {
     let dimension = WorldRegister.dimensions.get(dimensionId);
     if (!dimension) dimension = WorldRegister.dimensions.add(dimensionId);
-    WorldSpaces.sector.getPositionVec3Array(x, y, z, sector.position);
-    const newSector = new Sector(sector);
+
+    const newSector = new Sector(
+      sector,
+      WorldSpaces.sector.getPositionVec3Array(x, y, z)
+    );
     dimension.sectors.set(
       WorldSpaces.hash.hashVec3Array(newSector.position),
       newSector
@@ -71,7 +75,7 @@ class WorldRegisterSectors {
     if (this.get(dimensionId, x, y, z)) return false;
     let dimension = WorldRegister.dimensions.get(dimensionId);
     if (!dimension) dimension = WorldRegister.dimensions.add(dimensionId);
-    const sector = this.add(dimensionId, x, y, z, Sector.CreateNew())!;
+    const sector = this.add(dimensionId, x, y, z, SectorPool.getSector())!;
     WorldDataHooks.sectors.onNew([dimensionId, x, y, z], sector);
     return true;
   }

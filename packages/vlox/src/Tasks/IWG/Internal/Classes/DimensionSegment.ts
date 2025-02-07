@@ -1,6 +1,7 @@
 import { Vec3Array } from "@amodx/math";
 import { SectorVisistedMap } from "./SectorVisistedMap";
 import { Sector } from "World";
+import { BuildQueue } from "./BuildQueue";
 
 class TaskSegment {
   queue: number[] = [];
@@ -40,6 +41,7 @@ export class DimensionSegment {
   vistedMap = new SectorVisistedMap();
   rendered = new SectorVisistedMap();
   inProgress = new SectorVisistedMap();
+
 
   unRenderQueue = new SectorQueue();
   unLoadQueue = new SectorQueue();

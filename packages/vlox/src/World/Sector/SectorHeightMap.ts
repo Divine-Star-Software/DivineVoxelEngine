@@ -25,7 +25,7 @@ export class SectorHeightMap {
     const sector = WorldRegister.sectors.get(
       location[0],
       location[1],
-      location[2],
+      location[2],  
       location[3]
     );
     if (!sector) return WorldSpaces.world.bounds.MinY;
@@ -37,11 +37,11 @@ export class SectorHeightMap {
       const section = sector.sections[i];
       if (!section) continue;
 
-      const sectionPOS = y + i * WorldSpaces.section.bounds.y;
+      const sectionPOS = section.getPosition();
 
       let [sectionMin, sectionMax] = section.getMinMax();
       if (Math.abs(sectionMax) == Infinity) continue;
-      sectionMax = sectionPOS + sectionMax;
+      sectionMax = sectionPOS[1] + sectionMax;
       if (maxHeight < sectionMax) {
         maxHeight = sectionMax;
       }

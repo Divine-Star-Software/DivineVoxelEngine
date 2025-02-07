@@ -7,8 +7,36 @@ import { getSectorState } from "./getSectorState";
 import { IWGTasks } from "../IWGTasks";
 import { IWGDimensions } from "../IWGDimensions";
 import { IWGTools } from "../IWGTools";
+import { DimensionSegment } from "../Classes/DimensionSegment";
+import { LocationData } from "../../../../Math";
+import { Sector } from "../../../../World";
 const stateCursor = new SectorState();
 const sectorSquare = new Square();
+
+function run(
+  dimenion: DimensionSegment,
+  sector: Sector,
+  location: LocationData,
+  generator: Generator
+) {
+  let rendered = true;
+  if (!dimenion.rendered.has(location[1], location[2], location[3])) {
+    rendered = false;
+    dimenion.rendered.add(location[1], location[2], location[3]);
+  }
+
+  for (const section of sector.getRenerableSections()) {
+    if (rendered && (section.isInProgress() || !section.isDirty())) continue;
+
+    section.setInProgress(true);
+    generator.buildQueue.add([
+      location[0],
+      ...section.getPosition(),
+    ])
+ 
+  }
+}
+
 export function runBuildUpdate(generators: Generator[]) {
   for (const generator of generators) {
     if (!generator._building) continue;
@@ -61,9 +89,13 @@ export function runBuildUpdate(generators: Generator[]) {
         state.nSunAllDone &&
         state.nPropagtionAllDone
       ) {
+        if (sector.anySectionDirty()) {
+          run(segment, sector, [generator._dimension, cx, cy, cz],generator);
+          continue;
+        }
         if (segment.rendered.has(cx, cy, cz)) continue;
 
-        IWGTasks.buildTasks.add(generator._dimension, cx, cy, cz);
+        run(segment, sector, [generator._dimension, cx, cy, cz],generator);
       }
     }
   }

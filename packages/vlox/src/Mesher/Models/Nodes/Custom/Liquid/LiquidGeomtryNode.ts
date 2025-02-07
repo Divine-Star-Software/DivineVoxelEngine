@@ -127,6 +127,7 @@ export class LiquidGeometryNode extends GeoemtryNode<
       added = true;
       getFlowGradient(tool, vertexLevel);
       const quad = Quads[VoxelFaces.Up];
+      
       this.determineShading(VoxelFaces.Up);
       quad.flip = this.shouldFlip();
       tool.vars.textureIndex = args.stillTexture;
@@ -166,14 +167,13 @@ export class LiquidGeometryNode extends GeoemtryNode<
       const quad = Quads[VoxelFaces.Down];
       this.determineShading(VoxelFaces.Down);
       quad.flip = this.shouldFlip();
-      tool.vars.textureIndex = args.stillTexture;
       VoxelGeometryBuilder.addQuad(tool, tool.origin, quad);
       tool.updateBounds(quadBounds[VoxelFaces.Down]);
     }
 
     if (this.isExposed(VoxelFaces.North)) {
       added = true;
-      tool.vars.textureIndex = args.stillTexture;
+      tool.vars.textureIndex = args.flowTexture;
       const quad = Quads[VoxelFaces.North];
       tool.vars.animation.setAll(1);
       this.determineShading(VoxelFaces.North);
@@ -200,7 +200,7 @@ export class LiquidGeometryNode extends GeoemtryNode<
 
     if (this.isExposed(VoxelFaces.South)) {
       added = true;
-      tool.vars.textureIndex = args.stillTexture;
+      tool.vars.textureIndex = args.flowTexture;
       const quad = Quads[VoxelFaces.South];
       tool.vars.animation.setAll(1);
       this.determineShading(VoxelFaces.South);
@@ -226,12 +226,12 @@ export class LiquidGeometryNode extends GeoemtryNode<
 
     if (this.isExposed(VoxelFaces.East)) {
       added = true;
-      tool.vars.textureIndex = args.stillTexture;
+      tool.vars.textureIndex = args.flowTexture;
       const quad = Quads[VoxelFaces.East];
 
       tool.vars.animation.setAll(1);
       this.determineShading(VoxelFaces.East);
-      //  quad.flip = this.shouldFlip();
+      quad.flip = this.shouldFlip();
       if (upFaceExposed) {
         quad.positions.vertices[QuadVerticies.TopRight].y =
           vertexValue.vertices[FlowVerticies.NorthEast] * waterHeight;
@@ -253,7 +253,7 @@ export class LiquidGeometryNode extends GeoemtryNode<
 
     if (this.isExposed(VoxelFaces.West)) {
       added = true;
-      tool.vars.textureIndex = args.stillTexture;
+      tool.vars.textureIndex = args.flowTexture;
       const quad = Quads[VoxelFaces.West];
       tool.vars.animation.setAll(1);
       this.determineShading(VoxelFaces.West);

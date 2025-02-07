@@ -8,7 +8,7 @@ import { VoxelMesh } from "../Geomtry/VoxelMesh";
 import { VoxelMeshBVHBuilder } from "../Geomtry/VoxelMeshBVHBuilder";
 import { Vec3Array, Vector3Like, Vector4Like } from "@amodx/math";
 import { VoxelCursorInterface } from "../../Voxels/Cursor/VoxelCursor.interface.js";
-import { DataCursorInterface } from "../../Tools/DataCursor.interface.js";
+import { DataCursorInterface } from "../../Voxels/Cursor/DataCursor.interface.js";
 import { VoxelGeometryBuilderCacheSpace } from "./VoxelGeometryBuilderCacheSpace";
 
 class VoxelVars {
@@ -127,6 +127,13 @@ export class VoxelModelBuilder {
         this.bounds.max[1],
         this.bounds.max[2]
       );
+      this.bvhTool.structCursor.setIndex(0);
+      this.mesh.minBounds.x = this.bvhTool.structCursor.minX;
+      this.mesh.minBounds.y = this.bvhTool.structCursor.minY;
+      this.mesh.minBounds.z = this.bvhTool.structCursor.minZ;
+      this.mesh.maxBounds.x = this.bvhTool.structCursor.maxX;
+      this.mesh.maxBounds.y = this.bvhTool.structCursor.maxY;
+      this.mesh.maxBounds.z = this.bvhTool.structCursor.maxZ;
     }
 
     return true;

@@ -12,8 +12,10 @@ const air: RawVoxelData = [0, 0, 0, 0, 0, 0];
 export class BrushTool {
   data: PaintVoxelData = {
     id: airId,
+    name: "",
     state: 0,
     secondaryVoxelId: "",
+    secondaryVoxeName: "",
     level: 0,
     levelState: 0,
     mod: 0,
@@ -23,7 +25,6 @@ export class BrushTool {
   x = 0;
   y = 0;
   z = 0;
-  name = airId;
 
   voxelCursor = new VoxelCursor();
   dataCursor = new WorldCursor();
@@ -39,11 +40,19 @@ export class BrushTool {
   }
 
   setData(data: Partial<PaintVoxelData>) {
-    this.data.id = data.id ? data.id : airId;
+    this.clear();
+    if (data.name) {
+      this.setName(data.name);
+    } else {
+      if (data.id) this.setId(data.id);
+    }
+    if (data.secondaryVoxeName) {
+      this.setSecondaryName(data.secondaryVoxeName);
+    } else {
+      if (data.secondaryVoxelId) this.setSecondaryId(data.secondaryVoxelId);
+    }
+
     this.data.state = data.state ? data.state : 0;
-    this.data.secondaryVoxelId = data.secondaryVoxelId
-      ? data.secondaryVoxelId
-      : airId;
     this.data.level = data.level ? data.level : 0;
     this.data.levelState = data.levelState ? data.levelState : 0;
     this.data.mod = data.mod ? data.mod : 0;
@@ -73,20 +82,38 @@ export class BrushTool {
 
   setId(id: string) {
     this.data.id = id;
+    this.data.name = VoxelPalettesRegister.voxelIdToNameMap.get(id)!;
     return this;
   }
 
   setName(name: string) {
-    this.data.id = VoxelPalettesRegister.voxelName.getId(name);
-    this.name = name;
+    this.data.id = VoxelPalettesRegister.voxelNametoIdMap.get(name)!;
+    this.data.name = name;
     return this;
   }
 
   setSecondaryId(id: string) {
     this.data.secondaryVoxelId = id;
+    if (id) {
+      this.data.secondaryVoxeName =
+        VoxelPalettesRegister.voxelIdToNameMap.get(id)!;
+    } else {
+      this.data.secondaryVoxeName = "";
+    }
+
     return this;
   }
+  setSecondaryName(name: string) {
+    if (name) {
+      this.data.secondaryVoxelId =
+        VoxelPalettesRegister.voxelNametoIdMap.get(name)!;
+    } else {
+      this.data.secondaryVoxelId = "";
+    }
 
+    this.data.secondaryVoxeName = name;
+    return this;
+  }
   setShapeState(state: number) {
     this.data.state = state;
     return this;
@@ -109,6 +136,7 @@ export class BrushTool {
 
   clear() {
     this.data.id = "dve_air";
+    this.data.name = "";
     this.data.secondaryVoxelId = "";
     this.data.level = 0;
     this.data.levelState = 0;

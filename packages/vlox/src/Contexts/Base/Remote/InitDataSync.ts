@@ -16,12 +16,14 @@ export default function InitDataSync(props: {
 
     VoxelPalettesRegister.voxels.load(data.voxels.data.palette);
     VoxelTagsRegister.VoxelTags = data.voxels.data.tags;
+
     VoxelPalettesRegister.voxelIdToNameMap = new Map(
       data.voxels.data.idToNameMap
     );
     VoxelPalettesRegister.voxelNametoIdMap = new Map(
       data.voxels.data.nameToIdMap
     );
+
     VoxelPalettesRegister.substance.load(data.voxels.substances.palette);
     VoxelTagsRegister.SubstanceStags = data.voxels.substances.tags;
 

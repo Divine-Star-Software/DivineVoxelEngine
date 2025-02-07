@@ -24,10 +24,10 @@ export function BuildTagAndPaletteData(
   for (const voxel of props.voxels) {
     const tags: VoxelTags = {} as any;
     const voxelId = VoxelPalettesRegister.voxels.register(voxel.id);
-    if (voxel.name) {
-      VoxelPalettesRegister.voxelIdToNameMap.set(voxel.id, voxel.name || "");
-      VoxelPalettesRegister.voxelNametoIdMap.set(voxel.name || "", voxel.id);
-    }
+
+    VoxelPalettesRegister.voxelIdToNameMap.set(voxel.id, voxel.name || "");
+    VoxelPalettesRegister.voxelNametoIdMap.set(voxel.name || voxel.id , voxel.id);
+
     for (const tag of VoxelTagsRegister.IncludedVoxelTags) {
       if (voxel.properties[tag] === undefined) {
         (tags as any)[tag] = VoxelTagsRegister.VoxelTagDefaults[tag] || false;
@@ -70,6 +70,7 @@ export function BuildTagAndPaletteData(
     VoxelPalettesRegister.material.register(material.id);
   }
 
+  
   return {
     data: {
       palette: VoxelPalettesRegister.voxels._palette,

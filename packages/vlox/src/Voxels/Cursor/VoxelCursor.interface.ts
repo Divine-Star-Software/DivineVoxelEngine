@@ -223,11 +223,11 @@ export abstract class VoxelCursorInterface {
   }
 
   setName(name: string) {
-    this.setStringId(VoxelPalettesRegister.voxelName.getId(name));
+    return this.setStringId(VoxelPalettesRegister.voxelNametoIdMap.get(name)!);
   }
 
   getName() {
-    return this.getStringId();
+    return VoxelPalettesRegister.voxelIdToNameMap.get(this.getStringId())!;
   }
 
   isSameVoxel(voxel: VoxelCursorInterface) {

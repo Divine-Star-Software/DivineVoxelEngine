@@ -19,7 +19,9 @@ class Sectors {
       ),
     ] as LocationData);
     dimension.set(
-      WorldSpaces.hash.hashXYZ(location[1], location[2], location[3]),
+      WorldSpaces.hash.hashVec3(
+        WorldSpaces.sector.getPosition(location[1], location[2], location[3])
+      ),
       sector
     );
     return sector;
@@ -113,3 +115,5 @@ export class MeshRegister {
     this._dimensions.set("main", new Map());
   }
 }
+
+(window as any).MeshRegister = MeshRegister;

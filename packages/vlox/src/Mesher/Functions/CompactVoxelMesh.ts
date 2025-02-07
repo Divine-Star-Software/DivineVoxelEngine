@@ -1,4 +1,3 @@
-
 import { CompactMeshData, CompactSubMesh } from "../Types/Mesher.types";
 import { VoxelModelBuilder } from "Mesher/Models/VoxelModelBuilder";
 import { VoxelMeshVertexStructCursor } from "../Geomtry/VoxelMeshVertexStructCursor";
@@ -115,7 +114,7 @@ export function CompactVoxelMesh(
     }
     const minBounds = tool.mesh.minBounds;
     const maxBounds = tool.mesh.maxBounds;
-    
+
     data[1].push([
       tool.id,
       vertexArray,

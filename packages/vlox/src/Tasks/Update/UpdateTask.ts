@@ -2,6 +2,7 @@ import { WorldCursor } from "../../World/Cursor/WorldCursor";
 import { Vec3Array, Vector3Like } from "@amodx/math";
 import { WorldSpaces } from "../../World/WorldSpaces";
 import { LocationData } from "../../Math";
+import { WorldRegister } from "../../World/WorldRegister";
 
 export class TaskMap {
   _map: boolean[] = [];
@@ -62,9 +63,11 @@ class UpdatedBounds {
   min = Vector3Like.Clone(InfinityVec3);
   max = Vector3Like.Clone(NegativeInfinityVec3);
 
+  dimension = "main";
   constructor(public _task: UpdateTask) {}
 
-  reset() {
+  start(dimension?: string) {
+    this.dimension = dimension || "main";
     Vector3Like.Copy(this.min, InfinityVec3);
     Vector3Like.Copy(this.max, NegativeInfinityVec3);
   }
@@ -109,6 +112,39 @@ class UpdatedBounds {
 
     return sectionPositions;
   }
+
+  markSectionsAsDirty() {
+    const minSectionPos = WorldSpaces.section.getPosition(
+      this.min.x - 1,
+      this.min.y - 1,
+      this.min.z - 1,
+      tempPosition
+    );
+    const minX = minSectionPos.x;
+    const minY = minSectionPos.y;
+    const minZ = minSectionPos.z;
+    const maxSectionPos = WorldSpaces.section.getPosition(
+      this.max.x + 1,
+      this.max.y + 1,
+      this.max.z + 1,
+      tempPosition
+    );
+    const maxX = maxSectionPos.x;
+    const maxY = maxSectionPos.y;
+    const maxZ = maxSectionPos.z;
+
+    for (let x = minX; x <= maxX; x += WorldSpaces.section.bounds.x) {
+      for (let z = minZ; z <= maxZ; z += WorldSpaces.section.bounds.z) {
+        for (let y = minY; y <= maxY; y += WorldSpaces.section.bounds.y) {
+          if (!WorldSpaces.world.inBounds(x, y, z)) continue;
+          const sector = WorldRegister.sectors.get(this.dimension, x, y, z);
+          if (!sector) continue;
+          const section = sector.getSection(x, y, z);
+          section.setDirty(true);
+        }
+      }
+    }
+  }
 }
 export class UpdateTask {
   flow = new FlowQueues();
@@ -130,14 +166,13 @@ export class UpdateTask {
     this.flow.update.map.start(origin[1], origin[2], origin[3]);
     this.flow.remove.map.start(origin[1], origin[2], origin[3]);
     this.flow.remove.noRemoveMap.start(origin[1], origin[2], origin[3]);
-
+    this.bounds.start(origin[0]);
     this.clear();
   }
   clear() {
     this.rgb.clear();
     this.sun.clear();
     this.flow.clear();
-    this.bounds.reset();
   }
 }
 

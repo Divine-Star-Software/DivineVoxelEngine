@@ -1,14 +1,14 @@
 import { TemplateVoxelCursor } from "./TemplateVoxelCursor";
-import { DataCursorInterface } from "../../Tools/DataCursor.interface";
+import { DataCursorInterface } from "../../Voxels/Cursor/DataCursor.interface";
 import { FullVoxelTemplate } from "Templates/FullVoxelTemplate";
 
-export class TemplateCursor extends DataCursorInterface {
+export class TemplateCursor implements DataCursorInterface {
   _voxelIndex = 0;
   _template: FullVoxelTemplate | null = null;
   private voxel = new TemplateVoxelCursor(this);
 
   inBounds(x: number, y: number, z: number): boolean {
-      return true;
+    return true;
   }
   setTemplate(template: FullVoxelTemplate) {
     this._template = template;

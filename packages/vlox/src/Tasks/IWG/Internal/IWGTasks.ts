@@ -136,11 +136,31 @@ export class IWGTasks {
   /**# Build Task
    * ---
    */
-  static readonly buildTasks = TaskRegister.addTasks({
+/*   static readonly buildTasks = TaskRegister.addTasks({
     id: "build_tasks",
     async run(location, onDone, dimenion) {
-      dimenion.rendered.add(location[1], location[2], location[3]);
-      IWGTools.taskTool.build.sector.run(location, null, onDone);
+      const sector = WorldRegister.sectors.get(...location);
+      if (!sector)
+        throw new Error(
+          `Sector at ${location.toString()} does not exist when attempting building.`
+        );
+      let rendered = true;
+      if (!dimenion.rendered.has(location[1], location[2], location[3])) {
+        rendered = false;
+        dimenion.rendered.add(location[1], location[2], location[3]);
+      }
+
+      for (const section of sector.getRenerableSections()) {
+        if (section.isInProgress() || (!section.isDirty() && !rendered)) continue;
+        section.setInProgress(true);
+        IWGTools.parent.runTask("add-to-build-queue", [
+          location[0],
+          ...section.getPosition(),
+        ]);
+      }
+
+      onDone();
+      //  IWGTools.taskTool.build.sector.run(location, null, onDone);
     },
-  });
+  }); */
 }

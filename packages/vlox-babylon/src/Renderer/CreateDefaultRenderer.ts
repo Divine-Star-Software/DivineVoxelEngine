@@ -14,7 +14,8 @@ import InitDefaultEffects from "../Effects/InitDefaultEffects.js";
 import { TextureData } from "@divinevoxel/vlox/Textures/Texture.types.js";
 import { ImageArrayTexture } from "../Textures/ImageArrayTexture.js";
 import { CacheManager } from "@divinevoxel/vlox/Cache/CacheManager.js";
-import { MaterialInterface } from "Matereials/MaterialInterface.js";
+import { MaterialInterface } from "../Matereials/MaterialInterface.js";
+
 const defaultSubstances = [
   "dve_glow",
   "dve_flora",
@@ -127,7 +128,11 @@ export async function CreateDefaultRenderer(
     renderer.materials.register(mat.id, initData.createMaterial(scene, mat));
   }
   DefaultMaterialManager.init();
+
+
+  const buildTickDuration = 50;
   scene.registerBeforeRender(() => {
+
     for (const [key, type] of TextureManager._compiledTextures) {
       if (type.animatedTexture.tick(scene.deltaTime)) {
         (type.animatedTexture.shaderTexture as RawTexture).update(

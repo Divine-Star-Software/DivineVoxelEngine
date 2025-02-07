@@ -57,14 +57,14 @@ export class IWGTaskBase {
         const z = task.queue.shift()!;
         task.waitingFor++;
         if (this.data.propagationBlocking) {
-          dimension.inProgress.add(x, 0, z);
+          dimension.inProgress.add(x, y, z);
         }
         this.data.run(
           [dimension.id, x, y, z],
           () => {
             task.vistedMap.remove(x, y, z);
             if (this.data.propagationBlocking) {
-              dimension.inProgress.remove(x, 0, z);
+              dimension.inProgress.remove(x, y, z);
             }
             task.waitingFor--;
           },

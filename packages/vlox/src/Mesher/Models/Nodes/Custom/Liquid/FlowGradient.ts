@@ -67,7 +67,7 @@ const returnData: [angle: CompassAngles, flow: number] = [
 export function getFlowAngle(vertexLevel: QuadScalarVertexData) {
   if (vertexLevel.isAllEqualTo(7)) {
     returnData[0] = 0;
-    returnData[1] = FlowStates.None;
+    returnData[1] = FlowStates.Up;
     return returnData;
   }
   const upRight = vertexLevel.vertices[QuadVerticies.TopRight];

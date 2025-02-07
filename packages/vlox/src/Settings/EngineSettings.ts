@@ -4,7 +4,6 @@ import { TypedEventTarget } from "../Util/TypedEventTarget.js";
 type EngineSettingsEvents = {
   synced: { settings: EngineSettingsClass };
 };
-
 /**# Engine Settings
  * ---
  * Handles common settings for all contexts
@@ -12,12 +11,13 @@ type EngineSettingsEvents = {
 class EngineSettingsClass extends TypedEventTarget<EngineSettingsEvents> {
   enviorment: "node" | "browser" = Environment.isNode() ? "node" : "browser";
   settings = new EngineSettingsData();
+  version = "0.0.72";
 
   get doSunPropagation() {
-    return this.settings.lighting.autoSunLight == true;
+    return this.settings.lighting.sunLightEnabled == true;
   }
   get doRGBPropagation() {
-    return this.settings.lighting.autoRGBLight == true;
+    return this.settings.lighting.rgbLightEnabled == true;
   }
 
   get doLight() {
@@ -27,9 +27,6 @@ class EngineSettingsClass extends TypedEventTarget<EngineSettingsEvents> {
     return this.settings.flow.enable;
   }
 
-  get isClient() {
-    return this.enviorment != "browser";
-  }
   getSettings() {
     return this.settings;
   }

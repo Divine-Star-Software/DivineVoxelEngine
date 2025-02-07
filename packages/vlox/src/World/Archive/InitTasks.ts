@@ -8,6 +8,7 @@ import {
   compressBinaryObject,
   expandBinaryObject,
 } from "../../Util/BinaryObject";
+import { BinaryBufferData } from "Util/Binary/BinaryBuffer";
 
 function runArchiveSector(
   location: LocationData
@@ -25,23 +26,59 @@ function runArchiveSector(
     location: location,
   });
   const transfers: any[] = [];
-  if (archived.palettes.light) transfers.push(archived.palettes.light.buffer);
+  // if (archived.palettes.light) transfers.push(archived.palettes.light.buffer);
   if (archived.palettes.state) transfers.push(archived.palettes.state.buffer);
   if (archived.palettes.secondaryState)
     transfers.push(archived.palettes.secondaryState.buffer);
   for (const section of archived.sections) {
-    if (typeof section.buffers.id != "number")
-      transfers.push(section.buffers.id.buffer);
-    if (typeof section.buffers.light != "number")
-      transfers.push(section.buffers.light.buffer);
-    if (typeof section.buffers.state != "number")
-      transfers.push(section.buffers.state.buffer);
-    if (typeof section.buffers.secondary != "number")
-      transfers.push(section.buffers.secondary.buffer);
-    if (typeof section.buffers.mod != "number")
-      transfers.push(section.buffers.mod.buffer);
+    if (typeof section == "string") continue;
+    if (ArrayBuffer.isView((section.buffers.id as BinaryBufferData)?.buffer))
+      transfers.push((section.buffers.id as any).buffer);
+    if (ArrayBuffer.isView((section.buffers.state as BinaryBufferData)?.buffer))
+      transfers.push((section.buffers.state as any).buffer);
+
+    if (ArrayBuffer.isView((section.buffers.mod as BinaryBufferData)?.buffer))
+      transfers.push((section.buffers.mod as any).buffer);
+
+    if (ArrayBuffer.isView((section.buffers.state as BinaryBufferData)?.buffer))
+      transfers.push((section.buffers.state as any).buffer);
+
+    if (
+      ArrayBuffer.isView(
+        (section.buffers.light?.sun as BinaryBufferData)?.buffer
+      )
+    )
+      transfers.push((section.buffers.light?.sun as any).buffer);
+
+    if (
+      ArrayBuffer.isView(
+        (section.buffers.light?.red as BinaryBufferData)?.buffer
+      )
+    )
+      transfers.push((section.buffers.light?.red as any).buffer);
+    if (
+      ArrayBuffer.isView(
+        (section.buffers.light?.green as BinaryBufferData)?.buffer
+      )
+    )
+      transfers.push((section.buffers.light?.green as any).buffer);
+    if (
+      ArrayBuffer.isView(
+        (section.buffers.light?.blue as BinaryBufferData)?.buffer
+      )
+    )
+      transfers.push((section.buffers.light?.blue as any).buffer);
+
+    if (
+      ArrayBuffer.isView(
+        (section.buffers.secondary as BinaryBufferData)?.buffer
+      )
+    )
+      transfers.push((section.buffers.secondary as any).buffer);
+
+    if (!section.palettes) continue;
     if (section.palettes.id) transfers.push(section.palettes.id.buffer);
-    if (section.palettes.light) transfers.push(section.palettes.light.buffer);
+    //   if (section.palettes.light) transfers.push(section.palettes.light.buffer);
     if (section.palettes.state) transfers.push(section.palettes.state.buffer);
     if (section.palettes.mod) transfers.push(section.palettes.mod.buffer);
     if (section.palettes.secondaryState)
@@ -61,8 +98,14 @@ export default function InitTasks(props: { worldThread: Thread }) {
     "archive-sector-binary",
     async (location) => {
       const [archived] = runArchiveSector(location);
-      const compressed = await compressBinaryObject(archived);
-      return [compressed, [compressed]];
+      try {
+        const compressed = await compressBinaryObject(archived);
+        return [compressed, [compressed]];
+      } catch (error) {
+        console.log(archived);
+        console.error(error);
+      }
+      return [null, []];
     }
   );
   Threads.registerTask<ArchivedSectorData>(

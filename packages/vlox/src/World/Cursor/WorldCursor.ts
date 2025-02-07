@@ -1,12 +1,12 @@
 import { Vector3Like } from "@amodx/math";
 import { SectorCursor } from "./SectorCursor";
 import { WorldSpaces } from "../WorldSpaces";
-import { DataCursorInterface } from "../../Tools/DataCursor.interface";
+import { DataCursorInterface } from "../../Voxels/Cursor/DataCursor.interface";
 
 let cursorCache: SectorCursor[] = [];
 
 const tempPosition = Vector3Like.Create();
-export class WorldCursor extends DataCursorInterface {
+export class WorldCursor implements DataCursorInterface {
   sectorCursors = new Map<number, Map<number, SectorCursor>>();
 
   origin: Vector3Like = { x: 0, y: 0, z: 0 };

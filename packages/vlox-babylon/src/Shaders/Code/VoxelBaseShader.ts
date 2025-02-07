@@ -228,8 +228,9 @@ vec4 rgb = texture(dve_voxel,vec3(vec2(vUV.x,vUV.y + time * .01 * -1. * vFlow),v
   rgb.rgb *=  vLight;
 
   vec3 finalColor = doFog(rgb);
-  //FragColor = vec4(vec3(1.) * vAO,1.);
- FragColor = vec4(finalColor.rgb, rgb.a);
+ // FragColor = vec4(vec3(1.) * vLight,1.);
+//  FragColor = vec4(vec3(1.) * vAO,1.);
+  FragColor = vec4(finalColor.rgb, rgb.a);
 
   if (FragColor.a < 0.5) { 
     discard;

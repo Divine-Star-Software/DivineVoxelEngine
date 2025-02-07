@@ -8,6 +8,7 @@ import {
   GetXZYOrderArrayIndex,
   GetYXZOrderArrayIndex,
   GetYXZOrderArrayPositionVec3,
+  GetYXZOrderArrayPositionVec3Array,
 } from "../Math/Indexing.js";
 const tempPosition = Vector3Like.Create();
 const tempPosition2 = Vector3Like.Create();
@@ -75,6 +76,8 @@ class SectorSpace {
   static power2Axes = Vector3Like.Create();
   static bounds = Vector3Like.Create();
   static volumne = 0;
+  static sectionBounds = Vector3Like.Create();
+  static sectionVolumne = 0;
   static getPosition(
     x: number,
     y: number,
@@ -153,7 +156,38 @@ class SectionSpace {
     SectionSpace.getPosition(x, y, z, tempPosition);
     SectorSpace.getPosition(x, y, z, tempPosition2);
 
-    return (tempPosition.y - tempPosition2.y) / SectionSpace.bounds.y;
+    return GetYXZOrderArrayIndex(
+      (tempPosition.x - tempPosition2.x) / SectionSpace.bounds.x,
+      (tempPosition.y - tempPosition2.y) / SectionSpace.bounds.y,
+      (tempPosition.z - tempPosition2.z) / SectionSpace.bounds.z,
+      SectorSpace.sectionBounds.x,
+      SectorSpace.sectionBounds.y,
+      SectorSpace.sectionBounds.z
+    );
+  }
+  static getPositionFromIndex(
+    index: number,
+    refPosition = Vector3Like.Create()
+  ) {
+    return GetYXZOrderArrayPositionVec3(
+      index,
+      SectorSpace.sectionBounds.x,
+      SectorSpace.sectionBounds.y,
+      SectorSpace.sectionBounds.z,
+      refPosition
+    );
+  }
+  static getPositionFromIndexVec3Array(
+    index: number,
+    refPosition: Vec3Array = [0, 0, 0]
+  ) {
+    return GetYXZOrderArrayPositionVec3Array(
+      index,
+      SectorSpace.sectionBounds.x,
+      SectorSpace.sectionBounds.y,
+      SectorSpace.sectionBounds.z,
+      refPosition
+    );
   }
 }
 
@@ -272,6 +306,8 @@ EngineSettings.addEventListener("synced", (event) => {
   SectorSpace.bounds.x = 1 << SectorSpace.power2Axes.x;
   SectorSpace.bounds.y = 1 << SectorSpace.power2Axes.y;
   SectorSpace.bounds.z = 1 << SectorSpace.power2Axes.z;
+  SectorSpace.volumne =
+    SectorSpace.bounds.x * SectorSpace.bounds.y * SectorSpace.bounds.z;
 
   SectionSpace.power2Axes.x = settings.sections.power2Size.x;
   SectionSpace.power2Axes.y = settings.sections.power2Size.y;
@@ -283,8 +319,12 @@ EngineSettings.addEventListener("synced", (event) => {
   SectionSpace.volumne =
     SectionSpace.bounds.x * SectionSpace.bounds.y * SectionSpace.bounds.z;
 
-  SectorSpace.volumne =
-    (SectorSpace.bounds.x / SectionSpace.bounds.x) *
-    (SectorSpace.bounds.y / SectionSpace.bounds.y) *
-    (SectorSpace.bounds.z / SectionSpace.bounds.z);
+  SectorSpace.sectionBounds.x = SectorSpace.bounds.x / SectionSpace.bounds.x;
+  SectorSpace.sectionBounds.y = SectorSpace.bounds.y / SectionSpace.bounds.y;
+  SectorSpace.sectionBounds.z = SectorSpace.bounds.z / SectionSpace.bounds.z;
+
+  SectorSpace.sectionVolumne =
+    SectorSpace.sectionBounds.x *
+    SectorSpace.sectionBounds.y *
+    SectorSpace.sectionBounds.z;
 });

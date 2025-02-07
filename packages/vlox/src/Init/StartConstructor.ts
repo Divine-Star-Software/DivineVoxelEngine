@@ -50,10 +50,12 @@ export async function StartContrusctor(data: {} = {}) {
   InitMesherTasks(DVEC.threads.parent);
   InitUpdateTasks({
     onDone(tasks, origin) {
+      tasks.bounds.markSectionsAsDirty();
+/* 
       origin.runTask("build-queue", [
         tasks.origin[0],
         tasks.bounds.getSections(),
-      ]);
+      ]); */
     },
   });
   InitWorldGenerationTasks();

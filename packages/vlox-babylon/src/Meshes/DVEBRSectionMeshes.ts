@@ -1,4 +1,9 @@
-import { type Scene, type Engine, VertexBuffer } from "@babylonjs/core";
+import {
+  type Scene,
+  type Engine,
+  VertexBuffer,
+  Geometry,
+} from "@babylonjs/core";
 import type { Vec3Array } from "@amodx/math";
 import { Vector3 } from "@babylonjs/core/Maths/";
 import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
@@ -68,14 +73,14 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
       } else {
         if (!DVEBRSectionMeshes.meshCache.length) {
           mesh = new Mesh("", this.scene);
+          mesh.setEnabled(false);
           mesh.doNotSyncBoundingInfo = true;
           mesh.isPickable = false;
           mesh.checkCollisions = false;
           mesh.doNotSerialize = true;
           mesh.cullingStrategy = Mesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY;
-          mesh.metadata = { sector: true };
+          mesh.metadata = { section: true };
           mesh.alwaysSelectAsActiveMesh = true;
-          mesh.setEnabled(false);
 
           for (let i = this.scene.meshes.length - 1; i > -1; i--) {
             if (this.scene.meshes[i] == mesh) {
@@ -92,6 +97,7 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
       mesh.getVertexBuffer(VertexBuffer.PositionKind)?.dispose();
       mesh.unfreezeWorldMatrix();
       mesh.position.set(location[0], location[1], location[2]);
+      mesh.computeWorldMatrix();
       DVEBRMesh.UpdateVertexData(mesh, this.engine, subMeshes[i]);
       min.x = subMeshes[i][3][0];
       min.y = subMeshes[i][3][1];
@@ -99,8 +105,7 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
       max.x = subMeshes[i][4][0];
       max.y = subMeshes[i][4][1];
       max.z = subMeshes[i][4][2];
-      this.defaultBb.reConstruct(min, max, mesh.getWorldMatrix());
-      mesh.setBoundingInfo(this.defaultBb);
+      mesh.getBoundingInfo().reConstruct(min, max, mesh.getWorldMatrix());
       mesh.freezeWorldMatrix();
 
       mesh.material = this.renderer.materials.get(subMeshMaterial)!._material;
