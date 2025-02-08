@@ -7,71 +7,79 @@ import {
   setNibbleArrayIndex,
 } from "./BinaryArrays";
 
-export type BinaryBufferTypes =
-  /**If the buffer compressed to a single value the type will be a vlaue */
-  "value" | "1-bit" | "2-bit" | "4-bit" | "8-bit" | "16-bit";
-export interface BinaryBufferData {
-  type?: BinaryBufferTypes;
-  buffer: number | Uint8Array | Uint16Array;
+export enum BinaryBufferTypes {
+  Value = 0,
+  BitArray = 1,
+  HalfNibbleArray = 2,
+  NibbleArray = 4,
+  ByteArray = 8,
+  ShortArray = 16,
 }
-const excludeStore: BinaryBufferTypes[] = ["16-bit", "8-bit", "value"];
-
+export interface BinaryBufferData {
+  type: BinaryBufferTypes;
+  buffer: number | ArrayBufferLike;
+}
 export interface BinaryBuffer extends BinaryBufferData {}
 export class BinaryBuffer {
-  static BytePaletteMax = 256;
-  static NibblePaletteMax = 16;
-  static HalfNibblePaletteMax = 4;
-  static BitPaletteMax = 2;
+  static ByteArrayMax = 256;
+  static NibbleArrayMax = 16;
+  static HalfNibbleArrayMax = 4;
+  static BitArrayMax = 2;
 
   static DetermineSubByteArray = (
     paletteSize: number
   ): BinaryBufferTypes | null => {
-    if (paletteSize == BinaryBuffer.BitPaletteMax) return "1-bit";
+    if (paletteSize == BinaryBuffer.BitArrayMax)
+      return BinaryBufferTypes.BitArray;
     if (
-      paletteSize > BinaryBuffer.BitPaletteMax &&
-      paletteSize <= BinaryBuffer.HalfNibblePaletteMax
+      paletteSize > BinaryBuffer.BitArrayMax &&
+      paletteSize <= BinaryBuffer.HalfNibbleArrayMax
     )
-      return "2-bit";
+      return BinaryBufferTypes.HalfNibbleArray;
     if (
-      paletteSize > BinaryBuffer.HalfNibblePaletteMax &&
-      paletteSize <= BinaryBuffer.NibblePaletteMax
+      paletteSize > BinaryBuffer.HalfNibbleArrayMax &&
+      paletteSize <= BinaryBuffer.NibbleArrayMax
     )
-      return "4-bit";
+      return BinaryBufferTypes.NibbleArray;
     if (
-      paletteSize > BinaryBuffer.NibblePaletteMax &&
-      paletteSize <= BinaryBuffer.BytePaletteMax
+      paletteSize > BinaryBuffer.NibbleArrayMax &&
+      paletteSize <= BinaryBuffer.ByteArrayMax
     )
-      return "8-bit";
+      return BinaryBufferTypes.ByteArray;
     return null;
   };
   static CreateBufferForType(type: BinaryBufferTypes, length: number) {
-    if (type == "16-bit") return new Uint16Array(length);
-    if (type == "8-bit") return new Uint8Array(length);
-    if (type == "1-bit") return new Uint8Array(length);
-    if (type == "2-bit") return new Uint8Array(length);
-    if (type == "4-bit") return new Uint8Array(length);
+    if (type == BinaryBufferTypes.ShortArray) return new Uint16Array(length);
     return new Uint8Array(length);
   }
   static GetConvertedBufferSize(
     source: Uint8Array | Uint16Array,
     type: BinaryBufferTypes
   ) {
-    if (type == "16-bit" || type == "8-bit") return source.length;
-    if (type == "1-bit") return source.length / 8;
-    if (type == "4-bit") return source.length / 2;
-    if (type == "2-bit") return source.length / 4;
-    if (type == "value") return 1;
+    if (
+      type == BinaryBufferTypes.ShortArray ||
+      type == BinaryBufferTypes.ByteArray
+    )
+      return source.length;
+    if (type == BinaryBufferTypes.BitArray) return source.length / 8;
+    if (type == BinaryBufferTypes.HalfNibbleArray) return source.length / 4;
+    if (type == BinaryBufferTypes.NibbleArray) return source.length / 2;
+    if (type == BinaryBufferTypes.Value) return 1;
     return source.length;
   }
   static GetIndexLength(
     source: Uint8Array | Uint16Array,
     type: BinaryBufferTypes
   ) {
-    if (type == "16-bit" || type == "8-bit") return source.length;
-    if (type == "1-bit") return source.length * 8;
-    if (type == "4-bit") return source.length * 2;
-    if (type == "2-bit") return source.length * 4;
-    if (type == "value") return 1;
+    if (
+      type == BinaryBufferTypes.ShortArray ||
+      type == BinaryBufferTypes.ByteArray
+    )
+      return source.length;
+    if (type == BinaryBufferTypes.BitArray) return source.length * 8;
+    if (type == BinaryBufferTypes.HalfNibbleArray) return source.length * 4;
+    if (type == BinaryBufferTypes.NibbleArray) return source.length * 2;
+    if (type == BinaryBufferTypes.Value) return 1;
     return source.length;
   }
   static ReadBufferAtIndex(
@@ -79,10 +87,17 @@ export class BinaryBuffer {
     type: BinaryBufferTypes,
     index: number
   ) {
-    if (type == "16-bit" || type == "8-bit") return source[index];
-    if (type == "1-bit") return getBitArrayIndex(source as any, index);
-    if (type == "4-bit") return getNibbleArrayIndex(source as any, index);
-    if (type == "2-bit") return getHalfNibbleArrayIndex(source as any, index);
+    if (
+      type == BinaryBufferTypes.ShortArray ||
+      type == BinaryBufferTypes.ByteArray
+    )
+      return source[index];
+    if (type == BinaryBufferTypes.BitArray)
+      return getBitArrayIndex(source as any, index);
+    if (type == BinaryBufferTypes.NibbleArray)
+      return getNibbleArrayIndex(source as any, index);
+    if (type == BinaryBufferTypes.HalfNibbleArray)
+      return getHalfNibbleArrayIndex(source as any, index);
     return source[index];
   }
   static SetBufferAtIndex(
@@ -91,13 +106,17 @@ export class BinaryBuffer {
     index: number,
     value: number
   ) {
-    if (type == "16-bit" || type == "8-bit") {
+    if (
+      type == BinaryBufferTypes.ShortArray ||
+      type == BinaryBufferTypes.ByteArray
+    ) {
       return (source[index] = value);
     }
-    if (type == "1-bit") return setBitArrayIndex(source as any, index, value);
-    if (type == "4-bit")
+    if (type == BinaryBufferTypes.BitArray)
+      return setBitArrayIndex(source as any, index, value);
+    if (type == BinaryBufferTypes.NibbleArray)
       return setNibbleArrayIndex(source as any, index, value);
-    if (type == "2-bit")
+    if (type == BinaryBufferTypes.HalfNibbleArray)
       return setHalfNibbleArrayIndex(source as any, index, value);
     return source[index];
   }
@@ -109,8 +128,10 @@ export class BinaryBuffer {
   ) {
     if (
       sourceType == destinationType ||
-      (sourceType == "16-bit" && destinationType == "8-bit") ||
-      (sourceType == "8-bit" && destinationType == "16-bit")
+      (sourceType == BinaryBufferTypes.ShortArray &&
+        destinationType == BinaryBufferTypes.ByteArray) ||
+      (sourceType == BinaryBufferTypes.ByteArray &&
+        destinationType == BinaryBufferTypes.ShortArray)
     ) {
       const destination = this.CreateBufferForType(
         destinationType,
@@ -138,28 +159,31 @@ export class BinaryBuffer {
   static Create(data: Partial<BinaryBufferData>): BinaryBufferData {
     return {
       buffer: 0,
+      type: BinaryBufferTypes.Value,
       ...data,
     };
   }
+  bufferView: Uint8Array | Uint16Array;
   constructor(data: BinaryBufferData) {
     this.buffer = data.buffer;
-    if (data.type) {
-      this.type = data.type;
-    } else {
-      if (typeof data.buffer === "number") this.type = "value";
-      if (data.buffer instanceof Uint16Array) this.type = "16-bit";
-      if (data.buffer instanceof Uint8Array) this.type = "8-bit";
+    this.type = data.type;
+    if (typeof this.buffer !== "number") {
+      if (this.type == BinaryBufferTypes.ShortArray) {
+        this.bufferView = new Uint16Array(this.buffer);
+      } else {
+        this.bufferView = new Uint8Array(this.buffer);
+      }
     }
   }
   getValue(index: number) {
     if (typeof this.buffer == "number") return this.buffer;
-    return BinaryBuffer.ReadBufferAtIndex(this.buffer, this.type!, index);
+    return BinaryBuffer.ReadBufferAtIndex(this.bufferView, this.type!, index);
   }
 
   toJSON() {
     return {
       buffer: this.buffer,
-      ...(excludeStore.includes(this.type!) ? {} : { type: this.type }),
+      type: this.type,
     };
   }
 }

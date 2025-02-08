@@ -33,6 +33,8 @@ export default function InitDataSync(props: {
     for (const model of modelData.models) {
       SchemaRegister.registerModel(model.id, model.schema);
     }
+
+    console.warn("SYNC VOXEL DATA", Threads.parent.name);
     for (const voxel of modelData.voxels) {
       SchemaRegister.registerVoxel(voxel.id, voxel.modelId, voxel.modSchema);
     }

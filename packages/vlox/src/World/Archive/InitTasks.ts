@@ -27,9 +27,9 @@ function runArchiveSector(
   });
   const transfers: any[] = [];
   // if (archived.palettes.light) transfers.push(archived.palettes.light.buffer);
-  if (archived.palettes.state) transfers.push(archived.palettes.state.buffer);
-  if (archived.palettes.secondaryState)
-    transfers.push(archived.palettes.secondaryState.buffer);
+ // if (archived.palettes.state) transfers.push(archived.palettes.state.buffer);
+  if (archived.palettes.secondaryValue)
+    transfers.push(archived.palettes.secondaryValue.buffer);
   for (const section of archived.sections) {
     if (typeof section == "string") continue;
     if (ArrayBuffer.isView((section.buffers.id as BinaryBufferData)?.buffer))
@@ -79,10 +79,10 @@ function runArchiveSector(
     if (!section.palettes) continue;
     if (section.palettes.id) transfers.push(section.palettes.id.buffer);
     //   if (section.palettes.light) transfers.push(section.palettes.light.buffer);
-    if (section.palettes.state) transfers.push(section.palettes.state.buffer);
-    if (section.palettes.mod) transfers.push(section.palettes.mod.buffer);
-    if (section.palettes.secondaryState)
-      transfers.push(section.palettes.secondaryState.buffer);
+  //  if (section.palettes.state) transfers.push(section.palettes.state.buffer);
+  //  if (section.palettes.mod) transfers.push(section.palettes.mod.buffer);
+    if (section.palettes.secondaryValue)
+      transfers.push(section.palettes.secondaryValue.buffer);
     if (section.palettes.secondaryId)
       transfers.push(section.palettes.secondaryId.buffer);
   }

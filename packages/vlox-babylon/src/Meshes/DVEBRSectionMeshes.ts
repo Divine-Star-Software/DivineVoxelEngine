@@ -72,22 +72,23 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
         mesh = chunk.meshes.get(subMeshMaterial) as Mesh;
       } else {
         if (!DVEBRSectionMeshes.meshCache.length) {
-          mesh = new Mesh("", this.scene);
-          mesh.setEnabled(false);
-          mesh.doNotSyncBoundingInfo = true;
-          mesh.isPickable = false;
-          mesh.checkCollisions = false;
-          mesh.doNotSerialize = true;
-          mesh.cullingStrategy = Mesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY;
-          mesh.metadata = { section: true };
-          mesh.alwaysSelectAsActiveMesh = true;
-
+          const newMesh = new Mesh("", this.scene);
+          newMesh.setEnabled(false);
+          newMesh.freezeWorldMatrix();
+          newMesh.doNotSyncBoundingInfo = true;
+          newMesh.isPickable = false;
+          newMesh.checkCollisions = false;
+          newMesh.doNotSerialize = true;
+          newMesh.cullingStrategy = Mesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY;
+          newMesh.metadata = { section: true };
+          newMesh.alwaysSelectAsActiveMesh = true;
           for (let i = this.scene.meshes.length - 1; i > -1; i--) {
-            if (this.scene.meshes[i] == mesh) {
+            if (this.scene.meshes[i] == newMesh) {
               this.scene.meshes.splice(i, 1);
               break;
             }
           }
+          mesh = newMesh;
         } else {
           mesh = DVEBRSectionMeshes.meshCache.shift()!;
           mesh.setEnabled(false);

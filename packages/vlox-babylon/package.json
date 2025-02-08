@@ -1,6 +1,6 @@
 {
   "name": "@divinevoxel/vlox-babylon",
-  "version": "0.0.52",
+  "version": "0.0.53",
   "description": "BabylonJS renderer for @divinevoxel/vlox.",
   "main": "index.js",
   "types": "index.d.ts",

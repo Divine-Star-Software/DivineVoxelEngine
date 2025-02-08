@@ -1,3 +1,4 @@
+import { setNibbleArrayIndex } from "../../../Util/Binary/BinaryArrays";
 import { VoxelLightData } from "../../../Voxels/Cursor/VoxelLightData";
 import { ArchivedLightSegments, ArchivedSectionData } from "../Archive.types";
 const lightData = new VoxelLightData();
@@ -47,54 +48,17 @@ export function uint16To4CharString(value: number): string {
   return result;
 }
 
-function traverseSection(source: any, target: any) {
-  for (const key in source) {
-    if (!(key in target)) return false;
 
-    const sourceValue = source[key];
-    const targetValue = target[key];
 
-    if (
-      !ArrayBuffer.isView(sourceValue) &&
-      typeof sourceValue === "object" &&
-      sourceValue !== null &&
-      !ArrayBuffer.isView(targetValue) &&
-      typeof targetValue == "object" &&
-      targetValue !== null
-    ) {
-      if (!traverseSection(sourceValue, targetValue)) return false;
-      continue;
-    }
-
-    if (
-      typeof sourceValue === "number" ||
-      typeof sourceValue === "string" ||
-      typeof targetValue === "number" ||
-      typeof targetValue === "string"
-    ) {
-      if (sourceValue !== targetValue) return false;
-      continue;
-    }
-
-    if (
-      sourceValue instanceof Uint8Array ||
-      sourceValue instanceof Uint16Array
-    ) {
-      if (!(targetValue instanceof sourceValue.constructor)) return false;
-      if (sourceValue.length !== (targetValue as any).length) return false;
-      let target = targetValue as Uint8Array;
-      for (let i = 0; i < target.length; i++) {
-        if (sourceValue[i] != target[i]) return false;
-      }
-    }
+export function getLightBuffer(light: ArchivedLightSegments, buffer: Uint16Array) {
+  const array = new Uint8Array(buffer.length / 2);
+  for (let i = 0; i < buffer.length; i++) {
+    let l = 0;
+    if (light == "sun") l = lightData.getS(buffer[i]);
+    if (light == "red") l = lightData.getR(buffer[i]);
+    if (light == "green") l = lightData.getG(buffer[i]);
+    if (light == "blue") l = lightData.getB(buffer[i]);
+    setNibbleArrayIndex(array, i, l);
   }
-
-  return true;
-}
-
-export function compareSection(
-  section1: ArchivedSectionData,
-  section2: ArchivedSectionData
-) {
-  return traverseSection(section1, section2);
+  return array;
 }

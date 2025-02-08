@@ -69,7 +69,7 @@ export class Generator {
   tick() {
     if (this._building) {
       this.buildQueue.sort(this.position.x, this.position.y, this.position.z);
-      this.buildQueue.run(25);
+      this.buildQueue.run(125);
     }
   }
 }

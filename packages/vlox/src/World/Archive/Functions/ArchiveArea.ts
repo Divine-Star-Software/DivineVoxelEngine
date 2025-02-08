@@ -216,7 +216,7 @@ const getPaletteMaps = (archiveData: RunData) => {
   createPaletteMaps(archiveData, "level", levelPalette, paletteMap);
   paletteMap.clear();
 
-  const statePalette: Record<string, Uint16Array> = {};
+  /*   const statePalette: Record<string, Uint16Array> = {};
   createPaletteMaps(archiveData, "state", statePalette, paletteMap);
   createPaletteMaps(archiveData, "state", statePalette, paletteMap);
   paletteMap.clear();
@@ -224,19 +224,19 @@ const getPaletteMaps = (archiveData: RunData) => {
   const modPalette: Record<string, Uint16Array> = {};
   createPaletteMaps(archiveData, "mod", modPalette, paletteMap);
   createPaletteMaps(archiveData, "mod", modPalette, paletteMap);
-  paletteMap.clear();
+  paletteMap.clear(); */
 
-  const secondaryStatePalette: Record<string, Uint16Array> = {};
+  const secondaryValuePalette: Record<string, Uint16Array> = {};
   createPaletteMaps(
     archiveData,
-    "secondaryState",
-    secondaryStatePalette,
+    "secondaryValue",
+    secondaryValuePalette,
     paletteMap
   );
   createPaletteMaps(
     archiveData,
-    "secondaryState",
-    secondaryStatePalette,
+    "secondaryValue",
+    secondaryValuePalette,
     paletteMap
   );
   paletteMap.clear();
@@ -255,9 +255,9 @@ const getPaletteMaps = (archiveData: RunData) => {
     secondaryIdPalette,
     levelPalette,
     lightPalette,
-    statePalette,
-    secondaryStatePalette,
-    modPalette,
+    statePalette: {} as any,
+    secondaryValuePalette,
+    modPalette: {} as any,
   };
 };
 
@@ -269,14 +269,14 @@ function SectorToArchivedAreaSector(
   if (sector.palettes.secondaryId)
     palettes.secondaryId = sector.palettes.secondaryId;
 
- // if (sector.palettes.light) palettes.light = sector.palettes.light;
+  // if (sector.palettes.light) palettes.light = sector.palettes.light;
 
-
-  if (sector.palettes.secondaryState)
-    palettes.secondaryState = sector.palettes.secondaryState;
-  if (sector.palettes.state) palettes.state = sector.palettes.state;
+  if (sector.palettes.secondaryValue)
+    palettes.secondaryValueState = sector.palettes.secondaryValue;
+  /*   if (sector.palettes.state) palettes.state = sector.palettes.state;
   sector.palettes.stateMap = sector.palettes.stateMap;
-  if (sector.palettes.mod) palettes.state = sector.palettes.mod;
+  if (sector.palettes.mod) palettes.state = sector.palettes.mod; */
+
   sector.palettes.modMap = sector.palettes.modMap;
 
   return {
@@ -303,8 +303,8 @@ export default function CreateArchiveArea(
     version: "",
     keys: {
       sectorState: sectorStateKeys,
-      sectionState: []
-   //   sectionState: archiveData.sectors[0].keys.sectionState,
+      sectionState: [],
+      //   sectionState: archiveData.sectors[0].keys.sectionState,
     },
     maps: {
       sectorState: buildSectorState(archiveData),
@@ -342,7 +342,7 @@ export function CreateSectorFromArea(
   }
   palettes.id = id;
 
-/*   palettes.light =
+  /*   palettes.light =
     typeof sector.palettes.light == "string"
       ? area.maps.lightPalette[sector.palettes.light]
       : sector.palettes.light;
@@ -352,7 +352,7 @@ export function CreateSectorFromArea(
       ? area.maps.levelPalette[sector.palettes.level]
       : sector.palettes.level;
 
-  palettes.state =
+  /*   palettes.state =
     typeof sector.palettes.state == "string"
       ? area.maps.statePalette[sector.palettes.state]
       : sector.palettes.state!;
@@ -363,7 +363,7 @@ export function CreateSectorFromArea(
       ? area.maps.statePalette[sector.palettes.mod]
       : sector.palettes.mod!;
   palettes.modMap = sector.palettes.modMap;
-
+ */
   let secondaryId: string[];
   if (typeof sector.palettes.secondaryId == "string") {
     secondaryId = area.maps.idPalette[sector.palettes.secondaryId];
@@ -374,10 +374,10 @@ export function CreateSectorFromArea(
     secondaryId[i] = area.maps.id[i];
   }
   palettes.secondaryId = secondaryId;
-  palettes.secondaryState =
-    typeof sector.palettes.secondaryState == "string"
-      ? area.maps.secondaryStatePalette[sector.palettes.secondaryState]
-      : sector.palettes.secondaryState;
+  palettes.secondaryValue =
+    typeof sector.palettes.secondaryValueState == "string"
+      ? area.maps.secondaryValuePalette[sector.palettes.secondaryValueState]
+      : sector.palettes.secondaryValueState;
 
   const sections: ArchivedSectionData[] = [];
   for (let i = 0; i < sector.sections.length; i++) {
@@ -394,8 +394,8 @@ export function CreateSectorFromArea(
     vloxVersion: area.version,
     location: [area.dimension, ...sector.position],
     flags: sectorState,
-    timestamps:{},
-/*     keys: {
+    timestamps: {},
+    /*     keys: {
       sectionState: area.keys.sectionState,
     }, */
     duplicates: {},

@@ -21,9 +21,8 @@ export interface ArchivedSectorData {
   palettes: ArchivedSectorPaletteData;
   /** Placeholder for future buffer data. */
   buffers: ArchivedSectorBuffersData;
-
+  /**Contains duplicate data like duplicate sections. */
   duplicates: ArchivedSectorDuplicteData;
-
   /** Array of archived section data within the sector. */
   sections: (ArchivedSectionData | string)[];
 }
@@ -37,13 +36,25 @@ export interface ArchivedSectorDuplicteData {
 export interface ArchivedSectorPaletteData {
   id: string[];
   secondaryId: string[];
-  state: Uint16Array;
-  stateMap: Record<number, any[]>;
-  mod: Uint16Array;
-  modMap: Record<number, any[]>;
+  /**A map of sector voxel ids to a palette of store state objects.
+   *1. First depth -> voxels
+   *2. Second depth -> voxel states
+   *3. Third depth -> state object
+   */
+  stateMap: any[][][];
+  /**Same as state map but for secondary voxels */
+  secondaryStateMap: any[][][];
+  /**A map of sector voxel ids to a palette of store mod state objects.
+   *1. First depth -> voxels
+   *2. Second depth -> voxel mode states
+   *3. Third depth -> mode state object
+   */
+  modMap: any[][][];
+  /**Same as mod map but for secondary voxels */
+  secondaryModMap: any[][][];
   level?: Uint8Array;
   light: Partial<Record<ArchivedLightSegments, Uint8Array>>;
-  secondaryState?: Uint16Array;
+  secondaryValue?: Uint16Array;
 }
 
 /**
@@ -71,9 +82,16 @@ export interface ArchivedSectionPaletteData {
   light?: Partial<Record<ArchivedLightSegments, Uint8Array>>;
   level?: Uint8Array;
   secondaryId?: Uint16Array;
-  state?: Uint16Array;
-  mod?: Uint16Array;
-  secondaryState?: Uint16Array;
+  /** Palette of sector voxel ids to a palette of state ids for the voxel*/
+  state?: Record<number, Uint16Array>;
+  /** Palette of sector secondary voxel ids to a palette of state ids for the voxel*/
+  secondaryState?: Record<number, Uint16Array>;
+  /** Palette of sector voxel ids to a palette of mod ids for the voxel*/
+  mod?: Record<number, Uint16Array>;
+  /** Palette of sector secondary voxel ids to a palette of mod ids for the voxel*/
+  secondaryMod?: Record<number, Uint16Array>;
+
+  secondaryValue?: Uint16Array;
 }
 
 /**
@@ -86,7 +104,7 @@ export interface ArchivedSectionBuffers {
   dirtyMap?: Uint8Array | number;
   //voxel buffers
   id?: BinaryBufferData | number;
-  light?: Partial< Record<ArchivedLightSegments, BinaryBufferData | number>>;
+  light?: Partial<Record<ArchivedLightSegments, BinaryBufferData | number>>;
   level?: BinaryBufferData | number;
   state?: BinaryBufferData | number;
   mod?: BinaryBufferData | number;
@@ -128,7 +146,7 @@ export interface ArchivedAreaMapData {
   /** Record mapping string IDs to arrays of secondary voxel identifiers. */
   secondaryIdPalette: Record<string, string[]>;
   /** Record mapping string IDs to Uint16Arrays of secondary voxel states. */
-  secondaryStatePalette: Record<string, Uint16Array>;
+  secondaryValuePalette: Record<string, Uint16Array>;
   /** Record mapping section identifiers to `ArchivedSectionData`. */
   section: Record<string, ArchivedSectionData>;
   /** Record mapping sector state identifiers to arrays of state data. */
@@ -157,7 +175,7 @@ export interface ArchivedAreaSectorPaletteData {
   stateMap: Record<number, any[]>;
   modMap: Record<number, any[]>;
   secondaryId: string[];
-  secondaryState: Uint16Array;
+  secondaryValueState: Uint16Array;
 }
 
 /**
