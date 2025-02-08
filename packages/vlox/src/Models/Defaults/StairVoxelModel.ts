@@ -7,32 +7,17 @@ export const stair: VoxelModelData = {
     {
       name: "placement",
       type: "string",
-      values: {
-        0: "down",
-        1: "up",
-        2: "north",
-        3: "south",
-        4: "east",
-        5: "west",
-      },
+      values: ["down", "up", "north", "south", "east", "west"],
     },
     {
       name: "direction",
       type: "string",
-      values: {
-        0: "south",
-        1: "north",
-        2: "east",
-        3: "west",
-      },
+      values: ["south", "north", "east", "west"],
     },
     {
       name: "connected",
       type: "string",
-      values: {
-        0: "false",
-        1: "true",
-      },
+      values: ["false", "true"],
     },
   ],
   arguments: {

@@ -8,7 +8,6 @@ import { VoxelRelativeCubeIndex } from "../../../../Models/Indexing/VoxelRelativ
 import { Quad } from "../../../Geomtry/Primitives/Quad";
 import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData";
 
-
 export const GradientCheckSets: Record<
   VoxelFaces,
   Record<QuadVerticies, number[]>
@@ -388,7 +387,7 @@ export function getInterpolationValue(value: Vec4Array, weights: Vec4Array) {
 
 export type QuadVertexWeights = [Vec4Array, Vec4Array, Vec4Array, Vec4Array];
 
-export const addQuadWeights = (
+export const getQuadWeights = (
   quad: Quad,
   direction: VoxelFaces
 ): QuadVertexWeights => {

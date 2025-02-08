@@ -5,7 +5,7 @@ import { VoxelQuadGeometryNode } from "../../../Models/VoxelModel.types";
 import { Quad } from "../../Geomtry/Primitives/Quad"
 
 import {
-  addQuadWeights,
+  getQuadWeights,
   closestUnitNormal,
 } from "./Calc/CalcConstants";
 
@@ -53,7 +53,7 @@ export function GetQuadGeometryData(
   if (unitNormal[2] == 1) closestFace = VoxelFaces.North;
   if (unitNormal[2] == -1) closestFace = VoxelFaces.South;
 
-  const vertexWeights = addQuadWeights(quad, closestFace);
+  const vertexWeights = getQuadWeights(quad, closestFace);
 
   closestFace = closestFace;
   return {

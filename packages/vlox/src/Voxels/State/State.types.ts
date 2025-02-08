@@ -2,7 +2,7 @@ import { Vec3Array } from "@amodx/math";
 export interface VoxelStateStringSchemaData {
   name: string;
   type: "string";
-  values: Record<number, string>;
+  values: string[];
 }
 export interface VoxelStateNumberSchemaData {
   name: string;

@@ -47,11 +47,7 @@ export const chainModel: VoxelModelData = {
     {
       name: "axis",
       type: "string",
-      values: {
-        0: "y",
-        1: "x",
-        2: "z",
-      },
+      values: ["y", "x", "z"],
     },
   ],
   shapeStatesConditonalNodes: {},
@@ -828,7 +824,7 @@ export const candlesGeometry4: VoxelGeometryData = {
 };
 export const candlesModel: VoxelModelData = {
   id: "dve_candle",
-  divisor: [16,16,16],
+  divisor: [16, 16, 16],
   arguments: {
     candleTexture: {
       type: "texture",
@@ -848,10 +844,7 @@ export const candlesModel: VoxelModelData = {
     {
       name: "lit",
       type: "string",
-      values: {
-        0: "false",
-        1: "true",
-      },
+      values: ["false", "true"],
     },
   ],
   effects: [
@@ -1167,7 +1160,7 @@ export const leverGeometry = [leverGeometryBase, leverGeometryDown];
 
 export const leverModel: VoxelModelData = {
   id: "dve_lever",
-  divisor: [16,16,16],
+  divisor: [16, 16, 16],
   arguments: {
     baseTexture: {
       type: "texture",
@@ -1181,32 +1174,17 @@ export const leverModel: VoxelModelData = {
     {
       name: "placement",
       type: "string",
-      values: {
-        0: "down",
-        1: "up",
-        2: "north",
-        3: "south",
-        4: "east",
-        5: "west",
-      },
+      values: ["down", "up", "north", "south", "east", "west"],
     },
     {
       name: "direction",
       type: "string",
-      values: {
-        0: "north",
-        1: "south",
-        2: "east",
-        3: "west",
-      },
+      values: ["north", "south", "east", "west"],
     },
     {
       name: "state",
       type: "string",
-      values: {
-        0: "off",
-        1: "on",
-      },
+      values: ["off", "on"],
     },
   ],
   shapeStatesConditonalNodes: {},
@@ -1258,7 +1236,7 @@ export const leverModel: VoxelModelData = {
       {
         id: "lever",
         geometryId: "dve_lever_model",
-        position: [0, -.8, 3],
+        position: [0, -0.8, 3],
         rotation: [45, 0, 0],
         inputs: {
           texture: "@leverTexture",
@@ -1276,7 +1254,7 @@ export const leverModel: VoxelModelData = {
       {
         id: "lever",
         geometryId: "dve_lever_model",
-        position: [0, -.8, -3],
+        position: [0, -0.8, -3],
         rotation: [-45, 0, 0],
         inputs: {
           texture: "@leverTexture",

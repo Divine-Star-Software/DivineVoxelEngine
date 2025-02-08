@@ -3,7 +3,7 @@ import { VoxelFaces } from "../../../Math";
 
 import { Quad } from "../../Geomtry/Primitives/Quad";
 
-import { addQuadWeights, QuadVertexWeights } from "./Calc/CalcConstants";
+import { getQuadWeights, QuadVertexWeights } from "./Calc/CalcConstants";
 
 import { VoxelGeometryTransform } from "../../../Voxels/Types/VoxelModelCompiledData.types";
 import { TransformBox } from "../../../Models/Shared/Transform";
@@ -81,32 +81,32 @@ export function GetBoxGeometryNodeData(
     quadBounds[i] = GetBounds(positions);
   }
 
-  vertexWeights[VoxelFaces.Up] = addQuadWeights(
+  vertexWeights[VoxelFaces.Up] = getQuadWeights(
     quads[VoxelFaces.Up],
     VoxelFaces.Up
   );
 
-  vertexWeights[VoxelFaces.Down] = addQuadWeights(
+  vertexWeights[VoxelFaces.Down] = getQuadWeights(
     quads[VoxelFaces.Down],
     VoxelFaces.Down
   );
 
-  vertexWeights[VoxelFaces.North] = addQuadWeights(
+  vertexWeights[VoxelFaces.North] = getQuadWeights(
     quads[VoxelFaces.North],
     VoxelFaces.North
   );
 
-  vertexWeights[VoxelFaces.South] = addQuadWeights(
+  vertexWeights[VoxelFaces.South] = getQuadWeights(
     quads[VoxelFaces.South],
     VoxelFaces.South
   );
 
-  vertexWeights[VoxelFaces.East] = addQuadWeights(
+  vertexWeights[VoxelFaces.East] = getQuadWeights(
     quads[VoxelFaces.East],
     VoxelFaces.East
   );
 
-  vertexWeights[VoxelFaces.West] = addQuadWeights(
+  vertexWeights[VoxelFaces.West] = getQuadWeights(
     quads[VoxelFaces.West],
     VoxelFaces.West
   );

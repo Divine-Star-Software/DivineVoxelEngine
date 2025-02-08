@@ -7,24 +7,12 @@ export const simpleThinPannel: VoxelModelData = {
     {
       name: "placement",
       type: "string",
-      values: {
-        0: "down",
-        1: "up",
-        2: "north",
-        3: "south",
-        4: "east",
-        5: "west",
-      },
+      values: ["down", "up", "north", "south", "east", "west"],
     },
     {
       name: "direction",
       type: "string",
-      values: {
-        0: "north",
-        1: "south",
-        2: "east",
-        3: "west",
-      },
+      values: ["north", "south", "east", "west"],
     },
   ],
   arguments: {
@@ -500,24 +488,12 @@ export const simpleCrossedPannel: VoxelModelData = {
     {
       name: "placement",
       type: "string",
-      values: {
-        0: "down",
-        1: "up",
-        2: "north",
-        3: "south",
-        4: "east",
-        5: "west",
-      },
+      values: ["down", "up", "north", "south", "east", "west"],
     },
     {
       name: "direction",
       type: "string",
-      values: {
-        0: "north",
-        1: "south",
-        2: "east",
-        3: "west",
-      },
+      values: ["north", "south", "east", "west"],
     },
   ],
   arguments: {
