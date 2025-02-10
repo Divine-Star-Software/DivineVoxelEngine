@@ -1,11 +1,11 @@
 import { WorldSpaces } from "../../../World/WorldSpaces";
-import { UpdateTask } from "../../../Tasks/Update/UpdateTask";
+import { VoxelUpdateTask } from "../../VoxelUpdateTask";
 import { WorldRegister } from "../../../World/WorldRegister";
 import { SectionCursor } from "../../../World/Cursor/SectionCursor";
 import { EngineSettings } from "../../../Settings/EngineSettings";
 import { RGBUpdate } from "./RGBUpdate";
 const sectionCursor = new SectionCursor();
-export function WorldRGB(task: UpdateTask) {
+export function WorldRGB(task: VoxelUpdateTask) {
   if (!EngineSettings.doLight) return false;
   const sector = WorldRegister.sectors.get(
     task.origin[0],

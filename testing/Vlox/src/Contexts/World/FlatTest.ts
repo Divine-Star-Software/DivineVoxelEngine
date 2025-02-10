@@ -12,20 +12,24 @@ export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
   let endX = 16 * numChunks;
   let endZ = 16 * numChunks;
 
+  const buildTimes: number[] = [];
+  DVEW.TC.registerTask<number>("add-build-time", (time) => {
+    buildTimes.push(time);
+  });
   const tasks = new TaskTool(DVEW.threads.constructors);
   const propagation = tasks.propagation.createQueue();
   const worldSun = tasks.worldSun.createQueue();
   const brush = new BrushTool();
-  brush.start("main", 0, 0, 0);
+  brush.start(0, 0, 0, 0);
 
-  PerlinGen.worldCursor.setFocalPoint("main", 0, 0, 0);
-  WorldGen.worldCursor.setFocalPoint("main", 0, 0, 0);
+  PerlinGen.worldCursor.setFocalPoint(0, 0, 0, 0);
+  WorldGen.worldCursor.setFocalPoint(0, 0, 0, 0);
   let genOne = false;
   for (let x = startX - 32; x < endX + 32; x += 16) {
     for (let z = startZ - 32; z < endZ + 32; z += 16) {
       brush.setXYZ(x, 0, z).newSector();
-      propagation.add(["main", x, 0, z]);
-      worldSun.add(["main", x, 0, z]);
+      propagation.add([0, x, 0, z]);
+      worldSun.add([0, x, 0, z]);
     }
   }
   if (genOne) {
@@ -56,15 +60,25 @@ export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
   const tSunS = performance.now();
   await worldSun.run();
   const tSunE = performance.now();
+
+  const buildQueue = tasks.build.sector.createQueue();
   console.log("Sun done = ", tSunE - tSunS);
 
   for (let x = startX - 32; x < endX + 32; x += 16) {
     for (let z = startZ - 32; z < endZ + 32; z += 16) {
-      tasks.build.sector.run(["main", x, 0, z]);
+      buildQueue.add([0, x, 0, z]);
     }
   }
-
+  await buildQueue.run();
   const tEnd = performance.now();
 
   console.log("ALL DONE! total time = ", tEnd - tStart);
+
+  console.warn("build times", buildTimes);
+  buildTimes.sort((a,b)=>a-b);
+  console.log(
+    "average",
+    buildTimes.reduce((a, b) => a + b) / buildTimes.length,
+    [buildTimes.shift(), buildTimes.pop()]
+  );
 }

@@ -146,8 +146,8 @@ export class VoxelModelRuleBuilderRegister {
       this.models.set(model.id, rulesModel);
       const divisor = model.divisor ? model.divisor : null;
       if (divisor) {
-        for (const stateId in model.shapeStatesNodes) {
-          const nodes = model.shapeStatesNodes[stateId];
+        for (const stateId in model.stateNodes) {
+          const nodes = model.stateNodes[stateId];
           for (const node of nodes) {
             const d = "divisor" in node ? node.divisor! : divisor;
             if (node.position) {
@@ -162,8 +162,8 @@ export class VoxelModelRuleBuilderRegister {
             }
           }
         }
-        for (const stateId in model.shapeStatesConditonalNodes) {
-          const nodes = model.shapeStatesConditonalNodes[stateId];
+        for (const stateId in model.conditonalNodes) {
+          const nodes = model.conditonalNodes[stateId];
           for (const node of nodes) {
             const d = "divisor" in node ? node.divisor! : divisor;
             if (node.position) {
@@ -193,14 +193,14 @@ export class VoxelModelRuleBuilderRegister {
         }
       }
 
-      for (const stateId in model.shapeStatesNodes) {
-        const nodes = model.shapeStatesNodes[stateId];
+      for (const stateId in model.stateNodes) {
+        const nodes = model.stateNodes[stateId];
         addGeo(model, stateId, nodes).forEach((_) =>
           rulesModel.registerShapeState(..._)
         );
       }
-      for (const stateId in model.shapeStatesConditonalNodes) {
-        const nodes = model.shapeStatesConditonalNodes[stateId];
+      for (const stateId in model.conditonalNodes) {
+        const nodes = model.conditonalNodes[stateId];
         addGeo(model, stateId, nodes).forEach((_) =>
           rulesModel.registerCondiotnalNode(..._)
         );

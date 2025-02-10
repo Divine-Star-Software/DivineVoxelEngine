@@ -28,7 +28,7 @@ export const liquidGeometry: VoxelGeometryData = {
 export const liquidModel: VoxelModelData = {
   id: "dve_liquid",
   relationsSchema: [],
-  shapeStateSchema: [],
+  stateSchema: [],
   arguments: {
     stillTexture: {
       type: "texture",
@@ -37,8 +37,8 @@ export const liquidModel: VoxelModelData = {
       type: "texture",
     },
   },
-  shapeStatesConditonalNodes: {},
-  shapeStatesNodes: {
+  conditonalNodes: {},
+  stateNodes: {
     "*": [
       {
         id: "liquid",

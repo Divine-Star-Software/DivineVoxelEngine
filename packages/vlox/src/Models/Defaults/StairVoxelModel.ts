@@ -3,7 +3,7 @@ import { VoxelModelData } from "../VoxelModel.types";
 export const stair: VoxelModelData = {
   id: "dve_simple_stair",
   relationsSchema: [],
-  shapeStateSchema: [
+  stateSchema: [
     {
       name: "placement",
       type: "string",
@@ -25,9 +25,9 @@ export const stair: VoxelModelData = {
       type: "texture",
     },
   },
-  shapeStatesConditonalNodes: {},
+  conditonalNodes: {},
 
-  shapeStatesNodes: {
+  stateNodes: {
     "placement=up,direction=north,connected=false": [
       {
         id: "base",

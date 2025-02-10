@@ -10,7 +10,7 @@ export async function ShapeTest(DVEW: DivineVoxelEngineWorld) {
 
   const tasks = new TaskTool(DVEW.threads.constructors);
   const brush = new BrushTool();
-  brush.start("main", 0, 0, 0);
+  brush.start(0, 0, 0, 0);
 
   const propagation = tasks.propagation.createQueue();
   const worldSun = tasks.worldSun.createQueue();
@@ -20,14 +20,14 @@ export async function ShapeTest(DVEW: DivineVoxelEngineWorld) {
   builder.setXYZ(0, 0, 0).fillColumn();
   WorldGen.flatColumn(0, 0);
 
- tasks.propagation.queued.add(["main", 0, 0, 0]);
- tasks.worldSun.queued.add(["main", 0, 0, 0]);
+ tasks.propagation.queued.add([0, 0, 0, 0]);
+ tasks.worldSun.queued.add([0, 0, 0, 0]);
  */
   for (let x = startX - 32; x < endX + 32; x += 16) {
     for (let z = startZ - 32; z < endZ + 32; z += 16) {
       brush.setXYZ(x, 0, z).newSector();
-      propagation.add(["main", x, 0, z]);
-      worldSun.add(["main", x, 0, z]);
+      propagation.add([0, x, 0, z]);
+      worldSun.add([0, x, 0, z]);
     }
   }
 
@@ -54,7 +54,7 @@ export async function ShapeTest(DVEW: DivineVoxelEngineWorld) {
 
   for (let x = startX - 16; x < endX + 16; x += 16) {
     for (let z = startZ - 16; z < endZ + 16; z += 16) {
-      tasks.build.sector.run(["main", x, 0, z]);
+      tasks.build.sector.run([0, x, 0, z]);
     }
   }
 

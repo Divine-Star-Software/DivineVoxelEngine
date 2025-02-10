@@ -5,10 +5,8 @@ import {
   CreateBox,
   StandardMaterial,
 } from "@babylonjs/core";
-import {
-  VoxelMeshBVHBuilder,
-  StructCursor,
-} from "@divinevoxel/vlox/Mesher/Geomtry/VoxelMeshBVHBuilder";
+import { VoxelMeshBVHStructCursor } from "@divinevoxel/vlox/Mesher/Geomtry/VoxelMeshBVHStructCursor";
+import { VoxelMeshBVHBuilder } from "@divinevoxel/vlox/Mesher/Geomtry/VoxelMeshBVHBuilder";
 import { Vector2, Vector3, Vector4 } from "@babylonjs/core/Maths/";
 import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 
@@ -242,7 +240,11 @@ const stack: StackNode[] = Array.from(
   () => new StackNode(0, 0)
 );
 
-const makeMesh = (struct: StructCursor, hit = false, parent = false) => {
+const makeMesh = (
+  struct: VoxelMeshBVHStructCursor,
+  hit = false,
+  parent = false
+) => {
   const mesh = parent
     ? BVHViewer._parentBox.createInstance(crypto.randomUUID())
     : hit
@@ -271,9 +273,9 @@ function VoxelMeshIntersect(
   mesh_verterices: Float32Array,
   mesh_indices: Uint32Array
 ) {
-  const currentNode = new StructCursor(voxel_bvh);
-  const leftChild = new StructCursor(voxel_bvh);
-  const rightChild = new StructCursor(voxel_bvh);
+  const currentNode = new VoxelMeshBVHStructCursor(voxel_bvh);
+  const leftChild = new VoxelMeshBVHStructCursor(voxel_bvh);
+  const rightChild = new VoxelMeshBVHStructCursor(voxel_bvh);
 
   let intersectResult = new VoxelMeshIntersectResult(
     false,

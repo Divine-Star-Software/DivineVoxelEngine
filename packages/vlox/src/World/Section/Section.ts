@@ -1,6 +1,6 @@
 import { WorldSpaces } from "../WorldSpaces.js";
 import { Sector } from "../Sector/Sector.js";
-import { Vec3Array } from "@amodx/math";
+import { Vec2Array, Vec3Array } from "@amodx/math";
 import {
   getBitArrayIndex,
   setBitArrayIndex,
@@ -16,11 +16,15 @@ export interface SectionData extends VoxelDataArrays {
   voxelMap: Uint8Array;
   /**Y slice of the section to tell if the slice is dirty and voxelMap needs to be re-checked. */
   dirtyMap: Uint8Array;
+  /**Y slice of the section to tell if the slice is needs it voxel logic checked.*/
+  logicDirtyMap: Uint8Array;
   /**A bit array used to cache if a voxel is exposed or not. */
   buried: Uint8Array;
+  /**A bit array used to cache if a voxel needs its logic evaled or not*/
+  logicDirty: Uint8Array;
 }
 export interface Section extends SectionData {}
-
+const temp: Vec2Array = [0, 0];
 export class Section {
   static GetBufferSize() {
     const voxelSize = WorldSpaces.section.volumne;
@@ -33,7 +37,11 @@ export class Section {
         height / 8 +
         //dirtyMap
         height / 8 +
+        //logicDirtyMap
+        height / 8 +
         //bureid
+        voxelSize / 8 +
+        //logic dirty
         voxelSize / 8 +
         //---- voxel data arrays
         //ids
@@ -65,7 +73,11 @@ export class Section {
     bufferStart += height / 8;
     const dirtyMap = new Uint8Array(sectorBuffer, bufferStart, height / 8);
     bufferStart += height / 8;
+    const logicDirtyMap = new Uint8Array(sectorBuffer, bufferStart, height / 8);
+    bufferStart += height / 8;
     const buried = new Uint8Array(sectorBuffer, bufferStart, voxelSize / 8);
+    bufferStart += voxelSize / 8;
+    const logicDirty = new Uint8Array(sectorBuffer, bufferStart, voxelSize / 8);
     bufferStart += voxelSize / 8;
     const ids = new Uint16Array(sectorBuffer, bufferStart, voxelSize);
     bufferStart += voxelSize * 2;
@@ -83,6 +95,8 @@ export class Section {
       flagArray,
       voxelMap,
       dirtyMap,
+      logicDirtyMap,
+      logicDirty,
       buried,
       ids,
       light,
@@ -116,6 +130,8 @@ export class Section {
     this.flagArray = data.flagArray;
     this.voxelMap = data.voxelMap;
     this.dirtyMap = data.dirtyMap;
+    this.logicDirty = data.logicDirty;
+    this.logicDirtyMap = data.logicDirtyMap;
     this.buried = data.buried;
     this.ids = data.ids;
     this.level = data.level;
@@ -136,12 +152,38 @@ export class Section {
     return getBitArrayIndex(this.flagArray, index) == 1;
   }
 
-  isDirty() {
-    return this.getBitFlag(SectionStateDefaultFlags.isDirty);
+  isDisplayDirty() {
+    return this.getBitFlag(SectionStateDefaultFlags.displayDirty);
   }
-  setDirty(dirty: boolean) {
-    this.setBitFlag(SectionStateDefaultFlags.isDirty, dirty);
-    if (dirty) this.sector.setStored(false);
+  setDisplayDirty(dirty: boolean) {
+    this.setBitFlag(SectionStateDefaultFlags.displayDirty, dirty);
+    if (dirty) {
+      this.sector.setStored(false);
+      this.sector.setDisplayDirty(true);
+    }
+  }
+  isLogicDirty() {
+    return this.getBitFlag(SectionStateDefaultFlags.logicDirty);
+  }
+  setLogicDirty(dirty: boolean) {
+    this.setBitFlag(SectionStateDefaultFlags.logicDirty, dirty);
+    if (dirty) {
+      this.sector.setLogicDirty(true);
+    }
+  }
+  isLogicSliceDirty(y: number) {
+    return getBitArrayIndex(this.logicDirtyMap, y) == 1;
+  }
+  setLogicSliceDirty(y: number, dirty: boolean) {
+    setBitArrayIndex(this.logicDirtyMap, y, dirty ? 1 : 0);
+  }
+
+
+  getVoxelLogicDirty(index: number) {
+    return getBitArrayIndex(this.logicDirty, index) == 1;
+  }
+  setVoxelLogicDirty(index: number, value: boolean) {
+    return setBitArrayIndex(this.logicDirty, index, value ? 1 : 0);
   }
 
   isInProgress() {
@@ -149,6 +191,12 @@ export class Section {
   }
   setInProgress(inProgress: boolean) {
     this.setBitFlag(SectionStateDefaultFlags.inProgress, inProgress);
+  }
+  isLogicUpdateInProgress() {
+    return this.getBitFlag(SectionStateDefaultFlags.logicUpdateInProgress);
+  }
+  setLogicUpdateInProgress(inProgress: boolean) {
+    this.setBitFlag(SectionStateDefaultFlags.logicUpdateInProgress, inProgress);
   }
 
   getBuried(index: number) {
@@ -181,9 +229,24 @@ export class Section {
         if (i > max) max = i;
       }
     }
-    return [min, max];
+    temp[0] = min;
+    temp[1] = max;
+    return temp;
   }
-
+  getLogicMinMax() {
+    let min = Infinity;
+    let max = -Infinity;
+    let i = WorldSpaces.section.bounds.y;
+    while (i--) {
+      if (this.isLogicSliceDirty(i)) {
+        if (i < min) min = i;
+        if (i > max) max = i;
+      }
+    }
+    temp[0] = min;
+    temp[1] = max;
+    return temp;
+  }
   storeFlags() {
     const stored: Record<string, boolean> = {};
     for (const key in SectionState.StoredFlags) {
@@ -204,6 +267,8 @@ export class Section {
   toJSON(): SectionData {
     return {
       flagArray: this.flagArray,
+      logicDirtyMap: this.logicDirtyMap,
+      logicDirty: this.logicDirty,
       voxelMap: this.voxelMap,
       dirtyMap: this.dirtyMap,
       buried: this.buried,

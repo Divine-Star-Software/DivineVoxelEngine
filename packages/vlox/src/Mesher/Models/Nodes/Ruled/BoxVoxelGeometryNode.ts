@@ -15,7 +15,10 @@ import {
 import { VoxelRelativeCubeIndexPositionMap } from "../../../../Models/Indexing/VoxelRelativeCubeIndex";
 import { GetBoxGeometryNodeData } from "../../Common/BoxGeometryNode";
 import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData";
-import { VoxelGeometryBuilder } from "../../../Geomtry/VoxelGeometryBuilder";
+import {
+  addVoxelQuad,
+  VoxelGeometryBuilder,
+} from "../../../Geomtry/VoxelGeometryBuilder";
 import { VoxelModelConstructorRegister } from "../../../Models/VoxelModelConstructorRegister";
 
 const ArgIndexes = BoxVoxelGometryInputs.ArgIndexes;
@@ -51,8 +54,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
     const faceIndexes = this.geomtry.faceCullMap![trueFaceIndex];
     if (!faceIndexes) return true;
 
-    const tool = this.builder;
-
+    const builder = this.builder;
     for (
       let positionIndex = 0;
       positionIndex < faceIndexes.length;
@@ -61,16 +63,14 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
       const currentIndex = faceIndexes[positionIndex];
       const p = VoxelRelativeCubeIndexPositionMap[currentIndex];
       const hashed = this.builder.space.getHash(
-        tool.nVoxel,
-        tool.position.x + p[0],
-        tool.position.y + p[1],
-        tool.position.z + p[2]
+        builder.nVoxel,
+        builder.position.x + p[0],
+        builder.position.y + p[1],
+        builder.position.z + p[2]
       );
       if (this.builder.space.foundHash[hashed] < 2) continue;
-
+      const constructor = this.builder.space.getConstructor(hashed)!;
       const offsetBaseGometry = this.builder.space.getGeomtry(hashed);
-      const offsetConditonalGeometry =
-        this.builder.space.getConditionalGeomtry(hashed);
 
       if (offsetBaseGometry) {
         for (let i = 0; i < offsetBaseGometry.length; i++) {
@@ -84,43 +84,43 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
           );
           if (
             faceIndex > -1 &&
-            !this.builder.space
-              .getConstructor(hashed)
-              ?.isShapeStateFaceTransparent(
-                this.builder.space.modCache[hashed],
-                this.builder.space.stateCache[hashed],
-                geoId,
-                faceIndex
-              )
+            !constructor.isShapeStateFaceTransparent(
+              this.builder.space.modCache[hashed],
+              this.builder.space.stateCache[hashed],
+              geoId,
+              faceIndex
+            )
           ) {
             return false;
           }
         }
       }
 
-      if (!offsetConditonalGeometry) continue;
-      for (let i = 0; i < offsetConditonalGeometry.length; i++) {
-        const cond = offsetConditonalGeometry[i];
-        for (let k = 0; k < cond.length; k++) {
-          const geoId = cond[k];
-          if (VoxelModelConstructorRegister.rulesless[geoId]) continue;
-          const faceIndex = this.geomtry.cullIndex.getValue(
-            geoId,
-            currentIndex,
-            trueFaceIndex
-          );
-          if (
-            faceIndex > -1 &&
-            !this.builder.space
-              .getConstructor(hashed)
-              ?.isCondtionalStateFaceTransparent(
+      const offsetConditonalGeometry =
+        this.builder.space.getConditionalGeomtry(hashed);
+
+      if (offsetConditonalGeometry) {
+        for (let i = 0; i < offsetConditonalGeometry.length; i++) {
+          const cond = offsetConditonalGeometry[i];
+          for (let k = 0; k < cond.length; k++) {
+            const geoId = cond[k];
+            if (VoxelModelConstructorRegister.rulesless[geoId]) continue;
+            const faceIndex = this.geomtry.cullIndex.getValue(
+              geoId,
+              currentIndex,
+              trueFaceIndex
+            );
+            if (
+              faceIndex > -1 &&
+              !constructor.isCondtionalStateFaceTransparent(
                 this.builder.space.modCache[hashed],
                 this.builder.space.stateCache[hashed],
                 geoId,
                 faceIndex
               )
-          )
-            return false;
+            )
+              return false;
+          }
         }
       }
     }
@@ -192,7 +192,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
             ) {
               this._wasAOShaded = true;
               worldAO.vertices[v]++;
-              if (worldAO.vertices[v] > 4) {
+              if (worldAO.vertices[v] >= 3) {
                 shaded = true;
                 break;
               }
@@ -217,7 +217,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
             ) {
               this._wasAOShaded = true;
               worldAO.vertices[v]++;
-              if (worldAO.vertices[v] > 4) {
+              if (worldAO.vertices[v] >= 3) {
                 shaded = true;
                 break;
               }
@@ -264,10 +264,11 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
     for (let face = 0 as VoxelFaces; face < 6; face++) {
       if (args[face][ArgIndexes.Enabled] && this.isExposed(face)) {
         added = true;
+        const quad = this.quads[face];
+
         tool.calculateFaceData(face);
         this.determineShading(face);
         const faceArgs = args[face];
-        const quad = this.quads[face];
 
         quad.flip = this.shouldFlip() || faceArgs[ArgIndexes.Fliped];
 
@@ -286,7 +287,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
         //4
         quad.uvs.vertices[3].x = uvs[3][0];
         quad.uvs.vertices[3].y = uvs[3][1];
-        VoxelGeometryBuilder.addQuad(tool, this.builder.origin, quad);
+        addVoxelQuad(tool, this.builder.origin, quad);
 
         tool.updateBounds(this.quadBounds[face]);
       }

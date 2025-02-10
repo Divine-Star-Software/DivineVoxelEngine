@@ -43,15 +43,15 @@ export const chainModel: VoxelModelData = {
     },
   },
   relationsSchema: [],
-  shapeStateSchema: [
+  stateSchema: [
     {
       name: "axis",
       type: "string",
       values: ["y", "x", "z"],
     },
   ],
-  shapeStatesConditonalNodes: {},
-  shapeStatesNodes: {
+  conditonalNodes: {},
+  stateNodes: {
     "axis=y": [
       {
         id: "main",
@@ -143,9 +143,9 @@ export const carpetModel: VoxelModelData = {
     },
   },
   relationsSchema: [],
-  shapeStateSchema: [],
-  shapeStatesConditonalNodes: {},
-  shapeStatesNodes: {
+  stateSchema: [],
+  conditonalNodes: {},
+  stateNodes: {
     "*": [
       {
         id: "main",
@@ -407,7 +407,7 @@ export const fenceNorthsouth: VoxelGeometryData = {
 
 export const fence: VoxelModelData = {
   id: "dve_fence",
-
+  divisor: [16,16,16],
   relationsSchema: [
     {
       name: "same-east",
@@ -446,7 +446,7 @@ export const fence: VoxelModelData = {
       ],
     },
   ],
-  shapeStateSchema: [],
+  stateSchema: [],
   arguments: {
     southTex: {
       type: "texture",
@@ -467,7 +467,7 @@ export const fence: VoxelModelData = {
       type: "texture",
     },
   },
-  shapeStatesConditonalNodes: {
+  conditonalNodes: {
     "same-south=true": [
       {
         id: "fence_connection_south",
@@ -528,7 +528,7 @@ export const fence: VoxelModelData = {
     ],
   },
 
-  shapeStatesNodes: {
+  stateNodes: {
     "*": [
       {
         id: "fence_post",
@@ -835,7 +835,7 @@ export const candlesModel: VoxelModelData = {
   },
   relationsSchema: [],
 
-  shapeStateSchema: [
+  stateSchema: [
     {
       name: "num_candles",
       type: "number",
@@ -885,8 +885,8 @@ export const candlesModel: VoxelModelData = {
       },
     },
   ],
-  shapeStatesConditonalNodes: {},
-  shapeStatesNodes: {
+  conditonalNodes: {},
+  stateNodes: {
     "num_candles=0,lit=false": [
       {
         id: "candel_1",
@@ -1170,7 +1170,7 @@ export const leverModel: VoxelModelData = {
     },
   },
   relationsSchema: [],
-  shapeStateSchema: [
+  stateSchema: [
     {
       name: "placement",
       type: "string",
@@ -1187,8 +1187,8 @@ export const leverModel: VoxelModelData = {
       values: ["off", "on"],
     },
   ],
-  shapeStatesConditonalNodes: {},
-  shapeStatesNodes: {
+  conditonalNodes: {},
+  stateNodes: {
     "placement=down,direction=north,state=off": [
       {
         id: "lever_base",

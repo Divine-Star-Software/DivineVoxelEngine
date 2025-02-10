@@ -3,7 +3,7 @@ import { Vector3Like } from "@amodx/math";
 import { WorldSpaces } from "../World/WorldSpaces.js";
 import { SectorMesh } from "./Classes/SectorMesh.js";
 
-export type MeshRegisterDimensions = Map<string, Map<string, SectorMesh>>;
+export type MeshRegisterDimensions = Map<number, Map<string, SectorMesh>>;
 
 class Sectors {
   static add(location: LocationData): SectorMesh {
@@ -54,18 +54,18 @@ class Sectors {
 }
 
 class Dimensions {
-  static add(id: string) {
+  static add(id: number) {
     const dimension = new Map();
     MeshRegister._dimensions.set(id, dimension);
     return dimension;
   }
 
-  static get(id: string) {
+  static get(id: number) {
     return MeshRegister._dimensions.get(id);
   }
 
   static *getAllMeshes(
-    id: string
+    id: number
   ): Generator<[location: LocationData, substance: string, mesh: any]> {
     const dimension = MeshRegister._dimensions.get(id);
     if (!dimension) return;
@@ -87,7 +87,7 @@ class Dimensions {
     }
   }
 
-  static remove(id: string) {
+  static remove(id: number) {
     const dimension = MeshRegister._dimensions.get(id);
     if (!dimension) return false;
     dimension.forEach((sector) => {
@@ -103,7 +103,7 @@ class Dimensions {
 }
 
 export class MeshRegister {
-  static _dimensions: MeshRegisterDimensions = new Map([["main", new Map()]]);
+  static _dimensions: MeshRegisterDimensions = new Map([[0, new Map()]]);
   static dimensions = Dimensions;
   static sectors = Sectors;
 
@@ -112,7 +112,7 @@ export class MeshRegister {
       this.dimensions.remove(dkey);
     }
     this._dimensions.clear();
-    this._dimensions.set("main", new Map());
+    this._dimensions.set(0, new Map());
   }
 }
 

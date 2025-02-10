@@ -11,7 +11,15 @@ import { VoxelMeshVertexStructCursor } from "@divinevoxel/vlox/Mesher/Geomtry/Vo
 export class DVEBRMesh {
   observers = new DVEBRMeshObservers();
   static UpdateVertexData(mesh: Mesh, engine: Engine, data: CompactSubMesh) {
-    const buffer = new Buffer(engine, data[1], false);
+    this.UpdateVertexDataBuffers(mesh, engine, data[1], data[2]);
+  }
+  static UpdateVertexDataBuffers(
+    mesh: Mesh,
+    engine: Engine,
+    vertices: Float32Array,
+    indices: Uint16Array | Uint32Array
+  ) {
+    const buffer = new Buffer(engine, vertices, false);
 
     mesh.setVerticesBuffer(
       new VertexBuffer(
@@ -112,7 +120,7 @@ export class DVEBRMesh {
         1
       )
     );
-    mesh.setIndices(data[2]);
+    mesh.setIndices(indices);
   }
   /*   static UpdateVertexDataO(mesh: Mesh, engine: Engine, data: CompactSubMesh) {
  

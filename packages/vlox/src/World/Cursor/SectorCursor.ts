@@ -32,7 +32,7 @@ export class SectorCursor
     return true;
   }
 
-  setSector(dimension: string, x: number, y: number, z: number) {
+  setSector(dimension: number, x: number, y: number, z: number) {
     const sector = WorldRegister.sectors.get(dimension, x, y, z);
     if (!sector) return false;
     this._current = sector;

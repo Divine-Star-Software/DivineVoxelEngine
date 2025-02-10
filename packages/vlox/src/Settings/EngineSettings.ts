@@ -14,19 +14,21 @@ class EngineSettingsClass extends TypedEventTarget<EngineSettingsEvents> {
   version = "0.0.72";
 
   get doSunPropagation() {
-    return this.settings.lighting.sunLightEnabled == true;
+    return this.settings.propagation.sunLightEnabled == true;
   }
   get doRGBPropagation() {
-    return this.settings.lighting.rgbLightEnabled == true;
+    return this.settings.propagation.rgbLightEnabled == true;
   }
 
   get doLight() {
     return this.doRGBPropagation || this.doSunPropagation;
   }
   get doFlow() {
-    return this.settings.flow.enable;
+    return this.settings.propagation.flowEnabled;
   }
-
+  get doPower() {
+    return this.settings.propagation.powerEnabled;
+  }
   getSettings() {
     return this.settings;
   }

@@ -5,7 +5,7 @@ import {
 import { BuildStateData } from "../../../Voxels/Functions/BuildStateData";
 
 export class VoxelRulesModoel {
-  shapeStates = new Map<string, string[]>();
+  states = new Map<string, string[]>();
   conditionalNodes = new Map<string, string[]>();
 
   stateData: ReturnType<typeof BuildStateData>;
@@ -24,10 +24,10 @@ export class VoxelRulesModoel {
   constructor(public data: VoxelModelData) {}
 
   registerShapeState(id: string, geomtryId: string) {
-    let stateArray = this.shapeStates.get(id);
+    let stateArray = this.states.get(id);
     if (!stateArray) {
       stateArray = [];
-      this.shapeStates.set(id, stateArray);
+      this.states.set(id, stateArray);
     }
 
     if (!stateArray.find((_) => _ == geomtryId)) stateArray.push(geomtryId);

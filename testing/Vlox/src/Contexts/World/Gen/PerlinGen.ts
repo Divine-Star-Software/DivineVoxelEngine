@@ -186,7 +186,7 @@ export const PerlinGen = {
               .setId(voxelCursor.id)
               .updateVoxel(0);
 
-            if (
+       /*      if (
               !this.inNoiseRange(x, y + 1, z) &&
               Math.random() > 0.9 &&
               y >= 30
@@ -196,7 +196,7 @@ export const PerlinGen = {
                 .getVoxel(x, y, z)!
                 .setId(voxelCursor.id)
                 .updateVoxel(0);
-            }
+            } */
           } else {
             if (y < 30 && includeWater) {
               voxelCursor.setStringId("dve_liquid_dream_ether").process();

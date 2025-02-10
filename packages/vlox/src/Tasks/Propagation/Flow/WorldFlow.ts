@@ -1,5 +1,5 @@
 import { WorldSpaces } from "../../../World/WorldSpaces";
-import { UpdateTask } from "../../../Tasks/Update/UpdateTask";
+import { VoxelUpdateTask } from "../../VoxelUpdateTask";
 import { WorldRegister } from "../../../World/WorldRegister";
 import { EngineSettings } from "../../../Settings/EngineSettings";
 import { Vec3Array } from "@amodx/math";
@@ -21,7 +21,7 @@ const floodOutChecks: Vec3Array[] = [
   [0, 0, -1],
 ];
 
-function Flood(task: UpdateTask, voxel: WorldVoxelCursor) {
+function Flood(task: VoxelUpdateTask, voxel: WorldVoxelCursor) {
   const voxelId = voxel.id;
 
   while (queue.length) {
@@ -113,7 +113,7 @@ function Flood(task: UpdateTask, voxel: WorldVoxelCursor) {
   }
 }
 
-export function WorldFlow(task: UpdateTask) {
+export function WorldFlow(task: VoxelUpdateTask) {
   if (!EngineSettings.doFlow) return false;
   const sector = WorldRegister.sectors.get(
     task.origin[0],

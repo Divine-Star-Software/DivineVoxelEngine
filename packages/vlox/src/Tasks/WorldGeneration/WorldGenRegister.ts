@@ -16,7 +16,7 @@ export class WorldGenRegister {
     string,
     {
       attempts: number;
-      dimension: string;
+      dimension: number;
       sections: Map<string, [x: number, y: number, z: number]>;
       voxels: [x: number, y: number, z: number, data: RawVoxelData][];
     }

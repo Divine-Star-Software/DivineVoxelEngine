@@ -1,12 +1,9 @@
-import { Vec3Array } from "@amodx/math";
-import { CompactMeshData } from "../../Mesher/Types/Mesher.types";
 import { SectionMesh } from "./SectionMesh";
-
+import { CompactedSectionVoxelMesh } from "../../Mesher/Geomtry/CompactedSectionVoxelMesh";
 export abstract class DVESectionMeshes {
   abstract updateVertexData(
     section: SectionMesh,
-    position: Vec3Array,
-    data: CompactMeshData
+    data: CompactedSectionVoxelMesh
   ): SectionMesh;
 
   abstract returnMesh(mesh: any): void;

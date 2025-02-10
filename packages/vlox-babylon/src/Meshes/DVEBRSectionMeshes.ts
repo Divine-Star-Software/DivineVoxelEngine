@@ -14,10 +14,19 @@ import { DVEBRMesh } from "./DVEBRMesh";
 import { CompactMeshData } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
 import { SectionMesh } from "@divinevoxel/vlox/Renderer";
 import { EngineSettings } from "@divinevoxel/vlox/Settings/EngineSettings";
+import {
+  CompactedSectionVoxelMesh,
+  CompactedMeshData,
+} from "@divinevoxel/vlox/Mesher/Geomtry/CompactedSectionVoxelMesh";
+import { LocationData } from "@divinevoxel/vlox/Math";
+
 const min = Vector3.Zero();
 const max = new Vector3(16, 16, 16);
 const empty = new Float32Array(1);
 const emptyIndice = new Uint16Array(1);
+const meshData = new CompactedMeshData();
+const location: LocationData = [0, 0, 0, 0];
+const found = new Set<string>();
 export class DVEBRSectionMeshes extends DVESectionMeshes {
   static meshCache: Mesh[] = [];
   pickable = false;
@@ -54,22 +63,18 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
     DVEBRSectionMeshes.meshCache.push(mesh);
   }
 
-  updateVertexData(
-    chunk: SectionMesh,
-    location: Vec3Array,
-    data: CompactMeshData
-  ) {
-    if (data[0] == 1) return chunk;
+  updateVertexData(section: SectionMesh, data: CompactedSectionVoxelMesh) {
+    data.getLocation(location);
 
-    const found: Record<string, true> = {};
-    const subMeshes = data[1];
-    for (let i = 0; i < subMeshes.length; i++) {
-      const subMeshMaterial = subMeshes[i][0];
-      found[subMeshMaterial] = true;
+    const totalMeshes = data.getTotalMeshes();
+    for (let i = 0; i < totalMeshes; i++) {
+      data.getMeshData(i, meshData);
+      const subMeshMaterial = meshData.material;
+      found.add(subMeshMaterial);
       let mesh: Mesh;
 
-      if (chunk.meshes.has(subMeshMaterial)) {
-        mesh = chunk.meshes.get(subMeshMaterial) as Mesh;
+      if (section.meshes.has(subMeshMaterial)) {
+        mesh = section.meshes.get(subMeshMaterial) as Mesh;
       } else {
         if (!DVEBRSectionMeshes.meshCache.length) {
           const newMesh = new Mesh("", this.scene);
@@ -79,7 +84,6 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
           newMesh.isPickable = false;
           newMesh.checkCollisions = false;
           newMesh.doNotSerialize = true;
-          newMesh.cullingStrategy = Mesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY;
           newMesh.metadata = { section: true };
           newMesh.alwaysSelectAsActiveMesh = true;
           for (let i = this.scene.meshes.length - 1; i > -1; i--) {
@@ -97,21 +101,30 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
 
       mesh.getVertexBuffer(VertexBuffer.PositionKind)?.dispose();
       mesh.unfreezeWorldMatrix();
-      mesh.position.set(location[0], location[1], location[2]);
+      mesh.position.set(location[1], location[2], location[3]);
       mesh.computeWorldMatrix();
-      DVEBRMesh.UpdateVertexData(mesh, this.engine, subMeshes[i]);
-      min.x = subMeshes[i][3][0];
-      min.y = subMeshes[i][3][1];
-      min.z = subMeshes[i][3][2];
-      max.x = subMeshes[i][4][0];
-      max.y = subMeshes[i][4][1];
-      max.z = subMeshes[i][4][2];
+      DVEBRMesh.UpdateVertexDataBuffers(
+        mesh,
+        this.engine,
+        meshData.verticies,
+        meshData.indices
+      );
+      const minBounds = meshData.minBounds;
+      const maxBounds = meshData.maxBounds;
+
+      min.x = minBounds[0];
+      min.y = minBounds[1];
+      min.z = minBounds[2];
+      max.x = maxBounds[0];
+      max.y = maxBounds[1];
+      max.z = maxBounds[2];
+
       mesh.getBoundingInfo().reConstruct(min, max, mesh.getWorldMatrix());
       mesh.freezeWorldMatrix();
 
       mesh.material = this.renderer.materials.get(subMeshMaterial)!._material;
 
-      chunk.meshes.set(subMeshMaterial, mesh);
+      section.meshes.set(subMeshMaterial, mesh);
 
       if (!EngineSettings.settings.rendererSettings.cpuBound) {
         mesh.geometry!.clearCachedData();
@@ -123,13 +136,14 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
       }
     }
 
-    for (const [key, mesh] of chunk.meshes as Map<string, Mesh>) {
-      if (!found[key]) {
+    for (const [key, mesh] of section.meshes as Map<string, Mesh>) {
+      if (!found.has(key)) {
         this.returnMesh(mesh);
-        chunk.meshes.delete(key);
+        section.meshes.delete(key);
       }
     }
+    found.clear();
 
-    return chunk;
+    return section;
   }
 }

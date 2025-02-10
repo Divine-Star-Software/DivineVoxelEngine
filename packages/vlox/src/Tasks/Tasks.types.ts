@@ -4,7 +4,7 @@ import type { RawVoxelData } from "../Voxels/Types/Voxel.types.js";
 import {  SectorData } from "World/index.js";
 
 export type WorldLockTasks = [
-  dimension: string,
+  dimension: number,
   start: Vec3Array,
   end: Vec3Array,
 ];
@@ -13,7 +13,7 @@ export type VoxelUpdateTasks = [location: LocationData, raw: RawVoxelData];
 
 export type RunRebuildTasks = [buildQueue: string];
 
-export type RunBuildQueue = [dimension: string, sections: Vec3Array[]];
+export type RunBuildQueue = [dimension: number, sections: Vec3Array[]];
 
 export type GenerateTasks = [location: LocationData, data: any];
 

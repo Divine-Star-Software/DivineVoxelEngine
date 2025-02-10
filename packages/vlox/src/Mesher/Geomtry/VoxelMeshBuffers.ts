@@ -4,7 +4,7 @@ export class VoxelVertexBuffer {
   constructor(
     public vertexFloatSize: number,
     public sectorVertexSize: number,
-    startingSectorSize = 4
+    startingSectorSize = 8
   ) {
     this.sectorSize = vertexFloatSize * sectorVertexSize;
     for (let i = 0; i < startingSectorSize; i++) {
@@ -38,7 +38,7 @@ export class VoxelIndiceBuffer {
 
   constructor(
     public sectorSize: number,
-    startingSectorSize = 4
+    startingSectorSize = 8
   ) {
     for (let i = 0; i < startingSectorSize; i++) {
       this._buffers.push(new Uint32Array(sectorSize));

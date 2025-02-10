@@ -1,7 +1,7 @@
 import { $3dCardinalNeighbors } from "../../../Math/CardinalNeighbors.js";
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
 
-import { UpdateTask } from "../../Update/UpdateTask.js";
+import { VoxelUpdateTask } from "../../VoxelUpdateTask.js";
 import { WorldCursor } from "../../../World/index.js";
 
 export class FlowManager {
@@ -10,7 +10,7 @@ export class FlowManager {
   static _nDataTool = new WorldCursor();
 
   static setVoxel(
-    tasks: UpdateTask,
+    tasks: VoxelUpdateTask,
     vox: string,
     level: number,
     levelState: number,
@@ -38,7 +38,7 @@ export class FlowManager {
     // IlluminationManager.setDimension(dimension);
   }
 
-  static removeVoxel(tasks: UpdateTask, x: number, y: number, z: number) {
+  static removeVoxel(tasks: VoxelUpdateTask, x: number, y: number, z: number) {
     /*     for (const n of $3dCardinalNeighbors) {
       const nx = x + n[0];
       const ny = y + n[1];
@@ -155,7 +155,7 @@ export class FlowManager {
     // return this.lightData.minusOneForAll(2);
   }
 
-  static sunCheck(tasks: UpdateTask, x: number, y: number, z: number) {
+  static sunCheck(tasks: VoxelUpdateTask, x: number, y: number, z: number) {
     /*     if (!this._nDataTool.loadInAt(x, y - 1, z)) return;
     if (!this._nDataTool.isAir()) return;
     const l = this._nDataTool.getLight();

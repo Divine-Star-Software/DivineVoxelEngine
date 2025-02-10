@@ -9,7 +9,7 @@ import { VoxelLightData } from "../../Voxels/Cursor/VoxelLightData.js";
 
 import { WorldGeneration } from "./WorldGeneration.js";
 import { DivineVoxelEngineConstructor } from "../../Contexts/Constructor/DivineVoxelEngineConstructor.js";
-import { UpdateTask } from "../Update/UpdateTask.js";
+import { VoxelUpdateTask } from "../VoxelUpdateTask.js";
 import { RGBRemove, RGBUpdate } from "../Propagation/Illumanation/RGBUpdate.js";
 import { SunRemove, SunUpdate } from "../Propagation/Illumanation/SunUpdate.js";
 
@@ -21,9 +21,9 @@ export class WorldGenBrush extends BrushTool {
   }
   requestsId: "";
 
-  tasks = new UpdateTask();
+  tasks = new VoxelUpdateTask();
 
-  start(dimension: string, x: number, y: number, z: number) {
+  start(dimension: number, x: number, y: number, z: number) {
     this.dataCursor.setFocalPoint(dimension, x, y, z);
     this.tasks.setOrigin([dimension, x, y, z]);
     this.dimension = dimension;

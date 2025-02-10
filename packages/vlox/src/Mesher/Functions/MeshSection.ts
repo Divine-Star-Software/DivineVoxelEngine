@@ -1,5 +1,5 @@
 import { LocationData } from "../../Math";
-import type { SetSectionMeshTask } from "../../Renderer/Renderer.types.js";
+import type { SetSectionMeshTask } from "../Types/Mesher.types";
 //data
 import { WorldSpaces } from "../../World/WorldSpaces.js";
 //tools
@@ -14,6 +14,7 @@ import { WorldVoxelCursor } from "../../World/Cursor/WorldVoxelCursor";
 import { VoxelMeshBVHBuilder } from "../Geomtry/VoxelMeshBVHBuilder";
 import { Vector3Like } from "@amodx/math";
 import { RenderedMaterials } from "../Models/RenderedMaterials";
+import { CompactVoxelSectionMesh } from "./CompactVoxelSectionMesh";
 
 const sectionCursor = new SectionCursor();
 const worldCursor = new WorldCursor();
@@ -67,8 +68,7 @@ export function MeshSection(
 
   let [minY, maxY] = section.getMinMax();
   if (minY == Infinity && maxY == -Infinity) {
-
-    section.setDirty(false);
+    section.setDisplayDirty(false);
     section.setInProgress(false);
     return null;
   }
@@ -83,11 +83,12 @@ export function MeshSection(
     mesher.effects = effects;
   }
 
-  const volume = WorldSpaces.section.volumne;
   const slice = WorldSpaces.section.bounds.x * WorldSpaces.section.bounds.z;
 
-  //const t = performance.now();
-  for (let i = 0; i < volume; i++) {
+  const startY = minY * slice;
+  const endY = (maxY + 1) * slice;
+
+  for (let i = startY; i < endY; i++) {
     if (!(i % slice)) {
       const y = i / slice;
       if (!section.getHasVoxel(y) && !section.getHasVoxelDirty(y)) {
@@ -113,40 +114,34 @@ export function MeshSection(
     section.setBuried(i, !addedVoxel);
   }
 
-  // console.log(performance.now() - t);
-
-  const sectionEffects: SetSectionMeshTask[2] = [];
-  const sections = <SetSectionMeshTask>[
-    [location[0], ...section.getPosition()],
-    [] as any,
-    sectionEffects,
-    0,
-  ];
   const meshed: VoxelModelBuilder[] = [];
   for (let i = 0; i < RenderedMaterials.meshers.length; i++) {
     const mesher = RenderedMaterials.meshers[i];
-    for (const e in mesher.effects) {
-      const float = Float32Array.from(mesher.effects[e]);
-      transfers.push(float.buffer);
-      sectionEffects.push([e, float]);
-    }
     if (!mesher.mesh.vertexCount) {
       mesher.clear();
       mesher.bvhTool = null;
       continue;
     }
+    const { min, max } = mesher.bvhTool!.getMeshBounds();
+    mesher.mesh.minBounds.x = min[0];
+    mesher.mesh.minBounds.y = min[1];
+    mesher.mesh.minBounds.z = min[2];
+    mesher.mesh.maxBounds.x = max[0];
+    mesher.mesh.maxBounds.y = max[1];
+    mesher.mesh.maxBounds.z = max[2];
+
     meshed.push(mesher);
   }
 
-  const compactMesh = CompactVoxelMesh(meshed, transfers);
-  sections[1] = compactMesh;
+  const compactMesh = CompactVoxelSectionMesh(location, meshed, transfers);
+
   for (let i = 0; i < meshed.length; i++) {
     meshed[i].clear();
     meshed[i].bvhTool = null;
   }
 
-  section.setDirty(false);
+  section.setDisplayDirty(false);
   section.setInProgress(false);
 
-  return sections;
+  return compactMesh;
 }

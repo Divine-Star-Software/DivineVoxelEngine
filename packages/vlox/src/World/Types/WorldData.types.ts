@@ -1,12 +1,8 @@
 
-export type DimensionOptions = {
-  liquidFlowSpeed: number;
-  magmaFlowSpeed: number;
-  sunLight: boolean;
- };
- export type DimensionData = {
+
+ export type DimensionSyncData = {
   id: string;
-  options: DimensionOptions;
+  index: number;
  };
  
  

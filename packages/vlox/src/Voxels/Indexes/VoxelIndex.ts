@@ -12,8 +12,8 @@ export class VoxelNamedState {
   compiled = {
     mod: 0,
     modAny: false,
-    shapeState: 0,
-    shapeStateAny: false,
+    state: 0,
+    stateAny: false,
   };
   constructor(
     public voxelId: string,
@@ -25,9 +25,9 @@ export class VoxelNamedState {
     if (SchemaRegister.voxelModSchemaData.has(this.voxelId)) {
       const schema = SchemaRegister.getVoxelSchemas(this.voxelId);
       if (this.data.state == "*") {
-        this.compiled.shapeStateAny = true;
+        this.compiled.stateAny = true;
       } else if (this.data.state) {
-        this.compiled.shapeState = schema.state.readString(this.data.state);
+        this.compiled.state = schema.state.readString(this.data.state);
       }
 
       if (this.data.mod == "*") {
@@ -37,7 +37,7 @@ export class VoxelNamedState {
       }
     } else {
       this.compiled.modAny = true;
-      this.compiled.shapeStateAny = true;
+      this.compiled.stateAny = true;
     }
   }
 
@@ -47,7 +47,7 @@ export class VoxelNamedState {
       id: this.voxelId,
       level: 0,
       levelState: 0,
-      state: this.compiled.shapeState,
+      state: this.compiled.state,
       mod: this.compiled.mod,
     });
   }
@@ -117,30 +117,28 @@ export class VoxelIndex {
   getStateFromPaintData(data: PaintVoxelData): VoxelNamedState | false {
     const conatiner = this.states.get(data.id);
     if (!conatiner) return false;
-    const { mod, state: shapeState } = data;
-    for (const state of conatiner?.stateArray) {
+    const { mod, state } = data;
+    for (const modelState of conatiner?.stateArray) {
       if (
-        (mod == state.compiled.mod || state.compiled.modAny) &&
-        (shapeState == state.compiled.shapeState ||
-          state.compiled.shapeStateAny)
+        (mod == modelState.compiled.mod || modelState.compiled.modAny) &&
+        (state == modelState.compiled.state || modelState.compiled.stateAny)
       )
-        return state;
+        return modelState;
     }
     return false;
   }
   getStateFromRawData(data: RawVoxelData): VoxelNamedState | false {
-    const [id, light, shapeState, secondary, mod] = data;
+    const [id, light, state, secondary, mod] = data;
     const conatiner = this.states.get(
       VoxelPalettesRegister.voxels.getStringId(id)
     );
     if (!conatiner) return false;
-    for (const state of conatiner?.stateArray) {
+    for (const modelState of conatiner?.stateArray) {
       if (
-        (mod == state.compiled.mod || state.compiled.modAny) &&
-        (shapeState == state.compiled.shapeState ||
-          state.compiled.shapeStateAny)
+        (mod == modelState.compiled.mod || modelState.compiled.modAny) &&
+        (state == modelState.compiled.state || modelState.compiled.stateAny)
       )
-        return state;
+        return modelState;
     }
     return false;
   }

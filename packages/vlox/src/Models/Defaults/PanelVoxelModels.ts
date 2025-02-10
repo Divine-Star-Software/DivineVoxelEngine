@@ -3,7 +3,7 @@ import { VoxelModelData } from "../VoxelModel.types";
 export const simpleThinPannel: VoxelModelData = {
   id: "dve_simple_thin_panel",
   relationsSchema: [],
-  shapeStateSchema: [
+  stateSchema: [
     {
       name: "placement",
       type: "string",
@@ -27,10 +27,9 @@ export const simpleThinPannel: VoxelModelData = {
       type: "texture",
     },
   },
-  shapeStatesConditonalNodes: {},
-  //  shapeStatesOverrides: {},
+  conditonalNodes: {},
 
-  shapeStatesNodes: {
+  stateNodes: {
     "placement=down,direction=south": [
       {
         id: "cube",
@@ -484,7 +483,7 @@ export const simpleThinPannel: VoxelModelData = {
 export const simpleCrossedPannel: VoxelModelData = {
   id: "dve_simple_crossed_panels",
   relationsSchema: [],
-  shapeStateSchema: [
+  stateSchema: [
     {
       name: "placement",
       type: "string",
@@ -509,10 +508,9 @@ export const simpleCrossedPannel: VoxelModelData = {
       default: false,
     },
   },
-  shapeStatesConditonalNodes: {},
-  //  shapeStatesOverrides: {},
+  conditonalNodes: {},
 
-  shapeStatesNodes: {
+  stateNodes: {
     "placement=down,direction=north": [
       {
         id: "quad-1",

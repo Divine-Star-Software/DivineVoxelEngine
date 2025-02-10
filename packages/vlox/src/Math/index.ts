@@ -1,8 +1,12 @@
 export * from "./VoxelFaces.js";
 export * from "./VoxelFaces.js";
 export type LocationData = [
-  dimensionId: string,
+  /**Index for the dimension */
+  dimensionIndex: number,
+  /**x position */
   x: number,
+    /**y position */
   y: number,
+    /**z position */
   z: number,
 ];

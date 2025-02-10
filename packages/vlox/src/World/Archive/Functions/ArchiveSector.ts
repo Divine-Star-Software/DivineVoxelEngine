@@ -514,7 +514,12 @@ export default function ArchiveSector(
   const archivedSector: ArchivedSectorData = {
     version: "",
     vloxVersion: EngineSettings.version,
-    location: [...archiveData.location],
+    dimension: WorldRegister.dimensions.get(archiveData.location[0])!.id,
+    location: [
+      archiveData.location[1],
+      archiveData.location[2],
+      archiveData.location[3],
+    ],
     flags: sector.storeFlags(),
     timestamps: sector.storeTimestamps(),
     buffers: {},
@@ -523,7 +528,7 @@ export default function ArchiveSector(
     sections,
   };
 
- //RemoveDuplicates(archivedSector);
+  RemoveDuplicates(archivedSector);
 
   return archivedSector;
 }

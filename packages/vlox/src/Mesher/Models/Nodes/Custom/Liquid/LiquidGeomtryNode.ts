@@ -10,7 +10,7 @@ import type { LiquidVoxelModelArgs } from "../../../../../Models/Defaults/Liquid
 import { getFlowAngle, getFlowGradient, FlowVerticies } from "./FlowGradient";
 import { GetBoxGeometryNodeData } from "../../../Common/BoxGeometryNode";
 import { VoxelLightData } from "../../../../../Voxels/Cursor/VoxelLightData";
-import { VoxelGeometryBuilder } from "../../../../Geomtry/VoxelGeometryBuilder";
+import { addVoxelQuad, VoxelGeometryBuilder } from "../../../../Geomtry/VoxelGeometryBuilder";
 const vertexValue = new QuadScalarVertexData();
 const vertexLevel = new QuadScalarVertexData();
 
@@ -158,7 +158,7 @@ export class LiquidGeometryNode extends GeoemtryNode<
       quad.positions.vertices[2].y = vertexValue.vertices[2] * waterHeight;
       quad.positions.vertices[3].y = vertexValue.vertices[3] * waterHeight;
 
-      VoxelGeometryBuilder.addQuad(tool, tool.origin, quad);
+      addVoxelQuad(tool, tool.origin, quad);
       tool.updateBounds(quadBounds[VoxelFaces.Up]);
     }
     if (this.isExposed(VoxelFaces.Down)) {
@@ -167,7 +167,7 @@ export class LiquidGeometryNode extends GeoemtryNode<
       const quad = Quads[VoxelFaces.Down];
       this.determineShading(VoxelFaces.Down);
       quad.flip = this.shouldFlip();
-      VoxelGeometryBuilder.addQuad(tool, tool.origin, quad);
+      addVoxelQuad(tool, tool.origin, quad);
       tool.updateBounds(quadBounds[VoxelFaces.Down]);
     }
 
@@ -194,7 +194,7 @@ export class LiquidGeometryNode extends GeoemtryNode<
         quad.setUVs(uvs);
       }
 
-      VoxelGeometryBuilder.addQuad(tool, tool.origin, quad);
+      addVoxelQuad(tool, tool.origin, quad);
       tool.updateBounds(quadBounds[VoxelFaces.North]);
     }
 
@@ -220,7 +220,7 @@ export class LiquidGeometryNode extends GeoemtryNode<
         quad.positions.vertices[QuadVerticies.TopRight].y = 1;
         quad.setUVs(uvs);
       }
-      VoxelGeometryBuilder.addQuad(tool, tool.origin, quad);
+      addVoxelQuad(tool, tool.origin, quad);
       tool.updateBounds(quadBounds[VoxelFaces.South]);
     }
 
@@ -247,7 +247,7 @@ export class LiquidGeometryNode extends GeoemtryNode<
         quad.positions.vertices[QuadVerticies.TopRight].y = 1;
         quad.setUVs(uvs);
       }
-      VoxelGeometryBuilder.addQuad(tool, tool.origin, quad);
+      addVoxelQuad(tool, tool.origin, quad);
       tool.updateBounds(quadBounds[VoxelFaces.East]);
     }
 
@@ -273,7 +273,7 @@ export class LiquidGeometryNode extends GeoemtryNode<
         quad.positions.vertices[QuadVerticies.TopRight].y = 1;
         quad.setUVs(uvs);
       }
-      VoxelGeometryBuilder.addQuad(tool, tool.origin, quad);
+      addVoxelQuad(tool, tool.origin, quad);
       tool.updateBounds(quadBounds[VoxelFaces.West]);
     }
 

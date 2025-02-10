@@ -1,6 +1,8 @@
 export enum SectionStateDefaultFlags {
-  isDirty,
+  displayDirty,
+  logicDirty,
   inProgress,
+  logicUpdateInProgress,
 }
 export class SectionState {
   /**The default bit flags for sections */

@@ -1,4 +1,4 @@
-import { UpdateTask } from "../../Update/UpdateTask";
+import { VoxelUpdateTask } from "../../VoxelUpdateTask";
 import { $3dCardinalNeighbors } from "../../../Math/CardinalNeighbors";
 import {
   getMinusOneForRGB,
@@ -8,7 +8,7 @@ import {
   removeRGBLight,
 } from "./CommonFunctions";
 //@todo change array to not use push and shift
-export function RGBUpdate(tasks: UpdateTask) {
+export function RGBUpdate(tasks: VoxelUpdateTask) {
   const queue = tasks.rgb.update;
   while (queue.length) {
     const x = queue.shift()!;
@@ -38,7 +38,7 @@ export function RGBUpdate(tasks: UpdateTask) {
   }
 }
 
-export function RGBRemove(tasks: UpdateTask) {
+export function RGBRemove(tasks: VoxelUpdateTask) {
   const remove = tasks.rgb.remove;
   const update = tasks.rgb.update;
   const removeMap = tasks.rgb.removeMap;

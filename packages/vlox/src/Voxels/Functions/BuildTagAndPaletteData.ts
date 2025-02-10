@@ -9,6 +9,7 @@ import {
 } from "../Data/VoxelTag.types";
 import { VoxelPalettesRegister } from "../Data/VoxelPalettesRegister";
 import { CompiledVoxelTagAndPaletteData } from "../Types/VoxelModelCompiledData.types";
+import { VoxelLogicData } from "../Logic/VoxelLogic.types";
 
 export type BuildTagAndPaletteDataProps = {
   voxels: VoxelData[];
@@ -21,12 +22,19 @@ export type BuildTagAndPaletteDataProps = {
 export function BuildTagAndPaletteData(
   props: BuildTagAndPaletteDataProps
 ): CompiledVoxelTagAndPaletteData {
+  const logic: Record<string, VoxelLogicData[]> = {};
   for (const voxel of props.voxels) {
     const tags: VoxelTags = {} as any;
     const voxelId = VoxelPalettesRegister.voxels.register(voxel.id);
 
     VoxelPalettesRegister.voxelIdToNameMap.set(voxel.id, voxel.name || "");
-    VoxelPalettesRegister.voxelNametoIdMap.set(voxel.name || voxel.id , voxel.id);
+    VoxelPalettesRegister.voxelNametoIdMap.set(
+      voxel.name || voxel.id,
+      voxel.id
+    );
+    if (voxel.properties["dve_logic_data"]) {
+      logic[voxel.id] = voxel.properties["dve_logic_data"];
+    }
 
     for (const tag of VoxelTagsRegister.IncludedVoxelTags) {
       if (voxel.properties[tag] === undefined) {
@@ -70,9 +78,9 @@ export function BuildTagAndPaletteData(
     VoxelPalettesRegister.material.register(material.id);
   }
 
-  
   return {
     data: {
+      logic,
       palette: VoxelPalettesRegister.voxels._palette,
       tags: VoxelTagsRegister.VoxelTags,
       idToNameMap: [...VoxelPalettesRegister.voxelIdToNameMap.entries()],

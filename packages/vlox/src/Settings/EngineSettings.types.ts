@@ -33,24 +33,16 @@ export class WorldSettings {
     256,
     Number.MAX_SAFE_INTEGER
   );
-}
-export interface SectorSettings {}
-export class SectorSettings {
-  power2Size = Vector3Like.Create(4, 8, 4);
-}
-export interface SectionSettings {}
-export class SectionSettings {
-  power2Size = Vector3Like.Create(4, 4, 4);
+  sectorPower2Size = Vector3Like.Create(4, 8, 4);
+  sectionPower2Size = Vector3Like.Create(4, 4, 4);
 }
 
-export interface FlowSettings {}
-export class FlowSettings {
-  enable = true;
-}
-export interface LightingSettings {}
-export class LightingSettings {
+export interface PropagationSettings {}
+export class PropagationSettings {
   rgbLightEnabled = true;
   sunLightEnabled = true;
+  flowEnabled = true;
+  powerEnabled = true;
 }
 
 export class EngineSettingsData {
@@ -58,8 +50,5 @@ export class EngineSettingsData {
   rendererSettings = new RenderSettingsData();
   updating = new UpdatingSettings();
   world = new WorldSettings();
-  sectors = new SectorSettings();
-  sections = new SectionSettings();
-  flow = new FlowSettings();
-  lighting = new LightingSettings();
+  propagation = new PropagationSettings();
 }

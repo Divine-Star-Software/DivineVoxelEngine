@@ -184,9 +184,9 @@ export interface VoxelModelData {
     | VoxelGeometryBooleanArgument
     | VoxelGeometryFloatArgument
   >;
-  shapeStateSchema: (VoxelStateStringSchemaData | VoxelStateNumberSchemaData)[];
+  stateSchema: (VoxelStateStringSchemaData | VoxelStateNumberSchemaData)[];
   effects?: VoxelEffectData[];
   relationsSchema: VoxelModelRelationsSchemaData[];
-  shapeStatesNodes: Record<string, VoxelGeometryLinkData[]>;
-  shapeStatesConditonalNodes: Record<string, VoxelGeometryLinkData[]>;
+  stateNodes: Record<string, VoxelGeometryLinkData[]>;
+  conditonalNodes: Record<string, VoxelGeometryLinkData[]>;
 }

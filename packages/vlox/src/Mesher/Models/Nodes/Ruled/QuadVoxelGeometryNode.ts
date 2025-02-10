@@ -4,7 +4,7 @@ import { QuadVerticies } from "../../../Geomtry/Geometry.types";
 import { VoxelQuadGeometryNode } from "../../../../Models/VoxelModel.types";
 
 import { Quad } from "../../../Geomtry/Primitives/Quad";
-import { VoxelGeometryBuilder } from "../../../Geomtry/VoxelGeometryBuilder";
+import { addVoxelQuad, VoxelGeometryBuilder } from "../../../Geomtry/VoxelGeometryBuilder";
 
 import { GeoemtryNode } from "../GeometryNode";
 import {
@@ -262,7 +262,7 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
     //4
     quad.uvs.vertices[3].x = uvs[3][0];
     quad.uvs.vertices[3].y = uvs[3][1];
-    VoxelGeometryBuilder.addQuad(this.builder, this.builder.origin, quad);
+    addVoxelQuad(this.builder, this.builder.origin, quad);
 
     this.builder.updateBounds(this.quadBounds);
     this.builder.vars.light.setAll(0);

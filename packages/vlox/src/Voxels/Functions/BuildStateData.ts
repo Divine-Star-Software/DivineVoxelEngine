@@ -246,7 +246,7 @@ export function BuildStateData(
   const data = model.data;
 
   const { baseSchema, schemaIdPalette, schemaValuePalette } = buildSchemas(
-    data.shapeStateSchema,
+    data.stateSchema,
     data.relationsSchema
   );
   const geometryLinkPalette = new StringPalette();
@@ -256,8 +256,8 @@ export function BuildStateData(
   const log = model.data.id == "dve_simple_stair";
 
   //add geomtry from main shape states
-  for (const key in data.shapeStatesNodes) {
-    const nodeData = data.shapeStatesNodes[key];
+  for (const key in data.stateNodes) {
+    const nodeData = data.stateNodes[key];
 
     for (const node of nodeData) {
       if (geometryLinkPalette.isRegistered(node.id)) continue;
@@ -269,8 +269,8 @@ export function BuildStateData(
   }
 
   //add geomtry from condiotnal  shape states
-  for (const key in data.shapeStatesConditonalNodes) {
-    const nodeData = data.shapeStatesConditonalNodes[key];
+  for (const key in data.conditonalNodes) {
+    const nodeData = data.conditonalNodes[key];
 
     for (const node of nodeData) {
       if (geometryLinkPalette.isRegistered(node.id)) continue;
@@ -281,34 +281,34 @@ export function BuildStateData(
     }
   }
 
-  const shapeStateRelativeGeometryMap: number[][] = [];
+  const stateRelativeGeometryMap: number[][] = [];
   const relativeGeometryByteIndexMap: number[] = [];
 
   //build state trees
-  const shapeStateTree = new StateTreeNode("root");
-  const shapeStateGeoLinkPalette: number[][] = [];
-  const shapeStateGeometryPalette: number[][] = [];
+  const stateTree = new StateTreeNode("root");
+  const stateGeoLinkPalette: number[][] = [];
+  const stateGeometryPalette: number[][] = [];
 
   let relativeGeoId = 0;
   let relativeByteCount = 0;
-  const shapeStateRecord: Record<string, number> = {};
-  for (const key in data.shapeStatesNodes) {
-    shapeStateGeoLinkPalette.push(
-      data.shapeStatesNodes[key].map((_) =>
+  const stateRecord: Record<string, number> = {};
+  for (const key in data.stateNodes) {
+    stateGeoLinkPalette.push(
+      data.stateNodes[key].map((_) =>
         geometryLinkPalette.getNumberId(_.id)
       )
     );
-    shapeStateGeometryPalette.push(
-      data.shapeStatesNodes[key].map((_) =>
+    stateGeometryPalette.push(
+      data.stateNodes[key].map((_) =>
         geoPalette.getNumberId(VoxelModelRuleBuilderRegister.getGeometryLinkId(_))
       )
     );
-    shapeStateRecord[key] = shapeStateGeometryPalette.length - 1;
-    shapeStateRelativeGeometryMap[shapeStateRecord[key]] ??= [];
-    const nodeData = data.shapeStatesNodes[key];
+    stateRecord[key] = stateGeometryPalette.length - 1;
+    stateRelativeGeometryMap[stateRecord[key]] ??= [];
+    const nodeData = data.stateNodes[key];
 
     for (const node of nodeData) {
-      shapeStateRelativeGeometryMap[shapeStateRecord[key]][
+      stateRelativeGeometryMap[stateRecord[key]][
         geoPalette.getNumberId(VoxelModelRuleBuilderRegister.getGeometryLinkId(node))
       ] = relativeGeoId;
       relativeGeometryByteIndexMap[relativeGeoId] = relativeByteCount;
@@ -319,12 +319,12 @@ export function BuildStateData(
     }
 
     addPathToTree(
-      shapeStateTree,
+      stateTree,
       key
         .split(",")
         .map((pair) => pair.split("="))
         .flat(),
-      shapeStateGeoLinkPalette.length - 1
+      stateGeoLinkPalette.length - 1
     );
   }
 
@@ -336,14 +336,14 @@ export function BuildStateData(
   const condiotnalShapeStateNodeRecord: Record<string, number> = {};
   const condiotnalStatements: StateLogicStatement[] = [];
   const compareOperations = Object.keys(StateCompareOperationsMap);
-  for (const key in data.shapeStatesConditonalNodes) {
+  for (const key in data.conditonalNodes) {
     condiotnalShapeStateNodePalette.push(
-      data.shapeStatesConditonalNodes[key].map((_) =>
+      data.conditonalNodes[key].map((_) =>
         geometryLinkPalette.getNumberId(_.id)
       )
     );
     condiotnalShapeStateGeometryPalette.push(
-      data.shapeStatesConditonalNodes[key].map((_) =>
+      data.conditonalNodes[key].map((_) =>
         geoPalette.getNumberId(VoxelModelRuleBuilderRegister.getGeometryLinkId(_))
       )
     );
@@ -352,7 +352,7 @@ export function BuildStateData(
     condiotnalShapeStateRelativeGeometryMap[
       condiotnalShapeStateNodeRecord[key]
     ] ??= [];
-    const nodeData = data.shapeStatesConditonalNodes[key];
+    const nodeData = data.conditonalNodes[key];
 
     for (const node of nodeData) {
       condiotnalShapeStateRelativeGeometryMap[
@@ -425,14 +425,14 @@ export function BuildStateData(
     condiotanlGeometryStatePalette.push(newGeoCombo);
   }
 
-  const shapeStateTreeData = shapeStateTree.toJSON();
+  const stateTreeData = stateTree.toJSON();
 
   const newShapeStateTree: any[] = [];
 
   reMapTree(
     schemaIdPalette,
     schemaValuePalette,
-    shapeStateTreeData,
+    stateTreeData,
     newShapeStateTree,
     model.data.id
   );
@@ -540,21 +540,21 @@ export function BuildStateData(
   const finalData = {
     schema: baseSchema,
     effects: modelEffects,
-    shapeStateGeometryPalette,
+    stateGeometryPalette: stateGeometryPalette,
     condiotnalShapeStateGeometryPalette,
-    shapeStateTree: newShapeStateTree,
+    stateTree: newShapeStateTree,
     geometryLinkPalette: geometryLinkPalette._map,
     geometryLinkStateMap,
     relativeByteCount,
-    shapeStatePalette: shapeStateGeoLinkPalette,
-    shapeStateRecord,
+    statePalette: stateGeoLinkPalette,
+    stateRecord: stateRecord,
     condiotnalNodeStateTree,
     condiotnalStatements,
-    condiotnalShapeStatePalette: condiotnalShapeStateNodePalette,
+    condiotnalStatePalette: condiotnalShapeStateNodePalette,
     condiotnalShapeStateRecord: condiotnalShapeStateNodeRecord,
     condiotanlStatePalette,
     condiotanlGeometryStatePalette,
-    shapeStateRelativeGeometryMap,
+    stateRelativeGeometryMap: stateRelativeGeometryMap,
     relativeGeometryByteIndexMap,
     condiotnalShapeStateRelativeGeometryMap,
   };

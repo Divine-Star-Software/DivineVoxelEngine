@@ -8,15 +8,14 @@ export class StateTreeReader {
     public tree: any[]
   ) {}
 
-  getState(shapeState: number) {
+  getState(state: number) {
     if (!this.tree.length) return this.defaultValue;
     let found = -1;
     let index = this.startingIndex;
     let curretNode = this.tree;
 
     while (found == -1) {
-      curretNode =
-        curretNode[index][this.schema.nodes[index].getValue(shapeState)];
+      curretNode = curretNode[index][this.schema.nodes[index].getValue(state)];
       if (typeof curretNode == "number") {
         return curretNode;
       }

@@ -2,12 +2,12 @@ import { WorldSpaces } from "./WorldSpaces.js";
 import { Dimension } from "./Dimension/Dimension";
 import { Sector, SectorData } from "./Sector/Sector.js";
 import type { LocationData } from "../Math/index.js";
-import { DimensionData } from "./Types/WorldData.types.js";
+import { DimensionSyncData } from "./Types/WorldData.types.js";
 import { Vector3Like } from "@amodx/math";
 
 class WorldDataHooks {
   static dimension = {
-    onNew: (dimension: DimensionData): void => {},
+    onNew: (dimension: DimensionSyncData): void => {},
     onRemove: (location: LocationData): void => {},
   };
   static sectors = {
@@ -17,13 +17,14 @@ class WorldDataHooks {
 }
 
 class WorldRegisterDimensions {
-  static add(id: string) {
-    const dimesnion = Dimension.CreateNew(id);
-    WorldRegister._dimensions.set(id, dimesnion);
+  static add(index: number, id: string = "") {
+    const dimesnion = Dimension.CreateNew(index, id);
+    WorldRegister._dimensions.set(index, dimesnion);
+    WorldDataHooks.dimension.onNew(dimesnion.getData());
     return dimesnion;
   }
-  static get(id: string) {
-    return WorldRegister._dimensions.get(id);
+  static get(index: number) {
+    return WorldRegister._dimensions.get(index);
   }
 }
 
@@ -49,7 +50,7 @@ class WorldRegisterSectors {
     SectorPool._secotrs.length = 0;
   }
   static add(
-    dimensionId: string,
+    dimensionId: number,
     x: number,
     y: number,
     z: number,
@@ -71,7 +72,7 @@ class WorldRegisterSectors {
   static addAt(location: LocationData, sector: SectorData) {
     return this.add(...location, sector);
   }
-  static new(dimensionId: string, x: number, y: number, z: number) {
+  static new(dimensionId: number, x: number, y: number, z: number) {
     if (this.get(dimensionId, x, y, z)) return false;
     let dimension = WorldRegister.dimensions.get(dimensionId);
     if (!dimension) dimension = WorldRegister.dimensions.add(dimensionId);
@@ -83,7 +84,7 @@ class WorldRegisterSectors {
     return this.new(...location);
   }
   static get(
-    dimensionId: string,
+    dimensionId: number,
     x: number,
     y: number,
     z: number
@@ -100,7 +101,7 @@ class WorldRegisterSectors {
   static getAt(location: LocationData) {
     return this.get(...location);
   }
-  static remove(dimensionId: string, x: number, y: number, z: number) {
+  static remove(dimensionId: number, x: number, y: number, z: number) {
     let dimension = WorldRegister.dimensions.get(dimensionId);
     if (!dimension) return false;
     const position = WorldSpaces.sector.getPosition(x, y, z, tempPosition);
@@ -121,7 +122,9 @@ class WorldRegisterSectors {
 }
 
 export class WorldRegister {
-  static _dimensions = new Map<string, Dimension>();
+  static _dimensions = new Map<number, Dimension>([
+    [0, new Dimension(Dimension.CreateNew(0, "main"))],
+  ]);
   static _hooks = WorldDataHooks;
   static dimensions = WorldRegisterDimensions;
   static sectors = WorldRegisterSectors;

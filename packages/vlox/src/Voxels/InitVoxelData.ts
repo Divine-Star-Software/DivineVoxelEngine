@@ -68,6 +68,7 @@ import { VoxelSubstanceData } from "./Types/VoxelSubstances.types";
 import { VoxelTagIds } from "./Data/VoxelTag.types";
 import { BuildTagAndPaletteData } from "./Functions/BuildTagAndPaletteData";
 import { VoxelPalettesRegister } from "./Data/VoxelPalettesRegister";
+import { VoxelLogicRegister } from "./Logic/VoxelLogicRegister";
 
 export type InitVoxelDataProps = {
   geometry?: VoxelGeometryData[];
@@ -195,15 +196,15 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
       effects: stateData.effects,
       schema: stateData.schema,
       geoLinkMap: stateData.geometryLinkStateMap,
-      shapeStateMap: stateData.shapeStatePalette,
-      shapeStateGeometryMap: stateData.shapeStateGeometryPalette,
-      shapeStateTree: stateData.shapeStateTree,
+      stateMap: stateData.statePalette,
+      stateGeometryMap: stateData.stateGeometryPalette,
+      stateTree: stateData.stateTree,
       condiotnalStateTree: stateData.condiotnalNodeStateTree,
       condiotnalStatements: stateData.condiotnalStatements,
-      condiotnalStateMap: stateData.condiotnalShapeStatePalette,
+      condiotnalStateMap: stateData.condiotnalStatePalette,
       condiotnalShapeStateMap: stateData.condiotanlStatePalette,
       condiotnalShapeStateGeometryMap: stateData.condiotanlGeometryStatePalette,
-      shapeStateRelativeGeometryMap: stateData.shapeStateRelativeGeometryMap,
+      stateRelativeGeometryMap: stateData.stateRelativeGeometryMap,
       relativeGeometryByteIndexMap: stateData.relativeGeometryByteIndexMap,
       condiotnalShapeStateRelativeGeometryMap:
         stateData.condiotnalShapeStateRelativeGeometryMap,
@@ -216,12 +217,12 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
 
   for (const [mainKey, model] of VoxelModelRuleBuilderRegister.models) {
     const {
-      shapeStateVoxelInputs,
+      stateVoxelInputs,
       conditionalShapeStateVoxelInputs,
       transparentVoxelFaceIndexes,
     } = BuildFinalInputs(model);
 
-    for (const v in shapeStateVoxelInputs) {
+    for (const v in stateVoxelInputs) {
       const stateData = model.voxelModData.get(v)!;
       SchemaRegister.registerVoxel(v, mainKey, stateData.modSchema);
 
@@ -235,7 +236,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
         transparentFaceIndex: transparentVoxelFaceIndexes[v].data,
         modSchema: stateData.modSchema,
         modStateTree: stateData.modStateTree,
-        baseGeometryInputMap: shapeStateVoxelInputs[v],
+        baseGeometryInputMap: stateVoxelInputs[v],
         condiotnalGeometryInputMap: conditionalShapeStateVoxelInputs[v],
       });
     }
@@ -384,6 +385,14 @@ export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
   });
 
   let models = GetModelData(data);
+
+
+ for(const id in voxelData.data.logic) {
+  VoxelLogicRegister.register(id,
+    voxelData.data.logic[id]
+  )
+ }
+  
 
   return {
     models,

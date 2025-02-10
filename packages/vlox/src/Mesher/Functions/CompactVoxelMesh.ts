@@ -69,7 +69,6 @@ export function CompactVoxelMesh(
   transfers: any[] = []
 ): CompactMeshData {
   const data: CompactMeshData = [0, []];
-
   for (let i = 0; i < tools.length; i++) {
     const tool = tools[i];
     if (!tool.mesh!.vertexCount) continue;

@@ -7,9 +7,10 @@ import {
   ArchivedSectorData,
 } from "../Archive.types";
 import { uint16To4CharString } from "./Shared";
+import { WorldRegister } from "World/WorldRegister";
 
 type RunData = {
-  dimension: string;
+  dimension: number;
   sectors: ArchivedSectorData[];
   version?: number;
 };
@@ -280,7 +281,7 @@ function SectorToArchivedAreaSector(
   sector.palettes.modMap = sector.palettes.modMap;
 
   return {
-    position: [sector.location[1], sector.location[2], sector.location[3]],
+    position: sector.location,
     sectorState: sector.flags as any,
     buffers: sector.buffers,
     palettes,
@@ -299,7 +300,8 @@ export default function CreateArchiveArea(
   }
 
   return {
-    dimension: archiveData.dimension,
+    dimension:
+      WorldRegister.dimensions.get(archiveData.dimension)?.id || "main",
     version: "",
     keys: {
       sectorState: sectorStateKeys,
@@ -392,7 +394,8 @@ export function CreateSectorFromArea(
   return {
     version: area.version,
     vloxVersion: area.version,
-    location: [area.dimension, ...sector.position],
+    dimension: "",
+    location: [...sector.position],
     flags: sectorState,
     timestamps: {},
     /*     keys: {

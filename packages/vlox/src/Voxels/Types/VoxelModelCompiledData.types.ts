@@ -13,9 +13,11 @@ import {
 import { VoxelEffectSyncData } from "../Effects/VoxelEffects.types";
 import { VoxelTagStatesData } from "../Data/VoxelTagStates";
 import { VoxelSubstanceTags, VoxelTags } from "../Data/VoxelTag.types";
+import { VoxelLogicData } from "../../Voxels/Logic/VoxelLogic.types";
 
 export type CompiledVoxelTagAndPaletteData = {
   data: {
+    logic: Record<string,VoxelLogicData[]>
     tags: VoxelTags[];
     palette: string[];
     nameToIdMap: [string,string][]
@@ -74,11 +76,11 @@ export interface CompiledVoxelModelData {
   schema: VoxelModelStateSchemaData[];
   effects: VoxelEffectSyncData[];
   geoLinkMap: number[];
-  shapeStateTree: any[];
-  shapeStateMap: number[][];
-  shapeStateGeometryMap: number[][];
+  stateTree: any[];
+  stateMap: number[][];
+  stateGeometryMap: number[][];
   //maps each shape state geometry nodes to their relative index
-  shapeStateRelativeGeometryMap: number[][];
+  stateRelativeGeometryMap: number[][];
   //maps each shape state & condtional geometry relative ids to their starting byte index for the transparent index
   relativeGeometryByteIndexMap: number[];
 

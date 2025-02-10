@@ -11,8 +11,9 @@ export interface ArchivedSectorData {
   version: string;
   /** The version of vlox the data was stored in. */
   vloxVersion: string;
+  dimension: string;
   /** The location of the sector in the world. */
-  location: LocationData;
+  location: Vec3Array;
   /** Record of the sector's bit flags.  */
   flags: Record<string, boolean>;
   /** Record of the sector's timestamps. */

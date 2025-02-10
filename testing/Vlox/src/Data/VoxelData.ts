@@ -77,10 +77,7 @@ export const DVEVoxelData: VoxelData[] = [
           {
             name: "grassy",
             type: "string",
-            values: {
-              0: "false",
-              1: "true",
-            },
+            values: ["false", "true"],
           },
         ],
         modRelationSchema: [],
@@ -281,10 +278,7 @@ export const DVEVoxelData: VoxelData[] = [
           {
             name: "grassy",
             type: "string",
-            values: {
-              0: "false",
-              1: "true",
-            },
+            values: ["false", "true"],
           },
         ],
         modRelationSchema: [],
@@ -436,10 +430,7 @@ export const DVEVoxelData: VoxelData[] = [
           {
             name: "grassy",
             type: "string",
-            values: {
-              0: "false",
-              1: "true",
-            },
+            values: ["false", "true"],
           },
         ],
         modRelationSchema: [],

@@ -8,7 +8,7 @@ const isArgString = (data: any) => {
 };
 
 export function BuildFinalInputs(model: VoxelRulesModoel) {
-  const shapeStateVoxelInputs: Record<string, any[]> = {};
+  const stateVoxelInputs: Record<string, any[]> = {};
   const transparentVoxelFaceIndexes: Record<
     string,
     VoxelFaceTransparentResultsIndex
@@ -29,10 +29,10 @@ export function BuildFinalInputs(model: VoxelRulesModoel) {
       const modVoxelInput = voxel.inputs[modVoxelInputKey];
       const modIndex = voxelModData.modRecord[modVoxelInputKey];
       const baseStates: any[] = [];
-      for (const state in model.data.shapeStatesNodes) {
+      for (const state in model.data.stateNodes) {
         const geoNodes: any[] = [];
-        const shapeStateNodes = model.data.shapeStatesNodes[state];
-        for (const node of shapeStateNodes) {
+        const stateNodes = model.data.stateNodes[state];
+        for (const node of stateNodes) {
           const geo = VoxelModelRuleBuilderRegister.getGeomtryFromLink(node);
           if (!geo) throw new Error(`Geometry does not exist`);
           geo.inputs.resetDefaults();
@@ -51,8 +51,8 @@ export function BuildFinalInputs(model: VoxelRulesModoel) {
 
           const byteIndex =
             model.stateData.relativeGeometryByteIndexMap[
-              model.stateData.shapeStateRelativeGeometryMap[
-                model.stateData.shapeStateRecord[state]
+              model.stateData.stateRelativeGeometryMap[
+                model.stateData.stateRecord[state]
               ][
                 VoxelModelRuleBuilderRegister.geometryPalette.getNumberId(
                   VoxelModelRuleBuilderRegister.getGeometryLinkId(node)
@@ -71,18 +71,18 @@ export function BuildFinalInputs(model: VoxelRulesModoel) {
           }
         }
 
-        baseStates[model.stateData.shapeStateRecord[state]] = geoNodes;
+        baseStates[model.stateData.stateRecord[state]] = geoNodes;
       }
-      shapeStateVoxelInputs[voxelId] ??= [];
-      shapeStateVoxelInputs[voxelId][voxelModData.modRecord[modVoxelInputKey]] =
+      stateVoxelInputs[voxelId] ??= [];
+      stateVoxelInputs[voxelId][voxelModData.modRecord[modVoxelInputKey]] =
         baseStates;
 
       const condiotnalStates: any[] = [];
-      for (const state in model.data.shapeStatesConditonalNodes) {
+      for (const state in model.data.conditonalNodes) {
         const geoNodes: any[] = [];
-        const shapeStateNodes = model.data.shapeStatesConditonalNodes[state];
-        for (let i = 0; i < shapeStateNodes.length; i++) {
-          const node = shapeStateNodes[i];
+        const stateNodes = model.data.conditonalNodes[state];
+        for (let i = 0; i < stateNodes.length; i++) {
+          const node = stateNodes[i];
           const geo = VoxelModelRuleBuilderRegister.getGeomtryFromLink(node);
           if (!geo) throw new Error(`Geometry does not exist`);
           //   geo.inputs.resetDefaults();
@@ -131,7 +131,7 @@ export function BuildFinalInputs(model: VoxelRulesModoel) {
     }
   }
   return {
-    shapeStateVoxelInputs,
+    stateVoxelInputs,
     transparentVoxelFaceIndexes,
     conditionalShapeStateVoxelInputs,
   };

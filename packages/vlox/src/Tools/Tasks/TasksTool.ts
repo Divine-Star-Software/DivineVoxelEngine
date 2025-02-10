@@ -80,10 +80,12 @@ class VoxelTasks {
   update: TaskToolTask<VoxelUpdateTasks>;
   paint: TaskToolTask<VoxelUpdateTasks>;
   erease: TaskToolTask<LocationData>;
+  logic: TaskToolTask<LocationData>
   constructor(public tool: TaskTool) {
     this.update = new TaskToolTask(TasksIds.VoxelUpdate, tool.threads);
     this.paint = new TaskToolTask(TasksIds.VoxelPaint, tool.threads);
     this.erease = new TaskToolTask(TasksIds.VoxelErease, tool.threads);
+    this.logic = new TaskToolTask(TasksIds.LogicUpdate, tool.threads);
   }
 }
 

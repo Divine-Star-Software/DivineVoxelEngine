@@ -3,7 +3,7 @@ import { VoxelModelData } from "../VoxelModel.types";
 export const simpleCube: VoxelModelData = {
   id: "dve_simple_cube",
   relationsSchema: [],
-  shapeStateSchema: [],
+  stateSchema: [],
   arguments: {
     texture: {
       type: "texture",
@@ -13,8 +13,8 @@ export const simpleCube: VoxelModelData = {
       default: false,
     },
   },
-  shapeStatesConditonalNodes: {},
-  shapeStatesNodes: {
+  conditonalNodes: {},
+  stateNodes: {
     "*": [
       {
         id: "cube",
@@ -41,7 +41,7 @@ export const simpleCube: VoxelModelData = {
 export const orientedCube: VoxelModelData = {
   id: "dve_oriented_cube",
   relationsSchema: [],
-  shapeStateSchema: [
+  stateSchema: [
     {
       name: "placement",
       type: "string",
@@ -73,8 +73,8 @@ export const orientedCube: VoxelModelData = {
       type: "texture",
     },
   },
-  shapeStatesConditonalNodes: {},
-  shapeStatesNodes: {
+  conditonalNodes: {},
+  stateNodes: {
     "placement=down,direction=north": [
       {
         id: "cube",
@@ -558,7 +558,7 @@ export const orientedCube: VoxelModelData = {
 export const simpleHalfCube: VoxelModelData = {
   id: "dve_simple_half_cube",
   relationsSchema: [],
-  shapeStateSchema: [
+  stateSchema: [
     {
       name: "placement",
       type: "string",
@@ -573,8 +573,8 @@ export const simpleHalfCube: VoxelModelData = {
       type: "texture",
     },
   },
-  shapeStatesConditonalNodes: {},
-  shapeStatesNodes: {
+  conditonalNodes: {},
+  stateNodes: {
     "placement=down": [
       {
         id: "half_cube",
@@ -724,7 +724,7 @@ export const pillarCube: VoxelModelData = {
       ],
     },
   ],
-  shapeStateSchema: [
+  stateSchema: [
     {
       name: "direction",
       type: "string",
@@ -751,9 +751,9 @@ export const pillarCube: VoxelModelData = {
       type: "texture",
     },
   },
-  shapeStatesConditonalNodes: {},
+  conditonalNodes: {},
 
-  shapeStatesNodes: {
+  stateNodes: {
     "direction=down-up,same-down=false,same-up=false": [
       {
         id: "cube",

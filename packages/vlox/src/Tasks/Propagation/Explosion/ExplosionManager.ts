@@ -9,16 +9,16 @@ import { RGBRemove, RGBUpdate } from "../Illumanation/RGBUpdate.js";
 import { SunRemove, SunUpdate } from "../Illumanation/SunUpdate.js";
 import { FlowManager } from "../Flow/FlowManager.js";
 import { VisitedMap } from "../../../Util/VisistedMap";
-import { UpdateTask } from "../../Update/UpdateTask.js";
+import { VoxelUpdateTask } from "../../VoxelUpdateTask.js";
 import { Vec3Array } from "@amodx/math";
 import { WorldCursor } from "../../../World/index.js";
 import { VoxelLightData } from "../../../Voxels/Cursor/VoxelLightData.js";
 
 const lightData = new VoxelLightData();
 export const ExplosionManager = {
-  runExplosion(tasks: UpdateTask, radius: number) {
+  runExplosion(tasks: VoxelUpdateTask, radius: number) {
     const [dimension, sx, sy, sz] = tasks.origin;
-    FlowManager.setDimension(dimension);
+ //   FlowManager.setDimension(dimension);
 
     const queue: Vec3Array[] = [];
     const map = new VisitedMap();

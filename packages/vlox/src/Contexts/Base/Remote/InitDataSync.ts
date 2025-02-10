@@ -7,6 +7,7 @@ import { SchemaRegister } from "../../../Voxels/State/SchemaRegister";
 import { VoxelTagStates } from "../../../Voxels/Data/VoxelTagStates";
 import { VoxelPalettesRegister } from "../../../Voxels/Data/VoxelPalettesRegister";
 import { VoxelTagsRegister } from "../../../Voxels/Data/VoxelTagsRegister";
+import { VoxelLogicRegister } from "../../../Voxels/Logic/VoxelLogicRegister";
 
 export default function InitDataSync(props: {
   onSync(data: DataSyncData): void;
@@ -34,12 +35,18 @@ export default function InitDataSync(props: {
       SchemaRegister.registerModel(model.id, model.schema);
     }
 
-    console.warn("SYNC VOXEL DATA", Threads.parent.name);
     for (const voxel of modelData.voxels) {
       SchemaRegister.registerVoxel(voxel.id, voxel.modelId, voxel.modSchema);
     }
     VoxelTagStates.load(modelData.tagState);
 
+
+    
+     for(const id in data.voxels.data.logic) {
+      VoxelLogicRegister.register(id,
+        data.voxels.data.logic[id]
+      )
+     }
     props.onSync(data);
   });
 }

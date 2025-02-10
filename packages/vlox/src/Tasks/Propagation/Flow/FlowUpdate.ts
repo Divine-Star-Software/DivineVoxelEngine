@@ -1,8 +1,8 @@
 import { FlowManager as FM } from "./FlowManager.js";
 import { EngineSettings } from "../../../Settings/EngineSettings.js";
-import { UpdateTask } from "../../Update/UpdateTask.js"
+import { VoxelUpdateTask } from "../../VoxelUpdateTask.js"
 
-export async function FlowUpdate(tasks: UpdateTask, rebuild = true) {
+export async function FlowUpdate(tasks: VoxelUpdateTask, rebuild = true) {
 /*   const [dimension, x, y, z] = tasks.origin;
   FM.setDimension(dimension);
   const vox = FM.getVoxel(x, y, z);
@@ -22,7 +22,7 @@ export async function FlowUpdate(tasks: UpdateTask, rebuild = true) {
     }
   } */
 }
-function RunFlowPropagation(tasks: UpdateTask, vox: string) {
+function RunFlowPropagation(tasks: VoxelUpdateTask, vox: string) {
 /*   const que = tasks.flow.update.queue;
   const noRemoveMap = tasks.flow.remove.noRemoveMap;
   for (let i = 0; i < que.length; i++) {
@@ -73,7 +73,7 @@ function RunFlowPropagation(tasks: UpdateTask, vox: string) {
   } */
 }
 
-function RunFlowIncrease(tasks: UpdateTask, vox: string) {
+function RunFlowIncrease(tasks: VoxelUpdateTask, vox: string) {
   const que = tasks.flow.update.queue;
   const map = tasks.flow.update.map;
   const reque: number[][] = [];

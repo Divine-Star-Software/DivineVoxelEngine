@@ -3,14 +3,14 @@ import { VoxelCursorInterface } from "../../Voxels/Cursor/VoxelCursor.interface"
 import { WorldSectionCursorInterface } from "./WorldSectionCursor.interface";
 import { SectionStateDefaultFlags } from "../Section/SectionState";
 export class WorldVoxelCursor extends VoxelCursorInterface {
-  private _section: Section;
+  private _section: Section | null = null;
 
-  ids: Uint16Array;
-  light: Uint16Array;
-  level: Uint8Array;
-  state: Uint16Array;
-  mod: Uint16Array;
-  secondary: Uint16Array;
+  ids = new Uint16Array(1);
+  light = new Uint16Array(1);
+  level = new Uint8Array(1);
+  state = new Uint16Array(1);
+  mod = new Uint16Array(1);
+  secondary = new Uint16Array(1);
 
   constructor(public dataCursor: WorldSectionCursorInterface) {
     super();
@@ -30,26 +30,44 @@ export class WorldVoxelCursor extends VoxelCursorInterface {
     this.process();
   }
 
-  /**
-   *
-   * @param mode 0 for add 1 for remove
-   */
   updateVoxel(mode: 0 | 1 | 2) {
     const voxelPos = this.dataCursor._voxelPosition;
     this.dataCursor._section?.sector.setStored(false);
+    this.dataCursor._section?.setBuried(this.dataCursor._voxelIndex, false);
     if (mode == 0) {
-      this.dataCursor._section?.setBuried(this.dataCursor._voxelIndex, false);
+      if (this.doesVoxelAffectLogic()) {
+        this.dataCursor._section?.setLogicDirty(true);
+        this.dataCursor._section?.setLogicSliceDirty(voxelPos.y, true);
+        this.dataCursor._section?.setVoxelLogicDirty(
+          this.dataCursor._voxelIndex,
+          true
+        );
+      }
       this.dataCursor._section?.setHasVoxel(voxelPos.y, true);
       return true;
     }
     if (mode == 1) {
-      this.dataCursor._section?.setBuried(this.dataCursor._voxelIndex, false);
+      if (this.doesVoxelAffectLogic()) {
+        this.dataCursor._section?.setLogicDirty(true);
+        this.dataCursor._section?.setLogicSliceDirty(voxelPos.y, true);
+        this.dataCursor._section?.setVoxelLogicDirty(
+          this.dataCursor._voxelIndex,
+          true
+        );
+      }
       this.dataCursor._section?.setHasVoxelDirty(voxelPos.y, true);
       this.dataCursor._section?.setHasVoxel(voxelPos.y, false);
       return true;
     }
     if (mode == 2) {
-      this.dataCursor._section?.setBuried(this.dataCursor._voxelIndex, false);
+      if (this.doesVoxelAffectLogic()) {
+        this.dataCursor._section?.setLogicDirty(true);
+        this.dataCursor._section?.setLogicSliceDirty(voxelPos.y, true);
+        this.dataCursor._section?.setVoxelLogicDirty(
+          this.dataCursor._voxelIndex,
+          true
+        );
+      }
     }
     return false;
   }

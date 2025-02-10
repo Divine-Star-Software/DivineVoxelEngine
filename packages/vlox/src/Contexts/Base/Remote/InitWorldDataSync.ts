@@ -2,13 +2,13 @@ import { Threads } from "@amodx/threads/";
 import { WorldDataSyncIds } from "../../../World/Types/WorldDataSyncIds.js";
 import { WorldRegister } from "../../../World/WorldRegister.js";
 import type { LocationData } from "../../../Math/index.js";
-import { DimensionData } from "../../../World/Types/WorldData.types.js";
+import { DimensionSyncData } from "../../../World/Types/WorldData.types.js";
 import { SectorData } from "../../../World/index.js";
 export default function () {
-  Threads.registerTask<DimensionData>(
+  Threads.registerTask<DimensionSyncData>(
     WorldDataSyncIds.SyncDimension,
     (data) => {
-      WorldRegister.dimensions.add(data.id);
+      WorldRegister.dimensions.add(data.index, data.id);
     }
   );
   Threads.registerTask<[LocationData]>(

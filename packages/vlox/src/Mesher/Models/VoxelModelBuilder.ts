@@ -104,7 +104,7 @@ export class VoxelModelBuilder {
     this.bounds.max[0] = -Infinity;
     this.bounds.max[1] = -Infinity;
     this.bounds.max[2] = -Infinity;
-    this._boundsUpdate = true;
+    this._boundsUpdate = false;
   }
 
   endConstruction() {
@@ -127,17 +127,13 @@ export class VoxelModelBuilder {
         this.bounds.max[1],
         this.bounds.max[2]
       );
-      this.bvhTool.structCursor.setIndex(0);
-      this.mesh.minBounds.x = this.bvhTool.structCursor.minX;
-      this.mesh.minBounds.y = this.bvhTool.structCursor.minY;
-      this.mesh.minBounds.z = this.bvhTool.structCursor.minZ;
-      this.mesh.maxBounds.x = this.bvhTool.structCursor.maxX;
-      this.mesh.maxBounds.y = this.bvhTool.structCursor.maxY;
-      this.mesh.maxBounds.z = this.bvhTool.structCursor.maxZ;
+
     }
 
     return true;
   }
+
+  
 
   _boundsUpdate = false;
   updateBounds(bounds: [Vec3Array, Vec3Array]) {

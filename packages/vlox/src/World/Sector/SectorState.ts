@@ -3,8 +3,10 @@ export enum SectorStateDefaultBitFlags {
   isWorldDecorDone,
   isWorldPropagationDone,
   isWorldSunDone,
-  isDirty,
-  isStored,
+  displayDirty,
+  logicDirty,
+  stored,
+
 }
 
 export enum SectorStateDefaultTimeStamps {

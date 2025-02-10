@@ -1,11 +1,13 @@
 import { Thread, Threads } from "@amodx/threads";
 import { TasksIds } from "../TasksIds";
 import { VoxelUpdateTasks } from "../Tasks.types";
-import { VoxelUpdate, EreaseAndUpdate, PaintAndUpdate } from "./VoxelUpdate";
-import { UpdateTask } from "./UpdateTask";
+import { VoxelUpdate } from "./VoxelUpdate";
+import { VoxelUpdateTask } from "../VoxelUpdateTask";
 import { LocationData } from "Math";
+import { EreaseAndUpdate } from "./EreaseUpdate";
+import { PaintAndUpdate } from "./PaintUpdate";
 export default function (props: {
-  onDone(taks: UpdateTask, origin: Thread): void;
+  onDone(taks: VoxelUpdateTask, origin: Thread): void;
 }) {
   Threads.registerTask<VoxelUpdateTasks>(
     TasksIds.VoxelUpdate,

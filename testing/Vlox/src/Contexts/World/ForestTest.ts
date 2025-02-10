@@ -15,13 +15,13 @@ export async function ForestTest(DVEW: DivineVoxelEngineWorld) {
   const t1 = performance.now();
 
   const brush = new BrushTool();
-  brush.start("main", 0, 0, 0);
+  brush.start(0, 0, 0, 0);
 
   for (let x = startX - 32; x < endX + 32; x += 16) {
     for (let z = startZ - 32; z < endZ + 32; z += 16) {
       brush.setXYZ(x, 0, z).newSector();
-      propagation.add(["main", x, 0, z]);
-      worldSun.add(["main", x, 0, z]);
+      propagation.add([0, x, 0, z]);
+      worldSun.add([0, x, 0, z]);
     }
   }
 
@@ -36,7 +36,7 @@ export async function ForestTest(DVEW: DivineVoxelEngineWorld) {
   await propagation.run();
   for (let x = startX - 16; x < endX + 16; x += 16) {
     for (let z = startZ - 16; z < endZ + 16; z += 16) {
-      tasks.build.sector.run(["main", x, 0, z]);
+      tasks.build.sector.run([0, x, 0, z]);
     }
   }
 

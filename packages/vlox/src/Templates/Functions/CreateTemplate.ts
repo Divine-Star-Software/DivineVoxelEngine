@@ -6,7 +6,7 @@ import { convertToPaletteBuffer } from "../../Util/Binary/Palettes";
 import { WorldCursor } from "../../World";
 
 export default function CreateTemplate(
-  dimension: string,
+  dimension: number,
   start: Vec3Array,
   end: Vec3Array
 ) {

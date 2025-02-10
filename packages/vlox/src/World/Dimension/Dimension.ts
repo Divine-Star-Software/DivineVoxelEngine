@@ -1,15 +1,18 @@
+import { DimensionSyncData } from "../Types/WorldData.types";
 import { Sector } from "../Sector";
 
 export interface DimensionData {
   id: string;
+  index: number;
   sectors: Map<string, Sector>;
 }
 export interface Dimension extends DimensionData {}
 
 export class Dimension {
-  static CreateNew(id: string) {
+  static CreateNew(index: number, id = "") {
     return new Dimension({
       id,
+      index,
       sectors: new Map<string, Sector>(),
     });
   }
@@ -25,5 +28,12 @@ export class Dimension {
   }
   get(sectorId: string) {
     return this.sectors.get(sectorId);
+  }
+
+  getData(): DimensionSyncData {
+    return {
+      id: this.id,
+      index: this.index,
+    };
   }
 }

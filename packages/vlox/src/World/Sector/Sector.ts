@@ -81,12 +81,29 @@ export class Sector {
     return getBitArrayIndex(this.flagArray, index) == 1;
   }
 
+  isDisplayDirty() {
+    return this.getBitFlag(SectorStateDefaultBitFlags.displayDirty);
+  }
+
+  setDisplayDirty(stored: boolean) {
+    this.setBitFlag(SectorStateDefaultBitFlags.displayDirty, stored);
+  }
+
+  isLogicDirty() {
+    return this.getBitFlag(SectorStateDefaultBitFlags.logicDirty);
+  }
+
+  setLogicDirty(stored: boolean) {
+    this.setBitFlag(SectorStateDefaultBitFlags.logicDirty, stored);
+  }
+
+
   setStored(stored: boolean) {
-    this.setBitFlag(SectorStateDefaultBitFlags.isStored, stored);
+    this.setBitFlag(SectorStateDefaultBitFlags.stored, stored);
   }
 
   isStored() {
-    return this.getBitFlag(SectorStateDefaultBitFlags.isStored);
+    return this.getBitFlag(SectorStateDefaultBitFlags.stored);
   }
 
   setTimeStamp(index: number, value: number) {
@@ -103,15 +120,32 @@ export class Sector {
       yield section;
     }
   }
-
-  anySectionDirty() {
-    for (let i = 0; i < this.sections.length; i++) {
-      if (this.sections[i].isDirty() && !this.sections[i].isInProgress())
-        return true;
+  *getLogicDirtySections(): Generator<Section> {
+    for (const section of this.sections) {
+      const [min, max] = section.getLogicMinMax();
+      if (min == Infinity || max == -Infinity) continue;
+      yield section;
     }
-    return false;
   }
 
+  anySectionDisplayDirty() {
+    if (!this.isDisplayDirty()) return false;
+    for (let i = 0; i < this.sections.length; i++) {
+      if (this.sections[i].isDisplayDirty() && !this.sections[i].isInProgress())
+        return true;
+    }
+    this.setDisplayDirty(false);
+    return false;
+  }
+  anySectionLogicDirty() {
+    if (!this.isLogicDirty()) return false;
+    for (let i = 0; i < this.sections.length; i++) {
+      if (this.sections[i].isLogicDirty() && !this.sections[i].isLogicUpdateInProgress())
+        return true;
+    }
+    this.setLogicDirty(false);
+    return false;
+  }
   storeFlags() {
     const stored: Record<string, boolean> = {};
     for (const key in SectorState.StoredFlags) {

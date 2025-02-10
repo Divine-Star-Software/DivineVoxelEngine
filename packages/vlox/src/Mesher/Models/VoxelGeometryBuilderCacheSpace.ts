@@ -3,27 +3,26 @@ import { VoxelModelConstructorRegister } from "./VoxelModelConstructorRegister";
 import { Vec3Array, Vector3Like } from "@amodx/math";
 import { VoxelCursor } from "../../Voxels/Cursor/VoxelCursor";
 import { GetYXZOrderArrayIndex } from "../../Math/Indexing";
-
 export class VoxelGeometryBuilderCacheSpace {
   foundHash: Uint8Array;
   voxelCache: Uint16Array;
 
-  modCache: Int32Array;
-  stateCache: Int32Array;
-  conditonalStateCache: Int32Array;
+  modCache:Int32Array
+  stateCache:Int32Array
+  conditonalStateCache: Int32Array
   noCastAO: Uint8Array;
   offset: Vec3Array = [0, 0, 0];
+
   voxelCursor = new VoxelCursor();
 
   constructor(public bounds: Vector3Like) {
     const volume = bounds.x * bounds.y * bounds.z;
-    this.foundHash = new Uint8Array(volume);
-
-    this.voxelCache = new Uint16Array(volume);
-    this.modCache = new Int32Array(volume);
-    this.stateCache = new Int32Array(volume);
-    this.conditonalStateCache = new Int32Array(volume);
-    this.noCastAO = new Uint8Array(volume);
+    this.foundHash = new  Uint8Array(volume);
+    this.voxelCache = new  Uint16Array(volume);
+    this.modCache = new  Int32Array(volume);
+    this.stateCache =  new  Int32Array(volume);
+    this.conditonalStateCache = new  Int32Array(volume);
+    this.noCastAO = new  Uint8Array(volume);
   }
   start(x: number, y: number, z: number) {
     this.offset[0] = x;
@@ -56,13 +55,13 @@ export class VoxelGeometryBuilderCacheSpace {
     ];
   }
   getGeomtry(index: number) {
-    if (this.foundHash[index] < 2) return false;
+    if (this.foundHash[index] < 2) return null;
     return VoxelModelConstructorRegister.constructorsPaltte[
       this.voxelCache[index]
-    ].data.shapeStateGeometryMap[this.stateCache[index]];
+    ].data.stateGeometryMap[this.stateCache[index]];
   }
   getConditionalGeomtry(index: number) {
-    if (this.foundHash[index] < 2) return false;
+    if (this.foundHash[index] < 2) return null;
     return VoxelModelConstructorRegister.constructorsPaltte[
       this.voxelCache[index]
     ].data.condiotnalShapeStateGeometryMap[this.conditonalStateCache[index]];
@@ -83,14 +82,14 @@ export class VoxelGeometryBuilderCacheSpace {
     y: number,
     z: number
   ) {
-    if (this.foundHash[index] == 1) return -1;
-    if (this.foundHash[index] == 2) return this.stateCache[index];
+    if (this.foundHash[index] == 1) return;
+    if (this.foundHash[index] == 2) return;
 
     const voxel = dataCursor.getVoxel(x, y, z);
 
     if (!voxel || !voxel.isRenderable()) {
       this.foundHash[index] = 1;
-      return -1;
+      return;
     }
 
     const voxelId = voxel.getId();
@@ -98,7 +97,7 @@ export class VoxelGeometryBuilderCacheSpace {
       VoxelModelConstructorRegister.constructorsPaltte[voxelId];
     if (!voxelConstructor) {
       this.foundHash[index] = 1;
-      return -1;
+      return;
     }
 
     this.voxelCache[index] = voxelId;
@@ -108,7 +107,7 @@ export class VoxelGeometryBuilderCacheSpace {
     //no ao
     this.noCastAO[index] = voxel.isLightSource() || voxel.noAO() ? 1 : 0;
     //state
-    const state = voxelConstructor.shapeStateTree.getState(voxel.getState());
+    const state = voxelConstructor.stateTree.getState(voxel.getState());
     this.stateCache[index] = state;
     //mod
     const mod = voxelConstructor.modTree.getState(voxel.getMod());
@@ -124,7 +123,5 @@ export class VoxelGeometryBuilderCacheSpace {
       voxelConstructor.condtioanlShapeStateTree.getState();
 
     this.conditonalStateCache[index] = conditonalState;
-
-    return 1;
   }
 }

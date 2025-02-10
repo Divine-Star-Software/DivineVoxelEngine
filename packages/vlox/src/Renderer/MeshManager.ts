@@ -1,16 +1,23 @@
-import { SetSectionMeshTask } from "../Renderer/Renderer.types";
+import type { SetSectionMeshTask } from "../Mesher/Types/Mesher.types";
 import { MeshRegister } from "./MeshRegister.js";
 import { LocationData } from "../Math/index.js";
 import { VoxelEffectRegister } from "../Voxels/Effects/VoxelEffectRegister.js";
 import { DVESectionMeshes } from "./Classes/DVESectionMeshes";
+import {
+  CompactedMeshData,
+  CompactedSectionVoxelMesh,
+} from "../Mesher/Geomtry/CompactedSectionVoxelMesh";
 const added = new Set<string>();
+const compacted = new CompactedSectionVoxelMesh();
+const location: LocationData = [0, 0, 0, 0];
 export class MeshManager {
   static sectorMeshes: DVESectionMeshes;
   static runningUpdate = false;
   static updateSection(data: SetSectionMeshTask) {
-    const location = data[0];
-    const sections = data[1];
-    const effects = data[2];
+    compacted.setData(data);
+
+    compacted.getLocation(location);
+
     let sector = MeshRegister.sectors.get(location);
     if (!sector) {
       sector = MeshRegister.sectors.add(location);
@@ -19,7 +26,7 @@ export class MeshManager {
     if (!section) {
       section = sector.addSection(location[1], location[2], location[3]);
     }
-
+    /* 
     added.clear();
     for (const [id, points] of effects) {
       added.add(id);
@@ -41,13 +48,8 @@ export class MeshManager {
       }
     }
 
-    if (sections[0] == 0) {
-      this.sectorMeshes.updateVertexData(
-        section,
-        [location[1], location[2], location[3]],
-        sections
-      );
-    }
+ */
+    this.sectorMeshes.updateVertexData(section, compacted);
   }
   static removeSector(data: LocationData) {
     const sector = MeshRegister.sectors.remove(data);

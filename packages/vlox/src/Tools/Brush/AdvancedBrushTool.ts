@@ -3,7 +3,7 @@ import { TaskRunModes, TaskTool } from "../Tasks/TasksTool.js";
 import { LocationData } from "Math/index.js";
 
 export class AdvancedBrush extends BrushTool {
-  _location: LocationData = ["main", 0, 0, 0];
+  _location: LocationData = [0, 0, 0, 0];
   constructor(public tasks: TaskTool) {
     super();
   }

@@ -1,7 +1,7 @@
 import { Threads } from "@amodx/threads";
 import { ExplosionTasks } from "../Tasks.types";
 import { TasksIds } from "../TasksIds";
-import { UpdateTask } from "../Update/UpdateTask";
+import { VoxelUpdateTask } from "../VoxelUpdateTask";
 
 import { LocationData } from "../../Math";
 import { WorldSpaces } from "../../World/WorldSpaces";
@@ -13,7 +13,7 @@ import { WorldFlow } from "./Flow/WorldFlow";
 export default function InitTasks() {
 
   Threads.registerTask<LocationData>(TasksIds.Propagation, async (location) => {
-    const task = new UpdateTask();
+    const task = new VoxelUpdateTask();
     task.setOrigin(location);
     WorldRGB(task);
   //  task.setOrigin(location);
@@ -27,7 +27,7 @@ export default function InitTasks() {
       location[2],
       location[3]
     );
-    const task = new UpdateTask();
+    const task = new VoxelUpdateTask();
     task.setOrigin([
       location[0],
       sectorPosition.x,
@@ -43,7 +43,7 @@ export default function InitTasks() {
       location[2],
       location[3]
     );
-    const task = new UpdateTask();
+    const task = new VoxelUpdateTask();
     task.setOrigin([
       location[0],
       sectorPosition.x,

@@ -45,8 +45,7 @@ export class DVEQRSectorMeshes extends DVESectionMeshes {
   }
   updateVertexData(
     chunk: SectionMesh,
-    location: Vec3Array,
-    data: CompactMeshData
+    data: any
   ) {
     //   dveMesh.observers.updated.notify();
     return chunk;

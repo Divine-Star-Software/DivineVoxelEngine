@@ -10,9 +10,9 @@ export class VoxelMesh {
 
   readonly buffer = new VoxelVertexBuffer(
     VoxelMeshVertexStructCursor.VertexFloatSize,
-    1000
+    1024
   );
-  readonly indices = new VoxelIndiceBuffer(1000);
+  readonly indices = new VoxelIndiceBuffer(1024);
 
   addVerticies(vertexCount: number, indicesCount: number) {
     this.vertexCount += vertexCount;

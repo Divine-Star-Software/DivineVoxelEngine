@@ -25,7 +25,7 @@ export class VoxelConstructor {
 
   schema: StateSchema;
   effects: VoxelModelEffect;
-  shapeStateTree: StateTreeReader;
+  stateTree: StateTreeReader;
 
   condtioanlShapeStateTree: CondtionalTreeReader;
 
@@ -41,10 +41,10 @@ export class VoxelConstructor {
       voxleData.transparentFaceIndex
     );
     this.schema = new StateSchema(data.schema);
-    this.shapeStateTree = new StateTreeReader(
+    this.stateTree = new StateTreeReader(
       this.schema,
       0,
-      data.shapeStateTree
+      data.stateTree
     );
 
     this.condtioanlShapeStateTree = new CondtionalTreeReader(
@@ -65,7 +65,7 @@ export class VoxelConstructor {
 
   isShapeStateFaceTransparent(
     modState: number,
-    shapeState: number,
+    stateTree: number,
     geoId: number,
     faceIndex: number
   ) {
@@ -73,7 +73,7 @@ export class VoxelConstructor {
       this.transparentIndex.getValue(
         modState,
         this.data.relativeGeometryByteIndexMap[
-          this.data.shapeStateRelativeGeometryMap[shapeState][geoId]
+          this.data.stateRelativeGeometryMap[stateTree][geoId]
         ],
         faceIndex
       ) == 1
@@ -82,7 +82,7 @@ export class VoxelConstructor {
 
   isCondtionalStateFaceTransparent(
     modState: number,
-    shapeState: number,
+    state: number,
     geoId: number,
     faceIndex: number
   ) {
@@ -90,7 +90,7 @@ export class VoxelConstructor {
       this.transparentIndex.getValue(
         modState,
         this.data.relativeGeometryByteIndexMap[
-          this.data.condiotnalShapeStateRelativeGeometryMap[shapeState][geoId]
+          this.data.condiotnalShapeStateRelativeGeometryMap[state][geoId]
         ],
         faceIndex
       ) == 1
@@ -111,18 +111,14 @@ export class VoxelConstructor {
     const modState = builder.space!!.modCache[hashed];
 
     if (treeState > -1) {
-      const geoLinks = this.data.shapeStateMap[treeState];
-      const geometries = this.data.shapeStateGeometryMap[treeState];
+      const geoLinks = this.data.stateMap[treeState];
+      const geometries = this.data.stateGeometryMap[treeState];
       const geometriesLength = geoLinks.length;
-
       const inputs = this.baseInputMap[modState][treeState];
-
       for (let i = 0; i < geometriesLength; i++) {
         const nodeId = geoLinks[i];
         const geoInputs = inputs[nodeId];
-
         const geomtry = VoxelModelConstructorRegister.geometry[geometries[i]];
-
         const nodesLength = geomtry.nodes.length;
         for (let k = 0; k < nodesLength; k++) {
           const geo = geomtry.nodes[k];
@@ -166,12 +162,12 @@ export class VoxelConstructor {
       }
     }
 
-    this.effects.addEffects(
+   this.effects.addEffects(
       builder.voxel.getState(),
       builder.origin,
       builder.effects
     );
-
+ 
     builder.clearCalculatedData();
 
     return added;

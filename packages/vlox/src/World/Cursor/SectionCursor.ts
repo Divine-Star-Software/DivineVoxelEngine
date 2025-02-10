@@ -30,9 +30,9 @@ export class SectionCursor
   }
 
   setSection(section: Section): boolean;
-  setSection(dimension: string, x: number, y: number, z: number): boolean;
+  setSection(dimension: number, x: number, y: number, z: number): boolean;
   setSection(
-    sectionOrDimension: string | Section,
+    sectionOrDimension: number | Section,
     x?: number,
     y?: number,
     z?: number

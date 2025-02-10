@@ -5,7 +5,7 @@ type AllLight = [s: number, r: number, g: number, b: number];
  * Used to decode light color info.
  */
 export class VoxelLightData {
-  _lightValues = <AllLight>(new Uint16Array([0, 0, 0, 0]) as any);
+  _lightValues: AllLight = [0, 0, 0, 0];
 
   sumRGB(value: number) {
     return this.getR(value) + this.getG(value) + this.getB(value);

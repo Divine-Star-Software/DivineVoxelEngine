@@ -3,9 +3,9 @@ import { FlowUpdate } from "./FlowUpdate.js";
 import { FlowManager as FM } from "./FlowManager.js";
 import { EngineSettings } from "../../../Settings/EngineSettings.js";
 
-import { UpdateTask } from "../../Update/UpdateTask.js"
+import { VoxelUpdateTask } from "../../VoxelUpdateTask.js"
 
-function RunRemoveCheck(tasks: UpdateTask, vox: string) {
+function RunRemoveCheck(tasks: VoxelUpdateTask, vox: string) {
 /*   const [dimension, x, y, z] = tasks.origin;
   const queue = tasks.flow.remove.queue;
   const cl = FM.getLevel(vox, x, y, z);
@@ -32,7 +32,7 @@ function RunRemoveCheck(tasks: UpdateTask, vox: string) {
   } */
 }
 
-export async function FlowRemove(tasks: UpdateTask) {
+export async function FlowRemove(tasks: VoxelUpdateTask) {
 /*   const [dimension, x, y, z] = tasks.origin;
   FM.setDimension(dimension);
   const vox = FM.getVoxel(x, y, z);
@@ -52,7 +52,7 @@ export async function FlowRemove(tasks: UpdateTask) {
   } */
 }
 
-function RunRemovePropagation(tasks: UpdateTask, vox: string) {
+function RunRemovePropagation(tasks: VoxelUpdateTask, vox: string) {
 /*   const removeQ = tasks.flow.remove.queue;
   const updateQ = tasks.flow.update.queue;
   const map = tasks.flow.update.map;
@@ -134,7 +134,7 @@ function RunRemovePropagation(tasks: UpdateTask, vox: string) {
   }
   map.clear(); */
  }
-function RunFlowReduce(tasks: UpdateTask, vox: string) {
+function RunFlowReduce(tasks: VoxelUpdateTask, vox: string) {
 /*   const queue = tasks.flow.remove.queue;
   const map = tasks.flow.remove.map;
   const reque: number[][] = [];

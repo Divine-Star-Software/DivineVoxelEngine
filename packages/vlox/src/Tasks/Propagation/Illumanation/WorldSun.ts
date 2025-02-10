@@ -1,7 +1,7 @@
 import { $3dCardinalNeighbors } from "../../../Math/CardinalNeighbors.js";
 import { WorldSpaces } from "../../../World/WorldSpaces.js";
 import { Vec3Array } from "@amodx/math";
-import { UpdateTask } from "../../Update/UpdateTask.js";
+import { VoxelUpdateTask } from "../../VoxelUpdateTask.js";
 import { SectorHeightMap } from "../../../World/Sector/SectorHeightMap.js";
 import { VoxelLightData } from "../../../Voxels/Cursor/VoxelLightData.js";
 import {
@@ -19,7 +19,7 @@ const FloodOutPositions: Vec3Array[] = [
 ];
 const queue: number[] = [];
 const lightData = new VoxelLightData();
-export function RunWorldSun(tasks: UpdateTask) {
+export function RunWorldSun(tasks: VoxelUpdateTask) {
   const [, cx, cy, cz] = tasks.origin;
   const RmaxY = SectorHeightMap.getRelative(tasks.origin);
   const AmaxY = SectorHeightMap.getAbsolute(tasks.origin);

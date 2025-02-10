@@ -21,7 +21,7 @@ export class BrushTool {
     mod: 0,
   };
 
-  dimension = "main";
+  dimension = 0;
   x = 0;
   y = 0;
   z = 0;
@@ -201,7 +201,7 @@ export class BrushTool {
     return this;
   }
 
-  start(dimension: string, x: number, y: number, z: number) {
+  start(dimension: number, x: number, y: number, z: number) {
     this.dataCursor.setFocalPoint(dimension, x, y, z);
     this.dimension = dimension;
     this.x = x;

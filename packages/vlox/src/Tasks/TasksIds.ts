@@ -18,4 +18,5 @@ export enum TasksIds {
   VoxelErease,
   VoxelPaint,
   VoxelUpdate,
+  LogicUpdate
 }

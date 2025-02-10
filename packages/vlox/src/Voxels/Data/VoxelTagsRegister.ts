@@ -18,6 +18,11 @@ export class VoxelTagsRegister {
     VoxelTagIds.noAO,
     VoxelTagIds.isTransparent,
     VoxelTagIds.canHaveSecondary,
+    VoxelTagIds.isPowerSource,
+    VoxelTagIds.canBePowered,
+    VoxelTagIds.canCarryPower,
+    VoxelTagIds.canHoldPower,
+    VoxelTagIds.powerValue
   ];
   static IncludedSubstnacesTags: string[] = [
     VoxelSubstanceTagIds.parent,

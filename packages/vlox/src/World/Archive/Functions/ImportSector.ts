@@ -11,9 +11,9 @@ export default function ImportSector(
   archiveData: RunData
 ): SectorData {
   const sector = new Sector(Sector.CreateNew(), [
+    archivedSector.location[0],
     archivedSector.location[1],
     archivedSector.location[2],
-    archivedSector.location[3],
   ]);
 
 
@@ -65,6 +65,6 @@ export default function ImportSector(
     }
   }
 
-  sector.setBitFlag(Sector.FlagIds.isStored, true);
+  sector.setBitFlag(Sector.FlagIds.stored, true);
   return sector;
 }

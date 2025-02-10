@@ -2,6 +2,8 @@ import { VoxelPalettesRegister } from "./VoxelPalettesRegister";
 import { StateSchema } from "../State/Schema/StateSchema";
 import { StateTreeReader } from "../State/StateTreeReader";
 import { SchemaRegister } from "../State/SchemaRegister";
+import { VoxelLogic } from "Voxels/Logic/Classes/VoxelLogic";
+import { VoxelLogicRegister } from "Voxels/Logic/VoxelLogicRegister";
 
 export type VoxelTagStatesData = Record<
   string,
@@ -59,6 +61,7 @@ export class VoxelTagStates {
   }
 
   static isRegistered(voxel: number, id: string) {
+
     return this.voxelTags[voxel] && this.voxelTags[voxel][id] !== undefined;
   }
 
@@ -71,6 +74,7 @@ export class VoxelTagStates {
   }
 
   static getValue(voxel: number, id: string, state: number) {
+ 
     return this.voxelTags[voxel][id].treePalette[
       this.voxelTags[voxel][id].tree.getState(state)
     ];

@@ -1,4 +1,4 @@
-import { UpdateTask } from "../../Update/UpdateTask";
+import { VoxelUpdateTask } from "../../VoxelUpdateTask";
 import {
   isLessThanForSunAdd,
   getMinusOneForSun,
@@ -17,7 +17,7 @@ const FloodOutPositions: Vec3Array[] = [
   [0, 0, -1],
   [0, 1, 0],
 ];
-export function SunUpdate(tasks: UpdateTask) {
+export function SunUpdate(tasks: VoxelUpdateTask) {
   const queue = tasks.sun.update;
   while (queue.length) {
     const x = queue.shift()!;
@@ -64,7 +64,7 @@ export function SunUpdate(tasks: UpdateTask) {
   }
 }
 
-export function SunRemove(tasks: UpdateTask, clearUpdateMap = true) {
+export function SunRemove(tasks: VoxelUpdateTask, clearUpdateMap = true) {
   const remove = tasks.sun.remove;
   const update = tasks.sun.update;
   const removeMap = tasks.sun.removeMap;

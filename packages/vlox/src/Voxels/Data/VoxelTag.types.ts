@@ -6,10 +6,15 @@ export enum VoxelTagIds {
   colliderID = "dve_collider_id",
   checkCollisions = "dve_check_collisions",
   isLightSource = "dve_is_light_source",
+  lightValue = "dve_light_value",
   noAO = "dve_no_ao",
   isTransparent = "dve_is_transparent",
-  lightValue = "dve_light_value",
   canHaveSecondary = "dve_can_have_secondary",
+  canBePowered = "dve_can_be_powered",
+  canCarryPower = "dve_can_carry_power",
+  canHoldPower = "dve_can_hold_power",
+  isPowerSource = "dve_is_power_source",
+  powerValue = "dve_power_value",
 }
 
 export interface VoxelTags {
@@ -48,6 +53,21 @@ export interface VoxelTags {
 
   /** The hardness level of the voxel, affecting how it is broken or interacted with. */
   [VoxelTagIds.hardness]: number;
+
+  /** Whether or not the voxel can be powered */
+  [VoxelTagIds.canBePowered]: boolean;
+
+  /** Whether or not the voxel can carry power */
+  [VoxelTagIds.canCarryPower]: boolean;
+
+  /** Whether or not the voxel can hold power. */
+  [VoxelTagIds.canHoldPower]: boolean;
+
+  /** Whether or not the voxel is a power source*/
+  [VoxelTagIds.isPowerSource]: boolean;
+
+  /** If the voxel is a power source this is its value */
+  [VoxelTagIds.powerValue]: number;
 }
 
 export enum VoxelSubstanceTagIdds {

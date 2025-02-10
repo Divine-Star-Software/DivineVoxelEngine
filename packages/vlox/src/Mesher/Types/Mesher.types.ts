@@ -1,11 +1,13 @@
 import { TypedArrays } from "@amodx/binary";
 import { Vec3Array } from "@amodx/math";
+import { LocationData } from "Math";
 /* export type CompactMeshIndex = [
   id: string,
   array: TypedArrays,
   stride: number,
 ][];
  */
+export type SetSectionMeshTask = ArrayBuffer;
 export type CompactSubMesh = [
   materialId: string,
   vertexBuffer: Float32Array,

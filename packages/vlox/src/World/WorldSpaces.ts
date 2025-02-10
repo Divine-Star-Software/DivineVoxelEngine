@@ -300,18 +300,18 @@ EngineSettings.addEventListener("synced", (event) => {
     settings.world.max.z
   );
 
-  SectorSpace.power2Axes.x = settings.sectors.power2Size.x;
-  SectorSpace.power2Axes.y = settings.sectors.power2Size.y;
-  SectorSpace.power2Axes.z = settings.sectors.power2Size.z;
+  SectorSpace.power2Axes.x = settings.world.sectorPower2Size.x;
+  SectorSpace.power2Axes.y = settings.world.sectorPower2Size.y;
+  SectorSpace.power2Axes.z = settings.world.sectorPower2Size.z;
   SectorSpace.bounds.x = 1 << SectorSpace.power2Axes.x;
   SectorSpace.bounds.y = 1 << SectorSpace.power2Axes.y;
   SectorSpace.bounds.z = 1 << SectorSpace.power2Axes.z;
   SectorSpace.volumne =
     SectorSpace.bounds.x * SectorSpace.bounds.y * SectorSpace.bounds.z;
 
-  SectionSpace.power2Axes.x = settings.sections.power2Size.x;
-  SectionSpace.power2Axes.y = settings.sections.power2Size.y;
-  SectionSpace.power2Axes.z = settings.sections.power2Size.z;
+  SectionSpace.power2Axes.x = settings.world.sectionPower2Size.x;
+  SectionSpace.power2Axes.y = settings.world.sectionPower2Size.y;
+  SectionSpace.power2Axes.z = settings.world.sectionPower2Size.z;
   SectionSpace.bounds.x = 1 << SectionSpace.power2Axes.x;
   SectionSpace.bounds.y = 1 << SectionSpace.power2Axes.y;
   SectionSpace.bounds.z = 1 << SectionSpace.power2Axes.z;

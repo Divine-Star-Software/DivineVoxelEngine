@@ -3,6 +3,7 @@ import { DivineVoxelEngineConstructor } from "../Contexts/Constructor/DivineVoxe
 import { Threads } from "@amodx/threads";
 import { Environment } from "../Util/Environment";
 import { WorldRegister } from "../World/WorldRegister";
+import InitLogicTasks from "../Tasks/Logic/InitTasks";
 import InitUpdateTasks from "../Tasks/Update/InitTasks";
 import InitPropagationTasks from "../Tasks/Propagation/InitTasks";
 import InitMesherTasks from "../Mesher/InitTask";
@@ -48,6 +49,7 @@ export async function StartContrusctor(data: {} = {}) {
   InitWorldDataSync();
   InitPropagationTasks();
   InitMesherTasks(DVEC.threads.parent);
+  InitLogicTasks();
   InitUpdateTasks({
     onDone(tasks, origin) {
       tasks.bounds.markSectionsAsDirty();

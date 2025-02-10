@@ -7,25 +7,31 @@ let cursorCache: SectorCursor[] = [];
 
 const tempPosition = Vector3Like.Create();
 export class WorldCursor implements DataCursorInterface {
-  sectorCursors = new Map<number, Map<number, SectorCursor>>();
+  sectorCursors: Record<number, Record<number, SectorCursor | null>> = {};
 
-  origin: Vector3Like = { x: 0, y: 0, z: 0 };
-  dimension: string = "";
+  origin = Vector3Like.Create();
+  dimension = 0;
 
-  setFocalPoint(dimension: string, x: number, y: number, z: number) {
+  _lastPosition = Vector3Like.Create();
+
+  setFocalPoint(dimension: number, x: number, y: number, z: number) {
     const sectorPos = WorldSpaces.sector.getPosition(x, y, z, tempPosition);
 
-    for (const [cx, row] of this.sectorCursors) {
-      for (const [cz, col] of row) {
-        cursorCache.push(col);
+    for (const row in this.sectorCursors) {
+      for (const col in this.sectorCursors[row]) {
+        const cursor = this.sectorCursors[row][col];
+        if (!cursor) continue;
+        cursorCache.push(cursor);
+        this.sectorCursors[row][col] = null;
       }
     }
 
-    this.sectorCursors.clear();
     this.dimension = dimension;
     this.origin.x = sectorPos.x / WorldSpaces.sector.bounds.x;
     this.origin.y = sectorPos.y / WorldSpaces.sector.bounds.y;
     this.origin.z = sectorPos.z / WorldSpaces.sector.bounds.z;
+
+    this.getSector(x, y, z);
   }
 
   inBounds(x: number, y: number, z: number) {
@@ -39,11 +45,11 @@ export class WorldCursor implements DataCursorInterface {
     const cx = sectorPos.x / WorldSpaces.sector.bounds.x - this.origin.x;
     const cz = sectorPos.z / WorldSpaces.sector.bounds.z - this.origin.z;
 
-    let row = this.sectorCursors.get(cx);
-    let cursor = row?.get(cz);
+    let cursor = this.sectorCursors[cx]?.[cz];
 
     if (!cursor) {
       cursor = cursorCache.length ? cursorCache.shift()! : new SectorCursor();
+
       if (
         !cursor.setSector(this.dimension, sectorPos.x, sectorPos.y, sectorPos.z)
       ) {
@@ -51,11 +57,10 @@ export class WorldCursor implements DataCursorInterface {
         return null;
       }
 
-      if (!row) {
-        row = new Map();
-        this.sectorCursors.set(cx, row);
+      if (!this.sectorCursors[cx]) {
+        this.sectorCursors[cx] ??= {};
       }
-      row.set(cz, cursor);
+      this.sectorCursors[cx][cz] = cursor;
     }
     return cursor;
   }

@@ -32,11 +32,11 @@ export class SchemaRegister {
 
     const modelId = this.voxelModelMap.get(voxelId);
     if (!modelId) throw new Error(`Voxel ${voxelId} is not registered`);
-    let shapeStateSchema = this.modelStaeSchemas.get(modelId);
-    if (!shapeStateSchema) {
+    let stateSchema = this.modelStaeSchemas.get(modelId);
+    if (!stateSchema) {
       const schemaData = this.modelStateSchemaData.get(modelId);
       if (!schemaData) throw new Error(`Model ${modelId} is not registered`);
-      shapeStateSchema = new BinarySchema(schemaData);
+      stateSchema = new BinarySchema(schemaData);
     }
 
     let modSchema = this.voxelModSchemas.get(voxelId);
@@ -46,7 +46,7 @@ export class SchemaRegister {
       modSchema = new BinarySchema(schemaData);
     }
 
-    const voxelSchema = new VoxelSchema(voxelId, shapeStateSchema, modSchema);
+    const voxelSchema = new VoxelSchema(voxelId, stateSchema, modSchema);
 
     this.voxelSchemas.set(voxelId, voxelSchema);
 
