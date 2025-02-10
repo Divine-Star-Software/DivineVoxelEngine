@@ -17,17 +17,8 @@ import { VoxelEffectSyncData } from "../Effects/VoxelEffects.types";
 import { VoxelTagStates } from "../Data/VoxelTagStates";
 import { VoxelPalettesRegister } from "../Data/VoxelPalettesRegister";
 import { StateSchema } from "../State/Schema/StateSchema";
-function bitsNeeded(n: number): number {
-  if (n < 0) throw new Error("Input must be a non-negative integer.");
+import { bitsNeeded } from "../../Util/Binary/BinaryFunctions";
 
-  let bits = 0;
-  while (n > 0) {
-    bits++;
-    n >>= 1;
-  }
-
-  return bits;
-}
 class StateTreeNode<Value> {
   children = new Map<string, StateTreeNode<Value>>();
   result?: Value;
@@ -494,7 +485,7 @@ export function BuildStateData(
 
     for (const tag of tagEffects) {
       VoxelTagStates.register(
-        VoxelPalettesRegister.voxels.getNumberId(voxelId),
+        VoxelPalettesRegister.voxelIds.getNumberId(voxelId),
         (tag as any).tagId,
         schema,
         tag.tree,

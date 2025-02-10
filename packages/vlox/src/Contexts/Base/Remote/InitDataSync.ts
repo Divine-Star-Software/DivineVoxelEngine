@@ -15,7 +15,7 @@ export default function InitDataSync(props: {
   Threads.registerTask<DataSyncData>("sync-data", (data) => {
     EngineSettings.syncSettings(data.settings);
 
-    VoxelPalettesRegister.voxels.load(data.voxels.data.palette);
+    VoxelPalettesRegister.voxelIds.load(data.voxels.data.idPalette);
     VoxelTagsRegister.VoxelTags = data.voxels.data.tags;
 
     VoxelPalettesRegister.voxelIdToNameMap = new Map(
@@ -27,7 +27,9 @@ export default function InitDataSync(props: {
 
     VoxelPalettesRegister.substance.load(data.voxels.substances.palette);
     VoxelTagsRegister.SubstanceStags = data.voxels.substances.tags;
-
+    VoxelPalettesRegister.voxels = data.voxels.data.palette;
+    VoxelPalettesRegister.voxelRecord = data.voxels.data.record;
+    
     VoxelPalettesRegister.material.load(data.voxels.materials.palette);
 
     const modelData = data.voxels.models;

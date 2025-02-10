@@ -91,8 +91,7 @@ export default function ArchiveSector(
     const firstId = section.ids[0];
     const firstLight = section.light[0];
     const firstLevel = section.level[0];
-    const firstState = section.state[0];
-    const firstMod = section.mod[0];
+
     const firstSecondary = section.secondary[0];
 
     const firstLightLevels: Record<ArchivedLightSegments, number> = {
@@ -104,7 +103,7 @@ export default function ArchiveSector(
 
     const length = section.ids.length;
     for (let i = 0; i < length; i++) {
-      const stringId = VoxelPalettesRegister.voxels.getStringId(section.ids[i]);
+      const stringId = VoxelPalettesRegister.voxelIds.getStringId(section.ids[i]);
 
       const voxelId = !sectorPalettes.ids.isRegistered(stringId)
         ? sectorPalettes.ids.register(stringId)
@@ -116,7 +115,7 @@ export default function ArchiveSector(
 
       const secondaryId =
         VoxelTagsRegister.VoxelTags[section.ids[i]]["dve_can_have_secondary"] &&
-        VoxelPalettesRegister.voxels.getStringId(section.secondary[i]);
+        VoxelPalettesRegister.voxelIds.getStringId(section.secondary[i]);
 
       const voxelSecondary = secondaryId
         ? !sectorPalettes.secondaryId.isRegistered(secondaryId)
@@ -144,67 +143,6 @@ export default function ArchiveSector(
       if (!processedSection.palettes.level.isRegistered(section.level[i]))
         processedSection.palettes.level.register(section.level[i]);
 
-      let stateMap: VoxelStateObjectMap;
-      if (secondaryId) {
-        if (!sectorPalettes.secondaryStateMap[voxelSecondary]) {
-          stateMap = new VoxelStateObjectMap();
-          sectorPalettes.secondaryStateMap[voxelId] = stateMap;
-        } else {
-          stateMap = sectorPalettes.secondaryStateMap[voxelSecondary];
-        }
-      } else {
-        if (!sectorPalettes.stateMap[voxelId]) {
-          stateMap = new VoxelStateObjectMap();
-          sectorPalettes.stateMap[voxelId] = stateMap;
-        } else {
-          stateMap = sectorPalettes.stateMap[voxelId];
-        }
-      }
-
-      let voxelState = -1;
-      if (!stateMap.palette.isRegistered(section.state[i])) {
-        voxelState = stateMap.palette.register(section.state[i]);
-      } else {
-        voxelState = stateMap.palette.getId(section.state[i]);
-      }
-
-      if (!processedSection.palettes.state[voxelId]) {
-        processedSection.palettes.state[voxelId] = new NumberPalette();
-      }
-
-      if (!processedSection.palettes.state[voxelId].isRegistered(voxelState))
-        processedSection.palettes.state[voxelId].register(voxelState);
-
-      let modMap: VoxelStateObjectMap;
-      if (secondaryId) {
-        if (!sectorPalettes.secondaryModMap[voxelSecondary]) {
-          modMap = new VoxelStateObjectMap();
-          sectorPalettes.secondaryModMap[voxelSecondary] = modMap;
-        } else {
-          modMap = sectorPalettes.secondaryModMap[voxelSecondary];
-        }
-      } else {
-        if (!sectorPalettes.modMap[voxelId]) {
-          modMap = new VoxelStateObjectMap();
-          sectorPalettes.modMap[voxelSecondary] = modMap;
-        } else {
-          modMap = sectorPalettes.modMap[voxelId];
-        }
-      }
-
-      let voxelMod = -1;
-      if (!modMap.palette.isRegistered(section.mod[i])) {
-        voxelMod = modMap.palette.register(section.mod[i]);
-      } else {
-        voxelMod = modMap.palette.getId(section.mod[i]);
-      }
-
-      if (!processedSection.palettes.mod[voxelId]) {
-        processedSection.palettes.mod[voxelId] = new NumberPalette();
-      }
-
-      if (!processedSection.palettes.mod[voxelId].isRegistered(voxelMod))
-        processedSection.palettes.mod[voxelId].register(voxelMod);
 
       for (let l = 0; l < lightSegments.length; l++) {
         const segment = lightSegments[l];
@@ -224,16 +162,13 @@ export default function ArchiveSector(
 
       if (section.level[i] != firstLevel)
         processedSection.level.allTheSame = false;
-      if (section.state[i] != firstState)
-        processedSection.state.allTheSame = false;
-      if (section.mod[i] != firstMod) processedSection.mod.allTheSame = false;
+ 
       if (section.secondary[i] != firstSecondary)
         processedSection.secondary.allTheSame = false;
 
       processedSection.ids.buffer[i] = voxelId;
       processedSection.level.buffer[i] = voxelLevel;
-      processedSection.state.buffer[i] = voxelState;
-      processedSection.mod.buffer[i] = voxelMod;
+
       processedSection.secondary.buffer[i] = voxelSecondary;
     }
 
@@ -294,24 +229,6 @@ export default function ArchiveSector(
     if (archivedSection.level.isPaletted && !archivedSection.level.remapped) {
       neededPalettes.level = true;
     }
-    //state
-    archivedSection.state.isPaletted =
-      sectorPalettes.maxStatePaletteSize <= BinaryBuffer.ByteArrayMax ||
-      archivedSection.palettes.maxStatePaletteSize <= BinaryBuffer.ByteArrayMax;
-    archivedSection.state.remapped =
-      sectorPalettes.maxStatePaletteSize > BinaryBuffer.ByteArrayMax &&
-      archivedSection.palettes.maxStatePaletteSize <=
-        BinaryBuffer.ByteArrayMax &&
-      !archivedSection.state.allTheSame;
-
-    //mod
-    archivedSection.mod.isPaletted =
-      sectorPalettes.maxModPaletteSize <= BinaryBuffer.ByteArrayMax ||
-      archivedSection.palettes.maxModPaletteSize <= BinaryBuffer.ByteArrayMax;
-    archivedSection.mod.remapped =
-      sectorPalettes.maxModPaletteSize > BinaryBuffer.ByteArrayMax &&
-      archivedSection.palettes.maxModPaletteSize <= BinaryBuffer.ByteArrayMax &&
-      !archivedSection.mod.allTheSame;
 
     for (const semgnet of lightSegments) {
       archivedSection.light[semgnet].isPaletted =
@@ -356,7 +273,6 @@ export default function ArchiveSector(
       !archivedSection.light.green.remapped &&
       !archivedSection.light.blue.remapped &&
       !archivedSection.secondary.remapped &&
-      !archivedSection.mod.remapped &&
       !archivedSection.level.remapped
     )
       continue;
@@ -374,23 +290,7 @@ export default function ArchiveSector(
       let stateId = !secondary
         ? archivedSection.ids.buffer[i]
         : archivedSection.secondary.buffer[i];
-
-      if (archivedSection.state.remapped)
-        archivedSection.state.buffer[i] = archivedSection.palettes.state[
-          stateId
-        ].getId(
-          sectorPalettes.stateMap[stateId].palette.getId(
-            archivedSection.state.buffer[i]
-          )
-        );
-      if (archivedSection.mod.remapped)
-        archivedSection.mod.buffer[i] = archivedSection.palettes.mod[
-          stateId
-        ].getId(
-          sectorPalettes.modMap[archivedSection.ids.buffer[i]].palette.getId(
-            stateId
-          )
-        );
+        
       if (archivedSection.ids.remapped)
         archivedSection.ids.buffer[i] =
           archivedSection.palettes.ids.getId(stateId);

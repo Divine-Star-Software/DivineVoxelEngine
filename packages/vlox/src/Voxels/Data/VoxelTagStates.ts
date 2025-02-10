@@ -34,7 +34,7 @@ export class VoxelTagStates {
       if(!v) return;
       const stateSceham = new StateSchema(
         SchemaRegister.modelStaeBaseSchemaData.get(
-          SchemaRegister.voxelModelMap.get(VoxelPalettesRegister.voxels.getStringId(index))!
+          SchemaRegister.voxelModelMap.get(VoxelPalettesRegister.voxelIds.getStringId(index))!
         )!
       );
 

@@ -29,7 +29,7 @@ function meshVoxel(
 ): boolean {
   let added = false;
   const constructor =
-    VoxelModelConstructorRegister.constructorsPaltte[voxel.getId()];
+    VoxelModelConstructorRegister.constructorsPaltte[voxel.getVoxelId()];
   const builder = constructor.builder;
   builder.origin.x = sectionCursor._voxelPosition.x;
   builder.origin.y = sectionCursor._voxelPosition.y;

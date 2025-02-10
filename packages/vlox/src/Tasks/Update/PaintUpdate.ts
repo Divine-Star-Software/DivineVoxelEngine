@@ -1,5 +1,5 @@
 import { EngineSettings as ES } from "../../Settings/EngineSettings.js";
-import { $3dCardinalNeighbors } from "../../Math/CardinalNeighbors.js";
+import { CardinalNeighbors3D } from "../../Math/CardinalNeighbors.js";
 import { VoxelUpdateTasks } from "../Tasks.types.js";
 import { VoxelUpdateTask } from "../VoxelUpdateTask.js";
 import { RGBRemove, RGBUpdate } from "../Propagation/Illumanation/RGBUpdate.js";
@@ -42,13 +42,11 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
   if (id < 0) return false;
   voxel.setId(id);
   voxel.setLevel(raw[2]);
-  voxel.setState(raw[3]);
-  voxel.setMod(raw[4]);
   voxel.process();
 
   if (raw[3] > 0 && voxel.canHaveSecondaryVoxel()) {
     voxel.setSecondary(true);
-    voxel.setId(raw[5]);
+    voxel.setId(raw[3]);
     voxel.setSecondary(false);
   }
 
@@ -92,12 +90,12 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
   tasks.bounds.update(x, y, z);
   tasks.bounds.update(x + 1, y + 1, z + 1);
 
-  for (let i = 0; i < $3dCardinalNeighbors.length; i++) {
+  for (let i = 0; i < CardinalNeighbors3D.length; i++) {
     tasks.sDataCursor
       .getVoxel(
-        $3dCardinalNeighbors[i][0] + x,
-        $3dCardinalNeighbors[i][1] + y,
-        $3dCardinalNeighbors[i][2] + z
+        CardinalNeighbors3D[i][0] + x,
+        CardinalNeighbors3D[i][1] + y,
+        CardinalNeighbors3D[i][2] + z
       )
       ?.updateVoxel(2);
   }

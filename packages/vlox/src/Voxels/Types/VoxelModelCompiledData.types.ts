@@ -14,14 +14,17 @@ import { VoxelEffectSyncData } from "../Effects/VoxelEffects.types";
 import { VoxelTagStatesData } from "../Data/VoxelTagStates";
 import { VoxelSubstanceTags, VoxelTags } from "../Data/VoxelTag.types";
 import { VoxelLogicData } from "../../Voxels/Logic/VoxelLogic.types";
+import { VoxelPalettesRegister } from "Voxels/Data/VoxelPalettesRegister";
 
 export type CompiledVoxelTagAndPaletteData = {
   data: {
-    logic: Record<string,VoxelLogicData[]>
+    logic: Record<string, VoxelLogicData[]>;
     tags: VoxelTags[];
-    palette: string[];
-    nameToIdMap: [string,string][]
-    idToNameMap: [string,string][];
+    idPalette: string[];
+    palette: typeof VoxelPalettesRegister.voxels;
+    record: typeof VoxelPalettesRegister.voxelRecord;
+    nameToIdMap: [string, string][];
+    idToNameMap: [string, string][];
   };
   substances: {
     tags: VoxelSubstanceTags[];

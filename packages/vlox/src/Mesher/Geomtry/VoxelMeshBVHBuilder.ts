@@ -1,7 +1,7 @@
 import { Vec3Array } from "@amodx/math";
 import { WorldSpaces } from "../../World/WorldSpaces";
 import { VoxelMeshBVHStructCursor } from "./VoxelMeshBVHStructCursor";
-import { FlatBinaryTreeIndex } from "../../Util/Binary/BinaryTree";
+import { FlatBinaryTreeIndex } from "../../Util/FlatBinaryTreeIndex";
 const MAX_FLOAT32 = new Float32Array([Infinity])[0];
 
 export class VoxelMeshBVHBuilder {

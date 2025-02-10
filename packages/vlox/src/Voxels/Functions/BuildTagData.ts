@@ -11,7 +11,7 @@ import { VoxelPalettesRegister } from "../Data/VoxelPalettesRegister";
 import { CompiledVoxelTagAndPaletteData } from "../Types/VoxelModelCompiledData.types";
 import { VoxelLogicData } from "../Logic/VoxelLogic.types";
 
-export type BuildTagAndPaletteDataProps = {
+export type BuildTagDataProps = {
   voxels: VoxelData[];
   voxelsOverrides?: Record<string, (value: any) => any>;
   substances: VoxelSubstanceData[];
@@ -20,12 +20,15 @@ export type BuildTagAndPaletteDataProps = {
   materialsOverrides?: Record<string, (value: any) => any>;
 };
 export function BuildTagAndPaletteData(
-  props: BuildTagAndPaletteDataProps
+  props: BuildTagDataProps
 ): CompiledVoxelTagAndPaletteData {
   const logic: Record<string, VoxelLogicData[]> = {};
   for (const voxel of props.voxels) {
     const tags: VoxelTags = {} as any;
-    const voxelId = VoxelPalettesRegister.voxels.register(voxel.id);
+    if (VoxelPalettesRegister.voxelIds._map[voxel.id] !== undefined) {
+      throw new Error(`Voxel with id [${voxel.id}] is already registered.`);
+    }
+    const voxelId = VoxelPalettesRegister.voxelIds.register(voxel.id);
 
     VoxelPalettesRegister.voxelIdToNameMap.set(voxel.id, voxel.name || "");
     VoxelPalettesRegister.voxelNametoIdMap.set(
@@ -81,7 +84,9 @@ export function BuildTagAndPaletteData(
   return {
     data: {
       logic,
-      palette: VoxelPalettesRegister.voxels._palette,
+      palette: [],
+      record: [],
+      idPalette: VoxelPalettesRegister.voxelIds._palette,
       tags: VoxelTagsRegister.VoxelTags,
       idToNameMap: [...VoxelPalettesRegister.voxelIdToNameMap.entries()],
       nameToIdMap: [...VoxelPalettesRegister.voxelNametoIdMap.entries()],

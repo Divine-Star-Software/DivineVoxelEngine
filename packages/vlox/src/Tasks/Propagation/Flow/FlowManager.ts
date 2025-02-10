@@ -1,4 +1,4 @@
-import { $3dCardinalNeighbors } from "../../../Math/CardinalNeighbors.js";
+import { CardinalNeighbors3D } from "../../../Math/CardinalNeighbors.js";
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
 
 import { VoxelUpdateTask } from "../../VoxelUpdateTask.js";

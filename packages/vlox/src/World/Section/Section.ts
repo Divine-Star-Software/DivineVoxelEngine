@@ -50,10 +50,6 @@ export class Section {
         voxelSize * 2 +
         //level
         voxelSize +
-        //state
-        voxelSize * 2 +
-        //mod
-        voxelSize * 2 +
         //secondary
         voxelSize * 2
     );
@@ -83,10 +79,6 @@ export class Section {
     bufferStart += voxelSize * 2;
     const light = new Uint16Array(sectorBuffer, bufferStart, voxelSize);
     bufferStart += voxelSize * 2;
-    const state = new Uint16Array(sectorBuffer, bufferStart, voxelSize);
-    bufferStart += voxelSize * 2;
-    const mod = new Uint16Array(sectorBuffer, bufferStart, voxelSize);
-    bufferStart += voxelSize * 2;
     const secondary = new Uint16Array(sectorBuffer, bufferStart, voxelSize);
     bufferStart += voxelSize * 2;
     const level = new Uint8Array(sectorBuffer, bufferStart, voxelSize);
@@ -101,8 +93,6 @@ export class Section {
       ids,
       light,
       level,
-      state,
-      mod,
       secondary,
     };
   }
@@ -137,8 +127,7 @@ export class Section {
     this.level = data.level;
     this.light = data.light;
     this.secondary = data.secondary;
-    this.state = data.state;
-    this.mod = data.mod;
+
   }
 
   getPosition(): Readonly<Vec3Array> {
@@ -276,8 +265,6 @@ export class Section {
       light: this.light,
       level: this.level,
       secondary: this.secondary,
-      state: this.state,
-      mod: this.mod,
     };
   }
 }

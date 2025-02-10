@@ -9,12 +9,7 @@ export interface VoxelDataArrays {
   light: Uint16Array;
   /**The levels of the voxel. Used mainly for waterflow now. */
   level: Uint8Array;
-  /**The state of the voxel. Used mainly be the voxel model system to get the model shape. */
-  state: Uint16Array;
-  /**The mod state of the voxel. Used mainly by the voxel model system to change model inputs. */
-  mod: Uint16Array;
   /**The secondary state of the voxel. Can be set to a voxel id to make things like water logged voxels.
-   * But the main voxel itself must not use state or mod because the secondary voxel will use the same state and mod.
    */
   secondary: Uint16Array;
 }
@@ -74,14 +69,9 @@ export type RawVoxelData = [
   light: number,
   /**The level of the voxel */
   level: number,
-  /**The state of the voxel */
-  state: number,
-  /**The mod of the voxel */
-  mod: number,
   /**The secondary id of the voxel */
   secondary: number,
 ];
-
 
 interface VoxelProperties extends Partial<VoxelTags> {
   [key: string]: any;

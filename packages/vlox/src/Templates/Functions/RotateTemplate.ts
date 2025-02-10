@@ -131,14 +131,6 @@ export default function RotateTemplate(
     const level: ArrayLike<number> = template.level;
     rotateArray([sizeX, sizeY, sizeZ], level, angle, axes, index, newIndex);
   }
-  if (typeof template.state === "object") {
-    const state: ArrayLike<number> = template.state;
-    rotateArray([sizeX, sizeY, sizeZ], state, angle, axes, index, newIndex);
-  }
-  if (typeof template.mod === "object") {
-    const mod: ArrayLike<number> = template.mod;
-    rotateArray([sizeX, sizeY, sizeZ], mod, angle, axes, index, newIndex);
-  }
   if (typeof template.secondary === "object") {
     const secondary: ArrayLike<number> = template.secondary;
     rotateArray([sizeX, sizeY, sizeZ], secondary, angle, axes, index, newIndex);

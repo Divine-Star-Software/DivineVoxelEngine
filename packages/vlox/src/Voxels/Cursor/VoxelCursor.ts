@@ -8,13 +8,32 @@ export class VoxelCursor extends VoxelCursorInterface {
     data: Partial<PaintVoxelData>,
     light = 0
   ): RawVoxelData {
+    let stringId = data.id
+      ? data.id
+      : data.name
+        ? VoxelPalettesRegister.voxelNametoIdMap.get(data.name)!
+        : "dve_air";
+    let secondaryStringId = data.id
+      ? data.id
+      : data.name
+        ? VoxelPalettesRegister.voxelNametoIdMap.get(data.name)!
+        : "dve_air";
+
     const id =
-      (data.id !== undefined &&
-        VoxelPalettesRegister.voxels.getNumberId(data.id)) ||
+      (stringId !== "dve_air" &&
+        VoxelPalettesRegister.getVoxelIdFromString(
+          stringId,
+          data.state || 0,
+          data.mod || 0
+        )) ||
       0;
     const secondaryId =
-      (data.secondaryVoxelId !== undefined &&
-        VoxelPalettesRegister.voxels.getNumberId(data.secondaryVoxelId)) ||
+      (secondaryStringId !== "dve_air" &&
+        VoxelPalettesRegister.getVoxelIdFromString(
+          secondaryStringId,
+          data.state || 0,
+          data.mod || 0
+        )) ||
       0;
     let levleData = 0;
     if (data.level !== undefined)
@@ -22,7 +41,7 @@ export class VoxelCursor extends VoxelCursorInterface {
     if (data.levelState !== undefined)
       levleData = VoxelLevelReader.setLevelState(levleData, data.levelState);
 
-    return [id, light, levleData, data.state || 0, data.mod || 0, secondaryId];
+    return [id, light, levleData, secondaryId];
   }
 
   ids = new Uint16Array(1);

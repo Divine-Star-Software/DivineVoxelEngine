@@ -1,5 +1,5 @@
 import { EngineSettings as ES } from "../../Settings/EngineSettings.js";
-import { $3dCardinalNeighbors } from "../../Math/CardinalNeighbors.js";
+import { CardinalNeighbors3D } from "../../Math/CardinalNeighbors.js";
 import { VoxelUpdateTask } from "../VoxelUpdateTask.js";
 
 export const updateLightTask = (tasks: VoxelUpdateTask) => {
@@ -7,7 +7,7 @@ export const updateLightTask = (tasks: VoxelUpdateTask) => {
   let doSun = ES.doSunPropagation;
   const [dimension, x, y, z] = tasks.origin;
   tasks.nDataCursor.setFocalPoint(dimension, x, y, z);
-  for (const n of $3dCardinalNeighbors) {
+  for (const n of CardinalNeighbors3D) {
     const nx = n[0] + x;
     const ny = n[1] + y;
     const nz = n[2] + z;
@@ -29,7 +29,7 @@ export const updatePowerTask = (tasks: VoxelUpdateTask) => {
 
   const [dimension, x, y, z] = tasks.origin;
   tasks.nDataCursor.setFocalPoint(dimension, x, y, z);
-  for (const n of $3dCardinalNeighbors) {
+  for (const n of CardinalNeighbors3D) {
     const nx = n[0] + x;
     const ny = n[1] + y;
     const nz = n[2] + z;

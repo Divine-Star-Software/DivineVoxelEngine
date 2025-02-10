@@ -1,5 +1,5 @@
 import { VoxelUpdateTask } from "../../VoxelUpdateTask";
-import { $3dCardinalNeighbors } from "../../../Math/CardinalNeighbors";
+import { CardinalNeighbors3D } from "../../../Math/CardinalNeighbors";
 
 //@todo change array to not use push and shift
 export function PowerUpdate(tasks: VoxelUpdateTask) {
@@ -14,9 +14,9 @@ export function PowerUpdate(tasks: VoxelUpdateTask) {
     if (sl <= 0) continue;
 
     for (let i = 0; i < 6; i++) {
-      const nx = $3dCardinalNeighbors[i][0] + x;
-      const ny = $3dCardinalNeighbors[i][1] + y;
-      const nz = $3dCardinalNeighbors[i][2] + z;
+      const nx = CardinalNeighbors3D[i][0] + x;
+      const ny = CardinalNeighbors3D[i][1] + y;
+      const nz = CardinalNeighbors3D[i][2] + z;
       if (!tasks.nDataCursor.inBounds(nx, ny, nz)) continue;
       const voxel = tasks.nDataCursor.getVoxel(nx, ny, nz);
       if (!voxel) continue;
@@ -52,9 +52,9 @@ export function PowerRemove(tasks: VoxelUpdateTask) {
     if (sl <= 0) continue;
 
     for (let i = 0; i < 6; i++) {
-      const nx = $3dCardinalNeighbors[i][0] + x;
-      const ny = $3dCardinalNeighbors[i][1] + y;
-      const nz = $3dCardinalNeighbors[i][2] + z;
+      const nx = CardinalNeighbors3D[i][0] + x;
+      const ny = CardinalNeighbors3D[i][1] + y;
+      const nz = CardinalNeighbors3D[i][2] + z;
       if (!tasks.nDataCursor.inBounds(nx, ny, nz)) continue;
       const voxel = tasks.nDataCursor.getVoxel(nx, ny, nz);
       if (!voxel) continue;

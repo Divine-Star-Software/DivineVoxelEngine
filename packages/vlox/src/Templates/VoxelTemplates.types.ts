@@ -3,9 +3,7 @@ import { VoxelDataArrays } from "../Voxels";
 
 export interface VoxelTemplateBuffers {
   ids: Uint16Array | Uint8Array | number;
-  state: Uint16Array | Uint8Array | number;
   level: Uint8Array | number;
-  mod: Uint16Array | Uint8Array | number;
   secondary: Uint16Array | Uint8Array | number;
 }
 
@@ -16,8 +14,6 @@ export interface FullVoxelTemplateData extends VoxelDataArrays {
 export interface VoxelTemplatePaletteData {
   id: string[];
   level: Uint8Array;
-  state: Uint16Array;
-  mod: Uint16Array;
   secondaryId: string[];
   secondaryState: Uint16Array;
 }

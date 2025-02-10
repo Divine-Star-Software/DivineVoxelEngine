@@ -7,7 +7,7 @@ import { VoxelCursor } from "../../Voxels/Cursor/VoxelCursor.js";
 import { WorldRegister } from "../../World/WorldRegister.js";
 import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister.js";
 const airId = "dve_air";
-const air: RawVoxelData = [0, 0, 0, 0, 0, 0];
+const air: RawVoxelData = [0, 0, 0, 0];
 
 export class BrushTool {
   data: PaintVoxelData = {
@@ -153,9 +153,8 @@ export class BrushTool {
 
     const voxel = this.dataCursor.getVoxel(this.x, this.y, this.z);
     if (!voxel) return;
-    const id = VoxelPalettesRegister.voxels.getNumberId(this.data.id);
-    if (id < 0) return false;
-    voxel.setId(id);
+    if (!this.data.id || this.data.id == "dve_air") return false;
+    voxel.setStringId(this.data.id);
 
     if (this._debug) {
       console.warn(this.x, this.y, this.z, this.data.state);
@@ -167,15 +166,10 @@ export class BrushTool {
 
     voxel.setMod(this.data.mod);
 
-    if (this.data.secondaryVoxelId) {
-      const vid = VoxelPalettesRegister.voxels.getNumberId(
-        this.data.secondaryVoxelId
-      );
-      if (vid > 0) {
-        voxel.setSecondary(true);
-        voxel.setId(vid);
-        voxel.setSecondary(false);
-      }
+    if (this.data.secondaryVoxelId && this.data.secondaryVoxelId != "dve_air") {
+      voxel.setSecondary(true);
+      voxel.setStringId(this.data.secondaryVoxelId);
+      voxel.setSecondary(false);
     }
 
     voxel.process();

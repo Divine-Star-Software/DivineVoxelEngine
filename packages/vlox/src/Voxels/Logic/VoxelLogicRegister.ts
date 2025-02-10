@@ -12,7 +12,7 @@ export class VoxelLogicRegister {
 
 
   static register(id: string, logicData: VoxelLogicData[]) {
-    const voxelId = VoxelPalettesRegister.voxels.getNumberId(id);
+    const voxelId = VoxelPalettesRegister.voxelIds.getNumberId(id);
     this.voxels[voxelId] = new VoxelLogic(logicData);
   }
 

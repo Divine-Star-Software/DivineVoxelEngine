@@ -6,7 +6,7 @@ import { SectionCursor } from "../../World/Cursor/SectionCursor";
 import { VoxelLogicRegister } from "../../Voxels/Logic/VoxelLogicRegister";
 import { VoxelTagIds } from "../../Voxels/Data/VoxelTag.types";
 import { RGBRemove, RGBUpdate } from "../../Tasks/Propagation";
-import { $3dCardinalNeighbors } from "../../Math/CardinalNeighbors";
+import { CardinalNeighbors3D } from "../../Math/CardinalNeighbors";
 const sectionCursor = new SectionCursor();
 export function VoxelLogicUpdate(
   task: VoxelUpdateTask,
@@ -63,7 +63,7 @@ export function VoxelLogicUpdate(
       if (lightSource) {
         task.rgb.update.push(x, y, z);
       } else {
-        for (const n of $3dCardinalNeighbors) {
+        for (const n of CardinalNeighbors3D) {
           const nx = n[0] + x;
           const ny = n[1] + y;
           const nz = n[2] + z;

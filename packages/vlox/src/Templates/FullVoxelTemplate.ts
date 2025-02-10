@@ -25,10 +25,6 @@ export class FullVoxelTemplate {
     const light = new Uint16Array(sectionBuffer, bufferStart, voxelSize);
     bufferStart += voxelSize * 2;
     if (baseLightValue) light.fill(baseLightValue);
-
-    const state = new Uint16Array(sectionBuffer, bufferStart, voxelSize);
-    bufferStart += voxelSize * 2;
-    const mod = new Uint16Array(sectionBuffer, bufferStart, voxelSize);
     bufferStart += voxelSize * 2;
     const secondary = new Uint16Array(sectionBuffer, bufferStart, voxelSize);
     bufferStart += voxelSize * 2;
@@ -40,9 +36,7 @@ export class FullVoxelTemplate {
       ids,
       light,
       level,
-      state,
       secondary,
-      mod,
     };
   }
   index = Flat3DIndex.GetXZYOrder();
@@ -58,9 +52,7 @@ export class FullVoxelTemplate {
     this.index.setBounds(...data.size);
     this.ids = data.ids;
     this.level = data.level;
-    this.state = data.state;
     this.light = data.light;
-    this.mod = data.mod;
     this.secondary = data.secondary;
   }
 }

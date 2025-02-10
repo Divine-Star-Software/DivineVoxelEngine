@@ -36,8 +36,7 @@ export class ProcessedSection {
   ids: ProcessedData<Uint16Array>;
   light: Record<ArchivedLightSegments, ProcessedData<Uint8Array>>;
   level: ProcessedData<Uint8Array>;
-  state: ProcessedData<Uint16Array>;
-  mod: ProcessedData<Uint16Array>;
+
   secondary: ProcessedData<Uint16Array>;
   constructor(public original: Section) {
     this.ids = new ProcessedData(new Uint16Array(original.ids.length));
@@ -48,9 +47,9 @@ export class ProcessedSection {
       green: new ProcessedData(new Uint8Array(original.light.length)),
       blue: new ProcessedData(new Uint8Array(original.light.length)),
     };
-    this.state = new ProcessedData(new Uint16Array(original.state.length));
-    this.mod = new ProcessedData(new Uint16Array(original.mod.length));
-    this.secondary = new ProcessedData(new Uint16Array(original.mod.length));
+    this.secondary = new ProcessedData(
+      new Uint16Array(original.secondary.length)
+    );
   }
 }
 

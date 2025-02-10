@@ -66,9 +66,10 @@ import { VoxelLightData } from "./Cursor/VoxelLightData";
 import { VoxelMaterialData } from "./Types/VoxelMaterial.types";
 import { VoxelSubstanceData } from "./Types/VoxelSubstances.types";
 import { VoxelTagIds } from "./Data/VoxelTag.types";
-import { BuildTagAndPaletteData } from "./Functions/BuildTagAndPaletteData";
+import { BuildTagAndPaletteData } from "./Functions/BuildTagData";
 import { VoxelPalettesRegister } from "./Data/VoxelPalettesRegister";
 import { VoxelLogicRegister } from "./Logic/VoxelLogicRegister";
+import { BuildPaletteData } from "./Functions/BuildPaletteData";
 
 export type InitVoxelDataProps = {
   geometry?: VoxelGeometryData[];
@@ -179,7 +180,10 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
       });
       continue;
     }
-    const output = BuildRules(mainGeo, VoxelModelRuleBuilderRegister.geometryPalette);
+    const output = BuildRules(
+      mainGeo,
+      VoxelModelRuleBuilderRegister.geometryPalette
+    );
     syncData.geometry.push({
       id: mainKey,
       nodes: mainGeo.data.nodes,
@@ -188,7 +192,10 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
   }
 
   for (const [mainKey, model] of VoxelModelRuleBuilderRegister.models) {
-    const stateData = BuildStateData(model, VoxelModelRuleBuilderRegister.geometryPalette);
+    const stateData = BuildStateData(
+      model,
+      VoxelModelRuleBuilderRegister.geometryPalette
+    );
     model.stateData = stateData;
     SchemaRegister.registerModel(mainKey, stateData.schema);
     syncData.models.push({
@@ -386,13 +393,14 @@ export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
 
   let models = GetModelData(data);
 
+  BuildPaletteData({ models });
+  voxelData.data.palette = VoxelPalettesRegister.voxels;
+  voxelData.data.record = VoxelPalettesRegister.voxelRecord;
 
- for(const id in voxelData.data.logic) {
-  VoxelLogicRegister.register(id,
-    voxelData.data.logic[id]
-  )
- }
-  
+
+  for (const id in voxelData.data.logic) {
+    VoxelLogicRegister.register(id, voxelData.data.logic[id]);
+  }
 
   return {
     models,

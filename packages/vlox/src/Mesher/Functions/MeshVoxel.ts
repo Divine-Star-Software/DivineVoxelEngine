@@ -20,6 +20,7 @@ export function MeshVoxel(
   voxel.process();
   if (!voxel.isRenderable()) return false;
 
+
   const constructor = VoxelModelConstructorRegister.getConstructor(
     voxel.getStringId()
   );

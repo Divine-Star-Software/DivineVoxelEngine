@@ -92,7 +92,7 @@ export class VoxelGeometryBuilderCacheSpace {
       return;
     }
 
-    const voxelId = voxel.getId();
+    const voxelId = voxel.getVoxelId();
     const voxelConstructor =
       VoxelModelConstructorRegister.constructorsPaltte[voxelId];
     if (!voxelConstructor) {

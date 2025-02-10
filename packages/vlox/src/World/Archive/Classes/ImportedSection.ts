@@ -169,16 +169,16 @@ export class ImportedSection {
   getId(index: number): number {
     const value = this.buffers.ids.getValue(index);
     if (this.buffers.ids.type == BinaryBufferTypes.Value) {
-      return VoxelPalettesRegister.voxels.getNumberId(
+      return VoxelPalettesRegister.voxelIds.getNumberId(
         this.sector.palettes.id.getStringId(value)
       );
     }
     if (this.palettes.id) {
-      return VoxelPalettesRegister.voxels.getNumberId(
+      return VoxelPalettesRegister.voxelIds.getNumberId(
         this.sector.palettes.id.getStringId(this.palettes.id.getValue(value))
       );
     }
-    return VoxelPalettesRegister.voxels.getNumberId(
+    return VoxelPalettesRegister.voxelIds.getNumberId(
       this.sector.palettes.id.getStringId(value)
     );
   }
@@ -228,13 +228,13 @@ export class ImportedSection {
     const value = this.buffers.secondary.getValue(index);
     if (VoxelTagsRegister.VoxelTags[voxelId]["dve_can_have_secondary"]) {
       if (this.palettes.secondaryId) {
-        return VoxelPalettesRegister.voxels.getNumberId(
+        return VoxelPalettesRegister.voxelIds.getNumberId(
           this.sector.palettes.secondaryId!.getStringId(
             this.palettes.secondaryId.getValue(value)
           )
         );
       }
-      return VoxelPalettesRegister.voxels.getNumberId(
+      return VoxelPalettesRegister.voxelIds.getNumberId(
         this.sector.sector.palettes.secondaryId![value]
       );
     }
@@ -256,7 +256,7 @@ export class ImportedSection {
   getState(index: number) {
     const stateIndex = this.buffers.state.getValue(index);
     let returnValue = stateIndex;
-    let voxelId = VoxelPalettesRegister.voxels.getStringId(this.getId(index));
+    let voxelId = VoxelPalettesRegister.voxelIds.getStringId(this.getId(index));
 
     const secondary =
       VoxelTagsRegister.VoxelTags[this.getId(index)][
@@ -264,7 +264,7 @@ export class ImportedSection {
       ] && this.getSecondary(index) > 0;
 
     if (secondary) {
-      voxelId = VoxelPalettesRegister.voxels.getStringId(
+      voxelId = VoxelPalettesRegister.voxelIds.getStringId(
         this.getSecondary(index)
       );
 
@@ -304,7 +304,7 @@ export class ImportedSection {
   getMod(index: number) {
     const modIndex = this.buffers.mod.getValue(index);
     let returnValue = modIndex;
-    let voxelId = VoxelPalettesRegister.voxels.getStringId(this.getId(index));
+    let voxelId = VoxelPalettesRegister.voxelIds.getStringId(this.getId(index));
 
     const secondary =
       VoxelTagsRegister.VoxelTags[this.getId(index)][
@@ -312,7 +312,7 @@ export class ImportedSection {
       ] && this.getSecondary(index) > 0;
 
     if (secondary) {
-      voxelId = VoxelPalettesRegister.voxels.getStringId(
+      voxelId = VoxelPalettesRegister.voxelIds.getStringId(
         this.getSecondary(index)
       );
       let voxelIndex = this.sector.palettes.secondaryId.getNumberId(voxelId);

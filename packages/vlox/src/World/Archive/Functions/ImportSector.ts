@@ -60,8 +60,6 @@ export default function ImportSector(
       section.level[i] = importedSection.getLevel(i);
       section.light[i] = importedSection.getLight(i);
       section.secondary[i] = importedSection.getSecondary(i);
-      section.state[i] = importedSection.getState(i);
-      section.mod[i] = importedSection.getMod(i);
     }
   }
 

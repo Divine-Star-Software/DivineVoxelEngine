@@ -47,13 +47,13 @@ export class VoxelModelConstructorRegister {
       for (const vox of voxel) {
         this.constructors.set(vox.id, vox);
         this.constructorsPaltte[
-          VoxelPalettesRegister.voxels.getNumberId(vox.id)
+          VoxelPalettesRegister.voxelIds.getNumberId(vox.id)
         ] = vox;
       }
       return;
     }
     this.constructorsPaltte[
-      VoxelPalettesRegister.voxels.getNumberId(voxel.id)
+      VoxelPalettesRegister.voxelIds.getNumberId(voxel.id)
     ] = voxel;
     this.constructors.set(voxel.id, voxel);
   }

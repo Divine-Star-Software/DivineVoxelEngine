@@ -8,8 +8,6 @@ export class WorldVoxelCursor extends VoxelCursorInterface {
   ids = new Uint16Array(1);
   light = new Uint16Array(1);
   level = new Uint8Array(1);
-  state = new Uint16Array(1);
-  mod = new Uint16Array(1);
   secondary = new Uint16Array(1);
 
   constructor(public dataCursor: WorldSectionCursorInterface) {
@@ -22,8 +20,7 @@ export class WorldVoxelCursor extends VoxelCursorInterface {
     this.ids = this._section.ids;
     this.light = this._section.light;
     this.level = this._section.level;
-    this.state = this._section.state;
-    this.mod = this._section.mod;
+
     this.secondary = this._section.secondary;
 
     this._index = this.dataCursor._voxelIndex;

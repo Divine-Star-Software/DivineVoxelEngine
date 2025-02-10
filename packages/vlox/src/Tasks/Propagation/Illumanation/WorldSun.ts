@@ -1,4 +1,4 @@
-import { $3dCardinalNeighbors } from "../../../Math/CardinalNeighbors.js";
+import { CardinalNeighbors3D } from "../../../Math/CardinalNeighbors.js";
 import { WorldSpaces } from "../../../World/WorldSpaces.js";
 import { Vec3Array } from "@amodx/math";
 import { VoxelUpdateTask } from "../../VoxelUpdateTask.js";
@@ -75,8 +75,8 @@ export function RunWorldSun(tasks: VoxelUpdateTask) {
       for (let iz = cz; iz < maxZ; iz++) {
         const l = sectorCursor.getVoxel(ix, iy, iz)?.getLight();
         if (l && l < 0 && lightData.getS(l) != 0xf) continue;
-        for (let i = 0; i < $3dCardinalNeighbors.length; i++) {
-          const n = $3dCardinalNeighbors[i];
+        for (let i = 0; i < CardinalNeighbors3D.length; i++) {
+          const n = CardinalNeighbors3D[i];
           const nx = ix + n[0];
           const ny = iy + n[1];
           const nz = iz + n[2];

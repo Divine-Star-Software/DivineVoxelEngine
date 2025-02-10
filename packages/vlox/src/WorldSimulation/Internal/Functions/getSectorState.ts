@@ -1,6 +1,6 @@
 import { SectorState } from "../Classes/SectorState";
 import { WorldRegister } from "../../../World/WorldRegister";
-import { $2dMooreNeighborhood } from "../../../Math/CardinalNeighbors";
+import { MooreNeighborhood2D } from "../../../Math/CardinalNeighbors";
 import { WorldSpaces } from "../../../World/WorldSpaces";
 import { Sector } from "../../../World/index";
 import { DimensionSegment } from "../Classes/DimensionSegment";
@@ -15,11 +15,11 @@ export function getSectorState(
 
   const [cx, cy, cz] = sector.position;
 
-  for (let i = 0; i < $2dMooreNeighborhood.length; i++) {
+  for (let i = 0; i < MooreNeighborhood2D.length; i++) {
     const sectorPOS = WorldSpaces.sector.getPosition(
-      cx + $2dMooreNeighborhood[i][0] * WorldSpaces.sector.bounds.x,
+      cx + MooreNeighborhood2D[i][0] * WorldSpaces.sector.bounds.x,
       cy,
-      cz + $2dMooreNeighborhood[i][1] * WorldSpaces.sector.bounds.z,
+      cz + MooreNeighborhood2D[i][1] * WorldSpaces.sector.bounds.z,
       tempPosition
     );
     if (!segment.vistedMap.has(sectorPOS.x, cy, sectorPOS.z)) {

@@ -42,37 +42,6 @@ export function CreateArchivedSection(
     );
   }
 
-  if (archiveSection.state.remapped) {
-    for (const i in archiveSection.palettes.state) {
-      palettes.state ??= [];
-      palettes.state[i] = Uint16Array.from(
-        archiveSection.palettes.state[i]._palette
-      );
-    }
-
-    for (const i in archiveSection.palettes.secondaryState) {
-      palettes.secondaryState ??= [];
-      palettes.secondaryState[i] = Uint16Array.from(
-        archiveSection.palettes.secondaryState[i]._palette
-      );
-    }
-  }
-  if (archiveSection.mod.remapped) {
-    for (const i in archiveSection.palettes.mod) {
-      palettes.mod ??= [];
-      palettes.mod[i] = Uint16Array.from(
-        archiveSection.palettes.mod[i]._palette
-      );
-    }
-
-    for (const i in archiveSection.palettes.secondaryMod) {
-      palettes.secondaryMod ??= [];
-      palettes.secondaryMod[i] = Uint16Array.from(
-        archiveSection.palettes.secondaryMod[i]._palette
-      );
-    }
-  }
-
   if (archiveSection.secondary.remapped) {
     palettes.secondaryId = Uint16Array.from(
       archiveSection.palettes.secondaryId._palette
@@ -164,56 +133,6 @@ export function CreateArchivedSection(
         type: BinaryBufferTypes.NibbleArray,
       });
     }
-  }
-
-  if (archiveSection.state.allTheSame) {
-    if (archiveSection.state.buffer[0] !== 0) {
-      buffers.state = archiveSection.state.buffer[0];
-    }
-  } else if (archiveSection.state.isPaletted) {
-    const type = BinaryBuffer.DetermineSubByteArray(
-      archiveSection.state.remapped
-        ? archiveSection.palettes.maxStatePaletteSize
-        : sectorPalettes.maxStatePaletteSize
-    )!;
-    buffers.state = BinaryBuffer.Create({
-      buffer: BinaryBuffer.Convert(
-        archiveSection.state.buffer,
-        BinaryBufferTypes.ShortArray,
-        type
-      ).buffer,
-      type,
-    });
-  } else {
-    buffers.state = BinaryBuffer.Create({
-      buffer: archiveSection.state.buffer.buffer,
-      type: BinaryBufferTypes.ShortArray,
-    });
-  }
-
-  if (archiveSection.mod.allTheSame) {
-    if (archiveSection.mod.buffer[0] !== 0) {
-      buffers.mod = archiveSection.mod.buffer[0];
-    }
-  } else if (archiveSection.mod.isPaletted) {
-    const type = BinaryBuffer.DetermineSubByteArray(
-      archiveSection.mod.remapped
-        ? archiveSection.palettes.maxModPaletteSize
-        : sectorPalettes.maxModPaletteSize
-    )!;
-    buffers.mod = BinaryBuffer.Create({
-      buffer: BinaryBuffer.Convert(
-        archiveSection.mod.buffer,
-        BinaryBufferTypes.ShortArray,
-        type
-      ).buffer,
-      type,
-    });
-  } else {
-    buffers.mod = BinaryBuffer.Create({
-      buffer: archiveSection.mod.buffer.buffer,
-      type: BinaryBufferTypes.ShortArray,
-    });
   }
 
   if (archiveSection.secondary.allTheSame) {

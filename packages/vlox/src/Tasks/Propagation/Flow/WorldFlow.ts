@@ -45,7 +45,7 @@ function Flood(task: VoxelUpdateTask, voxel: WorldVoxelCursor) {
         const nz = floodOutChecks[i][2] + z;
         const downVoxel = task.nDataCursor.getVoxel(nx, ny - 1, nz);
         const downAir = downVoxel?.isAir() || false;
-        const downSameVoxel = downVoxel?.getId() == voxelId;
+        const downSameVoxel = downVoxel?.getVoxelId() == voxelId;
 
         let nVoxel = task.nDataCursor.getVoxel(nx, ny, nz);
         if (!nVoxel) continue;
@@ -83,7 +83,7 @@ function Flood(task: VoxelUpdateTask, voxel: WorldVoxelCursor) {
     let nVoxel = task.nDataCursor.getVoxel(x, y - 1, z)!;
     const nLevel = nVoxel.isAir()
       ? 0
-      : nVoxel.getId() == voxelId
+      : nVoxel.getVoxelId() == voxelId
         ? nVoxel.getLevel()
         : -1;
     const nState = nVoxel.getLevelState();

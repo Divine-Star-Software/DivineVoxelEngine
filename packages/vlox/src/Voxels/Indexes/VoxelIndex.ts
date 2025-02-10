@@ -128,9 +128,10 @@ export class VoxelIndex {
     return false;
   }
   getStateFromRawData(data: RawVoxelData): VoxelNamedState | false {
-    const [id, light, state, secondary, mod] = data;
+    const [id, light, secondary] = data;
+    const [, mod, state] = VoxelPalettesRegister.voxels[id];
     const conatiner = this.states.get(
-      VoxelPalettesRegister.voxels.getStringId(id)
+      VoxelPalettesRegister.voxelIds.getStringId(id)
     );
     if (!conatiner) return false;
     for (const modelState of conatiner?.stateArray) {

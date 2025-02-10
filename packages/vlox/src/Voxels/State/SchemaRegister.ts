@@ -25,6 +25,29 @@ export class SchemaRegister {
     return false;
   }
 
+  static getModelSchema(modelId: string) {
+    let stateSchema = this.modelStaeSchemas.get(modelId);
+    if (!stateSchema) {
+      const schemaData = this.modelStateSchemaData.get(modelId);
+      if (!schemaData) throw new Error(`Model ${modelId} is not registered`);
+      stateSchema = new BinarySchema(schemaData);
+    }
+
+    return stateSchema;
+  }
+  
+  static getVoxelModSchema(voxelId: string) {
+    let modSchema = this.voxelModSchemas.get(voxelId);
+    if (!modSchema) {
+      const schemaData = this.voxelModSchemaData.get(voxelId);
+      if (!schemaData)
+        throw new Error(`Voxel mod sceham [${voxelId}] is not registered`);
+      modSchema = new BinarySchema(schemaData);
+    }
+
+    return modSchema;
+  }
+
   static getVoxelSchemas(voxelId: string) {
     if (this.voxelSchemas.has(voxelId)) {
       return this.voxelSchemas.get(voxelId)!;

@@ -26,6 +26,7 @@ import { VoxelModelIndex } from "@divinevoxel/vlox/Voxels/Indexes/VoxelModelInde
 import { VoxelTextureIndex } from "@divinevoxel/vlox/Voxels/Indexes/VoxelTextureIndex";
 import { CacheManager } from "@divinevoxel/vlox/Cache/CacheManager";
 import { DVEBRMesh } from "../Meshes/DVEBRMesh";
+import { VoxelPalettesRegister } from "@divinevoxel/vlox/Voxels/Data/VoxelPalettesRegister";
 const dataTool = new VoxelCursor();
 const materialMap = new Map<string, DVEBRClassicMaterial>();
 
@@ -177,6 +178,8 @@ export default async function CreateDisplayIndex(data: VoxelData[]) {
         if (state.data.display.mod) {
           addVoxelData.mod = voxelSchema.mod.readString(state.data.display.mod);
         }
+      const vid =   VoxelPalettesRegister.voxelIds.getNumberId(addVoxelData.id);
+ 
         const rawData = VoxelCursor.VoxelDataToRaw(addVoxelData);
         const mesh = await buildMesh(
           displayScene,

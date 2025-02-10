@@ -1,6 +1,6 @@
 import { Vec3Array } from "@amodx/math";
 import { LocationData } from "../../Math";
-import { $2dMooreNeighborhood } from "../../Math/CardinalNeighbors";
+import { MooreNeighborhood2D } from "../../Math/CardinalNeighbors";
 import { WorldRegister } from "../WorldRegister";
 import { WorldSpaces } from "../WorldSpaces";
 
@@ -11,7 +11,7 @@ export class SectorHeightMap {
     const sectionDepth = WorldSpaces.section.bounds.z;
     let maxHeight = -Infinity;
     const [dimension, x, y, z] = location;
-    for (const check of $2dMooreNeighborhood) {
+    for (const check of MooreNeighborhood2D) {
       location[1] = check[0] * sectionWidth + x;
       location[3] = check[1] * sectionDepth + z;
       const height = this.getAbsolute(location);

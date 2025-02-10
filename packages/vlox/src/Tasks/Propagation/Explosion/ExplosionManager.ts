@@ -1,14 +1,10 @@
 //data
-import { $3dCardinalNeighbors } from "../../../Math/CardinalNeighbors.js";
-//objects
-
-
-//functions
+import { CardinalNeighbors3D } from "../../../Math/CardinalNeighbors.js";
 import { Distance3D } from "@amodx/math/Vectors/Functions/Distance3d";
 import { RGBRemove, RGBUpdate } from "../Illumanation/RGBUpdate.js";
 import { SunRemove, SunUpdate } from "../Illumanation/SunUpdate.js";
 import { FlowManager } from "../Flow/FlowManager.js";
-import { VisitedMap } from "../../../Util/VisistedMap";
+
 import { VoxelUpdateTask } from "../../VoxelUpdateTask.js";
 import { Vec3Array } from "@amodx/math";
 import { WorldCursor } from "../../../World/index.js";
@@ -21,7 +17,6 @@ export const ExplosionManager = {
  //   FlowManager.setDimension(dimension);
 
     const queue: Vec3Array[] = [];
-    const map = new VisitedMap();
 
     queue.push([sx, sy, sz]);
 
@@ -32,7 +27,7 @@ export const ExplosionManager = {
       const y = node[1];
       const z = node[2];
 
-      if (!map.inMap(x + 1, y, z)) {
+/*       if (!map.inMap(x + 1, y, z)) {
         if (tasks.sDataCursor.getVoxel(x + 1, y, z)) {
           const d = Distance3D(sx, sy, sz, x + 1, y, z);
           if (d <= radius) {
@@ -86,11 +81,11 @@ export const ExplosionManager = {
         }
         map.add(x, y - 1, z);
       }
-
+ */
       const voxel = tasks.sDataCursor.getVoxel(x, y, z);
       if (voxel) {
         if (voxel.isRenderable()) {
-          for (const n of $3dCardinalNeighbors) {
+          for (const n of CardinalNeighbors3D) {
             const nx = x + n[0];
             const ny = y + n[1];
             const nz = z + n[2];
