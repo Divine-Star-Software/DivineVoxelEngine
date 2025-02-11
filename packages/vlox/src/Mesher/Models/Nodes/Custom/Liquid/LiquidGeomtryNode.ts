@@ -1,12 +1,12 @@
 import { GeoemtryNode } from "../../GeometryNode";
-import { VoxelCustomGeomtryNode } from "../../../../../Models/VoxelModel.types";
+import { VoxelCustomGeomtryNode } from "../../../../../Voxels/Models/VoxelModel.types";
 import { CompassAngles } from "@amodx/math";
 import { Quad } from "../../../../Geomtry/Primitives/Quad";
 import { QuadUVData, QuadVerticies } from "../../../../Geomtry/Geometry.types";
 import { QuadScalarVertexData } from "../../../../Geomtry/Primitives/QuadVertexData";
 import { VoxelFaceDirections, VoxelFaces } from "../../../../../Math";
 import { shouldCauseFlip } from "../../../Common/Calc/CalcConstants";
-import type { LiquidVoxelModelArgs } from "../../../../../Models/Defaults/LiquidVoxelModel";
+import type { LiquidVoxelModelArgs } from "../../../../../Voxels/Models/Defaults/LiquidVoxelModel";
 import { getFlowAngle, getFlowGradient, FlowVerticies } from "./FlowGradient";
 import { GetBoxGeometryNodeData } from "../../../Common/BoxGeometryNode";
 import { VoxelLightData } from "../../../../../Voxels/Cursor/VoxelLightData";

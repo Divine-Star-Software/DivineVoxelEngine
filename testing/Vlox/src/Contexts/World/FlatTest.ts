@@ -12,10 +12,6 @@ export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
   let endX = 16 * numChunks;
   let endZ = 16 * numChunks;
 
-  const buildTimes: number[] = [];
-  DVEW.TC.registerTask<number>("add-build-time", (time) => {
-    buildTimes.push(time);
-  });
   const tasks = new TaskTool(DVEW.threads.constructors);
   const propagation = tasks.propagation.createQueue();
   const worldSun = tasks.worldSun.createQueue();
@@ -33,8 +29,8 @@ export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
     }
   }
   if (genOne) {
-    //WorldGen.flatColumn(0,0);
-    WorldGen.pyramidColumn(0, 0);
+ //   WorldGen.flatColumn(0, 0);
+    //  WorldGen.pyramidColumn(0, 0);
     // brush.setId("dve_dream_leaves").setXYZ(0, 1, -2).paint();
     // brush.setId("dve_dread_stone").setXYZ(0, 1, -1).paint();
 
@@ -42,7 +38,7 @@ export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
   } else {
     for (let x = startX; x < endX; x += 16) {
       for (let z = startZ; z < endZ; z += 16) {
-        //   WorldGen.flat(x, z);
+        //   WorldGen.flatColumn(x,z);
         PerlinGen.generateTest(x, z);
         /*        if (Math.random() > 0.5) {
           WorldGen.pyramidColumn(x, z);
@@ -73,12 +69,4 @@ export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
   const tEnd = performance.now();
 
   console.log("ALL DONE! total time = ", tEnd - tStart);
-
-  console.warn("build times", buildTimes);
-  buildTimes.sort((a,b)=>a-b);
-  console.log(
-    "average",
-    buildTimes.reduce((a, b) => a + b) / buildTimes.length,
-    [buildTimes.shift(), buildTimes.pop()]
-  );
 }

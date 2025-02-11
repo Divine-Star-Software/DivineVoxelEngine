@@ -5,9 +5,9 @@ import {
   StateCompareOperationsMap,
   StateLogicOperationsMap,
 } from "../State/State.types";
-import { VoxelRulesModoel } from "../../Models/Rules/Classes/VoxelRulesModel";
+import { VoxelRulesModoel } from "../Models/Rules/Classes/VoxelRulesModel";
 import { StringPalette } from "../../Util/StringPalette";
-import { VoxelModelRuleBuilderRegister } from "../../Models/Rules/VoxelModelRuleBuilderRegister";
+import { VoxelModelRuleBuilderRegister } from "../Models/Rules/VoxelModelRuleBuilderRegister";
 import {
   VoxelStateStringSchemaData,
   VoxelStateNumberSchemaData,

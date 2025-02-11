@@ -1,5 +1,5 @@
 import { TextureId } from "../../Textures/index";
-import { VoxelModelConstructorData } from "../../Models/VoxelModel.types";
+import { VoxelModelConstructorData } from "../Models/VoxelModel.types";
 import { VoxelTags } from "../Data/VoxelTag.types";
 import { VoxelLogicData } from "../Logic/VoxelLogic.types";
 export interface VoxelDataArrays {

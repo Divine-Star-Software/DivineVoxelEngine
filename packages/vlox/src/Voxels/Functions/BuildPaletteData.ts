@@ -1,5 +1,4 @@
-import { NumberPalette } from "../../Util/NumberPalette";
-import { FinalCompiledVoxelModelData } from "../Types/VoxelModelCompiledData.types";
+import { FinalCompiledVoxelModelData } from "../Models/CompiledVoxelModel.types";
 import { SchemaRegister } from "../State/SchemaRegister";
 import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister";
 

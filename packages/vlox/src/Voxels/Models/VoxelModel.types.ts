@@ -1,13 +1,13 @@
 import { Vec2Array, Vec3Array } from "@amodx/math";
-import { QuadUVData } from "../Mesher/Geomtry/Geometry.types";
-import { VoxelFaceNames } from "../Math";
-import { TextureId } from "../Textures/Texture.types";
+import { QuadUVData } from "../../Mesher/Geomtry/Geometry.types";
+import { VoxelFaceNames } from "../../Math";
+import { TextureId } from "../../Textures/Texture.types";
 import {
   VoxelStateStringSchemaData,
   VoxelModelRelationsSchemaData,
   VoxelStateNumberSchemaData,
-} from "../Voxels/State/State.types";
-import { VoxelEffectData } from "../Voxels/Effects/VoxelEffects.types";
+} from "../../Voxels/State/State.types";
+import { VoxelEffectData } from "../../Voxels/Effects/VoxelEffects.types";
 
 /**The model data assoicated with the actual voxel. */
 export interface VoxelModelConstructorData {

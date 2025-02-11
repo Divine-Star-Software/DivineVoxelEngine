@@ -262,7 +262,7 @@ export const WorldGen = {
 
   flatColumn(chunkX: number, chunkZ: number) {
     const columnCursor = this.worldCursor.getSector(chunkX, 0, chunkZ)!;
-    voxelCursor.setStringId("dve_dread_stone").process();
+/*     voxelCursor.setStringId("dve_dread_stone").process();
     for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
       for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
         for (let y = 0; y < 10; y++) {
@@ -271,7 +271,7 @@ export const WorldGen = {
       }
     }
     voxelCursor.setStringId("dve_dread_stone_slab").process();
-    columnCursor.getVoxel(2, 10, 2)!.setId(voxelCursor.id).updateVoxel(0);
+    columnCursor.getVoxel(2, 10, 2)!.setId(voxelCursor.id).updateVoxel(0); */
     voxelCursor.setStringId("dve_dream_fence").process();
     columnCursor.getVoxel(0, 10, 0)!.setId(voxelCursor.id).updateVoxel(0);
     columnCursor.getVoxel(1, 10, 0)!.setId(voxelCursor.id).updateVoxel(0);

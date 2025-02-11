@@ -1,4 +1,4 @@
-import { QuadUVData } from "../../Mesher/Geomtry/Geometry.types"
+import { QuadUVData } from "../../../Mesher/Geomtry/Geometry.types"
 export type QuadVoxelGometryArgs = [
   //upp
   enabled: boolean,

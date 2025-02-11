@@ -1,11 +1,11 @@
 import { BoxVoxelGometryInputs } from "../../Input/BoxVoxelGometryInputs";
 import { VoxelRuleGeometry } from "../Classes/VoxelRulesGeometry";
-import { VoxelFaceNameArray, VoxelFaces } from "../../../Math";
-import { TextureManager } from "../../../Textures/TextureManager";
+import { VoxelFaceNameArray, VoxelFaces } from "../../../../Math";
+import { TextureManager } from "../../../../Textures/TextureManager";
 import { Matrix2x2Like, Mat2Array, Vec4Array, AMath } from "@amodx/math";
-import { QuadUVData } from "../../../Mesher/Geomtry/Geometry.types";
+import { QuadUVData } from "../../../../Mesher/Geomtry/Geometry.types";
 import { QuadVoxelGometryInputs } from "../../Input/QuadVoxelGometryInputs";
-import { VoxelGeometryTransform } from "../../../Voxels/Types/VoxelModelCompiledData.types";
+import { VoxelGeometryTransform } from "../../CompiledVoxelModel.types"
 import { TextureId } from "Textures";
 
 const isArgString = (data: any) => {

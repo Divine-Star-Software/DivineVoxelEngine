@@ -1,7 +1,7 @@
 import { VoxelModelBuilder } from "../VoxelModelBuilder";
 import { Vector3Like } from "@amodx/math";
 import { VoxelGeometryConstructor } from "./VoxelGeometryConstructor";
-import { VoxelGeometryTransform } from "../../../Voxels/Types/VoxelModelCompiledData.types";
+import { VoxelGeometryTransform } from "../../../Voxels/Models/CompiledVoxelModel.types"
 export interface GeoemtryNodeConstructor<Data = any, Args = any> {
   new (
     geometryPaletteId: number,

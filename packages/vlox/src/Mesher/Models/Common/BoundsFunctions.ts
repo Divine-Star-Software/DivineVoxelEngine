@@ -1,8 +1,4 @@
-import { Vec3Array, Vector3Like } from "@amodx/math";
-import { VoxelModelBuilder } from "../VoxelModelBuilder";
-
-
-
+import { Vec3Array  } from "@amodx/math";
 export function GetBounds(vectors: Vec3Array[]): [Vec3Array, Vec3Array] {
   let minX = Infinity;
   let minY = Infinity;

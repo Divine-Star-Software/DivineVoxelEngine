@@ -117,7 +117,8 @@ export class DVEBRMesh {
         VoxelMeshVertexStructCursor.VertexFloatSize,
         undefined,
         VoxelMeshVertexStructCursor.VoxelDataOFfset,
-        1
+        1,
+   
       )
     );
     mesh.setIndices(indices);

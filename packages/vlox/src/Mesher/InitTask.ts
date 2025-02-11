@@ -45,8 +45,8 @@ export default function (rendererThread: Thread) {
           transfers
         );
         const buildTime = performance.now() - t;
-        origin.runTask("add-build-time", buildTime);
-        console.log("BUILD TIME", buildTime);
+
+
       }
     }
   );

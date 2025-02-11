@@ -64,7 +64,7 @@ export class VoxelGeometryBuilderCacheSpace {
     if (this.foundHash[index] < 2) return null;
     return VoxelModelConstructorRegister.constructorsPaltte[
       this.voxelCache[index]
-    ].data.condiotnalShapeStateGeometryMap[this.conditonalStateCache[index]];
+    ].data.condiotanlGeometryStatePalette[this.conditonalStateCache[index]];
   }
 
   getHash(dataCursor: DataCursorInterface, x: number, y: number, z: number) {

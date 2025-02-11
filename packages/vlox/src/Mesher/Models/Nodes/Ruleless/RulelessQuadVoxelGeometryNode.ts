@@ -1,7 +1,7 @@
 import { Vec3Array, Vec4Array } from "@amodx/math";
 import { VoxelFaces } from "../../../../Math";
 import { QuadVerticies } from "../../../Geomtry/Geometry.types";
-import { VoxelQuadGeometryNode } from "../../../../Models/VoxelModel.types";
+import { VoxelQuadGeometryNode } from "../../../../Voxels/Models/VoxelModel.types";
 
 import { Quad } from "../../../Geomtry/Primitives/Quad";
 import {
@@ -17,7 +17,7 @@ import {
 import {
   QuadVoxelGometryArgs,
   QuadVoxelGometryInputs,
-} from "../../../../Models/Input/QuadVoxelGometryInputs";
+} from "../../../../Voxels/Models/Input/QuadVoxelGometryInputs";
 import { GeoemtryNode } from "../GeometryNode";
 import { GetQuadGeometryData } from "../../Common/QuadGeometryNode";
 import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData";

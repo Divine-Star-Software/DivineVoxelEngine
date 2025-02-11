@@ -1,7 +1,7 @@
 import { Vec3Array, Vec4Array } from "@amodx/math";
 import { VoxelFaces } from "../../../../Math";
 import { QuadVerticies } from "../../../Geomtry/Geometry.types";
-import { VoxelBoxGeometryNode } from "../../../../Models/VoxelModel.types";
+import { VoxelBoxGeometryNode } from "../../../../Voxels/Models/VoxelModel.types";
 
 import { Quad } from "../../../Geomtry/Primitives/Quad";
 import { addVoxelQuad, VoxelGeometryBuilder } from "../../../Geomtry/VoxelGeometryBuilder";
@@ -9,7 +9,7 @@ import { addVoxelQuad, VoxelGeometryBuilder } from "../../../Geomtry/VoxelGeomet
 import {
   BoxVoxelGometryArgs,
   BoxVoxelGometryInputs,
-} from "../../../../Models/Input/BoxVoxelGometryInputs";
+} from "../../../../Voxels/Models/Input/BoxVoxelGometryInputs";
 import {
   getInterpolationValue,
   shouldCauseFlip,

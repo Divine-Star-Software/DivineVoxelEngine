@@ -5,8 +5,8 @@ import { Quad } from "../../Geomtry/Primitives/Quad";
 
 import { getQuadWeights, QuadVertexWeights } from "./Calc/CalcConstants";
 
-import { VoxelGeometryTransform } from "../../../Voxels/Types/VoxelModelCompiledData.types";
-import { TransformBox } from "../../../Models/Shared/Transform";
+import { VoxelGeometryTransform } from "../../../Voxels/Models/CompiledVoxelModel.types";
+import { TransformBox } from "../../../Voxels/Models/Shared/Transform";
 import { GetBounds } from "./BoundsFunctions";
 
 export function GetBoxGeometryNodeData(

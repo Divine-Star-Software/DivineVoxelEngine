@@ -1,9 +1,4 @@
-import { VoxelFaceCullResultsIndex } from "../../../Models/Indexing/VoxelFaceCullResultsIndex";
-import { VoxelAOResultsIndex } from "../../../Models/Indexing/VoxelAOResultsIndex";
-import {
-  CompiledVoxelGeometryRulessData,
-  CompiledVoxelGeometrySyncData,
-} from "../../../Voxels/Types/VoxelModelCompiledData.types";
+import { CompiledVoxelGeometrySyncData } from "../../../Voxels/Models/CompiledVoxelModel.types";
 import { BoxVoxelGometryNode } from "./Ruled/BoxVoxelGeometryNode";
 import { QuadVoxelGometryNode } from "./Ruled/QuadVoxelGeometryNode";
 import { RulelessQuadVoxelGeometryNode } from "./Ruleless/RulelessQuadVoxelGeometryNode";
@@ -13,30 +8,26 @@ import { VoxelModelConstructorRegister } from "../VoxelModelConstructorRegister"
 
 export class VoxelGeometryConstructor {
   nodes: GeoemtryNode<any, any>[] = [];
-  faceCullMap: number[][];
-  vertexHitMap: number[][];
-  cullIndex: VoxelFaceCullResultsIndex;
-  aoIndex: VoxelAOResultsIndex;
   constructor(
     public geometryPaletteId: number,
-    data: CompiledVoxelGeometrySyncData | CompiledVoxelGeometryRulessData
+    data: CompiledVoxelGeometrySyncData
   ) {
     for (const node of data.nodes) {
       if (node.node.type == "custom") {
-        const nodeClass = VoxelModelConstructorRegister.getCustomNode(node.node.id);
+        const nodeClass = VoxelModelConstructorRegister.getCustomNode(
+          node.node.id
+        );
         const newNode = new nodeClass(
           geometryPaletteId,
           this,
           node.node,
           node.tranform
-        )
+        );
         newNode.init();
         this.nodes.push(newNode);
-     
       }
     }
-    if ((data as CompiledVoxelGeometryRulessData)?.ruleless) {
-      data = data as CompiledVoxelGeometryRulessData;
+    if (data?.ruleless) {
       for (const node of data.nodes) {
         if (node.node.type == "box") {
           const newNode = new RulelessBoxVoxelGeometryNode(
@@ -60,11 +51,8 @@ export class VoxelGeometryConstructor {
         }
       }
     } else {
-      data = data as CompiledVoxelGeometrySyncData;
-      this.faceCullMap = data.faceCullMap!;
-      this.vertexHitMap = data.vertexHitMap!;
-      this.cullIndex = new VoxelFaceCullResultsIndex(data.cullIndex!);
-      this.aoIndex = new VoxelAOResultsIndex(data.aoIndex!);
+      const faces = data.faceIndexes!;
+      let index = 0;
       for (const node of data.nodes) {
         if (node.node.type == "box") {
           const newNode = new BoxVoxelGometryNode(
@@ -73,7 +61,13 @@ export class VoxelGeometryConstructor {
             node.node,
             node.tranform
           );
+          for (let i = 0; i < 6; i++) {
+            newNode.faceIndexes[i] = faces[index];
+            index++;
+          }
+          
           newNode.init();
+
           this.nodes.push(newNode);
         }
         if (node.node.type == "quad") {
@@ -83,6 +77,8 @@ export class VoxelGeometryConstructor {
             node.node,
             node.tranform
           );
+          newNode.trueFaceIndex = faces[index];
+          index++;
           newNode.init();
           this.nodes.push(newNode);
         }

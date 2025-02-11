@@ -1,18 +1,18 @@
 import { Vec3Array, Vec4Array } from "@amodx/math";
 import { VoxelFaces } from "../../../../Math";
 import { QuadVerticies } from "../../../Geomtry/Geometry.types";
-import { VoxelBoxGeometryNode } from "../../../../Models/VoxelModel.types";
+import { VoxelBoxGeometryNode } from "../../../../Voxels/Models/VoxelModel.types";
 import { Quad } from "../../../Geomtry/Primitives/Quad";
 import {
   BoxVoxelGometryArgs,
   BoxVoxelGometryInputs,
-} from "../../../../Models/Input/BoxVoxelGometryInputs";
+} from "../../../../Voxels/Models/Input/BoxVoxelGometryInputs";
 import { GeoemtryNode } from "../GeometryNode";
 import {
   getInterpolationValue,
   shouldCauseFlip,
 } from "../../Common/Calc/CalcConstants";
-import { VoxelRelativeCubeIndexPositionMap } from "../../../../Models/Indexing/VoxelRelativeCubeIndex";
+import { VoxelRelativeCubeIndexPositionMap } from "../../../../Voxels/Models/Indexing/VoxelRelativeCubeIndex";
 import { GetBoxGeometryNodeData } from "../../Common/BoxGeometryNode";
 import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData";
 import {
@@ -33,6 +33,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
     VoxelFaces,
     [Vec4Array, Vec4Array, Vec4Array, Vec4Array]
   >;
+  faceIndexes: number[] = [];
 
   _wasAOShaded = false;
   lightData = new VoxelLightData();
@@ -50,18 +51,15 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
   }
 
   isExposed(face: VoxelFaces) {
-    const trueFaceIndex = face + this.faceIndex;
-    const faceIndexes = this.geomtry.faceCullMap![trueFaceIndex];
+    const trueFaceIndex = this.faceIndexes[face];
+    const faceIndexes =
+      VoxelModelConstructorRegister.faceCullMap![trueFaceIndex];
     if (!faceIndexes) return true;
 
     const builder = this.builder;
-    for (
-      let positionIndex = 0;
-      positionIndex < faceIndexes.length;
-      positionIndex++
-    ) {
-      const currentIndex = faceIndexes[positionIndex];
-      const p = VoxelRelativeCubeIndexPositionMap[currentIndex];
+    for (let i = 0; i < faceIndexes.length; i++) {
+      const directionIndex = faceIndexes[i];
+      const p = VoxelRelativeCubeIndexPositionMap[directionIndex];
       const hashed = this.builder.space.getHash(
         builder.nVoxel,
         builder.position.x + p[0],
@@ -77,19 +75,19 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
           const geoId = offsetBaseGometry[i];
 
           if (VoxelModelConstructorRegister.rulesless[geoId]) continue;
-          const faceIndex = this.geomtry.cullIndex.getValue(
-            geoId,
-            currentIndex,
-            trueFaceIndex
-          );
+
           if (
-            faceIndex > -1 &&
+            VoxelModelConstructorRegister.faceCullIndex.getValue(
+              geoId,
+              directionIndex,
+              trueFaceIndex
+            ) == 1 /* &&
             !constructor.isShapeStateFaceTransparent(
               this.builder.space.modCache[hashed],
               this.builder.space.stateCache[hashed],
               geoId,
               faceIndex
-            )
+            ) */
           ) {
             return false;
           }
@@ -105,19 +103,18 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
           for (let k = 0; k < cond.length; k++) {
             const geoId = cond[k];
             if (VoxelModelConstructorRegister.rulesless[geoId]) continue;
-            const faceIndex = this.geomtry.cullIndex.getValue(
-              geoId,
-              currentIndex,
-              trueFaceIndex
-            );
             if (
-              faceIndex > -1 &&
+              VoxelModelConstructorRegister.faceCullIndex.getValue(
+                geoId,
+                directionIndex,
+                trueFaceIndex
+              ) == 1 /*  &&
               !constructor.isCondtionalStateFaceTransparent(
                 this.builder.space.modCache[hashed],
                 this.builder.space.stateCache[hashed],
                 geoId,
                 faceIndex
-              )
+              ) */
             )
               return false;
           }
@@ -130,6 +127,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
 
   determineShading(face: VoxelFaces) {
     const tool = this.builder;
+    const trueFaceIndex = this.faceIndexes[face];
 
     const lightData = tool.lightData[face];
     const noAO =
@@ -137,6 +135,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
 
     const worldLight = this.builder.vars.light;
     const worldAO = this.builder.vars.ao;
+
     for (let v = 0 as QuadVerticies; v < 4; v++) {
       worldAO.vertices[v] = 0;
 
@@ -147,19 +146,15 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
 
       if (noAO) continue;
 
-      const trueVertexIndex = this.vertexIndex + face * 4 + v;
+      const aoIndexes =
+        VoxelModelConstructorRegister.vertexHitMap![trueFaceIndex][v];
 
-      const aoIndexes = this.geomtry.vertexHitMap![trueVertexIndex];
 
       if (!aoIndexes) continue;
 
-      for (
-        let positionIndex = 0;
-        positionIndex < aoIndexes.length;
-        positionIndex++
-      ) {
-        const currentIndex = aoIndexes[positionIndex];
-        const p = VoxelRelativeCubeIndexPositionMap[currentIndex];
+      for (let i = 0; i < aoIndexes.length; i++) {
+        const directionIndex = aoIndexes[i];
+        const p = VoxelRelativeCubeIndexPositionMap[directionIndex];
 
         const hashed = this.builder.space.getHash(
           tool.nVoxel,
@@ -175,7 +170,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
           continue;
         const baseGeo = this.builder.space.getGeomtry(hashed);
         const conditonalGeo = this.builder.space.getConditionalGeomtry(hashed);
-
+  
         if (!baseGeo && !conditonalGeo) continue;
 
         let length = 0;
@@ -184,10 +179,11 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
           length = baseGeo.length;
           for (let geoIndex = 0; geoIndex < length; geoIndex++) {
             if (
-              this.geomtry.aoIndex.getValue(
+              VoxelModelConstructorRegister.aoIndex.getValue(
                 baseGeo[geoIndex],
-                currentIndex,
-                trueVertexIndex
+                directionIndex,
+                trueFaceIndex,
+                v
               )
             ) {
               this._wasAOShaded = true;
@@ -201,6 +197,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
         }
         if (!conditonalGeo || shaded) continue;
         length = conditonalGeo.length;
+
         for (
           let condtionsIndex = 0;
           condtionsIndex < length;
@@ -208,11 +205,14 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
         ) {
           const condiotnalength = conditonalGeo[condtionsIndex].length;
           for (let geoIndex = 0; geoIndex < condiotnalength; geoIndex++) {
+      
             if (
-              this.geomtry.aoIndex.getValue(
+
+              VoxelModelConstructorRegister.aoIndex.getValue(
                 conditonalGeo[condtionsIndex][geoIndex],
-                currentIndex,
-                trueVertexIndex
+                directionIndex,
+                trueFaceIndex,
+                v
               )
             ) {
               this._wasAOShaded = true;
@@ -228,6 +228,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
     }
   }
   shouldFlip() {
+    return false;
     const worldAO = this.builder.vars.ao;
     if (
       shouldCauseFlip(

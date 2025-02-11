@@ -1,20 +1,24 @@
 import { StringPalette } from "../../Util/StringPalette";
 import {
-  CompiledVoxelGeometryRulessData,
   CompiledVoxelGeometrySyncData,
   CompiledVoxelModelData,
-} from "../../Voxels/Types/VoxelModelCompiledData.types";
+} from "../../Voxels/Models/CompiledVoxelModel.types";
 import { GeoemtryNodeConstructor } from "./Nodes/GeometryNode";
 import { VoxelConstructor } from "./VoxelConstructor";
 import { VoxelGeometryConstructor } from "./Nodes/VoxelGeometryConstructor";
 import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister";
+import { AOOcclusionFaceIndex } from "../../Voxels/Models/Indexing/AOOcclusionFaceIndex";
+import { CulledOcclusionFaceIndex } from "../../Voxels/Models/Indexing/CulledOcclusionFaceIndex";
 
 export class VoxelModelConstructorRegister {
   static geometryPalette: StringPalette;
   static geometry: VoxelGeometryConstructor[] = [];
 
   static rulesless: boolean[] = [];
-
+  static aoIndex: AOOcclusionFaceIndex;
+  static faceCullIndex: CulledOcclusionFaceIndex;
+  static vertexHitMap: number[][][];
+  static faceCullMap: number[][];
   static setGeometryPalette(palette: string[]) {
     this.geometryPalette = new StringPalette(palette);
   }
@@ -57,12 +61,7 @@ export class VoxelModelConstructorRegister {
     ] = voxel;
     this.constructors.set(voxel.id, voxel);
   }
-  static registerGeometry(
-    geometries: (
-      | CompiledVoxelGeometrySyncData
-      | CompiledVoxelGeometryRulessData
-    )[]
-  ) {
+  static registerGeometry(geometries: CompiledVoxelGeometrySyncData[]) {
     for (const geometry of geometries) {
       const paletteId = this.geometryPalette.getNumberId(geometry.id);
 
@@ -70,7 +69,7 @@ export class VoxelModelConstructorRegister {
         paletteId,
         geometry
       );
-      if ((geometry as CompiledVoxelGeometryRulessData).ruleless == true) {
+      if (geometry.ruleless == true) {
         this.rulesless[paletteId] = true;
       } else {
         this.rulesless[paletteId] = false;

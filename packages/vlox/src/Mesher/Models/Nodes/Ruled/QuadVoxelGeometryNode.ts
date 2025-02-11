@@ -1,10 +1,13 @@
 import { Vec3Array, Vec4Array } from "@amodx/math";
 import { VoxelFaces } from "../../../../Math";
 import { QuadVerticies } from "../../../Geomtry/Geometry.types";
-import { VoxelQuadGeometryNode } from "../../../../Models/VoxelModel.types";
+import { VoxelQuadGeometryNode } from "../../../../Voxels/Models/VoxelModel.types";
 
 import { Quad } from "../../../Geomtry/Primitives/Quad";
-import { addVoxelQuad, VoxelGeometryBuilder } from "../../../Geomtry/VoxelGeometryBuilder";
+import {
+  addVoxelQuad,
+  VoxelGeometryBuilder,
+} from "../../../Geomtry/VoxelGeometryBuilder";
 
 import { GeoemtryNode } from "../GeometryNode";
 import {
@@ -12,13 +15,14 @@ import {
   shouldCauseFlip,
 } from "../../Common/Calc/CalcConstants";
 
-import { VoxelRelativeCubeIndexPositionMap } from "../../../../Models/Indexing/VoxelRelativeCubeIndex";
+import { VoxelRelativeCubeIndexPositionMap } from "../../../../Voxels/Models/Indexing/VoxelRelativeCubeIndex";
 import {
   QuadVoxelGometryArgs,
   QuadVoxelGometryInputs,
-} from "../../../../Models/Input/QuadVoxelGometryInputs";
+} from "../../../../Voxels/Models/Input/QuadVoxelGometryInputs";
 import { GetQuadGeometryData } from "../../Common/QuadGeometryNode";
 import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData";
+import { VoxelModelConstructorRegister } from "../../../Models/VoxelModelConstructorRegister";
 
 const ArgIndexes = QuadVoxelGometryInputs.ArgIndexes;
 
@@ -35,6 +39,8 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
   closestFace: VoxelFaces;
   lightData = new VoxelLightData();
 
+  trueFaceIndex: number;
+
   init(): void {
     this.faceCount = 6;
     this.vertexCount = this.faceCount * 4;
@@ -47,19 +53,15 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
     this.closestFace = closestFace;
   }
   isExposed() {
-    const trueFaceIndex = this.faceIndex;
-    const faceIndexes = this.geomtry.faceCullMap![trueFaceIndex];
+    const faceIndexes =
+      VoxelModelConstructorRegister.faceCullMap![this.trueFaceIndex];
     if (!faceIndexes) return true;
 
     const tool = this.builder;
 
-    for (
-      let positionIndex = 0;
-      positionIndex < faceIndexes.length;
-      positionIndex++
-    ) {
-      const currentIndex = faceIndexes[positionIndex];
-      const p = VoxelRelativeCubeIndexPositionMap[currentIndex];
+    for (let i = 0; i < faceIndexes.length; i++) {
+      const directionIndex = faceIndexes[i];
+      const p = VoxelRelativeCubeIndexPositionMap[directionIndex];
       const hashed = this.builder.space.getHash(
         tool.nVoxel,
         tool.position.x + p[0],
@@ -73,13 +75,12 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
 
       if (offsetBaseGometry) {
         for (let i = 0; i < offsetBaseGometry.length; i++) {
-          const faceIndex = this.geomtry.cullIndex.getValue(
-            offsetBaseGometry[i],
-            currentIndex,
-            trueFaceIndex
-          );
           if (
-            faceIndex > -1 &&
+            VoxelModelConstructorRegister.faceCullIndex.getValue(
+              offsetBaseGometry[i],
+              directionIndex,
+              this.trueFaceIndex
+            ) == 1 /* &&
             !this.builder
               .space.getConstructor(hashed)
               ?.isShapeStateFaceTransparent(
@@ -87,7 +88,7 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
                 this.builder.space.stateCache[hashed],
                 offsetBaseGometry[i],
                 faceIndex
-              )
+              ) */
           ) {
             return false;
           }
@@ -98,21 +99,20 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
       for (let i = 0; i < offsetConditonalGeometry.length; i++) {
         const cond = offsetConditonalGeometry[i];
         for (let k = 0; k < cond.length; k++) {
-          const faceIndex = this.geomtry.cullIndex.getValue(
-            cond[k],
-            currentIndex,
-            trueFaceIndex
-          );
           if (
-            faceIndex > -1 &&
-            !this.builder
-              .space.getConstructor(hashed)
+            VoxelModelConstructorRegister.faceCullIndex.getValue(
+              cond[k],
+              directionIndex,
+              this.trueFaceIndex
+            ) == 1 /* &&
+            !this.builder.space
+              .getConstructor(hashed)
               ?.isCondtionalStateFaceTransparent(
                 this.builder.space.modCache[hashed],
                 this.builder.space.stateCache[hashed],
                 cond[i],
                 faceIndex
-              )
+              ) */
           )
             return false;
         }
@@ -141,9 +141,8 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
 
       if (noAO) continue;
 
-      const trueVertexIndex = this.vertexIndex + 4 + v;
-
-      const aoIndexes = this.geomtry.vertexHitMap![trueVertexIndex];
+      const aoIndexes =
+        VoxelModelConstructorRegister.vertexHitMap![this.trueFaceIndex][v];
 
       if (!aoIndexes) continue;
 
@@ -174,10 +173,11 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
           length = baseGeo.length;
           for (let geoIndex = 0; geoIndex < length; geoIndex++) {
             if (
-              this.geomtry.aoIndex.getValue(
+              VoxelModelConstructorRegister.aoIndex.getValue(
                 baseGeo[geoIndex],
                 currentIndex,
-                trueVertexIndex
+                this.trueFaceIndex,
+                v
               )
             ) {
               worldAO.vertices[v] = 1;
@@ -196,10 +196,11 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
           const condiotnalength = conditonalGeo[condtionsIndex].length;
           for (let geoIndex = 0; geoIndex < condiotnalength; geoIndex++) {
             if (
-              this.geomtry.aoIndex.getValue(
+              VoxelModelConstructorRegister.aoIndex.getValue(
                 conditonalGeo[condtionsIndex][geoIndex],
                 currentIndex,
-                trueVertexIndex
+                this.trueFaceIndex,
+                v
               )
             ) {
               worldAO.vertices[v] = 1;

@@ -1,5 +1,5 @@
-import { VoxelFaceNameArray } from "../../Math";
-import { StringPalette } from "../../Util/StringPalette";
+import { VoxelFaceNameArray } from "../../../Math";
+import { StringPalette } from "../../../Util/StringPalette";
 import {
   VoxelGeometryData,
   VoxelGeometryLinkData,
@@ -9,7 +9,7 @@ import {
 import { VoxelRuleGeometry } from "./Classes/VoxelRulesGeometry";
 import { VoxelRulesModoel } from "./Classes/VoxelRulesModel";
 import { Vec4Array } from "@amodx/math";
-import { QuadUVData } from "../../Mesher/Geomtry/Geometry.types";
+import { QuadUVData } from "../../../Mesher/Geomtry/Geometry.types";
 const addGeo = (
   model: VoxelModelData,
   stateId: string,

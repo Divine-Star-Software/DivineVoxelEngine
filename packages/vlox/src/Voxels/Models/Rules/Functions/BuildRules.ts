@@ -1,11 +1,12 @@
-import { OcclusionFace, OcclusionFlatQuadFace } from "../Classes/OcclusionFace";
-import { VoxelRuleGeometry } from "../Classes/VoxelRulesGeometry";
+import { IOcclusionFace } from "../Classes/OcclusionFace";
 import { VoxelRelativeCubeIndex } from "../../Indexing/VoxelRelativeCubeIndex";
 import { Vec3Array, Vector3Like } from "@amodx/math";
-import { StringPalette } from "../../../Util/StringPalette";
-import { VoxelAOResultsIndex } from "../../Indexing/VoxelAOResultsIndex";
+import { StringPalette } from "../../../../Util/StringPalette";
 import { VoxelModelRuleBuilderRegister } from "../VoxelModelRuleBuilderRegister";
-import { VoxelFaceCullResultsIndex } from "../../Indexing/VoxelFaceCullResultsIndex";
+import { OcclusionFaceRegister } from "../Classes/OcclusionFaceRegister";
+import { AOOcclusionFaceIndex } from "../../Indexing/AOOcclusionFaceIndex";
+import { CulledOcclusionFaceIndex } from "../../Indexing/CulledOcclusionFaceIndex";
+import { OcclusionQuadFace } from "../Classes/OcclusionQuadFace";
 
 class OcculsionBox {
   constructor(
@@ -121,7 +122,7 @@ function projectionsOverlap(
   return !(max1 < min2 || max2 < min1);
 }
 
-function doesBoxIntersectFace(quad: OcclusionFace): boolean {
+function doesBoxIntersectFace(quad: IOcclusionFace): boolean {
   const quadPoints = quad.points;
 
   const quadNormal = quad.normal;
@@ -139,114 +140,102 @@ function doesBoxIntersectFace(quad: OcclusionFace): boolean {
   return true;
 }
 
-export function BuildRules(main: VoxelRuleGeometry, geoPalette: StringPalette) {
-  main.occlusionPlane.setOffset(0, 0, 0);
+export function BuildRules(geoPalette: StringPalette) {
   const faceCullMap: number[][] = [];
-  for (let i = 0; i < main.faceCount; i++) {
-    faceCullMap[i] = [];
-  }
-  const vertexHitMap: number[][] = [];
-  for (let i = 0; i < main.vertexCount; i++) {
-    vertexHitMap[i] = [];
-  }
-  const maxIndex = VoxelRelativeCubeIndex.flatIndex.size;
+  const vertexHitMap: number[][][] = [];
+  const cubeIndexSize = VoxelRelativeCubeIndex.flatIndex.size;
+  const totalFaces = OcclusionFaceRegister.faces.size;
+  const totalAOReusltsSize = totalFaces * 4 * cubeIndexSize * geoPalette.size;
 
-  const totalAOReusltsSize = main.vertexCount * maxIndex;
-  const aoRulesBuffer = new SharedArrayBuffer(
-    totalAOReusltsSize * (geoPalette.size + 1)
-  );
-
-  const aoIndex = new VoxelAOResultsIndex({
-    buffer: aoRulesBuffer,
-    vertexByteCount: main.vertexCount,
+  const aoIndex = new AOOcclusionFaceIndex({
+    buffer: new SharedArrayBuffer(Math.ceil(totalAOReusltsSize / 8)),
+    totalFaces,
+  });
+  const cullIndexResultsSize = totalFaces * cubeIndexSize * geoPalette.size;
+  const cullIndex = new CulledOcclusionFaceIndex({
+    buffer: new SharedArrayBuffer(Math.ceil(cullIndexResultsSize / 8)),
+    totalFaces,
   });
 
-  const cullIndex = new VoxelFaceCullResultsIndex({
-    buffer: new SharedArrayBuffer(
-      main.faceCount * 2 * maxIndex * (geoPalette.size + 1)
-    ),
+  const faces = OcclusionFaceRegister.faces._palette;
 
-    faceByteCount: main.faceCount,
-  });
+  const currentQuadFace = new OcclusionQuadFace();
+  const otherQuadFace = new OcclusionQuadFace();
 
-  for (
-    let otherNumberId = 0;
-    otherNumberId < geoPalette.size;
-    otherNumberId++
-  ) {
-    let other = VoxelModelRuleBuilderRegister.geometry.get(
-      geoPalette._palette[otherNumberId]
-    )!;
-    if (other.data.ogData.doNotBuildRules !== undefined) continue;
-    if (other.id == main.id) other = main.clone();
+  for (let faceIndex = 0; faceIndex < faces.length; faceIndex++) {
+    const faceData = OcclusionFaceRegister.faceIndex[faceIndex];
+    let currentFace: IOcclusionFace;
+    if (faceData[0] == 0) {
+      currentQuadFace.setPoints(faceData[1]);
+      currentFace = currentQuadFace;
+    } else {
+      throw new Error("");
+    }
+    faceCullMap[faceIndex] = [];
+    vertexHitMap[faceIndex] = [];
+    const facePoints = currentFace.points;
+    const faceNormal = currentFace.normal;
+    for (let gometryId = 0; gometryId < geoPalette.size; gometryId++) {
+      let geomtry = VoxelModelRuleBuilderRegister.geometry.get(
+        geoPalette._palette[gometryId]
+      )!;
+      if (geomtry.data.ogData.doNotBuildRules !== undefined) continue;
+      for (const otherFaceIndex of geomtry.faceIds) {
+        const otherFaceData = OcclusionFaceRegister.faceIndex[otherFaceIndex];
+        let otherFace: IOcclusionFace;
+        if (otherFaceData[0] == 0) {
+          otherQuadFace.setPoints(otherFaceData[1]);
+          otherFace = otherQuadFace;
+        } else {
+          throw new Error("");
+        }
 
-    for (let y = -1; y < 2; y++) {
-      for (let nx = -1; nx < 2; nx++) {
-        for (let nz = -1; nz < 2; nz++) {
-          const directionIndex = VoxelRelativeCubeIndex.getIndex(nx, y, nz);
-          other.occlusionPlane.setOffset(nx, y, nz);
-
-          for (const currentPlane of main.occlusionPlane.faces) {
-            let occuledFaceIndex = -1;
-
-            const points = currentPlane.points;
-            const normal = currentPlane.normal;
-            for (const otherPlane of other.occlusionPlane.faces) {
-              if (
-                otherPlane.parentId == currentPlane.parentId &&
-                currentPlane.nodeId == otherPlane.nodeId &&
-                nx == 0 &&
-                y == 0 &&
-                nz == 0
-              )
-                continue;
-
-              if (otherPlane.doesCoverFace(currentPlane)) {
-                occuledFaceIndex = otherPlane.faceCount;
-              }
   
-              if (
-                Vector3Like.EqualsArray(otherPlane.normal, currentPlane.normal)
-              )
+        for (let y = -1; y < 2; y++) {
+          for (let x = -1; x < 2; x++) {
+            for (let z = -1; z < 2; z++) {
+        
+              if (faceIndex == otherFaceIndex && x == 0 && y == 0 && z == 0)
                 continue;
-       
-              for (let v = 0; v < points.length; v++) {
-                updateOcculsionBox(points[v], normal);
-                const trueVertexIndex = currentPlane.vertexCount + v;
+              const directionIndex = VoxelRelativeCubeIndex.getIndex(x, y, z);
+      
+              otherQuadFace.setOffset(x, y, z);
 
-                if (doesBoxIntersectFace(otherPlane)) {
-           
-                  aoIndex.setValue(
-                    otherNumberId,
-                    directionIndex,
-                    trueVertexIndex,
-                    1
-                  );
-                  if (!vertexHitMap[trueVertexIndex].includes(directionIndex))
-                    vertexHitMap[trueVertexIndex].push(directionIndex);
+              if (otherFace.doesCoverFace(currentFace)) {
+                cullIndex.setValue(gometryId, directionIndex, faceIndex, 1);
+                if (!faceCullMap[faceIndex].includes(directionIndex)) {
+                  faceCullMap[faceIndex].push(directionIndex);
+                }
+              }
+
+              if (Vector3Like.EqualsArray(otherFace.normal,faceNormal))
+                continue;
+
+              for (let v = 0; v < facePoints.length; v++) {
+                updateOcculsionBox(facePoints[v], faceNormal);
+                vertexHitMap[faceIndex][v] ??= [];
+    
+                if (doesBoxIntersectFace(otherFace)) {
+               
+                  aoIndex.setValue(gometryId, directionIndex, faceIndex, v, 1);
+            
+                  if (!vertexHitMap[faceIndex][v].includes(directionIndex)) {
+                    vertexHitMap[faceIndex][v].push(directionIndex);
+                  }
                 }
               }
             }
-
-            cullIndex.setValue(
-              otherNumberId,
-              directionIndex,
-              currentPlane.faceCount,
-              occuledFaceIndex
-            );
-            if (occuledFaceIndex > -1) {
-              if (!faceCullMap[currentPlane.faceCount].includes(directionIndex))
-                faceCullMap[currentPlane.faceCount].push(directionIndex);
-            }
           }
         }
+
+
       }
     }
   }
 
   return {
-    aoIndex: aoIndex.getData(),
-    cullIndex: cullIndex.getData(),
+    aoIndex: aoIndex.toJSON(),
+    faceCullIndex: cullIndex.toJSON(),
     faceCullMap,
     vertexHitMap,
   };

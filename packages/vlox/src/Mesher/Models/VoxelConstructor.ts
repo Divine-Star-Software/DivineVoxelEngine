@@ -2,11 +2,11 @@ import { VoxelModelBuilder } from "./VoxelModelBuilder";
 import {
   CompiledVoxelModelInputData,
   CompiledVoxelModelData,
-} from "../../Voxels/Types/VoxelModelCompiledData.types";
+} from "../../Voxels/Models/CompiledVoxelModel.types";
 import { VoxelModelConstructorRegister } from "./VoxelModelConstructorRegister";
 import { StateSchema } from "../../Voxels/State/Schema/StateSchema";
 import { StateTreeReader } from "../../Voxels/State/StateTreeReader";
-import { VoxelFaceTransparentResultsIndex } from "../../Models/Indexing/VoxelFaceTransparentResultsIndex";
+import { VoxelFaceTransparentResultsIndex } from "../../Voxels/Models/Indexing/VoxelFaceTransparentResultsIndex";
 import { VoxelModelEffect } from "./VoxelModelEffect";
 import { CondtionalTreeReader } from "../../Voxels/State/CondiotnalTreeReader";
 
@@ -41,11 +41,7 @@ export class VoxelConstructor {
       voxleData.transparentFaceIndex
     );
     this.schema = new StateSchema(data.schema);
-    this.stateTree = new StateTreeReader(
-      this.schema,
-      0,
-      data.stateTree
-    );
+    this.stateTree = new StateTreeReader(this.schema, 0, data.stateTree);
 
     this.condtioanlShapeStateTree = new CondtionalTreeReader(
       this.schema,
@@ -107,6 +103,7 @@ export class VoxelConstructor {
       builder.position.z
     );
 
+
     const treeState = builder.space!.stateCache[hashed];
     const modState = builder.space!!.modCache[hashed];
 
@@ -162,12 +159,12 @@ export class VoxelConstructor {
       }
     }
 
-   this.effects.addEffects(
+    this.effects.addEffects(
       builder.voxel.getState(),
       builder.origin,
       builder.effects
     );
- 
+
     builder.clearCalculatedData();
 
     return added;

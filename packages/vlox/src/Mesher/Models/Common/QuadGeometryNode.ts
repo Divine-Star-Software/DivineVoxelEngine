@@ -1,6 +1,6 @@
 import { Vec3Array, Vector3Like } from "@amodx/math";
 import { VoxelFaces } from "../../../Math";
-import { VoxelQuadGeometryNode } from "../../../Models/VoxelModel.types";
+import { VoxelQuadGeometryNode } from "../../../Voxels/Models/VoxelModel.types";
 
 import { Quad } from "../../Geomtry/Primitives/Quad"
 
@@ -9,8 +9,8 @@ import {
   closestUnitNormal,
 } from "./Calc/CalcConstants";
 
-import { VoxelGeometryTransform } from "../../../Voxels/Types/VoxelModelCompiledData.types";
-import { TransformQuad } from "../../../Models/Shared/Transform";
+import { VoxelGeometryTransform } from "../../../Voxels/Models/CompiledVoxelModel.types";
+import { TransformQuad } from "../../../Voxels/Models/Shared/Transform";
 import { GetBounds } from "./BoundsFunctions";
 
 export function GetQuadGeometryData(

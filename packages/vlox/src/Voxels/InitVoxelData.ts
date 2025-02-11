@@ -14,7 +14,7 @@ import {
   fencePost,
   leverGeometry,
   leverModel,
-} from "../Models/Examples";
+} from "./Models/Examples";
 import {
   cube,
   halfDownCube,
@@ -24,41 +24,37 @@ import {
   quaterCubeWestEast,
   halfSouthCube,
   halfWestCube,
-} from "../Models/Defaults/CubeVoxelGeometry";
+} from "./Models/Defaults/CubeVoxelGeometry";
 import {
   orientedCube,
   pillarCube,
   simpleCube,
   simpleHalfCube,
-} from "../Models/Defaults/CubeVoxelModels";
+} from "./Models/Defaults/CubeVoxelModels";
 import {
   diagonalFlatPanelEastWest,
   diagonalFlatPanelWestEast,
   thinPanelDown,
   thinPanelSouth,
   thinPanelWest,
-} from "../Models/Defaults/PanelVoxelGeometry";
-import { stair } from "../Models/Defaults/StairVoxelModel";
+} from "./Models/Defaults/PanelVoxelGeometry";
+import { stair } from "./Models/Defaults/StairVoxelModel";
 import {
   liquidGeometry,
   liquidModel,
-} from "../Models/Defaults/LiquidVoxelModel";
-import { VoxelModelRuleBuilderRegister } from "../Models/Rules/VoxelModelRuleBuilderRegister";
-import { VoxelGeometryData, VoxelModelData } from "../Models/VoxelModel.types";
+} from "./Models/Defaults/LiquidVoxelModel";
+import { VoxelModelRuleBuilderRegister } from "./Models/Rules/VoxelModelRuleBuilderRegister";
+import { VoxelGeometryData, VoxelModelData } from "./Models/VoxelModel.types";
 import { VoxelData } from "./Types/Voxel.types";
 
-import { BuildRules } from "../Models/Rules/Functions/BuildRules";
 import { BuildStateData } from "./Functions/BuildStateData";
-import { BuildFinalInputs } from "../Models/Rules/Functions/BuildFinalInputs";
-import {
-  CompiledVoxelData,
-  FinalCompiledVoxelModelData,
-} from "./Types/VoxelModelCompiledData.types";
+import { BuildFinalInputs } from "./Models/Rules/Functions/BuildFinalInputs";
+import { CompiledVoxelData } from "./Types/VoxelModelCompiledData.types";
 import { SchemaRegister } from "../Voxels/State/SchemaRegister";
 import {
   simpleCrossedPannel,
   simpleThinPannel,
-} from "../Models/Defaults/PanelVoxelModels";
+} from "./Models/Defaults/PanelVoxelModels";
 import { VoxelTagStates } from "./Data/VoxelTagStates";
 import { VoxelIndex } from "../Voxels/Indexes/VoxelIndex";
 import { CacheManager } from "../Cache/CacheManager";
@@ -70,6 +66,8 @@ import { BuildTagAndPaletteData } from "./Functions/BuildTagData";
 import { VoxelPalettesRegister } from "./Data/VoxelPalettesRegister";
 import { VoxelLogicRegister } from "./Logic/VoxelLogicRegister";
 import { BuildPaletteData } from "./Functions/BuildPaletteData";
+import { BuildRules } from "./Models/Rules/Functions/BuildRules";
+import { FinalCompiledVoxelModelData } from "./Models/CompiledVoxelModel.types";
 
 export type InitVoxelDataProps = {
   geometry?: VoxelGeometryData[];
@@ -152,15 +150,6 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
 
     ...(data.models || [])
   );
-
-  const syncData: FinalCompiledVoxelModelData = {
-    geometryPalette: VoxelModelRuleBuilderRegister.geometryPalette._palette,
-    geometry: [],
-    models: [],
-    voxels: [],
-    tagState: [],
-  };
-
   for (const voxel of data.voxels) {
     const voxelData = voxel.properties["dve_model_data"];
     if (!voxelData) continue;
@@ -171,6 +160,15 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
     model!.voxels.set(voxel.id, voxelData);
   }
 
+  const syncData: FinalCompiledVoxelModelData = {
+    geometryPalette: VoxelModelRuleBuilderRegister.geometryPalette._palette,
+    ...BuildRules(VoxelModelRuleBuilderRegister.geometryPalette),
+    geometry: [],
+    models: [],
+    voxels: [],
+    tagState: [],
+  };
+
   for (const [mainKey, mainGeo] of VoxelModelRuleBuilderRegister.geometry) {
     if (mainGeo.data.ogData.doNotBuildRules) {
       syncData.geometry.push({
@@ -179,16 +177,13 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
         ruleless: true,
       });
       continue;
+    } else {
+      syncData.geometry.push({
+        id: mainKey,
+        nodes: mainGeo.data.nodes,
+        faceIndexes: mainGeo.faceIds,
+      });
     }
-    const output = BuildRules(
-      mainGeo,
-      VoxelModelRuleBuilderRegister.geometryPalette
-    );
-    syncData.geometry.push({
-      id: mainKey,
-      nodes: mainGeo.data.nodes,
-      ...output,
-    });
   }
 
   for (const [mainKey, model] of VoxelModelRuleBuilderRegister.models) {
@@ -210,7 +205,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
       condiotnalStatements: stateData.condiotnalStatements,
       condiotnalStateMap: stateData.condiotnalStatePalette,
       condiotnalShapeStateMap: stateData.condiotanlStatePalette,
-      condiotnalShapeStateGeometryMap: stateData.condiotanlGeometryStatePalette,
+      condiotanlGeometryStatePalette: stateData.condiotanlGeometryStatePalette,
       stateRelativeGeometryMap: stateData.stateRelativeGeometryMap,
       relativeGeometryByteIndexMap: stateData.relativeGeometryByteIndexMap,
       condiotnalShapeStateRelativeGeometryMap:
@@ -396,7 +391,6 @@ export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
   BuildPaletteData({ models });
   voxelData.data.palette = VoxelPalettesRegister.voxels;
   voxelData.data.record = VoxelPalettesRegister.voxelRecord;
-
 
   for (const id in voxelData.data.logic) {
     VoxelLogicRegister.register(id, voxelData.data.logic[id]);

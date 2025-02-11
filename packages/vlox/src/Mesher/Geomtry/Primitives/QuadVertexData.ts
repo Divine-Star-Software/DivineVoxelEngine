@@ -239,6 +239,15 @@ export class QuadVector3VertexData extends QuadVertexData<Vector3Like> {
       Vector3Like.Clone(this.vertices[QuadVerticies.BottomRight]),
     ]);
   }
+
+  toVec3Array(): [Vec3Array, Vec3Array, Vec3Array, Vec3Array] {
+    return [
+      Vector3Like.ToArray(this.vertices[0]),
+      Vector3Like.ToArray(this.vertices[1]),
+      Vector3Like.ToArray(this.vertices[2]),
+      Vector3Like.ToArray(this.vertices[3]),
+    ];
+  }
 }
 
 export class QuadVector2VertexData extends QuadVertexData<Vector2Like> {

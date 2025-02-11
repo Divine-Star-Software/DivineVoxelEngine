@@ -44,20 +44,32 @@ export function addVoxelQuad(
   const topRightVoxelData = VoxelShaderData.createAttribute(
     worldLight.vertices[QuadVerticies.TopRight],
     worldAO.vertices[QuadVerticies.TopRight],
+    worldAO.vertices[QuadVerticies.TopLeft],
+    worldAO.vertices[QuadVerticies.BottomLeft],
+    worldAO.vertices[QuadVerticies.BottomRight],
     animData.vertices[QuadVerticies.TopRight]
   );
   const topLeftVoxelData = VoxelShaderData.createAttribute(
     worldLight.vertices[QuadVerticies.TopLeft],
+    worldAO.vertices[QuadVerticies.TopRight],
     worldAO.vertices[QuadVerticies.TopLeft],
+    worldAO.vertices[QuadVerticies.BottomLeft],
+    worldAO.vertices[QuadVerticies.BottomRight],
     animData.vertices[QuadVerticies.TopLeft]
   );
   const bottomLeftVoxelData = VoxelShaderData.createAttribute(
     worldLight.vertices[QuadVerticies.BottomLeft],
+    worldAO.vertices[QuadVerticies.TopRight],
+    worldAO.vertices[QuadVerticies.TopLeft],
     worldAO.vertices[QuadVerticies.BottomLeft],
+    worldAO.vertices[QuadVerticies.BottomRight],
     animData.vertices[QuadVerticies.BottomLeft]
   );
   const bottomRightVoxelData = VoxelShaderData.createAttribute(
     worldLight.vertices[QuadVerticies.BottomRight],
+    worldAO.vertices[QuadVerticies.TopRight],
+    worldAO.vertices[QuadVerticies.TopLeft],
+    worldAO.vertices[QuadVerticies.BottomLeft],
     worldAO.vertices[QuadVerticies.BottomRight],
     animData.vertices[QuadVerticies.BottomRight]
   );
