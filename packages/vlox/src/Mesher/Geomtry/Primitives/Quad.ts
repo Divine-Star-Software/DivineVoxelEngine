@@ -243,9 +243,8 @@ export class Quad {
   positions = new QuadVector3VertexData();
   normals = new QuadVector3VertexData();
   uvs = new QuadVector2VertexData();
-  flip = false;
+
   doubleSided = false;
-  orientation: 0 | 1 = 0;
 
   constructor(data: {
     positions?:
@@ -258,7 +257,6 @@ export class Quad {
     if (data.positions) this.setPositions(data.positions);
     if (data.uvs) this.setUVs(data.uvs);
     if (data.doubleSided) this.doubleSided = data.doubleSided;
-    if (data.orientation !== undefined) this.orientation = data.orientation;
   }
 
   setUVs([v1, v2, v3, v4]: [

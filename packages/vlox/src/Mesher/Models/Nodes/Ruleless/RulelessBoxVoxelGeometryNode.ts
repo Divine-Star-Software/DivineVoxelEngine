@@ -104,7 +104,7 @@ export class RulelessBoxVoxelGeometryNode extends GeoemtryNode<
         this.determineShading(face);
         const faceArgs = args[face];
         const quad = this.quads[face];
-        quad.flip = this.shouldFlip() || faceArgs[ArgIndexes.Fliped];
+
         tool.vars.textureIndex = faceArgs[ArgIndexes.Texture];
 
         const uvs = faceArgs[ArgIndexes.UVs];

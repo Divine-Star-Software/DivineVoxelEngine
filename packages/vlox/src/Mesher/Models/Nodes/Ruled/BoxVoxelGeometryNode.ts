@@ -227,36 +227,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
       }
     }
   }
-  shouldFlip() {
-    return false;
-    const worldAO = this.builder.vars.ao;
-    if (
-      shouldCauseFlip(
-        worldAO.vertices[0],
-        worldAO.vertices[1],
-        worldAO.vertices[2],
-        worldAO.vertices[3]
-      ) &&
-      this._wasAOShaded
-    )
-      return true;
-    if (this._wasAOShaded) return false;
-    const worldLight = this.builder.vars.light;
-    return (
-      shouldCauseFlip(
-        this.lightData.getS(worldLight.vertices[0]),
-        this.lightData.getS(worldLight.vertices[1]),
-        this.lightData.getS(worldLight.vertices[2]),
-        this.lightData.getS(worldLight.vertices[3])
-      ) ||
-      shouldCauseFlip(
-        this.lightData.sumRGB(worldLight.vertices[0]),
-        this.lightData.sumRGB(worldLight.vertices[1]),
-        this.lightData.sumRGB(worldLight.vertices[2]),
-        this.lightData.sumRGB(worldLight.vertices[3])
-      )
-    );
-  }
+
 
   add(args: BoxVoxelGometryArgs) {
     let added = false;
@@ -271,7 +242,6 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
         this.determineShading(face);
         const faceArgs = args[face];
 
-        quad.flip = this.shouldFlip() || faceArgs[ArgIndexes.Fliped];
 
         tool.vars.textureIndex = faceArgs[ArgIndexes.Texture];
 

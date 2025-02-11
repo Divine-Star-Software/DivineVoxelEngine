@@ -132,7 +132,7 @@ export function App() {
 
       camera.setTarget(new Vector3(0, 0, 0));
 
-      camera.speed = 1;
+      camera.speed = 10;
       camera.maxZ = 500;
       camera.minZ = 0.01;
       camera.fov = 1.8;

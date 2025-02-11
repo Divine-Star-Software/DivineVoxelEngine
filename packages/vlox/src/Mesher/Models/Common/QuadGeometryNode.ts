@@ -18,7 +18,6 @@ export function GetQuadGeometryData(
   transform: VoxelGeometryTransform
 ) {
   const quad = TransformQuad(Quad.Create(data.points), transform);
-  quad.orientation = 0;
 
   const normals = quad.normals.getAsArray();
   const averageNormal: Vec3Array = [0, 0, 0];

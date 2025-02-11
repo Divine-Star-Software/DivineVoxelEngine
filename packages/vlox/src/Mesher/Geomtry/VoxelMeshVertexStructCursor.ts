@@ -79,14 +79,47 @@ export class VoxelMeshVertexStructCursor {
   }
 
   // voxel data
-  get voxelData() {
+  get voxelDataX() {
     return this.data[
       this.trueIndex + VoxelMeshVertexStructCursor.VoxelDataOFfset
     ];
   }
-  set voxelData(value: number) {
+  set voxelDataX(value: number) {
     this.data[this.trueIndex + VoxelMeshVertexStructCursor.VoxelDataOFfset] =
       value;
+  }
+
+  get voxelDataY() {
+    return this.data[
+      this.trueIndex + VoxelMeshVertexStructCursor.VoxelDataOFfset + 1
+    ];
+  }
+  set voxelDataY(value: number) {
+    this.data[
+      this.trueIndex + VoxelMeshVertexStructCursor.VoxelDataOFfset + 1
+    ] = value;
+  }
+
+  get voxelDataZ() {
+    return this.data[
+      this.trueIndex + VoxelMeshVertexStructCursor.VoxelDataOFfset + 2
+    ];
+  }
+  set voxelDataZ(value: number) {
+    this.data[
+      this.trueIndex + VoxelMeshVertexStructCursor.VoxelDataOFfset + 2
+    ] = value;
+  }
+
+  get voxelDataW() {
+    return this.data[
+      this.trueIndex + VoxelMeshVertexStructCursor.VoxelDataOFfset + 3
+    ];
+  }
+  set voxelDataW(value: number) {
+    this.data[
+      this.trueIndex + VoxelMeshVertexStructCursor.VoxelDataOFfset + 3
+    ] = value;
   }
 
   // texture index
@@ -185,7 +218,12 @@ export class VoxelMeshVertexStructCursor {
     return {
       position: [this.positionX, this.positionY, this.positionZ],
       normal: [this.normalX, this.normalY, this.normalZ],
-      voxelData: this.voxelData,
+      voxelData: [
+        this.voxelDataX,
+        this.voxelDataY,
+        this.voxelDataZ,
+        this.voxelDataW,
+      ],
       textureIndex: [
         this.textureIndexX,
         this.textureIndexY,

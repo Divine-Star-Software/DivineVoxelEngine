@@ -104,7 +104,7 @@ export class RulelessQuadVoxelGeometryNode extends GeoemtryNode<
     this.determineShading();
 
     const quad = this.quad;
-    quad.flip = this.shouldFlip() || args[ArgIndexes.Fliped];
+
     tool.vars.textureIndex = args[ArgIndexes.Texture];
 
     quad.doubleSided = args[ArgIndexes.DoubleSided];

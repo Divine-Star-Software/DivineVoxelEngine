@@ -30,7 +30,7 @@ export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
   }
   if (genOne) {
  //   WorldGen.flatColumn(0, 0);
-    //  WorldGen.pyramidColumn(0, 0);
+ PerlinGen.generateTest(0, 0,true);
     // brush.setId("dve_dream_leaves").setXYZ(0, 1, -2).paint();
     // brush.setId("dve_dread_stone").setXYZ(0, 1, -1).paint();
 
@@ -39,7 +39,7 @@ export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
     for (let x = startX; x < endX; x += 16) {
       for (let z = startZ; z < endZ; z += 16) {
         //   WorldGen.flatColumn(x,z);
-        PerlinGen.generateTest(x, z);
+        PerlinGen.generateTest(x, z,true);
         /*        if (Math.random() > 0.5) {
           WorldGen.pyramidColumn(x, z);
           continue;

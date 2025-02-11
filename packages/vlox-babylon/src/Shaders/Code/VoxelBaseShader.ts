@@ -20,11 +20,15 @@ const uint ao1Index = 16u;
 const uint ao2Index = 18u;
 const uint ao3Index = 20u;
 const uint ao4Index = 22u;
-const uint animIndex = 24u;
+const uint animIndex = 16u;
 const float aoValue =  pow( .65, 2.2);
 const uint textureIndexMask = uint(0xffff);
 const uint mainTexutreIndex =uint(0);
 const uint secondaryTextureIndex = uint(0xf + 0x1);
+
+
+const float aoArray[5] = float[5](1., pow( 1. - .2 , 2.2), pow( 1. - .2 * 2., 2.2), pow( 1. - .2 * 3. , 2.2), pow( 1. - .2 * 4. , 2.2)); 
+
         
 
 
@@ -60,7 +64,7 @@ in float indices;
 in vec3 textureIndex;
 in vec2 uv;
 in vec3 colors;
-in float voxelData;
+in vec4 voxelData;
 
 //varying
 out mat4 VOXEL;
@@ -72,7 +76,10 @@ out vec4 vColors;
 out float vFlow;
 out vec3 vUV;
 out vec4 vOverlayTextureIndex;
-out vec3 vLight;
+out vec3 vLight1;
+out vec3 vLight2;
+out vec3 vLight3;
+out vec3 vLight4;
 out vec4 vAO;
 
 
@@ -82,6 +89,21 @@ float getTextureIndex(int index) {
   ivec2( index % dve_voxel_animation_size,  index / dve_voxel_animation_size), 0).r;
   if(tInt == 0u) return float(index);
   return float(tInt);
+}
+
+
+vec3 getLightValue(uint value) {
+ return  vec3(
+    max(
+((
+    //rgb light
+    vec3(lightGradient[(value >> rVLIndex) & lightMask], lightGradient[(value >> gVLIndex) & lightMask], lightGradient[(value >> bVLIndex) & lightMask]) * doRGB) 
+    //sun light
+    + (lightGradient[(value >> sVLIndex) & lightMask] * doSun * sunLightLevel)), 
+    //base light min
+    baseLevel
+)
+);
 }
 
 
@@ -100,58 +122,26 @@ ${SharedShaders.FBMNoiseFunctions}
   void main(void) {
 
 mat4 vData;
-uint vd = uint(voxelData);
-float sVL =  lightGradient[(vd >> sVLIndex) & lightMask];
-uint redValue = (vd >> rVLIndex) & lightMask;
-uint greenValue = (vd >> gVLIndex) & lightMask;
-uint blueValue = (vd >> bVLIndex) & lightMask;
 
-vLight = vec3(max(((vec3(lightGradient[redValue], lightGradient[greenValue], lightGradient[blueValue]) * doRGB) + (sVL * doSun * sunLightLevel)), baseLevel));
+vLight1 = getLightValue(uint(voxelData.x));
+vLight2 = getLightValue(uint(voxelData.y));
+vLight3 = getLightValue(uint(voxelData.z));
+vLight4 = getLightValue(uint(voxelData.w));
 
-
-float ao1 = float(((aoMask << ao1Index) & vd) >> ao1Index);
-if(ao1 > 0.) {
-    ao1 = pow( 1. - .2 * ao1, 2.2);
-} else {
-    ao1 = 1.;
-}
-vAO.x = ao1;
-float ao2 = float(((aoMask << ao2Index) & vd) >> ao2Index);
-if(ao2 > 0.) {
-    ao2 = pow( 1. - .2 * ao2, 2.2);
-} else {
-    ao2 = 1.;
-}
-vAO.y = ao2;
-
-float ao3 = float(((aoMask << ao3Index) & vd) >> ao3Index);
-if(ao3 > 0.) {
-    ao3 = pow( 1. - .2 * ao3, 2.2);
-} else {
-    ao3 = 1.;
-}
-vAO.z = ao3;
-
-float ao4 = float(((aoMask << ao4Index) & vd) >> ao4Index);
-if(ao4 > 0.) {
-    ao4 = pow( 1. - .2 * ao4, 2.2);
-} else {
-    ao4 = 1.;
-}
-vAO.w = ao4;
-
-
-
-
-float animVL = float(((animMask << animIndex) & vd) >> animIndex);
-    vFlow = 0.;
+uint AO = uint(voxelData.x);
+vAO.x = aoArray[int((AO >> ao1Index) & aoMask)];
+vAO.y = aoArray[int((AO >> ao2Index) & aoMask)];
+vAO.z = aoArray[int((AO >> ao3Index) & aoMask)];
+vAO.w = aoArray[int((AO >> ao4Index) & aoMask)];
+uint Anim = uint(voxelData.y);
+float animVL = float((Anim >> animIndex) & animMask);
+vFlow = 0.;
 if(animVL == 1.) {
     vFlow = -1.;
 }
 if(animVL == 2.) {
     vFlow = 1.;
 }
-
 
 vec4 worldPOSTemp = world * vec4(position, 1.0);
 worldPOS = vec3(worldPOSTemp.x, worldPOSTemp.y, worldPOSTemp.z);
@@ -168,14 +158,10 @@ if(doColor == 1.0) {
 vUV.x = uv.x;
 vUV.y = uv.y;
 vUV.z = getTextureIndex(int(uint(textureIndex.x) & textureIndexMask));
-vOverlayTextureIndex.x = getTextureIndex(
-    int(((textureIndexMask << secondaryTextureIndex) & uint(textureIndex.x)) >> secondaryTextureIndex)
-);
+vOverlayTextureIndex.x = getTextureIndex(int((uint(textureIndex.x) >> secondaryTextureIndex) & textureIndexMask));
 vOverlayTextureIndex.y = getTextureIndex(int(uint(textureIndex.y) & textureIndexMask));
-vOverlayTextureIndex.z = getTextureIndex(  
-    int(((textureIndexMask << secondaryTextureIndex) & uint(textureIndex.y)) >> secondaryTextureIndex)
-);
-vOverlayTextureIndex.w = getTextureIndex( int(uint(textureIndex.z) & textureIndexMask));
+vOverlayTextureIndex.z = getTextureIndex(int((uint(textureIndex.z) >> secondaryTextureIndex) & textureIndexMask));
+vOverlayTextureIndex.w = getTextureIndex(int(uint(textureIndex.z) & textureIndexMask));
 
 #ifdef INSTANCES
 mat4 finalWorld = mat4(world0, world1, world2, world3);
@@ -220,7 +206,7 @@ vec4 rgb = texture(dve_voxel,vec3(vec2(vUV.x,vUV.y + time * .01 * -1. * vFlow),v
   //mix color
   rgb *= vColors;
   //mix light
-  rgb.rgb *=  vLight;
+  rgb.rgb *=  getLight();
 
   vec3 finalColor = doFog(rgb);
 
@@ -258,18 +244,10 @@ vec4 rgb = texture(dve_voxel,vec3(vec2(vUV.x,vUV.y + time * .01 * -1. * vFlow),v
 ${
   doAO
     ? /*glsl */ `
-float topRight     = vAO.x; 
-float topLeft      = vAO.y;
-float bottomLeft   = vAO.z;
-float bottomRight  = vAO.w;
-
-// Interpolate horizontally (u = vUV.x)
-float bottom = mix(bottomLeft, bottomRight, vUV.x);
-float top    = mix(topLeft,    topRight,    vUV.x);
-
-  float ao = mix(bottom, top, vUV.y);
-  rgb.rgb *= ao;
-
+    float top    = mix( vAO.y,    vAO.x,    vUV.x);
+    float bottom = mix( vAO.z,  vAO.w, vUV.x);
+    float ao = mix(bottom, top, vUV.y);
+    rgb.rgb *= ao;
 `
     : ``
 }
@@ -277,15 +255,15 @@ float top    = mix(topLeft,    topRight,    vUV.x);
   //mix color
   rgb *= vColors;
   //mix light
-  rgb.rgb *=  vLight;
+  rgb.rgb *=  getLight();
 
 
 // Then interpolate vertically (v = vUV.y)
 
   vec3 finalColor = doFog(rgb);
- // FragColor = vec4(vec3(1.) * vLight,1.);
+ //FragColor = vec4(vec3(1.) *  getLight(),1.);
 //FragColor = vec4(vec3(1.) *vAO.y,1.);
-// FragColor = vec4(vec3(1.) * ao,1.);
+ //FragColor = vec4(vec3(1.) * ao,1.);
  FragColor = vec4(finalColor.rgb, rgb.a);
 // FragColor = vec4(vUV.xy,0., 1.);
 
@@ -325,13 +303,15 @@ in vec3 worldPOS;
 in float vDistance;
 in vec3 worldPOSNoOrigin;
 in vec3 vNormal;
-in vec3 vLight;
 in vec4 vAO;
 in vec4 vColors;
 in float vFlow;
 in vec3 vUV;
 in vec4 vOverlayTextureIndex;
-
+in vec3 vLight1;
+in vec3 vLight2;
+in vec3 vLight3;
+in vec3 vLight4;
 //functions
 
 ${SharedShaders.FBMNoiseFunctions}
@@ -339,6 +319,12 @@ ${SharedShaders.FBMNoiseFunctions}
 ${SharedShaders.FogFragmentFunctions}
 
 ${top}
+
+vec3 getLight() {
+  vec3 top    = mix( vLight2,    vLight1,    vUV.x);
+  vec3 bottom = mix( vLight3,  vLight4, vUV.x);
+  return mix(bottom, top, vUV.y);
+}
 
 out vec4 FragColor;  
 void main(void) {

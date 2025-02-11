@@ -15,11 +15,11 @@ import {
   VoxelMeshVertexStructCursor,
 } from "./VoxelMeshVertexStructCursor";
 
-const empty: number[] = [];
-const structCursor = new VoxelMeshVertexStructCursor();
-export class VoxelGeometryBuilder {
-
-}
+export class VoxelGeometryBuilder {}
+const vector1ShaderData = Vector4Like.Create();
+const vector2ShaderData = Vector4Like.Create();
+const vector3ShaderData = Vector4Like.Create();
+const vector4ShaderData = Vector4Like.Create();
 
 export function addVoxelQuad(
   tool: VoxelModelBuilder,
@@ -41,213 +41,122 @@ export function addVoxelQuad(
   const topLeftNor = quad.normals.vertices[1];
   const bottomLeftNor = quad.normals.vertices[2];
   const bottomRightNor = quad.normals.vertices[3];
-  const topRightVoxelData = VoxelShaderData.createAttribute(
+  const topRightVoxelData = VoxelShaderData.create(
     worldLight.vertices[QuadVerticies.TopRight],
-    worldAO.vertices[QuadVerticies.TopRight],
-    worldAO.vertices[QuadVerticies.TopLeft],
-    worldAO.vertices[QuadVerticies.BottomLeft],
-    worldAO.vertices[QuadVerticies.BottomRight],
-    animData.vertices[QuadVerticies.TopRight]
-  );
-  const topLeftVoxelData = VoxelShaderData.createAttribute(
     worldLight.vertices[QuadVerticies.TopLeft],
-    worldAO.vertices[QuadVerticies.TopRight],
-    worldAO.vertices[QuadVerticies.TopLeft],
-    worldAO.vertices[QuadVerticies.BottomLeft],
-    worldAO.vertices[QuadVerticies.BottomRight],
-    animData.vertices[QuadVerticies.TopLeft]
-  );
-  const bottomLeftVoxelData = VoxelShaderData.createAttribute(
     worldLight.vertices[QuadVerticies.BottomLeft],
-    worldAO.vertices[QuadVerticies.TopRight],
-    worldAO.vertices[QuadVerticies.TopLeft],
-    worldAO.vertices[QuadVerticies.BottomLeft],
-    worldAO.vertices[QuadVerticies.BottomRight],
-    animData.vertices[QuadVerticies.BottomLeft]
-  );
-  const bottomRightVoxelData = VoxelShaderData.createAttribute(
     worldLight.vertices[QuadVerticies.BottomRight],
     worldAO.vertices[QuadVerticies.TopRight],
     worldAO.vertices[QuadVerticies.TopLeft],
     worldAO.vertices[QuadVerticies.BottomLeft],
     worldAO.vertices[QuadVerticies.BottomRight],
-    animData.vertices[QuadVerticies.BottomRight]
+    animData.vertices[QuadVerticies.TopRight],
+    vector1ShaderData
+  );
+  const topLeftVoxelData = VoxelShaderData.create(
+    worldLight.vertices[QuadVerticies.TopRight],
+    worldLight.vertices[QuadVerticies.TopLeft],
+    worldLight.vertices[QuadVerticies.BottomLeft],
+    worldLight.vertices[QuadVerticies.BottomRight],
+    worldAO.vertices[QuadVerticies.TopRight],
+    worldAO.vertices[QuadVerticies.TopLeft],
+    worldAO.vertices[QuadVerticies.BottomLeft],
+    worldAO.vertices[QuadVerticies.BottomRight],
+    animData.vertices[QuadVerticies.TopLeft],
+    vector2ShaderData
+  );
+  const bottomLeftVoxelData = VoxelShaderData.create(
+    worldLight.vertices[QuadVerticies.TopRight],
+    worldLight.vertices[QuadVerticies.TopLeft],
+    worldLight.vertices[QuadVerticies.BottomLeft],
+    worldLight.vertices[QuadVerticies.BottomRight],
+    worldAO.vertices[QuadVerticies.TopRight],
+    worldAO.vertices[QuadVerticies.TopLeft],
+    worldAO.vertices[QuadVerticies.BottomLeft],
+    worldAO.vertices[QuadVerticies.BottomRight],
+    animData.vertices[QuadVerticies.BottomLeft],
+    vector3ShaderData
+  );
+  const bottomRightVoxelData = VoxelShaderData.create(
+    worldLight.vertices[QuadVerticies.TopRight],
+    worldLight.vertices[QuadVerticies.TopLeft],
+    worldLight.vertices[QuadVerticies.BottomLeft],
+    worldLight.vertices[QuadVerticies.BottomRight],
+    worldAO.vertices[QuadVerticies.TopRight],
+    worldAO.vertices[QuadVerticies.TopLeft],
+    worldAO.vertices[QuadVerticies.BottomLeft],
+    worldAO.vertices[QuadVerticies.BottomRight],
+    animData.vertices[QuadVerticies.BottomRight],
+    vector4ShaderData
   );
   const indices = tool.mesh!.indices;
   let indIndex = tool.mesh.indicieCount;
   let sides = quad.doubleSided ? 2 : 1;
-  const flip = quad.flip;
-  let orientation = quad.orientation;
+
   while (sides--) {
     const baseIndex = tool.mesh.vertexCount;
-    if (!flip) {
-      tool.mesh.buffer.setIndex(baseIndex);
-      structCursor.data = tool.mesh.buffer.currentArray;
-      structCursor.index = tool.mesh.buffer.curentIndex;
-      addVertex(
-        tool.mesh.buffer.curentIndex,
-        tool.mesh.buffer.currentArray,
-        origin,
-        topRightPos,
-        topRightNor,
-        quad.uvs.vertices[QuadVerticies.TopRight],
-        topRightVoxelData,
-        texture,
-        overlayTextures
-      );
-      tool.mesh.buffer.setIndex(baseIndex + 1);
-      structCursor.data = tool.mesh.buffer.currentArray;
-      structCursor.index = tool.mesh.buffer.curentIndex;
-      addVertex(
-        tool.mesh.buffer.curentIndex,
-        tool.mesh.buffer.currentArray,
-        origin,
-        topLeftPos,
-        topLeftNor,
-        quad.uvs.vertices[QuadVerticies.TopLeft],
-        topLeftVoxelData,
-        texture,
-        overlayTextures
-      );
-      tool.mesh.buffer.setIndex(baseIndex + 2);
-      structCursor.data = tool.mesh.buffer.currentArray;
-      structCursor.index = tool.mesh.buffer.curentIndex;
-      addVertex(
-        tool.mesh.buffer.curentIndex,
-        tool.mesh.buffer.currentArray,
-        origin,
-        bottomLeftPos,
-        bottomLeftNor,
-        quad.uvs.vertices[QuadVerticies.BottomLeft],
-        bottomLeftVoxelData,
-        texture,
-        overlayTextures
-      );
-      tool.mesh.buffer.setIndex(baseIndex + 3);
-      structCursor.data = tool.mesh.buffer.currentArray;
-      structCursor.index = tool.mesh.buffer.curentIndex;
-      addVertex(
-        tool.mesh.buffer.curentIndex,
-        tool.mesh.buffer.currentArray,
-        origin,
-        bottomRightPos,
-        bottomRightNor,
-        quad.uvs.vertices[QuadVerticies.BottomRight],
-        bottomRightVoxelData,
-        texture,
-        overlayTextures
-      );
-    }
-    if (flip) {
-      tool.mesh.buffer.setIndex(baseIndex);
-      structCursor.data = tool.mesh.buffer.currentArray;
-      structCursor.index = tool.mesh.buffer.curentIndex;
-      addVertex(
-        tool.mesh.buffer.curentIndex,
-        tool.mesh.buffer.currentArray,
-        origin,
-        topLeftPos,
-        topLeftNor,
-        quad.uvs.vertices[QuadVerticies.TopLeft],
-        topLeftVoxelData,
-        texture,
-        overlayTextures
-      );
-      tool.mesh.buffer.setIndex(baseIndex + 1);
-      structCursor.data = tool.mesh.buffer.currentArray;
-      structCursor.index = tool.mesh.buffer.curentIndex;
-      addVertex(
-        tool.mesh.buffer.curentIndex,
-        tool.mesh.buffer.currentArray,
-        origin,
-        topRightPos,
-        topRightNor,
-        quad.uvs.vertices[QuadVerticies.TopRight],
-        topRightVoxelData,
-        texture,
-        overlayTextures
-      );
-      tool.mesh.buffer.setIndex(baseIndex + 2);
-      structCursor.data = tool.mesh.buffer.currentArray;
-      structCursor.index = tool.mesh.buffer.curentIndex;
-      addVertex(
-        tool.mesh.buffer.curentIndex,
-        tool.mesh.buffer.currentArray,
-        origin,
-        bottomRightPos,
-        bottomRightNor,
-        quad.uvs.vertices[QuadVerticies.BottomRight],
-        bottomRightVoxelData,
-        texture,
-        overlayTextures
-      );
-      tool.mesh.buffer.setIndex(baseIndex + 3);
-      structCursor.data = tool.mesh.buffer.currentArray;
-      structCursor.index = tool.mesh.buffer.curentIndex;
-      addVertex(
-        tool.mesh.buffer.curentIndex,
-        tool.mesh.buffer.currentArray,
-        origin,
-        bottomLeftPos,
-        bottomLeftNor,
-        quad.uvs.vertices[QuadVerticies.BottomLeft],
-        bottomLeftVoxelData,
-        texture,
-        overlayTextures
-      );
-    }
 
-    if (!orientation && !flip) {
-      indices.setIndex(indIndex).currentArray[indices.curentIndex] = baseIndex;
-      indices.setIndex(indIndex + 1).currentArray[indices.curentIndex] =
-        baseIndex + 1;
-      indices.setIndex(indIndex + 2).currentArray[indices.curentIndex] =
-        baseIndex + 2;
-      indices.setIndex(indIndex + 3).currentArray[indices.curentIndex] =
-        baseIndex + 2;
-      indices.setIndex(indIndex + 4).currentArray[indices.curentIndex] =
-        baseIndex + 3;
-      indices.setIndex(indIndex + 5).currentArray[indices.curentIndex] =
-        baseIndex;
-    } else if (!orientation && flip) {
-      indices.setIndex(indIndex).currentArray[indices.curentIndex] = baseIndex;
-      indices.setIndex(indIndex + 1).currentArray[indices.curentIndex] =
-        baseIndex + 3;
-      indices.setIndex(indIndex + 2).currentArray[indices.curentIndex] =
-        baseIndex + 2;
-      indices.setIndex(indIndex + 3).currentArray[indices.curentIndex] =
-        baseIndex + 2;
-      indices.setIndex(indIndex + 4).currentArray[indices.curentIndex] =
-        baseIndex + 1;
-      indices.setIndex(indIndex + 5).currentArray[indices.curentIndex] =
-        baseIndex;
-    }
+    tool.mesh.buffer.setIndex(baseIndex);
+    addVertex(
+      tool.mesh.buffer.curentIndex,
+      tool.mesh.buffer.currentArray,
+      origin,
+      topRightPos,
+      topRightNor,
+      quad.uvs.vertices[QuadVerticies.TopRight],
+      topRightVoxelData,
+      texture,
+      overlayTextures
+    );
 
-    if (orientation && !flip) {
-      indices.setIndex(indIndex).currentArray[indices.curentIndex] = baseIndex;
-      indices.setIndex(indIndex + 1).currentArray[indices.curentIndex] =
-        baseIndex + 3;
-      indices.setIndex(indIndex + 2).currentArray[indices.curentIndex] =
-        baseIndex + 2;
-      indices.setIndex(indIndex + 3).currentArray[indices.curentIndex] =
-        baseIndex + 2;
-      indices.setIndex(indIndex + 4).currentArray[indices.curentIndex] =
-        baseIndex + 1;
-      indices.setIndex(indIndex + 5).currentArray[indices.curentIndex] =
-        baseIndex;
-    } else if (orientation && flip) {
-      indices.setIndex(indIndex).currentArray[indices.curentIndex] = baseIndex;
-      indices.setIndex(indIndex + 1).currentArray[indices.curentIndex] =
-        baseIndex + 1;
-      indices.setIndex(indIndex + 2).currentArray[indices.curentIndex] =
-        baseIndex + 2;
-      indices.setIndex(indIndex + 3).currentArray[indices.curentIndex] =
-        baseIndex + 2;
-      indices.setIndex(indIndex + 4).currentArray[indices.curentIndex] =
-        baseIndex + 3;
-      indices.setIndex(indIndex + 5).currentArray[indices.curentIndex] =
-        baseIndex;
-    }
+    tool.mesh.buffer.setIndex(baseIndex + 1);
+    addVertex(
+      tool.mesh.buffer.curentIndex,
+      tool.mesh.buffer.currentArray,
+      origin,
+      topLeftPos,
+      topLeftNor,
+      quad.uvs.vertices[QuadVerticies.TopLeft],
+      topLeftVoxelData,
+      texture,
+      overlayTextures
+    );
+    tool.mesh.buffer.setIndex(baseIndex + 2);
+    addVertex(
+      tool.mesh.buffer.curentIndex,
+      tool.mesh.buffer.currentArray,
+      origin,
+      bottomLeftPos,
+      bottomLeftNor,
+      quad.uvs.vertices[QuadVerticies.BottomLeft],
+      bottomLeftVoxelData,
+      texture,
+      overlayTextures
+    );
+    tool.mesh.buffer.setIndex(baseIndex + 3);
+    addVertex(
+      tool.mesh.buffer.curentIndex,
+      tool.mesh.buffer.currentArray,
+      origin,
+      bottomRightPos,
+      bottomRightNor,
+      quad.uvs.vertices[QuadVerticies.BottomRight],
+      bottomRightVoxelData,
+      texture,
+      overlayTextures
+    );
+
+    indices.setIndex(indIndex).currentArray[indices.curentIndex] = baseIndex;
+    indices.setIndex(indIndex + 1).currentArray[indices.curentIndex] =
+      baseIndex + 1;
+    indices.setIndex(indIndex + 2).currentArray[indices.curentIndex] =
+      baseIndex + 2;
+    indices.setIndex(indIndex + 3).currentArray[indices.curentIndex] =
+      baseIndex + 2;
+    indices.setIndex(indIndex + 4).currentArray[indices.curentIndex] =
+      baseIndex + 3;
+    indices.setIndex(indIndex + 5).currentArray[indices.curentIndex] =
+      baseIndex;
 
     tool.mesh.addVerticies(4, 6);
   }
@@ -259,11 +168,11 @@ function addVertex(
   position: Vector3Like,
   normal: Vector3Like,
   uvs: Vector2Like,
-  voxelData: number,
+  voxelData: Vector4Like,
   texture: number,
   overlayTextures: Vector4Like
 ) {
- index *= VoxelMeshVertexConstants.VertexFloatSize;
+  index *= VoxelMeshVertexConstants.VertexFloatSize;
   array[VoxelMeshVertexConstants.PositionOffset + index] =
     position.x + origin.x;
   array[VoxelMeshVertexConstants.PositionOffset + index + 1] =
@@ -285,5 +194,8 @@ function addVertex(
   array[VoxelMeshVertexConstants.TextureIndexOffset + index + 2] =
     VoxelShaderData.createTextureIndex(overlayTextures.w, 0);
 
-  array[VoxelMeshVertexConstants.VoxelDataOFfset + index] = voxelData; 
+  array[VoxelMeshVertexConstants.VoxelDataOFfset + index] = voxelData.x;
+  array[VoxelMeshVertexConstants.VoxelDataOFfset + index + 1] = voxelData.y;
+  array[VoxelMeshVertexConstants.VoxelDataOFfset + index + 2] = voxelData.z;
+  array[VoxelMeshVertexConstants.VoxelDataOFfset + index + 3] = voxelData.w;
 }

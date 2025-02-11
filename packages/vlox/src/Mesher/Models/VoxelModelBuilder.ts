@@ -12,7 +12,7 @@ import { DataCursorInterface } from "../../Voxels/Cursor/DataCursor.interface.js
 import { VoxelGeometryBuilderCacheSpace } from "./VoxelGeometryBuilderCacheSpace";
 
 class VoxelVars {
-  faceFlipped = false;
+
   textureIndex = 0;
   overlayTextures = Vector4Like.Create();
   light = new QuadScalarVertexData();
@@ -21,7 +21,6 @@ class VoxelVars {
   level = new QuadScalarVertexData();
 
   reset() {
-    this.faceFlipped = false;
     this.textureIndex = 0;
     this.overlayTextures.x = 0;
     this.overlayTextures.y = 0;

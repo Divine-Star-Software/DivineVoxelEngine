@@ -246,7 +246,7 @@ export class QuadVoxelGometryNode extends GeoemtryNode<
     this.determineShading();
 
     const quad = this.quad;
-    quad.flip = this.shouldFlip() || args[ArgIndexes.Fliped];
+
     this.builder.vars.textureIndex = args[ArgIndexes.Texture];
 
     quad.doubleSided = args[ArgIndexes.DoubleSided];
