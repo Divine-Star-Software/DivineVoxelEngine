@@ -30,6 +30,9 @@ const addGeo = (
     if (!VoxelModelRuleBuilderRegister.geometryPalette.isRegistered(newId))
       VoxelModelRuleBuilderRegister.geometryPalette.register(newId);
     const newData = structuredClone(geo.data);
+    newData.cullingProcedure = geoLinkNode?.cullingProcedure
+      ? geoLinkNode?.cullingProcedure
+      : newData.cullingProcedure;
     for (const node of newData.nodes) {
       node.tranform = {
         ...(geoLinkNode.position ? { position: geoLinkNode.position } : {}),
@@ -52,7 +55,7 @@ const addGeo = (
   return registred;
 };
 const getGeometryLinkId = (node: VoxelGeometryLinkData) => {
-  return `${node.geometryId}${
+  return `${node.geometryId}${node.cullingProcedure ? JSON.stringify(node.cullingProcedure) : " "}${
     node.position ? `-p${node.position.toString()}` : ""
   }${node.rotation ? `-r${node.rotation.toString()}` : ""}${
     node.scale ? `-s${node.scale.toString()}` : ""
@@ -127,6 +130,9 @@ export class VoxelModelRuleBuilderRegister {
         new VoxelRuleGeometry(geo.id, {
           ogData: geo,
           id: geo.id,
+          cullingProcedure: geo.cullingProcedure
+            ? geo.cullingProcedure
+            : { type: "default" },
           nodes: geo.nodes.map((node) => ({
             node,
             tranform: {},

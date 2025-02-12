@@ -12,6 +12,7 @@ export class VoxelShaderData {
   static v = 0xffff + 0xf + 0xf;
   static LightMask = 0xffff;
   static AOMask = 0b11;
+  static VertexMask = 0b11;
   static AnimationMask = 0b11;
   static TextureIndexMax = 0xffff;
 
@@ -26,24 +27,7 @@ export class VoxelShaderData {
     return value;
   }
 
-  static createAttribute(
-    light: number,
-    ao: number,
-    ao2: number,
-    ao3: number,
-    ao4: number,
-    animation: number
-  ) {
-    let value = 0;
-    value |= (animation & this.AnimationMask) << 24;
-    value |= (light & this.LightMask) << 0;
-    value |= (ao & this.AOMask) << 16;
-    value |= (ao2 & this.AOMask) << 18;
-    value |= (ao3 & this.AOMask) << 20;
-    value |= (ao4 & this.AOMask) << 22;
 
-    return value >>> 0;
-  }
 
   static create(
     light1: number,
@@ -55,6 +39,7 @@ export class VoxelShaderData {
     ao3: number,
     ao4: number,
     animation: number,
+    vertexIndex: number,
     ref = Vector4Like.Create()
   ) {
     let x = 0;
@@ -70,6 +55,7 @@ export class VoxelShaderData {
     ref.y = y;
     let z = 0;
     z |= (light3 & this.LightMask) << 0;
+    z |= (vertexIndex & this.VertexMask) << 16;
     ref.z = z;
     let w = 0;
     w |= (light4 & this.LightMask) << 0;
@@ -79,5 +65,3 @@ export class VoxelShaderData {
   }
 }
 
-const t = VoxelShaderData.createAttribute(0xffff, 2, 2, 2, 2, 2);
-console.log("SHADER TEST", t, t & VoxelShaderData.LightMask);

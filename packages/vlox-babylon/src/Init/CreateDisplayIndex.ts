@@ -56,7 +56,7 @@ const buildMesh = (
 
     newMat.setNumberArray(
       "lightGradient",
-      DefaultMaterialManager.unifrosm.lightGradient
+      DefaultMaterialManager.uniforms.lightGradient
     );
     newMat.setNumber("doSun", 0);
     newMat.setNumber("baseLevel", 1);

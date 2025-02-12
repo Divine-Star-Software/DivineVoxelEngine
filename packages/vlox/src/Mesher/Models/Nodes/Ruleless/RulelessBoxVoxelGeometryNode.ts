@@ -1,10 +1,13 @@
 import { Vec3Array, Vec4Array } from "@amodx/math";
 import { VoxelFaces } from "../../../../Math";
 import { QuadVerticies } from "../../../Geomtry/Geometry.types";
-import { VoxelBoxGeometryNode } from "../../../../Voxels/Models/VoxelModel.types";
+import { BaseVoxelGeomtryTextureProcedureData, VoxelBoxGeometryNode } from "../../../../Voxels/Models/VoxelModel.types";
 
 import { Quad } from "../../../Geomtry/Primitives/Quad";
-import { addVoxelQuad, VoxelGeometryBuilder } from "../../../Geomtry/VoxelGeometryBuilder";
+import {
+  addVoxelQuad,
+  VoxelGeometryBuilder,
+} from "../../../Geomtry/VoxelGeometryBuilder";
 
 import {
   BoxVoxelGometryArgs,
@@ -19,6 +22,7 @@ import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData";
 
 import { GeoemtryNode } from "../GeometryNode";
 import { GetBoxGeometryNodeData } from "../../Common/BoxGeometryNode";
+import { TextureProcedureRegister } from "../../Procedures/TextureProcedureRegister";
 
 const ArgIndexes = BoxVoxelGometryInputs.ArgIndexes;
 
@@ -51,7 +55,8 @@ export class RulelessBoxVoxelGeometryNode extends GeoemtryNode<
     const tool = this.builder;
 
     const lightData = tool.lightData[face];
-    const noAO = this.builder.voxel.isLightSource() || this.builder.voxel.noAO();
+    const noAO =
+      this.builder.voxel.isLightSource() || this.builder.voxel.noAO();
 
     const worldLight = this.builder.vars.light;
     const worldAO = this.builder.vars.ao;
@@ -95,17 +100,15 @@ export class RulelessBoxVoxelGeometryNode extends GeoemtryNode<
   }
 
   add(args: BoxVoxelGometryArgs) {
-    const tool = this.builder;
+    const builder = this.builder;
     let added = false;
     for (let face = 0 as VoxelFaces; face < 6; face++) {
       if (args[face][ArgIndexes.Enabled]) {
         added = true;
-        tool.calculateFaceData(face);
+        builder.calculateFaceData(face);
         this.determineShading(face);
         const faceArgs = args[face];
         const quad = this.quads[face];
-
-        tool.vars.textureIndex = faceArgs[ArgIndexes.Texture];
 
         const uvs = faceArgs[ArgIndexes.UVs];
         //1
@@ -120,7 +123,27 @@ export class RulelessBoxVoxelGeometryNode extends GeoemtryNode<
         //4
         quad.uvs.vertices[3].x = uvs[3][0];
         quad.uvs.vertices[3].y = uvs[3][1];
-        addVoxelQuad(tool, tool.position, quad);
+
+        if (typeof faceArgs[ArgIndexes.Texture] == "number") {
+          builder.vars.textureIndex = faceArgs[ArgIndexes.Texture] as number;
+        } else {
+          const procedure = TextureProcedureRegister.get(
+            (
+              faceArgs[
+                ArgIndexes.Texture
+              ] as BaseVoxelGeomtryTextureProcedureData
+            ).type
+          );
+          const data = faceArgs[ArgIndexes.Texture];
+          builder.vars.textureIndex = procedure.getTexture(builder, data);
+          procedure.transformUVs(builder, data, quad);
+          procedure.getOverlayTexture(
+            builder,
+            data,
+            this.builder.vars.overlayTextures
+          );
+        }
+        addVoxelQuad(builder, builder.position, quad);
 
         this.builder.updateBounds(this.quadBounds[face]);
       }

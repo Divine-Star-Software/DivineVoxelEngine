@@ -32,7 +32,8 @@ export function BuildFinalInputs(model: VoxelRulesModoel) {
       for (const state in model.data.stateNodes) {
         const geoNodes: any[] = [];
         const stateNodes = model.data.stateNodes[state];
-        for (const node of stateNodes) {
+        for (let n = 0; n < stateNodes.length; n++) {
+          const node = stateNodes[n];
           const geo = VoxelModelRuleBuilderRegister.getGeomtryFromLink(node);
           if (!geo) throw new Error(`Geometry does not exist`);
           geo.inputs.resetDefaults();
@@ -46,7 +47,7 @@ export function BuildFinalInputs(model: VoxelRulesModoel) {
             geo.inputs[geoArg] = constructorArg;
           }
 
-          geoNodes[model.stateData.geometryLinkPalette[node.id]] =
+          geoNodes[model.stateData.geometryLinkStateMap[state][n]] =
             geo.inputs.cloneArgs();
 
           const byteIndex =

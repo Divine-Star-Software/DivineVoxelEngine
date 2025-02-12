@@ -5,13 +5,16 @@ import { RulelessQuadVoxelGeometryNode } from "./Ruleless/RulelessQuadVoxelGeome
 import { GeoemtryNode } from "./GeometryNode";
 import { RulelessBoxVoxelGeometryNode } from "./Ruleless/RulelessBoxVoxelGeometryNode";
 import { VoxelModelConstructorRegister } from "../VoxelModelConstructorRegister";
+import { CullingProcedureData } from "../../../Voxels/Models/VoxelModel.types";
 
 export class VoxelGeometryConstructor {
   nodes: GeoemtryNode<any, any>[] = [];
+  cullingProcedure: CullingProcedureData;
   constructor(
     public geometryPaletteId: number,
     data: CompiledVoxelGeometrySyncData
   ) {
+    this.cullingProcedure = data.cullingProcedure;
     for (const node of data.nodes) {
       if (node.node.type == "custom") {
         const nodeClass = VoxelModelConstructorRegister.getCustomNode(
@@ -65,7 +68,7 @@ export class VoxelGeometryConstructor {
             newNode.faceIndexes[i] = faces[index];
             index++;
           }
-          
+
           newNode.init();
 
           this.nodes.push(newNode);

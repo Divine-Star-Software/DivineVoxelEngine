@@ -5,8 +5,10 @@ import { TextureManager } from "../../../../Textures/TextureManager";
 import { Matrix2x2Like, Mat2Array, Vec4Array, AMath } from "@amodx/math";
 import { QuadUVData } from "../../../../Mesher/Geomtry/Geometry.types";
 import { QuadVoxelGometryInputs } from "../../Input/QuadVoxelGometryInputs";
-import { VoxelGeometryTransform } from "../../CompiledVoxelModel.types"
+import { VoxelGeometryTransform } from "../../CompiledVoxelModel.types";
 import { TextureId } from "Textures";
+import { TextureProcedure } from "Mesher/Models/Procedures/TextureProcedure";
+import { BaseVoxelGeomtryTextureProcedureData } from "Voxels/Models/VoxelModel.types";
 
 const isArgString = (data: any) => {
   if (typeof data !== "string") return false;
@@ -139,22 +141,7 @@ export function BuildGeomtryInputs(geomtry: VoxelRuleGeometry) {
                 value)
           );
         }
-        if (isArgString(faceData.transparent)) {
-          faceTransparentIndex[relativeFaceCount + face] = false;
-          onInput(String(faceData.transparent!), (value) => {
-            args[argsIndex][face][
-              BoxVoxelGometryInputs.ArgIndexes.Transparent
-            ] = value;
 
-            faceTransparentIndex[relativeFaceCount + face] = Boolean(value);
-          });
-        } else {
-          args[argsIndex][face][BoxVoxelGometryInputs.ArgIndexes.Transparent] =
-            Boolean(faceData.transparent);
-          faceTransparentIndex[relativeFaceCount + face] = Boolean(
-            faceData.transparent
-          );
-        }
         if (isArgString(faceData.rotation)) {
           onInput(String(faceData.rotation!), (value) => {
             args[argsIndex][face][BoxVoxelGometryInputs.ArgIndexes.Rotation] =
@@ -221,18 +208,6 @@ export function BuildGeomtryInputs(geomtry: VoxelRuleGeometry) {
       const relativeFaceCount = faceCount;
 
       let defaultUvs: Vec4Array = [0, 0, 1, 1];
-
-      if (isArgString(node.transparent)) {
-        onInput(String(node.transparent!), (value) => {
-          args[argsIndex][QuadVoxelGometryInputs.ArgIndexes.Transparent] =
-            value;
-          faceTransparentIndex[relativeFaceCount] = Boolean(value);
-        });
-      } else {
-        args[argsIndex][QuadVoxelGometryInputs.ArgIndexes.Transparent] =
-          Boolean(node.transparent);
-        faceTransparentIndex[relativeFaceCount] = Boolean(node.transparent);
-      }
 
       if (isArgString(node.doubleSided)) {
         onInput(String(node.doubleSided!), (value) => {
@@ -327,8 +302,29 @@ export function BuildGeomtryInputs(geomtry: VoxelRuleGeometry) {
       set(value) {
         if (data.type == "texture") {
           const textureId = value as TextureId;
-          value =
-            TextureManager.getTexture("dve_voxel")?.getTextureIndex(textureId);
+          if (!Array.isArray(textureId) && typeof textureId == "object") {
+            const procedureData = {
+              ...(textureId as any),
+            } as BaseVoxelGeomtryTextureProcedureData;
+            if (procedureData.texture) {
+              procedureData.texture = TextureManager.getTexture(
+                "dve_voxel"
+              )?.getTextureIndex(procedureData.texture as any);
+            }
+            if (procedureData.textureRecrod) {
+              for (const key in procedureData.textureRecrod) {
+                procedureData.textureRecrod[key] = TextureManager.getTexture(
+                  "dve_voxel"
+                )?.getTextureIndex(procedureData.textureRecrod[key] as any);
+              }
+            }
+            value = { ...procedureData };
+          } else {
+            value =
+              TextureManager.getTexture("dve_voxel")?.getTextureIndex(
+                textureId
+              );
+          }
         }
         for (const func of obs) {
           func(value);

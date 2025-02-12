@@ -1,10 +1,11 @@
 import { VoxelFaces } from "../../../Math";
-import { QuadUVData } from "../../../Mesher/Geomtry/Geometry.types"
+import { QuadUVData } from "../../../Mesher/Geomtry/Geometry.types";
+import { BaseVoxelGeomtryTextureProcedureData } from "../VoxelModel.types";
 export type BoxFaceArags = [
   //upp
   enabled: boolean,
   Fliped: boolean,
-  texture: number,
+  texture: number | BaseVoxelGeomtryTextureProcedureData,
   rotation: number,
   transparent: boolean,
   uvs: QuadUVData,

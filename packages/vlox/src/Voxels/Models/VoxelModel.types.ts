@@ -8,6 +8,7 @@ import {
   VoxelStateNumberSchemaData,
 } from "../../Voxels/State/State.types";
 import { VoxelEffectData } from "../../Voxels/Effects/VoxelEffects.types";
+import { VoxelTags } from "../Data/VoxelTag.types";
 
 /**The model data assoicated with the actual voxel. */
 export interface VoxelModelConstructorData {
@@ -20,22 +21,34 @@ export interface VoxelModelConstructorData {
     lightValue?: Record<string, Vec3Array>;
   };
 }
+export interface BaseVoxelGeomtryTextureProcedureData {
+  type: string;
+  texture?: TextureId | number;
+  textureRecrod?: Record<string, TextureId | number>;
+  [key:string]: any
+}
 
-interface VoxelOutlinedTextureProtocalData {
+interface VoxelGeomtryOutlinedTextureProcedureData
+  extends BaseVoxelGeomtryTextureProcedureData {
   type: "outlined";
-  textures: {
-    top: TextureId;
-    "corner-top-right": TextureId;
-    "corner-top-left": TextureId;
-    "corner-top-left-top-right": TextureId;
-    bottom: TextureId;
-    "corner-bottom-right": TextureId;
-    "corner-bottom-left": TextureId;
-    "corner-bottom-left-bottom-right": TextureId;
-    right: TextureId;
-    left: TextureId;
+  texture: TextureId | number;
+  textureRecrod: {
+    top: TextureId | number;
+    "corner-top-right": TextureId | number;
+    "corner-top-left": TextureId | number;
+    "corner-top-left-top-right": TextureId | number;
+    bottom: TextureId | number;
+    "corner-bottom-right": TextureId | number;
+    "corner-bottom-left": TextureId | number;
+    "corner-bottom-left-bottom-right": TextureId | number;
+    right: TextureId | number;
+    left: TextureId | number;
   };
 }
+
+
+
+
 
 /**Define a custom geomtry node */
 export interface VoxelCustomGeomtryNode {
@@ -58,8 +71,7 @@ export interface VoxelBoxGeometryNode {
 export interface VoxelBoxFaceData {
   enabled?: boolean;
   flip?: boolean;
-  texture: string;
-  transparent?: boolean | string;
+  texture: TextureId | BaseVoxelGeomtryTextureProcedureData;
   uv: [x1: number, y1: number, x2: number, y2: number] | string;
   rotation?: number | string;
 }
@@ -71,8 +83,7 @@ export interface VoxelQuadGeometryNode {
   divisor?: Vec3Array;
   doubleSided?: boolean | string;
   points: [p1: Vec3Array, p2: Vec3Array, p3: Vec3Array, p4: Vec3Array];
-  transparent?: boolean | string;
-  texture: string;
+  texture: TextureId | BaseVoxelGeomtryTextureProcedureData;
   uv: [x1: number, y1: number, x2: number, y2: number] | QuadUVData | string;
   textureRotation?: number | string;
 }
@@ -85,20 +96,9 @@ export interface VoxelTriangleGeometryNode {
   orientation?: 0 | 1;
   doubleSided?: boolean;
   points: [p1: Vec3Array, p2: Vec3Array, p3: Vec3Array];
-  transparent?: boolean | string;
-  texture: string;
+  texture: TextureId | BaseVoxelGeomtryTextureProcedureData;
   uv: [v1: Vec2Array, v2: Vec2Array, v3: Vec2Array] | string;
   textureRotation?: number | string;
-}
-
-//geometry
-export interface VoxelRawGeometryGeometryNode {
-  type: "raw-geometry";
-  positions: number[];
-  normals: number[];
-  indices: number[];
-  uvs: number[];
-  texture: string;
 }
 
 //arguments
@@ -107,7 +107,7 @@ export interface VoxelGeometryTextureArgument {
 }
 export interface VoxelGeometryBooleanArgument {
   type: "boolean";
-  default: boolean;
+  default: boolean;             
 }
 export interface VoxelGeometryIntArgument {
   type: "int";
@@ -133,8 +133,23 @@ export type VoxelGeometryNodes =
   | VoxelCustomGeomtryNode
   | VoxelBoxGeometryNode
   | VoxelTriangleGeometryNode
-  | VoxelQuadGeometryNode
-  | VoxelRawGeometryGeometryNode;
+  | VoxelQuadGeometryNode;
+
+export type CullingProcedureData =
+  | {
+      type: "default";
+    }
+  | {
+      type: "none";
+    }
+  | {
+      type: "transparent";
+    }
+  | {
+      type: "custom";
+      id: string;
+      data: any;
+    };
 
 export interface VoxelGeometryData {
   id: string;
@@ -147,6 +162,10 @@ export interface VoxelGeometryData {
    * Ideal for advanced or non cubic models.
    * */
   doNotBuildRules?: true;
+  /**
+   * Define the culling procedure for faces
+   */
+  cullingProcedure?: CullingProcedureData;
   arguments: Record<
     string,
     | VoxelGeometryTextureArgument
@@ -159,8 +178,12 @@ export interface VoxelGeometryData {
 }
 
 export interface VoxelGeometryLinkData {
-  id: string;
+  //  id: string;
   geometryId: string;
+  /**
+   * Overrride the culling procedure for faces
+   */
+  cullingProcedure?: CullingProcedureData;
   /**Divisor used for transform of this specific node.*/
   divisor?: Vec3Array;
   inputs: Record<string, any>;
@@ -185,6 +208,8 @@ export interface VoxelModelData {
     | VoxelGeometryFloatArgument
   >;
   stateSchema: (VoxelStateStringSchemaData | VoxelStateNumberSchemaData)[];
+  /**Define default tags for the voxel. */
+  tags?: Partial<VoxelTags>;
   effects?: VoxelEffectData[];
   relationsSchema: VoxelModelRelationsSchemaData[];
   stateNodes: Record<string, VoxelGeometryLinkData[]>;

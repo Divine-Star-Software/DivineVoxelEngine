@@ -41,7 +41,6 @@ export const liquidModel: VoxelModelData = {
   stateNodes: {
     "*": [
       {
-        id: "liquid",
         geometryId: "dve_liquid",
         inputs: {
           stillTexture: "@stillTexture",

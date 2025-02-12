@@ -77,7 +77,19 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
       shaderMaterial.backFaceCulling = data.backFaceCulling;
     }
     //   shaderMaterial.needDepthPrePass = true;
-    let liquid = false;
+    let liquid = false;    
+    
+    if (this.id.includes("transparent")) {
+   //   shaderMaterial.forceDepthWrite = true;
+  //  shaderMaterial.separateCullingPass = true;
+      shaderMaterial.backFaceCulling = false;
+      shaderMaterial.forceDepthWrite = true;
+    }
+    if (this.id.includes("flora")) {
+      //   shaderMaterial.forceDepthWrite = true;
+     //  shaderMaterial.separateCullingPass = true;
+         shaderMaterial.backFaceCulling = true;
+       }
     if (this.id.includes("liquid")) {
       liquid = true;
 
@@ -85,8 +97,8 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
       //     shaderMaterial.disableDepthWrite = true;
       //   shaderMaterial.needDepthPrePass = true;
       //   shaderMaterial.separateCullingPass = false;
-      shaderMaterial.forceDepthWrite = true;
-
+     // shaderMaterial.disableDepthWrite = true;
+     shaderMaterial.forceDepthWrite = true;
       shaderMaterial.backFaceCulling = false;
       // shaderMaterial.transparencyMode = 0;
       // shaderMaterial.alphaMode = 0;
@@ -96,16 +108,7 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
       //shaderMaterial.stencil.opStencilDepthPass = Engine.KEEP;
       //  shaderMaterial.stencil.mask = 0x00;
       this.scene.setRenderingAutoClearDepthStencil(0, false, false, false);
-    } else if (data.alphaBlending) {
-      //  shaderMaterial.alpha = .5;
-      shaderMaterial.disableDepthWrite = true;
-      shaderMaterial.separateCullingPass = true;
-      //   shaderMaterial.needDepthPrePass = true;
-      //   shaderMaterial.separateCullingPass = true;
-      //  shaderMaterial.needDepthPrePass = true;
-      //    shaderMaterial.backFaceCulling = false;
     }
-
     this._material = shaderMaterial;
 
     this._material.fogEnabled = true;

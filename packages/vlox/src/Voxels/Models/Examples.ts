@@ -54,7 +54,6 @@ export const chainModel: VoxelModelData = {
   stateNodes: {
     "axis=y": [
       {
-        id: "main",
         geometryId: "dve_chain",
         inputs: {
           texture: "@texture",
@@ -63,7 +62,6 @@ export const chainModel: VoxelModelData = {
     ],
     "axis=x": [
       {
-        id: "main",
         geometryId: "dve_chain",
         rotation: [90, 0, 0],
         inputs: {
@@ -73,7 +71,6 @@ export const chainModel: VoxelModelData = {
     ],
     "axis=z": [
       {
-        id: "main",
         geometryId: "dve_chain",
         rotation: [0, 0, 90],
         inputs: {
@@ -148,7 +145,6 @@ export const carpetModel: VoxelModelData = {
   stateNodes: {
     "*": [
       {
-        id: "main",
         geometryId: "dve_carpet",
         inputs: {
           topBottomTex: "@topBottomTex",
@@ -407,7 +403,7 @@ export const fenceNorthsouth: VoxelGeometryData = {
 
 export const fence: VoxelModelData = {
   id: "dve_fence",
-  divisor: [16,16,16],
+  divisor: [16, 16, 16],
   relationsSchema: [
     {
       name: "same-east",
@@ -470,7 +466,6 @@ export const fence: VoxelModelData = {
   conditonalNodes: {
     "same-south=true": [
       {
-        id: "fence_connection_south",
         geometryId: "dve_fence_north_south",
         inputs: {
           upTex: "@upTex",
@@ -484,7 +479,6 @@ export const fence: VoxelModelData = {
     ],
     "same-north=true": [
       {
-        id: "fence_connection_north",
         geometryId: "dve_fence_north_south",
         position: [0, 0, 10],
         inputs: {
@@ -499,7 +493,6 @@ export const fence: VoxelModelData = {
     ],
     "same-east=true": [
       {
-        id: "fence_connection_east",
         position: [10, 0, 0],
         geometryId: "dve_fence_east_west",
         inputs: {
@@ -514,7 +507,6 @@ export const fence: VoxelModelData = {
     ],
     "same-west=true": [
       {
-        id: "fence_connection_west",
         geometryId: "dve_fence_east_west",
         inputs: {
           upTex: "@upTex",
@@ -531,7 +523,6 @@ export const fence: VoxelModelData = {
   stateNodes: {
     "*": [
       {
-        id: "fence_post",
         geometryId: "dve_fence_post",
         inputs: {
           upTex: "@upTex",
@@ -889,7 +880,6 @@ export const candlesModel: VoxelModelData = {
   stateNodes: {
     "num_candles=0,lit=false": [
       {
-        id: "candel_1",
         geometryId: "dve_candle_state_1",
         inputs: {
           candleTexture: "@candleTexture",
@@ -898,7 +888,6 @@ export const candlesModel: VoxelModelData = {
     ],
     "num_candles=1,lit=false": [
       {
-        id: "candel_1",
         geometryId: "dve_candle_state_1",
         position: [-2, 0, 0],
         inputs: {
@@ -906,7 +895,6 @@ export const candlesModel: VoxelModelData = {
         },
       },
       {
-        id: "candel_2",
         geometryId: "dve_candle_state_2",
         position: [2, 0, 0],
         inputs: {
@@ -916,7 +904,6 @@ export const candlesModel: VoxelModelData = {
     ],
     "num_candles=2,lit=false": [
       {
-        id: "candel_1",
         geometryId: "dve_candle_state_1",
         position: [-2, 0, 2],
         inputs: {
@@ -924,7 +911,6 @@ export const candlesModel: VoxelModelData = {
         },
       },
       {
-        id: "candel_2",
         geometryId: "dve_candle_state_2",
         position: [2, 0, 2],
         inputs: {
@@ -932,7 +918,6 @@ export const candlesModel: VoxelModelData = {
         },
       },
       {
-        id: "candel_3",
         geometryId: "dve_candle_state_3",
         position: [2, 0, -2],
         inputs: {
@@ -942,7 +927,6 @@ export const candlesModel: VoxelModelData = {
     ],
     "num_candles=3,lit=false": [
       {
-        id: "candel_1",
         geometryId: "dve_candle_state_1",
         position: [-2, 0, 2],
         inputs: {
@@ -950,7 +934,6 @@ export const candlesModel: VoxelModelData = {
         },
       },
       {
-        id: "candel_2",
         geometryId: "dve_candle_state_2",
         position: [2, 0, 2],
         inputs: {
@@ -958,7 +941,6 @@ export const candlesModel: VoxelModelData = {
         },
       },
       {
-        id: "candel_3",
         geometryId: "dve_candle_state_3",
         position: [2, 0, -2],
         inputs: {
@@ -966,7 +948,6 @@ export const candlesModel: VoxelModelData = {
         },
       },
       {
-        id: "candel_4",
         geometryId: "dve_candle_state_4",
         position: [-2, 0, -2],
         inputs: {
@@ -977,7 +958,6 @@ export const candlesModel: VoxelModelData = {
 
     "num_candles=0,lit=true": [
       {
-        id: "candel_1",
         geometryId: "dve_candle_state_1",
         inputs: {
           candleTexture: "@candleLitTexture",
@@ -986,7 +966,6 @@ export const candlesModel: VoxelModelData = {
     ],
     "num_candles=1,lit=true": [
       {
-        id: "candel_1",
         geometryId: "dve_candle_state_1",
         position: [-2, 0, 0],
         inputs: {
@@ -994,7 +973,6 @@ export const candlesModel: VoxelModelData = {
         },
       },
       {
-        id: "candel_2",
         geometryId: "dve_candle_state_2",
         position: [2, 0, 0],
         inputs: {
@@ -1004,7 +982,6 @@ export const candlesModel: VoxelModelData = {
     ],
     "num_candles=2,lit=true": [
       {
-        id: "candel_1",
         geometryId: "dve_candle_state_1",
         position: [-2, 0, 2],
         inputs: {
@@ -1012,7 +989,6 @@ export const candlesModel: VoxelModelData = {
         },
       },
       {
-        id: "candel_2",
         geometryId: "dve_candle_state_2",
         position: [2, 0, 2],
         inputs: {
@@ -1020,7 +996,6 @@ export const candlesModel: VoxelModelData = {
         },
       },
       {
-        id: "candel_3",
         geometryId: "dve_candle_state_3",
         position: [2, 0, -2],
         inputs: {
@@ -1030,7 +1005,6 @@ export const candlesModel: VoxelModelData = {
     ],
     "num_candles=3,lit=true": [
       {
-        id: "candel_1",
         geometryId: "dve_candle_state_1",
         position: [-2, 0, 2],
         inputs: {
@@ -1038,7 +1012,6 @@ export const candlesModel: VoxelModelData = {
         },
       },
       {
-        id: "candel_2",
         geometryId: "dve_candle_state_2",
         position: [2, 0, 2],
         inputs: {
@@ -1046,7 +1019,6 @@ export const candlesModel: VoxelModelData = {
         },
       },
       {
-        id: "candel_3",
         geometryId: "dve_candle_state_3",
         position: [2, 0, -2],
         inputs: {
@@ -1054,7 +1026,6 @@ export const candlesModel: VoxelModelData = {
         },
       },
       {
-        id: "candel_4",
         geometryId: "dve_candle_state_4",
         position: [-2, 0, -2],
         inputs: {
@@ -1191,14 +1162,12 @@ export const leverModel: VoxelModelData = {
   stateNodes: {
     "placement=down,direction=north,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         inputs: {
           texture: "@baseTexture",
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, -8, -3],
         rotation: [-45, 0, 0],
@@ -1209,14 +1178,12 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=down,direction=north,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         inputs: {
           texture: "@baseTexture",
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, -8, 3],
         rotation: [45, 0, 0],
@@ -1227,14 +1194,12 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=down,direction=south,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         inputs: {
           texture: "@baseTexture",
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, -0.8, 3],
         rotation: [45, 0, 0],
@@ -1245,14 +1210,12 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=down,direction=south,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         inputs: {
           texture: "@baseTexture",
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, -0.8, -3],
         rotation: [-45, 0, 0],
@@ -1263,14 +1226,12 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=down,direction=east,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         inputs: {
           texture: "@baseTexture",
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [-3, -8, 0],
         rotation: [0, 0, 45],
@@ -1281,14 +1242,12 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=down,direction=east,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         inputs: {
           texture: "@baseTexture",
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [3, -8, 0],
         rotation: [0, 0, -45],
@@ -1299,14 +1258,12 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=down,direction=west,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         inputs: {
           texture: "@baseTexture",
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [3, -8, 0],
         rotation: [0, 0, -45],
@@ -1317,14 +1274,12 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=down,direction=west,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         inputs: {
           texture: "@baseTexture",
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [-3, -8, 0],
         rotation: [0, 0, 45],
@@ -1337,7 +1292,6 @@ export const leverModel: VoxelModelData = {
     //placment up
     "placement=up,direction=north,state=off": [
       {
-        id: "lever_base",
         rotation: [0, 0, 180],
         rotationPivot: [8, 8, 8],
         geometryId: "dve_lever_model_base",
@@ -1346,7 +1300,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         rotation: [45, 0, 0],
         position: [0, 2, -3],
@@ -1359,7 +1312,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=up,direction=north,state=on": [
       {
-        id: "lever_base",
         rotation: [0, 0, 180],
         rotationPivot: [8, 8, 8],
         geometryId: "dve_lever_model_base",
@@ -1368,7 +1320,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         rotation: [-45, 0, 0],
         position: [0, 2, 3],
@@ -1381,7 +1332,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=up,direction=south,state=off": [
       {
-        id: "lever_base",
         rotation: [0, 0, 180],
         rotationPivot: [8, 8, 8],
         geometryId: "dve_lever_model_base",
@@ -1390,7 +1340,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         rotation: [-45, 0, 0],
         position: [0, 2, 3],
@@ -1403,7 +1352,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=up,direction=south,state=on": [
       {
-        id: "lever_base",
         rotation: [0, 0, 180],
         rotationPivot: [8, 8, 8],
         geometryId: "dve_lever_model_base",
@@ -1412,7 +1360,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         rotation: [45, 0, 0],
         position: [0, 2, -3],
@@ -1425,7 +1372,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=up,direction=east,state=off": [
       {
-        id: "lever_base",
         rotation: [0, 0, 180],
         rotationPivot: [8, 8, 8],
         geometryId: "dve_lever_model_base",
@@ -1434,7 +1380,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         rotation: [0, 0, -45],
         position: [-3, 2, -0],
@@ -1447,7 +1392,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=up,direction=east,state=on": [
       {
-        id: "lever_base",
         rotation: [0, 0, 180],
         rotationPivot: [8, 8, 8],
         geometryId: "dve_lever_model_base",
@@ -1456,7 +1400,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         rotation: [0, 0, 45],
         position: [3, 2, -0],
@@ -1469,7 +1412,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=up,direction=west,state=off": [
       {
-        id: "lever_base",
         rotation: [0, 0, 180],
         rotationPivot: [8, 8, 8],
         geometryId: "dve_lever_model_base",
@@ -1478,7 +1420,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         rotation: [0, 0, 45],
         position: [3, 2, -0],
@@ -1491,7 +1432,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=up,direction=west,state=on": [
       {
-        id: "lever_base",
         rotation: [0, 0, 180],
         rotationPivot: [8, 8, 8],
         geometryId: "dve_lever_model_base",
@@ -1500,7 +1440,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         rotation: [0, 0, -45],
         position: [-3, 2, -0],
@@ -1515,7 +1454,6 @@ export const leverModel: VoxelModelData = {
     //placement north
     "placement=north,direction=north,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [-90, 0, 0],
         rotationPivot: [8, 8, 8],
@@ -1524,7 +1462,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, -5, 8],
         rotation: [-90 - 45, 0, 0],
@@ -1536,7 +1473,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=north,direction=north,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [-90, 0, 0],
         rotationPivot: [8, 8, 8],
@@ -1545,7 +1481,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, 5, 8],
         rotation: [-90 + 45, 0, 0],
@@ -1557,7 +1492,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=north,direction=south,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [-90, 0, 0],
         rotationPivot: [8, 8, 8],
@@ -1566,7 +1500,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, 5, 8],
         rotation: [-90 + 45, 0, 0],
@@ -1578,7 +1511,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=north,direction=south,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [-90, 0, 0],
         rotationPivot: [8, 8, 8],
@@ -1587,7 +1519,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, -5, 8],
         rotation: [-90 - 45, 0, 0],
@@ -1599,7 +1530,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=north,direction=east,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [-90, 0, 0],
         rotationPivot: [8, 8, 8],
@@ -1608,7 +1538,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [-5, 0, 8],
         rotation: [-90, 45, 0],
@@ -1620,7 +1549,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=north,direction=east,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [-90, 0, 0],
         rotationPivot: [8, 8, 8],
@@ -1629,7 +1557,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [5, 0, 8],
         rotation: [-90, -45, 0],
@@ -1641,7 +1568,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=north,direction=west,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [-90, 0, 0],
         rotationPivot: [8, 8, 8],
@@ -1650,7 +1576,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [-5, 0, 8],
         rotation: [-90, 45, 0],
@@ -1662,7 +1587,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=north,direction=west,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [-90, 0, 0],
         rotationPivot: [8, 8, 8],
@@ -1671,7 +1595,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [5, 0, 8],
         rotation: [-90, -45, 0],
@@ -1684,7 +1607,6 @@ export const leverModel: VoxelModelData = {
 
     "placement=south,direction=north,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [90, 0, 0],
         rotationPivot: [8, 8, 8],
@@ -1694,7 +1616,6 @@ export const leverModel: VoxelModelData = {
       },
 
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, -5, 8],
         rotation: [90 + 45, 0, 0],
@@ -1706,7 +1627,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=south,direction=north,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [90, 0, 0],
         rotationPivot: [8, 8, 8],
@@ -1715,7 +1635,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, 5, 8],
         rotation: [90 - 45, 0, 0],
@@ -1727,7 +1646,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=south,direction=south,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [90, 0, 0],
         rotationPivot: [8, 8, 8],
@@ -1737,7 +1655,6 @@ export const leverModel: VoxelModelData = {
       },
 
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, 5, 8],
         rotation: [90 - 45, 0, 0],
@@ -1749,7 +1666,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=south,direction=south,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [90, 0, 0],
         rotationPivot: [8, 8, 8],
@@ -1758,7 +1674,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, -5, 8],
         rotation: [90 + 45, 0, 0],
@@ -1770,7 +1685,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=south,direction=east,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [90, 0, 0],
         rotationPivot: [8, 8, 8],
@@ -1780,7 +1694,6 @@ export const leverModel: VoxelModelData = {
       },
 
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [-5, 0, 8],
         rotation: [90, -45, 0],
@@ -1792,7 +1705,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=south,direction=east,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [90, 0, 0],
         rotationPivot: [8, 8, 8],
@@ -1801,7 +1713,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [5, 0, 8],
         rotation: [90, 45, 0],
@@ -1813,7 +1724,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=south,direction=west,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [90, 0, 0],
         rotationPivot: [8, 8, 8],
@@ -1823,7 +1733,6 @@ export const leverModel: VoxelModelData = {
       },
 
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [-5, 0, 8],
         rotation: [90, -45, 0],
@@ -1835,7 +1744,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=south,direction=west,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [90, 0, 0],
         rotationPivot: [8, 8, 8],
@@ -1844,7 +1752,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [5, 0, 8],
         rotation: [90, 45, 0],
@@ -1857,7 +1764,6 @@ export const leverModel: VoxelModelData = {
 
     "placement=east,direction=north,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [0, 0, 90],
         rotationPivot: [8, 8, 8],
@@ -1866,7 +1772,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, -5, 8],
         rotation: [90, -90, 45],
@@ -1878,7 +1783,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=east,direction=north,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [0, 0, 90],
         rotationPivot: [8, 8, 8],
@@ -1887,7 +1791,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, 5, 8],
         rotation: [90, -90, -45],
@@ -1899,7 +1802,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=east,direction=south,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [0, 0, 90],
         rotationPivot: [8, 8, 8],
@@ -1909,7 +1811,6 @@ export const leverModel: VoxelModelData = {
       },
 
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, 5, 8],
         rotation: [90, -90, -45],
@@ -1921,7 +1822,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=east,direction=south,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [0, 0, 90],
         rotationPivot: [8, 8, 8],
@@ -1930,7 +1830,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, -5, 8],
         rotation: [90, -90, 45],
@@ -1942,7 +1841,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=east,direction=east,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [0, 0, 90],
         rotationPivot: [8, 8, 8],
@@ -1951,7 +1849,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [8, 0, 5],
         rotation: [90, -90 + 45, 0],
@@ -1963,7 +1860,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=east,direction=east,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [0, 0, 90],
         rotationPivot: [8, 8, 8],
@@ -1972,7 +1868,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [8, 0, -5],
         rotation: [90, -90 - 45, 0],
@@ -1984,7 +1879,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=east,direction=west,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [0, 0, 90],
         rotationPivot: [8, 8, 8],
@@ -1993,7 +1887,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [8, 0, -5],
         rotation: [90, -90 - 45, 0],
@@ -2005,7 +1898,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=east,direction=west,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [0, 0, 90],
         rotationPivot: [8, 8, 8],
@@ -2014,7 +1906,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [8, 0, 5],
         rotation: [90, -90 + 45, 0],
@@ -2027,7 +1918,6 @@ export const leverModel: VoxelModelData = {
 
     "placement=west,direction=north,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [0, 0, -90],
         rotationPivot: [8, 8, 8],
@@ -2036,7 +1926,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, -5, 8],
         rotation: [90, 90, -45],
@@ -2048,7 +1937,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=west,direction=north,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [0, 0, -90],
         rotationPivot: [8, 8, 8],
@@ -2058,7 +1946,6 @@ export const leverModel: VoxelModelData = {
       },
 
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, 5, 8],
         rotation: [90, 90, 45],
@@ -2070,7 +1957,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=west,direction=south,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [0, 0, -90],
         rotationPivot: [8, 8, 8],
@@ -2080,7 +1966,6 @@ export const leverModel: VoxelModelData = {
       },
 
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, 5, 8],
         rotation: [90, 90, 45],
@@ -2092,7 +1977,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=west,direction=south,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [0, 0, -90],
         rotationPivot: [8, 8, 8],
@@ -2102,7 +1986,6 @@ export const leverModel: VoxelModelData = {
       },
 
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [0, -5, 8],
         rotation: [90, 90, -45],
@@ -2114,7 +1997,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=west,direction=east,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [0, 0, -90],
         rotationPivot: [8, 8, 8],
@@ -2124,7 +2006,6 @@ export const leverModel: VoxelModelData = {
       },
 
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [8, 0, 5],
         rotation: [90, 90 - 45, 0],
@@ -2136,7 +2017,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=west,direction=east,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [0, 0, -90],
         rotationPivot: [8, 8, 8],
@@ -2145,7 +2025,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [8, 0, -5],
         rotation: [90, 90 + 45, 0],
@@ -2157,7 +2036,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=west,direction=west,state=off": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [0, 0, -90],
         rotationPivot: [8, 8, 8],
@@ -2167,7 +2045,6 @@ export const leverModel: VoxelModelData = {
       },
 
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [8, 0, -5],
         rotation: [90, 90 + 45, 0],
@@ -2179,7 +2056,6 @@ export const leverModel: VoxelModelData = {
     ],
     "placement=west,direction=west,state=on": [
       {
-        id: "lever_base",
         geometryId: "dve_lever_model_base",
         rotation: [0, 0, -90],
         rotationPivot: [8, 8, 8],
@@ -2188,7 +2064,6 @@ export const leverModel: VoxelModelData = {
         },
       },
       {
-        id: "lever",
         geometryId: "dve_lever_model",
         position: [8, 0, 5],
         rotation: [90, 90 - 45, 0],

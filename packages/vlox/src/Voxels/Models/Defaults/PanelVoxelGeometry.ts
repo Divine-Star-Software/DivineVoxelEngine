@@ -184,37 +184,37 @@ export const thinPanelDown: VoxelGeometryData = {
           texture: "@upTex",
           uv: "@upUvs",
           rotation: "@upTexRotation",
-          transparent: "@upTexTransparent",
+ 
         },
         down: {
           texture: "@downTex",
           uv: "@downUvs",
           rotation: "@downTexRotation",
-          transparent: "@downTexTransparent",
+ 
         },
         north: {
           texture: "@northTex",
           uv: "@northUvs",
           rotation: "@northTexRotation",
-          transparent: "@northTexTransparent",
+
         },
         south: {
           texture: "@southTex",
           uv: "@southUvs",
           rotation: "@southTexRotation",
-          transparent: "@southTexTransparent",
+
         },
         east: {
           texture: "@eastTex",
           uv: "@eastUvs",
           rotation: "@eastTexRotation",
-          transparent: "@eastTexTransparent",
+
         },
         west: {
           texture: "@westTex",
           uv: "@westUvs",
           rotation: "@westTexRotation",
-          transparent: "@westTexTransparent",
+
         },
       },
     },
@@ -326,37 +326,37 @@ export const thinPanelSouth: VoxelGeometryData = {
           texture: "@upTex",
           uv: "@upUvs",
           rotation: "@upTexRotation",
-          transparent: "@upTexTransparent",
+
         },
         down: {
           texture: "@downTex",
           uv: "@downUvs",
           rotation: "@downTexRotation",
-          transparent: "@downTexTransparent",
+
         },
         north: {
           texture: "@northTex",
           uv: "@northUvs",
           rotation: "@northTexRotation",
-          transparent: "@northTexTransparent",
+      
         },
         south: {
           texture: "@southTex",
           uv: "@southUvs",
           rotation: "@southTexRotation",
-          transparent: "@southTexTransparent",
+         
         },
         east: {
           texture: "@eastTex",
           uv: "@eastUvs",
           rotation: "@eastTexRotation",
-          transparent: "@eastTexTransparent",
+        
         },
         west: {
           texture: "@westTex",
           uv: "@westUvs",
           rotation: "@westTexRotation",
-          transparent: "@westTexTransparent",
+        
         },
       },
     },
@@ -464,37 +464,37 @@ export const thinPanelWest: VoxelGeometryData = {
           texture: "@upTex",
           uv: "@upUvs",
           rotation: "@upTexRotation",
-          transparent: "@upTexTransparent",
+   
         },
         down: {
           texture: "@downTex",
           uv: "@downUvs",
           rotation: "@downTexRotation",
-          transparent: "@downTexTransparent",
+  
         },
         north: {
           texture: "@northTex",
           uv: "@northUvs",
           rotation: "@northTexRotation",
-          transparent: "@northTexTransparent",
+
         },
         south: {
           texture: "@southTex",
           uv: "@southUvs",
           rotation: "@southTexRotation",
-          transparent: "@southTexTransparent",
+  
         },
         east: {
           texture: "@eastTex",
           uv: "@eastUvs",
           rotation: "@eastTexRotation",
-          transparent: "@eastTexTransparent",
+       
         },
         west: {
           texture: "@westTex",
           uv: "@westUvs",
           rotation: "@westTexRotation",
-          transparent: "@westTexTransparent",
+
         },
       },
     },

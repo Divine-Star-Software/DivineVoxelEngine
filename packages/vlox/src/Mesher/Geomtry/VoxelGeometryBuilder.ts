@@ -51,6 +51,7 @@ export function addVoxelQuad(
     worldAO.vertices[QuadVerticies.BottomLeft],
     worldAO.vertices[QuadVerticies.BottomRight],
     animData.vertices[QuadVerticies.TopRight],
+    QuadVerticies.TopRight,
     vector1ShaderData
   );
   const topLeftVoxelData = VoxelShaderData.create(
@@ -63,6 +64,7 @@ export function addVoxelQuad(
     worldAO.vertices[QuadVerticies.BottomLeft],
     worldAO.vertices[QuadVerticies.BottomRight],
     animData.vertices[QuadVerticies.TopLeft],
+    QuadVerticies.TopLeft,
     vector2ShaderData
   );
   const bottomLeftVoxelData = VoxelShaderData.create(
@@ -75,6 +77,7 @@ export function addVoxelQuad(
     worldAO.vertices[QuadVerticies.BottomLeft],
     worldAO.vertices[QuadVerticies.BottomRight],
     animData.vertices[QuadVerticies.BottomLeft],
+    QuadVerticies.BottomLeft,
     vector3ShaderData
   );
   const bottomRightVoxelData = VoxelShaderData.create(
@@ -87,15 +90,17 @@ export function addVoxelQuad(
     worldAO.vertices[QuadVerticies.BottomLeft],
     worldAO.vertices[QuadVerticies.BottomRight],
     animData.vertices[QuadVerticies.BottomRight],
+    QuadVerticies.BottomRight,
     vector4ShaderData
   );
   const indices = tool.mesh!.indices;
   let indIndex = tool.mesh.indicieCount;
   let sides = quad.doubleSided ? 2 : 1;
 
+  const baseIndex = tool.mesh.vertexCount;
+
   while (sides--) {
     const baseIndex = tool.mesh.vertexCount;
-
     tool.mesh.buffer.setIndex(baseIndex);
     addVertex(
       tool.mesh.buffer.curentIndex,
@@ -146,19 +151,45 @@ export function addVoxelQuad(
       overlayTextures
     );
 
-    indices.setIndex(indIndex).currentArray[indices.curentIndex] = baseIndex;
-    indices.setIndex(indIndex + 1).currentArray[indices.curentIndex] =
-      baseIndex + 1;
-    indices.setIndex(indIndex + 2).currentArray[indices.curentIndex] =
-      baseIndex + 2;
-    indices.setIndex(indIndex + 3).currentArray[indices.curentIndex] =
-      baseIndex + 2;
-    indices.setIndex(indIndex + 4).currentArray[indices.curentIndex] =
-      baseIndex + 3;
-    indices.setIndex(indIndex + 5).currentArray[indices.curentIndex] =
-      baseIndex;
-
     tool.mesh.addVerticies(4, 6);
+  }
+  if (!quad.doubleSided) {
+    let index = baseIndex;
+    indices.setIndex(indIndex).currentArray[indices.curentIndex] = index;
+    indices.setIndex(indIndex + 1).currentArray[indices.curentIndex] =
+      index + 1;
+    indices.setIndex(indIndex + 2).currentArray[indices.curentIndex] =
+      index + 2;
+    indices.setIndex(indIndex + 3).currentArray[indices.curentIndex] =
+      index + 2;
+    indices.setIndex(indIndex + 4).currentArray[indices.curentIndex] =
+      index + 3;
+    indices.setIndex(indIndex + 5).currentArray[indices.curentIndex] = index;
+  } else {
+    let index = baseIndex;
+    indices.setIndex(indIndex).currentArray[indices.curentIndex] = index;
+    indices.setIndex(indIndex + 1).currentArray[indices.curentIndex] =
+      index + 1;
+    indices.setIndex(indIndex + 2).currentArray[indices.curentIndex] =
+      index + 2;
+    indices.setIndex(indIndex + 3).currentArray[indices.curentIndex] =
+      index + 2;
+    indices.setIndex(indIndex + 4).currentArray[indices.curentIndex] =
+      index + 3;
+    indices.setIndex(indIndex + 5).currentArray[indices.curentIndex] = index;
+    index += 4;
+    indIndex += 6;
+    indices.setIndex(indIndex).currentArray[indices.curentIndex] = index;
+    indices.setIndex(indIndex + 1).currentArray[indices.curentIndex] =
+    index + 3;
+    indices.setIndex(indIndex + 2).currentArray[indices.curentIndex] =
+    index + 2;
+    indices.setIndex(indIndex + 3).currentArray[indices.curentIndex] =
+    index + 2;
+    indices.setIndex(indIndex + 4).currentArray[indices.curentIndex] =
+    index + 1;
+    indices.setIndex(indIndex + 5).currentArray[indices.curentIndex] =
+    index;
   }
 }
 function addVertex(

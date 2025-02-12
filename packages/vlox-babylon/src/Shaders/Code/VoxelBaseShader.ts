@@ -12,6 +12,7 @@ precision highp sampler2DArray;
 const uint lightMask = uint(0xf);
 const uint aoMask = uint(${0b11});
 const uint animMask = uint(${0b11});
+const uint vertexMask = uint(${0b11});
 const uint sVLIndex = 0u;
 const uint rVLIndex = 4u;
 const uint gVLIndex = 8u;
@@ -21,7 +22,7 @@ const uint ao2Index = 18u;
 const uint ao3Index = 20u;
 const uint ao4Index = 22u;
 const uint animIndex = 16u;
-const float aoValue =  pow( .65, 2.2);
+const uint vertexIndex = 16u;
 const uint textureIndexMask = uint(0xffff);
 const uint mainTexutreIndex =uint(0);
 const uint secondaryTextureIndex = uint(0xf + 0x1);
@@ -29,7 +30,7 @@ const uint secondaryTextureIndex = uint(0xf + 0x1);
 
 const float aoArray[5] = float[5](1., pow( 1. - .2 , 2.2), pow( 1. - .2 * 2., 2.2), pow( 1. - .2 * 3. , 2.2), pow( 1. - .2 * 4. , 2.2)); 
 
-        
+const vec2 quadUVArray[4] = vec2[4](vec2(1.,1.),vec2(0.,1.),vec2(0.,0.),vec2(1.,0.));     
 
 
 //texture animations
@@ -75,6 +76,7 @@ out vec3 vNormal;
 out vec4 vColors;
 out float vFlow;
 out vec3 vUV;
+out vec2 iUV;
 out vec4 vOverlayTextureIndex;
 out vec3 vLight1;
 out vec3 vLight2;
@@ -133,8 +135,8 @@ vAO.x = aoArray[int((AO >> ao1Index) & aoMask)];
 vAO.y = aoArray[int((AO >> ao2Index) & aoMask)];
 vAO.z = aoArray[int((AO >> ao3Index) & aoMask)];
 vAO.w = aoArray[int((AO >> ao4Index) & aoMask)];
-uint Anim = uint(voxelData.y);
-float animVL = float((Anim >> animIndex) & animMask);
+
+float animVL = float(( uint(voxelData.y) >> animIndex) & animMask);
 vFlow = 0.;
 if(animVL == 1.) {
     vFlow = -1.;
@@ -142,6 +144,12 @@ if(animVL == 1.) {
 if(animVL == 2.) {
     vFlow = 1.;
 }
+
+
+
+
+iUV = quadUVArray[( uint(voxelData.z) >> vertexIndex) & vertexMask];
+
 
 vec4 worldPOSTemp = world * vec4(position, 1.0);
 worldPOS = vec3(worldPOSTemp.x, worldPOSTemp.y, worldPOSTemp.z);
@@ -244,9 +252,9 @@ vec4 rgb = texture(dve_voxel,vec3(vec2(vUV.x,vUV.y + time * .01 * -1. * vFlow),v
 ${
   doAO
     ? /*glsl */ `
-    float top    = mix( vAO.y,    vAO.x,    vUV.x);
-    float bottom = mix( vAO.z,  vAO.w, vUV.x);
-    float ao = mix(bottom, top, vUV.y);
+    float top    = mix( vAO.y,    vAO.x,    iUV.x);
+    float bottom = mix( vAO.z,  vAO.w, iUV.x);
+    float ao = mix(bottom, top, iUV.y);
     rgb.rgb *= ao;
 `
     : ``
@@ -307,6 +315,7 @@ in vec4 vAO;
 in vec4 vColors;
 in float vFlow;
 in vec3 vUV;
+in vec2 iUV;
 in vec4 vOverlayTextureIndex;
 in vec3 vLight1;
 in vec3 vLight2;
@@ -321,9 +330,9 @@ ${SharedShaders.FogFragmentFunctions}
 ${top}
 
 vec3 getLight() {
-  vec3 top    = mix( vLight2,    vLight1,    vUV.x);
-  vec3 bottom = mix( vLight3,  vLight4, vUV.x);
-  return mix(bottom, top, vUV.y);
+  vec3 top    = mix( vLight2,    vLight1,    iUV.x);
+  vec3 bottom = mix( vLight3,  vLight4, iUV.x);
+  return mix(bottom, top, iUV.y);
 }
 
 out vec4 FragColor;  

@@ -10,6 +10,7 @@ import {
 import { VoxelPalettesRegister } from "../Data/VoxelPalettesRegister";
 import { CompiledVoxelTagAndPaletteData } from "../Types/VoxelModelCompiledData.types";
 import { VoxelLogicData } from "../Logic/VoxelLogic.types";
+import { VoxelModelRuleBuilderRegister } from "../Models/Rules/VoxelModelRuleBuilderRegister";
 
 export type BuildTagDataProps = {
   voxels: VoxelData[];
@@ -23,12 +24,24 @@ export function BuildTagAndPaletteData(
   props: BuildTagDataProps
 ): CompiledVoxelTagAndPaletteData {
   const logic: Record<string, VoxelLogicData[]> = {};
+
   for (const voxel of props.voxels) {
     const tags: VoxelTags = {} as any;
     if (VoxelPalettesRegister.voxelIds._map[voxel.id] !== undefined) {
       throw new Error(`Voxel with id [${voxel.id}] is already registered.`);
     }
     const voxelId = VoxelPalettesRegister.voxelIds.register(voxel.id);
+
+    if (voxel.properties["dve_model_data"]) {
+      const model = VoxelModelRuleBuilderRegister.models.get(
+        voxel.properties["dve_model_data"].id
+      );
+      if (model?.data.tags) {
+        for (const tagId in model.data.tags) {
+          voxel.properties[tagId] = (model.data.tags as any)[tagId];
+        }
+      }
+    }
 
     VoxelPalettesRegister.voxelIdToNameMap.set(voxel.id, voxel.name || "");
     VoxelPalettesRegister.voxelNametoIdMap.set(

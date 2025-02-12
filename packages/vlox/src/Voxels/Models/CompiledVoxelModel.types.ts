@@ -14,6 +14,7 @@ import {
   StateLogicStatement,
 } from "../State/State.types";
 import {
+  CullingProcedureData,
   VoxelGeometryData,
   VoxelGeometryNodes,
 } from "../Models/VoxelModel.types";
@@ -34,14 +35,11 @@ export interface VoxelGeometryTransform {
   flip?: [flipX: 0 | 1, flipY: 0 | 1, flipZ: 0 | 1];
 }
 
-export interface CompiledVoxelGeometryData {
-  id: string;
-  ogData: VoxelGeometryData;
-  nodes: CompiledVoxelGeometryNodes[];
-}
+
 
 export type CompiledVoxelGeometrySyncData = {
   id: string;
+  cullingProcedure: CullingProcedureData;
   nodes: CompiledVoxelGeometryNodes[];
   faceIndexes?: number[];
   ruleless?: true;
@@ -51,7 +49,6 @@ export interface CompiledVoxelModelData {
   id: string;
   schema: VoxelModelStateSchemaData[];
   effects: VoxelEffectSyncData[];
-  geoLinkMap: number[];
   stateTree: any[];
   stateMap: number[][];
   stateGeometryMap: number[][];
@@ -59,7 +56,6 @@ export interface CompiledVoxelModelData {
   stateRelativeGeometryMap: number[][];
   //maps each shape state & condtional geometry relative ids to their starting byte index for the transparent index
   relativeGeometryByteIndexMap: number[];
-
   condiotnalStatements: StateLogicStatement[];
   condiotnalStateMap: number[][];
   //maps condiotnal states to their local geometry links

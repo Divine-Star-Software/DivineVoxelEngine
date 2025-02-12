@@ -103,7 +103,6 @@ export class VoxelConstructor {
       builder.position.z
     );
 
-
     const treeState = builder.space!.stateCache[hashed];
     const modState = builder.space!!.modCache[hashed];
 
@@ -117,7 +116,7 @@ export class VoxelConstructor {
         const geoInputs = inputs[nodeId];
         const geomtry = VoxelModelConstructorRegister.geometry[geometries[i]];
         const nodesLength = geomtry.nodes.length;
-        for (let k = 0; k < nodesLength; k++) {
+    for (let k = 0; k < nodesLength; k++) {
           const geo = geomtry.nodes[k];
           geo.builder = this.builder;
           const addedGeo = geo.add(geoInputs[k]);
@@ -140,14 +139,8 @@ export class VoxelConstructor {
         const inputs = this.conditonalInputMap[modState][c];
 
         for (let i = 0; i < geometriesLength; i++) {
-          const nodeId = geometries[i];
           const geoInputs = inputs[i];
-
-          const geomtry =
-            VoxelModelConstructorRegister.geometry[
-              this.data.geoLinkMap[nodeId]
-            ];
-
+          const geomtry = VoxelModelConstructorRegister.geometry[geometries[i]];
           const nodesLength = geomtry.nodes.length;
           for (let k = 0; k < nodesLength; k++) {
             const geo = geomtry.nodes[k];

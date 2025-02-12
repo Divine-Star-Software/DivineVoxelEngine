@@ -1,7 +1,7 @@
-import { VoxelModelBuilder } from "../VoxelModelBuilder.js";
-import type { TextureId } from "../../../Textures/Texture.types.js";
+import { VoxelModelBuilder } from "../../VoxelModelBuilder.js";
+import type { TextureId } from "../../../../Textures/Texture.types.js";
 import { Vec3Array } from "@amodx/math";
-import { VoxelFaceDirections, VoxelFaces } from "../../../Math/index.js";
+import { VoxelFaceDirections, VoxelFaces } from "../../../../Math/index.js";
 /*
 0 -> normal direction
 1 -> top right

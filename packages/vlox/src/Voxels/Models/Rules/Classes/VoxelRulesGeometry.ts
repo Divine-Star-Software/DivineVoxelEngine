@@ -1,8 +1,17 @@
 import { GetOcclusionFaces } from "../Functions/GetOcclusionFaces";
 import { BuildGeomtryInputs } from "../Functions/BuildGeomtryInputs";
 import { BuildStateData } from "../../../../Voxels/Functions/BuildStateData";
-import { CompiledVoxelGeometryData } from "../../CompiledVoxelModel.types";
-
+import { CompiledVoxelGeometryNodes } from "../../CompiledVoxelModel.types";
+import {
+  CullingProcedureData,
+  VoxelGeometryData,
+} from "Voxels/Models/VoxelModel.types";
+export interface VoxelRuleGeometryData {
+  id: string;
+  cullingProcedure: CullingProcedureData;
+  ogData: VoxelGeometryData;
+  nodes: CompiledVoxelGeometryNodes[];
+}
 export class VoxelRuleGeometry {
   inputs: ReturnType<typeof BuildGeomtryInputs>;
 
@@ -13,7 +22,7 @@ export class VoxelRuleGeometry {
 
   constructor(
     public id: string,
-    public data: CompiledVoxelGeometryData
+    public data: VoxelRuleGeometryData
   ) {
     if (data.ogData.doNotBuildRules !== true) {
       this.faceIds = GetOcclusionFaces(this.id, this, data.nodes);

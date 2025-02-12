@@ -22,7 +22,8 @@ export class VoxelTagsRegister {
     VoxelTagIds.canBePowered,
     VoxelTagIds.canCarryPower,
     VoxelTagIds.canHoldPower,
-    VoxelTagIds.powerValue
+    VoxelTagIds.powerValue,
+    VoxelTagIds.fullBlock
   ];
   static IncludedSubstnacesTags: string[] = [
     VoxelSubstanceTagIds.parent,

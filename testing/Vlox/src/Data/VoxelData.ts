@@ -25,11 +25,10 @@ export const DVEVoxelData: VoxelData[] = [
       ],
 
       dve_model_data: {
-        id: "dve_simple_cube",
+        id: "dve_transparent_simple_cube",
         inputs: {
           "*": {
             texture: "dve_dream_leaves",
-            transparent: true,
           },
         },
       },
@@ -82,7 +81,13 @@ export const DVEVoxelData: VoxelData[] = [
         ],
         modRelationSchema: [],
         inputs: {
-          "grassy=false": { texture: "dve_dread_stone:default" },
+          "grassy=false": {
+            texture: {
+              type: "consistent-rotation",
+              texture: "dve_dread_stone:default",
+              rotations: [0, 90,  270],
+            },
+          },
           "grassy=true": {
             texture: "dve_dread_stone:grassy-top",
           },

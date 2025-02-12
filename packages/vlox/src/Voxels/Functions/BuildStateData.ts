@@ -240,9 +240,9 @@ export function BuildStateData(
     data.stateSchema,
     data.relationsSchema
   );
-  const geometryLinkPalette = new StringPalette();
+
   //maps geo link ids to geomtry ids
-  const geometryLinkStateMap: number[] = [];
+  const geometryLinkStateMap: Record<string, Record<number, number>> = {};
 
   const log = model.data.id == "dve_simple_stair";
 
@@ -250,10 +250,10 @@ export function BuildStateData(
   for (const key in data.stateNodes) {
     const nodeData = data.stateNodes[key];
 
-    for (const node of nodeData) {
-      if (geometryLinkPalette.isRegistered(node.id)) continue;
-      const linkId = geometryLinkPalette.register(node.id);
-      geometryLinkStateMap[linkId] = geoPalette.getNumberId(
+    for (let i = 0; i < nodeData.length; i++) {
+      geometryLinkStateMap[key] ??= {};
+      const node = nodeData[i];
+      geometryLinkStateMap[key][i] ??= geoPalette.getNumberId(
         VoxelModelRuleBuilderRegister.getGeometryLinkId(node)
       );
     }
@@ -263,10 +263,10 @@ export function BuildStateData(
   for (const key in data.conditonalNodes) {
     const nodeData = data.conditonalNodes[key];
 
-    for (const node of nodeData) {
-      if (geometryLinkPalette.isRegistered(node.id)) continue;
-      const linkId = geometryLinkPalette.register(node.id);
-      geometryLinkStateMap[linkId] = geoPalette.getNumberId(
+    for (let i = 0; i < nodeData.length; i++) {
+      geometryLinkStateMap[key] ??= {};
+      const node = nodeData[i];
+      geometryLinkStateMap[key][i] ??= geoPalette.getNumberId(
         VoxelModelRuleBuilderRegister.getGeometryLinkId(node)
       );
     }
@@ -285,13 +285,13 @@ export function BuildStateData(
   const stateRecord: Record<string, number> = {};
   for (const key in data.stateNodes) {
     stateGeoLinkPalette.push(
-      data.stateNodes[key].map((_) =>
-        geometryLinkPalette.getNumberId(_.id)
-      )
+      data.stateNodes[key].map((_, index) => geometryLinkStateMap[key][index])
     );
     stateGeometryPalette.push(
       data.stateNodes[key].map((_) =>
-        geoPalette.getNumberId(VoxelModelRuleBuilderRegister.getGeometryLinkId(_))
+        geoPalette.getNumberId(
+          VoxelModelRuleBuilderRegister.getGeometryLinkId(_)
+        )
       )
     );
     stateRecord[key] = stateGeometryPalette.length - 1;
@@ -300,7 +300,9 @@ export function BuildStateData(
 
     for (const node of nodeData) {
       stateRelativeGeometryMap[stateRecord[key]][
-        geoPalette.getNumberId(VoxelModelRuleBuilderRegister.getGeometryLinkId(node))
+        geoPalette.getNumberId(
+          VoxelModelRuleBuilderRegister.getGeometryLinkId(node)
+        )
       ] = relativeGeoId;
       relativeGeometryByteIndexMap[relativeGeoId] = relativeByteCount;
       relativeGeoId++;
@@ -329,13 +331,15 @@ export function BuildStateData(
   const compareOperations = Object.keys(StateCompareOperationsMap);
   for (const key in data.conditonalNodes) {
     condiotnalShapeStateNodePalette.push(
-      data.conditonalNodes[key].map((_) =>
-        geometryLinkPalette.getNumberId(_.id)
+      data.conditonalNodes[key].map(
+        (_, index) => geometryLinkStateMap[key][index]
       )
     );
     condiotnalShapeStateGeometryPalette.push(
       data.conditonalNodes[key].map((_) =>
-        geoPalette.getNumberId(VoxelModelRuleBuilderRegister.getGeometryLinkId(_))
+        geoPalette.getNumberId(
+          VoxelModelRuleBuilderRegister.getGeometryLinkId(_)
+        )
       )
     );
     condiotnalShapeStateNodeRecord[key] =
@@ -348,8 +352,11 @@ export function BuildStateData(
     for (const node of nodeData) {
       condiotnalShapeStateRelativeGeometryMap[
         condiotnalShapeStateNodeRecord[key]
-      ][geoPalette.getNumberId(VoxelModelRuleBuilderRegister.getGeometryLinkId(node))] =
-        relativeGeoId;
+      ][
+        geoPalette.getNumberId(
+          VoxelModelRuleBuilderRegister.getGeometryLinkId(node)
+        )
+      ] = relativeGeoId;
       relativeGeometryByteIndexMap[relativeGeoId] = relativeByteCount;
       relativeGeoId++;
       relativeByteCount += Math.ceil(
@@ -534,7 +541,6 @@ export function BuildStateData(
     stateGeometryPalette: stateGeometryPalette,
     condiotnalShapeStateGeometryPalette,
     stateTree: newShapeStateTree,
-    geometryLinkPalette: geometryLinkPalette._map,
     geometryLinkStateMap,
     relativeByteCount,
     statePalette: stateGeoLinkPalette,

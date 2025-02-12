@@ -1,7 +1,10 @@
 import { Vec3Array, Vec4Array } from "@amodx/math";
-import { VoxelFaces } from "../../../../Math";
+import { VoxelFaceDirections, VoxelFaceNameMap, VoxelFaces } from "../../../../Math";
 import { QuadVerticies } from "../../../Geomtry/Geometry.types";
-import { VoxelBoxGeometryNode } from "../../../../Voxels/Models/VoxelModel.types";
+import {
+  BaseVoxelGeomtryTextureProcedureData,
+  VoxelBoxGeometryNode,
+} from "../../../../Voxels/Models/VoxelModel.types";
 import { Quad } from "../../../Geomtry/Primitives/Quad";
 import {
   BoxVoxelGometryArgs,
@@ -20,6 +23,7 @@ import {
   VoxelGeometryBuilder,
 } from "../../../Geomtry/VoxelGeometryBuilder";
 import { VoxelModelConstructorRegister } from "../../../Models/VoxelModelConstructorRegister";
+import { TextureProcedureRegister } from "../../Procedures/TextureProcedureRegister";
 
 const ArgIndexes = BoxVoxelGometryInputs.ArgIndexes;
 
@@ -73,21 +77,21 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
       if (offsetBaseGometry) {
         for (let i = 0; i < offsetBaseGometry.length; i++) {
           const geoId = offsetBaseGometry[i];
-
           if (VoxelModelConstructorRegister.rulesless[geoId]) continue;
+          const cullingProcedure =
+            VoxelModelConstructorRegister.geometry[geoId].cullingProcedure;
+          if (cullingProcedure.type == "transparent") {
+            if (constructor.id != this.builder.voxel.getStringId()) continue;
+          } else {
+            if (cullingProcedure.type != "default") continue;
+          }
 
           if (
             VoxelModelConstructorRegister.faceCullIndex.getValue(
               geoId,
               directionIndex,
               trueFaceIndex
-            ) == 1 /* &&
-            !constructor.isShapeStateFaceTransparent(
-              this.builder.space.modCache[hashed],
-              this.builder.space.stateCache[hashed],
-              geoId,
-              faceIndex
-            ) */
+            ) == 1
           ) {
             return false;
           }
@@ -103,18 +107,23 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
           for (let k = 0; k < cond.length; k++) {
             const geoId = cond[k];
             if (VoxelModelConstructorRegister.rulesless[geoId]) continue;
+            const cullingProcedure =
+              VoxelModelConstructorRegister.geometry[geoId].cullingProcedure;
+            if (
+              cullingProcedure.type == "transparent" ||
+              this.geomtry.cullingProcedure.type == "transparent"
+            ) {
+              if (constructor.id != this.builder.voxel.getStringId()) continue;
+            } else {
+              if (cullingProcedure.type != "default") continue;
+            }
+            if (VoxelModelConstructorRegister.rulesless[geoId]) continue;
             if (
               VoxelModelConstructorRegister.faceCullIndex.getValue(
                 geoId,
                 directionIndex,
                 trueFaceIndex
-              ) == 1 /*  &&
-              !constructor.isCondtionalStateFaceTransparent(
-                this.builder.space.modCache[hashed],
-                this.builder.space.stateCache[hashed],
-                geoId,
-                faceIndex
-              ) */
+              ) == 1
             )
               return false;
           }
@@ -149,7 +158,6 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
       const aoIndexes =
         VoxelModelConstructorRegister.vertexHitMap![trueFaceIndex][v];
 
-
       if (!aoIndexes) continue;
 
       for (let i = 0; i < aoIndexes.length; i++) {
@@ -170,7 +178,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
           continue;
         const baseGeo = this.builder.space.getGeomtry(hashed);
         const conditonalGeo = this.builder.space.getConditionalGeomtry(hashed);
-  
+
         if (!baseGeo && !conditonalGeo) continue;
 
         let length = 0;
@@ -205,9 +213,7 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
         ) {
           const condiotnalength = conditonalGeo[condtionsIndex].length;
           for (let geoIndex = 0; geoIndex < condiotnalength; geoIndex++) {
-      
             if (
-
               VoxelModelConstructorRegister.aoIndex.getValue(
                 conditonalGeo[condtionsIndex][geoIndex],
                 directionIndex,
@@ -228,22 +234,21 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
     }
   }
 
-
   add(args: BoxVoxelGometryArgs) {
     let added = false;
-    const tool = this.builder;
+    const builder = this.builder;
 
     for (let face = 0 as VoxelFaces; face < 6; face++) {
-      if (args[face][ArgIndexes.Enabled] && this.isExposed(face)) {
+      if (
+        args[face][ArgIndexes.Enabled] &&
+        (this.geomtry.cullingProcedure.type == "none" || this.isExposed(face))
+      ) {
         added = true;
         const quad = this.quads[face];
 
-        tool.calculateFaceData(face);
+        builder.calculateFaceData(face);
         this.determineShading(face);
         const faceArgs = args[face];
-
-
-        tool.vars.textureIndex = faceArgs[ArgIndexes.Texture];
 
         const uvs = faceArgs[ArgIndexes.UVs];
         //1
@@ -258,9 +263,30 @@ export class BoxVoxelGometryNode extends GeoemtryNode<
         //4
         quad.uvs.vertices[3].x = uvs[3][0];
         quad.uvs.vertices[3].y = uvs[3][1];
-        addVoxelQuad(tool, this.builder.origin, quad);
 
-        tool.updateBounds(this.quadBounds[face]);
+        if (typeof faceArgs[ArgIndexes.Texture] == "number") {
+          builder.vars.textureIndex = faceArgs[ArgIndexes.Texture] as number;
+        } else {
+          const procedure = TextureProcedureRegister.get(
+            (
+              faceArgs[
+                ArgIndexes.Texture
+              ] as BaseVoxelGeomtryTextureProcedureData
+            ).type
+          );
+          const data = faceArgs[ArgIndexes.Texture];
+          builder.vars.textureIndex = procedure.getTexture(builder, data);
+          procedure.transformUVs(builder, data, quad);
+          procedure.getOverlayTexture(
+            builder,
+            data,
+            this.builder.vars.overlayTextures
+          );
+        }
+
+        addVoxelQuad(builder, this.builder.origin, quad);
+
+        builder.updateBounds(this.quadBounds[face]);
       }
     }
 

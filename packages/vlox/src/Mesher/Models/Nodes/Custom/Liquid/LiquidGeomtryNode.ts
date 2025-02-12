@@ -81,12 +81,11 @@ export class LiquidGeometryNode extends GeoemtryNode<
       VoxelFaceDirections[face][1] + this.builder.position.y,
       VoxelFaceDirections[face][2] + this.builder.position.z
     );
-    if (
-      !nv ||
-      nv.isAir() ||
-      (!this.builder.voxel.isSameVoxel(nv) && face == VoxelFaces.Up)
-    )
+    if (!nv || (face == VoxelFaces.Up && !this.builder.voxel.isSameVoxel(nv)))
       return true;
+    if (this.builder.voxel.isSameVoxel(nv)) return false;
+
+    if (nv.isAir() || nv._tags["dve_is_transparent"]) return true;
     return false;
   }
 

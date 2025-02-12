@@ -42,12 +42,6 @@ export abstract class VoxelCursorInterface {
     this.id = this.ids[this._index];
     this.secondaryId = this.secondary[this._index];
 
-    if (this.secondaryId > 1) {
-      this.id = this.secondaryId;
-    } else {
-      this.secondaryId = 0;
-    }
-
     this._loadedId = this.getId();
 
     this._tags = VoxelTagsRegister.VoxelTags[this.getVoxelId()];
@@ -64,8 +58,6 @@ export abstract class VoxelCursorInterface {
 
   setSecondary(enable: boolean) {
     this.__secondary = enable;
-    VoxelTagIds;
-    VoxelTagsRegister;
     this._loadedId = this.getId();
     return this;
   }
@@ -329,10 +321,7 @@ export abstract class VoxelCursorInterface {
   }
 
   isSameVoxel(voxel: VoxelCursorInterface) {
-    return (
-      VoxelPalettesRegister.voxels[this.getId()][0] ==
-      VoxelPalettesRegister.voxels[voxel.getId()][0]
-    );
+    return this.getIndexData()[0] == voxel.getIndexData()[0];
   }
   copy(cursor: VoxelCursorInterface) {
     this.ids[this._index] = cursor.ids[cursor._index];

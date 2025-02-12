@@ -26,11 +26,9 @@ export const stair: VoxelModelData = {
     },
   },
   conditonalNodes: {},
-
   stateNodes: {
     "placement=up,direction=north,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_down_half",
         position: [0, 0.5, 0],
         inputs: {
@@ -43,7 +41,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_west_east",
         position: [0, 0, 0.5],
         inputs: {
@@ -58,7 +55,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=up,direction=south,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_down_half",
         position: [0, 0.5, 0],
         inputs: {
@@ -71,7 +67,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_west_east",
         inputs: {
           upTex: "@texture",
@@ -85,7 +80,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=up,direction=east,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_down_half",
         position: [0, 0.5, 0],
         inputs: {
@@ -98,7 +92,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_south_north",
         position: [0.5, 0, 0],
         inputs: {
@@ -113,7 +106,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=up,direction=west,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_down_half",
         position: [0, 0.5, 0],
         inputs: {
@@ -126,7 +118,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_south_north",
         inputs: {
           upTex: "@texture",
@@ -140,7 +131,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=down,direction=north,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_down_half",
         inputs: {
           upTex: "@texture",
@@ -152,7 +142,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_west_east",
         position: [0, 0.5, 0.5],
         inputs: {
@@ -167,7 +156,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=down,direction=south,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_down_half",
         inputs: {
           upTex: "@texture",
@@ -179,7 +167,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_west_east",
         position: [0, 0.5, 0],
         inputs: {
@@ -194,7 +181,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=down,direction=east,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_down_half",
         inputs: {
           upTex: "@texture",
@@ -206,7 +192,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_south_north",
         position: [0.5, 0.5, 0],
         inputs: {
@@ -221,7 +206,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=down,direction=west,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_down_half",
         inputs: {
           upTex: "@texture",
@@ -233,7 +217,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_south_north",
         position: [0, 0.5, 0],
         inputs: {
@@ -249,7 +232,6 @@ export const stair: VoxelModelData = {
 
     "placement=north,direction=north,connected=false": [
       {
-        id: "base",
         position: [0, 0, 0.5],
         geometryId: "dve_half_cube_south_half",
         inputs: {
@@ -262,7 +244,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_west_east",
         position: [0, 0.5, 0],
         inputs: {
@@ -277,7 +258,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=north,direction=south,connected=false": [
       {
-        id: "base",
         position: [0, 0, 0.5],
         geometryId: "dve_half_cube_south_half",
         inputs: {
@@ -290,7 +270,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_west_east",
         inputs: {
           upTex: "@texture",
@@ -304,7 +283,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=north,direction=east,connected=false": [
       {
-        id: "base",
         position: [0, 0, 0.5],
         geometryId: "dve_half_cube_south_half",
         inputs: {
@@ -317,7 +295,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_up_down",
         position: [0.5, 0, 0],
         inputs: {
@@ -332,7 +309,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=north,direction=west,connected=false": [
       {
-        id: "base",
         position: [0, 0, 0.5],
         geometryId: "dve_half_cube_south_half",
         inputs: {
@@ -345,7 +321,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_up_down",
         inputs: {
           upTex: "@texture",
@@ -360,7 +335,6 @@ export const stair: VoxelModelData = {
 
     "placement=south,direction=north,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_south_half",
         inputs: {
           upTex: "@texture",
@@ -372,7 +346,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_west_east",
         position: [0, 0.5, 0.5],
         inputs: {
@@ -387,7 +360,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=south,direction=south,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_south_half",
         inputs: {
           upTex: "@texture",
@@ -399,7 +371,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_west_east",
         position: [0, 0, 0.5],
         inputs: {
@@ -414,7 +385,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=south,direction=east,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_south_half",
         inputs: {
           upTex: "@texture",
@@ -426,7 +396,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_up_down",
         position: [0.5, 0, 0.5],
         inputs: {
@@ -441,7 +410,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=south,direction=west,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_south_half",
         inputs: {
           upTex: "@texture",
@@ -453,7 +421,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_up_down",
         position: [0, 0, 0.5],
         inputs: {
@@ -469,7 +436,6 @@ export const stair: VoxelModelData = {
 
     "placement=east,direction=north,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_west_half",
         position: [0.5, 0, 0],
         inputs: {
@@ -482,7 +448,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_south_north",
         position: [0, 0.5, 0],
         inputs: {
@@ -497,7 +462,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=east,direction=south,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_west_half",
         position: [0.5, 0, 0],
         inputs: {
@@ -510,7 +474,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_south_north",
         position: [0, 0, 0],
         inputs: {
@@ -525,7 +488,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=east,direction=east,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_west_half",
         position: [0.5, 0, 0],
         inputs: {
@@ -538,7 +500,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_up_down",
         position: [0, 0, 0.5],
         inputs: {
@@ -553,7 +514,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=east,direction=west,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_west_half",
         position: [0.5, 0, 0],
         inputs: {
@@ -566,7 +526,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_up_down",
         position: [0, 0, 0],
         inputs: {
@@ -582,7 +541,6 @@ export const stair: VoxelModelData = {
 
     "placement=west,direction=north,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_west_half",
         inputs: {
           upTex: "@texture",
@@ -594,7 +552,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_south_north",
         position: [0.5, 0.5, 0],
         inputs: {
@@ -609,7 +566,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=west,direction=south,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_west_half",
         inputs: {
           upTex: "@texture",
@@ -621,7 +577,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_south_north",
         position: [0.5, 0, 0],
         inputs: {
@@ -636,7 +591,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=west,direction=east,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_west_half",
         inputs: {
           upTex: "@texture",
@@ -648,7 +602,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_up_down",
         position: [0.5, 0, 0.5],
         inputs: {
@@ -663,7 +616,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=west,direction=west,connected=false": [
       {
-        id: "base",
         geometryId: "dve_half_cube_west_half",
         inputs: {
           upTex: "@texture",
@@ -675,7 +627,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_quater_cube_up_down",
         position: [0.5, 0, 0],
         inputs: {
@@ -692,7 +643,6 @@ export const stair: VoxelModelData = {
     //connected
     "placement=up,direction=north,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_down_half",
         position: [0, 0.5, 0],
         inputs: {
@@ -705,7 +655,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0.5, 0, 0.5],
         inputs: {
@@ -720,7 +669,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=up,direction=south,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_down_half",
         position: [0, 0.5, 0],
         inputs: {
@@ -733,7 +681,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0, 0, 0.5],
         inputs: {
@@ -748,7 +695,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=up,direction=east,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_down_half",
         position: [0, 0.5, 0],
         inputs: {
@@ -761,7 +707,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0.5, 0, 0],
         inputs: {
@@ -776,7 +721,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=up,direction=west,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_down_half",
         position: [0, 0.5, 0],
         inputs: {
@@ -789,7 +733,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         inputs: {
           upTex: "@texture",
@@ -804,7 +747,6 @@ export const stair: VoxelModelData = {
 
     "placement=down,direction=north,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_down_half",
         inputs: {
           upTex: "@texture",
@@ -816,7 +758,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0.5, 0.5, 0.5],
         inputs: {
@@ -831,7 +772,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=down,direction=south,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_down_half",
         inputs: {
           upTex: "@texture",
@@ -843,7 +783,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0, 0.5, 0.5],
         inputs: {
@@ -858,7 +797,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=down,direction=east,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_down_half",
         inputs: {
           upTex: "@texture",
@@ -870,7 +808,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0.5, 0.5, 0],
         inputs: {
@@ -885,7 +822,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=down,direction=west,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_down_half",
         inputs: {
           upTex: "@texture",
@@ -897,7 +833,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0, 0.5, 0],
         inputs: {
@@ -913,7 +848,6 @@ export const stair: VoxelModelData = {
 
     "placement=north,direction=north,connected=true": [
       {
-        id: "base",
         position: [0, 0, 0.5],
         geometryId: "dve_half_cube_south_half",
         inputs: {
@@ -926,7 +860,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0.5, 0.5, 0],
         inputs: {
@@ -941,7 +874,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=north,direction=south,connected=true": [
       {
-        id: "base",
         position: [0, 0, 0.5],
         geometryId: "dve_half_cube_south_half",
         inputs: {
@@ -954,7 +886,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0, 0.5, 0],
         inputs: {
@@ -969,7 +900,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=north,direction=east,connected=true": [
       {
-        id: "base",
         position: [0, 0, 0.5],
         geometryId: "dve_half_cube_south_half",
         inputs: {
@@ -982,7 +912,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0.5, 0, 0],
         inputs: {
@@ -997,7 +926,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=north,direction=west,connected=true": [
       {
-        id: "base",
         position: [0, 0, 0.5],
         geometryId: "dve_half_cube_south_half",
         inputs: {
@@ -1010,7 +938,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         inputs: {
           upTex: "@texture",
@@ -1025,7 +952,6 @@ export const stair: VoxelModelData = {
 
     "placement=south,direction=north,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_south_half",
         inputs: {
           upTex: "@texture",
@@ -1037,7 +963,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0.5, 0.5, 0.5],
         inputs: {
@@ -1052,7 +977,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=south,direction=south,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_south_half",
         inputs: {
           upTex: "@texture",
@@ -1064,7 +988,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0, 0.5, 0.5],
         inputs: {
@@ -1079,7 +1002,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=south,direction=east,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_south_half",
         inputs: {
           upTex: "@texture",
@@ -1091,7 +1013,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0.5, 0, 0.5],
         inputs: {
@@ -1106,7 +1027,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=south,direction=west,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_south_half",
         inputs: {
           upTex: "@texture",
@@ -1118,7 +1038,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0, 0, 0.5],
         inputs: {
@@ -1134,7 +1053,6 @@ export const stair: VoxelModelData = {
 
     "placement=east,direction=north,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_west_half",
         position: [0.5, 0, 0],
         inputs: {
@@ -1147,7 +1065,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0, 0.5, 0.5],
         inputs: {
@@ -1162,7 +1079,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=east,direction=south,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_west_half",
         position: [0.5, 0, 0],
         inputs: {
@@ -1175,7 +1091,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0, 0.5, 0],
         inputs: {
@@ -1190,7 +1105,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=east,direction=east,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_west_half",
         position: [0.5, 0, 0],
         inputs: {
@@ -1203,7 +1117,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0, 0, 0.5],
         inputs: {
@@ -1218,7 +1131,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=east,direction=west,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_west_half",
         position: [0.5, 0, 0],
         inputs: {
@@ -1231,7 +1143,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         inputs: {
           upTex: "@texture",
@@ -1246,7 +1157,6 @@ export const stair: VoxelModelData = {
 
     "placement=west,direction=north,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_west_half",
         inputs: {
           upTex: "@texture",
@@ -1258,7 +1168,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0.5, 0.5, 0.5],
         inputs: {
@@ -1273,7 +1182,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=west,direction=south,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_west_half",
         inputs: {
           upTex: "@texture",
@@ -1285,7 +1193,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0.5, 0.5, 0],
         inputs: {
@@ -1300,7 +1207,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=west,direction=east,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_west_half",
         inputs: {
           upTex: "@texture",
@@ -1312,7 +1218,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0.5, 0, 0.5],
         inputs: {
@@ -1327,7 +1232,6 @@ export const stair: VoxelModelData = {
     ],
     "placement=west,direction=west,connected=true": [
       {
-        id: "base",
         geometryId: "dve_half_cube_west_half",
         inputs: {
           upTex: "@texture",
@@ -1339,7 +1243,6 @@ export const stair: VoxelModelData = {
         },
       },
       {
-        id: "up",
         geometryId: "dve_eighth_cube",
         position: [0.5, 0, 0],
         inputs: {

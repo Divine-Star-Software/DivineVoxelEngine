@@ -14,14 +14,13 @@ export class DefaultMaterialManager {
     },
   };
   static fogData = new Vector4();
-  static unifrosm = {
-    //defines the light value gradient for voxxel lighting
+  static uniforms = {
     lightGradient: [
-      0.06, 0.1, 0.11, 0.14, 0.17, 0.21, 0.26, 0.31, 0.38, 0.45, 0.54, 0.64,
-      0.74, 0.85, 0.97, 1,
+      0.08, 0.12, 0.16, 0.21, 0.27, 0.34, 0.42, 0.50, 0.59, 0.68, 0.77, 0.85,
+      0.91, 0.96, 0.99, 1,
     ],
   };
-
+  
   static sceneTool: SceneTool;
   static init() {
     this.sceneTool = new SceneTool();
@@ -38,7 +37,7 @@ export class DefaultMaterialManager {
     for (const [id, mat] of DVEBabylonRenderer.instance.materials
       .materials) {
       
-      mat.setNumberArray("lightGradient", this.unifrosm.lightGradient);
+      mat.setNumberArray("lightGradient", this.uniforms.lightGradient);
     }
   }
 

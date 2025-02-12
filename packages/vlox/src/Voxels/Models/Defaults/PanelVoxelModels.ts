@@ -32,7 +32,6 @@ export const simpleThinPannel: VoxelModelData = {
   stateNodes: {
     "placement=down,direction=south": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_down",
         inputs: {
           upTex: "@upDownTextures",
@@ -50,7 +49,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=down,direction=north": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_down",
         inputs: {
           upTex: "@upDownTextures",
@@ -68,7 +66,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=down,direction=east": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_down",
         inputs: {
           upTex: "@upDownTextures",
@@ -86,7 +83,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=down,direction=west": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_down",
         inputs: {
           upTex: "@upDownTextures",
@@ -105,7 +101,6 @@ export const simpleThinPannel: VoxelModelData = {
 
     "placement=up,direction=north": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_down",
         position: [0, 1 - 3 / 16, 0],
         inputs: {
@@ -124,7 +119,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=up,direction=south": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_down",
         position: [0, 1 - 3 / 16, 0],
         inputs: {
@@ -143,7 +137,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=up,direction=east": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_down",
         position: [0, 1 - 3 / 16, 0],
         inputs: {
@@ -162,7 +155,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=up,direction=west": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_down",
         position: [0, 1 - 3 / 16, 0],
         inputs: {
@@ -182,7 +174,6 @@ export const simpleThinPannel: VoxelModelData = {
 
     "placement=north,direction=north": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_south",
         position: [0, 0, 1 - 3 / 16],
         inputs: {
@@ -201,7 +192,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=north,direction=south": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_south",
         position: [0, 0, 1 - 3 / 16],
         inputs: {
@@ -220,7 +210,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=north,direction=east": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_south",
         position: [0, 0, 1 - 3 / 16],
         inputs: {
@@ -239,7 +228,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=north,direction=west": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_south",
         position: [0, 0, 1 - 3 / 16],
         inputs: {
@@ -259,7 +247,6 @@ export const simpleThinPannel: VoxelModelData = {
 
     "placement=south,direction=north": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_south",
         inputs: {
           upTex: "@sideTextures",
@@ -277,7 +264,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=south,direction=south": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_south",
         inputs: {
           upTex: "@sideTextures",
@@ -295,7 +281,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=south,direction=east": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_south",
         inputs: {
           upTex: "@sideTextures",
@@ -313,7 +298,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=south,direction=west": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_south",
         inputs: {
           upTex: "@sideTextures",
@@ -331,7 +315,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=east,direction=north": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_west",
         position: [1 - 3 / 16, 0, 0],
         inputs: {
@@ -350,7 +333,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=east,direction=south": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_west",
         position: [1 - 3 / 16, 0, 0],
         inputs: {
@@ -369,7 +351,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=east,direction=east": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_west",
         position: [1 - 3 / 16, 0, 0],
         inputs: {
@@ -388,7 +369,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=east,direction=west": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_west",
         position: [1 - 3 / 16, 0, 0],
         inputs: {
@@ -408,7 +388,6 @@ export const simpleThinPannel: VoxelModelData = {
 
     "placement=west,direction=north": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_west",
         inputs: {
           upTex: "@sideTextures",
@@ -426,7 +405,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=west,direction=south": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_west",
         inputs: {
           upTex: "@sideTextures",
@@ -444,7 +422,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=west,direction=east": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_west",
         inputs: {
           upTex: "@sideTextures",
@@ -462,7 +439,6 @@ export const simpleThinPannel: VoxelModelData = {
     ],
     "placement=west,direction=west": [
       {
-        id: "cube",
         geometryId: "dve_thin_panel_west",
         inputs: {
           upTex: "@sideTextures",
@@ -513,7 +489,6 @@ export const simpleCrossedPannel: VoxelModelData = {
   stateNodes: {
     "placement=down,direction=north": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -524,7 +499,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -536,7 +510,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     ],
     "placement=down,direction=south": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -546,7 +519,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -559,7 +531,6 @@ export const simpleCrossedPannel: VoxelModelData = {
 
     "placement=down,direction=east": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -569,7 +540,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -581,7 +551,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     ],
     "placement=down,direction=west": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -591,7 +560,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -603,7 +571,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     ],
     "placement=up,direction=north": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -613,7 +580,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -625,7 +591,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     ],
     "placement=up,direction=south": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -635,7 +600,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -648,7 +612,6 @@ export const simpleCrossedPannel: VoxelModelData = {
 
     "placement=up,direction=east": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -658,7 +621,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -670,7 +632,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     ],
     "placement=up,direction=west": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -680,7 +641,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -692,7 +652,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     ],
     "placement=north,direction=north": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -702,7 +661,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -714,7 +672,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     ],
     "placement=north,direction=south": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -724,7 +681,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -737,7 +693,6 @@ export const simpleCrossedPannel: VoxelModelData = {
 
     "placement=north,direction=east": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -747,7 +702,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -759,7 +713,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     ],
     "placement=north,direction=west": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -769,7 +722,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -781,7 +733,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     ],
     "placement=south,direction=north": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -791,7 +742,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -803,7 +753,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     ],
     "placement=south,direction=south": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -813,7 +762,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -826,7 +774,6 @@ export const simpleCrossedPannel: VoxelModelData = {
 
     "placement=south,direction=east": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -836,7 +783,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -848,7 +794,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     ],
     "placement=south,direction=west": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -858,7 +803,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -870,7 +814,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     ],
     "placement=east,direction=north": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -880,7 +823,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -892,7 +834,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     ],
     "placement=east,direction=south": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -902,7 +843,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -915,7 +855,6 @@ export const simpleCrossedPannel: VoxelModelData = {
 
     "placement=east,direction=east": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -925,7 +864,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -937,7 +875,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     ],
     "placement=east,direction=west": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -947,7 +884,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -959,7 +895,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     ],
     "placement=west,direction=north": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -969,7 +904,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -981,7 +915,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     ],
     "placement=west,direction=south": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -991,7 +924,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -1004,7 +936,6 @@ export const simpleCrossedPannel: VoxelModelData = {
 
     "placement=west,direction=east": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -1014,7 +945,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",
@@ -1026,7 +956,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     ],
     "placement=west,direction=west": [
       {
-        id: "quad-1",
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
@@ -1036,7 +965,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         },
       },
       {
-        id: "quad-2",
         geometryId: "dve_diagonal_flat_panel_east_west",
         inputs: {
           texture: "@texture",

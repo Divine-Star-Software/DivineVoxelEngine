@@ -29,7 +29,9 @@ import {
   orientedCube,
   pillarCube,
   simpleCube,
+  simpleNoCulledCube,
   simpleHalfCube,
+  simpleTransparentCube,
 } from "./Models/Defaults/CubeVoxelModels";
 import {
   diagonalFlatPanelEastWest,
@@ -131,6 +133,8 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
 
   VoxelModelRuleBuilderRegister.registerModels(
     simpleCube,
+    simpleTransparentCube,
+    simpleNoCulledCube,
     orientedCube,
     simpleHalfCube,
     pillarCube,
@@ -175,6 +179,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
         id: mainKey,
         nodes: mainGeo.data.nodes,
         ruleless: true,
+        cullingProcedure: mainGeo.data.cullingProcedure
       });
       continue;
     } else {
@@ -182,6 +187,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
         id: mainKey,
         nodes: mainGeo.data.nodes,
         faceIndexes: mainGeo.faceIds,
+        cullingProcedure: mainGeo.data.cullingProcedure
       });
     }
   }
@@ -197,7 +203,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
       id: mainKey,
       effects: stateData.effects,
       schema: stateData.schema,
-      geoLinkMap: stateData.geometryLinkStateMap,
+   //   geoLinkMap: stateData.geometryLinkStateMap,
       stateMap: stateData.statePalette,
       stateGeometryMap: stateData.stateGeometryPalette,
       stateTree: stateData.stateTree,
@@ -370,6 +376,8 @@ export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
     ...data.voxels,
   ];
 
+  let models = GetModelData(data);
+  
   const voxelData = BuildTagAndPaletteData({
     voxels,
     voxelsOverrides: {
@@ -386,7 +394,7 @@ export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
     materials,
   });
 
-  let models = GetModelData(data);
+
 
   BuildPaletteData({ models });
   voxelData.data.palette = VoxelPalettesRegister.voxels;

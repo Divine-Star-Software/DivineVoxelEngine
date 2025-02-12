@@ -15,9 +15,11 @@ export enum VoxelTagIds {
   canHoldPower = "dve_can_hold_power",
   isPowerSource = "dve_is_power_source",
   powerValue = "dve_power_value",
+  fullBlock = "dve_full_block",
 }
 
 export interface VoxelTags {
+  [VoxelTagIds.fullBlock]: boolean;
   /** The material used to render the voxel. Used by the engine to assign meshes to the proper material. */
   [VoxelTagIds.renderedMaterial]: string;
 
