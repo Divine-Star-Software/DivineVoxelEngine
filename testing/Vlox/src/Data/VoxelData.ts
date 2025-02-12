@@ -85,7 +85,7 @@ export const DVEVoxelData: VoxelData[] = [
             texture: {
               type: "consistent-rotation",
               texture: "dve_dread_stone:default",
-              rotations: [0, 90,  270],
+              rotations: [0, 90, 270],
             },
           },
           "grassy=true": {
@@ -170,8 +170,25 @@ export const DVEVoxelData: VoxelData[] = [
         id: "dve_liquid",
         inputs: {
           "*": {
+            stillTexture: {
+              type: "outlined",
+              texture: "dve_liquid_dream_ether:still",
+              textureRecrod: {
+                top: "dve_foam:top",
+                "corner-top-right": "dve_foam:corner-top-right",
+                "corner-top-left": "dve_foam:corner-top-left",
+                "corner-top-left-top-right":
+                  "dve_foam:corner-top-left-top-right",
+                bottom: "dve_foam:bottom",
+                "corner-bottom-right": "dve_foam:corner-bottom-right",
+                "corner-bottom-left": "dve_foam:corner-bottom-left",
+                "corner-bottom-left-bottom-right":
+                  "dve_foam:corner-bottom-left-bottom-right",
+                right: "dve_foam:right",
+                left: "dve_foam:left",
+              },
+            },
             flowTexture: "dve_liquid_dream_ether:still",
-            stillTexture: "dve_liquid_dream_ether:still",
           },
         },
       },

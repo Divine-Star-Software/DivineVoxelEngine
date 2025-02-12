@@ -1,5 +1,6 @@
-import { Vec3Array  } from "@amodx/math";
-export function GetBounds(vectors: Vec3Array[]): [Vec3Array, Vec3Array] {
+import { Vec3Array, Vector3Like } from "@amodx/math";
+
+export function GetBounds(...vectors: Vector3Like[]): [Vec3Array, Vec3Array] {
   let minX = Infinity;
   let minY = Infinity;
   let minZ = Infinity;
@@ -10,7 +11,7 @@ export function GetBounds(vectors: Vec3Array[]): [Vec3Array, Vec3Array] {
 
   const EPSILON = 0;
   for (let i = 0; i < vectors.length; i++) {
-    const [x, y, z] = vectors[i];
+    const {x, y, z} = vectors[i];
 
     if (x < minX) minX = x;
     if (y < minY) minY = y;
@@ -20,7 +21,7 @@ export function GetBounds(vectors: Vec3Array[]): [Vec3Array, Vec3Array] {
     if (z > maxZ) maxZ = z;
   }
 
-/*   if (maxX - minX < EPSILON) {
+  /*   if (maxX - minX < EPSILON) {
     minX -= EPSILON / 2;
     maxX += Number.EPSILON / 2;
   }
@@ -32,7 +33,6 @@ export function GetBounds(vectors: Vec3Array[]): [Vec3Array, Vec3Array] {
     maxZ -= EPSILON / 2;
     minZ += EPSILON / 2;
   } */
-
 
   return [
     [minX, minY, minZ],

@@ -1,11 +1,11 @@
 import { QuadVerticies } from "../Geometry.types.js";
-import { Vector3Like, Vector2Like, Vec3Array } from "@amodx/math";
+import { Vector3Like, Vector2Like, Vec3Array, Vec2Array } from "@amodx/math";
 type QuadDataType<Data> = [Data, Data, Data, Data];
 
 export class QuadVertexData<Data> {
   constructor(public vertices: QuadDataType<Data>) {}
 
-  getAsArray() {
+  toArray() {
     return [
       this.vertices[QuadVerticies.TopRight],
       this.vertices[QuadVerticies.TopLeft],
@@ -73,85 +73,6 @@ export class QuadVertexData<Data> {
       structuredClone(this.vertices[QuadVerticies.TopLeft]),
       structuredClone(this.vertices[QuadVerticies.BottomLeft]),
       structuredClone(this.vertices[QuadVerticies.BottomRight]),
-    ]);
-  }
-}
-export class QuadVec3ArrayVertexData extends QuadVertexData<Vec3Array> {
-  constructor(
-    public vertices: QuadDataType<Vec3Array> = [
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-    ]
-  ) {
-    super(vertices);
-  }
-
-  setFromQuadData(vertexData: QuadVertexData<Vec3Array>) {
-    Vector3Like.CopyArray(
-      this.vertices[QuadVerticies.TopRight],
-      vertexData.vertices[QuadVerticies.TopRight]
-    );
-    Vector3Like.CopyArray(
-      this.vertices[QuadVerticies.TopLeft],
-      vertexData.vertices[QuadVerticies.TopLeft]
-    );
-    Vector3Like.CopyArray(
-      this.vertices[QuadVerticies.BottomLeft],
-      vertexData.vertices[QuadVerticies.BottomLeft]
-    );
-    Vector3Like.CopyArray(
-      this.vertices[QuadVerticies.BottomRight],
-      vertexData.vertices[QuadVerticies.BottomRight]
-    );
-  }
-
-  addToVertex(vertex: QuadVerticies, value: Vec3Array) {
-    Vector3Like.AddArrayInPlace(this.vertices[vertex], value);
-  }
-
-  subtractFromVertex(vertex: QuadVerticies, value: Vec3Array) {
-    Vector3Like.SubtractArrayInPlace(this.vertices[vertex], value);
-  }
-
-  addAll(value: Vec3Array) {
-    this.addToVertex(QuadVerticies.TopRight, value);
-    this.addToVertex(QuadVerticies.TopLeft, value);
-    this.addToVertex(QuadVerticies.BottomLeft, value);
-    this.addToVertex(QuadVerticies.BottomRight, value);
-  }
-
-  subtractAll(value: Vec3Array) {
-    this.subtractFromVertex(QuadVerticies.TopRight, value);
-    this.subtractFromVertex(QuadVerticies.TopLeft, value);
-    this.subtractFromVertex(QuadVerticies.BottomLeft, value);
-    this.subtractFromVertex(QuadVerticies.BottomRight, value);
-  }
-
-  isEqualTo(v1: Vec3Array, v2: Vec3Array, v3: Vec3Array, v4: Vec3Array) {
-    return (
-      Vector3Like.EqualsArray(this.vertices[QuadVerticies.TopRight], v1) &&
-      Vector3Like.EqualsArray(this.vertices[QuadVerticies.TopLeft], v2) &&
-      Vector3Like.EqualsArray(this.vertices[QuadVerticies.BottomLeft], v3) &&
-      Vector3Like.EqualsArray(this.vertices[QuadVerticies.BottomRight], v4)
-    );
-  }
-
-  isAllEqualTo(v1: Vec3Array) {
-    return (
-      Vector3Like.EqualsArray(this.vertices[QuadVerticies.TopRight], v1) &&
-      Vector3Like.EqualsArray(this.vertices[QuadVerticies.TopLeft], v1) &&
-      Vector3Like.EqualsArray(this.vertices[QuadVerticies.BottomLeft], v1) &&
-      Vector3Like.EqualsArray(this.vertices[QuadVerticies.BottomRight], v1)
-    );
-  }
-  clone() {
-    return new QuadVec3ArrayVertexData([
-      [...this.vertices[QuadVerticies.TopRight]],
-      [...this.vertices[QuadVerticies.TopLeft]],
-      [...this.vertices[QuadVerticies.BottomLeft]],
-      [...this.vertices[QuadVerticies.BottomRight]],
     ]);
   }
 }
@@ -324,6 +245,16 @@ export class QuadVector2VertexData extends QuadVertexData<Vector2Like> {
       Vector2Like.Equals(this.vertices[QuadVerticies.BottomRight], v1)
     );
   }
+
+  toVec2Array(): [Vec2Array, Vec2Array, Vec2Array, Vec2Array] {
+    return [
+      Vector2Like.ToArray(this.vertices[0]),
+      Vector2Like.ToArray(this.vertices[1]),
+      Vector2Like.ToArray(this.vertices[2]),
+      Vector2Like.ToArray(this.vertices[3]),
+    ];
+  }
+
   clone() {
     return new QuadVector2VertexData([
       Vector2Like.Clone(this.vertices[QuadVerticies.TopRight]),

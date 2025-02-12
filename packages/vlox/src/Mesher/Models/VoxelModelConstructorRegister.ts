@@ -69,11 +69,7 @@ export class VoxelModelConstructorRegister {
         paletteId,
         geometry
       );
-      if (geometry.ruleless == true) {
-        this.rulesless[paletteId] = true;
-      } else {
-        this.rulesless[paletteId] = false;
-      }
+  
     }
   }
 }

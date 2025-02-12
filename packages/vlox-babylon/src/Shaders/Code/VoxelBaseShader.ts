@@ -168,7 +168,7 @@ vUV.y = uv.y;
 vUV.z = getTextureIndex(int(uint(textureIndex.x) & textureIndexMask));
 vOverlayTextureIndex.x = getTextureIndex(int((uint(textureIndex.x) >> secondaryTextureIndex) & textureIndexMask));
 vOverlayTextureIndex.y = getTextureIndex(int(uint(textureIndex.y) & textureIndexMask));
-vOverlayTextureIndex.z = getTextureIndex(int((uint(textureIndex.z) >> secondaryTextureIndex) & textureIndexMask));
+vOverlayTextureIndex.z = getTextureIndex(int((uint(textureIndex.y) >> secondaryTextureIndex) & textureIndexMask));
 vOverlayTextureIndex.w = getTextureIndex(int(uint(textureIndex.z) & textureIndexMask));
 
 #ifdef INSTANCES
@@ -192,25 +192,31 @@ gl_Position = viewProjection * world * vec4(position, 1.0);
   
 vec4 rgb = texture(dve_voxel,vec3(vec2(vUV.x,vUV.y + time * .01 * -1. * vFlow),vUV.z));
     
-/*     
-    vec4 oRGB1 =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.x));
-    vec4 oRGB2 =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.y));
-    vec4 oRGB3 =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.z));
-    vec4 oRGB4 =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.w));
-    if(oRGB1.a > 0.5) {
-        rgb = oRGB1;
+  if(vOverlayTextureIndex.x > 0.){
+    vec4 oRGB =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.x));
+    if(oRGB.a > 0.5) {
+      rgb = oRGB;
     }
-    if(oRGB2.a > 0.5) {
-        rgb = oRGB2;
+  }
+  if(vOverlayTextureIndex.y > 0.){
+    vec4 oRGB =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.y));
+    if(oRGB.a > 0.5) {
+      rgb = oRGB;
     }
-    if(oRGB3.a > 0.5) {
-        rgb = oRGB3;
-    }
-    if(oRGB4.a > 0.5) {
-        rgb = oRGB4;
-    }
-*/
+  }
+  if(vOverlayTextureIndex.z > 0.){
 
+    vec4 oRGB =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.z));
+    if(oRGB.a > 0.5) {
+      rgb = oRGB;
+    }
+  }
+  if(vOverlayTextureIndex.w > 0.){
+    vec4 oRGB =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.w));
+    if(oRGB.a > 0.5) {
+      rgb = oRGB;
+    }
+  }
   //mix color
   rgb *= vColors;
   //mix light

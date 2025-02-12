@@ -306,9 +306,7 @@ export function BuildStateData(
       ] = relativeGeoId;
       relativeGeometryByteIndexMap[relativeGeoId] = relativeByteCount;
       relativeGeoId++;
-      relativeByteCount += Math.ceil(
-        VoxelModelRuleBuilderRegister.getGeomtryFromLink(node)!.faceCount / 8
-      );
+ 
     }
 
     addPathToTree(
@@ -359,9 +357,7 @@ export function BuildStateData(
       ] = relativeGeoId;
       relativeGeometryByteIndexMap[relativeGeoId] = relativeByteCount;
       relativeGeoId++;
-      relativeByteCount += Math.ceil(
-        VoxelModelRuleBuilderRegister.getGeomtryFromLink(node)!.faceCount / 8
-      );
+   
     }
     const statement: StateLogicStatement = [];
     const nodes = key.split(" ");
@@ -542,7 +538,7 @@ export function BuildStateData(
     condiotnalShapeStateGeometryPalette,
     stateTree: newShapeStateTree,
     geometryLinkStateMap,
-    relativeByteCount,
+
     statePalette: stateGeoLinkPalette,
     stateRecord: stateRecord,
     condiotnalNodeStateTree,

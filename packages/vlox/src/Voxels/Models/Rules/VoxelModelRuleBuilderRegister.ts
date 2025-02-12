@@ -8,7 +8,7 @@ import {
 } from "../VoxelModel.types";
 import { VoxelRuleGeometry } from "./Classes/VoxelRulesGeometry";
 import { VoxelRulesModoel } from "./Classes/VoxelRulesModel";
-import { Vec4Array } from "@amodx/math";
+import { Vec2Array, Vec4Array } from "@amodx/math";
 import { QuadUVData } from "../../../Mesher/Geomtry/Geometry.types";
 const addGeo = (
   model: VoxelModelData,
@@ -108,7 +108,7 @@ export class VoxelModelRuleBuilderRegister {
             }
             if (Array.isArray(node.uv)) {
               if (Array.isArray(node.uv[0])) {
-                let uvs = node.uv as QuadUVData;
+                let uvs = node.uv as any;
                 for (let i = 0; i < node.uv.length; i++) {
                   uvs[i][0] /= d[0];
                   uvs[i][1] /= d[1];
@@ -120,6 +120,24 @@ export class VoxelModelRuleBuilderRegister {
                 uvs[2] /= d[0];
                 uvs[3] /= d[1];
               }
+            }
+          }
+          if (node.type == "triangle") {
+            let d = node.divisor ? node.divisor : divisor;
+            for (let i = 0; i < 4; i++) {
+              const point = node.points[i];
+              point[0] /= d[0];
+              point[1] /= d[1];
+              point[2] /= d[2];
+            }
+            if (Array.isArray(node.uv)) {
+              if (Array.isArray(node.uv[0])) {
+                let uvs = node.uv as Vec2Array[];
+                for (let i = 0; i < node.uv.length; i++) {
+                  uvs[i][0] /= d[0];
+                  uvs[i][1] /= d[1];
+                }
+              } 
             }
           }
         }

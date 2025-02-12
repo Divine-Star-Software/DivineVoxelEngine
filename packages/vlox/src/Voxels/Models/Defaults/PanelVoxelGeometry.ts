@@ -34,7 +34,7 @@ export const diagonalFlatPanelWestEast: VoxelGeometryData = {
       doubleSided: "@doubleSided",
       uv: "@uvs",
       texture: "@texture",
-      textureRotation: "@textureRotation",
+      rotation: "@textureRotation",
     },
   ],
 };
@@ -73,7 +73,7 @@ export const diagonalFlatPanelEastWest: VoxelGeometryData = {
       doubleSided: "@doubleSided",
       uv: "@uvs",
       texture: "@texture",
-      textureRotation: "@textureRotation",
+      rotation: "@textureRotation",
     },
   ],
 };

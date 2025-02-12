@@ -7,6 +7,7 @@ import { OcclusionFaceRegister } from "../Classes/OcclusionFaceRegister";
 import { AOOcclusionFaceIndex } from "../../Indexing/AOOcclusionFaceIndex";
 import { CulledOcclusionFaceIndex } from "../../Indexing/CulledOcclusionFaceIndex";
 import { OcclusionQuadFace } from "../Classes/OcclusionQuadFace";
+import { OcclusionTriangleFace } from "../Classes/OcclusionTriangleFace";
 
 class OcculsionBox {
   constructor(
@@ -160,7 +161,9 @@ export function BuildRules(geoPalette: StringPalette) {
   const faces = OcclusionFaceRegister.faces._palette;
 
   const currentQuadFace = new OcclusionQuadFace();
+  const currentTriangleFace = new OcclusionTriangleFace();
   const otherQuadFace = new OcclusionQuadFace();
+  const otherTriangleFace = new OcclusionTriangleFace();
 
   for (let faceIndex = 0; faceIndex < faces.length; faceIndex++) {
     const faceData = OcclusionFaceRegister.faceIndex[faceIndex];
@@ -169,7 +172,8 @@ export function BuildRules(geoPalette: StringPalette) {
       currentQuadFace.setPoints(faceData[1]);
       currentFace = currentQuadFace;
     } else {
-      throw new Error("");
+      otherTriangleFace.setPoints(faceData[1]);
+      currentFace = otherTriangleFace;
     }
     faceCullMap[faceIndex] = [];
     vertexHitMap[faceIndex] = [];
@@ -180,25 +184,32 @@ export function BuildRules(geoPalette: StringPalette) {
         geoPalette._palette[gometryId]
       )!;
       if (geomtry.data.ogData.doNotBuildRules !== undefined) continue;
-      for (const otherFaceIndex of geomtry.faceIds) {
-        const otherFaceData = OcclusionFaceRegister.faceIndex[otherFaceIndex];
+      for (const otherGeo of geomtry.compiled) {
+        if (otherGeo.type == "custom" || otherGeo.trueFaceIndex === undefined)
+          continue;
+        const otherFaceData =
+          OcclusionFaceRegister.faceIndex[otherGeo.trueFaceIndex];
         let otherFace: IOcclusionFace;
         if (otherFaceData[0] == 0) {
           otherQuadFace.setPoints(otherFaceData[1]);
           otherFace = otherQuadFace;
         } else {
-          throw new Error("");
+          currentTriangleFace.setPoints(otherFaceData[1]);
+          otherFace = currentTriangleFace;
         }
 
-  
         for (let y = -1; y < 2; y++) {
           for (let x = -1; x < 2; x++) {
             for (let z = -1; z < 2; z++) {
-        
-              if (faceIndex == otherFaceIndex && x == 0 && y == 0 && z == 0)
+              if (
+                faceIndex == otherGeo.trueFaceIndex &&
+                x == 0 &&
+                y == 0 &&
+                z == 0
+              )
                 continue;
               const directionIndex = VoxelRelativeCubeIndex.getIndex(x, y, z);
-      
+
               otherQuadFace.setOffset(x, y, z);
 
               if (otherFace.doesCoverFace(currentFace)) {
@@ -208,17 +219,16 @@ export function BuildRules(geoPalette: StringPalette) {
                 }
               }
 
-              if (Vector3Like.EqualsArray(otherFace.normal,faceNormal))
+              if (Vector3Like.EqualsArray(otherFace.normal, faceNormal))
                 continue;
 
               for (let v = 0; v < facePoints.length; v++) {
                 updateOcculsionBox(facePoints[v], faceNormal);
                 vertexHitMap[faceIndex][v] ??= [];
-    
+
                 if (doesBoxIntersectFace(otherFace)) {
-               
                   aoIndex.setValue(gometryId, directionIndex, faceIndex, v, 1);
-            
+
                   if (!vertexHitMap[faceIndex][v].includes(directionIndex)) {
                     vertexHitMap[faceIndex][v].push(directionIndex);
                   }
@@ -227,8 +237,6 @@ export function BuildRules(geoPalette: StringPalette) {
             }
           }
         }
-
-
       }
     }
   }

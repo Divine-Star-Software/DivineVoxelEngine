@@ -1,33 +1,16 @@
-import { VoxelFaceTransparentResultsIndex } from "../../Indexing/VoxelFaceTransparentResultsIndex";
 import { VoxelRulesModoel } from "../Classes/VoxelRulesModel";
 import { VoxelModelRuleBuilderRegister } from "../VoxelModelRuleBuilderRegister";
 
-const isArgString = (data: any) => {
-  if (typeof data !== "string") return;
-  return data[0] == "@";
-};
-
 export function BuildFinalInputs(model: VoxelRulesModoel) {
   const stateVoxelInputs: Record<string, any[]> = {};
-  const transparentVoxelFaceIndexes: Record<
-    string,
-    VoxelFaceTransparentResultsIndex
-  > = {};
+
   const conditionalShapeStateVoxelInputs: Record<string, any[]> = {};
 
   for (const [voxelId, voxel] of model.voxels) {
-    const transparentIndex = new VoxelFaceTransparentResultsIndex({
-      buffer: new SharedArrayBuffer(
-        model.stateData.relativeByteCount * Object.keys(voxel.inputs).length
-      ),
-      resultsSize: model.stateData.relativeByteCount,
-    });
-    transparentVoxelFaceIndexes[voxelId] = transparentIndex;
     const voxelModData = model.voxelModData.get(voxelId)!;
 
     for (const modVoxelInputKey in voxel.inputs) {
       const modVoxelInput = voxel.inputs[modVoxelInputKey];
-      const modIndex = voxelModData.modRecord[modVoxelInputKey];
       const baseStates: any[] = [];
       for (const state in model.data.stateNodes) {
         const geoNodes: any[] = [];
@@ -36,40 +19,19 @@ export function BuildFinalInputs(model: VoxelRulesModoel) {
           const node = stateNodes[n];
           const geo = VoxelModelRuleBuilderRegister.getGeomtryFromLink(node);
           if (!geo) throw new Error(`Geometry does not exist`);
-          geo.inputs.resetDefaults();
+          geo.input.resetDefaults();
           for (const geoArg in node.inputs) {
             const constructorArg = node.inputs[geoArg];
-            if (isArgString(constructorArg)) {
-              geo.inputs[geoArg] =
+            if (geo.input.isArgString(constructorArg)) {
+              geo.input.proxy[geoArg] =
                 modVoxelInput[constructorArg.replace("@", "")];
               continue;
             }
-            geo.inputs[geoArg] = constructorArg;
+            geo.input.proxy[geoArg] = constructorArg;
           }
 
           geoNodes[model.stateData.geometryLinkStateMap[state][n]] =
-            geo.inputs.cloneArgs();
-
-          const byteIndex =
-            model.stateData.relativeGeometryByteIndexMap[
-              model.stateData.stateRelativeGeometryMap[
-                model.stateData.stateRecord[state]
-              ][
-                VoxelModelRuleBuilderRegister.geometryPalette.getNumberId(
-                  VoxelModelRuleBuilderRegister.getGeometryLinkId(node)
-                )
-              ]
-            ];
-          if (geo.data.ogData.doNotBuildRules !== true) {
-            for (let i = 0; i < geo.inputs.faceTransparentIndex.length; i++) {
-              transparentIndex.setValue(
-                modIndex,
-                byteIndex,
-                i,
-                geo.inputs.faceTransparentIndex[i] ? 1 : 0
-              );
-            }
-          }
+            geo.input.cloneArgs();
         }
 
         baseStates[model.stateData.stateRecord[state]] = geoNodes;
@@ -86,40 +48,18 @@ export function BuildFinalInputs(model: VoxelRulesModoel) {
           const node = stateNodes[i];
           const geo = VoxelModelRuleBuilderRegister.getGeomtryFromLink(node);
           if (!geo) throw new Error(`Geometry does not exist`);
-          //   geo.inputs.resetDefaults();
+          geo.input.resetDefaults();
           for (const geoArg in node.inputs) {
             const constructorArg = node.inputs[geoArg];
 
-            if (isArgString(constructorArg)) {
-              geo.inputs[geoArg] =
+            if (geo.input.isArgString(constructorArg)) {
+              geo.input.proxy[geoArg] =
                 modVoxelInput[constructorArg.replace("@", "")];
               continue;
             }
-            geo.inputs[geoArg] = constructorArg;
+            geo.input.proxy[geoArg] = constructorArg;
           }
-          geoNodes[i] = geo.inputs.cloneArgs();
-
-          const byteIndex =
-            model.stateData.relativeGeometryByteIndexMap[
-              model.stateData.condiotnalShapeStateRelativeGeometryMap[
-                model.stateData.condiotnalShapeStateRecord[state]
-              ][
-                VoxelModelRuleBuilderRegister.geometryPalette.getNumberId(
-                  VoxelModelRuleBuilderRegister.getGeometryLinkId(node)
-                )
-              ]
-            ];
-
-          if (geo.data.ogData.doNotBuildRules !== true) {
-            for (let i = 0; i < geo.inputs.faceTransparentIndex.length; i++) {
-              transparentIndex.setValue(
-                modIndex,
-                byteIndex,
-                i,
-                geo.inputs.faceTransparentIndex[i] ? 1 : 0
-              );
-            }
-          }
+          geoNodes[i] = geo.input.cloneArgs();
         }
 
         condiotnalStates[model.stateData.condiotnalShapeStateRecord[state]] =
@@ -133,7 +73,6 @@ export function BuildFinalInputs(model: VoxelRulesModoel) {
   }
   return {
     stateVoxelInputs,
-    transparentVoxelFaceIndexes,
     conditionalShapeStateVoxelInputs,
   };
 }

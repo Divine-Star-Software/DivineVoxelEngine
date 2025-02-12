@@ -21,34 +21,6 @@ export interface VoxelModelConstructorData {
     lightValue?: Record<string, Vec3Array>;
   };
 }
-export interface BaseVoxelGeomtryTextureProcedureData {
-  type: string;
-  texture?: TextureId | number;
-  textureRecrod?: Record<string, TextureId | number>;
-  [key:string]: any
-}
-
-interface VoxelGeomtryOutlinedTextureProcedureData
-  extends BaseVoxelGeomtryTextureProcedureData {
-  type: "outlined";
-  texture: TextureId | number;
-  textureRecrod: {
-    top: TextureId | number;
-    "corner-top-right": TextureId | number;
-    "corner-top-left": TextureId | number;
-    "corner-top-left-top-right": TextureId | number;
-    bottom: TextureId | number;
-    "corner-bottom-right": TextureId | number;
-    "corner-bottom-left": TextureId | number;
-    "corner-bottom-left-bottom-right": TextureId | number;
-    right: TextureId | number;
-    left: TextureId | number;
-  };
-}
-
-
-
-
 
 /**Define a custom geomtry node */
 export interface VoxelCustomGeomtryNode {
@@ -62,43 +34,46 @@ export interface VoxelBoxGeometryNode {
   type: "box";
   /**Divisor used for transform of this specific node.*/
   divisor?: Vec3Array;
-  noShade?: boolean;
   points: [start: Vec3Array, end: Vec3Array];
   rotation?: Vec3Array;
-  faces: Record<VoxelFaceNames, VoxelBoxFaceData>;
+  faces: Record<VoxelFaceNames, BaseVoxelQuadData>;
 }
 
-export interface VoxelBoxFaceData {
+export interface BaseVoxelQuadData {
+  doubleSided?: boolean | string;
   enabled?: boolean;
-  flip?: boolean;
-  texture: TextureId | BaseVoxelGeomtryTextureProcedureData;
+  /**Id for an input arg for the texture */
+  texture: string;
+  /**UV for the face or id for an input arg. */
   uv: [x1: number, y1: number, x2: number, y2: number] | string;
+  /**UV rotation or id for an input arg */
   rotation?: number | string;
 }
 
 //quad
-export interface VoxelQuadGeometryNode {
+export interface VoxelQuadGeometryNode extends BaseVoxelQuadData {
   type: "quad";
   /**Divisor used for transform of this specific node.*/
   divisor?: Vec3Array;
-  doubleSided?: boolean | string;
   points: [p1: Vec3Array, p2: Vec3Array, p3: Vec3Array, p4: Vec3Array];
-  texture: TextureId | BaseVoxelGeomtryTextureProcedureData;
-  uv: [x1: number, y1: number, x2: number, y2: number] | QuadUVData | string;
-  textureRotation?: number | string;
+}
+
+export interface BaseVoxelTriangleData {
+  doubleSided?: boolean;
+  /**Id for the input arg for the texture */
+  texture: string;
+  /**UV for the triangle or id for the input arg. */
+  uv: [v1: Vec2Array, v2: Vec2Array, v3: Vec2Array] | string;
+  /**UV rotation or id for an input arg */
+  rotation?: number | string;
 }
 
 //triangle
-export interface VoxelTriangleGeometryNode {
+export interface VoxelTriangleGeometryNode extends BaseVoxelTriangleData {
   type: "triangle";
   /**Divisor used for transform of this specific node.*/
   divisor?: Vec3Array;
-  orientation?: 0 | 1;
-  doubleSided?: boolean;
   points: [p1: Vec3Array, p2: Vec3Array, p3: Vec3Array];
-  texture: TextureId | BaseVoxelGeomtryTextureProcedureData;
-  uv: [v1: Vec2Array, v2: Vec2Array, v3: Vec2Array] | string;
-  textureRotation?: number | string;
 }
 
 //arguments
@@ -107,7 +82,7 @@ export interface VoxelGeometryTextureArgument {
 }
 export interface VoxelGeometryBooleanArgument {
   type: "boolean";
-  default: boolean;             
+  default: boolean;
 }
 export interface VoxelGeometryIntArgument {
   type: "int";
@@ -121,7 +96,10 @@ export interface VoxelGeometryBoxUVArgument {
   type: "box-uv";
   default: [x1: number, y1: number, x2: number, y2: number];
 }
-
+export interface VoxelGeometryUVArgument {
+  type: "uv";
+  default: Vec2Array[];
+}
 export interface VoxelGeometryVector3Argument {
   type: "vector3";
   default?: Vec3Array;
@@ -170,6 +148,7 @@ export interface VoxelGeometryData {
     string,
     | VoxelGeometryTextureArgument
     | VoxelGeometryBoxUVArgument
+    | VoxelGeometryUVArgument
     | VoxelGeometryVector3Argument
     | VoxelGeometryIntArgument
     | VoxelGeometryBooleanArgument

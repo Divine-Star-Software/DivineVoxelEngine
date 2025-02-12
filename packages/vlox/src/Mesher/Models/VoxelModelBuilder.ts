@@ -25,6 +25,7 @@ class VoxelVars {
     this.overlayTextures.x = 0;
     this.overlayTextures.y = 0;
     this.overlayTextures.z = 0;
+    this.overlayTextures.w = 0;
   }
 }
 

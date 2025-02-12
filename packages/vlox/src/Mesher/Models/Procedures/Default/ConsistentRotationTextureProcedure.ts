@@ -1,11 +1,14 @@
 import { Vec3Array, Vector3Like, Vector4Like } from "@amodx/math";
 import type { Quad } from "../../../Geomtry";
 import { VoxelModelBuilder } from "Mesher/Models/VoxelModelBuilder";
-import { TextureProcedure } from "../TextureProcedure";
-import { BaseVoxelGeomtryTextureProcedureData } from "Voxels/Models/VoxelModel.types";
+import {
+  TextureProcedure,
+  BaseVoxelGeomtryTextureProcedureData,
+} from "../TextureProcedure";
 import { TextureId } from "Textures";
 import { WorldSpaces } from "../../../../World/WorldSpaces";
 import { GetYXZOrderArrayIndex } from "../../../../Math/Indexing";
+import { VoxelFaces } from "Math";
 
 /**
  * Extend your data type so we can add a seed if we want, and define
@@ -27,7 +30,9 @@ const defaultBounds: Vec3Array = [4, 4, 4];
 export class ConsistentRotationTextureProcedure extends TextureProcedure<VoxelGeometryConsistentRotationTextureProcedureData> {
   getTexture(
     builder: VoxelModelBuilder,
-    data: VoxelGeometryConsistentRotationTextureProcedureData
+    data: VoxelGeometryConsistentRotationTextureProcedureData,
+    closestFace: VoxelFaces,
+    primitive: Quad
   ): number {
     return data.texture! as number;
   }
@@ -35,6 +40,8 @@ export class ConsistentRotationTextureProcedure extends TextureProcedure<VoxelGe
   getOverlayTexture(
     builder: VoxelModelBuilder,
     data: VoxelGeometryConsistentRotationTextureProcedureData,
+    closestFace: VoxelFaces,
+    primitive: Quad,
     ref: Vector4Like
   ): Vector4Like {
     return ref;
@@ -43,6 +50,7 @@ export class ConsistentRotationTextureProcedure extends TextureProcedure<VoxelGe
   transformUVs(
     builder: VoxelModelBuilder,
     data: VoxelGeometryConsistentRotationTextureProcedureData,
+    closestFace: VoxelFaces,
     primitive: Quad
   ): void {
     const bounds = data.rotationBounds ? data.rotationBounds : defaultBounds;
@@ -53,7 +61,6 @@ export class ConsistentRotationTextureProcedure extends TextureProcedure<VoxelGe
 
     const rotationIndex =
       GetYXZOrderArrayIndex(x, y, z, ...bounds) % data.rotations.length;
-
 
     const rotation = data.rotations[rotationIndex];
 

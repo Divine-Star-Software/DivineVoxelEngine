@@ -3,21 +3,23 @@ import { Quad } from "../Geomtry/Primitives/Quad"
 const Quads = {
   north: Quad.Create(
     [
-      [0, 0, 0],
       [1, 1, 0],
+      [0, 1, 0],
+      [0, 0, 0],
+      [1, 0, 0],
     ],
     Quad.FullUVs as any,
-    false,
-    1
+   
   ),
   south: Quad.Create(
     [
-      [0, 0, 0],
       [1, 1, 0],
+      [0, 1, 0],
+      [0, 0, 0],
+      [1, 0, 0],
     ],
     Quad.FullUVs as any,
-    false,
-    0
+
   ),
 };
 

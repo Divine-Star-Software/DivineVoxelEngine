@@ -228,19 +228,23 @@ export const Textures: TextureData[] = [
         },
         {
           id: "corner-top-left-top-right",
-          index: [3, 1],
+          index: [3, 0],
         },
         {
-          id: "corner-bottom-right",
+          id: "bottom",
           index: [0, 1],
         },
         {
-          id: "corner-bottom-left",
+          id: "corner-bottom-right",
           index: [1, 1],
         },
         {
-          id: "corner-bottom-left-bottom-right",
+          id: "corner-bottom-left",
           index: [2, 1],
+        },
+        {
+          id: "corner-bottom-left-bottom-right",
+          index: [3, 1],
         },
         {
           id: "right",

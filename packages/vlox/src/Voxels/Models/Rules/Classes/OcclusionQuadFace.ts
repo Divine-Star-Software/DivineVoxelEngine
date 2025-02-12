@@ -15,7 +15,7 @@ export class OcclusionQuadFace extends IOcclusionFace {
 
   setPoints(points: [Vec3Array, Vec3Array, Vec3Array, Vec3Array]) {
     this._points = points;
-    this.normals = Quad.GetQuadNormalLeftHanded(
+    this.normals = Quad.GetNormalLeftHanded(
       points[0],
       points[1],
       points[2],

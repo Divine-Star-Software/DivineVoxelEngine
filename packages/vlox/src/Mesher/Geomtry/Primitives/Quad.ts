@@ -12,6 +12,7 @@ import {
   QuadVertexVec3Data,
   QuadVerticies,
 } from "../Geometry.types";
+import { GetBounds } from "../Functions/GetBounds";
 
 export class Quad {
   static FullUVs: Readonly<QuadUVData> = Object.freeze([
@@ -36,14 +37,11 @@ export class Quad {
   }
 
   static Create(
-    positions?:
-      | [Vec3Array, Vec3Array]
-      | [Vec3Array, Vec3Array, Vec3Array, Vec3Array],
+    positions?: [Vec3Array, Vec3Array, Vec3Array, Vec3Array],
     uvs?: [Vec2Array, Vec2Array, Vec2Array, Vec2Array],
-    doubleSided?: boolean,
-    orientation?: 0 | 1
+    doubleSided?: boolean
   ) {
-    return new Quad({ positions, uvs, doubleSided, orientation });
+    return new Quad({ positions, uvs, doubleSided });
   }
 
   static RotateVertices90Degrees(
@@ -56,7 +54,7 @@ export class Quad {
     return vertices;
   }
 
-  static GetQuadNormalRightHanded(
+  static GetNormalRightHanded(
     p1: Vec3Array,
     p2: Vec3Array,
     p3: Vec3Array,
@@ -94,7 +92,7 @@ export class Quad {
     }
     return normals;
   }
-  static GetQuadNormalLeftHanded(
+  static GetNormalLeftHanded(
     p1: Vec3Array,
     p2: Vec3Array,
     p3: Vec3Array,
@@ -138,54 +136,6 @@ export class Quad {
       }
     }
     return normals;
-  }
-  static CalculateQuadPoints(
-    start: Vec3Array,
-    end: Vec3Array
-  ): {
-    points: QuadVertexVec3Data;
-    normal: Vec3Array;
-  } {
-    const plane = start
-      .map((value, index) => (end[index] !== value ? index : -1))
-      .filter((index) => index !== -1);
-
-    let topLeft: Vec3Array, bottomRight: Vec3Array;
-    const topRight: Vec3Array = end;
-    const bottomLeft: Vec3Array = start;
-
-    if (plane.includes(0) && plane.includes(2)) {
-      // XZ plane
-      topLeft = [start[0], start[1], end[2]];
-      bottomRight = [end[0], start[1], start[2]];
-    } else if (plane.includes(0) && plane.includes(1)) {
-      // XY plane
-      topLeft = [start[0], end[1], start[2]];
-      bottomRight = [end[0], start[1], start[2]];
-    } else if (plane.includes(1) && plane.includes(2)) {
-      // YZ plane
-      topLeft = [start[0], end[1], start[2]];
-      bottomRight = [start[0], start[1], end[2]];
-    }
-
-    const delta = [end[0] - start[0], end[1] - start[1], end[2] - start[2]];
-
-    let normal: Vec3Array = [0, 0, 0];
-    if (delta[0] === 0) {
-      // Constant X, so normal is along X
-      normal[0] = 1;
-    } else if (delta[1] === 0) {
-      // Constant Y, so normal is along Y
-      normal[1] = 1;
-    } else if (delta[2] === 0) {
-      // Constant Z, so normal is along Z
-      normal[2] = 1;
-    }
-
-    return {
-      points: [topRight, topLeft!, bottomLeft, bottomRight!],
-      normal,
-    };
   }
 
   static OrderQuadVertices(
@@ -244,15 +194,13 @@ export class Quad {
   normals = new QuadVector3VertexData();
   uvs = new QuadVector2VertexData();
 
+  bounds: [min: Vec3Array,max:Vec3Array] = [[0,0,0],[0,0,0]]
   doubleSided = false;
 
   constructor(data: {
-    positions?:
-      | [Vec3Array, Vec3Array]
-      | [Vec3Array, Vec3Array, Vec3Array, Vec3Array];
+    positions?: [Vec3Array, Vec3Array, Vec3Array, Vec3Array];
     uvs?: [Vec2Array, Vec2Array, Vec2Array, Vec2Array];
     doubleSided?: boolean;
-    orientation?: 0 | 1;
   }) {
     if (data.positions) this.setPositions(data.positions);
     if (data.uvs) this.setUVs(data.uvs);
@@ -265,79 +213,37 @@ export class Quad {
     v3: Vec2Array,
     v4: Vec2Array,
   ]) {
-    this.uvs.set(
-      Vector2Like.FromArray(v1),
-      Vector2Like.FromArray(v2),
-      Vector2Like.FromArray(v3),
-      Vector2Like.FromArray(v4)
+    this.uvs.vertices[0].x = v1[0];
+    this.uvs.vertices[0].y = v1[1];
+    this.uvs.vertices[1].x = v2[0];
+    this.uvs.vertices[1].y = v2[1];
+    this.uvs.vertices[2].x = v3[0];
+    this.uvs.vertices[2].y = v3[1];
+    this.uvs.vertices[3].x = v4[0];
+    this.uvs.vertices[3].y = v4[1];
+    return this;
+  }
+
+  setPositions(positions: [Vec3Array, Vec3Array, Vec3Array, Vec3Array]) {
+    const [n1, n2, n3, n4] = Quad.GetNormalLeftHanded(...positions);
+    this.positions.set(
+      Vector3Like.FromArray(positions[0]),
+      Vector3Like.FromArray(positions[1]),
+      Vector3Like.FromArray(positions[2]),
+      Vector3Like.FromArray(positions[3])
     );
-    return this;
-  }
+    this.normals.set(
+      Vector3Like.FromArray(n1),
+      Vector3Like.FromArray(n2),
+      Vector3Like.FromArray(n3),
+      Vector3Like.FromArray(n4)
+    );
 
-  scale(x: number, y: number, z: number) {
-    const scale = Vector3Like.Create(x, y, z);
-    for (const position of this.positions) {
-      Vector3Like.MultiplyInPlace(position, scale);
-    }
-    return this;
-  }
-
-  transform(x: number, y: number, z: number) {
-    const transform = Vector3Like.Create(x, y, z);
-    for (const position of this.positions) {
-      Vector3Like.AddInPlace(position, transform);
-    }
-    return this;
-  }
-
-  setPositions(
-    positions:
-      | [Vec3Array, Vec3Array]
-      | [Vec3Array, Vec3Array, Vec3Array, Vec3Array]
-  ) {
-    if (positions.length == 2) {
-      const { points, normal } = Quad.CalculateQuadPoints(
-        positions[0],
-        positions[1]
-      );
-
-      this.positions.set(
-        Vector3Like.FromArray(points[0]),
-        Vector3Like.FromArray(points[1]),
-        Vector3Like.FromArray(points[2]),
-        Vector3Like.FromArray(points[3])
-      );
-      this.normals.set(
-        Vector3Like.FromArray(normal),
-        Vector3Like.FromArray(normal),
-        Vector3Like.FromArray(normal),
-        Vector3Like.FromArray(normal)
-      );
-    }
-    if (positions.length == 4) {
-      const [n1, n2, n3, n4] = Quad.GetQuadNormalLeftHanded(...positions);
-      this.positions.set(
-        Vector3Like.FromArray(positions[0]),
-        Vector3Like.FromArray(positions[1]),
-        Vector3Like.FromArray(positions[2]),
-        Vector3Like.FromArray(positions[3])
-      );
-      this.normals.set(
-        Vector3Like.FromArray(n1),
-        Vector3Like.FromArray(n2),
-        Vector3Like.FromArray(n3),
-        Vector3Like.FromArray(n4)
-      );
-    }
+    this.bounds = GetBounds(...this.positions);
     return this;
   }
 
   clone() {
-    return Quad.Create(
-      this.positions
-        .getAsArray()
-        .map((_) => Vector3Like.ToArray(_)) as QuadVertexVec3Data,
-      this.uvs.getAsArray().map((_) => Vector2Like.ToArray(_)) as QuadUVData
-    );
+    return Quad.Create(this.positions.toVec3Array(), this.uvs.toVec2Array());
   }
 }

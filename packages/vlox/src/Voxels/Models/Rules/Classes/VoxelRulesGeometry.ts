@@ -1,33 +1,37 @@
-import { GetOcclusionFaces } from "../Functions/GetOcclusionFaces";
-import { BuildGeomtryInputs } from "../Functions/BuildGeomtryInputs";
 import { BuildStateData } from "../../../../Voxels/Functions/BuildStateData";
-import { CompiledVoxelGeometryNodes } from "../../CompiledVoxelModel.types";
 import {
   CullingProcedureData,
   VoxelGeometryData,
-} from "Voxels/Models/VoxelModel.types";
+  VoxelGeometryNodes,
+} from "../../../../Voxels/Models/VoxelModel.types";
+import { CompileGeomtryNodes } from "../Functions/Compile/CompileGeomtryNodes";
+import { CompiledGeomtryNodes } from "../../../../Mesher/Models/Nodes/Types/GeomtryNode.types";
+import { GeomtryInput } from "./GeomtryInput";
+import { VoxelGeometryTransform } from "Mesher/Geomtry/Geometry.types";
 export interface VoxelRuleGeometryData {
   id: string;
   cullingProcedure: CullingProcedureData;
   ogData: VoxelGeometryData;
-  nodes: CompiledVoxelGeometryNodes[];
+  nodes: {
+    node: VoxelGeometryNodes;
+    tranform: VoxelGeometryTransform;
+  }[];
 }
 export class VoxelRuleGeometry {
-  inputs: ReturnType<typeof BuildGeomtryInputs>;
-
-  faceIds: number[] = [];
-  faceCount = 0;
-  vertexCount = 0;
   state: ReturnType<typeof BuildStateData>;
+  input: GeomtryInput;
+  compiled: CompiledGeomtryNodes[];
 
   constructor(
     public id: string,
     public data: VoxelRuleGeometryData
   ) {
-    if (data.ogData.doNotBuildRules !== true) {
-      this.faceIds = GetOcclusionFaces(this.id, this, data.nodes);
-    }
+    this.input = new GeomtryInput(data.ogData);
 
-    this.inputs = BuildGeomtryInputs(this);
+    this.compiled = CompileGeomtryNodes(
+      data.ogData.doNotBuildRules !== true,
+      this.input,
+      data.nodes
+    );
   }
 }

@@ -174,22 +174,11 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
   };
 
   for (const [mainKey, mainGeo] of VoxelModelRuleBuilderRegister.geometry) {
-    if (mainGeo.data.ogData.doNotBuildRules) {
-      syncData.geometry.push({
-        id: mainKey,
-        nodes: mainGeo.data.nodes,
-        ruleless: true,
-        cullingProcedure: mainGeo.data.cullingProcedure
-      });
-      continue;
-    } else {
-      syncData.geometry.push({
-        id: mainKey,
-        nodes: mainGeo.data.nodes,
-        faceIndexes: mainGeo.faceIds,
-        cullingProcedure: mainGeo.data.cullingProcedure
-      });
-    }
+    syncData.geometry.push({
+      id: mainKey,
+      nodes: mainGeo.compiled,
+      cullingProcedure: mainGeo.data.cullingProcedure,
+    });
   }
 
   for (const [mainKey, model] of VoxelModelRuleBuilderRegister.models) {
@@ -203,7 +192,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
       id: mainKey,
       effects: stateData.effects,
       schema: stateData.schema,
-   //   geoLinkMap: stateData.geometryLinkStateMap,
+      //   geoLinkMap: stateData.geometryLinkStateMap,
       stateMap: stateData.statePalette,
       stateGeometryMap: stateData.stateGeometryPalette,
       stateTree: stateData.stateTree,
@@ -227,7 +216,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
     const {
       stateVoxelInputs,
       conditionalShapeStateVoxelInputs,
-      transparentVoxelFaceIndexes,
+      
     } = BuildFinalInputs(model);
 
     for (const v in stateVoxelInputs) {
@@ -241,7 +230,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
             "dve_rendered_material"
           ] || "dve_solid",
         modelId: mainKey,
-        transparentFaceIndex: transparentVoxelFaceIndexes[v].data,
+ 
         modSchema: stateData.modSchema,
         modStateTree: stateData.modStateTree,
         baseGeometryInputMap: stateVoxelInputs[v],
@@ -377,7 +366,7 @@ export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
   ];
 
   let models = GetModelData(data);
-  
+
   const voxelData = BuildTagAndPaletteData({
     voxels,
     voxelsOverrides: {
@@ -393,8 +382,6 @@ export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
     substances,
     materials,
   });
-
-
 
   BuildPaletteData({ models });
   voxelData.data.palette = VoxelPalettesRegister.voxels;

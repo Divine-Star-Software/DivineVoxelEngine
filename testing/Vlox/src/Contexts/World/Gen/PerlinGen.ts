@@ -30,7 +30,7 @@ export const PerlinGen = {
     let r = height + detail;
 
     // Adjust y position based on noise, simulating elevation changes
-    let elevation = y / 100; // Example elevation factor, adjust as needed
+    let elevation = y / 150; // Example elevation factor, adjust as needed
 
     // Voxel placement condition, adjust thresholds as needed
     return r > 0.3 + elevation && r < 0.4 + elevation;
