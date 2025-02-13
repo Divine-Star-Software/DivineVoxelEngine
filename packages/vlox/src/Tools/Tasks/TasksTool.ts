@@ -1,18 +1,17 @@
-import { Thread, ThreadPool } from "@amodx/threads/";
-import {
-  ExplosionTasks,
-  GenerateTasks,
-  VoxelUpdateTasks,
-} from "../../Tasks/Tasks.types";
+import { BinaryTaskType, Thread, ThreadPool, Threads } from "@amodx/threads/";
+import { ExplosionTasks, VoxelUpdateTasks } from "../../Tasks/Tasks.types";
 import { LocationData } from "../../Math";
 import { TasksIds } from "../../Tasks/TasksIds.js";
+import { setLocationData } from "../../Util/LocationData";
 
 export type TaskRunModes = "async" | "sync";
-
+interface ITask<Data> {
+  run(data: Data, transfer: any[] | null, onDone?: (data: any) => void): void;
+}
 class TaskQueue<Data extends any = any, ReturnData extends any = void> {
   private _queue: Data[] = [];
 
-  constructor(private _task: TaskToolTask<Data, ReturnData>) {}
+  constructor(private _task: ITask<Data>) {}
   add(data: Data) {
     this._queue.push(data);
   }
@@ -36,15 +35,54 @@ class TaskQueue<Data extends any = any, ReturnData extends any = void> {
     });
   }
 }
-
-export class TaskToolTask<
-  Data extends any = any,
-  ReturnData extends any = void,
-> {
+export class LocationTaskToolTask implements ITask<LocationData> {
   private _count = 0;
   _threads: Thread[];
   constructor(
-    public id: string | number,
+    public id: string,
+    threads: Thread | ThreadPool
+  ) {
+    if (threads instanceof Thread) {
+      this._threads = [threads];
+    } else {
+      this._threads = [...threads.getThreads()];
+    }
+  }
+
+  run(
+    location: LocationData,
+    transfer?: any[] | null,
+    onDone?: (data: any) => void
+  ) {
+    const thread = this._threads[this._count];
+
+    const view = Threads.createBinaryTask( 16);
+
+    setLocationData(view,location)
+
+    thread.runBinaryTask(this.id, view, onDone);
+    this._count++;
+    if (this._count >= this._threads.length) this._count = 0;
+  }
+
+  runAsync(location: LocationData): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.run(location, null, resolve);
+    });
+  }
+
+  createQueue() {
+    return new TaskQueue<LocationData>(this);
+  }
+}
+export class TaskToolTask<
+  Data extends any = any,
+  ReturnData extends any = void,
+> implements ITask<Data>{
+  private _count = 0;
+  _threads: Thread[];
+  constructor(
+    public id: string,
     threads: Thread | ThreadPool
   ) {
     if (threads instanceof Thread) {
@@ -80,21 +118,21 @@ class VoxelTasks {
   update: TaskToolTask<VoxelUpdateTasks>;
   paint: TaskToolTask<VoxelUpdateTasks>;
   erease: TaskToolTask<LocationData>;
-  logic: TaskToolTask<LocationData>
+
   constructor(public tool: TaskTool) {
     this.update = new TaskToolTask(TasksIds.VoxelUpdate, tool.threads);
     this.paint = new TaskToolTask(TasksIds.VoxelPaint, tool.threads);
-    this.erease = new TaskToolTask(TasksIds.VoxelErease, tool.threads);
-    this.logic = new TaskToolTask(TasksIds.LogicUpdate, tool.threads);
+    this.erease = new TaskToolTask(TasksIds.VoxelErase, tool.threads);
+
   }
 }
 
 class BuildTask {
-  section: TaskToolTask<LocationData>;
-  sector: TaskToolTask<LocationData>;
+  section: LocationTaskToolTask;
+  sector: LocationTaskToolTask;
   constructor(public tool: TaskTool) {
-    this.section = new TaskToolTask(TasksIds.BuildSection, tool.threads);
-    this.sector = new TaskToolTask(TasksIds.BuildSector, tool.threads);
+    this.section = new LocationTaskToolTask(TasksIds.BuildSection, tool.threads);
+    this.sector = new LocationTaskToolTask(TasksIds.BuildSector, tool.threads);
   }
 }
 export class TaskTool {
@@ -102,19 +140,20 @@ export class TaskTool {
   build: BuildTask;
   explosion: TaskToolTask<ExplosionTasks>;
   anaylzer: TaskToolTask<LocationData>;
-  propagation: TaskToolTask<LocationData>;
-  generate: TaskToolTask<GenerateTasks>;
-  decorate: TaskToolTask<GenerateTasks>;
-  worldSun: TaskToolTask<LocationData>;
-
+  propagation: LocationTaskToolTask;
+  generate: LocationTaskToolTask;
+  decorate: LocationTaskToolTask;
+  worldSun: LocationTaskToolTask;
+  logic: LocationTaskToolTask;
   constructor(public threads: Thread | ThreadPool) {
     this.voxel = new VoxelTasks(this);
     this.build = new BuildTask(this);
 
     this.explosion = new TaskToolTask(TasksIds.Explosion, threads);
-    this.propagation = new TaskToolTask(TasksIds.Propagation, threads);
-    this.generate = new TaskToolTask(TasksIds.Generate, threads);
-    this.decorate = new TaskToolTask(TasksIds.Decorate, threads);
-    this.worldSun = new TaskToolTask(TasksIds.WorldSun, threads);
+    this.propagation = new LocationTaskToolTask(TasksIds.Propagation, threads);
+    this.generate = new LocationTaskToolTask(TasksIds.Generate, threads);
+    this.decorate = new LocationTaskToolTask(TasksIds.Decorate, threads);
+    this.worldSun = new LocationTaskToolTask(TasksIds.WorldSun, threads);
+    this.logic = new LocationTaskToolTask(TasksIds.LogicUpdate, threads);
   }
 }

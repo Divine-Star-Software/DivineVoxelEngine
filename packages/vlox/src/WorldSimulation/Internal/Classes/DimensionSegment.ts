@@ -1,39 +1,10 @@
-import { Vec3Array } from "@amodx/math";
+import {  Vector3Like } from "@amodx/math";
 import { SectorVisistedMap } from "./SectorVisistedMap";
-import { Sector } from "World";
-import { TickQueue } from "./TickQueue";
 
-class TaskSegment {
-  queue: number[] = [];
-  vistedMap = new SectorVisistedMap();
-  waitingFor = 0;
-  clear() {
-    this.waitingFor = 0;
-    this.queue.length = 0;
-    this.vistedMap.clear();
-  }
-}
+import { TaskTool } from "../../../Tools/Tasks/TasksTool";
+import { TaskSegment } from "./TaskSegment";
+import { Generator } from "./Generator";
 
-class SecotrQueueNode {
-  time = 0;
-  constructor(public position: Vec3Array) {}
-}
-
-class SectorQueue {
-  nodes: SecotrQueueNode[] = [];
-  private addedMap = new SectorVisistedMap();
-  removeIndex(index: number) {
-    const sector = this.nodes.splice(index, 1)[0];
-    this.addedMap.remove(...sector.position);
-  }
-  inMap(sector: Sector) {
-    return this.addedMap.has(...sector.position);
-  }
-  addSector(sector: Sector) {
-    this.addedMap.add(...sector.position);
-    this.nodes.push(new SecotrQueueNode([...sector.position]));
-  }
-}
 
 export class DimensionSegment {
   tasks = new Map<string, TaskSegment>();
@@ -42,14 +13,58 @@ export class DimensionSegment {
   rendered = new SectorVisistedMap();
   inProgress = new SectorVisistedMap();
 
+  generators: Generator[] = [];
 
-  unRenderQueue = new SectorQueue();
-  unLoadQueue = new SectorQueue();
 
-  constructor(public id: number) {}
+  constructor(
+    public id: number,
+    public taskTool: TaskTool
+  ) {}
 
-  addTask(id: string) {
-    this.tasks.set(id, new TaskSegment());
+  _updatePosition = Vector3Like.Create();
+
+  addGenerator(generator: Generator) {
+    this.generators.push(generator);
+  }
+
+  removeGenerator(generator: Generator) {
+    for (let i = 0; i < this.generators.length; i++) {
+      if (this.generators[i] == generator) this.generators.splice(i, 1);
+    }
+  }
+
+  getUpdatePosition() {
+    const numGenerators = this.generators.length;
+    if (numGenerators === 0) {
+      this._updatePosition.x = 0;
+      this._updatePosition.y = 0;
+      this._updatePosition.z = 0;
+      return this._updatePosition;
+    }
+    if (numGenerators === 1) {
+      this._updatePosition.x = this.generators[0].position.x;
+      this._updatePosition.y = this.generators[0].position.y;
+      this._updatePosition.z = this.generators[0].position.z;
+      return this._updatePosition;
+    }
+  
+    let sumX = 0, sumY = 0, sumZ = 0;
+    for (let i = 0; i < numGenerators; i++) {
+      sumX += this.generators[i].position.x;
+      sumY += this.generators[i].position.y;
+      sumZ += this.generators[i].position.z;
+    }
+  
+    this._updatePosition.x = sumX / numGenerators;
+    this._updatePosition.y = sumY / numGenerators;
+    this._updatePosition.z = sumZ / numGenerators;
+  
+    return this._updatePosition;
+  }
+  
+
+  addTask(id: string,propagationBlocking:boolean) {
+    this.tasks.set(id, new TaskSegment(this,propagationBlocking));
   }
   getTask(id: string) {
     const task = this.tasks.get(id);

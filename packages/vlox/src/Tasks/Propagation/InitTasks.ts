@@ -8,16 +8,20 @@ import { WorldSpaces } from "../../World/WorldSpaces";
 import { RunWorldSun } from "./Illumanation/WorldSun";
 import { ExplosionManager } from "./Explosion/ExplosionManager";
 import { WorldRGB } from "./Illumanation/WorldRGB";
-import { WorldFlow } from "./Flow/WorldFlow";
+
+import { WorldRegister } from "../../World/WorldRegister";
+import { Sector } from "../../World";
+import { getLocationData } from "../../Util/LocationData";
 
 export default function InitTasks() {
-
-  Threads.registerTask<LocationData>(TasksIds.Propagation, async (location) => {
-    const task = new VoxelUpdateTask();
-    task.setOrigin(location);
+  const task = new VoxelUpdateTask();
+  Threads.registerBinaryTask(TasksIds.Propagation, (view) => {
+    const location = getLocationData(view);
+    task.setOrigin(...location);
     WorldRGB(task);
-  //  task.setOrigin(location);
-   // WorldFlow(task);
+    WorldRegister.sectors
+      .get(...location)!
+      .setBitFlag(Sector.FlagIds.isWorldPropagationDone, true);
   });
 
   Threads.registerTask<ExplosionTasks>(TasksIds.Explosion, async (data) => {
@@ -27,8 +31,8 @@ export default function InitTasks() {
       location[2],
       location[3]
     );
-    const task = new VoxelUpdateTask();
-    task.setOrigin([
+
+    task.setOriginAt([
       location[0],
       sectorPosition.x,
       sectorPosition.y,
@@ -37,19 +41,9 @@ export default function InitTasks() {
     ExplosionManager.runExplosion(task, data[1]);
   });
 
-  Threads.registerTask<LocationData>(TasksIds.WorldSun, (location) => {
-    const sectorPosition = WorldSpaces.sector.getPosition(
-      location[1],
-      location[2],
-      location[3]
-    );
-    const task = new VoxelUpdateTask();
-    task.setOrigin([
-      location[0],
-      sectorPosition.x,
-      sectorPosition.y,
-      sectorPosition.z,
-    ]);
+  Threads.registerBinaryTask(TasksIds.WorldSun, (view) => {
+    const location = getLocationData(view);
+    task.setOrigin(...location);
     RunWorldSun(task);
   });
 }

@@ -10,6 +10,7 @@ import {
   isLessThanForSunAddDown,
   isLessThanForSunAdd,
 } from "./CommonFunctions.js";
+import { Sector } from "../../../World/index.js";
 const FloodOutPositions: Vec3Array[] = [
   [1, 0, 0],
   [-1, 0, 0],
@@ -132,5 +133,7 @@ export function RunWorldSun(tasks: VoxelUpdateTask) {
         }
       }
     }
+
+    sectorCursor._current!.setBitFlag(Sector.FlagIds.isWorldSunDone, true);
   }
 }

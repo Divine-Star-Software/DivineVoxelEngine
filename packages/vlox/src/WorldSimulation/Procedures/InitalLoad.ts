@@ -38,7 +38,7 @@ export async function InitalLoad(props: {
     const inte = setInterval(() => {
       let allDone = true;
       for (const [key, task] of dimension.tasks) {
-        if (task.waitingFor > 0 || task.queue.length > 0) {
+        if (task.waitingFor > 0 || task._task.size > 0) {
           allDone = false;
           break;
         }

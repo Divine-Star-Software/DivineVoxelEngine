@@ -1,11 +1,12 @@
 import { DimensionSegment } from "./Classes/DimensionSegment";
 import { TaskRegister } from "./TaskRegister";
+import { WorldSimulationTools } from "./WorldSimulationTools";
 
 export class WorldSimulationDimensions {
   static readonly _dimensions = new Map<number, DimensionSegment>();
 
   static addDimension(dimensionId: number) {
-    const segment = new DimensionSegment(dimensionId);
+    const segment = new DimensionSegment(dimensionId,WorldSimulationTools.taskTool);
     TaskRegister.addToDimension(segment);
     this._dimensions.set(dimensionId, segment);
   }

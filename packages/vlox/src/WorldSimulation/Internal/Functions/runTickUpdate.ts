@@ -7,21 +7,19 @@ import { getSectorState } from "./getSectorState";
 import { WorldSimulationDimensions } from "../WorldSimulationDimensions";
 import { DimensionSegment } from "../Classes/DimensionSegment";
 import { Sector } from "../../../World";
+import { WorldSimulationTasks } from "../WorldSimulationTasks";
 const stateCursor = new SectorState();
 const sectorSquare = new Square();
 
 function buildCheck(
   dimenion: DimensionSegment,
   sector: Sector,
-  generator: Generator,
-  x: number,
-  y: number,
-  z: number
+  generator: Generator
 ) {
   let rendered = true;
-  if (!dimenion.rendered.has(x, y, z)) {
+  if (!dimenion.rendered.has(...sector.position)) {
     rendered = false;
-    dimenion.rendered.add(x, y, z);
+    dimenion.rendered.add(...sector.position);
   }
 
   for (const section of sector.getRenerableSections()) {
@@ -29,25 +27,19 @@ function buildCheck(
       continue;
 
     section.setInProgress(true);
-    generator.buildQueue.add(dimenion.id, ...section.position);
+
+    WorldSimulationTasks.buildTasks.add(dimenion.id, ...section.position);
   }
 }
 
-function logicCheck(
-  dimenion: DimensionSegment,
-  sector: Sector,
-  generator: Generator,
-  x: number,
-  y: number,
-  z: number
-) {
+function logicCheck(dimenion: DimensionSegment, sector: Sector) {
   if (!sector.isLogicDirty()) return false;
 
   for (const section of sector.getLogicDirtySections()) {
     if (section.isLogicUpdateInProgress() || !section.isLogicDirty()) continue;
     section.setLogicUpdateInProgress(true);
 
-    generator.logicQueue.add(dimenion.id, ...section.position);
+    WorldSimulationTasks.logicTasks.add(dimenion.id, ...section.position);
   }
 }
 
@@ -106,14 +98,14 @@ export function runTickUpdate(generators: Generator[]) {
         state.nPropagtionAllDone
       ) {
         if (!segment.rendered.has(cx, cy, cz)) {
-          buildCheck(segment, sector, generator, cx, cy, cz);
+          buildCheck(segment, sector, generator);
           continue;
         }
         if (sector.anySectionLogicDirty()) {
-          logicCheck(segment, sector, generator, cx, cy, cz);
+          logicCheck(segment, sector);
         }
         if (sector.anySectionDisplayDirty()) {
-          buildCheck(segment, sector, generator, cx, cy, cz);
+          buildCheck(segment, sector, generator);
         }
       }
     }

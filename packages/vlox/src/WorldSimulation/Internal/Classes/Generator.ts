@@ -1,10 +1,8 @@
 import { Vector3Like } from "@amodx/math";
 import { Circle } from "@amodx/math/Shapes";
 import { WorldSpaces } from "../../../World/WorldSpaces";
-import { TickQueue } from "./TickQueue";
+
 import { TaskTool } from "../../../Tools/Tasks/TasksTool";
-import { BuildQueue } from "./Queues/BuildQueue";
-import { LogicQueue } from "./Queues/LogiccQueue";
 
 export interface GeneratorData {
   dimension: number;
@@ -29,8 +27,8 @@ export class Generator {
   _genCircle = new Circle({ x: 0, y: 0 }, 0);
   _renderCircle = new Circle({ x: 0, y: 0 }, 0);
   _maxCircle = new Circle({ x: 0, y: 0 }, 10);
-  buildQueue : BuildQueue;
-  logicQueue: LogicQueue;
+
+
   constructor(public taskTool: TaskTool, data: GeneratorData) {
     this._dimension = data.dimension;
     this.position = data.position;
@@ -40,8 +38,7 @@ export class Generator {
     this._renderCircle.radius = data.renderRadius;
     this._genCircle.radius = data.generationRadius;
     this._maxCircle.radius = data.maxRadius;
-    this.buildQueue = new BuildQueue(taskTool);
-    this.logicQueue = new LogicQueue(taskTool);
+
   }
 
   update() {
@@ -69,12 +66,5 @@ export class Generator {
     this._maxCircle.center.y = this._sectorPosition.z;
   }
 
-  tick() {
-    if (this._building) {
-      this.buildQueue.sort(this.position.x, this.position.y, this.position.z);
-      this.buildQueue.run(125);
-    }
-    this.logicQueue.sort(this.position.x, this.position.y, this.position.z);
-    this.logicQueue.run();
-  }
+
 }

@@ -1,6 +1,15 @@
-import { GenerateTasks } from "../Tasks.types"
 
 export type WorldGenInterface = {
-  generate(data: GenerateTasks): Promise<any | void>;
-  decorate(data: GenerateTasks): Promise<any | void>;
+  generate(
+    dimensionId: number,
+    x: number,
+    y: number,
+    z: number
+  ): Promise<any | void>;
+  decorate(
+    dimensionId: number,
+    x: number,
+    y: number,
+    z: number
+  ): Promise<any | void>;
 };

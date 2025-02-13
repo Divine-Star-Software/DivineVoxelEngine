@@ -12,7 +12,7 @@ export function VoxelLogicUpdate(
   task: VoxelUpdateTask,
   location: LocationData
 ) {
-  task.setOrigin(location);
+  task.setOriginAt(location);
 
   const sector = WorldRegister.sectors.getAt(location);
 

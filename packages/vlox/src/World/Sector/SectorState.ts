@@ -6,6 +6,7 @@ export enum SectorStateDefaultBitFlags {
   displayDirty,
   logicDirty,
   stored,
+  inProgress,
 
 }
 

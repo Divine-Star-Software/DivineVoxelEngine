@@ -70,9 +70,11 @@ export class WorldSimulation {
   }
 
   static tick() {
-    for (const gen of this._generators) {
-      gen.tick();
-    }
+    WorldSimulationTasks.logicTasks.runTask(125);
+    WorldSimulationTasks.buildTasks.runTask(125);
+    WorldSimulationTasks.saveTasks.runTask(50);
+    WorldSimulationTasks.unloadTasks.runTask(50);
+    WorldSimulationTasks.unbuildTasks.runTask(125);
   }
 
   static update() {
@@ -104,8 +106,6 @@ export class WorldSimulation {
     WorldSimulationTasks.worldDecorateTasks.runTask();
     WorldSimulationTasks.worldSunTasks.runTask();
     WorldSimulationTasks.worldPropagationTasks.runTask();
-    WorldSimulationTasks.saveTasks.runTask();
-    WorldSimulationTasks.saveAndUnloadTasks.runTask();
 
     cullSectors(this._generators, this._cullGenerators);
   }

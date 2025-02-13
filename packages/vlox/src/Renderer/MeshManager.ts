@@ -18,9 +18,9 @@ export class MeshManager {
 
     compacted.getLocation(location);
 
-    let sector = MeshRegister.sectors.get(location);
+    let sector = MeshRegister.sectors.getAt(location);
     if (!sector) {
-      sector = MeshRegister.sectors.add(location);
+      sector = MeshRegister.sectors.addAt(location);
     }
     let section = sector.getSection(location[1], location[2], location[3]);
     if (!section) {
@@ -51,8 +51,8 @@ export class MeshManager {
  */
     this.sectorMeshes.updateVertexData(section, compacted);
   }
-  static removeSector(data: LocationData) {
-    const sector = MeshRegister.sectors.remove(data);
+  static removeSector(dimensionId:number,x:number,y:number,z:number) {
+    const sector = MeshRegister.sectors.remove(dimensionId,x,y,z);
     if (!sector) return false;
     for (const section of sector.sections) {
       if (!section) continue;
@@ -62,5 +62,8 @@ export class MeshManager {
       }
       section.meshes.clear();
     }
+  }
+  static removeSectorAt(data: LocationData) {
+    return this.removeSector(...data)
   }
 }

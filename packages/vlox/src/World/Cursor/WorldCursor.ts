@@ -58,7 +58,7 @@ export class WorldCursor implements DataCursorInterface {
       }
 
       if (!this.sectorCursors[cx]) {
-        this.sectorCursors[cx] ??= {};
+        this.sectorCursors[cx] = {};
       }
       this.sectorCursors[cx][cz] = cursor;
     }
@@ -66,8 +66,8 @@ export class WorldCursor implements DataCursorInterface {
   }
 
   getVoxel(x: number, y: number, z: number) {
-    const section = this.getSector(x, y, z);
-    if (!section) return null;
-    return section.getVoxel(x, y, z);
+    const sector = this.getSector(x, y, z);
+    if (!sector) return null;
+    return sector.getVoxel(x, y, z);
   }
 }

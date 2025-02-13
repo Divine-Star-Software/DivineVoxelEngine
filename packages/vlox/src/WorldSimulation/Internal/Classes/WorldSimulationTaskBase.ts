@@ -1,34 +1,40 @@
 import { LocationData } from "../../../Math/index.js";
 import { WorldSimulationDimensions } from "../WorldSimulationDimensions.js";
 import { DimensionSegment } from "./DimensionSegment.js";
+import { TaskSegment } from "./TaskSegment.js";
 
-export type WorldSimulationTaskBase = {
+export type WorldSimulationTaskBaseData = {
   id: string;
   propagationBlocking?: boolean;
+  sort?: boolean;
+  predicate?(location: LocationData, dimension: DimensionSegment): boolean;
+  checkDone?(location: LocationData): boolean;
   run(
+    dimension: DimensionSegment,
     location: LocationData,
-    onDone: () => void,
-    dimension: DimensionSegment
+    taskId: number,
+    task: TaskSegment
   ): void;
 };
 
-export class IWGTaskBase {
-  constructor(public data: WorldSimulationTaskBase) {}
+export class WorldSimulationTaskBase {
+  constructor(public data: WorldSimulationTaskBaseData) {}
 
   add(dimensionId: number, x: number, y: number, z: number) {
     const dimension = WorldSimulationDimensions.getDimension(dimensionId);
     const task = dimension.getTask(this.data.id);
-    if (task.vistedMap.has(x, y, z)) return;
+
+    if (task.has(dimensionId, x, y, z)) return;
     if (this.data.propagationBlocking && dimension.inProgress.has(x, y, z))
       return;
-    task.queue.push(x, y, z);
-    task.vistedMap.add(x, y, z);
+
+    task.add(dimensionId, x, y, z);
   }
 
   remove(dimensionId: number, x: number, y: number, z: number) {
     const dimension = WorldSimulationDimensions.getDimension(dimensionId);
     const task = dimension.getTask(this.data.id);
-    task.vistedMap.remove(x, y, z);
+    task.remove(dimensionId, x, y, z);
     if (this.data.propagationBlocking) {
       dimension.inProgress.remove(x, y, z);
     }
@@ -49,27 +55,31 @@ export class IWGTaskBase {
   runTask(max = 1000) {
     for (const [key, dimension] of WorldSimulationDimensions._dimensions) {
       const task = dimension.getTask(this.data.id);
+      if (this.data.checkDone) {
+        for (const [id, taskData] of task._task) {
+          if (this.data.checkDone(taskData)) {
+            task.completeTask(id);
+          }
+        }
+      }
+
       if (task.waitingFor < 0) task.waitingFor = 0;
       if (task.waitingFor >= max) continue;
-      while (task.waitingFor < max && task.queue.length) {
-        const x = task.queue.shift()!;
-        const y = task.queue.shift()!;
-        const z = task.queue.shift()!;
-        task.waitingFor++;
-        if (this.data.propagationBlocking) {
-          dimension.inProgress.add(x, y, z);
+
+      if (this.data.sort) {
+        const updatePosition = dimension.getUpdatePosition();
+        task.sort(updatePosition.x, updatePosition.y, updatePosition.z);
+      }
+
+      for (const location of task.run()) {
+        if (task.waitingFor > max) break;
+        const [, x, y, z] = location;
+        if (this.data.predicate && !this.data.predicate(location, dimension)) {
+          continue;
         }
-        this.data.run(
-          [dimension.id, x, y, z],
-          () => {
-            task.vistedMap.remove(x, y, z);
-            if (this.data.propagationBlocking) {
-              dimension.inProgress.remove(x, y, z);
-            }
-            task.waitingFor--;
-          },
-          dimension
-        );
+        const taskId = task.addTask(dimension.id, x, y, z);
+    
+        this.data.run(dimension, location, taskId, task);
       }
     }
   }

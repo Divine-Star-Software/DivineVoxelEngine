@@ -20,7 +20,7 @@ export class DVEBRMesh {
     indices: Uint16Array | Uint32Array
   ) {
     const buffer = new Buffer(engine, vertices, false);
-
+    buffer.create
     mesh.setVerticesBuffer(
       new VertexBuffer(
         engine,

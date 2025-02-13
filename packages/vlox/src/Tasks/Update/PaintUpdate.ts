@@ -12,7 +12,7 @@ const tasks = new VoxelUpdateTask();
 
 export async function PaintAndUpdate(data: VoxelUpdateTasks) {
   const [dimension, x, y, z] = data[0];
-  tasks.setOrigin(data[0]);
+  tasks.setOriginAt(data[0]);
   let voxel = tasks.sDataCursor.getVoxel(x, y, z);
   if (!voxel) return false;
   const raw = data[1];

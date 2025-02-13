@@ -1,11 +1,12 @@
 import type { SetSectionMeshTask } from "../Mesher/Types/Mesher.types";
 import type { LocationData } from "Math/index.js";
-import { Thread, ThreadPool, Threads } from "@amodx/threads/";
+import { Thread, ThreadPool, Threads, BinaryTaskType } from "@amodx/threads/";
 import { MeshManager } from "./MeshManager";
 import { MeshRegister } from "./MeshRegister";
 import { RunBuildQueue } from "Tasks/Tasks.types";
 import { TaskTool } from "../Tools/Tasks/TasksTool";
 import { EngineSettings } from "../Settings/EngineSettings";
+import { getLocationData } from "../Util/LocationData";
 
 export default function RendererTasks(threads: Thread | ThreadPool) {
   const tasks = new TaskTool(threads);
@@ -16,8 +17,8 @@ export default function RendererTasks(threads: Thread | ThreadPool) {
       origin.sendMessage([], [data]);
     }
   });
-  Threads.registerTask<LocationData>("remove-sector", (data) => {
-    MeshManager.removeSector(data);
+  Threads.registerBinaryTask("remove-sector", (data) => {
+    MeshManager.removeSector(...getLocationData(data));
   });
   Threads.registerTask<LocationData>("clear-all", (data) => {
     MeshRegister.clearAll();

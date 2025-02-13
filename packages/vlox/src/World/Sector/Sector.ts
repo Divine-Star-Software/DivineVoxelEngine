@@ -106,6 +106,8 @@ export class Sector {
     return this.getBitFlag(SectorStateDefaultBitFlags.stored);
   }
 
+  
+
   setTimeStamp(index: number, value: number) {
     this.timeStampArray[index] = value;
   }

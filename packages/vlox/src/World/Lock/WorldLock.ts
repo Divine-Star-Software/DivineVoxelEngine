@@ -115,7 +115,8 @@ export class WorldLock {
     this.locks.delete(data.toString());
   }
 
-  static isLocked([sdim, x, y, z]: LocationData) {
+  static isLocked(sdim: number, x: number, y: number, z: number) {
+    if (!this.locks.size) return false;
     let locked = false;
 
     for (const [key, [dim, [sx, sy, sz], [ex, ey, ez]]] of this.locks) {

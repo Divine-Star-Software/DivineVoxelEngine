@@ -78,14 +78,27 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
       } else {
         if (!DVEBRSectionMeshes.meshCache.length) {
           const newMesh = new Mesh("", this.scene);
-          newMesh.setEnabled(false);
-          newMesh.freezeWorldMatrix();
-          newMesh.doNotSyncBoundingInfo = true;
+
           newMesh.isPickable = false;
           newMesh.checkCollisions = false;
           newMesh.doNotSerialize = true;
           newMesh.metadata = { section: true };
           newMesh.alwaysSelectAsActiveMesh = true;
+          const geometry = new Geometry(
+            Geometry.RandomId(),
+            this.scene,
+            undefined,
+            false,
+            newMesh
+          );
+          geometry._boundingInfo = new BoundingInfo(
+            new Vector3(0, 0, 0),
+            new Vector3(0, 0, 0)
+          );
+          geometry.useBoundingInfoFromGeometry = true;
+          newMesh.doNotSyncBoundingInfo = true;
+          newMesh.setEnabled(false);
+          newMesh.freezeWorldMatrix();
           for (let i = this.scene.meshes.length - 1; i > -1; i--) {
             if (this.scene.meshes[i] == newMesh) {
               this.scene.meshes.splice(i, 1);

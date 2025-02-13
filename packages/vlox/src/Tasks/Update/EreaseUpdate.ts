@@ -12,7 +12,7 @@ const tasks = new VoxelUpdateTask();
 
 export async function EreaseAndUpdate(location: LocationData) {
   const [dimension, x, y, z] = location;
-  tasks.setOrigin(location);
+  tasks.setOriginAt(location);
   let voxel = tasks.sDataCursor.getVoxel(x, y, z);
   if (!voxel) return false;
   const substanceData = voxel.getSubstanceData();

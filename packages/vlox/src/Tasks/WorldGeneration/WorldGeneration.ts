@@ -4,7 +4,9 @@ import { WorldGenRegister } from "./WorldGenRegister.js";
 //tools
 import { WorldGenBrush } from "./WorldGenBrush.js";
 import { WorldGenInterface } from "./WorldGen.types.js";
-import { GenerateTasks } from "../Tasks.types.js";
+import { WorldRegister } from "../../World/WorldRegister.js";
+import { LocationData } from "../../Math/index.js";
+import { Sector } from "../../World/index.js";
 
 export class WorldGeneration {
   static worldGen: WorldGenInterface | null = null;
@@ -18,7 +20,7 @@ export class WorldGeneration {
   }
 
   static async generate(
-    data: GenerateTasks,
+    data: Readonly< LocationData>,
     mode: "generate" | "decorate",
     onDone: Function
   ) {
@@ -26,21 +28,34 @@ export class WorldGeneration {
       throw new Error(`A World Generator must be set.`);
     }
 
-    const requestsId = WorldGenRegister.registerRequest(data[0]);
+    const requestsId = WorldGenRegister.registerRequest(data);
     for (const brush of this._brushes) {
       brush.requestsId = requestsId;
     }
+    const sector = WorldRegister.sectors.get(...data);
+    if (!sector) {
+      console.error(
+        `Error when attempting wolrd gen at [${data.join(",")}] Sector does not exist`
+      );
+      return;
+    }
 
     if (mode == "generate") {
-      await this.worldGen.generate(data);
+      await this.worldGen.generate(...data);
     }
     if (mode == "decorate") {
-      await this.worldGen.decorate(data);
+      await this.worldGen.decorate(...data);
     }
 
     if (!WorldGenRegister.attemptRequestFullFill(requestsId)) {
       const readyCheck = () => {
         if (WorldGenRegister.attemptRequestFullFill(requestsId)) {
+          if (mode == "generate") {
+            sector.setBitFlag(Sector.FlagIds.isWorldGenDone, true);
+          }
+          if (mode == "decorate") {
+            sector.setBitFlag(Sector.FlagIds.isWorldDecorDone, true);
+          }
           onDone();
           return;
         }
@@ -48,6 +63,12 @@ export class WorldGeneration {
       };
       readyCheck();
     } else {
+      if (mode == "generate") {
+        sector.setBitFlag(Sector.FlagIds.isWorldGenDone, true);
+      }
+      if (mode == "decorate") {
+        sector.setBitFlag(Sector.FlagIds.isWorldDecorDone, true);
+      }
       onDone();
     }
   }

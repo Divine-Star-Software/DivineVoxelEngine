@@ -88,15 +88,15 @@ class WorldRegisterSectors {
     x: number,
     y: number,
     z: number
-  ): false | Sector {
+  ): null | Sector {
     let dimension = WorldRegister.dimensions.get(dimensionId);
-    if (!dimension) return false;
+    if (!dimension) return null;
     const sector = dimension.sectors.get(
       WorldSpaces.hash.hashVec3(
         WorldSpaces.sector.getPosition(x, y, z, tempPosition)
       )
     );
-    return sector || false;
+    return sector || null;
   }
   static getAt(location: LocationData) {
     return this.get(...location);

@@ -25,7 +25,7 @@ export class WorldGenBrush extends BrushTool {
 
   start(dimension: number, x: number, y: number, z: number) {
     this.dataCursor.setFocalPoint(dimension, x, y, z);
-    this.tasks.setOrigin([dimension, x, y, z]);
+    this.tasks.setOriginAt([dimension, x, y, z]);
     this.dimension = dimension;
     this.x = x;
     this.y = y;

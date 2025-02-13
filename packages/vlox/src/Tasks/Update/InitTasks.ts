@@ -19,7 +19,7 @@ export default function (props: {
   );
 
   Threads.registerTask<LocationData>(
-    TasksIds.VoxelErease,
+    TasksIds.VoxelErase,
     async (data, origin) => {
       const tasks = await EreaseAndUpdate(data);
       if (!tasks) return;

@@ -1,6 +1,6 @@
 import type { LocationData } from "../Math/index.js";
 
-import { Thread, Threads } from "@amodx/threads/";
+import { BinaryTaskType, Thread, Threads } from "@amodx/threads/";
 //data
 import { WorldRegister } from "./WorldRegister.js";
 
@@ -10,6 +10,7 @@ import { WorldSpaces } from "./WorldSpaces.js";
 import { WorldLock } from "./Lock/WorldLock.js";
 import { WorldDataSyncIds } from "./Types/WorldDataSyncIds.js";
 import { WorldStorageInterface } from "./Types/WorldStorage.interface.js";
+import { setLocationData } from "../Util/LocationData.js";
 
 export default function ({
   threads,
@@ -30,7 +31,12 @@ export default function ({
   };
   WorldRegister._hooks.sectors.onRemove = (location) => {
     for (const thread of threads) {
-      thread.runTask(WorldDataSyncIds.UnSyncSector, location);
+      const view = Threads.createBinaryTask(16);
+
+      thread.runBinaryTask(
+        WorldDataSyncIds.UnSyncSector,
+        setLocationData(view, location)
+      );
     }
   };
 
@@ -97,24 +103,12 @@ export default function ({
       return;
     }
   });
+
   Threads.registerTask<WorldLockTasks>("world-alloc", async (data) => {
     await WorldLock.addLock(data);
   });
   Threads.registerTask<WorldLockTasks>("world-dealloc", async (data) => {
     await WorldLock.removeLock(data);
-  });
-  Threads.registerTask<LocationData>("unload-sector", (location) => {
-    if (WorldLock.isLocked(location)) return [false];
-    WorldRegister.sectors.remove(
-      location[0],
-      location[1],
-      location[2],
-      location[3]
-    );
-    for (const thread of threads) {
-      thread.runTask(WorldDataSyncIds.UnSyncSector, location);
-    }
-    return [false];
   });
 
   Threads.registerTask<LoadSectorDataTasks>(

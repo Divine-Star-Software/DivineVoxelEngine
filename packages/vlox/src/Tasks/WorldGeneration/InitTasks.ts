@@ -1,21 +1,22 @@
 import { Threads } from "@amodx/threads";
 import { WorldGeneration } from "./WorldGeneration";
 import { TasksIds } from "../../Tasks/TasksIds";
-import { GenerateTasks } from "../Tasks.types";
+import { LocationData } from "../../Math";
+import { getLocationData } from "../../Util/LocationData";
 
 export default function () {
-  Threads.registerTask<GenerateTasks>(
+  Threads.registerBinaryTask(
     TasksIds.Generate,
     (data) =>
       new Promise<void>((resolve) =>
-        WorldGeneration.generate(data, "generate", resolve)
+        WorldGeneration.generate(getLocationData(data), "generate", resolve)
       )
   );
-  Threads.registerTask<GenerateTasks>(
+  Threads.registerBinaryTask(
     TasksIds.Decorate,
     (data) =>
       new Promise<void>((resolve) =>
-        WorldGeneration.generate(data, "decorate", resolve)
+        WorldGeneration.generate(getLocationData(data), "decorate", resolve)
       )
   );
 }

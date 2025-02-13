@@ -22,7 +22,7 @@ export class WorldGenRegister {
     }
   >();
 
-  static registerRequest(location: LocationData) {
+  static registerRequest(location: Readonly<LocationData>) {
     const id = location.toString();
     this._requests.set(id, {
       attempts: 0,

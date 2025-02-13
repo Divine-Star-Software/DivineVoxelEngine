@@ -1,7 +1,8 @@
-import { Mesh } from "@babylonjs/core";
-import { MatrixArray } from "./MatrixArray"
+import { Matrix, Mesh, Vector3 } from "@babylonjs/core";
+import { MatrixArray } from "./MatrixArray";
 import { EntityInstance } from "./EntityInstance.js";
 import "@babylonjs/core/Meshes/thinInstanceMesh";
+const identity = Matrix.Identity();
 export class EntityTool {
   _instanceAmount = 0;
   _matrixArray: MatrixArray;
@@ -18,16 +19,12 @@ export class EntityTool {
   setInstanceAmount(amount: number) {
     this._matrixArray = new MatrixArray(amount);
     this.addBuffer("matrix", this._matrixArray.matricies, 16);
-
+    const matrix = this.mesh.thinInstanceGetWorldMatrices();
     this._instanceAmount = amount;
     let i = this._instanceAmount;
     while (i--) {
-      const newInstance = new EntityInstance(
-        i,
-        new MatrixArray(this._matrixArray, i),
-        this
-      );
-      newInstance.scale.setAll(0);
+      const newInstance = new EntityInstance(i, matrix[i], this);
+      matrix[i].setAll(0);
       this._instances.push(newInstance);
     }
     this.update();
@@ -36,17 +33,12 @@ export class EntityTool {
   getInstance() {
     const instance = this._instances.shift();
     if (!instance) return false;
-    instance.scale.setAll(1);
-    instance.position.setAll(0);
-
+    instance.matrix.copyFrom(identity);
     this._usedInstances.add(instance);
     return instance;
   }
 
   returnInstance(instance: EntityInstance) {
-    instance.scale.setAll(0);
-    instance.position.setAll(0);
-
     this._instances.push(instance);
     this._usedInstances.delete(instance);
   }

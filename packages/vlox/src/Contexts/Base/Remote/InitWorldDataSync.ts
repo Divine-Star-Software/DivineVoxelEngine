@@ -1,9 +1,10 @@
-import { Threads } from "@amodx/threads/";
+import { Threads, BinaryTaskType } from "@amodx/threads/";
 import { WorldDataSyncIds } from "../../../World/Types/WorldDataSyncIds.js";
 import { WorldRegister } from "../../../World/WorldRegister.js";
 import type { LocationData } from "../../../Math/index.js";
 import { DimensionSyncData } from "../../../World/Types/WorldData.types.js";
 import { SectorData } from "../../../World/index.js";
+import { getLocationData } from "../../../Util/LocationData.js";
 export default function () {
   Threads.registerTask<DimensionSyncData>(
     WorldDataSyncIds.SyncDimension,
@@ -29,7 +30,7 @@ export default function () {
       );
     }
   );
-  Threads.registerTask<LocationData>(WorldDataSyncIds.UnSyncSector, (data) => {
-    WorldRegister.sectors.remove(data[0], data[1], data[2], data[3]);
+  Threads.registerBinaryTask(WorldDataSyncIds.UnSyncSector, (data) => {
+    WorldRegister.sectors.remove(...getLocationData(data));
   });
 }

@@ -146,7 +146,6 @@ export class BrushTool {
     this.y = 0;
     this.z = 0;
   }
-  _debug = false;
 
   _paint() {
     if (!this.dataCursor.inBounds(this.x, this.y, this.z)) return false;
@@ -154,17 +153,9 @@ export class BrushTool {
     const voxel = this.dataCursor.getVoxel(this.x, this.y, this.z);
     if (!voxel) return;
     if (!this.data.id || this.data.id == "dve_air") return false;
-    voxel.setStringId(this.data.id);
-
-    if (this._debug) {
-      console.warn(this.x, this.y, this.z, this.data.state);
-    }
-
-    voxel.setState(this.data.state);
+    voxel.setStringId(this.data.id, this.data.state, this.data.mod);
 
     voxel.setLevel(this.data.level);
-
-    voxel.setMod(this.data.mod);
 
     if (this.data.secondaryVoxelId && this.data.secondaryVoxelId != "dve_air") {
       voxel.setSecondary(true);

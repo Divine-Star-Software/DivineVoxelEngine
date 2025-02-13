@@ -155,20 +155,28 @@ export class VoxelUpdateTask {
   bounds = new UpdatedBounds(this);
   sDataCursor = new WorldCursor();
   nDataCursor = new WorldCursor();
-  origin: LocationData;
-  setOrigin(origin: LocationData) {
-    this.sDataCursor.setFocalPoint(...origin);
-    this.nDataCursor.setFocalPoint(...origin);
-    this.origin = origin;
-    this.rgb.removeMap.start(origin[1], origin[2], origin[3]);
-    this.sun.removeMap.start(origin[1], origin[2], origin[3]);
-    this.rgb.updateMap.start(origin[1], origin[2], origin[3]);
-    this.sun.updateMap.start(origin[1], origin[2], origin[3]);
-    this.flow.update.map.start(origin[1], origin[2], origin[3]);
-    this.flow.remove.map.start(origin[1], origin[2], origin[3]);
-    this.flow.remove.noRemoveMap.start(origin[1], origin[2], origin[3]);
-    this.bounds.start(origin[0]);
+  origin: LocationData = [0, 0, 0, 0];
+  setOrigin(dimension: number, x: number, y: number, z: number) {
+    this.sDataCursor.setFocalPoint(dimension, x, y, z);
+    this.nDataCursor.setFocalPoint(dimension, x, y, z);
+
+    this.origin[0] = dimension;
+    this.origin[1] = x;
+    this.origin[2] = y;
+    this.origin[3] = z;
+
+    this.rgb.removeMap.start(x, y, z);
+    this.sun.removeMap.start(x, y, z);
+    this.rgb.updateMap.start(x, y, z);
+    this.sun.updateMap.start(x, y, z);
+    this.flow.update.map.start(x, y, z);
+    this.flow.remove.map.start(x, y, z);
+    this.flow.remove.noRemoveMap.start(x, y, z);
+    this.bounds.start(dimension);
     this.clear();
+  }
+  setOriginAt(origin: LocationData) {
+    this.setOrigin(...origin);
   }
   clear() {
     this.rgb.clear();

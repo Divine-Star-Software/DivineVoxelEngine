@@ -12,7 +12,9 @@ const stateCursor = new SectorState();
 const sectorSquare = new Square();
 export function runWorldUpdate(generators: Generator[]) {
   for (const generator of generators) {
-    const segment = WorldSimulationDimensions._dimensions.get(generator._dimension);
+    const segment = WorldSimulationDimensions._dimensions.get(
+      generator._dimension
+    );
     if (!segment)
       throw new Error(
         `No segment for dimensions ${generator._dimension} found.`
@@ -33,7 +35,7 @@ export function runWorldUpdate(generators: Generator[]) {
       const cz = queue.shift()!;
 
       if (
-        WorldLock.isLocked([generator._dimension, cx, cy, cz]) ||
+        WorldLock.isLocked(generator._dimension, cx, cy, cz) ||
         segment.inProgress.has(cx, cy, cz) ||
         vistedMap.has(cx, cy, cz)
       )
@@ -60,7 +62,12 @@ export function runWorldUpdate(generators: Generator[]) {
         cz
       );
       if (!sector) {
-        WorldSimulationTasks.worldLoadTasks.add(generator._dimension, cx, cy, cz);
+        WorldSimulationTasks.worldLoadTasks.add(
+          generator._dimension,
+          cx,
+          cy,
+          cz
+        );
         continue;
       }
 
@@ -72,7 +79,12 @@ export function runWorldUpdate(generators: Generator[]) {
         state.allLoaded &&
         !sector.getBitFlag(Sector.FlagIds.isWorldGenDone)
       ) {
-        WorldSimulationTasks.worldGenTasks.add(generator._dimension, cx, cy, cz);
+        WorldSimulationTasks.worldGenTasks.add(
+          generator._dimension,
+          cx,
+          cy,
+          cz
+        );
         continue;
       }
 
@@ -80,7 +92,12 @@ export function runWorldUpdate(generators: Generator[]) {
         state.nWorldGenAllDone &&
         !sector.getBitFlag(Sector.FlagIds.isWorldDecorDone)
       ) {
-        WorldSimulationTasks.worldDecorateTasks.add(generator._dimension, cx, cy, cz);
+        WorldSimulationTasks.worldDecorateTasks.add(
+          generator._dimension,
+          cx,
+          cy,
+          cz
+        );
         continue;
       }
 
@@ -88,7 +105,12 @@ export function runWorldUpdate(generators: Generator[]) {
         state.nDecorAllDone &&
         !sector.getBitFlag(Sector.FlagIds.isWorldPropagationDone)
       ) {
-        WorldSimulationTasks.worldPropagationTasks.add(generator._dimension, cx, cy, cz);
+        WorldSimulationTasks.worldPropagationTasks.add(
+          generator._dimension,
+          cx,
+          cy,
+          cz
+        );
         continue;
       }
 
@@ -96,7 +118,12 @@ export function runWorldUpdate(generators: Generator[]) {
         state.nPropagtionAllDone &&
         !sector.getBitFlag(Sector.FlagIds.isWorldSunDone)
       ) {
-        WorldSimulationTasks.worldSunTasks.add(generator._dimension, cx, cy, cz);
+        WorldSimulationTasks.worldSunTasks.add(
+          generator._dimension,
+          cx,
+          cy,
+          cz
+        );
         continue;
       }
     }

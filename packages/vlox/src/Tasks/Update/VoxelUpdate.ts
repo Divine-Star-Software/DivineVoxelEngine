@@ -10,7 +10,7 @@ const tasks = new VoxelUpdateTask();
 
 export async function VoxelUpdate(data: VoxelUpdateTasks) {
   const [dimension, x, y, z] = data[0];
-  tasks.setOrigin(data[0]);
+  tasks.setOriginAt(data[0]);
   const voxel = tasks.sDataCursor.getVoxel(x, y, z);
   if (!voxel) return false;
 
