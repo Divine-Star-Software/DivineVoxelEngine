@@ -15,7 +15,7 @@ export class TaskSegment {
 
   constructor(
     public dimension: DimensionSegment,
-    public propagationBlocking: boolean
+    public generationTask: boolean
   ) {}
 
   _getLocationData(dimension: number, x: number, y: number, z: number) {
@@ -29,43 +29,39 @@ export class TaskSegment {
   completeTask(id: number) {
     const locationData = this._task.get(id);
     if (!locationData) return false;
-    if (this.propagationBlocking) {
-      this.dimension.inProgress.remove(
+    this._hash.delete(
+      WorldSpaces.hash.hashXYZ(
         locationData[1],
         locationData[2],
         locationData[3]
-      );
-    }
+      )
+    );
     this._task.delete(id);
     pool.push(locationData);
     this.waitingFor--;
 
     return true;
   }
-  addTask(dimension: number, x: number, y: number, z: number) {
+  addTask(x: number, y: number, z: number) {
     const id = this._taskCount;
-    this._task.set(id, this._getLocationData(dimension, x, y, z));
+    this._task.set(id, this._getLocationData(this.dimension.id, x, y, z));
     this._taskCount++;
     this.waitingFor++;
-    if (this.propagationBlocking) {
-      this.dimension.inProgress.add(x, y, z);
-    }
     return id;
   }
 
-  has(dimension: number, x: number, y: number, z: number) {
+  has(x: number, y: number, z: number) {
     return this._hash.has(WorldSpaces.hash.hashXYZ(x, y, z));
   }
-  remove(dimension: number, x: number, y: number, z: number) {
-    //this.hash.has(WorldSpaces.hash.hashXYZ(x, y, z));
-  }
-  add(dimension: number, x: number, y: number, z: number) {
+
+  add(x: number, y: number, z: number) {
     const key = WorldSpaces.hash.hashXYZ(x, y, z);
     if (this._hash.has(key)) return false;
     this._hash.add(key);
-    const location = this._getLocationData(dimension, x, y, z);
+    const location = this._getLocationData(this.dimension.id, x, y, z);
     this.nodes.push(location);
   }
+
   sort(x: number, y: number, z: number) {
     const sections = this.nodes;
     const sx = x,
@@ -105,13 +101,9 @@ export class TaskSegment {
   }
 
   *run(): Generator<LocationData> {
-    let count = 0;
     while (this.nodes.length) {
       const vec = this.nodes.shift()!;
-      const [, x, y, z] = vec;
       yield vec;
-      this._hash.delete(WorldSpaces.hash.hashXYZ(x, y, z));
-      count++;
       pool.push(vec);
     }
   }

@@ -2,19 +2,19 @@ import { Thread, ThreadPool } from "@amodx/threads";
 import { WorldStorageInterface } from "../World/Types/WorldStorage.interface";
 import { TaskTool } from "../Tools/Tasks/TasksTool";
 import { Generator, GeneratorData } from "./Internal/Classes/Generator";
-import { runWorldUpdate } from "./Internal/Functions/runWorldUpdate";
+
 import { WorldSimulationTasks } from "./Internal/WorldSimulationTasks";
-import { runTickUpdate } from "./Internal/Functions/runTickUpdate";
 import { WorldSimulationTools } from "./Internal/WorldSimulationTools";
 import { WorldSimulationDimensions } from "./Internal/WorldSimulationDimensions";
-import { cullSectors } from "./Internal/Functions/cullSectors";
 import { Vector3Like } from "@amodx/math";
 import { InitalLoad } from "./Procedures/InitalLoad";
 import SaveAllSectors from "./Procedures/SaveAllSectors";
+import { runActiveSectorUpdate } from "./Internal/Functions/runActiveSectorUpdate";
 
 interface WorldSimulationInitData {
   parent: Thread;
-  threads: Thread | ThreadPool;
+  generators: Thread | ThreadPool;
+  meshers: Thread | ThreadPool;
   worldStorage?: WorldStorageInterface;
 }
 let initalized = false;
@@ -37,7 +37,7 @@ export class WorldSimulation {
   static init(data: WorldSimulationInitData) {
     initalized = true;
     WorldSimulationTools.parent = data.parent;
-    WorldSimulationTools.taskTool = new TaskTool(data.threads);
+    WorldSimulationTools.taskTool = new TaskTool(data.meshers, data.generators);
     if (data.worldStorage)
       WorldSimulationTools.worldStorage = data.worldStorage;
   }
@@ -57,57 +57,59 @@ export class WorldSimulation {
 
   static addGenerator(generator: Generator) {
     this._generators.push(generator);
+    WorldSimulationDimensions.getDimension(generator._dimension)!.addGenerator(
+      generator
+    );
   }
 
   static removeGenerator(generator: Generator) {
+    WorldSimulationDimensions.getDimension(
+      generator._dimension
+    )!.removeGenerator(generator);
     for (let i = 0; i < this._generators.length; i++) {
       if (this._generators[i] == generator) {
         this._generators.splice(i, 1);
+
         return true;
       }
     }
     return false;
   }
 
-  static tick() {
-    WorldSimulationTasks.logicTasks.runTask(125);
-    WorldSimulationTasks.buildTasks.runTask(125);
-    WorldSimulationTasks.saveTasks.runTask(50);
-    WorldSimulationTasks.unloadTasks.runTask(50);
-    WorldSimulationTasks.unbuildTasks.runTask(125);
-  }
-
-  static update() {
-    if (!initalized) {
-      throw new Error(`IWG must be initalized.`);
-    }
-    if (this._cullGenerators.length) this._cullGenerators.length = 0;
+  static tick(generationOnly = false) {
+    let needActiveSectorUpdate = false;
     for (const gen of this._generators) {
       gen.update();
-      if (!gen._culling) continue;
-      if (gen._positonChanged) {
-        if (!gen._waitingForCull) {
-          gen._waitingForCull = true;
-          gen._cullTime = performance.now();
-        } else {
-          if (performance.now() - gen._cullTime > 4000) {
-            gen._waitingForCull = false;
-            this._cullGenerators.push(gen);
-          }
-        }
+      if (gen._dirty || gen._isNew) {
+        gen._isNew = false;
+        gen._dirty = false;
+        needActiveSectorUpdate = true;
       }
     }
-    runTickUpdate(this._generators);
-    //  IWGTasks.buildTasks.runTask();
 
-    runWorldUpdate(this._generators);
+    if (needActiveSectorUpdate) {
+      runActiveSectorUpdate();
+    }
+
+    for (const [, dimenion] of WorldSimulationDimensions._dimensions) {
+      for (let i = 0; i < dimenion.active._sectors.length; i++) {
+        dimenion.active._sectors[i].renderUpdate();
+        dimenion.active._sectors[i].generateUpdate();
+      }
+    }
+
     WorldSimulationTasks.worldLoadTasks.runTask();
     WorldSimulationTasks.worldGenTasks.runTask();
     WorldSimulationTasks.worldDecorateTasks.runTask();
     WorldSimulationTasks.worldSunTasks.runTask();
     WorldSimulationTasks.worldPropagationTasks.runTask();
 
-    cullSectors(this._generators, this._cullGenerators);
+    if (generationOnly) return;
+    WorldSimulationTasks.logicTasks.runTask();
+    WorldSimulationTasks.buildTasks.runTask(125);
+    WorldSimulationTasks.saveTasks.runTask(50);
+    WorldSimulationTasks.unloadTasks.runTask(50);
+    WorldSimulationTasks.unbuildTasks.runTask();
   }
 }
 

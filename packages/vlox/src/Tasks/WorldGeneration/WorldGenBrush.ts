@@ -8,7 +8,6 @@ import { BrushTool } from "../../Tools/Brush/Brush.js";
 import { VoxelLightData } from "../../Voxels/Cursor/VoxelLightData.js";
 
 import { WorldGeneration } from "./WorldGeneration.js";
-import { DivineVoxelEngineConstructor } from "../../Contexts/Constructor/DivineVoxelEngineConstructor.js";
 import { VoxelUpdateTask } from "../VoxelUpdateTask.js";
 import { RGBRemove, RGBUpdate } from "../Propagation/Illumanation/RGBUpdate.js";
 import { SunRemove, SunUpdate } from "../Propagation/Illumanation/SunUpdate.js";
@@ -129,14 +128,14 @@ export class WorldGenBrush extends BrushTool {
   }
 
   worldAlloc(start: Vec3Array, end: Vec3Array) {
-    return DivineVoxelEngineConstructor.instance.threads.world.runTaskAsync<WorldLockTasks>(
+    return WorldGenRegister._worldThread.runTaskAsync<WorldLockTasks>(
       "world-alloc",
       [this.dimension, start, end]
     );
   }
 
   worldDealloc(start: Vec3Array, end: Vec3Array) {
-    return DivineVoxelEngineConstructor.instance.threads.world.runTaskAsync<WorldLockTasks>(
+    return WorldGenRegister._worldThread.runTaskAsync<WorldLockTasks>(
       "world-dealloc",
       [this.dimension, start, end]
     );

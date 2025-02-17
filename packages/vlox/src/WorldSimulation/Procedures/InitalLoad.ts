@@ -16,12 +16,14 @@ export async function InitalLoad(props: {
     const generator = WorldSimulation.createGenerator({
       ...props.genData,
       building: false,
-      culling: false
+      culling: false,
     });
     if (!WorldSimulationDimensions._dimensions.has(generator._dimension)) {
       WorldSimulationDimensions.addDimension(generator._dimension);
     }
-    const dimension = WorldSimulationDimensions.getDimension(props.dimension || 0);
+    const dimension = WorldSimulationDimensions.getDimension(
+      props.dimension || 0
+    );
     let done = false;
     generator._building = false;
     WorldSimulation.addGenerator(generator);
@@ -30,7 +32,7 @@ export async function InitalLoad(props: {
     const update = () => {
       if (done) return;
 
-      WorldSimulation.update();
+      WorldSimulation.tick(true);
       timeOut = setTimeout(update, 0);
     };
     update();
@@ -38,6 +40,7 @@ export async function InitalLoad(props: {
     const inte = setInterval(() => {
       let allDone = true;
       for (const [key, task] of dimension.tasks) {
+        if (!task.generationTask) continue;
         if (task.waitingFor > 0 || task._task.size > 0) {
           allDone = false;
           break;
@@ -55,6 +58,6 @@ export async function InitalLoad(props: {
 
         resolve(true);
       })();
-    }, 100);
+    }, 250);
   });
 }

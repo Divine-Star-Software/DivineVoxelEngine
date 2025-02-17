@@ -18,7 +18,9 @@ export class Generator {
   position: Vector3Like;
   _dimension = 0;
   _building = true;
-  _positonChanged = false;
+
+  _isNew = true;
+  _dirty = true;
   _waitingForCull = false;
   _cullTime = 0;
   _culling = true;
@@ -28,8 +30,10 @@ export class Generator {
   _renderCircle = new Circle({ x: 0, y: 0 }, 0);
   _maxCircle = new Circle({ x: 0, y: 0 }, 10);
 
-
-  constructor(public taskTool: TaskTool, data: GeneratorData) {
+  constructor(
+    public taskTool: TaskTool,
+    data: GeneratorData
+  ) {
     this._dimension = data.dimension;
     this.position = data.position;
     this._building =
@@ -38,12 +42,10 @@ export class Generator {
     this._renderCircle.radius = data.renderRadius;
     this._genCircle.radius = data.generationRadius;
     this._maxCircle.radius = data.maxRadius;
-
   }
 
   update() {
-    this._positonChanged = false;
-
+    this._dirty = false;
     WorldSpaces.section.getPosition(
       this.position.x,
       0,
@@ -52,7 +54,7 @@ export class Generator {
     );
 
     if (!Vector3Like.Equals(this._sectorPosition, this._cachedPosition)) {
-      this._positonChanged = true;
+      this._dirty = true;
       Vector3Like.Copy(this._cachedPosition, this._sectorPosition);
     }
 
@@ -65,6 +67,4 @@ export class Generator {
     this._maxCircle.center.x = this._sectorPosition.x;
     this._maxCircle.center.y = this._sectorPosition.z;
   }
-
-
 }

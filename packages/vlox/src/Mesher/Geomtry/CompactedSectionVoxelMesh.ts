@@ -1,16 +1,20 @@
 import { Vec3Array } from "@amodx/math";
 import { LocationData } from "../../Math";
 import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister";
+import { VoxelMeshVertexStructCursor } from "./VoxelMeshVertexStructCursor";
 
 export class CompactedMeshData {
-  material: string = "dve_solid";
+  material: number;
+  materialId: string = "dve_solid";
   minBounds: Vec3Array = [0, 0, 0];
   maxBounds: Vec3Array = [0, 0, 0];
+  vertexCount = 0;
+  indexCount = 0;
   vertexIndex: [start: number, length: number] = [0, 0];
   indiceIndex: [start: number, length: number] = [0, 0];
 
   verticies: Float32Array;
-  indices: Uint16Array | Uint32Array;
+  indices: Uint32Array;
 }
 
 export class CompactedSectionVoxelMesh {
@@ -86,7 +90,13 @@ export class CompactedSectionVoxelMesh {
   }
 
   setMeshData(index: number, mesh: CompactedMeshData) {
-    const { material, minBounds, maxBounds, vertexIndex, indiceIndex } = mesh;
+    const {
+      materialId: material,
+      minBounds,
+      maxBounds,
+      vertexIndex,
+      indiceIndex,
+    } = mesh;
     let startByte =
       CompactedSectionVoxelMesh.GetHeaderByteSize(0) +
       CompactedSectionVoxelMesh.GetMeshHeaderByteSize() * index;
@@ -128,9 +138,8 @@ export class CompactedSectionVoxelMesh {
       CompactedSectionVoxelMesh.GetMeshHeaderByteSize() * index;
 
     // material index
-    mesh.material = VoxelPalettesRegister.material.getStringId(
-      this.data.getUint8(startByte)
-    );
+    mesh.material = this.data.getUint8(startByte);
+    mesh.materialId = VoxelPalettesRegister.material.getStringId(mesh.material);
     startByte++;
 
     // min bounds
@@ -162,11 +171,11 @@ export class CompactedSectionVoxelMesh {
     startByte += 4;
 
     mesh.verticies = new Float32Array(this.data.buffer, ...mesh.vertexIndex);
-    mesh.indices =
-      mesh.indiceIndex[1] > 65535
-        ? new Uint32Array(this.data.buffer, ...mesh.indiceIndex)
-        : new Uint16Array(this.data.buffer, ...mesh.indiceIndex);
+    mesh.indices = new Uint32Array(this.data.buffer, ...mesh.indiceIndex);
 
+    mesh.vertexCount =
+      mesh.vertexIndex[1] / VoxelMeshVertexStructCursor.VertexFloatSize;
+    mesh.indexCount = mesh.indiceIndex[1];
     return mesh;
   }
 }

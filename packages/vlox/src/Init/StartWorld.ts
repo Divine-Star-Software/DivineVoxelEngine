@@ -39,7 +39,8 @@ export async function StartWorld(props: StartWorldProps = {}) {
 
   const threads: Thread[] = [
     DVEW.threads.parent,
-    ...DVEW.threads.constructors.getThreads(),
+    ...DVEW.threads.meshers.getThreads(),
+    ...DVEW.threads.generators.getThreads(),
   ];
   if (DVEW.threads.nexus.isPortSet) {
     threads.push(DVEW.threads.nexus);

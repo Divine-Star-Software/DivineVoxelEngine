@@ -8,7 +8,7 @@ export async function ShapeTest(DVEW: DivineVoxelEngineWorld) {
   let endX = 16 * numChunks;
   let endZ = 16 * numChunks;
 
-  const tasks = new TaskTool(DVEW.threads.constructors);
+  const tasks = new TaskTool(DVEW.threads.meshers, DVEW.threads.generators);
   const brush = new BrushTool();
   brush.start(0, 0, 0, 0);
 

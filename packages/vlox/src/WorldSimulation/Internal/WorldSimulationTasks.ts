@@ -14,7 +14,7 @@ export class WorldSimulationTasks {
    */
   static readonly worldLoadTasks = TaskRegister.addTasks({
     id: "load",
-    propagationBlocking: true,
+    generationTask: true,
     async run(dimesnion, location, taskId, task) {
       const [dimension, x, y, z] = location;
       const sector = WorldRegister.sectors.get(location[0], x, y, z);
@@ -40,7 +40,7 @@ export class WorldSimulationTasks {
    */
   static readonly worldGenTasks = TaskRegister.addTasks({
     id: "generate",
-    propagationBlocking: true,
+    generationTask: true,
     checkDone(location) {
       return (
         WorldRegister.sectors
@@ -65,7 +65,7 @@ export class WorldSimulationTasks {
    */
   static readonly worldDecorateTasks = TaskRegister.addTasks({
     id: "decorate",
-    propagationBlocking: true,
+    generationTask: true,
     checkDone(location) {
       return (
         WorldRegister.sectors
@@ -90,7 +90,7 @@ export class WorldSimulationTasks {
    */
   static readonly worldSunTasks = TaskRegister.addTasks({
     id: "wolrd_sun",
-    propagationBlocking: true,
+    generationTask: true,
     checkDone(location) {
       return (
         WorldRegister.sectors
@@ -115,7 +115,7 @@ export class WorldSimulationTasks {
    */
   static readonly worldPropagationTasks = TaskRegister.addTasks({
     id: "propagation",
-    propagationBlocking: true,
+    generationTask: true,
     checkDone(location) {
       return (
         WorldRegister.sectors
@@ -151,21 +151,6 @@ export class WorldSimulationTasks {
    */
   static readonly unloadTasks = TaskRegister.addTasks({
     id: "unload",
-    predicate(location, dimension) {
-      sectorSquare.sideLength = WorldSpaces.sector.bounds.x;
-      sectorSquare.center.x = location[1] + WorldSpaces.sector.bounds.x / 2;
-      sectorSquare.center.y = location[3] + WorldSpaces.sector.bounds.z / 2;
-
-      for (let i = 0; i < dimension.generators.length; i++) {
-        const gen = dimension.generators[i];
-        if (
-          Circle.IsSquareInsideOrTouchingCircle(sectorSquare, gen._maxCircle)
-        ) {
-          return false;
-        }
-      }
-      return true;
-    },
     async run(dimension, location, taskId, task) {
       if (!WorldSimulationTools.worldStorage) {
         WorldRegister.sectors.removeAt(location);
@@ -187,6 +172,10 @@ export class WorldSimulationTasks {
         throw new Error(
           `Sector at ${location.toString()} does not exist when attempting building.`
         );
+      WorldRegister.sectors
+        .get(...location)
+        ?.getSection(location[1], location[2], location[3])
+        ?.setInProgress(true);
       WorldSimulationTools.taskTool.build.section.run(location, null);
       task.completeTask(taskId);
     },
@@ -194,26 +183,12 @@ export class WorldSimulationTasks {
   static readonly unbuildTasks = TaskRegister.addTasks({
     id: "unbuild_tasks",
     sort: true,
-    propagationBlocking: true,
-    predicate(location, dimension) {
-      sectorSquare.sideLength = WorldSpaces.sector.bounds.x;
-      sectorSquare.center.x = location[1] + WorldSpaces.sector.bounds.x / 2;
-      sectorSquare.center.y = location[3] + WorldSpaces.sector.bounds.z / 2;
-      for (let i = 0; i < dimension.generators.length; i++) {
-        const gen = dimension.generators[i];
-        if (
-          Circle.IsSquareInsideOrTouchingCircle(sectorSquare, gen._renderCircle)
-        ) {
-          return false;
-        }
-      }
-      return true;
-    },
     run(dimension, location, taskId, task) {
       const view = Threads.createBinaryTask(16);
       setLocationData(view, location);
       WorldSimulationTools.parent.runBinaryTask("remove-sector", view);
-      dimension.rendered.remove(location[1], location[2], location[3]);
+      dimension.active.get(location[1], location[2], location[3])!._rendered =
+        false;
       task.completeTask(taskId);
     },
   });

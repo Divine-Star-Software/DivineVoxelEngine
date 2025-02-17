@@ -129,10 +129,9 @@ export async function CreateDefaultRenderer(
   }
   DefaultMaterialManager.init();
 
-
   const buildTickDuration = 50;
   scene.registerBeforeRender(() => {
-
+ //   renderer.voxelScene.render();
     for (const [key, type] of TextureManager._compiledTextures) {
       if (type.animatedTexture.tick(scene.deltaTime)) {
         (type.animatedTexture.shaderTexture as RawTexture).update(
@@ -160,6 +159,6 @@ export async function CreateDefaultRenderer(
 
   InitDefaultEffects();
   initData.afterCreate && (await initData.afterCreate(sceneTool));
-  renderer.init = async (dver) => {};
+
   return renderer;
 }

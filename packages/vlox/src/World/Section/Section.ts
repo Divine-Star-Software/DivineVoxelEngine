@@ -3,13 +3,21 @@ import { Sector } from "../Sector/Sector.js";
 import { Vec2Array, Vec3Array } from "@amodx/math";
 import {
   getBitArrayIndex,
+  getBitAtomicArrayIndex,
   setBitArrayIndex,
+  setBitAtomicArrayIndex,
 } from "../../Util/Binary/BinaryArrays.js";
-import { VoxelDataArrays } from "Voxels/index.js";
-import { SectionState, SectionStateDefaultFlags } from "./SectionState.js";
+import { VoxelDataArrays } from "../../Voxels/index.js";
+import {
+  SectionState,
+  SectionStateDefaultFlags,
+  SectionStateDefaultTicks,
+} from "./SectionState.js";
 import { forceMultipleOf2 } from "../../Util/Binary/BinaryFunctions.js";
 
 export interface SectionData extends VoxelDataArrays {
+  /**Array of bit ticks for the sector*/
+  tickArray: Uint32Array;
   /**Array of bit flags for the sector*/
   flagArray: Uint8Array;
   /**Y slice of the section to tell if there is voxels or not. Used for height maps. */
@@ -31,8 +39,10 @@ export class Section {
     const height = WorldSpaces.section.bounds.y;
     return forceMultipleOf2(
       //----- state
-      //2 bytes for flags
-      2 +
+      //4 tick counters
+      4 * 4 +
+        //2 bytes for flags
+        2 +
         //voxelMap
         height / 8 +
         //dirtyMap
@@ -58,76 +68,61 @@ export class Section {
     return index * Section.GetBufferSize() + Sector.GetHeaderSize();
   }
 
-  static CreateNew(index: number, sectorBuffer: ArrayBufferLike): SectionData {
-    const voxelSize = WorldSpaces.section.volumne;
-    const height = WorldSpaces.section.bounds.y;
-    let bufferStart = this.GetArrayStartIndex(index);
+  position: Vec3Array = [0, 0, 0];
+  readonly _Flags = SectionStateDefaultFlags;
+  readonly _Ticks = SectionStateDefaultTicks;
+  public index: number;
+  public sector: Sector;
 
-    const flagArray = new Uint8Array(sectorBuffer, bufferStart, 2);
-    bufferStart += 2;
-    const voxelMap = new Uint8Array(sectorBuffer, bufferStart, height / 8);
-    bufferStart += height / 8;
-    const dirtyMap = new Uint8Array(sectorBuffer, bufferStart, height / 8);
-    bufferStart += height / 8;
-    const logicDirtyMap = new Uint8Array(sectorBuffer, bufferStart, height / 8);
-    bufferStart += height / 8;
-    const buried = new Uint8Array(sectorBuffer, bufferStart, voxelSize / 8);
-    bufferStart += voxelSize / 8;
-    const logicDirty = new Uint8Array(sectorBuffer, bufferStart, voxelSize / 8);
-    bufferStart += voxelSize / 8;
-    const ids = new Uint16Array(sectorBuffer, bufferStart, voxelSize);
-    bufferStart += voxelSize * 2;
-    const light = new Uint16Array(sectorBuffer, bufferStart, voxelSize);
-    bufferStart += voxelSize * 2;
-    const secondary = new Uint16Array(sectorBuffer, bufferStart, voxelSize);
-    bufferStart += voxelSize * 2;
-    const level = new Uint8Array(sectorBuffer, bufferStart, voxelSize);
-    bufferStart += voxelSize;
-    return {
-      flagArray,
-      voxelMap,
-      dirtyMap,
-      logicDirtyMap,
-      logicDirty,
-      buried,
-      ids,
-      light,
-      level,
-      secondary,
-    };
-  }
-
-  static toObject(sector: Sector, index: number, data: SectionData) {
-    return new Section(sector, index, data);
-  }
-
-  readonly position: Vec3Array;
-
-  constructor(
-    public sector: Sector,
-    public index: number,
-    data: SectionData
-  ) {
+  setBuffer(sector: Sector, buffer: ArrayBufferLike, index: number) {
+    this.index = index;
+    this.sector = sector;
     this.position = WorldSpaces.section.getPositionFromIndexVec3Array(
-      this.index
+      index,
+      this.position
     );
     this.position[0] =
-      this.position[0] * WorldSpaces.section.bounds.x + this.sector.position[0];
+      this.position[0] * WorldSpaces.section.bounds.x + sector.position[0];
     this.position[1] =
-      this.position[1] * WorldSpaces.section.bounds.y + this.sector.position[1];
+      this.position[1] * WorldSpaces.section.bounds.y + sector.position[1];
     this.position[2] =
-      this.position[2] * WorldSpaces.section.bounds.z + this.sector.position[2];
-    this.flagArray = data.flagArray;
-    this.voxelMap = data.voxelMap;
-    this.dirtyMap = data.dirtyMap;
-    this.logicDirty = data.logicDirty;
-    this.logicDirtyMap = data.logicDirtyMap;
-    this.buried = data.buried;
-    this.ids = data.ids;
-    this.level = data.level;
-    this.light = data.light;
-    this.secondary = data.secondary;
-
+      this.position[2] * WorldSpaces.section.bounds.z + sector.position[2];
+    const voxelSize = WorldSpaces.section.volumne;
+    const height = WorldSpaces.section.bounds.y;
+    let bufferStart = Section.GetArrayStartIndex(index);
+    this.tickArray = new Uint32Array(buffer, bufferStart, 4);
+    bufferStart += 4 * Uint32Array.BYTES_PER_ELEMENT;
+    this.flagArray = new Uint8Array(buffer, bufferStart, 2);
+    bufferStart += 2;
+    this.voxelMap = new Uint8Array(buffer, bufferStart, height / 8);
+    bufferStart += height / 8;
+    this.dirtyMap = new Uint8Array(buffer, bufferStart, height / 8);
+    bufferStart += height / 8;
+    this.logicDirtyMap = new Uint8Array(buffer, bufferStart, height / 8);
+    bufferStart += height / 8;
+    this.buried = new Uint8Array(buffer, bufferStart, voxelSize / 8);
+    bufferStart += voxelSize / 8;
+    this.logicDirty = new Uint8Array(buffer, bufferStart, voxelSize / 8);
+    bufferStart += voxelSize / 8;
+    this.ids = new Uint16Array(buffer, bufferStart, voxelSize);
+    bufferStart += voxelSize * Uint16Array.BYTES_PER_ELEMENT;
+    this.light = new Uint16Array(buffer, bufferStart, voxelSize);
+    bufferStart += voxelSize * Uint16Array.BYTES_PER_ELEMENT;
+    this.secondary = new Uint16Array(buffer, bufferStart, voxelSize);
+    bufferStart += voxelSize * Uint16Array.BYTES_PER_ELEMENT;
+    this.level = new Uint8Array(buffer, bufferStart, voxelSize);
+    bufferStart += voxelSize;
+  }
+  clear() {
+    this.flagArray = null as any;
+    this.voxelMap = null as any;
+    this.dirtyMap = null as any;
+    this.buried = null as any;
+    this.logicDirty = null as any;
+    this.ids = null as any;
+    this.light = null as any;
+    this.secondary = null as any;
+    this.level = null as any;
   }
 
   getPosition(): Readonly<Vec3Array> {
@@ -135,22 +130,12 @@ export class Section {
   }
 
   setBitFlag(index: number, value: boolean) {
-    setBitArrayIndex(this.flagArray, index, value ? 1 : 0);
+    setBitAtomicArrayIndex(this.flagArray, index, value ? 1 : 0);
   }
   getBitFlag(index: number) {
-    return getBitArrayIndex(this.flagArray, index) == 1;
+    return getBitAtomicArrayIndex(this.flagArray, index) == 1;
   }
 
-  isDisplayDirty() {
-    return this.getBitFlag(SectionStateDefaultFlags.displayDirty);
-  }
-  setDisplayDirty(dirty: boolean) {
-    this.setBitFlag(SectionStateDefaultFlags.displayDirty, dirty);
-    if (dirty) {
-      this.sector.setStored(false);
-      this.sector.setDisplayDirty(true);
-    }
-  }
   isLogicDirty() {
     return this.getBitFlag(SectionStateDefaultFlags.logicDirty);
   }
@@ -166,7 +151,6 @@ export class Section {
   setLogicSliceDirty(y: number, dirty: boolean) {
     setBitArrayIndex(this.logicDirtyMap, y, dirty ? 1 : 0);
   }
-
 
   getVoxelLogicDirty(index: number) {
     return getBitArrayIndex(this.logicDirty, index) == 1;
@@ -206,6 +190,18 @@ export class Section {
   }
   getHasVoxelDirty(y: number): boolean {
     return getBitArrayIndex(this.dirtyMap, y) == 1;
+  }
+
+  getTick(tick: number) {
+    return this.tickArray[tick];
+  }
+  incrementTick(tick: number) {
+    this.tickArray[tick]++;
+  }
+
+  canRender() {
+    const [min, max] = this.getMinMax();
+    return min !== Math.abs(Infinity) && max !== Math.abs(Infinity);
   }
 
   getMinMax() {
@@ -252,19 +248,5 @@ export class Section {
       }
       this.setBitFlag(storedIndex, flags[flag]);
     }
-  }
-  toJSON(): SectionData {
-    return {
-      flagArray: this.flagArray,
-      logicDirtyMap: this.logicDirtyMap,
-      logicDirty: this.logicDirty,
-      voxelMap: this.voxelMap,
-      dirtyMap: this.dirtyMap,
-      buried: this.buried,
-      ids: this.ids,
-      light: this.light,
-      level: this.level,
-      secondary: this.secondary,
-    };
   }
 }

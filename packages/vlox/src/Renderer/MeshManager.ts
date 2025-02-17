@@ -1,16 +1,16 @@
 import type { SetSectionMeshTask } from "../Mesher/Types/Mesher.types";
 import { MeshRegister } from "./MeshRegister.js";
 import { LocationData } from "../Math/index.js";
-import { VoxelEffectRegister } from "../Voxels/Effects/VoxelEffectRegister.js";
 import { DVESectionMeshes } from "./Classes/DVESectionMeshes";
-import {
-  CompactedMeshData,
-  CompactedSectionVoxelMesh,
-} from "../Mesher/Geomtry/CompactedSectionVoxelMesh";
+import { CompactedSectionVoxelMesh } from "../Mesher/Geomtry/CompactedSectionVoxelMesh";
+import { SectorMesh } from "./Classes/SectorMesh";
+import { SectionMesh } from "./Classes/SectionMesh";
 const added = new Set<string>();
 const compacted = new CompactedSectionVoxelMesh();
 const location: LocationData = [0, 0, 0, 0];
 export class MeshManager {
+  static _sectorPool: SectorMesh[] = [];
+  static _sectionPool: SectionMesh[] = [];
   static sectorMeshes: DVESectionMeshes;
   static runningUpdate = false;
   static updateSection(data: SetSectionMeshTask) {
@@ -51,19 +51,12 @@ export class MeshManager {
  */
     this.sectorMeshes.updateVertexData(section, compacted);
   }
-  static removeSector(dimensionId:number,x:number,y:number,z:number) {
-    const sector = MeshRegister.sectors.remove(dimensionId,x,y,z);
+  static removeSector(dimensionId: number, x: number, y: number, z: number) {
+    const sector = MeshRegister.sectors.remove(dimensionId, x, y, z);
     if (!sector) return false;
-    for (const section of sector.sections) {
-      if (!section) continue;
-      section.dispose();
-      for (const [, mesh] of section.meshes) {
-        this.sectorMeshes.returnMesh(mesh);
-      }
-      section.meshes.clear();
-    }
+    sector.dipose();
   }
   static removeSectorAt(data: LocationData) {
-    return this.removeSector(...data)
+    return this.removeSector(...data);
   }
 }

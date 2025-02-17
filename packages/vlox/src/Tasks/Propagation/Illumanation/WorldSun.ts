@@ -40,6 +40,8 @@ export function RunWorldSun(tasks: VoxelUpdateTask) {
     );
     return;
   }
+
+
   const minY = AmaxY - 1 < 0 ? 0 : AmaxY;
 
   const section = sectorCursor.getSection(cx, minY, cz)!;

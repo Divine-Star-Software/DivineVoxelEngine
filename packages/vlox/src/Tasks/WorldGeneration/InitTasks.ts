@@ -1,10 +1,13 @@
-import { Threads } from "@amodx/threads";
+import { Thread, Threads } from "@amodx/threads";
 import { WorldGeneration } from "./WorldGeneration";
 import { TasksIds } from "../../Tasks/TasksIds";
 import { LocationData } from "../../Math";
 import { getLocationData } from "../../Util/LocationData";
+import { WorldGenRegister } from "./WorldGenRegister";
 
-export default function () {
+export default function (props: { worldThread: Thread }) {
+  WorldGenRegister._worldThread = props.worldThread;
+
   Threads.registerBinaryTask(
     TasksIds.Generate,
     (data) =>

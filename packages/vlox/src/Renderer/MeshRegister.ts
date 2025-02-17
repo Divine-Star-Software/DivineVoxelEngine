@@ -2,6 +2,7 @@ import { type LocationData } from "../Math/index.js";
 import { Vec3Array, Vector3Like } from "@amodx/math";
 import { WorldSpaces } from "../World/WorldSpaces.js";
 import { SectorMesh } from "./Classes/SectorMesh.js";
+import { MeshManager } from "./MeshManager.js";
 
 export type MeshRegisterDimensions = Map<number, Map<string, SectorMesh>>;
 
@@ -13,14 +14,20 @@ class Sectors {
     let dimension = MeshRegister.dimensions.get(dimensionId);
     if (!dimension) dimension = MeshRegister.dimensions.add(dimensionId);
 
-    const sector = new SectorMesh([
-      dimensionId,
-      ...WorldSpaces.sector.getPositionVec3Array(x, y, z, tempVec3Array),
-    ] as LocationData);
-    dimension.set(
-      WorldSpaces.hash.hashVec3(WorldSpaces.sector.getPosition(x, y, z)),
-      sector
+    const sector = MeshManager._sectorPool.length
+      ? MeshManager._sectorPool.shift()!
+      : new SectorMesh();
+    const posoiton = WorldSpaces.sector.getPositionVec3Array(
+      x,
+      y,
+      z,
+      tempVec3Array
     );
+    sector.position[0] = posoiton[0];
+    sector.position[1] = posoiton[1];
+    sector.position[2] = posoiton[2];
+
+    dimension.set(WorldSpaces.hash.hashVec3Array(sector.position), sector);
     return sector;
   }
 
@@ -76,13 +83,9 @@ class Dimensions {
   static remove(id: number) {
     const dimension = MeshRegister._dimensions.get(id);
     if (!dimension) return false;
-    dimension.forEach((sector) => {
-      sector.sections.forEach((section) => {
-        section.meshes.forEach((sectionMeshes) => {
-          sectionMeshes.dispose();
-        });
-      });
-    });
+    for (const [, sector] of dimension) {
+      sector.dipose();
+    }
     MeshRegister._dimensions.delete(id);
     return true;
   }

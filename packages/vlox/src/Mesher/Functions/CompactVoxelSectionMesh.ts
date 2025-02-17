@@ -32,16 +32,14 @@ export function CompactVoxelSectionMesh(
     const tool = tools[i];
 
     // Add the vertex data
-    const vertexByteSize = tool.mesh.vertexCount * VoxelMeshVertexStructCursor.VertexByteSize;
+    const vertexByteSize =
+      tool.mesh.vertexCount * VoxelMeshVertexStructCursor.VertexByteSize;
     totalByteCount += vertexByteSize;
     // Align after writing vertex data
     totalByteCount = align4(totalByteCount);
 
     // Add the index data
-    const indexByteSize =
-      tool.mesh.indicieCount > 65535
-        ? tool.mesh.indicieCount * 4
-        : tool.mesh.indicieCount * 2;
+    const indexByteSize = tool.mesh.indicieCount * 4;
 
     totalByteCount += indexByteSize;
     // Align after writing index data
@@ -62,7 +60,7 @@ export function CompactVoxelSectionMesh(
     const tool = tools[i];
 
     // Fill out the meshData structure
-    meshData.material = tool.id;
+    meshData.materialId = tool.id;
 
     const minBounds = tool.mesh.minBounds;
     const maxBounds = tool.mesh.maxBounds;
@@ -74,7 +72,8 @@ export function CompactVoxelSectionMesh(
     meshData.maxBounds[2] = maxBounds.z;
 
     // Vertex info
-    const totalVertFloats = tool.mesh.vertexCount * VoxelMeshVertexStructCursor.VertexFloatSize;
+    const totalVertFloats =
+      tool.mesh.vertexCount * VoxelMeshVertexStructCursor.VertexFloatSize;
     const vertexByteCount = totalVertFloats * 4;
 
     meshData.vertexIndex[0] = byteCount;
@@ -89,10 +88,7 @@ export function CompactVoxelSectionMesh(
     meshData.indiceIndex[0] = byteCount;
     meshData.indiceIndex[1] = tool.mesh.indicieCount;
 
-    const indexByteCount =
-      tool.mesh.indicieCount > 65535
-        ? tool.mesh.indicieCount * 4
-        : tool.mesh.indicieCount * 2;
+    const indexByteCount = tool.mesh.indicieCount * 4;
 
     byteCount += indexByteCount;
     // Align to 4 bytes for the next iteration (or final)
@@ -125,10 +121,11 @@ export function CompactVoxelSectionMesh(
     }
 
     // Write index data
-    const indicesArray =
-      tool.mesh.indicieCount > 65535
-        ? new Uint32Array(buffer, meshData.indiceIndex[0], tool.mesh.indicieCount)
-        : new Uint16Array(buffer, meshData.indiceIndex[0], tool.mesh.indicieCount);
+    const indicesArray = new Uint32Array(
+      buffer,
+      meshData.indiceIndex[0],
+      tool.mesh.indicieCount
+    );
 
     const indiceBuffers = tool.mesh.indices._buffers;
     start = 0;

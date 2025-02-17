@@ -280,16 +280,17 @@ ${
  //FragColor = vec4(vec3(1.) * ao,1.);
  FragColor = vec4(finalColor.rgb, rgb.a);
 // FragColor = vec4(vUV.xy,0., 1.);
-
+//FragColor = vec4(1. );
   if (FragColor.a < 0.5) { 
     discard;
-  } 
+  }  
 
   `;
 
   static GetFragment(main: string, top = "") {
     const shader = /* glsl */ `#version 300 es
 precision highp float;
+precision highp int;
 precision highp usampler2D; 
 precision highp sampler2DArray;
 

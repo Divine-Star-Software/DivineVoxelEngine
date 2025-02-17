@@ -5,9 +5,9 @@ import { TaskSegment } from "./TaskSegment.js";
 
 export type WorldSimulationTaskBaseData = {
   id: string;
-  propagationBlocking?: boolean;
   sort?: boolean;
-  predicate?(location: LocationData, dimension: DimensionSegment): boolean;
+  generationTask?: boolean;
+
   checkDone?(location: LocationData): boolean;
   run(
     dimension: DimensionSegment,
@@ -24,35 +24,12 @@ export class WorldSimulationTaskBase {
     const dimension = WorldSimulationDimensions.getDimension(dimensionId);
     const task = dimension.getTask(this.data.id);
 
-    if (task.has(dimensionId, x, y, z)) return;
-    if (this.data.propagationBlocking && dimension.inProgress.has(x, y, z))
-      return;
+    if (task.has(x, y, z)) return;
 
-    task.add(dimensionId, x, y, z);
+    task.add(x, y, z);
   }
 
-  remove(dimensionId: number, x: number, y: number, z: number) {
-    const dimension = WorldSimulationDimensions.getDimension(dimensionId);
-    const task = dimension.getTask(this.data.id);
-    task.remove(dimensionId, x, y, z);
-    if (this.data.propagationBlocking) {
-      dimension.inProgress.remove(x, y, z);
-    }
-  }
-
-  cancelAll(dimensionId: number | null = null) {
-    if (dimensionId) {
-      const dimension = WorldSimulationDimensions.getDimension(dimensionId);
-      const task = dimension.getTask(this.data.id);
-      task.clear();
-    } else {
-      for (const [key, dimension] of WorldSimulationDimensions._dimensions) {
-        dimension.clearAllTasks();
-      }
-    }
-  }
-
-  runTask(max = 1000) {
+  runTask(max = 10) {
     for (const [key, dimension] of WorldSimulationDimensions._dimensions) {
       const task = dimension.getTask(this.data.id);
       if (this.data.checkDone) {
@@ -63,23 +40,22 @@ export class WorldSimulationTaskBase {
         }
       }
 
-      if (task.waitingFor < 0) task.waitingFor = 0;
       if (task.waitingFor >= max) continue;
 
       if (this.data.sort) {
         const updatePosition = dimension.getUpdatePosition();
         task.sort(updatePosition.x, updatePosition.y, updatePosition.z);
       }
+      let count = 0;
 
       for (const location of task.run()) {
-        if (task.waitingFor > max) break;
         const [, x, y, z] = location;
-        if (this.data.predicate && !this.data.predicate(location, dimension)) {
-          continue;
-        }
-        const taskId = task.addTask(dimension.id, x, y, z);
-    
+
+        const taskId = task.addTask(x, y, z);
+
         this.data.run(dimension, location, taskId, task);
+        if (count + task.waitingFor > max) break;
+        count++;
       }
     }
   }

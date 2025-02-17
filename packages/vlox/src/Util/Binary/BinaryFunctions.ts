@@ -28,3 +28,8 @@ export function bitsNeeded(n: number): number {
 
   return bits;
 }
+
+export function nextPowerOf2(n: number): number {
+  if (n <= 1) return 1;
+  return 2 ** Math.ceil(Math.log2(n));
+}

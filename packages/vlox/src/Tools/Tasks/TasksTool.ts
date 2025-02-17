@@ -56,9 +56,9 @@ export class LocationTaskToolTask implements ITask<LocationData> {
   ) {
     const thread = this._threads[this._count];
 
-    const view = Threads.createBinaryTask( 16);
+    const view = Threads.createBinaryTask(16);
 
-    setLocationData(view,location)
+    setLocationData(view, location);
 
     thread.runBinaryTask(this.id, view, onDone);
     this._count++;
@@ -75,10 +75,9 @@ export class LocationTaskToolTask implements ITask<LocationData> {
     return new TaskQueue<LocationData>(this);
   }
 }
-export class TaskToolTask<
-  Data extends any = any,
-  ReturnData extends any = void,
-> implements ITask<Data>{
+export class TaskToolTask<Data extends any = any, ReturnData extends any = void>
+  implements ITask<Data>
+{
   private _count = 0;
   _threads: Thread[];
   constructor(
@@ -120,10 +119,9 @@ class VoxelTasks {
   erease: TaskToolTask<LocationData>;
 
   constructor(public tool: TaskTool) {
-    this.update = new TaskToolTask(TasksIds.VoxelUpdate, tool.threads);
-    this.paint = new TaskToolTask(TasksIds.VoxelPaint, tool.threads);
-    this.erease = new TaskToolTask(TasksIds.VoxelErase, tool.threads);
-
+    this.update = new TaskToolTask(TasksIds.VoxelUpdate, tool.generators);
+    this.paint = new TaskToolTask(TasksIds.VoxelPaint, tool.generators);
+    this.erease = new TaskToolTask(TasksIds.VoxelErase, tool.generators);
   }
 }
 
@@ -131,8 +129,11 @@ class BuildTask {
   section: LocationTaskToolTask;
   sector: LocationTaskToolTask;
   constructor(public tool: TaskTool) {
-    this.section = new LocationTaskToolTask(TasksIds.BuildSection, tool.threads);
-    this.sector = new LocationTaskToolTask(TasksIds.BuildSector, tool.threads);
+    this.section = new LocationTaskToolTask(
+      TasksIds.BuildSection,
+      tool.meshers
+    );
+    this.sector = new LocationTaskToolTask(TasksIds.BuildSector, tool.meshers);
   }
 }
 export class TaskTool {
@@ -145,15 +146,18 @@ export class TaskTool {
   decorate: LocationTaskToolTask;
   worldSun: LocationTaskToolTask;
   logic: LocationTaskToolTask;
-  constructor(public threads: Thread | ThreadPool) {
+  constructor(
+    public meshers: Thread | ThreadPool,
+    public generators: Thread | ThreadPool
+  ) {
     this.voxel = new VoxelTasks(this);
     this.build = new BuildTask(this);
 
-    this.explosion = new TaskToolTask(TasksIds.Explosion, threads);
-    this.propagation = new LocationTaskToolTask(TasksIds.Propagation, threads);
-    this.generate = new LocationTaskToolTask(TasksIds.Generate, threads);
-    this.decorate = new LocationTaskToolTask(TasksIds.Decorate, threads);
-    this.worldSun = new LocationTaskToolTask(TasksIds.WorldSun, threads);
-    this.logic = new LocationTaskToolTask(TasksIds.LogicUpdate, threads);
+    this.explosion = new TaskToolTask(TasksIds.Explosion, generators);
+    this.propagation = new LocationTaskToolTask(TasksIds.Propagation, generators);
+    this.generate = new LocationTaskToolTask(TasksIds.Generate, generators);
+    this.decorate = new LocationTaskToolTask(TasksIds.Decorate, generators);
+    this.worldSun = new LocationTaskToolTask(TasksIds.WorldSun, generators);
+    this.logic = new LocationTaskToolTask(TasksIds.LogicUpdate, generators);
   }
 }

@@ -18,9 +18,10 @@ export default function () {
       //  register.dimensions.re(data.id);
     }
   );
-  Threads.registerTask<[LocationData, SectorData]>(
+  Threads.registerTask<[LocationData, ArrayBufferLike]>(
     WorldDataSyncIds.SyncSector,
     (data) => {
+     
       WorldRegister.sectors.add(
         data[0][0],
         data[0][1],

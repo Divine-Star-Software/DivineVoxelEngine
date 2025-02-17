@@ -4,6 +4,7 @@ import { Sector, SectorData } from "./Sector/Sector.js";
 import type { LocationData } from "../Math/index.js";
 import { DimensionSyncData } from "./Types/WorldData.types.js";
 import { Vector3Like } from "@amodx/math";
+import { Section } from "./Section/Section.js";
 
 class WorldDataHooks {
   static dimension = {
@@ -30,53 +31,73 @@ class WorldRegisterDimensions {
 
 const tempPosition = Vector3Like.Create();
 
-class SectorPool {
-  static _secotrs: SectorData[] = [];
-  static _enabled = false;
+class WorldRegisterPools {
+  static _sectorBuffers: ArrayBufferLike[] = [];
+  static _sectors: Sector[] = [];
+  static _sections: Section[] = [];
+  static _sectorBufferEnabled = false;
   static getSector() {
-    if (!this._enabled) return Sector.CreateNew();
-    if (this._secotrs.length) return this._secotrs.shift()!;
-    return Sector.CreateNew();
+    if (!this._sectorBufferEnabled) return Sector.CreateNewBuffer();
+    if (this._sectorBuffers.length) return this._sectorBuffers.shift()!;
+    return Sector.CreateNewBuffer();
   }
-  static returnSector(secotr: Sector) {
-    secotr.bufferView.fill(0);
-    this._secotrs.push(secotr.toJSON());
+  static returnSector(sector: Sector) {
+    if (this._sectorBufferEnabled) {
+      sector.bufferView.fill(0);
+      this._sectorBuffers.push(sector.buffer);
+    }
+    this._sectors.push(sector);
+    sector.clear();
+    for (let i = 0; i < sector.sections.length; i++) {
+      sector.sections[i].clear();
+      this._sections.push(sector.sections[i]);
+    }
+    sector.setReleased(true);
   }
 }
 
 class WorldRegisterSectors {
-  static setSecotrPool(enabled: boolean) {
-    SectorPool._enabled = enabled;
-    SectorPool._secotrs.length = 0;
+  static setSecotrBufferPool(enabled: boolean) {
+    WorldRegisterPools._sectorBufferEnabled = enabled;
+    WorldRegisterPools._sectorBuffers.length = 0;
   }
   static add(
     dimensionId: number,
     x: number,
     y: number,
     z: number,
-    sector: SectorData
+    sector: ArrayBufferLike
   ) {
     let dimension = WorldRegister.dimensions.get(dimensionId);
     if (!dimension) dimension = WorldRegister.dimensions.add(dimensionId);
 
-    const newSector = new Sector(
-      sector,
-      WorldSpaces.sector.getPositionVec3Array(x, y, z)
-    );
+    const newSector = WorldRegisterPools._sectors.length
+      ? WorldRegisterPools._sectors.shift()!
+      : new Sector();
+    newSector.setReleased(false);
+    WorldSpaces.sector.getPositionVec3Array(x, y, z, newSector.position);
+    newSector.setBuffer(sector);
+
     dimension.sectors.set(
       WorldSpaces.hash.hashVec3Array(newSector.position),
       newSector
     );
     return newSector;
   }
-  static addAt(location: LocationData, sector: SectorData) {
+  static addAt(location: LocationData, sector: ArrayBufferLike) {
     return this.add(...location, sector);
   }
   static new(dimensionId: number, x: number, y: number, z: number) {
     if (this.get(dimensionId, x, y, z)) return false;
     let dimension = WorldRegister.dimensions.get(dimensionId);
     if (!dimension) dimension = WorldRegister.dimensions.add(dimensionId);
-    const sector = this.add(dimensionId, x, y, z, SectorPool.getSector())!;
+    const sector = this.add(
+      dimensionId,
+      x,
+      y,
+      z,
+      WorldRegisterPools.getSector()
+    )!;
     WorldDataHooks.sectors.onNew([dimensionId, x, y, z], sector);
     return true;
   }
@@ -108,11 +129,11 @@ class WorldRegisterSectors {
     const sectorKey = WorldSpaces.hash.hashVec3(position);
     const sector = dimension.sectors.get(sectorKey);
     if (!sector) return false;
-    if (SectorPool._enabled) SectorPool.returnSector(sector);
     WorldDataHooks.sectors.onRemove(
       [dimensionId, position.x, position.y, position.z],
       sector
     );
+    WorldRegisterPools.returnSector(sector);
     dimension.sectors.delete(sectorKey);
     return true;
   }
@@ -122,6 +143,7 @@ class WorldRegisterSectors {
 }
 
 export class WorldRegister {
+  static _pools = WorldRegisterPools;
   static _dimensions = new Map<number, Dimension>([
     [0, new Dimension(Dimension.CreateNew(0, "main"))],
   ]);

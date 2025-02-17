@@ -2,7 +2,6 @@ import { Thread, Threads } from "@amodx/threads";
 import { WorldRegister } from "../World/WorldRegister";
 import { MeshSection } from "./Functions/MeshSection";
 import { TasksIds } from "../Tasks/TasksIds";
-import { LocationData } from "../Math";
 import { SetSectionMeshTask } from "./Types/Mesher.types";
 import { getLocationData } from "../Util/LocationData";
 

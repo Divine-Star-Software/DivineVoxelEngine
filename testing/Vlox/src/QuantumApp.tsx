@@ -25,15 +25,22 @@ export function App() {
         }
       );
 
-      const constructorWorkers: Worker[] = [];
+      const mesherWorkers: Worker[] = [];
       for (let i = 0; i < navigator.hardwareConcurrency - 1; i++) {
-        constructorWorkers.push(
-          new Worker(new URL("./Contexts/Constructor/", import.meta.url), {
+        mesherWorkers.push(
+          new Worker(new URL("./Contexts/Mesher/", import.meta.url), {
             type: "module",
           })
         );
       }
-
+      const generatorWorkers: Worker[] = [];
+      for (let i = 0; i < navigator.hardwareConcurrency - 1; i++) {
+        generatorWorkers.push(
+          new Worker(new URL("./Contexts/Generator", import.meta.url), {
+            type: "module",
+          })
+        );
+      }
       const canvas = canvasRef.current;
       const engine = new Engine(canvas);
       await engine.init();
@@ -56,7 +63,8 @@ export function App() {
         rendererSettings: { mode: "webgpu" },
         renderer,
         worldWorker,
-        constructorWorkers,
+        mesherWorkers,
+        generatorWorkers,
         voxels: DVEVoxelData,
       });
 

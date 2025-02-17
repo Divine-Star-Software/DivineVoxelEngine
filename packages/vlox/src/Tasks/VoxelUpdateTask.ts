@@ -140,7 +140,8 @@ class UpdatedBounds {
           const sector = WorldRegister.sectors.get(this.dimension, x, y, z);
           if (!sector) continue;
           const section = sector.getSection(x, y, z);
-          section.setDisplayDirty(true);
+          if (!section.canRender()) continue;
+          section.incrementTick(section._Ticks.displayDirty);
         }
       }
     }

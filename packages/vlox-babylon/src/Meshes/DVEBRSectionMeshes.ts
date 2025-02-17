@@ -3,15 +3,15 @@ import {
   type Engine,
   VertexBuffer,
   Geometry,
+  Buffer,
+  SubMesh,
 } from "@babylonjs/core";
-import type { Vec3Array } from "@amodx/math";
 import { Vector3 } from "@babylonjs/core/Maths/";
 import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo.js";
 import { DVESectionMeshes } from "@divinevoxel/vlox/Renderer";
 import { DVEBabylonRenderer } from "../Renderer/DVEBabylonRenderer";
 import { DVEBRMesh } from "./DVEBRMesh";
-import { CompactMeshData } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
 import { SectionMesh } from "@divinevoxel/vlox/Renderer";
 import { EngineSettings } from "@divinevoxel/vlox/Settings/EngineSettings";
 import {
@@ -46,9 +46,13 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
 
   returnMesh(mesh: Mesh) {
     mesh.geometry?.clearCachedData();
-    mesh.getVertexBuffer(VertexBuffer.PositionKind)?.dispose();
+
     for (const bufferKind in mesh.getVerticesDataKinds()) {
       mesh.removeVerticesData(bufferKind);
+    }
+    if (mesh.metadata.buffer && mesh.metadata.buffer instanceof Buffer) {
+      mesh.metadata.buffer.dispose();
+      mesh.metadata.buffer = null;
     }
     mesh.setIndices(emptyIndice);
     if (mesh.isEnabled()) {
@@ -69,7 +73,7 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
     const totalMeshes = data.getTotalMeshes();
     for (let i = 0; i < totalMeshes; i++) {
       data.getMeshData(i, meshData);
-      const subMeshMaterial = meshData.material;
+      const subMeshMaterial = meshData.materialId;
       found.add(subMeshMaterial);
       let mesh: Mesh;
 
@@ -82,7 +86,7 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
           newMesh.isPickable = false;
           newMesh.checkCollisions = false;
           newMesh.doNotSerialize = true;
-          newMesh.metadata = { section: true };
+          newMesh.metadata = { section: true, buffer: null };
           newMesh.alwaysSelectAsActiveMesh = true;
           const geometry = new Geometry(
             Geometry.RandomId(),
@@ -91,6 +95,7 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
             false,
             newMesh
           );
+
           geometry._boundingInfo = new BoundingInfo(
             new Vector3(0, 0, 0),
             new Vector3(0, 0, 0)
@@ -112,11 +117,21 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
         }
       }
 
-      mesh.getVertexBuffer(VertexBuffer.PositionKind)?.dispose();
+
       mesh.unfreezeWorldMatrix();
       mesh.position.set(location[1], location[2], location[3]);
       mesh.computeWorldMatrix();
-      DVEBRMesh.UpdateVertexDataBuffers(
+      if (mesh.metadata.buffer && mesh.metadata.buffer instanceof Buffer) {
+        const buffer = mesh.metadata.buffer as Buffer;
+        
+        for (const bufferKind in mesh.getVerticesDataKinds()) {
+          mesh.geometry!.removeVerticesData(bufferKind);
+        }
+        mesh.geometry!.releaseForMesh(mesh);
+        mesh.metadata.buffer.dispose();
+ 
+      }
+      mesh.metadata.buffer = DVEBRMesh.UpdateVertexDataBuffers(
         mesh,
         this.engine,
         meshData.verticies,
@@ -128,6 +143,7 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
       min.x = minBounds[0];
       min.y = minBounds[1];
       min.z = minBounds[2];
+
       max.x = maxBounds[0];
       max.y = maxBounds[1];
       max.z = maxBounds[2];

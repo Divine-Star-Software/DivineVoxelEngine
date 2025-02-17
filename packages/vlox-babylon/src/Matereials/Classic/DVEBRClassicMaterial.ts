@@ -66,30 +66,36 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
       );
     }
 
-    const shaderMaterial = new ShaderMaterial(this.id, data.scene, this.id, {
-      ...shaderData,
-      needAlphaBlending: data.alphaBlending,
-      needAlphaTesting: data.alphaTesting,
-    });
+    const shaderMaterial = new ShaderMaterial(
+      this.id,
+      data.scene,
+      this.id,
+      {
+        ...shaderData,
+        needAlphaBlending: data.alphaBlending,
+        needAlphaTesting: data.alphaTesting,
+      },
+      false
+    );
 
     conatiner.materials.push(shaderMaterial);
     if (data.backFaceCulling !== undefined) {
       shaderMaterial.backFaceCulling = data.backFaceCulling;
     }
     //   shaderMaterial.needDepthPrePass = true;
-    let liquid = false;    
-    
+    let liquid = false;
+
     if (this.id.includes("transparent")) {
-   //   shaderMaterial.forceDepthWrite = true;
-  //  shaderMaterial.separateCullingPass = true;
-  //    shaderMaterial.backFaceCulling = false;
+      //   shaderMaterial.forceDepthWrite = true;
+      //  shaderMaterial.separateCullingPass = true;
+      //    shaderMaterial.backFaceCulling = false;
       shaderMaterial.forceDepthWrite = true;
     }
     if (this.id.includes("flora")) {
       //   shaderMaterial.forceDepthWrite = true;
-     //  shaderMaterial.separateCullingPass = true;
-         shaderMaterial.backFaceCulling = true;
-       }
+      //  shaderMaterial.separateCullingPass = true;
+      shaderMaterial.backFaceCulling = true;
+    }
     if (this.id.includes("liquid")) {
       liquid = true;
 
@@ -97,8 +103,8 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
       //     shaderMaterial.disableDepthWrite = true;
       //   shaderMaterial.needDepthPrePass = true;
       //   shaderMaterial.separateCullingPass = false;
-     // shaderMaterial.disableDepthWrite = true;
-     shaderMaterial.forceDepthWrite = true;
+      // shaderMaterial.disableDepthWrite = true;
+      shaderMaterial.forceDepthWrite = true;
       shaderMaterial.backFaceCulling = false;
       // shaderMaterial.transparencyMode = 0;
       // shaderMaterial.alphaMode = 0;
@@ -145,7 +151,7 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
 
     if (texture) {
       this.setTexture(texture.id, texture.shaderTexture);
- 
+
       this.setTexture(
         `${texture.id}_animation`,
         animationTexture!.shaderTexture

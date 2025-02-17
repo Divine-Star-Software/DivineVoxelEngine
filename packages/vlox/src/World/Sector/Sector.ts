@@ -3,10 +3,13 @@ import { Vec3Array } from "@amodx/math";
 import { WorldSpaces } from "../WorldSpaces";
 import {
   getBitArrayIndex,
+  getBitAtomicArrayIndex,
   setBitArrayIndex,
+  setBitAtomicArrayIndex,
 } from "../../Util/Binary/BinaryArrays.js";
 import { SectorState, SectorStateDefaultBitFlags } from "./SectorState.js";
 import { forceMultipleOf2 } from "../../Util/Binary/BinaryFunctions.js";
+import { WorldRegister } from "../WorldRegister.js";
 
 export interface SectorData {
   buffer: ArrayBufferLike;
@@ -34,39 +37,43 @@ export class Sector {
       WorldSpaces.sector.bounds.y / WorldSpaces.section.bounds.y;
     return this.GetHeaderSize() + Section.GetBufferSize() * totalSections;
   }
-  static CreateNew(): SectorData {
-    const buffer = new SharedArrayBuffer(this.GetBufferSize());
-    const flagArray = new Uint8Array(buffer, 0, 12);
-    const timeStampArray = new Uint32Array(buffer, 12, 12);
-    const sections: SectionData[] = [];
-    const totalSections = WorldSpaces.sector.sectionVolumne;
 
-    for (let i = 0; i < totalSections; i++) {
-      sections[i] = Section.CreateNew(i, buffer);
-    }
-
-    return {
-      buffer,
-      flagArray,
-      timeStampArray,
-      sections,
-    };
+  static CreateNewBuffer() {
+    return new SharedArrayBuffer(this.GetBufferSize());
   }
 
   sections: Section[] = [];
   bufferView: Uint8Array;
 
-  constructor(
-    data: SectorData,
-    public position: Vec3Array
-  ) {
-    this.flagArray = data.flagArray;
-    this.timeStampArray = data.timeStampArray;
-    this.buffer = data.buffer;
-    this.bufferView = new Uint8Array(data.buffer);
-    for (let i = 0; i < data.sections.length; i++) {
-      this.sections[i] = new Section(this, i, data.sections[i]);
+  position: Vec3Array = [0, 0, 0];
+
+  private _released = false;
+  setReleased(released: boolean) {
+    this._released = released;
+  }
+  isReleased() {
+    return this._released;
+  }
+
+  setBuffer(buffer: ArrayBufferLike) {
+    this.buffer = buffer;
+    this.flagArray = new Uint8Array(buffer, 0, 12);
+    this.timeStampArray = new Uint32Array(buffer, 12, 12);
+    this.bufferView = new Uint8Array(buffer);
+    const totalSections = WorldSpaces.sector.sectionVolumne;
+    for (let i = 0; i < totalSections; i++) {
+      this.sections[i] = WorldRegister._pools._sections.length
+        ? WorldRegister._pools._sections.shift()!
+        : new Section();
+
+      this.sections[i].setBuffer(this, buffer, i);
     }
+  }
+
+  clear() {
+    this.flagArray = null as any;
+    this.timeStampArray = null as any;
+    this.bufferView = null as any;
   }
 
   getSection(x: number, y: number, z: number) {
@@ -74,11 +81,11 @@ export class Sector {
   }
 
   setBitFlag(index: number, value: boolean) {
-    setBitArrayIndex(this.flagArray, index, value ? 1 : 0);
+    setBitAtomicArrayIndex(this.flagArray, index, value ? 1 : 0);
   }
 
   getBitFlag(index: number) {
-    return getBitArrayIndex(this.flagArray, index) == 1;
+    return getBitAtomicArrayIndex(this.flagArray, index) == 1;
   }
 
   isDisplayDirty() {
@@ -97,7 +104,6 @@ export class Sector {
     this.setBitFlag(SectorStateDefaultBitFlags.logicDirty, stored);
   }
 
-
   setStored(stored: boolean) {
     this.setBitFlag(SectorStateDefaultBitFlags.stored, stored);
   }
@@ -105,8 +111,6 @@ export class Sector {
   isStored() {
     return this.getBitFlag(SectorStateDefaultBitFlags.stored);
   }
-
-  
 
   setTimeStamp(index: number, value: number) {
     this.timeStampArray[index] = value;
@@ -130,19 +134,13 @@ export class Sector {
     }
   }
 
-  anySectionDisplayDirty() {
-    if (!this.isDisplayDirty()) return false;
-    for (let i = 0; i < this.sections.length; i++) {
-      if (this.sections[i].isDisplayDirty() && !this.sections[i].isInProgress())
-        return true;
-    }
-    this.setDisplayDirty(false);
-    return false;
-  }
   anySectionLogicDirty() {
     if (!this.isLogicDirty()) return false;
     for (let i = 0; i < this.sections.length; i++) {
-      if (this.sections[i].isLogicDirty() && !this.sections[i].isLogicUpdateInProgress())
+      if (
+        this.sections[i].isLogicDirty() &&
+        !this.sections[i].isLogicUpdateInProgress()
+      )
         return true;
     }
     this.setLogicDirty(false);
@@ -183,17 +181,5 @@ export class Sector {
       }
       this.setTimeStamp(storedIndex, stored[timeStamp]);
     }
-  }
-  toJSON(): SectorData {
-    const sections: SectionData[] = [];
-    for (const section of this.sections) {
-      sections.push(section.toJSON());
-    }
-    return {
-      buffer: this.buffer,
-      flagArray: this.flagArray,
-      timeStampArray: this.timeStampArray,
-      sections,
-    };
   }
 }

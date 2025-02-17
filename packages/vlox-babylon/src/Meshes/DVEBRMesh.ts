@@ -5,7 +5,7 @@ class DVEBRMeshObservers {
   updated = new Observable();
 }
 import { Buffer, VertexBuffer } from "@babylonjs/core/Meshes/buffer.js";
-import { Engine } from "@babylonjs/core";
+import { AbstractMesh, Engine, SubMesh } from "@babylonjs/core";
 import { CompactSubMesh } from "@divinevoxel/vlox/Mesher/Types/Mesher.types";
 import { VoxelMeshVertexStructCursor } from "@divinevoxel/vlox/Mesher/Geomtry/VoxelMeshVertexStructCursor";
 export class DVEBRMesh {
@@ -20,8 +20,8 @@ export class DVEBRMesh {
     indices: Uint16Array | Uint32Array
   ) {
     const buffer = new Buffer(engine, vertices, false);
-    buffer.create
-    mesh.setVerticesBuffer(
+    const geo = mesh.geometry ? mesh.geometry : mesh;
+    geo.setVerticesBuffer(
       new VertexBuffer(
         engine,
         buffer,
@@ -31,15 +31,10 @@ export class DVEBRMesh {
         VoxelMeshVertexStructCursor.VertexFloatSize,
         undefined,
         VoxelMeshVertexStructCursor.PositionOffset,
-        3,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        true
+        3
       )
     );
-    mesh.setVerticesBuffer(
+    geo.setVerticesBuffer(
       new VertexBuffer(
         engine,
         buffer,
@@ -50,24 +45,22 @@ export class DVEBRMesh {
         undefined,
         VoxelMeshVertexStructCursor.NormalOffset,
         3
-      ),
-      true
+      )
     );
-    mesh.setVerticesBuffer(
+    geo.setVerticesBuffer(
       new VertexBuffer(
         engine,
         buffer,
-        VertexBuffer.NormalKind,
+        VertexBuffer.ColorKind,
         false,
         undefined,
         VoxelMeshVertexStructCursor.VertexFloatSize,
         undefined,
-        VoxelMeshVertexStructCursor.NormalOffset,
+        VoxelMeshVertexStructCursor.ColorOffset,
         3
-      ),
-      true
+      )
     );
-    mesh.setVerticesBuffer(
+    geo.setVerticesBuffer(
       new VertexBuffer(
         engine,
         buffer,
@@ -78,10 +71,9 @@ export class DVEBRMesh {
         undefined,
         VoxelMeshVertexStructCursor.TextureIndexOffset,
         3
-      ),
-      true
+      )
     );
-    mesh.setVerticesBuffer(
+    geo.setVerticesBuffer(
       new VertexBuffer(
         engine,
         buffer,
@@ -94,7 +86,7 @@ export class DVEBRMesh {
         2
       )
     );
-    mesh.setVerticesBuffer(
+    geo.setVerticesBuffer(
       new VertexBuffer(
         engine,
         buffer,
@@ -107,7 +99,7 @@ export class DVEBRMesh {
         3
       )
     );
-    mesh.setVerticesBuffer(
+    geo.setVerticesBuffer(
       new VertexBuffer(
         engine,
         buffer,
@@ -120,7 +112,8 @@ export class DVEBRMesh {
         4
       )
     );
-    mesh.setIndices(indices);
+    geo.setIndices(indices);
+    return buffer;
   }
   /*   static UpdateVertexDataO(mesh: Mesh, engine: Engine, data: CompactSubMesh) {
  

@@ -4,13 +4,14 @@ import { WorldSpaces } from "../../World/WorldSpaces.js";
 import { BrushTool } from "../../Tools/Brush/Brush";
 
 import { RawVoxelData } from "../../Voxels/Types/Voxel.types";
-import { DivineVoxelEngineConstructor } from "../../Contexts/Constructor";
 import { WorldRegister } from "../../World/WorldRegister";
+import { Thread } from "@amodx/threads";
 
 const brush = new BrushTool();
 const dataTool = brush.voxelCursor;
 
 export class WorldGenRegister {
+  static _worldThread: Thread;
   static MAX_ATTEMPTS = 100;
   static _requests = new Map<
     string,
@@ -60,10 +61,12 @@ export class WorldGenRegister {
       const sectorKey = WorldSpaces.hash.hashVec3(sectorPos);
 
       if (!requests.sections.has(sectorKey)) {
-        DivineVoxelEngineConstructor.instance.threads.world.runTask(
-          "add-sector",
-          [requests.dimension, sectorPos.x, sectorPos.y, sectorPos.z]
-        );
+        this._worldThread.runTask("add-sector", [
+          requests.dimension,
+          sectorPos.x,
+          sectorPos.y,
+          sectorPos.z,
+        ]);
         requests.sections.set(sectorKey, [
           sectorPos.x,
           sectorPos.y,
@@ -89,10 +92,12 @@ export class WorldGenRegister {
       );
       if (!sector) {
         done = false;
-        DivineVoxelEngineConstructor.instance.threads.world.runTask(
-          "add-sector",
-          [requests.dimension, pos[0], pos[1], pos[2]]
-        );
+        this._worldThread.runTask("add-sector", [
+          requests.dimension,
+          pos[0],
+          pos[1],
+          pos[2],
+        ]);
       }
     }
     if (!done) {

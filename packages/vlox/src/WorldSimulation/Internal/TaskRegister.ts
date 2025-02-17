@@ -15,7 +15,7 @@ export class TaskRegister {
 
   static addToDimension(dimension: DimensionSegment) {
     for (const task of this.tasks) {
-      dimension.addTask(task.data.id, task.data.propagationBlocking || false);
+      dimension.addTask(task.data.id, task.data.generationTask || false);
     }
   }
 }

@@ -12,11 +12,11 @@ function CullSectors(scene: Scene) {
 
   for (const [, dimension] of MeshRegister._dimensions) {
     for (const [, sector] of dimension) {
-      min.set(sector.location[1], sector.location[2], sector.location[3]);
+      min.set(sector.position[0], sector.position[1], sector.position[2]);
       max.set(
-        sector.location[1] + WorldSpaces.sector.bounds.x,
-        sector.location[2] + WorldSpaces.sector.bounds.y,
-        sector.location[3] + WorldSpaces.sector.bounds.z
+        sector.position[0] + WorldSpaces.sector.bounds.x,
+        sector.position[1] + WorldSpaces.sector.bounds.y,
+        sector.position[2] + WorldSpaces.sector.bounds.z
       );
       boundingBox.reConstruct(min, max);
       const sectorVisible = camera.isInFrustum(boundingBox);
@@ -56,9 +56,9 @@ function CullSectors(scene: Scene) {
 
 export class DVEBRMeshCuller {
   init(scene: Scene) {
-    scene.freezeActiveMeshes();
+ /*    scene.freezeActiveMeshes();
     scene.registerBeforeRender(() => {
       CullSectors(scene);
-    });
+    }); */
   }
 }

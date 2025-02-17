@@ -14,7 +14,8 @@ import { DVERenderThreads } from "./DVERenderThreads.js";
 type PartialEngineSettings = RecursivePartial<EngineSettingsData>;
 export interface DVERInitData extends PartialEngineSettings {
   worldWorker: Worker;
-  constructorWorkers: Worker[];
+  mesherWorkers: Worker[];
+  generatorWorkers: Worker[];
   renderer: DVERenderer;
   nexusWorker?: Worker;
 }
@@ -43,12 +44,14 @@ export class DivineVoxelEngineRender {
    */
   async clearAll() {
     this.meshRegister.clearAll();
-    await this.threads.world.runTaskAsync("clear-all", "");
-
-    await Promise.all(
-      this.threads.constructors
+    await Promise.all([
+      this.threads.world.runTaskAsync("clear-all", ""),
+      ...this.threads.meshers
         .getThreads()
-        .map((_) => _.runTaskAsync("clear-all", ""))
-    );
+        .map((_) => _.runTaskAsync("clear-all", "")),
+      ...this.threads.generators
+        .getThreads()
+        .map((_) => _.runTaskAsync("clear-all", "")),
+    ]);
   }
 }

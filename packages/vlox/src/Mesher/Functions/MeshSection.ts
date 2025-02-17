@@ -68,7 +68,6 @@ export function MeshSection(
 
   let [minY, maxY] = section.getMinMax();
   if (minY == Infinity && maxY == -Infinity) {
-    section.setDisplayDirty(false);
     section.setInProgress(false);
     return null;
   }
@@ -140,7 +139,6 @@ export function MeshSection(
     meshed[i].bvhTool = null;
   }
 
-  section.setDisplayDirty(false);
   section.setInProgress(false);
 
   return compactMesh;

@@ -29,16 +29,30 @@ export async function StartRenderer(initData: StartRendererProps) {
   DVER.threads.setThreadPort(DVER.threads.world.name, initData.worldWorker);
 
   if (
-    Array.isArray(initData.constructorWorkers) &&
-    initData.constructorWorkers[0] instanceof Worker
+    Array.isArray(initData.mesherWorkers) &&
+    initData.mesherWorkers[0] instanceof Worker
   ) {
     DVER.threads.setThreadPort(
-      DVER.threads.constructors.name,
-      initData.constructorWorkers
+      DVER.threads.meshers.name,
+      initData.mesherWorkers
     );
   } else {
     throw Error(
-      "Supplied data for the Constructor Workers is not correct. Must be path to worker or an array workers."
+      "Supplied data for the Mesher Workers is not correct. Must be path to worker or an array workers."
+    );
+  }
+
+  if (
+    Array.isArray(initData.generatorWorkers) &&
+    initData.generatorWorkers[0] instanceof Worker
+  ) {
+    DVER.threads.setThreadPort(
+      DVER.threads.generators.name,
+      initData.generatorWorkers
+    );
+  } else {
+    throw Error(
+      "Supplied data for the Generator Workers is not correct. Must be path to worker or an array workers."
     );
   }
 
@@ -51,7 +65,7 @@ export async function StartRenderer(initData: StartRendererProps) {
     materials: initData.materials || [],
   });
 
-  InitRendererTasks(DVER.threads.constructors);
+  InitRendererTasks();
   InitWorldDataSync();
 
   InitMesher(syncData.voxels.materials.palette, syncData.voxels.models);

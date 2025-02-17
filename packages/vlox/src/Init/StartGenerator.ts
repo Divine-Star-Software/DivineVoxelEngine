@@ -1,24 +1,22 @@
 import InitDataSync from "../Contexts/Base/Remote/InitDataSync";
-import { DivineVoxelEngineConstructor } from "../Contexts/Constructor/DivineVoxelEngineConstructor";
 import { Threads } from "@amodx/threads";
 import { Environment } from "../Util/Environment";
 import { WorldRegister } from "../World/WorldRegister";
 import InitLogicTasks from "../Tasks/Logic/InitTasks";
 import InitUpdateTasks from "../Tasks/Update/InitTasks";
 import InitPropagationTasks from "../Tasks/Propagation/InitTasks";
-import InitMesherTasks from "../Mesher/InitTask";
 import InitWorldGenerationTasks from "../Tasks/WorldGeneration/InitTasks";
 import InitWorldDataSync from "../Contexts/Base/Remote/InitWorldDataSync";
-import InitMesher from "../Mesher/InitMesher";
 import InitArchiveTasks from "../World/Archive/InitTasks";
-export async function StartContrusctor(data: {} = {}) {
-  const DVEC = new DivineVoxelEngineConstructor();
+import { DivineVoxelEngineGenerator } from "../Contexts/Generator";
+export async function StartGenerator(data: {} = {}) {
+  const DVEG = new DivineVoxelEngineGenerator();
 
-  DivineVoxelEngineConstructor.environment = Environment.isNode()
+  DivineVoxelEngineGenerator.environment = Environment.isNode()
     ? "node"
     : "browser";
   let parent = "render";
-  if (DivineVoxelEngineConstructor.environment == "node") {
+  if (DivineVoxelEngineGenerator.environment == "node") {
     parent = "server";
   }
 
@@ -28,7 +26,6 @@ export async function StartContrusctor(data: {} = {}) {
 
   InitDataSync({
     onSync(data) {
-      InitMesher(data.voxels.materials.palette, data.voxels.models);
       ready = true;
     },
   });
@@ -45,21 +42,20 @@ export async function StartContrusctor(data: {} = {}) {
     readyCheck();
   });
 
-  InitArchiveTasks({ worldThread: DVEC.threads.world });
+  InitArchiveTasks({ worldThread: DVEG.threads.world });
   InitWorldDataSync();
   InitPropagationTasks();
-  InitMesherTasks(DVEC.threads.parent);
   InitLogicTasks();
   InitUpdateTasks({
     onDone(tasks, origin) {
       tasks.bounds.markSectionsAsDirty();
-/* 
+      /* 
       origin.runTask("build-queue", [
         tasks.origin[0],
         tasks.bounds.getSections(),
       ]); */
     },
   });
-  InitWorldGenerationTasks();
-  return DVEC;
+  InitWorldGenerationTasks({ worldThread: DVEG.threads.world });
+  return DVEG;
 }

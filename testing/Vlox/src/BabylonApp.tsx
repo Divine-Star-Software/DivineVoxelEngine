@@ -22,7 +22,7 @@ let ran = false;
 import { GUI } from "dat.gui";
 import { BinaryObject } from "@amodx/binary";
 import { Compressor } from "@amodx/core/Compression/Compression";
-
+import { Inspector } from "@babylonjs/inspector";
 export function App() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   useEffect(() => {
@@ -55,21 +55,44 @@ export function App() {
         }
       );
 
-      const constructorWorkers: Worker[] = [];
+      const mesherWorkers: Worker[] = [];
       for (let i = 0; i < navigator.hardwareConcurrency - 1; i++) {
-        constructorWorkers.push(
-          new Worker(new URL("./Contexts/Constructor/", import.meta.url), {
+        mesherWorkers.push(
+          new Worker(new URL("./Contexts/Mesher/", import.meta.url), {
             type: "module",
           })
         );
       }
-
+      const generatorWorkers: Worker[] = [];
+      for (let i = 0; i < navigator.hardwareConcurrency - 1; i++) {
+        generatorWorkers.push(
+          new Worker(new URL("./Contexts/Generator", import.meta.url), {
+            type: "module",
+          })
+        );
+      }
       const canvas = canvasRef.current;
 
       let antialias = false;
       const engine = new Engine(canvas, antialias);
       engine.doNotHandleContextLost = true;
       engine.enableOfflineSupport = false;
+
+      const gl = engine._gl;
+
+      if (!gl) {
+        console.error("WebGL 2 not supported!");
+      }
+
+      const multiDraw = gl.getExtension("WEBGL_multi_draw");
+
+      if (!multiDraw) {
+        console.error("WEBGL_multi_draw extension is not available!");
+      } else {
+        console.log("WEBGL_multi_draw is enabled!");
+      }
+
+      console.warn(multiDraw);
 
       const nodes = new RenderNodes();
       engine.setSize(window.innerWidth, window.innerHeight);
@@ -97,23 +120,27 @@ export function App() {
       });
 
       const DVER = await StartRenderer({
-/*         rendererSettings: {
+        /*         rendererSettings: {
           cpuBound: true,
         }, */
         renderer,
         worldWorker,
-        constructorWorkers,
+        mesherWorkers,
+        generatorWorkers,
         voxels: DVEVoxelData,
       });
 
       await CreateDisplayIndex(DVEVoxelData);
-      const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
+
+      /*  const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
       skybox.infiniteDistance = true;
       const skyboxMat = renderer.materials.get("dve_skybox");
       if (skyboxMat) {
         skybox.material = skyboxMat._material;
         skybox.material!.backFaceCulling = false;
       }
+ */
+
       const sceneTool = new SceneTool();
       sceneTool.fog.setDensity(0.00001);
       sceneTool.fog.setColor(1, 1, 1);
@@ -123,12 +150,12 @@ export function App() {
       sceneTool.levels.setSun(0.8);
       sceneTool.levels.setBase(0.01);
 
-      const viwer = new AxesViewer(scene);
+      /*     const viwer = new AxesViewer(scene);
       viwer.xAxis.position.z -= 2;
       viwer.yAxis.position.z -= 2;
       viwer.zAxis.position.z -= 2;
-
-      const camera = new FreeCamera("", new Vector3(-20, 40, -20), scene);
+ */
+      const camera = new FreeCamera("", new Vector3(-40, 20, -40), scene);
 
       camera.setTarget(new Vector3(0, 0, 0));
 
@@ -179,10 +206,10 @@ export function App() {
       debugFolder.add(actions, "downloadCache");
       debugFolder.open();
 
-      /*    setTimeout(() => {
+      /*      setTimeout(() => {
         Inspector.Show(scene, {});
-      }, 1_000);
- */
+      }, 1_000); */
+
       //  await InitRenderPlayer(DVER, nodes);
 
       DVER.threads.world.runTask("start-world", []);

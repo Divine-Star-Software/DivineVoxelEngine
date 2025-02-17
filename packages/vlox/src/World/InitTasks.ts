@@ -19,14 +19,14 @@ export default function ({
   threads: Thread[];
   worldStorage?: WorldStorageInterface;
 }) {
-  WorldRegister.sectors.setSecotrPool(true);
+  WorldRegister.sectors.setSecotrBufferPool(true);
   const loadInMap: Map<string, boolean> = new Map();
   /*
 [sectors]
 */
   WorldRegister._hooks.sectors.onNew = (location, sector) => {
     for (const thread of threads) {
-      thread.runTask(WorldDataSyncIds.SyncSector, [location, sector]);
+      thread.runTask(WorldDataSyncIds.SyncSector, [location, sector.buffer]);
     }
   };
   WorldRegister._hooks.sectors.onRemove = (location) => {
@@ -110,7 +110,7 @@ export default function ({
   Threads.registerTask<WorldLockTasks>("world-dealloc", async (data) => {
     await WorldLock.removeLock(data);
   });
-
+  /* 
   Threads.registerTask<LoadSectorDataTasks>(
     "load-sector",
     ([location, sector]) => {
@@ -127,7 +127,7 @@ export default function ({
       return [true];
     }
   );
-  /*   Threads.registerTask<RunBuildQueue>("build-queue", async ([dim, sections]) => {
+  Threads.registerTask<RunBuildQueue>("build-queue", async ([dim, sections]) => {
     for (const position of sections) {
       mesher.setLocation([dim, ...position]).buildSection();
     }
