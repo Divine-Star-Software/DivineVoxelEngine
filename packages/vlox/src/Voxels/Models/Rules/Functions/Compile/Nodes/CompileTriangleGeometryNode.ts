@@ -1,7 +1,7 @@
 import { Vec2Array, Vec3Array, Vec4Array } from "@amodx/math";
 import { VoxelFaces } from "../../../../../../Math";
 import { Triangle } from "../../../../../../Mesher/Geomtry/Primitives/Triangle";
-import { closestUnitNormal, getVertexWeights } from "./CalcFunctions";
+import { getVertexWeights } from "./CalcFunctions";
 import { TransformTriangle } from "../../../../../../Mesher/Geomtry/Transform/TransformTriangle";
 import { VoxelGeometryTransform } from "../../../../../../Mesher/Geomtry/Geometry.types";
 import {
@@ -11,6 +11,7 @@ import {
 import { OcclusionFaceRegister } from "../../../Classes/OcclusionFaceRegister";
 import { GeomtryInput } from "../../../Classes/GeomtryInput";
 import { BaseVoxelTriangleData } from "../../../../VoxelModel.types";
+import { closestVoxelFace } from "../../../../../../Math/UtilFunctions";
 
 export function CompileTriangleGeometryNode(
   buildRules: boolean,
@@ -47,14 +48,8 @@ export function CompileTriangleGeometryNode(
     averageNormal[2] /= magnitude;
   }
 
-  const unitNormal = closestUnitNormal(averageNormal);
-  let closestFace = VoxelFaces.Up;
-  if (unitNormal[0] == 1) closestFace = VoxelFaces.East;
-  if (unitNormal[0] == -1) closestFace = VoxelFaces.West;
-  if (unitNormal[1] == 1) closestFace = VoxelFaces.Up;
-  if (unitNormal[1] == -1) closestFace = VoxelFaces.Down;
-  if (unitNormal[2] == 1) closestFace = VoxelFaces.North;
-  if (unitNormal[2] == -1) closestFace = VoxelFaces.South;
+  const closestFace = closestVoxelFace(averageNormal);
+
 
   const weights: [Vec4Array, Vec4Array, Vec4Array] = [] as any;
   const positions = triangle.positions.toVec3Array();

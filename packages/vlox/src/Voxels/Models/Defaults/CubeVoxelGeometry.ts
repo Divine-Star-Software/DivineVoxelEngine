@@ -14,10 +14,6 @@ export const cube: VoxelGeometryData = {
       type: "int",
       default: 0,
     },
-    upTexTransparent: {
-      type: "boolean",
-      default: false,
-    },
     downTex: {
       type: "texture",
     },
@@ -28,10 +24,6 @@ export const cube: VoxelGeometryData = {
     downTexRotation: {
       type: "int",
       default: 0,
-    },
-    downTexTransparent: {
-      type: "boolean",
-      default: false,
     },
     northTex: {
       type: "texture",
@@ -44,10 +36,6 @@ export const cube: VoxelGeometryData = {
       type: "int",
       default: 0,
     },
-    northTexTransparent: {
-      type: "boolean",
-      default: false,
-    },
     southTex: {
       type: "texture",
     },
@@ -58,10 +46,6 @@ export const cube: VoxelGeometryData = {
     southTexRotation: {
       type: "int",
       default: 0,
-    },
-    southTexTransparent: {
-      type: "boolean",
-      default: false,
     },
     eastTex: {
       type: "texture",
@@ -74,10 +58,6 @@ export const cube: VoxelGeometryData = {
       type: "int",
       default: 0,
     },
-    eastTexTransparent: {
-      type: "boolean",
-      default: false,
-    },
     westTex: {
       type: "texture",
     },
@@ -88,10 +68,6 @@ export const cube: VoxelGeometryData = {
     westTexRotation: {
       type: "int",
       default: 0,
-    },
-    westTexTransparent: {
-      type: "boolean",
-      default: false,
     },
   },
   nodes: [
@@ -106,37 +82,31 @@ export const cube: VoxelGeometryData = {
           texture: "@upTex",
           uv: "@upUvs",
           rotation: "@upTexRotation",
-
         },
         down: {
           texture: "@downTex",
           uv: "@downUvs",
           rotation: "@downTexRotation",
-
         },
         north: {
           texture: "@northTex",
           uv: "@northUvs",
           rotation: "@northTexRotation",
- 
         },
         south: {
           texture: "@southTex",
           uv: "@southUvs",
           rotation: "@southTexRotation",
-
         },
         east: {
           texture: "@eastTex",
           uv: "@eastUvs",
           rotation: "@eastTexRotation",
-
         },
         west: {
           texture: "@westTex",
           uv: "@westUvs",
           rotation: "@westTexRotation",
-
         },
       },
     },

@@ -11,6 +11,7 @@ import {
   Vector3,
   VertexBuffer,
 } from "@babylonjs/core";
+//https://playground.babylonjs.com/#SF6VE4
 import { VoxelMeshVertexStructCursor } from "@divinevoxel/vlox/Mesher/Geomtry/VoxelMeshVertexStructCursor";
 import { VoxelScene } from "../VoxelScene";
 import { BufferAllocator } from "./BufferAllocator";
@@ -264,12 +265,7 @@ export class BufferMesh extends Mesh {
     this._indicesAllocator.free(allocation.indiceAllocationId);
     this._allocations--;
   }
-  _writeQueue: [
-    allocation: BufferAllocation,
-    verticies: Float32Array,
-    indices: Uint32Array,
-  ][] = [];
-
+  
   writeBuffers(
     allocation: BufferAllocation,
     verticies: Float32Array,
@@ -298,8 +294,6 @@ export class BufferMesh extends Mesh {
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
-
-
   }
 
   render(mesh: SubMesh, alpha: boolean, effectiveMesh: AbstractMesh) {

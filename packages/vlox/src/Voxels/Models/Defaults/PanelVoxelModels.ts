@@ -19,16 +19,12 @@ export const simpleThinPannel: VoxelModelData = {
     upDownTextures: {
       type: "texture",
     },
-    upDownTexturesTransparent: {
-      type: "boolean",
-      default: false,
-    },
     sideTextures: {
       type: "texture",
     },
   },
+  placingStrategy: "*",
   conditonalNodes: {},
-
   stateNodes: {
     "placement=down,direction=south": [
       {
@@ -36,10 +32,8 @@ export const simpleThinPannel: VoxelModelData = {
         inputs: {
           upTex: "@upDownTextures",
           upTexRotation: 0,
-          upTexTransparent: "@upDownTexturesTransparent",
           downTex: "@upDownTextures",
           downTexRotation: 0,
-          downTexTransparent: "@upDownTexturesTransparent",
           northTex: "@sideTextures",
           southTex: "@sideTextures",
           eastTex: "@sideTextures",
@@ -53,10 +47,8 @@ export const simpleThinPannel: VoxelModelData = {
         inputs: {
           upTex: "@upDownTextures",
           upTexRotation: 180,
-          upTexTransparent: "@upDownTexturesTransparent",
           downTex: "@upDownTextures",
           downTexRotation: 180,
-          downTexTransparent: "@upDownTexturesTransparent",
           northTex: "@sideTextures",
           southTex: "@sideTextures",
           eastTex: "@sideTextures",
@@ -70,10 +62,8 @@ export const simpleThinPannel: VoxelModelData = {
         inputs: {
           upTex: "@upDownTextures",
           upTexRotation: 90,
-          upTexTransparent: "@upDownTexturesTransparent",
           downTex: "@upDownTextures",
           downTexRotation: 90,
-          downTexTransparent: "@upDownTexturesTransparent",
           northTex: "@sideTextures",
           southTex: "@sideTextures",
           eastTex: "@sideTextures",
@@ -87,10 +77,8 @@ export const simpleThinPannel: VoxelModelData = {
         inputs: {
           upTex: "@upDownTextures",
           upTexRotation: 270,
-          upTexTransparent: "@upDownTexturesTransparent",
           downTex: "@upDownTextures",
           downTexRotation: 270,
-          downTexTransparent: "@upDownTexturesTransparent",
           northTex: "@sideTextures",
           southTex: "@sideTextures",
           eastTex: "@sideTextures",
@@ -106,10 +94,8 @@ export const simpleThinPannel: VoxelModelData = {
         inputs: {
           upTex: "@upDownTextures",
           upTexRotation: 180,
-          upTexTransparent: "@upDownTexturesTransparent",
           downTex: "@upDownTextures",
           downTexRotation: 180,
-          downTexTransparent: "@upDownTexturesTransparent",
           northTex: "@sideTextures",
           southTex: "@sideTextures",
           eastTex: "@sideTextures",
@@ -124,10 +110,8 @@ export const simpleThinPannel: VoxelModelData = {
         inputs: {
           upTex: "@upDownTextures",
           upTexRotation: 0,
-          upTexTransparent: "@upDownTexturesTransparent",
           downTex: "@upDownTextures",
           downTexRotation: 0,
-          downTexTransparent: "@upDownTexturesTransparent",
           northTex: "@sideTextures",
           southTex: "@sideTextures",
           eastTex: "@sideTextures",
@@ -142,10 +126,10 @@ export const simpleThinPannel: VoxelModelData = {
         inputs: {
           upTex: "@upDownTextures",
           upTexRotation: 90,
-          upTexTransparent: "@upDownTexturesTransparent",
+
           downTex: "@upDownTextures",
           downTexRotation: 90,
-          downTexTransparent: "@upDownTexturesTransparent",
+
           northTex: "@sideTextures",
           southTex: "@sideTextures",
           eastTex: "@sideTextures",
@@ -160,10 +144,8 @@ export const simpleThinPannel: VoxelModelData = {
         inputs: {
           upTex: "@upDownTextures",
           upTexRotation: 270,
-          upTexTransparent: "@upDownTexturesTransparent",
           downTex: "@upDownTextures",
           downTexRotation: 270,
-          downTexTransparent: "@upDownTexturesTransparent",
           northTex: "@sideTextures",
           southTex: "@sideTextures",
           eastTex: "@sideTextures",
@@ -181,10 +163,10 @@ export const simpleThinPannel: VoxelModelData = {
           downTex: "@sideTextures",
           northTex: "@upDownTextures",
           northTexRotation: 180,
-          northTexTransparent: "@upDownTexturesTransparent",
+
           southTex: "@upDownTextures",
           southTexRotation: 180,
-          southTexTransparent: "@upDownTexturesTransparent",
+
           eastTex: "@sideTextures",
           westTex: "@sideTextures",
         },
@@ -199,10 +181,10 @@ export const simpleThinPannel: VoxelModelData = {
           downTex: "@sideTextures",
           northTex: "@upDownTextures",
           northTexRotation: 0,
-          northTexTransparent: "@upDownTexturesTransparent",
+
           southTex: "@upDownTextures",
           southTexRotation: 0,
-          southTexTransparent: "@upDownTexturesTransparent",
+
           eastTex: "@sideTextures",
           westTex: "@sideTextures",
         },
@@ -217,10 +199,10 @@ export const simpleThinPannel: VoxelModelData = {
           downTex: "@sideTextures",
           northTex: "@upDownTextures",
           northTexRotation: 90,
-          northTexTransparent: "@upDownTexturesTransparent",
+
           southTex: "@upDownTextures",
           southTexRotation: 90,
-          southTexTransparent: "@upDownTexturesTransparent",
+
           eastTex: "@sideTextures",
           westTex: "@sideTextures",
         },
@@ -235,10 +217,10 @@ export const simpleThinPannel: VoxelModelData = {
           downTex: "@sideTextures",
           northTex: "@upDownTextures",
           northTexRotation: 270,
-          northTexTransparent: "@upDownTexturesTransparent",
+
           southTex: "@upDownTextures",
           southTexRotation: 270,
-          southTexTransparent: "@upDownTexturesTransparent",
+
           eastTex: "@sideTextures",
           westTex: "@sideTextures",
         },
@@ -253,10 +235,10 @@ export const simpleThinPannel: VoxelModelData = {
           downTex: "@sideTextures",
           northTex: "@upDownTextures",
           northTexRotation: 180,
-          northTexTransparent: "@upDownTexturesTransparent",
+
           southTex: "@upDownTextures",
           southTexRotation: 180,
-          southTexTransparent: "@upDownTexturesTransparent",
+
           eastTex: "@sideTextures",
           westTex: "@sideTextures",
         },
@@ -270,10 +252,10 @@ export const simpleThinPannel: VoxelModelData = {
           downTex: "@sideTextures",
           northTex: "@upDownTextures",
           northTexRotation: 0,
-          northTexTransparent: "@upDownTexturesTransparent",
+
           southTex: "@upDownTextures",
           southTexRotation: 0,
-          southTexTransparent: "@upDownTexturesTransparent",
+
           eastTex: "@sideTextures",
           westTex: "@sideTextures",
         },
@@ -287,10 +269,10 @@ export const simpleThinPannel: VoxelModelData = {
           downTex: "@sideTextures",
           northTex: "@upDownTextures",
           northTexRotation: 90,
-          northTexTransparent: "@upDownTexturesTransparent",
+
           southTex: "@upDownTextures",
           southTexRotation: 90,
-          southTexTransparent: "@upDownTexturesTransparent",
+
           eastTex: "@sideTextures",
           westTex: "@sideTextures",
         },
@@ -304,10 +286,10 @@ export const simpleThinPannel: VoxelModelData = {
           downTex: "@sideTextures",
           northTex: "@upDownTextures",
           northTexRotation: 270,
-          northTexTransparent: "@upDownTexturesTransparent",
+
           southTex: "@upDownTextures",
           southTexRotation: 270,
-          southTexTransparent: "@upDownTexturesTransparent",
+
           eastTex: "@sideTextures",
           westTex: "@sideTextures",
         },
@@ -324,10 +306,9 @@ export const simpleThinPannel: VoxelModelData = {
           southTex: "@sideTextures",
           eastTex: "@upDownTextures",
           eastTexRotation: 0,
-          eastTexTransparent: "@upDownTexturesTransparent",
+
           westTex: "@upDownTextures",
           westTexRotation: 0,
-          westTexTransparent: "@upDownTexturesTransparent",
         },
       },
     ],
@@ -342,10 +323,9 @@ export const simpleThinPannel: VoxelModelData = {
           southTex: "@sideTextures",
           eastTex: "@upDownTextures",
           eastTexRotation: 180,
-          eastTexTransparent: "@upDownTexturesTransparent",
+
           westTex: "@upDownTextures",
           westTexRotation: 180,
-          westTexTransparent: "@upDownTexturesTransparent",
         },
       },
     ],
@@ -360,10 +340,9 @@ export const simpleThinPannel: VoxelModelData = {
           southTex: "@sideTextures",
           eastTex: "@upDownTextures",
           eastTexRotation: 90,
-          eastTexTransparent: "@upDownTexturesTransparent",
+
           westTex: "@upDownTextures",
           westTexRotation: 90,
-          westTexTransparent: "@upDownTexturesTransparent",
         },
       },
     ],
@@ -378,10 +357,9 @@ export const simpleThinPannel: VoxelModelData = {
           southTex: "@sideTextures",
           eastTex: "@upDownTextures",
           eastTexRotation: 270,
-          eastTexTransparent: "@upDownTexturesTransparent",
+
           westTex: "@upDownTextures",
           westTexRotation: 270,
-          westTexTransparent: "@upDownTexturesTransparent",
         },
       },
     ],
@@ -396,10 +374,9 @@ export const simpleThinPannel: VoxelModelData = {
           southTex: "@sideTextures",
           eastTex: "@upDownTextures",
           eastTexRotation: 0,
-          eastTexTransparent: "@upDownTexturesTransparent",
+
           westTex: "@upDownTextures",
           westTexRotation: 0,
-          westTexTransparent: "@upDownTexturesTransparent",
         },
       },
     ],
@@ -413,10 +390,9 @@ export const simpleThinPannel: VoxelModelData = {
           southTex: "@sideTextures",
           eastTex: "@upDownTextures",
           eastTexRotation: 180,
-          eastTexTransparent: "@upDownTexturesTransparent",
+
           westTex: "@upDownTextures",
           westTexRotation: 180,
-          westTexTransparent: "@upDownTexturesTransparent",
         },
       },
     ],
@@ -430,10 +406,9 @@ export const simpleThinPannel: VoxelModelData = {
           southTex: "@sideTextures",
           eastTex: "@upDownTextures",
           eastTexRotation: 90,
-          eastTexTransparent: "@upDownTexturesTransparent",
+
           westTex: "@upDownTextures",
           westTexRotation: 90,
-          westTexTransparent: "@upDownTexturesTransparent",
         },
       },
     ],
@@ -447,10 +422,9 @@ export const simpleThinPannel: VoxelModelData = {
           southTex: "@sideTextures",
           eastTex: "@upDownTextures",
           eastTexRotation: 270,
-          eastTexTransparent: "@upDownTexturesTransparent",
+
           westTex: "@upDownTextures",
           westTexRotation: 270,
-          westTexTransparent: "@upDownTexturesTransparent",
         },
       },
     ],
@@ -459,6 +433,43 @@ export const simpleThinPannel: VoxelModelData = {
 export const simpleCrossedPannel: VoxelModelData = {
   id: "dve_simple_crossed_panels",
   relationsSchema: [],
+  stateSchema: [],
+  placingStrategy: "*",
+  arguments: {
+    texture: {
+      type: "texture",
+    },
+    doubleSided: {
+      type: "boolean",
+      default: false,
+    },
+  },
+  conditonalNodes: {},
+  stateNodes: {
+    "*": [
+      {
+        geometryId: "dve_diagonal_flat_panel_west_east",
+        inputs: {
+          texture: "@texture",
+          textureRotation: 0,
+          doubleSided: "@doubleSided",
+        },
+      },
+      {
+        geometryId: "dve_diagonal_flat_panel_east_west",
+        inputs: {
+          texture: "@texture",
+          textureRotation: 0,
+          doubleSided: "@doubleSided",
+        },
+      },
+    ],
+  },
+};
+export const orientedCrossedPannel: VoxelModelData = {
+  id: "dve_oriented_crossed_panels",
+  relationsSchema: [],
+  placingStrategy: "*",
   stateSchema: [
     {
       name: "placement",
@@ -475,10 +486,6 @@ export const simpleCrossedPannel: VoxelModelData = {
     texture: {
       type: "texture",
     },
-    transparent: {
-      type: "boolean",
-      default: false,
-    },
     doubleSided: {
       type: "boolean",
       default: false,
@@ -493,8 +500,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 0,
-
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -503,7 +508,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 0,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -514,7 +518,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 180,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -523,19 +526,16 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 180,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
     ],
-
     "placement=down,direction=east": [
       {
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
           textureRotation: 90,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -544,7 +544,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 90,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -555,7 +554,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 270,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -564,7 +562,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 270,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -575,7 +572,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 180,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -584,7 +580,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 180,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -595,7 +590,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 0,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -604,7 +598,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 0,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -616,7 +609,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 270,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -625,7 +617,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 270,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -636,7 +627,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 90,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -645,7 +635,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 90,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -656,7 +645,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 0,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -665,7 +653,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 0,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -676,7 +663,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 180,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -685,7 +671,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 180,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -697,7 +682,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 90,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -706,7 +690,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 90,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -717,7 +700,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 270,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -726,7 +708,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 270,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -737,7 +718,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 0,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -746,7 +726,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 0,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -757,7 +736,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 180,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -766,19 +744,16 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 180,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
     ],
-
     "placement=south,direction=east": [
       {
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
           textureRotation: 270,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -787,7 +762,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 270,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -798,7 +772,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 90,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -807,7 +780,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 90,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -818,7 +790,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 0,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -827,7 +798,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 0,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -838,7 +808,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 180,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -847,19 +816,16 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 180,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
     ],
-
     "placement=east,direction=east": [
       {
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
           textureRotation: 270,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -868,7 +834,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 270,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -879,7 +844,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 90,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -888,7 +852,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 90,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -899,7 +862,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 0,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -908,7 +870,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 0,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -919,7 +880,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 180,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -928,19 +888,16 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 180,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
     ],
-
     "placement=west,direction=east": [
       {
         geometryId: "dve_diagonal_flat_panel_west_east",
         inputs: {
           texture: "@texture",
           textureRotation: 270,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -949,7 +906,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 270,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -960,7 +916,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 90,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },
@@ -969,7 +924,6 @@ export const simpleCrossedPannel: VoxelModelData = {
         inputs: {
           texture: "@texture",
           textureRotation: 90,
-          transaprent: "@transparent",
           doubleSided: "@doubleSided",
         },
       },

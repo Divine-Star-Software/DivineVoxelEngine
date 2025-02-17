@@ -2,6 +2,7 @@ import { TextureId } from "../../Textures/index";
 import { VoxelModelConstructorData } from "../Models/VoxelModel.types";
 import { VoxelTags } from "../Data/VoxelTag.types";
 import { VoxelLogicData } from "../Logic/VoxelLogic.types";
+import { VoxelFaceNames } from "../../Math";
 export interface VoxelDataArrays {
   /**The runtime numeric voxel ids */
   ids: Uint16Array;
@@ -73,15 +74,13 @@ export type RawVoxelData = [
   secondary: number,
 ];
 
+
 interface VoxelProperties extends Partial<VoxelTags> {
   [key: string]: any;
-
   /**Logic data for a the voxel */
   dve_logic_data?: VoxelLogicData[];
-
-  /** Named states associated with the voxel. */
+  /** Named states associated with the voxel. Used for indexing. */
   dve_named_states?: VoxelNamedStateData[];
-
   /** Model data used to construct the voxel's appearance. */
   dve_model_data?: VoxelModelConstructorData;
 }

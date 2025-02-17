@@ -1,7 +1,7 @@
 import { Vec3Array, Vec4Array } from "@amodx/math";
 import { VoxelFaces } from "../../../../../../Math";
 import { Quad } from "../../../../../../Mesher/Geomtry/Primitives/Quad";
-import { getQuadWeights, closestUnitNormal, mapQuadUvs } from "./CalcFunctions";
+import { getQuadWeights, mapQuadUvs } from "./CalcFunctions";
 import { TransformQuad } from "../../../../../../Mesher/Geomtry/Transform/TransformQuad";
 import { VoxelGeometryTransform } from "../../../../../../Mesher/Geomtry/Geometry.types";
 import {
@@ -11,6 +11,7 @@ import {
 import { OcclusionFaceRegister } from "../../../Classes/OcclusionFaceRegister";
 import { GeomtryInput } from "Voxels/Models/Rules/Classes/GeomtryInput";
 import { BaseVoxelQuadData } from "Voxels/Models/VoxelModel.types";
+import { closestVoxelFace } from "../../../../../../Math/UtilFunctions";
 
 export function CompileQuadGeometryNode(
   buildRules: boolean,
@@ -47,14 +48,7 @@ export function CompileQuadGeometryNode(
     averageNormal[2] /= magnitude;
   }
 
-  const unitNormal = closestUnitNormal(averageNormal);
-  let closestFace = VoxelFaces.Up;
-  if (unitNormal[0] == 1) closestFace = VoxelFaces.East;
-  if (unitNormal[0] == -1) closestFace = VoxelFaces.West;
-  if (unitNormal[1] == 1) closestFace = VoxelFaces.Up;
-  if (unitNormal[1] == -1) closestFace = VoxelFaces.Down;
-  if (unitNormal[2] == 1) closestFace = VoxelFaces.North;
-  if (unitNormal[2] == -1) closestFace = VoxelFaces.South;
+  const closestFace = closestVoxelFace(averageNormal);
 
   const weights = getQuadWeights(quad, closestFace);
   const positions = quad.positions.toVec3Array();

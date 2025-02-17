@@ -84,33 +84,6 @@ export const getQuadWeights = (
 
   return returnArray;
 };
-export function closestUnitNormal(v: Vec3Array): Vec3Array {
-  const [x, y, z] = v;
-  let maxDotOverMagnitude = -Infinity;
-  let bestS: Vec3Array = [0, 0, 0];
-
-  for (const sx of [-1, 0, 1]) {
-    for (const sy of [-1, 0, 1]) {
-      for (const sz of [-1, 0, 1]) {
-        if (sx === 0 && sy === 0 && sz === 0) continue; // Skip the zero vector
-        const sMagnitude = Math.sqrt(sx * sx + sy * sy + sz * sz);
-        const vDotS = x * sx + y * sy + z * sz;
-        const dotOverMagnitude = vDotS / sMagnitude;
-
-        if (dotOverMagnitude > maxDotOverMagnitude) {
-          maxDotOverMagnitude = dotOverMagnitude;
-          bestS = [sx, sy, sz];
-        }
-      }
-    }
-  }
-
-  // Normalize the best vector to unit length
-  const sMagnitude = Math.sqrt(
-    bestS[0] * bestS[0] + bestS[1] * bestS[1] + bestS[2] * bestS[2]
-  );
-  return [bestS[0] / sMagnitude, bestS[1] / sMagnitude, bestS[2] / sMagnitude];
-}
 
 
 

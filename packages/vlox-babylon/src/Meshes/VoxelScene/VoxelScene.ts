@@ -1,7 +1,6 @@
 import {
   BoundingBox,
   BoundingInfo,
-  Engine,
   MultiMaterial,
   Scene,
   SubMesh,
@@ -204,19 +203,13 @@ export class VoxelScene {
           >) {
             if (!mesh.mesh) continue;
             if (!sectorVisible) {
-              if (mesh.isEnabled()) {
-                mesh.setEnabled(false);
-              }
+              if (mesh.isEnabled()) mesh.setEnabled(false);
               continue;
             }
             if (camera.isInFrustum(mesh.mesh.getBoundingInfo())) {
-              if (!mesh.isEnabled()) {
-                mesh.setEnabled(true);
-              }
+              if (!mesh.isEnabled()) mesh.setEnabled(true);
             } else {
-              if (mesh.isEnabled()) {
-                mesh.setEnabled(false);
-              }
+              if (mesh.isEnabled()) mesh.setEnabled(false);
             }
           }
         }

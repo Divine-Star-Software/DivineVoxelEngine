@@ -33,6 +33,7 @@ export function BuildTagAndPaletteData(
     const voxelId = VoxelPalettesRegister.voxelIds.register(voxel.id);
 
     if (voxel.properties["dve_model_data"]) {
+      tags["dve_model_id"] = voxel.properties["dve_model_data"].id;
       const model = VoxelModelRuleBuilderRegister.models.get(
         voxel.properties["dve_model_data"].id
       );

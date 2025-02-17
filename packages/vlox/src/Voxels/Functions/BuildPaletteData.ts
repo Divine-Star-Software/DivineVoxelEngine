@@ -39,7 +39,7 @@ export function BuildPaletteData(props: BuildPaletteDataProps) {
 
   for (const [, model] of models) {
     const schema = SchemaRegister.getModelSchema(model.id);
-
+    
     const valuePairs: [key: string, values: string[]][] = [];
 
     for (const node of schema.nodes) {

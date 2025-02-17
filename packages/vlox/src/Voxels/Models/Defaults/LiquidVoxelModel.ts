@@ -38,6 +38,7 @@ export const liquidModel: VoxelModelData = {
     },
   },
   conditonalNodes: {},
+  placingStrategy: "*",
   stateNodes: {
     "*": [
       {

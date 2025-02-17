@@ -13,10 +13,6 @@ export const diagonalFlatPanelWestEast: VoxelGeometryData = {
       type: "int",
       default: 0,
     },
-    transaprent: {
-      type: "boolean",
-      default: false,
-    },
     doubleSided: {
       type: "boolean",
       default: false,
@@ -92,10 +88,6 @@ export const thinPanelDown: VoxelGeometryData = {
       type: "int",
       default: 0,
     },
-    upTexTransparent: {
-      type: "boolean",
-      default: false,
-    },
     downTex: {
       type: "texture",
     },
@@ -106,10 +98,6 @@ export const thinPanelDown: VoxelGeometryData = {
     downTexRotation: {
       type: "int",
       default: 0,
-    },
-    downTexTransparent: {
-      type: "boolean",
-      default: false,
     },
     northTex: {
       type: "texture",
@@ -122,10 +110,6 @@ export const thinPanelDown: VoxelGeometryData = {
       type: "int",
       default: 0,
     },
-    northTexTransparent: {
-      type: "boolean",
-      default: false,
-    },
     southTex: {
       type: "texture",
     },
@@ -136,10 +120,6 @@ export const thinPanelDown: VoxelGeometryData = {
     southTexRotation: {
       type: "int",
       default: 0,
-    },
-    southTexTransparent: {
-      type: "boolean",
-      default: false,
     },
     eastTex: {
       type: "texture",
@@ -152,10 +132,6 @@ export const thinPanelDown: VoxelGeometryData = {
       type: "int",
       default: 0,
     },
-    eastTexTransparent: {
-      type: "boolean",
-      default: false,
-    },
     westTex: {
       type: "texture",
     },
@@ -166,10 +142,6 @@ export const thinPanelDown: VoxelGeometryData = {
     westTexRotation: {
       type: "int",
       default: 0,
-    },
-    westTexTransparent: {
-      type: "boolean",
-      default: false,
     },
   },
   nodes: [
@@ -184,37 +156,31 @@ export const thinPanelDown: VoxelGeometryData = {
           texture: "@upTex",
           uv: "@upUvs",
           rotation: "@upTexRotation",
- 
         },
         down: {
           texture: "@downTex",
           uv: "@downUvs",
           rotation: "@downTexRotation",
- 
         },
         north: {
           texture: "@northTex",
           uv: "@northUvs",
           rotation: "@northTexRotation",
-
         },
         south: {
           texture: "@southTex",
           uv: "@southUvs",
           rotation: "@southTexRotation",
-
         },
         east: {
           texture: "@eastTex",
           uv: "@eastUvs",
           rotation: "@eastTexRotation",
-
         },
         west: {
           texture: "@westTex",
           uv: "@westUvs",
           rotation: "@westTexRotation",
-
         },
       },
     },
@@ -234,10 +200,6 @@ export const thinPanelSouth: VoxelGeometryData = {
       type: "int",
       default: 0,
     },
-    upTexTransparent: {
-      type: "boolean",
-      default: false,
-    },
     downTex: {
       type: "texture",
     },
@@ -248,10 +210,6 @@ export const thinPanelSouth: VoxelGeometryData = {
     downTexRotation: {
       type: "int",
       default: 0,
-    },
-    downTexTransparent: {
-      type: "boolean",
-      default: false,
     },
     northTex: {
       type: "texture",
@@ -264,10 +222,6 @@ export const thinPanelSouth: VoxelGeometryData = {
       type: "int",
       default: 0,
     },
-    northTexTransparent: {
-      type: "boolean",
-      default: false,
-    },
     southTex: {
       type: "texture",
     },
@@ -278,10 +232,6 @@ export const thinPanelSouth: VoxelGeometryData = {
     southTexRotation: {
       type: "int",
       default: 0,
-    },
-    southTexTransparent: {
-      type: "boolean",
-      default: false,
     },
     eastTex: {
       type: "texture",
@@ -294,10 +244,6 @@ export const thinPanelSouth: VoxelGeometryData = {
       type: "int",
       default: 0,
     },
-    eastTexTransparent: {
-      type: "boolean",
-      default: false,
-    },
     westTex: {
       type: "texture",
     },
@@ -308,10 +254,6 @@ export const thinPanelSouth: VoxelGeometryData = {
     westTexRotation: {
       type: "int",
       default: 0,
-    },
-    westTexTransparent: {
-      type: "boolean",
-      default: false,
     },
   },
   nodes: [
@@ -326,37 +268,31 @@ export const thinPanelSouth: VoxelGeometryData = {
           texture: "@upTex",
           uv: "@upUvs",
           rotation: "@upTexRotation",
-
         },
         down: {
           texture: "@downTex",
           uv: "@downUvs",
           rotation: "@downTexRotation",
-
         },
         north: {
           texture: "@northTex",
           uv: "@northUvs",
           rotation: "@northTexRotation",
-      
         },
         south: {
           texture: "@southTex",
           uv: "@southUvs",
           rotation: "@southTexRotation",
-         
         },
         east: {
           texture: "@eastTex",
           uv: "@eastUvs",
           rotation: "@eastTexRotation",
-        
         },
         west: {
           texture: "@westTex",
           uv: "@westUvs",
           rotation: "@westTexRotation",
-        
         },
       },
     },
@@ -376,10 +312,6 @@ export const thinPanelWest: VoxelGeometryData = {
       type: "int",
       default: 0,
     },
-    upTexTransparent: {
-      type: "boolean",
-      default: false,
-    },
     downTex: {
       type: "texture",
     },
@@ -390,10 +322,6 @@ export const thinPanelWest: VoxelGeometryData = {
     downTexRotation: {
       type: "int",
       default: 0,
-    },
-    downTexTransparent: {
-      type: "boolean",
-      default: false,
     },
     northTex: {
       type: "texture",
@@ -413,10 +341,6 @@ export const thinPanelWest: VoxelGeometryData = {
       type: "box-uv",
       default: [0, 0, 3 / 16, 1],
     },
-    southTexTransparent: {
-      type: "boolean",
-      default: false,
-    },
     southTexRotation: {
       type: "int",
       default: 0,
@@ -432,10 +356,6 @@ export const thinPanelWest: VoxelGeometryData = {
       type: "int",
       default: 0,
     },
-    eastTexTransparent: {
-      type: "boolean",
-      default: false,
-    },
     westTex: {
       type: "texture",
     },
@@ -446,10 +366,6 @@ export const thinPanelWest: VoxelGeometryData = {
     westTexRotation: {
       type: "int",
       default: 0,
-    },
-    westTexTransparent: {
-      type: "boolean",
-      default: false,
     },
   },
   nodes: [
@@ -464,37 +380,31 @@ export const thinPanelWest: VoxelGeometryData = {
           texture: "@upTex",
           uv: "@upUvs",
           rotation: "@upTexRotation",
-   
         },
         down: {
           texture: "@downTex",
           uv: "@downUvs",
           rotation: "@downTexRotation",
-  
         },
         north: {
           texture: "@northTex",
           uv: "@northUvs",
           rotation: "@northTexRotation",
-
         },
         south: {
           texture: "@southTex",
           uv: "@southUvs",
           rotation: "@southTexRotation",
-  
         },
         east: {
           texture: "@eastTex",
           uv: "@eastUvs",
           rotation: "@eastTexRotation",
-       
         },
         west: {
           texture: "@westTex",
           uv: "@westUvs",
           rotation: "@westTexRotation",
-
         },
       },
     },

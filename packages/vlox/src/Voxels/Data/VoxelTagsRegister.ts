@@ -39,6 +39,7 @@ export class VoxelTagsRegister {
     [VoxelTagIds.colliderID]: "dve_cube",
   };
   static VoxelTags: VoxelTags[] = [];
+
   static SubstanceStagDefaults: Record<string, any> = {};
   static SubstanceStags: VoxelSubstanceTags[] = [];
 }

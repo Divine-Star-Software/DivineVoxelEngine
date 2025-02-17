@@ -3,6 +3,7 @@ export enum VoxelTagIds {
   renderedMaterial = "dve_rendered_material",
   voxelMaterial = "dve_voxel_material",
   hardness = "dve_hardness",
+  modelId = "dve_model_id",
   colliderID = "dve_collider_id",
   checkCollisions = "dve_check_collisions",
   isLightSource = "dve_is_light_source",
@@ -44,6 +45,7 @@ export interface VoxelTags {
   /** Defines the light value emitted by the voxel (r, g, z). */
   [VoxelTagIds.lightValue]: [r: number, g: number, z: number] | number;
 
+  [VoxelTagIds.modelId]: string;
   /** The collider ID for the voxel, used for collision detection. */
   [VoxelTagIds.colliderID]: string;
 

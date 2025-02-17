@@ -14,7 +14,7 @@ import {
   fencePost,
   leverGeometry,
   leverModel,
-} from "./Models/Examples";
+} from "./Models/Defaults/Examples";
 import {
   cube,
   halfDownCube,
@@ -70,6 +70,7 @@ import { VoxelLogicRegister } from "./Logic/VoxelLogicRegister";
 import { BuildPaletteData } from "./Functions/BuildPaletteData";
 import { BuildRules } from "./Models/Rules/Functions/BuildRules";
 import { FinalCompiledVoxelModelData } from "./Models/CompiledVoxelModel.types";
+import { VoxelModelPlacingStrategyRegister } from "./Models/Placing/VoxelModelPlacingStrategyRegister";
 
 export type InitVoxelDataProps = {
   geometry?: VoxelGeometryData[];
@@ -186,6 +187,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
       model,
       VoxelModelRuleBuilderRegister.geometryPalette
     );
+    VoxelModelPlacingStrategyRegister.register(model.data.id,model.data.placingStrategy);
     model.stateData = stateData;
     SchemaRegister.registerModel(mainKey, stateData.schema);
     syncData.models.push({
