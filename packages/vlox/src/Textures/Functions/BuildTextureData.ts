@@ -1,7 +1,6 @@
 import { CompiledTexture } from "../Classes/CompiledTexture";
 import { TextureData } from "../../Textures/Texture.types";
 import { CompiledTextureAnimation } from "../../Textures/Classes/CompiledTextureAnimation";
-import { Vec2Array } from "@amodx/math";
 
 let baseURL = "assets/textures";
 let canvas: HTMLCanvasElement;
@@ -180,6 +179,7 @@ async function process(
         ? CompiledTexture.GetAtlasIndex(...named.index, data.atlas.tiles[0])
         : named.index;
       compiled.textureMap[`${textureId}:${named.id}`] = textureIndex + tIndex;
+      
     }
   }
 
@@ -201,7 +201,7 @@ export async function BuildTextureData({
   finalSize: currentFinalSize,
   createCache,
 }: BuildTextureDataProps): Promise<CompiledTexture> {
-  baseURL = currentBaseURL || "assets/textures";
+  const defaultBaseURL = currentBaseURL || "assets/textures";
 
   finalSize[0] = currentFinalSize ? currentFinalSize[0] : 256;
   finalSize[1] = currentFinalSize ? currentFinalSize[1] : 256;
@@ -223,6 +223,11 @@ export async function BuildTextureData({
 
   let count = 0;
   for (const texture of textures) {
+    if (texture.basePath) {
+      baseURL = texture.basePath;
+    } else {
+      baseURL = defaultBaseURL;
+    }
     if (!texture.variations?.length) {
       try {
         count = await process(compiled, texture, count, null, createCache);
@@ -237,6 +242,12 @@ export async function BuildTextureData({
     if (texture.variations) {
       for (let i = 0; i < texture.variations.length; i++) {
         const vara = texture.variations[i];
+        if (texture.basePath) {
+          baseURL = texture.basePath;
+        } else {
+          baseURL = defaultBaseURL;
+        }
+
         if (typeof vara == "string") {
           const newData: TextureData = { type: texture.type, id: vara };
           try {
@@ -256,6 +267,12 @@ export async function BuildTextureData({
           }
         }
         try {
+          if (vara.basePath) {
+            baseURL = vara.basePath;
+          } else {
+            baseURL = defaultBaseURL;
+          }
+
           count = await process(compiled, vara, count, texture.id, createCache);
         } catch (error) {
           console.warn(`Could not load texture ${texture.id}`);

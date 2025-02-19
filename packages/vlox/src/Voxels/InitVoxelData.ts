@@ -57,20 +57,20 @@ import {
   simpleCrossedPannel,
   simpleThinPannel,
 } from "./Models/Defaults/PanelVoxelModels";
-import { VoxelTagStates } from "./Data/VoxelTagStates";
 import { VoxelIndex } from "../Voxels/Indexes/VoxelIndex";
 import { CacheManager } from "../Cache/CacheManager";
 import { VoxelLightData } from "./Cursor/VoxelLightData";
 import { VoxelMaterialData } from "./Types/VoxelMaterial.types";
 import { VoxelSubstanceData } from "./Types/VoxelSubstances.types";
 import { VoxelTagIds } from "./Data/VoxelTag.types";
-import { BuildTagAndPaletteData } from "./Functions/BuildTagData";
+import { BuildTagAndPaletteData as BuildTagData } from "./Functions/BuildTagData";
 import { VoxelPalettesRegister } from "./Data/VoxelPalettesRegister";
 import { VoxelLogicRegister } from "./Logic/VoxelLogicRegister";
 import { BuildPaletteData } from "./Functions/BuildPaletteData";
 import { BuildRules } from "./Models/Rules/Functions/BuildRules";
 import { FinalCompiledVoxelModelData } from "./Models/CompiledVoxelModel.types";
 import { VoxelModelPlacingStrategyRegister } from "./Models/Placing/VoxelModelPlacingStrategyRegister";
+import { VoxelTagsRegister } from "./Data/VoxelTagsRegister";
 
 export type InitVoxelDataProps = {
   geometry?: VoxelGeometryData[];
@@ -80,24 +80,7 @@ export type InitVoxelDataProps = {
   substances?: VoxelSubstanceData[];
 };
 
-function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
-  if (CacheManager.cacheLoadEnabled && CacheManager.cachedData) {
-    const syncData = CacheManager.cachedData.models;
-
-    for (let i = 0; i < syncData.models.length; i++) {
-      const model = syncData.models[i];
-      SchemaRegister.registerModel(model.id, model.schema);
-    }
-
-    for (let i = 0; i < syncData.voxels.length; i++) {
-      const voxel = syncData.voxels[i];
-      SchemaRegister.registerVoxel(voxel.id, voxel.modelId, voxel.modSchema);
-    }
-    VoxelTagStates.load(syncData.tagState);
-
-    return syncData;
-  }
-
+function RegisterModels(data: InitVoxelDataProps) {
   VoxelModelRuleBuilderRegister.registerGeometry(
     cube,
     halfDownCube,
@@ -155,6 +138,25 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
 
     ...(data.models || [])
   );
+}
+
+function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
+  if (CacheManager.cacheLoadEnabled && CacheManager.cachedData) {
+    const syncData = CacheManager.cachedData.models;
+
+    for (let i = 0; i < syncData.models.length; i++) {
+      const model = syncData.models[i];
+      SchemaRegister.registerModel(model.id, model.schema);
+    }
+
+    for (let i = 0; i < syncData.voxels.length; i++) {
+      const voxel = syncData.voxels[i];
+      SchemaRegister.registerVoxel(voxel.id, voxel.modelId, voxel.modSchema);
+    }
+  
+    return syncData;
+  }
+
   for (const voxel of data.voxels) {
     const voxelData = voxel.properties["dve_model_data"];
     if (!voxelData) continue;
@@ -171,7 +173,6 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
     geometry: [],
     models: [],
     voxels: [],
-    tagState: [],
   };
 
   for (const [mainKey, mainGeo] of VoxelModelRuleBuilderRegister.geometry) {
@@ -187,7 +188,10 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
       model,
       VoxelModelRuleBuilderRegister.geometryPalette
     );
-    VoxelModelPlacingStrategyRegister.register(model.data.id,model.data.placingStrategy);
+    VoxelModelPlacingStrategyRegister.register(
+      model.data.id,
+      model.data.placingStrategy
+    );
     model.stateData = stateData;
     SchemaRegister.registerModel(mainKey, stateData.schema);
     syncData.models.push({
@@ -215,11 +219,8 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
   } */
 
   for (const [mainKey, model] of VoxelModelRuleBuilderRegister.models) {
-    const {
-      stateVoxelInputs,
-      conditionalShapeStateVoxelInputs,
-      
-    } = BuildFinalInputs(model);
+    const { stateVoxelInputs, conditionalShapeStateVoxelInputs } =
+      BuildFinalInputs(model);
 
     for (const v in stateVoxelInputs) {
       const stateData = model.voxelModData.get(v)!;
@@ -228,11 +229,11 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
       syncData.voxels.push({
         id: v,
         materialId:
-          VoxelIndex.instance.dataMap.get(v)?.properties[
-            "dve_rendered_material"
-          ] || "dve_solid",
+          VoxelTagsRegister.VoxelTags[
+            VoxelPalettesRegister.voxelIds.getNumberId(v)
+          ]["dve_rendered_material"] || "dve_solid",
         modelId: mainKey,
- 
+
         modSchema: stateData.modSchema,
         modStateTree: stateData.modStateTree,
         baseGeometryInputMap: stateVoxelInputs[v],
@@ -240,8 +241,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
       });
     }
   }
-  syncData.tagState = VoxelTagStates.toJSON();
-
+ 
   if (CacheManager.cacheStoreEnabled) {
     CacheManager.cachedModelData = syncData;
   }
@@ -251,7 +251,6 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
 
 export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
   const lightData = new VoxelLightData();
-  new VoxelIndex(data.voxels);
 
   const materials: VoxelMaterialData[] = [
     { id: "dve_solid", properties: {} },
@@ -367,9 +366,8 @@ export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
     ...data.voxels,
   ];
 
-  let models = GetModelData(data);
-
-  const voxelData = BuildTagAndPaletteData({
+  RegisterModels(data);
+  const voxelData = BuildTagData({
     voxels,
     voxelsOverrides: {
       [VoxelTagIds.lightValue]: (value) => {
@@ -385,6 +383,8 @@ export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
     materials,
   });
 
+  let models = GetModelData(data);
+
   BuildPaletteData({ models });
   voxelData.data.palette = VoxelPalettesRegister.voxels;
   voxelData.data.record = VoxelPalettesRegister.voxelRecord;
@@ -392,6 +392,7 @@ export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
   for (const id in voxelData.data.logic) {
     VoxelLogicRegister.register(id, voxelData.data.logic[id]);
   }
+  new VoxelIndex(data.voxels);
 
   return {
     models,

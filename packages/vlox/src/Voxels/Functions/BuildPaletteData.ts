@@ -114,6 +114,7 @@ export function BuildPaletteData(props: BuildPaletteDataProps) {
     }
   }
 
+  console.warn("FINAL PALETTE SIZE",finalPalette.length);
   VoxelPalettesRegister.voxels = finalPalette;
   VoxelPalettesRegister.voxelRecord = finalPaletteRecord;
 }

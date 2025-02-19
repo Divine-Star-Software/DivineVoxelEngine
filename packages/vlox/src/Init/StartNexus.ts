@@ -3,8 +3,7 @@ import { DivineVoxelEngineNexus } from "../Contexts/Nexus/DivineVoxelEngineNexus
 import { Environment } from "../Util/Environment";
 import { Threads } from "@amodx/threads";
 import InitWorldDataSync from "../Contexts/Base/Remote/InitWorldDataSync";
-import { SchemaRegister } from "../Voxels/State/SchemaRegister";
-import { VoxelTagStates } from "../Voxels/Data/VoxelTagStates";
+
 export async function StartNexus(data: {} = {}) {
   const DVEN = new DivineVoxelEngineNexus(data || {});
   DivineVoxelEngineNexus.environment = Environment.isNode()
@@ -15,7 +14,7 @@ export async function StartNexus(data: {} = {}) {
     parent = "server";
   }
 
-  await Threads.init("constructor", self, parent);
+  await Threads.init("generator", self, parent);
 
   let ready = false;
   InitDataSync({

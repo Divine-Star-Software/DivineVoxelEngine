@@ -20,7 +20,7 @@ export async function StartGenerator(data: {} = {}) {
     parent = "server";
   }
 
-  await Threads.init("constructor", self, parent);
+  await Threads.init("generator", self, parent);
 
   let ready = false;
 

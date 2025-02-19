@@ -15,9 +15,9 @@ export default function ImportSector(
   sector.setBuffer(
     Sector.CreateNewBuffer()
   );
-  sector.position[0] =    archivedSector.location[0];
-  sector.position[1] =    archivedSector.location[1];
-  sector.position[2] =    archivedSector.location[2];
+  sector.position[0] =    archivedSector.position[0];
+  sector.position[1] =    archivedSector.position[1];
+  sector.position[2] =    archivedSector.position[2];
 
   sector.loadFlags(archivedSector.flags);
   sector.loadTimestamps(archivedSector.timestamps);

@@ -31,7 +31,7 @@ export interface VoxelModelRelationsSchemaData {
 export type BinarySchemaNodeData = {
   id: string;
   type: "binary";
-  valuePalette?:string[];
+  valuePalette?: string[];
   index: number;
   mask: number;
 };
@@ -73,7 +73,6 @@ export const StateLogicOperationsMap: Record<string, StateLogiceOperations> = {
 export type StateLogicNode = [
   schemaId: number,
   operation: StateCompareOperations,
-  value: number
+  value: number,
 ];
 export type StateLogicStatement = (StateLogicNode | StateLogiceOperations)[];
-

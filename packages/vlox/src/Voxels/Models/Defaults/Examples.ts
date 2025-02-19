@@ -17,7 +17,7 @@ export const chainGeometry: VoxelGeometryData = {
         [11, 0, 5],
         [5, 0, 11],
       ],
-      uv: [0, 0, 6, 1],
+      uv: [0, 0, 6, 16],
       texture: "@texture",
       doubleSided: true,
     },
@@ -826,6 +826,30 @@ export const candlesModel: VoxelModelData = {
       type: "texture",
     },
   },
+  tags: {
+    dve_logic_data: [
+      {
+        type: "state",
+        value: {
+          lit: "true",
+        },
+        true: [
+          {
+            type: "tag",
+            tagId: "dve_is_light_source",
+            value: true,
+          },
+        ],
+        false: [
+          {
+            type: "tag",
+            tagId: "dve_is_light_source",
+            value: false,
+          },
+        ],
+      },
+    ],
+  },
   relationsSchema: [],
   placingStrategy: "*",
   stateSchema: [
@@ -861,20 +885,6 @@ export const candlesModel: VoxelModelData = {
           [8 + 2, 6.5, 8 + -2],
           [8 + -2, 5.5, 8 + -2],
         ],
-      },
-    },
-    {
-      type: "tag",
-      tagId: "dve_is_light_source",
-      values: {
-        "num_candles=0,lit=false": false,
-        "num_candles=0,lit=true": true,
-        "num_candles=1,lit=false": false,
-        "num_candles=1,lit=true": true,
-        "num_candles=2,lit=false": false,
-        "num_candles=2,lit=true": true,
-        "num_candles=3,lit=false": false,
-        "num_candles=3,lit=true": true,
       },
     },
   ],

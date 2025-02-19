@@ -14,7 +14,11 @@ export type TextureDataBase = {
    */
   id: string;
   /**
-   * If the texture is not in the default path specify it here.
+   * Specify the base path to look for the texture in. 
+   */
+  basePath?: string;
+  /**
+   * Specify the directy path to the texture
    */
   path?: string;
   /**
@@ -27,9 +31,9 @@ export type TextureDataBase = {
   atlas?: {
     tiles: [tilesX: number, tilesY: number];
     /**To make it eaiser to use specifc tiles from an atlas you can name tiles.
-     * 
-     *  To use the name just at it to the end of the id with a colon ":". 
-     * 
+     *
+     *  To use the name just at it to the end of the id with a colon ":".
+     *
      * dve_dream_stone:grassy-top
      */
     namedTiles?: {
@@ -43,7 +47,7 @@ export type TextureDataBase = {
    */
   animated?: {
     frameTime: number;
-    pingPong?:boolean;
+    pingPong?: boolean;
     interpolate?: boolean;
     frames?: (number | { index: number; time: number })[];
   };

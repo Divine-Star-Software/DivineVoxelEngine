@@ -63,6 +63,10 @@ export function CompileQuadGeometryNode(
         (input.args[argsIndex][QuadVoxelGometryInputs.ArgIndexes.Enabled] =
           value)
     );
+  } else {
+    node.enabled !== undefined &&
+      (input.args[argsIndex][QuadVoxelGometryInputs.ArgIndexes.Enabled] =
+        node.enabled as boolean);
   }
 
   if (input.isArgString(node.doubleSided)) {
@@ -72,6 +76,10 @@ export function CompileQuadGeometryNode(
         (input.args[argsIndex][QuadVoxelGometryInputs.ArgIndexes.DoubleSided] =
           value)
     );
+  } else {
+    node.doubleSided !== undefined &&
+      (input.args[argsIndex][QuadVoxelGometryInputs.ArgIndexes.DoubleSided] =
+        node.doubleSided as boolean);
   }
   if (input.isArgString(node.rotation)) {
     input.onInput(String(node.rotation!), (value) => {

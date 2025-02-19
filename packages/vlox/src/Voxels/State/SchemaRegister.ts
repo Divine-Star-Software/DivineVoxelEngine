@@ -7,8 +7,8 @@ export class SchemaRegister {
     string,
     VoxelModelStateSchemaData[]
   >();
-  static modelStateSchemaData = new Map<string, BinarySchemaNodeData[]>();
-  static voxelModSchemaData = new Map<string, BinarySchemaNodeData[]>();
+  static stateSchemaData = new Map<string, BinarySchemaNodeData[]>();
+  static modSchemaData = new Map<string, BinarySchemaNodeData[]>();
   static modelStaeSchemas = new Map<string, BinarySchema>();
   static voxelModSchemas = new Map<string, BinarySchema>();
   static voxelModelMap = new Map<string, string>();
@@ -18,8 +18,8 @@ export class SchemaRegister {
   static hasVoxelSchema(voxelId: string) {
     if (this.voxelSchemas.has(voxelId)) return true;
     if (
-      this.modelStateSchemaData.has(this.voxelModelMap.get(voxelId) || "") &&
-      this.voxelModSchemaData.has(voxelId)
+      this.stateSchemaData.has(this.voxelModelMap.get(voxelId) || "") &&
+      this.modSchemaData.has(voxelId)
     )
       return true;
     return false;
@@ -28,7 +28,7 @@ export class SchemaRegister {
   static getModelSchema(modelId: string) {
     let stateSchema = this.modelStaeSchemas.get(modelId);
     if (!stateSchema) {
-      const schemaData = this.modelStateSchemaData.get(modelId);
+      const schemaData = this.stateSchemaData.get(modelId);
       if (!schemaData) throw new Error(`Model ${modelId} is not registered`);
       stateSchema = new BinarySchema(schemaData);
     }
@@ -39,7 +39,7 @@ export class SchemaRegister {
   static getVoxelModSchema(voxelId: string) {
     let modSchema = this.voxelModSchemas.get(voxelId);
     if (!modSchema) {
-      const schemaData = this.voxelModSchemaData.get(voxelId);
+      const schemaData = this.modSchemaData.get(voxelId);
       if (!schemaData)
         throw new Error(`Voxel mod sceham [${voxelId}] is not registered`);
       modSchema = new BinarySchema(schemaData);
@@ -57,14 +57,14 @@ export class SchemaRegister {
     if (!modelId) throw new Error(`Voxel ${voxelId} is not registered`);
     let stateSchema = this.modelStaeSchemas.get(modelId);
     if (!stateSchema) {
-      const schemaData = this.modelStateSchemaData.get(modelId);
+      const schemaData = this.stateSchemaData.get(modelId);
       if (!schemaData) throw new Error(`Model ${modelId} is not registered`);
       stateSchema = new BinarySchema(schemaData);
     }
 
     let modSchema = this.voxelModSchemas.get(voxelId);
     if (!modSchema) {
-      const schemaData = this.voxelModSchemaData.get(voxelId);
+      const schemaData = this.modSchemaData.get(voxelId);
       if (!schemaData) throw new Error(`Voxel ${voxelId} is not registered`);
       modSchema = new BinarySchema(schemaData);
     }
@@ -85,7 +85,7 @@ export class SchemaRegister {
         binaryData.push(node);
       }
     }
-    this.modelStateSchemaData.set(id, binaryData);
+    this.stateSchemaData.set(id, binaryData);
   }
 
   static registerVoxel(
@@ -100,6 +100,6 @@ export class SchemaRegister {
         binaryData.push(node);
       }
     }
-    this.voxelModSchemaData.set(id, binaryData);
+    this.modSchemaData.set(id, binaryData);
   }
 }

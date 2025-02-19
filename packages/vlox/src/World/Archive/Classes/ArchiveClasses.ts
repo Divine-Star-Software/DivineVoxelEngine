@@ -2,7 +2,9 @@ import { StringPalette } from "../../../Util/StringPalette";
 import { NumberPalette } from "../../../Util/NumberPalette";
 import { Section } from "../../../World/Section";
 import { ArchivedLightSegments } from "../Archive.types";
-
+import { VoxelPalettesRegister } from "../../../Voxels/Data/VoxelPalettesRegister";
+import { SchemaRegister } from "../../../Voxels/State/SchemaRegister";
+import { BinarySchemaNodeData } from "../../../Voxels/State/State.types";
 class ProcessedData<Buffer = any> {
   constructor(public buffer: Buffer) {}
   allTheSame = true;
@@ -12,17 +14,75 @@ class ProcessedData<Buffer = any> {
 }
 
 class SectionPalette {
-  ids = new NumberPalette();
+  voxels = new NumberPalette();
   level = new NumberPalette();
   light = new LightPalette();
-  maxStatePaletteSize = 0;
-  state: Record<number, NumberPalette> = {};
-  secondaryState: Record<number, NumberPalette> = {};
-  maxModPaletteSize = 0;
-  mod: Record<number, NumberPalette> = {};
-  secondaryMod: Record<number, NumberPalette> = {};
-  secondaryId = new NumberPalette();
-  secondaryValue = new NumberPalette();
+  secondaryVoxels = new NumberPalette();
+}
+
+export class SectorVoxelPalette {
+  ids = new StringPalette();
+  value = 0;
+  get size() {
+    return this._voxelCount;
+  }
+  _voxelsRegistered = new Map<number, number>();
+  _statesSchemasRegistered = new Map<string, number>();
+  _modSchemasRegistered = new Map<string, number>();
+
+  voxelPalette: number[] = [];
+  statePalette: BinarySchemaNodeData[][] = [[]];
+  modPalette: BinarySchemaNodeData[][] = [[]];
+  _voxelCount = 0;
+  _stateSchemaCount = 1;
+  _modSchemaCount = 1;
+  register(id: number) {
+    if (this._voxelsRegistered.has(id)) return this._voxelsRegistered.get(id)!;
+
+    const stringId = VoxelPalettesRegister.voxelIds.getStringId(
+      VoxelPalettesRegister.voxels[id][0]
+    );
+
+    let voxelId = 0;
+    if (!this.ids.isRegistered(stringId)) {
+      voxelId = this.ids.register(stringId);
+      const stateData = SchemaRegister.stateSchemaData.get(
+        SchemaRegister.voxelModelMap.get(stringId)!
+      );
+      const modData = SchemaRegister.modSchemaData.get(stringId);
+
+      let statePaletteId = this._stateSchemaCount;
+      if (!stateData || stateData?.length == 0) {
+        statePaletteId = 0;
+      } else {
+        this.statePalette[statePaletteId] = stateData;
+        this._stateSchemaCount++;
+      }
+
+      let modPaletteId = this._modSchemaCount;
+      if (!modData || modData?.length == 0) {
+        modPaletteId = 0;
+      } else {
+        this.modPalette[modPaletteId] = modData;
+        this._modSchemaCount++;
+      }
+
+      this._statesSchemasRegistered.set(stringId, statePaletteId);
+      this._modSchemasRegistered.set(stringId, modPaletteId);
+    } else {
+      voxelId = this.ids.getNumberId(stringId);
+    }
+    const statePaletteId = this._statesSchemasRegistered.get(stringId)!;
+    const modPaletteId = this._modSchemasRegistered.get(stringId)!;
+
+    const paletteId = this._voxelCount;
+    this._voxelsRegistered.set(id, paletteId);
+    const [, state, mod] = VoxelPalettesRegister.voxels[id];
+    this.voxelPalette.push(voxelId, statePaletteId, state, modPaletteId, mod);
+    this._voxelCount++;
+
+    return paletteId;
+  }
 }
 
 export class ProcessedSection {
@@ -33,13 +93,13 @@ export class ProcessedSection {
   voxelMapValue = 0;
   isDirtyMapAllTheSame = false;
   dirtyMapValue = 0;
-  ids: ProcessedData<Uint16Array>;
+  voxels: ProcessedData<Uint16Array>;
   light: Record<ArchivedLightSegments, ProcessedData<Uint8Array>>;
   level: ProcessedData<Uint8Array>;
 
-  secondary: ProcessedData<Uint16Array>;
+  secondaryVoxels: ProcessedData<Uint16Array>;
   constructor(public original: Section) {
-    this.ids = new ProcessedData(new Uint16Array(original.ids.length));
+    this.voxels = new ProcessedData(new Uint16Array(original.ids.length));
     this.level = new ProcessedData(new Uint8Array(original.level.length));
     this.light = {
       sun: new ProcessedData(new Uint8Array(original.light.length)),
@@ -47,7 +107,7 @@ export class ProcessedSection {
       green: new ProcessedData(new Uint8Array(original.light.length)),
       blue: new ProcessedData(new Uint8Array(original.light.length)),
     };
-    this.secondary = new ProcessedData(
+    this.secondaryVoxels = new ProcessedData(
       new Uint16Array(original.secondary.length)
     );
   }
@@ -66,15 +126,7 @@ export class VoxelStateObjectMap {
 }
 
 export class SectorPalette {
-  ids = new StringPalette();
+  voxels = new SectorVoxelPalette();
   level = new NumberPalette();
   light = new LightPalette();
-  stateMap: VoxelStateObjectMap[] = [];
-  secondaryStateMap: VoxelStateObjectMap[] = [];
-  maxStatePaletteSize = 0;
-  modMap: VoxelStateObjectMap[] = [];
-  secondaryModMap: VoxelStateObjectMap[] = [];
-  maxModPaletteSize = 0;
-  secondaryId = new StringPalette();
-  secondaryValue = new NumberPalette();
 }

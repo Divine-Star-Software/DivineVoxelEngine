@@ -15,15 +15,16 @@ export type VoxelLogicEffects =
       value: string | number;
     };
 
-export type VoxelLogicData =
-  | {
-      type: "powered";
-      on: VoxelLogicEffects[];
-      off: VoxelLogicEffects[];
-    }
-  | {
-      type: "state";
-      value: string;
-      true: VoxelLogicEffects[];
-      false: VoxelLogicEffects[];
-    };
+export type VoxelLogicPoweredData = {
+  type: "powered";
+  on: VoxelLogicEffects[];
+  off: VoxelLogicEffects[];
+};
+export type VoxelLogicStateData = {
+  type: "state";
+  value: Record<string,number|string>;
+  true: VoxelLogicEffects[];
+  false: VoxelLogicEffects[];
+};
+
+export type VoxelLogicData = VoxelLogicPoweredData | VoxelLogicStateData;

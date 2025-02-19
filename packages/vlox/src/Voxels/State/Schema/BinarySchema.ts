@@ -110,7 +110,15 @@ export class BinarySchema {
     return this;
   }
 
-  getNmber(id: string) {
+  get(id: string): string | number {
+    const node = this.nodeMap.get(id);
+    if (!node) throw new Error(`Node with ${id} does not exist.`);
+    if (node.valuePalette)
+      return node.valuePalette.getStringId(node.getValue(this._value));
+    return node.getValue(this._value);
+  }
+
+  getNumber(id: string) {
     const node = this.nodeMap.get(id);
     if (!node) throw new Error(`Node with ${id} does not exist.`);
     return node.getValue(this._value);

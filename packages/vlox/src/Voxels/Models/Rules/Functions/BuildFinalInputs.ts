@@ -23,8 +23,14 @@ export function BuildFinalInputs(model: VoxelRulesModoel) {
           for (const geoArg in node.inputs) {
             const constructorArg = node.inputs[geoArg];
             if (geo.input.isArgString(constructorArg)) {
-              geo.input.proxy[geoArg] =
-                modVoxelInput[constructorArg.replace("@", "")];
+              const arg = constructorArg.replace("@", "");
+              if (!Object.hasOwn(modVoxelInput, arg)) {
+                console.warn(
+                  `Could not input for voxel ${voxelId} and geo ${geo.data.id}. ${geoArg} does not exist`
+                );
+                continue;
+              }
+              geo.input.proxy[geoArg] = modVoxelInput[arg];
               continue;
             }
             geo.input.proxy[geoArg] = constructorArg;

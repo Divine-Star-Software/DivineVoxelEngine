@@ -22,7 +22,7 @@ export class VoxelNamedState {
     for (const key in data.properties) {
       this.tags.set(key, data.properties[key]);
     }
-    if (SchemaRegister.voxelModSchemaData.has(this.voxelId)) {
+    if (SchemaRegister.modSchemaData.has(this.voxelId)) {
       const schema = SchemaRegister.getVoxelSchemas(this.voxelId);
       if (this.data.state == "*") {
         this.compiled.stateAny = true;
@@ -83,6 +83,7 @@ export class VoxelIndex {
   states = new Map<string, VoxelNamedStateContainer>();
   stateArray: VoxelNamedStateContainer[] = [];
   tagIndexes = new Map<string, TagIndex>();
+
   constructor(data: VoxelData[]) {
     if (VoxelIndex.instance) return VoxelIndex.instance;
     if (!VoxelIndex.instance) VoxelIndex.instance = this;
@@ -127,6 +128,7 @@ export class VoxelIndex {
     }
     return false;
   }
+
   getStateFromRawData(data: RawVoxelData): VoxelNamedState | false {
     const [id, light, secondary] = data;
     const [, mod, state] = VoxelPalettesRegister.voxels[id];

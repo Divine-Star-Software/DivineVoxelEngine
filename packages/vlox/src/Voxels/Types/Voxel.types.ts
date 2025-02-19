@@ -26,6 +26,8 @@ export type VoxelNamedStateData = {
   display:
     | {
         type: "texture";
+        /**The id of the texture type to pull from  */
+        textureType?: string;
         source: TextureId | string;
       }
     | {
@@ -74,11 +76,13 @@ export type RawVoxelData = [
   secondary: number,
 ];
 
-
-interface VoxelProperties extends Partial<VoxelTags> {
+export interface VoxelBaseProperties extends Partial<VoxelTags> {
   [key: string]: any;
   /**Logic data for a the voxel */
   dve_logic_data?: VoxelLogicData[];
+}
+
+export interface VoxelProperties extends VoxelBaseProperties {
   /** Named states associated with the voxel. Used for indexing. */
   dve_named_states?: VoxelNamedStateData[];
   /** Model data used to construct the voxel's appearance. */

@@ -11,8 +11,8 @@ export function CreateArchivedSection(
   sectorPalettes: SectorPalette
 ): ArchivedSectionData {
   const palettes: ArchivedSectionData["palettes"] = {};
-  if (archiveSection.ids.remapped)
-    palettes.id = Uint16Array.from(archiveSection.palettes.ids._palette);
+  if (archiveSection.voxels.remapped)
+    palettes.id = Uint16Array.from(archiveSection.palettes.voxels._palette);
 
   if (archiveSection.level.remapped)
     palettes.level = Uint8Array.from(archiveSection.palettes.level._palette);
@@ -42,31 +42,28 @@ export function CreateArchivedSection(
     );
   }
 
-  if (archiveSection.secondary.remapped) {
-    palettes.secondaryId = Uint16Array.from(
-      archiveSection.palettes.secondaryId._palette
-    );
-    palettes.secondaryValue = Uint16Array.from(
-      archiveSection.palettes.secondaryValue._palette
+  if (archiveSection.secondaryVoxels.remapped) {
+    palettes.secondaryVoxels = Uint16Array.from(
+      archiveSection.palettes.secondaryVoxels._palette
     );
   }
 
   const buffers: ArchivedSectionData["buffers"] = <any>{};
 
   //id
-  if (archiveSection.ids.allTheSame) {
-    if (archiveSection.ids.buffer[0] !== 0) {
-      buffers.id = archiveSection.ids.buffer[0];
+  if (archiveSection.voxels.allTheSame) {
+    if (archiveSection.voxels.buffer[0] !== 0) {
+      buffers.id = archiveSection.voxels.buffer[0];
     }
-  } else if (archiveSection.ids.isPaletted) {
+  } else if (archiveSection.voxels.isPaletted) {
     const type = BinaryBuffer.DetermineSubByteArray(
-      archiveSection.ids.remapped
-        ? archiveSection.palettes.ids.size
-        : sectorPalettes.ids.size
+      archiveSection.voxels.remapped
+        ? archiveSection.palettes.voxels.size
+        : sectorPalettes.voxels.size
     )!;
     buffers.id = BinaryBuffer.Create({
       buffer: BinaryBuffer.Convert(
-        archiveSection.ids.buffer,
+        archiveSection.voxels.buffer,
         BinaryBufferTypes.ShortArray,
         type
       ).buffer,
@@ -74,7 +71,7 @@ export function CreateArchivedSection(
     });
   } else {
     buffers.id = BinaryBuffer.Create({
-      buffer: archiveSection.ids.buffer.buffer,
+      buffer: archiveSection.voxels.buffer.buffer,
       type: BinaryBufferTypes.ShortArray,
     });
   }
@@ -135,25 +132,19 @@ export function CreateArchivedSection(
     }
   }
 
-  if (archiveSection.secondary.allTheSame) {
-    if (archiveSection.secondary.buffer[0] !== 0) {
-      buffers.secondary = archiveSection.secondary.buffer[0];
+  if (archiveSection.secondaryVoxels.allTheSame) {
+    if (archiveSection.secondaryVoxels.buffer[0] !== 0) {
+      buffers.secondary = archiveSection.secondaryVoxels.buffer[0];
     }
-  } else if (archiveSection.secondary.isPaletted) {
+  } else if (archiveSection.secondaryVoxels.isPaletted) {
     const type = BinaryBuffer.DetermineSubByteArray(
-      archiveSection.secondary.remapped
-        ? Math.max(
-            archiveSection.palettes.secondaryValue.size,
-            archiveSection.palettes.secondaryId.size
-          )
-        : Math.max(
-            sectorPalettes.secondaryValue.size,
-            sectorPalettes.secondaryId.size
-          )
+      archiveSection.secondaryVoxels.remapped
+        ? archiveSection.palettes.secondaryVoxels.size
+        : sectorPalettes.voxels.size
     )!;
     buffers.secondary = BinaryBuffer.Create({
       buffer: BinaryBuffer.Convert(
-        archiveSection.secondary.buffer,
+        archiveSection.secondaryVoxels.buffer,
         BinaryBufferTypes.ShortArray,
         type
       ).buffer,
@@ -161,7 +152,7 @@ export function CreateArchivedSection(
     });
   } else {
     buffers.secondary = BinaryBuffer.Create({
-      buffer: archiveSection.secondary.buffer.buffer,
+      buffer: archiveSection.secondaryVoxels.buffer.buffer,
       type: BinaryBufferTypes.ShortArray,
     });
   }

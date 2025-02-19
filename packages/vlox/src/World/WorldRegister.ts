@@ -18,6 +18,7 @@ class WorldDataHooks {
 }
 
 class WorldRegisterDimensions {
+  static _dimensionMap = new Map<string, number>([[ "main",0]]);
   static add(index: number, id: string = "") {
     const dimesnion = Dimension.CreateNew(index, id);
     WorldRegister._dimensions.set(index, dimesnion);

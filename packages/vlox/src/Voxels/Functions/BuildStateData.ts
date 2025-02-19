@@ -14,7 +14,6 @@ import {
   VoxelModelRelationsSchemaData,
 } from "../State/State.types";
 import { VoxelEffectSyncData } from "../Effects/VoxelEffects.types";
-import { VoxelTagStates } from "../Data/VoxelTagStates";
 import { VoxelPalettesRegister } from "../Data/VoxelPalettesRegister";
 import { StateSchema } from "../State/Schema/StateSchema";
 import { bitsNeeded } from "../../Util/Binary/BinaryFunctions";
@@ -485,16 +484,6 @@ export function BuildStateData(
     const modeStateTree = new StateTreeNode("root");
     const modStatePalette: any[] = [];
     const modStateRecord: Record<string, number> = {};
-
-    for (const tag of tagEffects) {
-      VoxelTagStates.register(
-        VoxelPalettesRegister.voxelIds.getNumberId(voxelId),
-        (tag as any).tagId,
-        schema,
-        tag.tree,
-        tag.treePalette
-      );
-    }
 
     const { baseSchema, schemaIdPalette, schemaValuePalette } = buildSchemas(
       voxelData.modSchema || [],

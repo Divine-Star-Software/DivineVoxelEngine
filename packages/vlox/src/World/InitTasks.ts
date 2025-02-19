@@ -110,10 +110,10 @@ export default function ({
   Threads.registerTask<WorldLockTasks>("world-dealloc", async (data) => {
     await WorldLock.removeLock(data);
   });
-  /* 
-  Threads.registerTask<LoadSectorDataTasks>(
+
+  Threads.registerTask<[LocationData, ArrayBufferLike]>(
     "load-sector",
-    ([location, sector]) => {
+    ([location,sector]) => {
       WorldRegister.sectors.add(
         location[0],
         location[1],
@@ -127,6 +127,7 @@ export default function ({
       return [true];
     }
   );
+    /* 
   Threads.registerTask<RunBuildQueue>("build-queue", async ([dim, sections]) => {
     for (const position of sections) {
       mesher.setLocation([dim, ...position]).buildSection();

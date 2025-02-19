@@ -1,4 +1,3 @@
-import { VoxelTagStatesData } from "Voxels/Data/VoxelTagStates";
 import { AOOcclusionFaceIndexData } from "../Models/Indexing/AOOcclusionFaceIndex";
 import { CulledOcclusionFaceIndexData } from "../Models/Indexing/CulledOcclusionFaceIndex";
 import {
@@ -60,5 +59,4 @@ export interface FinalCompiledVoxelModelData {
 
   models: CompiledVoxelModelData[];
   voxels: CompiledVoxelModelInputData[];
-  tagState: VoxelTagStatesData;
 }

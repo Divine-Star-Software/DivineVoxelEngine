@@ -1,6 +1,5 @@
 import { VoxelLightData } from "./VoxelLightData";
 import { VoxelLevelReader } from "./VoxelLevelReader";
-import { VoxelTagStates } from "../Data/VoxelTagStates";
 import { RawVoxelData } from "../Types/Voxel.types";
 import {
   VoxelSubstanceTags,
@@ -15,8 +14,9 @@ interface WritableArrayLike<T> {
   [index: number]: T;
 }
 export abstract class VoxelCursorInterface {
-  _loadedId = 0;
+  _voxelId = 0;
   id = 0;
+
   secondaryId = 0;
 
   _tags: VoxelTags = {} as any;
@@ -42,9 +42,8 @@ export abstract class VoxelCursorInterface {
     this.id = this.ids[this._index];
     this.secondaryId = this.secondary[this._index];
 
-    this._loadedId = this.getId();
-
-    this._tags = VoxelTagsRegister.VoxelTags[this.getVoxelId()];
+    this._voxelId = this.getVoxelId();
+    this._tags = VoxelTagsRegister.VoxelTags[this._voxelId];
 
     this._substanceTags =
       VoxelTagsRegister.SubstanceStags[
@@ -58,7 +57,7 @@ export abstract class VoxelCursorInterface {
 
   setSecondary(enable: boolean) {
     this.__secondary = enable;
-    this._loadedId = this.getId();
+
     return this;
   }
   getRenderedMaterial() {
@@ -125,7 +124,7 @@ export abstract class VoxelCursorInterface {
   }
 
   getLight() {
-    if (this._loadedId == 0) return this.light[this._index];
+    if (this._voxelId == 0) return this.light[this._index];
     if (this.isOpaque()) {
       if (this.isLightSource()) {
         return this._tags[VoxelTagIds.lightValue] as number;
@@ -147,27 +146,18 @@ export abstract class VoxelCursorInterface {
   }
 
   isLightSource() {
-    if (this._loadedId <= 0) return false;
+    if (this._voxelId <= 0) return false;
     if (
-      VoxelLogicRegister.voxels[this._loadedId]?.hasTag(
+      VoxelLogicRegister.voxels[this._voxelId]?.hasTag(
         VoxelTagIds.isLightSource
       )
     ) {
-      return VoxelLogicRegister.voxels[this._loadedId].getTagValue(
+      return VoxelLogicRegister.voxels[this._voxelId].getTagValue(
         VoxelTagIds.isLightSource,
         this
       );
     }
-    return VoxelTagStates.isRegistered(
-      this._loadedId,
-      VoxelTagIds.isLightSource
-    )
-      ? VoxelTagStates.getValue(
-          this._loadedId,
-          VoxelTagIds.isLightSource,
-          this.getState()
-        ) === true
-      : this._tags[VoxelTagIds.isLightSource];
+    return this._tags[VoxelTagIds.isLightSource];
   }
 
   doesVoxelAffectLogic() {
@@ -183,12 +173,12 @@ export abstract class VoxelCursorInterface {
   }
 
   getLightSourceValue() {
-    if (this._loadedId <= 0) return 0;
+    if (this._voxelId <= 0) return 0;
     return this._tags[VoxelTagIds.lightValue] as number;
   }
 
   getPower() {
-    if (this._loadedId == 0) return -1;
+    if (this._voxelId == 0) return -1;
     if (this._substanceTags["dve_is_liquid"]) return -1;
     if (
       !this._tags["dve_can_carry_power"] &&
@@ -215,26 +205,27 @@ export abstract class VoxelCursorInterface {
   }
 
   isPowerSource() {
-    if (this._loadedId <= 0) return false;
-    return VoxelTagStates.isRegistered(
-      this._loadedId,
-      VoxelTagIds.isPowerSource
-    )
-      ? VoxelTagStates.getValue(
-          this._loadedId,
-          VoxelTagIds.isPowerSource,
-          this.getState()
-        ) === true
-      : this._tags[VoxelTagIds.isPowerSource];
+    if (this._voxelId <= 0) return false;
+    if (
+      VoxelLogicRegister.voxels[this._voxelId]?.hasTag(
+        VoxelTagIds.isPowerSource
+      )
+    ) {
+      return VoxelLogicRegister.voxels[this._voxelId].getTagValue(
+        VoxelTagIds.isPowerSource,
+        this
+      );
+    }
+    return this._tags[VoxelTagIds.isPowerSource];
   }
 
   getPowerSourceValue() {
-    if (this._loadedId <= 0) return 0;
+    if (this._voxelId <= 0) return 0;
     return this._tags[VoxelTagIds.powerValue] as number;
   }
 
   noAO() {
-    if (this._loadedId <= 0) return false;
+    if (this._voxelId <= 0) return false;
     return this._tags[VoxelTagIds.noAO];
   }
   isRenderable() {

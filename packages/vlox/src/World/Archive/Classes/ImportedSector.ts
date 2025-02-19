@@ -2,68 +2,28 @@ import { StringPalette } from "../../../Util/StringPalette";
 import { NumberPalette } from "../../../Util/NumberPalette";
 import { ArchivedLightSegments, ArchivedSectorData } from "../Archive.types";
 import { ImportedSection } from "./ImportedSection";
+import { BinarySchemaNodeData } from "../../../Voxels/State/State.types";
+import { BinarySchema } from "../../../Voxels/State/Schema/BinarySchema";
 import { SchemaRegister } from "../../../Voxels/State/SchemaRegister";
 
 class ImportedSectorPalettes {
   id: StringPalette;
-  secondaryId: StringPalette;
-  secondaryValue: NumberPalette;
+  voxelPalette: Uint16Array;
+  statePalette: BinarySchemaNodeData[][] = [];
+  modPalette: BinarySchemaNodeData[][] = [];
+
+  stateSchemas = new Map<number, BinarySchema>();
+  modSchema = new Map<number, BinarySchema>();
+
   level?: NumberPalette;
   light: Record<ArchivedLightSegments, NumberPalette | null>;
-  state: number[][] = [];
-  secondaryState: number[][] = [];
-  mod: number[][] = [];
-  secondaryMod: number[][] = [];
+
   constructor(sector: ArchivedSectorData) {
-    for (let i = 0; i < sector.palettes.id.length; i++) {
-      const voxelId = sector.palettes.id[i];
-      if (!SchemaRegister.hasVoxelSchema(voxelId)) continue;
-      const schema = SchemaRegister.getVoxelSchemas(voxelId);
-      const stateMap = sector.palettes.stateMap[i];
-      if (stateMap) {
-        const stateArray: number[] = [];
-        for (let s = 0; s < stateMap.length; s++) {
-          stateArray[s] = schema.state.fromStateObject(stateMap[s]);
-        }
-        this.state[i] = stateArray;
-      }
-
-      const modMap = sector.palettes.modMap[i];
-      if (modMap) {
-        const modArray: number[] = [];
-        for (let m = 0; m < modMap.length; m++) {
-          modArray[m] = schema.mod.fromStateObject(modMap[m]);
-        }
-        this.mod[i] = modArray;
-      }
-    }
-
-    for (let i = 0; i < sector.palettes.secondaryId.length; i++) {
-      const voxelId = sector.palettes.secondaryId[i];
-      if (!SchemaRegister.hasVoxelSchema(voxelId)) continue;
-      const schema = SchemaRegister.getVoxelSchemas(voxelId);
-      const stateMap = sector.palettes.secondaryStateMap[i];
-      if (stateMap) {
-        const stateArray: number[] = [];
-        for (let s = 0; s < stateMap.length; s++) {
-          stateArray[s] = schema.state.fromStateObject(stateMap[s]);
-        }
-        this.secondaryState[i] = stateArray;
-      }
-      const modMap = sector.palettes.secondaryModMap[i];
-
-      if (modMap) {
-        const modArray: number[] = [];
-        for (let m = 0; m < modMap.length; m++) {
-          modArray[m] = schema.mod.fromStateObject(modMap[m]);
-        }
-        this.secondaryMod[i] = modArray;
-      }
-    }
-
     this.id = new StringPalette(sector.palettes.id);
-    this.secondaryId = new StringPalette(sector.palettes.secondaryId);
-    this.secondaryValue = new NumberPalette(sector.palettes.secondaryValue);
+    this.voxelPalette = sector.palettes.voxelPalette;
+    this.statePalette = sector.palettes.stateSchemaPalette;
+    this.modPalette = sector.palettes.modSchemaPaette;
+
     this.level = sector.palettes.level
       ? new NumberPalette(sector.palettes.level)
       : undefined;
@@ -84,6 +44,7 @@ class ImportedSectorPalettes {
   }
 }
 
+const temp: [id: string, state: number, mod: number] = ["", 0, 0];
 export class ImportedSector {
   sections: ImportedSection[] = [];
   palettes: ImportedSectorPalettes;
@@ -106,5 +67,59 @@ export class ImportedSector {
         archivedSection
       );
     }
+  }
+
+  getVoxelData(id: number) {
+    const index = id * 5;
+    temp[0] = this.palettes.id.getStringId(this.palettes.voxelPalette[index]);
+    if (temp[0] == "dve_air") {
+      temp[1] = 0;
+      temp[2] = 0;
+      return temp;
+    }
+    const voxelSchema = SchemaRegister.getVoxelSchemas(temp[0]);
+    let finalStateValue = 0;
+    const statePaletteId = this.palettes.voxelPalette[index + 1];
+    if (statePaletteId != 0) {
+      const stateNodes = this.palettes.statePalette[statePaletteId];
+      if (!this.palettes.stateSchemas.get(statePaletteId)!)
+        this.palettes.stateSchemas.set(
+          statePaletteId,
+          new BinarySchema(stateNodes)
+        );
+      const stateSchema = this.palettes.stateSchemas.get(statePaletteId)!;
+      const stateValue = this.palettes.voxelPalette[index + 2];
+      stateSchema.startEncoding(stateValue);
+      for (const node of stateNodes) {
+        if (node.valuePalette) {
+          voxelSchema.state.setValue(node.id, stateSchema.getValue(node.id));
+        } else {
+          voxelSchema.state.setNumber(node.id, stateSchema.getNumber(node.id));
+        }
+      }
+      finalStateValue = stateSchema.getEncoded();
+    }
+    temp[1] = finalStateValue;
+    let finalModValue = 0;
+    const modPaletteId = this.palettes.voxelPalette[index + 3];
+    if (modPaletteId != 0) {
+      const modNodes = this.palettes.modPalette[modPaletteId];
+
+      if (!this.palettes.modSchema.get(modPaletteId)!)
+        this.palettes.modSchema.set(modPaletteId, new BinarySchema(modNodes));
+      const modSchema = this.palettes.modSchema.get(modPaletteId)!;
+      const modValue = this.palettes.voxelPalette[index + 4];
+      modSchema.startEncoding(modValue);
+      for (const node of modNodes) {
+        if (node.valuePalette) {
+          voxelSchema.mod.setValue(node.id, modSchema.getValue(node.id));
+        } else {
+          voxelSchema.mod.setNumber(node.id, modSchema.getNumber(node.id));
+        }
+      }
+      finalModValue = modSchema.getEncoded();
+    }
+    temp[2] = finalModValue;
+    return temp;
   }
 }

@@ -30,6 +30,7 @@ export const simpleCube: VoxelModelData = {
     ],
   },
 };
+
 export const simpleTransparentCube: VoxelModelData = {
   id: "dve_transparent_simple_cube",
   relationsSchema: [],
@@ -67,6 +68,7 @@ export const simpleTransparentCube: VoxelModelData = {
     ],
   },
 };
+
 export const simpleNoCulledCube: VoxelModelData = {
   id: "dve_no_cull_simple_cube",
   relationsSchema: [],
@@ -182,7 +184,6 @@ export const orientedCube: VoxelModelData = {
       direction: [1, 0, 0],
       state: "placement=west,rotation=270",
     },
-
     //north normal
     {
       face: "north",

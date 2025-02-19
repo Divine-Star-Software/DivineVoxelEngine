@@ -30,6 +30,37 @@ import { VoxelPalettesRegister } from "@divinevoxel/vlox/Voxels/Data/VoxelPalett
 const dataTool = new VoxelCursor();
 const materialMap = new Map<string, DVEBRClassicMaterial>();
 
+let canvas = document.createElement("canvas");
+let context: CanvasRenderingContext2D = canvas.getContext("2d")!;
+async function loadAndInvertImage(
+  imgSrcData: string | HTMLImageElement
+): Promise<string> {
+  if (!context) throw new Error("");
+  const prom: Promise<string> = new Promise((resolve, reject) => {
+    const image = typeof imgSrcData == "string" ? new Image() : imgSrcData;
+    image.onerror = (error) => reject(error);
+    if (typeof imgSrcData == "string") image.src = imgSrcData;
+    image.onload = () => {
+      canvas.width = image.width;
+      canvas.height = image.height;
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.imageSmoothingEnabled = false;
+      context.save();
+      context.translate(0, canvas.height);
+      context.scale(1, -1);
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      context.restore();
+      const dataUrl = canvas.toDataURL("image/png");
+      const returnImage = new Image(canvas.width, canvas.height);
+      returnImage.src = dataUrl;
+      returnImage.onload = () => {
+        resolve(returnImage.src);
+      };
+    };
+  });
+  return prom;
+}
+
 const buildMesh = (
   scene: Scene,
   voxelData: RawVoxelData,
@@ -107,17 +138,12 @@ export default async function CreateDisplayIndex(data: VoxelData[]) {
     return;
   }
 
-  const canvas = document.createElement("canvas");
-  canvas.width = 256;
-  canvas.height = 256;
-  /*   canvas.setAttribute(
-    "style",
-    "position:absolute;left:50%;top:0;background-color:black; z-index:100; width: 256px; height: 256px; display: block; margin: auto;"
-  );
-
-  document.body.append(canvas); */
-
-  const engine = new Engine(canvas, undefined, { preserveDrawingBuffer: true });
+  const render3dCanvas = document.createElement("canvas");
+  render3dCanvas.width = 256;
+  render3dCanvas.height = 256;
+  const engine = new Engine(render3dCanvas, undefined, {
+    preserveDrawingBuffer: true,
+  });
   const displayScene = new Scene(engine);
 
   const camera = new ArcRotateCamera(
@@ -178,24 +204,24 @@ export default async function CreateDisplayIndex(data: VoxelData[]) {
         if (state.data.display.mod) {
           addVoxelData.mod = voxelSchema.mod.readString(state.data.display.mod);
         }
-      const vid =   VoxelPalettesRegister.voxelIds.getNumberId(addVoxelData.id);
- 
+        const vid = VoxelPalettesRegister.voxelIds.getNumberId(addVoxelData.id);
+
         const rawData = VoxelCursor.VoxelDataToRaw(addVoxelData);
-        const mesh = await buildMesh(
-          displayScene,
-          rawData,
-          voxelId,
-          state.data.id
-        );
+        const mesh = buildMesh(displayScene, rawData, voxelId, state.data.id);
 
         if (!mesh) continue;
         mesh.setEnabled(false);
         meshes.set(mesh, { id: voxelId, stateId: state.data.id });
       }
       if (state.data.display.type == "texture") {
-        const { source } = state.data.display;
-        const path =
-          TextureManager.getTexture("dve_voxel").getTexturePath(source);
+        const { source, textureType } = state.data.display;
+
+        const path = await loadAndInvertImage(
+          TextureManager.getTexture(textureType || "dve_voxel").getTexturePath(
+            source
+          )
+        );
+
         VoxelTextureIndex.registerImage(voxelId, stateId, path);
         continue;
       }
@@ -210,7 +236,7 @@ export default async function CreateDisplayIndex(data: VoxelData[]) {
     VoxelTextureIndex.registerImage(
       data.id,
       data.stateId,
-      canvas.toDataURL("image/png")
+      render3dCanvas.toDataURL("image/png")
     );
 
     mesh.setEnabled(false);

@@ -17,10 +17,12 @@ export class CompiledTexture {
   };
 
   images: HTMLImageElement[] = [];
-
+  /**Maps texture ids to their atlas sizes  */
   atlasSizeMap: Record<string, [width: number, height: number]> = {};
+  /**Maps texture ids to their index */
   textureMap: Record<string, number> = {};
   animations: CompiledTextureAnimation[] = [];
+  /**To be used by the renderer to store a refernce to the actual texture used for rendering */
   shaderTexture: any;
   animatedTexture: TextureAnimationTexture;
 

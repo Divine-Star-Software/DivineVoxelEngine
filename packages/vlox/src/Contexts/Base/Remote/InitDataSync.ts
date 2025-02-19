@@ -4,7 +4,6 @@ import { EngineSettings } from "../../../Settings/EngineSettings";
 
 //objects
 import { SchemaRegister } from "../../../Voxels/State/SchemaRegister";
-import { VoxelTagStates } from "../../../Voxels/Data/VoxelTagStates";
 import { VoxelPalettesRegister } from "../../../Voxels/Data/VoxelPalettesRegister";
 import { VoxelTagsRegister } from "../../../Voxels/Data/VoxelTagsRegister";
 import { VoxelLogicRegister } from "../../../Voxels/Logic/VoxelLogicRegister";
@@ -29,7 +28,7 @@ export default function InitDataSync(props: {
     VoxelTagsRegister.SubstanceStags = data.voxels.substances.tags;
     VoxelPalettesRegister.voxels = data.voxels.data.palette;
     VoxelPalettesRegister.voxelRecord = data.voxels.data.record;
-    
+
     VoxelPalettesRegister.material.load(data.voxels.materials.palette);
 
     const modelData = data.voxels.models;
@@ -40,15 +39,11 @@ export default function InitDataSync(props: {
     for (const voxel of modelData.voxels) {
       SchemaRegister.registerVoxel(voxel.id, voxel.modelId, voxel.modSchema);
     }
-    VoxelTagStates.load(modelData.tagState);
 
+    for (const id in data.voxels.data.logic) {
+      VoxelLogicRegister.register(id, data.voxels.data.logic[id]);
+    }
 
-    
-     for(const id in data.voxels.data.logic) {
-      VoxelLogicRegister.register(id,
-        data.voxels.data.logic[id]
-      )
-     }
     props.onSync(data);
   });
 }

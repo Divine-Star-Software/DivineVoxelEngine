@@ -13,23 +13,22 @@ import { BinaryBufferData } from "Util/Binary/BinaryBuffer";
 function runArchiveSector(
   location: LocationData
 ): [ArchivedSectorData, transfers: any[]] {
-  const sector = WorldRegister.sectors.get(
-    location[0],
-    location[1],
-    location[2],
-    location[3]
-  );
-  if (!sector)
+  const sector = WorldRegister.sectors.get(...location);
+  if (!sector) {
+    console.warn(
+      [...location],
+      WorldRegister._dimensions.get(0)!.sectors,
+      sector
+    );
+
     throw new Error(`Sector at location ${location.toString()} does not exist`);
+  }
 
   const archived = ArchiveSector({
-    location: location,
+    location,
   });
   const transfers: any[] = [];
-  // if (archived.palettes.light) transfers.push(archived.palettes.light.buffer);
- // if (archived.palettes.state) transfers.push(archived.palettes.state.buffer);
-  if (archived.palettes.secondaryValue)
-    transfers.push(archived.palettes.secondaryValue.buffer);
+
   for (const section of archived.sections) {
     if (typeof section == "string") continue;
     if (ArrayBuffer.isView((section.buffers.id as BinaryBufferData)?.buffer))
@@ -78,13 +77,6 @@ function runArchiveSector(
 
     if (!section.palettes) continue;
     if (section.palettes.id) transfers.push(section.palettes.id.buffer);
-    //   if (section.palettes.light) transfers.push(section.palettes.light.buffer);
-  //  if (section.palettes.state) transfers.push(section.palettes.state.buffer);
-  //  if (section.palettes.mod) transfers.push(section.palettes.mod.buffer);
-    if (section.palettes.secondaryValue)
-      transfers.push(section.palettes.secondaryValue.buffer);
-    if (section.palettes.secondaryId)
-      transfers.push(section.palettes.secondaryId.buffer);
   }
 
   return [archived, transfers] as const;
@@ -112,10 +104,19 @@ export default function InitTasks(props: { worldThread: Thread }) {
     "import-sector",
     async (archived) => {
       const importedSector = ImportSector(archived, {});
-      await props.worldThread.runTaskAsync("load-sector", [
-        archived.location,
-        importedSector,
-      ]);
+      props.worldThread.runTask(
+        "load-sector",
+        [
+          [
+            WorldRegister.dimensions._dimensionMap.get(archived.dimension) || 0,
+            ...archived.position,
+          ],
+          importedSector.buffer,
+        ],
+        importedSector.buffer instanceof SharedArrayBuffer
+          ? []
+          : [importedSector.buffer]
+      );
     }
   );
   Threads.registerTask<[LocationData, ArrayBuffer]>(
@@ -123,10 +124,13 @@ export default function InitTasks(props: { worldThread: Thread }) {
     async ([location, archived]) => {
       const archivedSector = await expandBinaryObject(archived, true);
       const importedSector = ImportSector(archivedSector, {});
-      await props.worldThread.runTaskAsync("load-sector", [
-        location,
-        importedSector,
-      ]);
+      props.worldThread.runTask(
+        "load-sector",
+        [location, importedSector.buffer],
+        importedSector.buffer instanceof SharedArrayBuffer
+          ? []
+          : [importedSector.buffer]
+      );
     }
   );
 }

@@ -1,14 +1,12 @@
-import { CompassDirections, Vec2Array, Vec3Array } from "@amodx/math";
-import { QuadUVData } from "../../Mesher/Geomtry/Geometry.types";
+import { Vec2Array, Vec3Array } from "@amodx/math";
 import { VoxelFaceNames } from "../../Math";
-import { TextureId } from "../../Textures/Texture.types";
 import {
   VoxelStateStringSchemaData,
   VoxelModelRelationsSchemaData,
   VoxelStateNumberSchemaData,
 } from "../../Voxels/State/State.types";
 import { VoxelEffectData } from "../../Voxels/Effects/VoxelEffects.types";
-import { VoxelTags } from "../Data/VoxelTag.types";
+import { VoxelBaseProperties } from "../Types/Voxel.types";
 
 /**The model data assoicated with the actual voxel. */
 export interface VoxelModelConstructorData {
@@ -180,7 +178,7 @@ export interface VoxelModelPlacingStrategyData {
   /** The direction of the ray that intersected the voxel that is being placed upon.  */
   direction: Vec3Array;
   /** The delta of the virtual voxel cube face intersected. If it was intersected halfway, it would be 0.5. */
-  delta?: [min:number,max:number];
+  delta?: [min: number, max: number];
   /** Defines an alternative ID to override the same parameters. */
   alt?: number;
   /** The resulting state string of the model. */
@@ -201,10 +199,10 @@ export interface VoxelModelData {
     | VoxelGeometryFloatArgument
   >;
   /**Define the placing strategy for the model. */
-  placingStrategy: VoxelModelPlacingStrategyData[]|string;
+  placingStrategy: VoxelModelPlacingStrategyData[] | string;
   stateSchema: (VoxelStateStringSchemaData | VoxelStateNumberSchemaData)[];
   /**Define default tags for the voxel. */
-  tags?: Partial<VoxelTags>;
+  tags?: Partial<VoxelBaseProperties>;
   effects?: VoxelEffectData[];
   relationsSchema: VoxelModelRelationsSchemaData[];
   stateNodes: Record<string, VoxelGeometryLinkData[]>;
