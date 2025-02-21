@@ -1,6 +1,6 @@
 import { VoxelCursorInterface } from "../../Voxels/Cursor/VoxelCursor.interface";
 import { TemplateCursor } from "./TemplateCursor";
-import { FullVoxelTemplate } from "Templates/FullVoxelTemplate";
+import { FullVoxelTemplate } from "../../Templates/FullVoxelTemplate";
 export class TemplateVoxelCursor extends VoxelCursorInterface {
   private _template: FullVoxelTemplate;
 

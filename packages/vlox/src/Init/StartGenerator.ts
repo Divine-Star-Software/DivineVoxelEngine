@@ -48,7 +48,7 @@ export async function StartGenerator(data: {} = {}) {
   InitLogicTasks();
   InitUpdateTasks({
     onDone(tasks, origin) {
-      tasks.bounds.markSectionsAsDirty();
+
       /* 
       origin.runTask("build-queue", [
         tasks.origin[0],

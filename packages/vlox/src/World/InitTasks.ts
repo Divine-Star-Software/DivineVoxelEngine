@@ -1,11 +1,8 @@
 import type { LocationData } from "../Math/index.js";
-
-import { BinaryTaskType, Thread, Threads } from "@amodx/threads/";
+import { Thread, Threads } from "@amodx/threads/";
 //data
 import { WorldRegister } from "./WorldRegister.js";
-
-import { WorldLockTasks, LoadSectorDataTasks } from "../Tasks/Tasks.types.js";
-
+import { WorldLockTasks } from "../Tasks/Tasks.types.js";
 import { WorldSpaces } from "./WorldSpaces.js";
 import { WorldLock } from "./Lock/WorldLock.js";
 import { WorldDataSyncIds } from "./Types/WorldDataSyncIds.js";
@@ -20,7 +17,7 @@ export default function ({
   worldStorage?: WorldStorageInterface;
 }) {
   WorldRegister.sectors.setSecotrBufferPool(true);
-  const loadInMap: Map<string, boolean> = new Map();
+  const loadInMap = new Map<string, boolean>();
   /*
 [sectors]
 */
@@ -113,7 +110,7 @@ export default function ({
 
   Threads.registerTask<[LocationData, ArrayBufferLike]>(
     "load-sector",
-    ([location,sector]) => {
+    ([location, sector]) => {
       WorldRegister.sectors.add(
         location[0],
         location[1],
@@ -127,7 +124,7 @@ export default function ({
       return [true];
     }
   );
-    /* 
+  /* 
   Threads.registerTask<RunBuildQueue>("build-queue", async ([dim, sections]) => {
     for (const position of sections) {
       mesher.setLocation([dim, ...position]).buildSection();

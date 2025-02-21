@@ -60,7 +60,7 @@ export class AdvancedBrush extends BrushTool {
   }
   explode(radius = 6, onDone?: Function) {
     this._mapLocation();
-    this.tasks.explosion.run([this._location, radius], null, () => {
+    this.tasks.voxel.explosion.run([this._location, radius], null, () => {
       if (onDone) onDone();
     });
   }

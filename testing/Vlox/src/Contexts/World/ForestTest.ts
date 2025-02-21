@@ -10,8 +10,8 @@ export async function ForestTest(DVEW: DivineVoxelEngineWorld) {
   let endZ = 16 * numChunks;
 
   const tasks = new TaskTool(DVEW.threads.meshers, DVEW.threads.generators);
-  const propagation = tasks.propagation.createQueue();
-  const worldSun = tasks.worldSun.createQueue();
+  const propagation = tasks.generation.propagation.createQueue();
+  const worldSun = tasks.generation.worldSun.createQueue();
   const t1 = performance.now();
 
   const brush = new BrushTool();

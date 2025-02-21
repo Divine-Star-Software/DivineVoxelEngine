@@ -103,7 +103,7 @@ export const ExplosionManager = {
             }
           }
 
-          tasks.bounds.update(x, y, z);
+          tasks.bounds.updateDisplay(x, y, z);
 /*           if (
             voxel.getHardness() > 10_000 ||
             voxel.getSubstnaceData().isLiquid()

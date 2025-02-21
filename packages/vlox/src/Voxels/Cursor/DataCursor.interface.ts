@@ -6,4 +6,6 @@ export interface  DataCursorInterface {
     z: number
   ): VoxelCursorInterface | null;
    inBounds(x: number, y: number, z: number): boolean;
+
+   clone() : DataCursorInterface;
 }

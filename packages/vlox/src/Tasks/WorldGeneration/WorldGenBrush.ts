@@ -68,7 +68,7 @@ export class WorldGenBrush extends BrushTool {
     }
 
     this._paint();
-    this.tasks.bounds.update(this.x, this.y, this.z);
+    this.tasks.bounds.updateDisplay(this.x, this.y, this.z);
 
     return this;
   }
@@ -93,7 +93,7 @@ export class WorldGenBrush extends BrushTool {
       this.tasks.sun.update.push(this.x, this.y, this.z);
       //  Propagation.instance.sunUpdate(this.tasks);
     }
-    this.tasks.bounds.update(this.x, this.y, this.z);
+    this.tasks.bounds.updateDisplay(this.x, this.y, this.z);
   }
 
   erase() {
@@ -114,7 +114,7 @@ export class WorldGenBrush extends BrushTool {
       SunRemove(this.tasks);
     }
 
-    this.tasks.bounds.update(this.x, this.y, this.z);
+    this.tasks.bounds.updateDisplay(this.x, this.y, this.z);
 
     return this;
   }

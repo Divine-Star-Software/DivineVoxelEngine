@@ -34,7 +34,7 @@ export function RGBUpdate(tasks: VoxelUpdateTask) {
         voxel.setLight(getMinusOneForRGB(sl, nl));
       }
     }
-    tasks.bounds.update(x, y, z);
+    tasks.bounds.updateDisplay(x, y, z);
   }
 }
 
@@ -80,7 +80,7 @@ export function RGBRemove(tasks: VoxelUpdateTask) {
       }
     }
 
-    tasks.bounds.update(x, y, z);
+    tasks.bounds.updateDisplay(x, y, z);
     voxel.setLight(removeRGBLight(sl));
   }
   removeMap.clear();

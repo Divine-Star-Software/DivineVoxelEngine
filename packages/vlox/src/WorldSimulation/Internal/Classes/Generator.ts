@@ -11,6 +11,7 @@ export interface GeneratorData {
   position: Vector3Like;
   renderRadius: number;
   generationRadius: number;
+  tickRadius:number;
   maxRadius: number;
 }
 
@@ -27,6 +28,7 @@ export class Generator {
   _cachedPosition = Vector3Like.Create();
   _sectorPosition = Vector3Like.Create();
   _genCircle = new Circle({ x: 0, y: 0 }, 0);
+  _tickCircle = new Circle({ x: 0, y: 0 }, 0);
   _renderCircle = new Circle({ x: 0, y: 0 }, 0);
   _maxCircle = new Circle({ x: 0, y: 0 }, 10);
 
@@ -41,6 +43,7 @@ export class Generator {
     this._culling = typeof data.culling !== "undefined" ? data.culling : true;
     this._renderCircle.radius = data.renderRadius;
     this._genCircle.radius = data.generationRadius;
+    this._tickCircle.radius = data.generationRadius;
     this._maxCircle.radius = data.maxRadius;
   }
 
@@ -63,6 +66,9 @@ export class Generator {
 
     this._genCircle.center.x = this._sectorPosition.x;
     this._genCircle.center.y = this._sectorPosition.z;
+
+    this._tickCircle.center.x = this._sectorPosition.x;
+    this._tickCircle.center.y = this._sectorPosition.z;
 
     this._maxCircle.center.x = this._sectorPosition.x;
     this._maxCircle.center.y = this._sectorPosition.z;

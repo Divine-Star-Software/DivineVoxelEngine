@@ -12,8 +12,8 @@ export async function ShapeTest(DVEW: DivineVoxelEngineWorld) {
   const brush = new BrushTool();
   brush.start(0, 0, 0, 0);
 
-  const propagation = tasks.propagation.createQueue();
-  const worldSun = tasks.worldSun.createQueue();
+  const propagation = tasks.generation.propagation.createQueue();
+  const worldSun = tasks.generation.worldSun.createQueue();
 
   const t1 = performance.now();
   /* 

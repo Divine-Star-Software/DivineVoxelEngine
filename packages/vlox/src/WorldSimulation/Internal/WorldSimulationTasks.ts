@@ -57,7 +57,7 @@ export class WorldSimulationTasks {
 
       if (sector.getBitFlag(Sector.FlagIds.isWorldGenDone))
         return task.completeTask(taskId);
-      WorldSimulationTools.taskTool.generate.run(location);
+      WorldSimulationTools.taskTool.generation.generate.run(location);
     },
   });
   /**# Decorate Sectors
@@ -82,7 +82,7 @@ export class WorldSimulationTasks {
 
       if (sector.getBitFlag(Sector.FlagIds.isWorldDecorDone))
         return task.completeTask(taskId);
-      WorldSimulationTools.taskTool.decorate.run(location);
+      WorldSimulationTools.taskTool.generation.decorate.run(location);
     },
   });
   /**# World Sun
@@ -107,14 +107,14 @@ export class WorldSimulationTasks {
 
       if (sector.getBitFlag(Sector.FlagIds.isWorldSunDone))
         return task.completeTask(taskId);
-      WorldSimulationTools.taskTool.worldSun.run(location);
+      WorldSimulationTools.taskTool.generation.worldSun.run(location);
     },
   });
   /**# World Propagation
    * ---
    */
   static readonly worldPropagationTasks = TaskRegister.addTasks({
-    id: "propagation",
+    id: "world_propagation",
     generationTask: true,
     checkDone(location) {
       return (
@@ -132,7 +132,7 @@ export class WorldSimulationTasks {
 
       if (sector.getBitFlag(Sector.FlagIds.isWorldPropagationDone))
         return task.completeTask(taskId);
-      WorldSimulationTools.taskTool.propagation.run(location);
+      WorldSimulationTools.taskTool.generation.propagation.run(location);
     },
   });
   /**# Save Sector
@@ -192,18 +192,5 @@ export class WorldSimulationTasks {
       task.completeTask(taskId);
     },
   });
-  static readonly logicTasks = TaskRegister.addTasks({
-    id: "logic_tasks",
-    sort: true,
-    run(dimension, location, taskId, task) {
-      const sector = WorldRegister.sectors.get(...location);
-      if (!sector)
-        throw new Error(
-          `Sector at ${location.toString()} does not exist when attempting logic.`
-        );
-      WorldSimulationTools.taskTool.logic.run(location, null, () => {
-        task.completeTask(taskId);
-      });
-    },
-  });
+
 }

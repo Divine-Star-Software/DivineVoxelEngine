@@ -79,4 +79,8 @@ export class SectionCursor
     this.voxel.loadIn();
     return this.voxel;
   }
+
+  clone() {
+    return new SectionCursor();
+  }
 }

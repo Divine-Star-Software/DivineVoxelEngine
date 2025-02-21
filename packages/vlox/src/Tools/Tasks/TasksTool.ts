@@ -117,8 +117,10 @@ class VoxelTasks {
   update: TaskToolTask<VoxelUpdateTasks>;
   paint: TaskToolTask<VoxelUpdateTasks>;
   erease: TaskToolTask<LocationData>;
+  explosion: TaskToolTask<ExplosionTasks>;
 
   constructor(public tool: TaskTool) {
+    this.explosion = new TaskToolTask(TasksIds.Explosion, tool.generators);
     this.update = new TaskToolTask(TasksIds.VoxelUpdate, tool.generators);
     this.paint = new TaskToolTask(TasksIds.VoxelPaint, tool.generators);
     this.erease = new TaskToolTask(TasksIds.VoxelErase, tool.generators);
@@ -136,28 +138,60 @@ class BuildTask {
     this.sector = new LocationTaskToolTask(TasksIds.BuildSector, tool.meshers);
   }
 }
-export class TaskTool {
-  voxel: VoxelTasks;
-  build: BuildTask;
-  explosion: TaskToolTask<ExplosionTasks>;
-  anaylzer: TaskToolTask<LocationData>;
+
+class SimulationTasks {
+  logic: LocationTaskToolTask;
+  propagation: LocationTaskToolTask;
+  constructor(public tool: TaskTool) {
+    this.logic = new LocationTaskToolTask(
+      TasksIds.LogicUpdate,
+      tool.generators
+    );
+    this.propagation = new LocationTaskToolTask(
+      TasksIds.PropagationUpdate,
+      tool.generators
+    );
+  }
+}
+
+class GenerationTasks {
   propagation: LocationTaskToolTask;
   generate: LocationTaskToolTask;
   decorate: LocationTaskToolTask;
   worldSun: LocationTaskToolTask;
-  logic: LocationTaskToolTask;
+  constructor(public tool: TaskTool) {
+    this.propagation = new LocationTaskToolTask(
+      TasksIds.WorldPropagation,
+      tool.generators
+    );
+    this.generate = new LocationTaskToolTask(
+      TasksIds.Generate,
+      tool.generators
+    );
+    this.decorate = new LocationTaskToolTask(
+      TasksIds.Decorate,
+      tool.generators
+    );
+    this.worldSun = new LocationTaskToolTask(
+      TasksIds.WorldSun,
+      tool.generators
+    );
+  }
+}
+
+export class TaskTool {
+  voxel: VoxelTasks;
+  build: BuildTask;
+  generation: GenerationTasks;
+  simulation: SimulationTasks;
+
   constructor(
     public meshers: Thread | ThreadPool,
     public generators: Thread | ThreadPool
   ) {
     this.voxel = new VoxelTasks(this);
     this.build = new BuildTask(this);
-
-    this.explosion = new TaskToolTask(TasksIds.Explosion, generators);
-    this.propagation = new LocationTaskToolTask(TasksIds.Propagation, generators);
-    this.generate = new LocationTaskToolTask(TasksIds.Generate, generators);
-    this.decorate = new LocationTaskToolTask(TasksIds.Decorate, generators);
-    this.worldSun = new LocationTaskToolTask(TasksIds.WorldSun, generators);
-    this.logic = new LocationTaskToolTask(TasksIds.LogicUpdate, generators);
+    this.generation = new GenerationTasks(this);
+    this.simulation = new SimulationTasks(this);
   }
 }

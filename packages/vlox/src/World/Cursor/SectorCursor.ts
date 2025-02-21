@@ -1,5 +1,5 @@
 import type { Section } from "../Section/index";
-import type { Sector } from "../Sector/index";
+import { Sector } from "../Sector/index";
 
 import { WorldRegister } from "../WorldRegister";
 import { WorldVoxelCursor } from "./WorldVoxelCursor";
@@ -74,5 +74,9 @@ export class SectorCursor
 
   getVoxelAtIndex(index: number) {
     this._voxelIndex = index;
+  }
+
+  clone() {
+    return new SectorCursor();
   }
 }

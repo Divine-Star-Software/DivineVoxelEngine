@@ -1,6 +1,6 @@
 import { TemplateVoxelCursor } from "./TemplateVoxelCursor";
 import { DataCursorInterface } from "../../Voxels/Cursor/DataCursor.interface";
-import { FullVoxelTemplate } from "Templates/FullVoxelTemplate";
+import { FullVoxelTemplate } from "../../Templates/FullVoxelTemplate";
 
 export class TemplateCursor implements DataCursorInterface {
   _voxelIndex = 0;
@@ -19,5 +19,9 @@ export class TemplateCursor implements DataCursorInterface {
     this._voxelIndex = this._template.index.getIndexXYZ(x, y, z);
     this.voxel.loadIn();
     return this.voxel;
+  }
+
+  clone(): DataCursorInterface {
+    return new TemplateCursor();
   }
 }

@@ -1,14 +1,13 @@
-import { Thread, Threads } from "@amodx/threads";
+import { Threads } from "@amodx/threads";
 import { TasksIds } from "../TasksIds";
 import { VoxelUpdateTask } from "../VoxelUpdateTask";
-import { LocationData } from "../../Math";
 import { VoxelLogicUpdate } from "./VoxelLogicUpdate";
+import { getLocationData } from "../../Util/LocationData";
+
 export default function () {
   const tasks = new VoxelUpdateTask();
-  Threads.registerTask<LocationData>(
-    TasksIds.LogicUpdate,
-    async (data, origin) => {
-      VoxelLogicUpdate(tasks, data);
-    }
-  );
+  Threads.registerBinaryTask(TasksIds.LogicUpdate, (view) => {
+    const location = getLocationData(view);
+    VoxelLogicUpdate(tasks, location);
+  });
 }

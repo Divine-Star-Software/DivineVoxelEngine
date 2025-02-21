@@ -43,7 +43,7 @@ export class SectorState {
         tempPosition
       );
       const sector = WorldRegister.sectors.get(
-        this.simSector.dimensionId,
+        this.simSector.dimension.id,
         sectorPOS.x,
         cy,
         sectorPOS.z

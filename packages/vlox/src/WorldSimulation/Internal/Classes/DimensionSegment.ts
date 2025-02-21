@@ -1,18 +1,23 @@
-import { Vector3Like } from "@amodx/math";
+import { Vec3Array, Vector3Like } from "@amodx/math";
 
 import { TaskTool } from "../../../Tools/Tasks/TasksTool";
 import { TaskSegment } from "./TaskSegment";
 import { Generator } from "./Generator";
 import { SimulationSector } from "./SimulationSector";
+import { WorldSpaces } from "../../../World/WorldSpaces";
+import { DimensionSimulation } from "../../Tick/VoxelUpdateTick";
 
+const tempPosition = Vector3Like.Create();
 class ActiveSectors {
   _sectors: SimulationSector[] = [];
   _map = new Map<string, SimulationSector>();
   constructor(public dimension: DimensionSegment) {}
   add(x: number, y: number, z: number) {
-    const key = `${x}-${y}-${z}`;
+    const key = WorldSpaces.hash.hashVec3(
+      WorldSpaces.sector.getPosition(x, y, z, tempPosition)
+    );
     if (this._map.has(key)) return false;
-    const newSector = new SimulationSector(this.dimension.id);
+    const newSector = new SimulationSector(this.dimension);
     newSector.position[0] = x;
     newSector.position[1] = y;
     newSector.position[2] = z;
@@ -21,13 +26,17 @@ class ActiveSectors {
   }
 
   get(x: number, y: number, z: number) {
-    const key = `${x}-${y}-${z}`;
+    const key = WorldSpaces.hash.hashVec3(
+      WorldSpaces.sector.getPosition(x, y, z, tempPosition)
+    );
     if (!this._map.has(key)) return null;
     return this._map.get(key);
   }
 
   remove(x: number, y: number, z: number) {
-    const key = `${x}-${y}-${z}`;
+    const key = WorldSpaces.hash.hashVec3(
+      WorldSpaces.sector.getPosition(x, y, z, tempPosition)
+    );
     if (!this._map.has(key)) return false;
     for (let i = 0; i < this._sectors.length; i++) {
       if (this._sectors[i]) this._sectors.splice(i, 1);
@@ -36,15 +45,25 @@ class ActiveSectors {
 }
 
 export class DimensionSegment {
+  private tick = new Uint32Array(1);
   tasks = new Map<string, TaskSegment>();
   active = new ActiveSectors(this);
   generators: Generator[] = [];
+  simulation = new DimensionSimulation(this);
   _updatePosition = Vector3Like.Create();
 
   constructor(
     public id: number,
     public taskTool: TaskTool
   ) {}
+
+  incrementTick() {
+    this.tick[0]++;
+  }
+
+  getTick() {
+    return this.tick[0];
+  }
 
   addGenerator(generator: Generator) {
     this.generators.push(generator);

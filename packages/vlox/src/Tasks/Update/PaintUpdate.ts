@@ -54,7 +54,14 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
     voxel.setLight(voxel.getLightSourceValue());
   }
 
+  tasks.bounds.updateDisplay(x - 1, y - 1, z - 1);
+  tasks.bounds.updateDisplay(x + 1, y + 1, z + 1);
+  if (voxel.doesVoxelAffectLogic()) {
+    tasks.bounds.updateLogic(x - 1, y - 1, z - 1);
+    tasks.bounds.updateLogic(x + 1, y + 1, z + 1);
+  }
   voxel.updateVoxel(0);
+ 
   if (ES.doLight) {
     updateLightTask(tasks);
     if (doRGB) {
@@ -72,7 +79,6 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
     }
   }
 
-
   if (ES.doPower) {
     if (
       voxel._tags["dve_can_be_powered"] ||
@@ -80,25 +86,25 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
       voxel._tags["dve_can_carry_power"] ||
       voxel._tags["dve_can_hold_power"]
     ) {
-
       updatePowerTask(tasks);
       tasks.power.update.push(x, y, z);
       PowerUpdate(tasks);
     }
   }
 
-  tasks.bounds.update(x, y, z);
-  tasks.bounds.update(x + 1, y + 1, z + 1);
-
   for (let i = 0; i < CardinalNeighbors3D.length; i++) {
-    tasks.sDataCursor
-      .getVoxel(
-        CardinalNeighbors3D[i][0] + x,
-        CardinalNeighbors3D[i][1] + y,
-        CardinalNeighbors3D[i][2] + z
-      )
-      ?.updateVoxel(2);
+    const nx = CardinalNeighbors3D[i][0] + x;
+    const ny = CardinalNeighbors3D[i][1] + y;
+    const nz = CardinalNeighbors3D[i][2] + z;
+    const voxel = tasks.sDataCursor.getVoxel(nx, ny, nz);
+    if (!voxel) continue;
+    voxel.updateVoxel(2);
+    if (voxel.doesVoxelAffectLogic()) {
+      tasks.bounds.updateLogic(nx, ny, nz);
+    }
   }
 
+  tasks.bounds.markDisplayDirty();
+  tasks.bounds.markLogicDirty();
   return tasks;
 }

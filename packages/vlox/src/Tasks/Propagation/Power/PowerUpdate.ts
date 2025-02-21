@@ -31,7 +31,7 @@ export function PowerUpdate(tasks: VoxelUpdateTask) {
         voxel.setPower(sl - 1);
       }
     }
-    tasks.bounds.update(x, y, z);
+    tasks.bounds.updateDisplay(x, y, z);
   }
 }
 
@@ -72,7 +72,7 @@ export function PowerRemove(tasks: VoxelUpdateTask) {
       }
     }
 
-    tasks.bounds.update(x, y, z);
+    tasks.bounds.updateDisplay(x, y, z);
     voxel.setPower(0);
   }
   removeMap.clear();

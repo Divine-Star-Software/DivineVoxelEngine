@@ -16,7 +16,9 @@ export function setBitValue(
 export function forceMultipleOf2(n: number): number {
   return n % 2 === 0 ? n : n + 1;
 }
-
+export function forceMultipleOf4(n: number): number {
+  return n % 4 === 0 ? n : n + (4 - (n % 4));
+}
 export function bitsNeeded(n: number): number {
   if (n < 0) throw new Error("Input must be a non-negative integer.");
 

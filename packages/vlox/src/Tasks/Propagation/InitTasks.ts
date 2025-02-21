@@ -3,7 +3,6 @@ import { ExplosionTasks } from "../Tasks.types";
 import { TasksIds } from "../TasksIds";
 import { VoxelUpdateTask } from "../VoxelUpdateTask";
 
-import { LocationData } from "../../Math";
 import { WorldSpaces } from "../../World/WorldSpaces";
 import { RunWorldSun } from "./Illumanation/WorldSun";
 import { ExplosionManager } from "./Explosion/ExplosionManager";
@@ -12,10 +11,17 @@ import { WorldRGB } from "./Illumanation/WorldRGB";
 import { WorldRegister } from "../../World/WorldRegister";
 import { Sector } from "../../World";
 import { getLocationData } from "../../Util/LocationData";
+import { PropagationUpdate } from "./PropagationUpdate";
 
 export default function InitTasks() {
   const task = new VoxelUpdateTask();
-  Threads.registerBinaryTask(TasksIds.Propagation, (view) => {
+
+  Threads.registerBinaryTask(TasksIds.PropagationUpdate, (view) => {
+    const location = getLocationData(view);
+    PropagationUpdate(location);
+  });
+
+  Threads.registerBinaryTask(TasksIds.WorldPropagation, (view) => {
     const location = getLocationData(view);
     task.setOrigin(...location);
     WorldRGB(task);

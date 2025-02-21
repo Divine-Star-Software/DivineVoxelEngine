@@ -13,8 +13,8 @@ export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
   let endZ = 16 * numChunks;
 
   const tasks = new TaskTool(DVEW.threads.meshers, DVEW.threads.generators);
-  const propagation = tasks.propagation.createQueue();
-  const worldSun = tasks.worldSun.createQueue();
+  const propagation = tasks.generation.propagation.createQueue();
+  const worldSun = tasks.generation.worldSun.createQueue();
   const brush = new BrushTool();
   brush.start(0, 0, 0, 0);
 
@@ -29,9 +29,9 @@ export async function FlatTest(DVEW: DivineVoxelEngineWorld) {
     }
   }
   if (genOne) {
-  //  WorldGen.pyramidColumn(0, 0);
+    //  WorldGen.pyramidColumn(0, 0);
     //   WorldGen.flatColumn(0, 0);
-   PerlinGen.generateTest(0, 0, true);
+    PerlinGen.generateTest(0, 0, true);
     // brush.setId("dve_dream_leaves").setXYZ(0, 1, -2).paint();
     // brush.setId("dve_dread_stone").setXYZ(0, 1, -1).paint();
 

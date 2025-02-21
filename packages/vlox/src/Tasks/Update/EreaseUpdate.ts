@@ -24,9 +24,20 @@ export async function EreaseAndUpdate(location: LocationData) {
       return tasks;
     }
   }
+
+  tasks.bounds.updateDisplay(x - 1, y - 1, z - 1);
+  tasks.bounds.updateDisplay(x + 1, y + 1, z + 1);
+  if (voxel.doesVoxelAffectLogic()) {
+    tasks.bounds.updateLogic(x - 1, y - 1, z - 1);
+    tasks.bounds.updateLogic(x + 1, y + 1, z + 1);
+  }
+
+
   voxel = tasks.sDataCursor.getVoxel(x, y, z)!;
   const light = voxel.getLight();
   const isLightSource = voxel.isLightSource();
+
+
   voxel.setSecondary(true).setId(0).setSecondary(false);
   voxel
     .setLight(light > 0 ? light : 0)
@@ -51,7 +62,6 @@ export async function EreaseAndUpdate(location: LocationData) {
   }
   voxel = tasks.sDataCursor.getVoxel(x, y, z)!;
   if (ES.doPower) {
-
     if (foundPower > -1) {
       voxel.setLevel(foundPower);
       tasks.power.remove.push(x, y, z);
@@ -59,17 +69,21 @@ export async function EreaseAndUpdate(location: LocationData) {
       PowerUpdate(tasks);
     }
   }
-  tasks.bounds.update(x, y, z);
-  tasks.bounds.update(x + 1, y + 1, z + 1);
+
 
   for (let i = 0; i < CardinalNeighbors3D.length; i++) {
-    tasks.sDataCursor
-      .getVoxel(
-        CardinalNeighbors3D[i][0] + x,
-        CardinalNeighbors3D[i][1] + y,
-        CardinalNeighbors3D[i][2] + z
-      )
-      ?.updateVoxel(2);
+    const nx = CardinalNeighbors3D[i][0] + x;
+    const ny = CardinalNeighbors3D[i][1] + y;
+    const nz = CardinalNeighbors3D[i][2] + z;
+    const voxel = tasks.sDataCursor.getVoxel(nx, ny, nz);
+    if (!voxel) continue;
+    voxel.updateVoxel(2);
+    if (voxel.doesVoxelAffectLogic()) {
+      tasks.bounds.updateLogic(nx, ny, nz);
+    }
   }
+
+  tasks.bounds.markDisplayDirty();
+  tasks.bounds.markLogicDirty();
   return tasks;
 }

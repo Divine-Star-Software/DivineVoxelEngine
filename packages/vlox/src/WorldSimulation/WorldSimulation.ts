@@ -49,6 +49,7 @@ export class WorldSimulation {
       dimension: data.dimension ? data.dimension : 0,
       position: data.position ? data.position : Vector3Like.Create(),
       renderRadius: data.renderRadius ? data.renderRadius : 150,
+      tickRadius: data.tickRadius ? data.tickRadius : 150,
       generationRadius: data.generationRadius ? data.generationRadius : 250,
       maxRadius: data.maxRadius ? data.maxRadius : 300,
       building: data.building ? data.building : undefined,
@@ -60,6 +61,10 @@ export class WorldSimulation {
     WorldSimulationDimensions.getDimension(generator._dimension)!.addGenerator(
       generator
     );
+  }
+
+  static getDimension(id: number) {
+    return WorldSimulationDimensions.getDimension(id);
   }
 
   static removeGenerator(generator: Generator) {
@@ -77,6 +82,13 @@ export class WorldSimulation {
   }
 
   static tick(generationOnly = false) {
+    for (const [, dimenion] of WorldSimulationDimensions._dimensions) {
+      dimenion.incrementTick();
+      for (let i = 0; i < dimenion.active._sectors.length; i++) {
+        dimenion.active._sectors[i].tickUpdate();
+        dimenion.active._sectors[i].generateUpdate();
+      }
+    }
     let needActiveSectorUpdate = false;
     for (const gen of this._generators) {
       gen.update();
@@ -91,13 +103,6 @@ export class WorldSimulation {
       runActiveSectorUpdate();
     }
 
-    for (const [, dimenion] of WorldSimulationDimensions._dimensions) {
-      for (let i = 0; i < dimenion.active._sectors.length; i++) {
-        dimenion.active._sectors[i].renderUpdate();
-        dimenion.active._sectors[i].generateUpdate();
-      }
-    }
-
     WorldSimulationTasks.worldLoadTasks.runTask();
     WorldSimulationTasks.worldGenTasks.runTask();
     WorldSimulationTasks.worldDecorateTasks.runTask();
@@ -105,7 +110,6 @@ export class WorldSimulation {
     WorldSimulationTasks.worldPropagationTasks.runTask();
 
     if (generationOnly) return;
-    WorldSimulationTasks.logicTasks.runTask();
     WorldSimulationTasks.buildTasks.runTask(125);
     WorldSimulationTasks.saveTasks.runTask(50);
     WorldSimulationTasks.unloadTasks.runTask(50);

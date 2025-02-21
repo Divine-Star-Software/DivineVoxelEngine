@@ -8,7 +8,7 @@ export enum TasksIds {
   WorldSun = "WorldSun",
   SunLightUpdate = "SunLightUpdate",
   SunLightRemove = "SunLightRemove",
-  Propagation = "Propagation",
+  WorldPropagation = "Propagation",
   AnalyzerUpdate = "AnalyzerUpdate",
   FlowUpdate = "FlowUpdate",
   FlowRemove = "FlowRemove",
@@ -19,4 +19,5 @@ export enum TasksIds {
   VoxelPaint = "VoxelPaint",
   VoxelUpdate = "VoxelUpdate",
   LogicUpdate = "LogicUpdate",
+  PropagationUpdate = "PropagationUpdate",
 }

@@ -14,6 +14,13 @@ export async function VoxelUpdate(data: VoxelUpdateTasks) {
   const voxel = tasks.sDataCursor.getVoxel(x, y, z);
   if (!voxel) return false;
 
+  tasks.bounds.updateDisplay(x - 1, y - 1, z - 1);
+  tasks.bounds.updateDisplay(x + 1, y + 1, z + 1);
+  if (voxel.doesVoxelAffectLogic()) {
+    tasks.bounds.updateLogic(x - 1, y - 1, z - 1);
+    tasks.bounds.updateLogic(x + 1, y + 1, z + 1);
+  }
+
   let doRGB = ES.doRGBPropagation;
   let doSun = ES.doSunPropagation;
 
@@ -34,8 +41,8 @@ export async function VoxelUpdate(data: VoxelUpdateTasks) {
       FlowUpdate(tasks);
     }
   }
-  tasks.bounds.update(x, y, z);
-  tasks.bounds.update(x + 1, y + 1, z + 1);
 
+  tasks.bounds.markDisplayDirty();
+  tasks.bounds.markLogicDirty();
   return tasks;
 }

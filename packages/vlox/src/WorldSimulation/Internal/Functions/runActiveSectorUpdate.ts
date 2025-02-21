@@ -106,10 +106,22 @@ export function runActiveSectorUpdate() {
           render.add(sector);
           unrender.delete(sector);
           sector.renderering = true;
+          sector.ticking = false;
         } else {
           if (!render.has(sector) && sector._rendered) {
             unrender.add(sector);
           }
+        }
+
+        if (
+          Circle.IsSquareInsideOrTouchingCircle(
+            sectorSquare,
+            generator._tickCircle
+          )
+        ) {
+          sector.ticking = true;
+        } else {
+          sector.ticking = false;
         }
 
         for (let i = 0; i < MooreNeighborhood2D.length; i++) {

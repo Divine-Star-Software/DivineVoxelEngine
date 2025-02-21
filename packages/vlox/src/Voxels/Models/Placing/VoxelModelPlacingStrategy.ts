@@ -36,7 +36,7 @@ export class VoxelModelPlacingStrategy {
         if (strat.alt == undefined) {
           match = false;
         }
-        if (strat.alt !== alt) {
+        if (strat.alt !== alt) { 
           match = false;
         }
       }

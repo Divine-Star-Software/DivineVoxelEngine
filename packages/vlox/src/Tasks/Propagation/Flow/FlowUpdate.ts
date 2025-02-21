@@ -94,7 +94,7 @@ function RunFlowIncrease(tasks: VoxelUpdateTask, vox: string) {
 
       reque.push([x, y, z, -1]);
     }
-    tasks.bounds.update(x,y,z);
+    tasks.bounds.updateDisplay(x,y,z);
   }
 
   //@ts-ignore

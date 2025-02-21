@@ -17,7 +17,7 @@ import { RenderNodes } from "Classes";
 import { DVEVoxelData } from "Data/VoxelData";
 import { StartRenderer } from "@divinevoxel/vlox/Init/StartRenderer";
 import { CacheManager } from "@divinevoxel/vlox/Cache/CacheManager";
-
+import { DebugGenMap } from "@divinevoxel/vlox-babylon/Debug/GenMap/DebugGenMap";
 let ran = false;
 import { GUI } from "dat.gui";
 import { BinaryObject } from "@amodx/binary";
@@ -155,9 +155,9 @@ export function App() {
       viwer.yAxis.position.z -= 2;
       viwer.zAxis.position.z -= 2;
  */
-      const camera = new FreeCamera("", new Vector3(-40, 20, -40), scene);
+      const camera = new FreeCamera("", new Vector3(-1, 7, -1), scene);
 
-      camera.setTarget(new Vector3(0, 0, 0));
+      camera.setTarget(new Vector3(8, 0, 8));
 
       camera.speed = 10;
       camera.maxZ = 500;
@@ -175,6 +175,9 @@ export function App() {
       nodes.engine = engine;
 
       nodes.sceneTool = sceneTool;
+
+      const map = new DebugGenMap();
+      map.init(camera.globalPosition, Vector3.Zero(), 0);
 
       engine.runRenderLoop(() => {
         scene.render();

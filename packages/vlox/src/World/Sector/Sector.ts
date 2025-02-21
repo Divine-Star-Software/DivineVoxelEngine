@@ -8,7 +8,7 @@ import {
   setBitAtomicArrayIndex,
 } from "../../Util/Binary/BinaryArrays.js";
 import { SectorState, SectorStateDefaultBitFlags } from "./SectorState.js";
-import { forceMultipleOf2 } from "../../Util/Binary/BinaryFunctions.js";
+import { forceMultipleOf2,forceMultipleOf4 } from "../../Util/Binary/BinaryFunctions.js";
 import { WorldRegister } from "../WorldRegister.js";
 
 export interface SectorData {
@@ -25,7 +25,7 @@ export class Sector {
   static FlagIds = SectorState.Flags;
   static TimeStampIds = SectorState.TimeStamps;
   static GetHeaderSize() {
-    return forceMultipleOf2(
+    return forceMultipleOf4(
       //12 bytes fot flags
       12 +
         //12 * 4 bytes for time stamps
@@ -134,18 +134,6 @@ export class Sector {
     }
   }
 
-  anySectionLogicDirty() {
-    if (!this.isLogicDirty()) return false;
-    for (let i = 0; i < this.sections.length; i++) {
-      if (
-        this.sections[i].isLogicDirty() &&
-        !this.sections[i].isLogicUpdateInProgress()
-      )
-        return true;
-    }
-    this.setLogicDirty(false);
-    return false;
-  }
   storeFlags() {
     const stored: Record<string, boolean> = {};
     for (const key in SectorState.StoredFlags) {

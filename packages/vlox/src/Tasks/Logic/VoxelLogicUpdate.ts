@@ -7,6 +7,7 @@ import { VoxelLogicRegister } from "../../Voxels/Logic/VoxelLogicRegister";
 import { VoxelTagIds } from "../../Voxels/Data/VoxelTag.types";
 import { RGBRemove, RGBUpdate } from "../../Tasks/Propagation";
 import { CardinalNeighbors3D } from "../../Math/CardinalNeighbors";
+import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister";
 const sectionCursor = new SectionCursor();
 export function VoxelLogicUpdate(
   task: VoxelUpdateTask,
@@ -34,6 +35,7 @@ export function VoxelLogicUpdate(
 
   const [minY, maxY] = section.getLogicMinMax();
 
+
   const [cx, cy, cz] = section.position;
   const slice = WorldSpaces.section.bounds.x * WorldSpaces.section.bounds.z;
   const startY = minY * slice;
@@ -55,7 +57,10 @@ export function VoxelLogicUpdate(
     const y = cy + sectionCursor._voxelPosition.y;
     const z = cz + sectionCursor._voxelPosition.z;
 
-    const logic = VoxelLogicRegister.voxels[section.ids[i]];
+    const logic =
+      VoxelLogicRegister.voxels[
+        VoxelPalettesRegister.voxels[section.ids[i]][0]
+      ];
 
     if (!logic) continue;
     if (logic.hasTag(VoxelTagIds.isLightSource)) {
@@ -82,8 +87,7 @@ export function VoxelLogicUpdate(
 
   section.logicDirtyMap.fill(0);
   section.logicDirty.fill(0);
-  section.setLogicDirty(false);
   section.setLogicUpdateInProgress(false);
 
-  task.bounds.markSectionsAsDirty();
+  task.bounds.markDisplayDirty();
 }

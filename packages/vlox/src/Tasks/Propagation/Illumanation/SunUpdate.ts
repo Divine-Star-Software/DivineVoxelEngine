@@ -60,7 +60,7 @@ export function SunUpdate(tasks: VoxelUpdateTask) {
       }
     }
 
-    tasks.bounds.update(x, y, z);
+    tasks.bounds.updateDisplay(x, y, z);
   }
 }
 
@@ -120,7 +120,7 @@ export function SunRemove(tasks: VoxelUpdateTask, clearUpdateMap = true) {
       }
     }
 
-    tasks.bounds.update(x, y, z);
+    tasks.bounds.updateDisplay(x, y, z);
     voxel.setLight(removeSunLight(sl));
   }
   removeMap.clear();
