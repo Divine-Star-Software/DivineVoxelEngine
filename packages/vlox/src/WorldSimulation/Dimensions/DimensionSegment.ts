@@ -1,11 +1,12 @@
 import { Vec3Array, Vector3Like } from "@amodx/math";
 
-import { TaskTool } from "../../../Tools/Tasks/TasksTool";
-import { TaskSegment } from "./TaskSegment";
+import { TaskTool } from "../../Tools/Tasks/TasksTool";
+import { TaskSegment } from "../Tasks/TaskSegment";
 import { Generator } from "./Generator";
 import { SimulationSector } from "./SimulationSector";
-import { WorldSpaces } from "../../../World/WorldSpaces";
-import { DimensionSimulation } from "../../Tick/VoxelUpdateTick";
+import { WorldSpaces } from "../../World/WorldSpaces";
+import { DimensionSimulation } from "./DimensionSimulation";
+import { SimulationBrush } from "../Tools/SimulationBrush";
 
 const tempPosition = Vector3Like.Create();
 class ActiveSectors {
@@ -45,9 +46,9 @@ class ActiveSectors {
 }
 
 export class DimensionSegment {
-  private tick = new Uint32Array(1);
+  private tick = 0;
   tasks = new Map<string, TaskSegment>();
-  active = new ActiveSectors(this);
+  activeSectors = new ActiveSectors(this);
   generators: Generator[] = [];
   simulation = new DimensionSimulation(this);
   _updatePosition = Vector3Like.Create();
@@ -57,12 +58,16 @@ export class DimensionSegment {
     public taskTool: TaskTool
   ) {}
 
+  getBrush() {
+    return new SimulationBrush(this);
+  }
+
   incrementTick() {
-    this.tick[0]++;
+    this.tick++;
   }
 
   getTick() {
-    return this.tick[0];
+    return this.tick;
   }
 
   addGenerator(generator: Generator) {

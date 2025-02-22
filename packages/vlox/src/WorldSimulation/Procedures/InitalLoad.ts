@@ -1,6 +1,6 @@
-import { GeneratorData } from "../Internal/Classes/Generator";
+import { GeneratorData } from "../Dimensions/Generator"
 import { WorldSimulation } from "../WorldSimulation";
-import { WorldSimulationDimensions } from "../Internal/WorldSimulationDimensions";
+import { WorldSimulationDimensions } from "../Internal/WorldSimulationDimensions"
 import { WorldSimulationTools } from "../Internal/WorldSimulationTools";
 import SaveAllSectors from "./SaveAllSectors";
 /**# InitalLoad

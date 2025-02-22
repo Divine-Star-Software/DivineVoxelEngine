@@ -116,14 +116,14 @@ export class TaskToolTask<Data extends any = any, ReturnData extends any = void>
 class VoxelTasks {
   update: TaskToolTask<VoxelUpdateTasks>;
   paint: TaskToolTask<VoxelUpdateTasks>;
-  erease: TaskToolTask<LocationData>;
+  erase: TaskToolTask<LocationData>;
   explosion: TaskToolTask<ExplosionTasks>;
 
   constructor(public tool: TaskTool) {
     this.explosion = new TaskToolTask(TasksIds.Explosion, tool.generators);
     this.update = new TaskToolTask(TasksIds.VoxelUpdate, tool.generators);
     this.paint = new TaskToolTask(TasksIds.VoxelPaint, tool.generators);
-    this.erease = new TaskToolTask(TasksIds.VoxelErase, tool.generators);
+    this.erase = new TaskToolTask(TasksIds.VoxelErase, tool.generators);
   }
 }
 

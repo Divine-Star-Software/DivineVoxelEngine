@@ -8,18 +8,13 @@ import { updateLightTask } from "./Common.js";
 
 const tasks = new VoxelUpdateTask();
 
-export async function VoxelUpdate(data: VoxelUpdateTasks) {
+export function VoxelUpdate(data: VoxelUpdateTasks) {
   const [dimension, x, y, z] = data[0];
   tasks.setOriginAt(data[0]);
   const voxel = tasks.sDataCursor.getVoxel(x, y, z);
   if (!voxel) return false;
 
-  tasks.bounds.updateDisplay(x - 1, y - 1, z - 1);
-  tasks.bounds.updateDisplay(x + 1, y + 1, z + 1);
-  if (voxel.doesVoxelAffectLogic()) {
-    tasks.bounds.updateLogic(x - 1, y - 1, z - 1);
-    tasks.bounds.updateLogic(x + 1, y + 1, z + 1);
-  }
+  tasks.bounds.updateDisplay(x, y, z);
 
   let doRGB = ES.doRGBPropagation;
   let doSun = ES.doSunPropagation;
@@ -36,13 +31,6 @@ export async function VoxelUpdate(data: VoxelUpdateTasks) {
     }
   }
 
-  if (ES.doFlow) {
-    if (voxel.getSubstanceData()["dve_is_solid"]) {
-      FlowUpdate(tasks);
-    }
-  }
-
   tasks.bounds.markDisplayDirty();
-  tasks.bounds.markLogicDirty();
   return tasks;
 }

@@ -41,7 +41,7 @@ export class AdvancedBrush extends BrushTool {
   }
   eraseAndUpdate(onDone?: Function) {
     this._mapLocation();
-    this.tasks.voxel.erease.run(this._location, null, () => {
+    this.tasks.voxel.erase.run(this._location, null, () => {
       if (onDone) onDone();
     });
   }

@@ -1,9 +1,9 @@
-import { LocationData } from "../../../Math/index.js";
-import { WorldSimulationDimensions } from "../WorldSimulationDimensions.js";
-import { DimensionSegment } from "./DimensionSegment.js";
+import { LocationData } from "../../Math/index.js";
+import { WorldSimulationDimensions } from "../Internal/WorldSimulationDimensions.js"
+import { DimensionSegment } from "../Dimensions/DimensionSegment.js";
 import { TaskSegment } from "./TaskSegment.js";
 
-export type WorldSimulationTaskBaseData = {
+export type SimulationTaskBaseData = {
   id: string;
   sort?: boolean;
   generationTask?: boolean;
@@ -17,8 +17,8 @@ export type WorldSimulationTaskBaseData = {
   ): void;
 };
 
-export class WorldSimulationTaskBase {
-  constructor(public data: WorldSimulationTaskBaseData) {}
+export class SimulationTaskBase {
+  constructor(public data: SimulationTaskBaseData) {}
 
   add(dimensionId: number, x: number, y: number, z: number) {
     const dimension = WorldSimulationDimensions.getDimension(dimensionId);

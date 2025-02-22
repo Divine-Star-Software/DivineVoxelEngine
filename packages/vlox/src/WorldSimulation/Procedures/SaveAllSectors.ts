@@ -1,5 +1,5 @@
 import { WorldRegister } from "../../World/WorldRegister";
-import { WorldSimulationDimensions } from "../Internal/WorldSimulationDimensions";
+import { WorldSimulationDimensions } from "../Internal/WorldSimulationDimensions"
 import { WorldSimulationTools } from "../Internal/WorldSimulationTools";
 /**# Save All Sectors
  * ---

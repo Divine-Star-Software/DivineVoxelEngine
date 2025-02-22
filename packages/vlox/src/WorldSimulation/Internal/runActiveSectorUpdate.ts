@@ -1,9 +1,9 @@
-import { WorldSpaces } from "../../../World/WorldSpaces";
-import { SimulationSector } from "../Classes/SimulationSector";
-import { WorldSimulationDimensions } from "../WorldSimulationDimensions";
+import { WorldSpaces } from "../../World/WorldSpaces";
+import { SimulationSector } from "../Dimensions/SimulationSector"
+import { WorldSimulationDimensions } from "./WorldSimulationDimensions"
 import { Circle, Square, Vector3Like } from "@amodx/math";
-import { MooreNeighborhood2D } from "../../../Math/CardinalNeighbors";
-import { WorldSimulationTasks } from "../WorldSimulationTasks";
+import { MooreNeighborhood2D } from "../../Math/CardinalNeighbors";
+import { WorldSimulationTasks } from "./WorldSimulationTasks";
 
 const sectorSquare = new Square();
 const tempPosition = Vector3Like.Create();
@@ -15,8 +15,8 @@ const vistedMap = new Set<string>();
 export function runActiveSectorUpdate() {
   sectorSquare.sideLength = WorldSpaces.sector.bounds.x;
   for (const [, dimension] of WorldSimulationDimensions._dimensions) {
-    for (let i = dimension.active._sectors.length - 1; i > -1; i--) {
-      const sector = dimension.active._sectors[i];
+    for (let i = dimension.activeSectors._sectors.length - 1; i > -1; i--) {
+      const sector = dimension.activeSectors._sectors[i];
       sector.generating = false;
       sector.renderering = false;
 
@@ -36,8 +36,8 @@ export function runActiveSectorUpdate() {
           )
         ) {
           removedSectors.push(sector);
-          dimension.active._map.delete(WorldSpaces.hash.hashXYZ(cx, cy, cz));
-          dimension.active._sectors.splice(i, 1);
+          dimension.activeSectors._map.delete(WorldSpaces.hash.hashXYZ(cx, cy, cz));
+          dimension.activeSectors._sectors.splice(i, 1);
         }
       }
     }
@@ -81,11 +81,11 @@ export function runActiveSectorUpdate() {
         )
           continue;
 
-        if (!dimension.active._map.has(key)) {
-          dimension.active.add(cx, cy, cz);
+        if (!dimension.activeSectors._map.has(key)) {
+          dimension.activeSectors.add(cx, cy, cz);
         }
 
-        const sector = dimension.active._map.get(key)!;
+        const sector = dimension.activeSectors._map.get(key)!;
 
         if (
           Circle.IsSquareInsideOrTouchingCircle(

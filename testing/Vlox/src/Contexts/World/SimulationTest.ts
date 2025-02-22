@@ -4,7 +4,8 @@ import { TickInterval } from "@divinevoxel/vlox/Util/TickInterval";
 import { Threads } from "@amodx/threads";
 import RegisterCoreTasksWorld from "@dvegames/vlox/Core/Tasks/World/RegisterTasksWorld";
 import { DivineVoxelEngineWorld } from "@divinevoxel/vlox/Contexts/World/DivineVoxelEngineWorld";
-
+import { AdvancedBrush } from "@divinevoxel/vlox/Tools/Brush/AdvancedBrushTool";
+import { TaskTool } from "@divinevoxel/vlox/Tools/Tasks/TasksTool";
 export function SimulationTest(DVEW: DivineVoxelEngineWorld) {
   WorldSimulation.init({
     parent: DVEW.threads.parent,
@@ -33,14 +34,30 @@ export function SimulationTest(DVEW: DivineVoxelEngineWorld) {
       maxRadius: 300,
     });
 
-    const dimension = WorldSimulation.getDimension(0);
-    console.warn("got dimension", dimension, dimension.simulation);
-    setTimeout(() => {
-      console.log("add update");
-      dimension.simulation.scheduleUpdate("liquid", 8, 8, 8, 0, null);
-    }, 1_000);
     WorldSimulation.addGenerator(generator);
     tickInterval.start();
+
+    const dimension = WorldSimulation.getDimension(0);
+
+    const brush = dimension.getBrush();
+
+    console.warn("got dimension", dimension, dimension.simulation);
+    setTimeout(async () => {
+      await brush
+        .setId("dve_liquid_dream_ether")
+        .setLevel(7)
+        .setXYZ(8, 1, 8)
+        .paintAsync();
+        await brush
+        .setXYZ(9, 1, 8)
+        .paintAsync();
+      brush.clear();
+
+      setTimeout(async () => {
+        console.warn("erease async");
+        await brush.setXYZ(8, 1, 8).eraseAsync();
+      }, 5_000);
+    }, 1_000);
   });
 
   Threads.registerTask("world-ready", () => {});

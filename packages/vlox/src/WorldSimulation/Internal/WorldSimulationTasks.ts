@@ -1,7 +1,7 @@
 import { WorldRegister } from "../../World/WorldRegister";
 import { Sector } from "../../World/index";
 import { WorldSimulationTools } from "./WorldSimulationTools";
-import { TaskRegister } from "./TaskRegister";
+import { TaskRegister } from "../Tasks/TaskRegister";
 import { Circle, Square } from "@amodx/math";
 import { BinaryTaskType, Threads } from "@amodx/threads";
 import { setLocationData } from "../../Util/LocationData";
@@ -187,7 +187,7 @@ export class WorldSimulationTasks {
       const view = Threads.createBinaryTask(16);
       setLocationData(view, location);
       WorldSimulationTools.parent.runBinaryTask("remove-sector", view);
-      dimension.active.get(location[1], location[2], location[3])!._rendered =
+      dimension.activeSectors.get(location[1], location[2], location[3])!._rendered =
         false;
       task.completeTask(taskId);
     },

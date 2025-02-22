@@ -1,12 +1,11 @@
 import { Vec3Array, Vector3Like } from "@amodx/math";
 import { SectorState } from "./SectorState";
-import { Sector } from "../../../World/Sector";
-import { MooreNeighborhood2D } from "../../../Math/CardinalNeighbors";
-import { WorldSpaces } from "../../../World/WorldSpaces";
-import { WorldRegister } from "../../../World/WorldRegister";
-import { WorldSimulationTasks } from "../WorldSimulationTasks";
-import { TickQueue } from "../../Tick/TickQueue";
-import { DimensionSegment } from "./DimensionSegment";
+import { Sector } from "../../World/Sector";
+import { WorldSpaces } from "../../World/WorldSpaces";
+import { WorldRegister } from "../../World/WorldRegister";
+import { WorldSimulationTasks } from "../Internal/WorldSimulationTasks";
+import { TickQueue } from "../Tick/TickQueue"
+import { DimensionSegment } from "./DimensionSegment"
 const tempPosition = Vector3Like.Create();
 export class SimulationSector {
   position: Vec3Array = [0, 0, 0];

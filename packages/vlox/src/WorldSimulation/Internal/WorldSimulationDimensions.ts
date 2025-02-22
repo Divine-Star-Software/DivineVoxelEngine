@@ -1,5 +1,5 @@
-import { DimensionSegment } from "./Classes/DimensionSegment";
-import { TaskRegister } from "./TaskRegister";
+import { DimensionSegment } from "../Dimensions/DimensionSegment";
+import { TaskRegister } from "../Tasks/TaskRegister"
 import { WorldSimulationTools } from "./WorldSimulationTools";
 
 export class WorldSimulationDimensions {

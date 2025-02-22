@@ -238,7 +238,7 @@ export abstract class VoxelCursorInterface {
     return 0 == this.ids[this._index];
   }
   setAir() {
-    this.ids[0] = 0;
+    this.ids[this._index] = 0;
     return this;
   }
 

@@ -1,16 +1,14 @@
 import { EngineSettings as ES } from "../../Settings/EngineSettings.js";
-import { CardinalNeighbors3D } from "../../Math/CardinalNeighbors.js";
 import { VoxelUpdateTasks } from "../Tasks.types.js";
 import { VoxelUpdateTask } from "../VoxelUpdateTask.js";
 import { RGBRemove, RGBUpdate } from "../Propagation/Illumanation/RGBUpdate.js";
 import { SunRemove, SunUpdate } from "../Propagation/Illumanation/SunUpdate.js";
-import { FlowUpdate } from "../Propagation/Flow/FlowUpdate.js";
 import { updateLightTask, updatePowerTask } from "./Common.js";
 import { PowerUpdate } from "../../Tasks/Propagation/Power/PowerUpdate.js";
 
 const tasks = new VoxelUpdateTask();
 
-export async function PaintAndUpdate(data: VoxelUpdateTasks) {
+export function PaintAndUpdate(data: VoxelUpdateTasks) {
   const [dimension, x, y, z] = data[0];
   tasks.setOriginAt(data[0]);
   let voxel = tasks.sDataCursor.getVoxel(x, y, z);
@@ -20,10 +18,8 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
   const isOpaque = voxel.isOpaque();
   let doRGB = ES.doRGBPropagation;
   let doSun = ES.doSunPropagation;
-
-  lighttest: if (ES.doLight) {
-    const light = voxel.getLight();
-    if (light <= 0) break lighttest;
+  const light = voxel.getLight();
+  if (ES.doLight && light > 0) {
     if (doSun) {
       if (voxel.hasSunLight()) {
         tasks.sun.remove.push(x, y, z);
@@ -54,14 +50,9 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
     voxel.setLight(voxel.getLightSourceValue());
   }
 
-  tasks.bounds.updateDisplay(x - 1, y - 1, z - 1);
-  tasks.bounds.updateDisplay(x + 1, y + 1, z + 1);
-  if (voxel.doesVoxelAffectLogic()) {
-    tasks.bounds.updateLogic(x - 1, y - 1, z - 1);
-    tasks.bounds.updateLogic(x + 1, y + 1, z + 1);
-  }
+  tasks.bounds.updateDisplay(x, y, z);
   voxel.updateVoxel(0);
- 
+
   if (ES.doLight) {
     updateLightTask(tasks);
     if (doRGB) {
@@ -73,11 +64,6 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
     }
   }
   voxel = tasks.sDataCursor.getVoxel(x, y, z)!;
-  if (ES.doFlow) {
-    if (!voxel.isAir() && voxel.getSubstanceData()["dve_is_liquid"]) {
-      FlowUpdate(tasks);
-    }
-  }
 
   if (ES.doPower) {
     if (
@@ -92,19 +78,6 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
     }
   }
 
-  for (let i = 0; i < CardinalNeighbors3D.length; i++) {
-    const nx = CardinalNeighbors3D[i][0] + x;
-    const ny = CardinalNeighbors3D[i][1] + y;
-    const nz = CardinalNeighbors3D[i][2] + z;
-    const voxel = tasks.sDataCursor.getVoxel(nx, ny, nz);
-    if (!voxel) continue;
-    voxel.updateVoxel(2);
-    if (voxel.doesVoxelAffectLogic()) {
-      tasks.bounds.updateLogic(nx, ny, nz);
-    }
-  }
-
   tasks.bounds.markDisplayDirty();
-  tasks.bounds.markLogicDirty();
   return tasks;
 }

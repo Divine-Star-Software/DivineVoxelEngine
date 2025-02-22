@@ -166,6 +166,7 @@ export const DVEVoxelData: VoxelData[] = [
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
       dve_voxel_material: "water",
+      dve_simulation_behavior: "liquid",
       dve_model_data: {
         id: "dve_liquid",
         inputs: {

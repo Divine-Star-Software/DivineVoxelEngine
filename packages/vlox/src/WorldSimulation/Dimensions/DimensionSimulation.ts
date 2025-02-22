@@ -1,19 +1,12 @@
 import { WorldSpaces } from "../../World/WorldSpaces";
 import { LocationData } from "../../Math";
 import { WorldCursor } from "../../World/Cursor/WorldCursor";
-import { DimensionSegment } from "../Internal/Classes/DimensionSegment";
+import { DimensionSegment } from "./DimensionSegment";
 import { WorldRegister } from "../../World/WorldRegister";
 import { Vec3Array, Vector3Like } from "@amodx/math";
-export class VoxelUpdateTick<Data extends any = null> {
-  constructor(
-    public type: string,
-    public x: number,
-    public y: number,
-    public z: number,
-    public data: Data
-  ) {}
-}
-
+import { VoxelTickUpdate } from "../Voxels/Ticks/VoxelTickUpdate"
+import { PriorityQueue } from "../../Util/PriorityQueue";
+import { VoxelUpdate } from "../Voxels/Behaviors";
 const NegativeInfinityVec3 = Vector3Like.Create(
   -Infinity,
   -Infinity,
@@ -24,7 +17,6 @@ const tempPosition = Vector3Like.Create();
 class UpdatedBounds {
   displayMin = Vector3Like.Clone(InfinityVec3);
   displayMax = Vector3Like.Clone(NegativeInfinityVec3);
-
   dimension = 0;
 
   start(dimension?: number) {
@@ -95,6 +87,9 @@ export class DimensionSimulation {
   sDataCursor = new WorldCursor();
   bounds = new UpdatedBounds();
 
+  updateQueue = new PriorityQueue<VoxelUpdate>();
+
+
   constructor(public dimension: DimensionSegment) {}
 
   setOrigin(x: number, y: number, z: number) {
@@ -120,12 +115,12 @@ export class DimensionSimulation {
     delay: number,
     data = null
   ) {
-    const active = this.dimension.active.get(x, y, z);
+    const active = this.dimension.activeSectors.get(x, y, z);
     if (!active)
       throw new Error(
         `Tried to schedule a voxel update on a non loaded active sector`
       );
-    const update = new VoxelUpdateTick(type, x, y, z, data);
+    const update = new VoxelTickUpdate(type, x, y, z, data);
     active.tickQueue.addTick(update, delay);
   }
 }

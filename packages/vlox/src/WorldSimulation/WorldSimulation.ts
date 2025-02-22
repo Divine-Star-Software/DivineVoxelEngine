@@ -1,15 +1,14 @@
 import { Thread, ThreadPool } from "@amodx/threads";
 import { WorldStorageInterface } from "../World/Types/WorldStorage.interface";
 import { TaskTool } from "../Tools/Tasks/TasksTool";
-import { Generator, GeneratorData } from "./Internal/Classes/Generator";
-
+import { Generator, GeneratorData } from "./Dimensions/Generator";
 import { WorldSimulationTasks } from "./Internal/WorldSimulationTasks";
 import { WorldSimulationTools } from "./Internal/WorldSimulationTools";
 import { WorldSimulationDimensions } from "./Internal/WorldSimulationDimensions";
 import { Vector3Like } from "@amodx/math";
 import { InitalLoad } from "./Procedures/InitalLoad";
 import SaveAllSectors from "./Procedures/SaveAllSectors";
-import { runActiveSectorUpdate } from "./Internal/Functions/runActiveSectorUpdate";
+import { runActiveSectorUpdate } from "./Internal/runActiveSectorUpdate";
 
 interface WorldSimulationInitData {
   parent: Thread;
@@ -45,7 +44,7 @@ export class WorldSimulation {
   static createGenerator(data: Partial<GeneratorData>) {
     if (!initalized)
       throw new Error(`IWG must be initalized first before creating generator`);
-    return new Generator(WorldSimulationTools.taskTool, {
+    return new Generator({
       dimension: data.dimension ? data.dimension : 0,
       position: data.position ? data.position : Vector3Like.Create(),
       renderRadius: data.renderRadius ? data.renderRadius : 150,
@@ -84,9 +83,9 @@ export class WorldSimulation {
   static tick(generationOnly = false) {
     for (const [, dimenion] of WorldSimulationDimensions._dimensions) {
       dimenion.incrementTick();
-      for (let i = 0; i < dimenion.active._sectors.length; i++) {
-        dimenion.active._sectors[i].tickUpdate();
-        dimenion.active._sectors[i].generateUpdate();
+      for (let i = 0; i < dimenion.activeSectors._sectors.length; i++) {
+        dimenion.activeSectors._sectors[i].tickUpdate();
+        dimenion.activeSectors._sectors[i].generateUpdate();
       }
     }
     let needActiveSectorUpdate = false;

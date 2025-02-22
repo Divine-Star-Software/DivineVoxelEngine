@@ -30,11 +30,11 @@ export class WorldGen implements WorldGenInterface {
     brush.setId("dve_dread_stone");
     for (let x = cx; x < chunkWidth + cx; x++) {
       for (let z = cz; z < chunkDepth + cz; z++) {
-        brush.setXYZ(x, y, z)!.paint();
+        brush.setXYZ(x, 0, z)!.paint();
       }
     }
 
-    const height = 10;
+/*     const height = 10;
     for (let y = 0; y < 1 + height; y++) {
       //   if (y % 2 == 0) continue;
       for (let x = cx + minus; x < chunkWidth + cx - minus; x++) {
@@ -44,15 +44,7 @@ export class WorldGen implements WorldGenInterface {
       }
       minus++;
     } 
-
-    if (cx == 0 && cz == 0) {
-          brush.setId("dve_liquid_dream_ether").setXYZ(8, 8, 8).setLevel(7).paint();
-     brush.dataCursor.getVoxel(8, 8, 8)?.updateVoxel(3);
-    //  brush.setId("dve_liquid_dream_ether").setXYZ(8, 1, 8).setLevel(7).paint();
-    //  brush.dataCursor.getVoxel(8, 1, 8)?.updateVoxel(3);
-      brush.clear();
-    }
-
+ */
     brush.stop();
   }
 

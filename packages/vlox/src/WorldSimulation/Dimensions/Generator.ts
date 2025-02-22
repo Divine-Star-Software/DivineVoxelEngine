@@ -1,9 +1,6 @@
 import { Vector3Like } from "@amodx/math";
 import { Circle } from "@amodx/math/Shapes";
-import { WorldSpaces } from "../../../World/WorldSpaces";
-
-import { TaskTool } from "../../../Tools/Tasks/TasksTool";
-
+import { WorldSpaces } from "../../World/WorldSpaces";
 export interface GeneratorData {
   dimension: number;
   building?: boolean;
@@ -11,7 +8,7 @@ export interface GeneratorData {
   position: Vector3Like;
   renderRadius: number;
   generationRadius: number;
-  tickRadius:number;
+  tickRadius: number;
   maxRadius: number;
 }
 
@@ -32,10 +29,7 @@ export class Generator {
   _renderCircle = new Circle({ x: 0, y: 0 }, 0);
   _maxCircle = new Circle({ x: 0, y: 0 }, 10);
 
-  constructor(
-    public taskTool: TaskTool,
-    data: GeneratorData
-  ) {
+  constructor(data: GeneratorData) {
     this._dimension = data.dimension;
     this.position = data.position;
     this._building =

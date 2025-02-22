@@ -1,6 +1,6 @@
-import { LocationData } from "../../../Math";
-import { WorldSpaces } from "../../../World/WorldSpaces";
-import { DimensionSegment } from "./DimensionSegment";
+import { LocationData } from "../../Math";
+import { WorldSpaces } from "../../World/WorldSpaces";
+import { DimensionSegment } from "../Dimensions/DimensionSegment";
 const pool: LocationData[] = [];
 export class TaskSegment {
   _hash = new Set();

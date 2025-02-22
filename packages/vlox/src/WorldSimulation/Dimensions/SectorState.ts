@@ -1,8 +1,8 @@
-import { Sector } from "../../../World/Sector";
-import { MooreNeighborhood2D } from "../../../Math/CardinalNeighbors";
-import { WorldSpaces } from "../../../World/WorldSpaces";
+import { Sector } from "../../World/Sector";
+import { MooreNeighborhood2D } from "../../Math/CardinalNeighbors";
+import { WorldSpaces } from "../../World/WorldSpaces";
 import { Vec3Array, Vector3Like } from "@amodx/math";
-import { WorldRegister } from "../../../World/WorldRegister";
+import { WorldRegister } from "../../World/WorldRegister";
 import { SimulationSector } from "./SimulationSector";
 const tempPosition = Vector3Like.Create();
 export class SectorState {

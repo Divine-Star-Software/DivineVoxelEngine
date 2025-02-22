@@ -1,16 +1,17 @@
-import { DimensionSegment } from "../Internal/Classes/DimensionSegment";
-import { VoxelUpdateTick } from "./VoxelUpdateTick";
-import { VoxelUpdateRegister } from "./VoxelUpdateRegister";
-import "./Types/index";
-const tickArrayPool: VoxelUpdateTick[][] = [];
+import { DimensionSegment } from "../Dimensions/DimensionSegment";
+import {
+  VoxelTickUpdateRegister,
+  VoxelTickUpdate,
+} from "../Voxels/Ticks/index";
+
+const tickArrayPool: VoxelTickUpdate[][] = [];
 
 export class TickQueue {
   constructor(public dimension: DimensionSegment) {}
-  ticks = new Map<number, VoxelUpdateTick[]>();
-  _lastTick = 0;
+  ticks = new Map<number, VoxelTickUpdate[]>();
 
-  addTick(data: VoxelUpdateTick, delay = 0) {
-    const trueTick = this._lastTick + 1 + delay;
+  addTick(data: VoxelTickUpdate, delay = 0) {
+    const trueTick = this.dimension.getTick() + 1 + delay;
     if (!this.ticks.get(trueTick)) {
       this.ticks.set(
         trueTick,
@@ -23,7 +24,6 @@ export class TickQueue {
 
   run() {
     const tick = this.dimension.getTick();
-    this._lastTick = tick;
 
     const updates = this.ticks.get(tick);
 
@@ -31,7 +31,7 @@ export class TickQueue {
 
     while (updates.length) {
       const update = updates.shift()!;
-      const type = VoxelUpdateRegister.getUpdateType(update.type);
+      const type = VoxelTickUpdateRegister.getUpdateType(update.type);
       type.run(this.dimension.simulation, update);
     }
 
