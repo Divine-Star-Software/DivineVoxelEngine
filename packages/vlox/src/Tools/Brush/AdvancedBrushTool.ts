@@ -35,29 +35,17 @@ export class AdvancedBrush extends BrushTool {
   }
   paintAndUpdate(onDone?: Function) {
     this._mapLocation();
-    this.tasks.voxel.paint.run([this._location, this.getRaw()], null, () => {
+    this.tasks.voxel.paint.run([this._location, this.getRaw(),{}], null, () => {
       if (onDone) onDone();
     });
   }
   eraseAndUpdate(onDone?: Function) {
     this._mapLocation();
-    this.tasks.voxel.erase.run(this._location, null, () => {
+    this.tasks.voxel.erase.run([this._location,{}], null, () => {
       if (onDone) onDone();
     });
   }
-  update(onDone?: Function) {
-    this._mapLocation();
-    this.tasks.voxel.update.run([this._location, this.getRaw()], null, () => {
-      if (onDone) onDone();
-    });
-  }
-  updateAndAwait() {
-    return new Promise((resolve) => {
-      this.update(() => {
-        resolve(true);
-      });
-    });
-  }
+
   explode(radius = 6, onDone?: Function) {
     this._mapLocation();
     this.tasks.voxel.explosion.run([this._location, radius], null, () => {

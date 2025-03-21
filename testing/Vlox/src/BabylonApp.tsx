@@ -12,17 +12,18 @@ import {
   AxesViewer,
 } from "@babylonjs/core";
 import { Textures } from "Data/TextureData";
-import { SceneTool } from "@divinevoxel/vlox-babylon/Tools/SceneTool";
+
 import { RenderNodes } from "Classes";
 import { DVEVoxelData } from "Data/VoxelData";
 import { StartRenderer } from "@divinevoxel/vlox/Init/StartRenderer";
 import { CacheManager } from "@divinevoxel/vlox/Cache/CacheManager";
 import { DebugGenMap } from "@divinevoxel/vlox-babylon/Debug/GenMap/DebugGenMap";
 let ran = false;
-import { GUI } from "dat.gui";
+
 import { BinaryObject } from "@amodx/binary";
 import { Compressor } from "@amodx/core/Compression/Compression";
-import { Inspector } from "@babylonjs/inspector";
+import { InitSkybox } from "@divinevoxel/vlox-babylon/Init/Skybox/InitSkybox";
+import { Debug } from "./Debug/Debug";
 export function App() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   useEffect(() => {
@@ -47,7 +48,7 @@ export function App() {
 
         CacheManager.cachedData = cachedData as any;
       }
-
+      const halfThreads = Math.ceil((navigator.hardwareConcurrency - 3) / 2);
       const worldWorker = new Worker(
         new URL("./Contexts/World/", import.meta.url),
         {
@@ -56,7 +57,7 @@ export function App() {
       );
 
       const mesherWorkers: Worker[] = [];
-      for (let i = 0; i < navigator.hardwareConcurrency - 1; i++) {
+      for (let i = 0; i < halfThreads; i++) {
         mesherWorkers.push(
           new Worker(new URL("./Contexts/Mesher/", import.meta.url), {
             type: "module",
@@ -64,7 +65,7 @@ export function App() {
         );
       }
       const generatorWorkers: Worker[] = [];
-      for (let i = 0; i < navigator.hardwareConcurrency - 1; i++) {
+      for (let i = 0; i < halfThreads; i++) {
         generatorWorkers.push(
           new Worker(new URL("./Contexts/Generator", import.meta.url), {
             type: "module",
@@ -74,7 +75,10 @@ export function App() {
       const canvas = canvasRef.current;
 
       let antialias = false;
-      const engine = new Engine(canvas, antialias);
+      const engine = new Engine(canvas, antialias, {
+        alpha: true,
+        premultipliedAlpha: false,
+      });
       engine.doNotHandleContextLost = true;
       engine.enableOfflineSupport = false;
 
@@ -108,7 +112,7 @@ export function App() {
       });
       canvasResized.observe(canvas!);
       const scene = new Scene(engine);
-      scene.clearColor.setAll(0);
+      scene.clearColor.set(1,1,1,0);
       const light = new HemisphericLight("", new Vector3(0, 0, 0), scene);
       light.specular.set(0, 0, 0);
 
@@ -132,15 +136,7 @@ export function App() {
 
       await CreateDisplayIndex(DVEVoxelData);
 
-      /*  const skybox = CreateSphere("skyBox", { diameter: 400.0 }, scene);
-      skybox.infiniteDistance = true;
-      const skyboxMat = renderer.materials.get("dve_skybox");
-      if (skyboxMat) {
-        skybox.material = skyboxMat._material;
-        skybox.material!.backFaceCulling = false;
-      }
- */
-
+      /* 
       const sceneTool = new SceneTool();
       sceneTool.fog.setDensity(0.00001);
       sceneTool.fog.setColor(1, 1, 1);
@@ -148,14 +144,18 @@ export function App() {
       sceneTool.options.doAO(true);
       sceneTool.options.doRGB(true);
       sceneTool.levels.setSun(0.8);
-      sceneTool.levels.setBase(0.01);
+      sceneTool.levels.setBase(0.01); */
+
+      const skybox = InitSkybox({
+        renderer,
+      });
 
       /*     const viwer = new AxesViewer(scene);
       viwer.xAxis.position.z -= 2;
       viwer.yAxis.position.z -= 2;
       viwer.zAxis.position.z -= 2;
  */
-      const camera = new FreeCamera("", new Vector3(-1, 7, -1), scene);
+      const camera = new FreeCamera("", new Vector3(-1, 64, -1), scene);
 
       camera.setTarget(new Vector3(8, 0, 8));
 
@@ -174,48 +174,29 @@ export function App() {
       nodes.canvas = canvas!;
       nodes.engine = engine;
 
-      nodes.sceneTool = sceneTool;
-
       const map = new DebugGenMap();
       map.init(camera.globalPosition, Vector3.Zero(), 0);
 
+      Debug(renderer);
       engine.runRenderLoop(() => {
         scene.render();
       });
-
-      const gui = new GUI();
-
-      const Debug = {};
-      const actions = {
-        async downloadCache() {
-          CacheManager.cachedModelData;
-          const data = BinaryObject.objectToBuffer(
-            CacheManager.getCachedData()
-          );
-          const compressed = await Compressor.core.compressArrayBuffer(data);
-
-          const blob = new Blob([compressed], {});
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = "dve-cache.bin";
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-        },
-      };
-      const debugFolder = gui.addFolder("Debug");
-      debugFolder.add(actions, "downloadCache");
-      debugFolder.open();
 
       /*      setTimeout(() => {
         Inspector.Show(scene, {});
       }, 1_000); */
 
       //  await InitRenderPlayer(DVER, nodes);
-
       DVER.threads.world.runTask("start-world", []);
+
+      /* 
+
+      const cursor = new WorldCursor();
+      cursor.setFocalPoint(0, 0, 0, 0);
+      setInterval(() => {
+        const particles = new VoxelExplodeParticles(scene, cursor);
+        particles.explodeAt(0, 10, 0, "dve_dream_stone");
+      }, 2_000); */
     })();
   }, []);
 

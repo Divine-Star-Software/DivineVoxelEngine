@@ -1,7 +1,8 @@
 import { VoxelCursorInterface } from "./VoxelCursor.interface";
-import { PaintVoxelData, RawVoxelData } from "../Types/Voxel.types";
+import {  RawVoxelData } from "../Types/Voxel.types";
 import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister";
 import { VoxelLevelReader } from "./VoxelLevelReader";
+import { PaintVoxelData } from "../Types/PaintVoxelData";
 
 export class VoxelCursor extends VoxelCursorInterface {
   static VoxelDataToRaw(

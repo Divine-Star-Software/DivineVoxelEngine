@@ -1,6 +1,12 @@
 export class TypedEventTarget<
   T extends Record<string, any>,
 > extends EventTarget {
+  createEventListener<K extends keyof T>(
+    type: K,
+    listener: ((event: CustomEvent<T[K]>) => void) | EventListenerObject | null
+  ): ((event: CustomEvent<T[K]>) => void) | EventListenerObject | null {
+    return listener;
+  }
   addEventListener<K extends keyof T>(
     type: K,
     listener: ((event: CustomEvent<T[K]>) => void) | EventListenerObject | null,

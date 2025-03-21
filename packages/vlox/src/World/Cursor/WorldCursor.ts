@@ -71,8 +71,7 @@ export class WorldCursor implements DataCursorInterface {
     return sector.getVoxel(x, y, z);
   }
 
-  clone(){
- return  new WorldCursor();
-
+  clone() {
+    return new WorldCursor();
   }
 }

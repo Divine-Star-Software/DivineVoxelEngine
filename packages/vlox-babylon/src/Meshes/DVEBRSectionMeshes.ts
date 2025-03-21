@@ -82,7 +82,7 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
       } else {
         if (!DVEBRSectionMeshes.meshCache.length) {
           const newMesh = new Mesh("", this.scene);
-
+          newMesh.renderingGroupId = 1;
           newMesh.isPickable = false;
           newMesh.checkCollisions = false;
           newMesh.doNotSerialize = true;

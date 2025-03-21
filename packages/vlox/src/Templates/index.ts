@@ -1,1 +1,1 @@
-export * from "./Functions/CreateTemplate"
+export * from "./Archive/CreateArchivedTemplate"

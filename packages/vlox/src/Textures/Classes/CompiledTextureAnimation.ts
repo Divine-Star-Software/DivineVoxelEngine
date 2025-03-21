@@ -3,12 +3,17 @@ export class CompiledTextureAnimation {
   _times: number[] = [];
   _currentTime = 0;
   _frameIndex = 0;
-  _current: number = Infinity;
+  _current: number = -1;
   _animatedTextureIndex = -1;
   constructor(public textureIndex: number) {}
 
   tick(delta: number) {
-    if (this._current == Infinity) this._current = this._times[0];
+    if(!this._frames.length || !this._times.length) return;
+    if(Number.isNaN(this._current)) {
+      console.error("ERROR NAN",this._current,this._frameIndex,delta);
+      return;
+    }
+    if (this._current == -1) this._current = this._times[0];
     this._current -= delta;
     if (this._current <= 0) {
       this._frameIndex++;

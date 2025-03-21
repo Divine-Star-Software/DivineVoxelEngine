@@ -1,0 +1,37 @@
+import { EngineSettings as ES } from "../../../Settings/EngineSettings.js";
+import { PaintVoxelTask } from "../../Tasks.types.js";
+import { VoxelUpdateTask } from "../../VoxelUpdateTask.js";
+import { canUpdate, updateArea, updatePowerTask } from "../Common.js";
+import { PowerUpdate } from "../../Propagation/Power/PowerUpdate.js";
+
+const tasks = new VoxelUpdateTask();
+
+export function PaintVoxel([location, raw, updateData]: PaintVoxelTask) {
+  const [dimension, x, y, z] = location;
+  if (!canUpdate(x, y, z, updateData)) return false;
+  tasks.setOriginAt(location);
+  let voxel = tasks.sDataCursor.getVoxel(x, y, z);
+  if (!voxel) return false;
+
+  raw[1] = 0;
+  voxel = tasks.sDataCursor.getVoxel(x, y, z)!;
+  voxel.setRaw(raw);
+  voxel.updateVoxel(0);
+
+  updateArea(tasks, x, y, z, x, y, z);
+
+  if (ES.doPower) {
+    if (
+      voxel.tags["dve_can_be_powered"] ||
+      voxel.tags["dve_is_power_source"] ||
+      voxel.tags["dve_can_carry_power"] ||
+      voxel.tags["dve_can_hold_power"]
+    ) {
+      updatePowerTask(tasks);
+      tasks.power.update.push(x, y, z);
+      PowerUpdate(tasks);
+    }
+  }
+
+  return tasks;
+}

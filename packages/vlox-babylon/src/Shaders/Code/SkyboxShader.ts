@@ -1,19 +1,16 @@
-import { SharedShaders } from "./SharedShaders";
+import { SceneUBO } from "../../Scene/SceneUBO";
+import { FogShaders } from "./Shared/FogShader";
+import { NoiseShaders } from "./Shared/NoiseShader";
+import { SkyShaders } from "./Shared/SkyShader";
 
 export class SkyboxShader {
   static GetVertex() {
     return /* glsl */ `#version 300 es
 precision highp float;
 
+${SceneUBO.Define}
 //uniforms
-uniform float doEffects;
-uniform vec4 fogOptions;
-uniform vec4 vFogInfos;
-uniform vec3 vFogColor;
-uniform float time;
 uniform vec3 cameraPosition;
-uniform vec3 cameraDirection;
-
 uniform mat4 world;
 uniform mat4 viewProjection;
 
@@ -48,15 +45,9 @@ precision highp float;
 precision highp sampler2DArray;
 
 
+${SceneUBO.Define}
 //uniforms
-uniform float doEffects;
-uniform vec4 fogOptions;
-uniform vec4 vFogInfos;
-uniform vec3 vFogColor;
-uniform float time;
 uniform vec3 cameraPosition;
-uniform vec3 cameraDirection;
-
 
 //varying
 in vec3 worldPOS;
@@ -64,23 +55,16 @@ in float vDistance;
 
 
 //functions
-${SharedShaders.FBMNoiseFunctions}
 
-${SharedShaders.FogFragmentFunctions}
-
-
-
+${SkyShaders.Functions}
+${NoiseShaders.FBMNoiseFunctions}
+${FogShaders.Functions}
 
 out vec4 FragColor;  
 void main(void) {
-
-    vec3 c = vFogColor.rgb;
-    c.r -= .2;
-    c.g -= .2;
-    c.b -= .2;
-    vec4 skyboxColor = vec4(c.rgb,1);
-    vec3 finalColor = doFog(skyboxColor);
-    FragColor = vec4(finalColor.rgb,1);
+  vec3 fogColor = getFogColor();
+  vec4 skyColor = vec4(getSkyColor(fogColor),1.);
+  FragColor = blendFog(fogColor,skyColor);
 
 } 
     `;

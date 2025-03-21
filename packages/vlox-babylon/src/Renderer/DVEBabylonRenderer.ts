@@ -6,10 +6,10 @@ import { DivineVoxelEngineRender } from "@divinevoxel/vlox/Contexts/Render/Divin
 import { Observable } from "@amodx/core/Observers/Observable.js";
 import { DVEBRMesh } from "../Meshes/DVEBRMesh.js";
 import { TimerState, type Engine } from "@babylonjs/core";
-import { SceneTool } from "../Tools/SceneTool";
+
 import { DVEBRSectionMeshes } from "../Meshes/DVEBRSectionMeshesN";
 import { DVEBRMaterialRegister } from "../Matereials/DVEBRNodeMaterialsManager";
-import { VoxelScene } from "../Meshes/VoxelScene/VoxelScene";
+import { VoxelScene } from "../Scene/VoxelScene";
 export interface DVEBabylonRendererInitData {
   scene: Scene;
 }
@@ -24,7 +24,7 @@ export class DVEBabylonRenderer extends DVERenderer {
   scene: Scene;
   foManager: DVEBRFOManager;
   meshCuller: DVEBRMeshCuller;
-  sceneTool: SceneTool;
+
   materials = new DVEBRMaterialRegister();
 
   voxelScene: VoxelScene;
@@ -38,7 +38,7 @@ export class DVEBabylonRenderer extends DVERenderer {
     this.meshCuller = new DVEBRMeshCuller();
 
     this.sectorMeshes = new DVEBRSectionMeshes(data.scene, this.engine, this);
-    this.sceneTool = new SceneTool();
+
     this.meshCuller.init(this.scene);
     if (!DVEBabylonRenderer.instance) DVEBabylonRenderer.instance = this;
 
@@ -50,11 +50,6 @@ export class DVEBabylonRenderer extends DVERenderer {
 
     this.scene.registerBeforeRender(() => {
       this.voxelScene.beforRender();
-    });
-
-    this.scene.onAfterRenderingGroupObservable.add((data) => {
-      if (data.renderingGroupId !== 0) return;
-      this.voxelScene.render();
     });
   }
 }

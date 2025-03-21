@@ -61,10 +61,6 @@ const tempPosition = Vector3Like.Create();
 class UpdatedBounds {
   displayMin = Vector3Like.Clone(InfinityVec3);
   displayMax = Vector3Like.Clone(NegativeInfinityVec3);
-  logicMin = Vector3Like.Clone(InfinityVec3);
-  logicMax = Vector3Like.Clone(NegativeInfinityVec3);
-  propagationMin = Vector3Like.Clone(InfinityVec3);
-  propagationMax = Vector3Like.Clone(NegativeInfinityVec3);
 
   dimension = 0;
   constructor(public _task: VoxelUpdateTask) {}
@@ -73,10 +69,6 @@ class UpdatedBounds {
     this.dimension = dimension || 0;
     Vector3Like.Copy(this.displayMin, InfinityVec3);
     Vector3Like.Copy(this.displayMax, NegativeInfinityVec3);
-    Vector3Like.Copy(this.logicMin, InfinityVec3);
-    Vector3Like.Copy(this.logicMax, NegativeInfinityVec3);
-    Vector3Like.Copy(this.propagationMin, InfinityVec3);
-    Vector3Like.Copy(this.propagationMax, NegativeInfinityVec3);
   }
 
   updateDisplay(x: number, y: number, z: number) {
@@ -88,38 +80,20 @@ class UpdatedBounds {
     if (z > this.displayMax.z) this.displayMax.z = z;
   }
 
-  updateLogic(x: number, y: number, z: number) {
-    if (x < this.logicMin.x) this.logicMin.x = x;
-    if (y < this.logicMin.y) this.logicMin.y = y;
-    if (z < this.logicMin.z) this.logicMin.z = z;
-    if (x > this.logicMax.x) this.logicMax.x = x;
-    if (y > this.logicMax.y) this.logicMax.y = y;
-    if (z > this.logicMax.z) this.logicMax.z = z;
-  }
-
-  updatePropagation(x: number, y: number, z: number) {
-    if (x < this.propagationMin.x) this.propagationMin.x = x;
-    if (y < this.propagationMin.y) this.propagationMin.y = y;
-    if (z < this.propagationMin.z) this.propagationMin.z = z;
-    if (x > this.propagationMax.x) this.propagationMax.x = x;
-    if (y > this.propagationMax.y) this.propagationMax.y = y;
-    if (z > this.propagationMax.z) this.propagationMax.z = z;
-  }
-
   getSections() {
     const minSectionPos = WorldSpaces.section.getPosition(
-      this.displayMin.x - 1,
-      this.displayMin.y - 1,
-      this.displayMin.z - 1,
+      this.displayMin.x,
+      this.displayMin.y,
+      this.displayMin.z,
       tempPosition
     );
     const minX = minSectionPos.x;
     const minY = minSectionPos.y;
     const minZ = minSectionPos.z;
     const maxSectionPos = WorldSpaces.section.getPosition(
-      this.displayMax.x + 1,
-      this.displayMax.y + 1,
-      this.displayMax.z + 1,
+      this.displayMax.x,
+      this.displayMax.y,
+      this.displayMax.z,
       tempPosition
     );
     const maxX = maxSectionPos.x;
@@ -179,96 +153,6 @@ class UpdatedBounds {
           const section = sector.getSection(x, y, z);
           if (!section.canRender()) continue;
           section.incrementTick(section._Ticks.displayDirty);
-        }
-      }
-    }
-  }
-  markLogicDirty() {
-    if (
-      this.logicMax.x == -Infinity ||
-      this.logicMax.y == -Infinity ||
-      this.logicMax.z == -Infinity
-    )
-      return false;
-    if (
-      this.logicMin.x == Infinity ||
-      this.logicMin.y == Infinity ||
-      this.logicMin.z == Infinity
-    )
-      return false;
-    const minSectionPos = WorldSpaces.section.getPosition(
-      this.logicMin.x - 1,
-      this.logicMin.y - 1,
-      this.logicMin.z - 1,
-      tempPosition
-    );
-    const minX = minSectionPos.x;
-    const minY = minSectionPos.y;
-    const minZ = minSectionPos.z;
-    const maxSectionPos = WorldSpaces.section.getPosition(
-      this.logicMax.x + 1,
-      this.logicMax.y + 1,
-      this.logicMax.z + 1,
-      tempPosition
-    );
-    const maxX = maxSectionPos.x;
-    const maxY = maxSectionPos.y;
-    const maxZ = maxSectionPos.z;
-
-    for (let x = minX; x <= maxX; x += WorldSpaces.section.bounds.x) {
-      for (let z = minZ; z <= maxZ; z += WorldSpaces.section.bounds.z) {
-        for (let y = minY; y <= maxY; y += WorldSpaces.section.bounds.y) {
-          if (!WorldSpaces.world.inBounds(x, y, z)) continue;
-          const sector = WorldRegister.sectors.get(this.dimension, x, y, z);
-          if (!sector) continue;
-          const section = sector.getSection(x, y, z);
-          const [min, max] = section.getLogicMinMax();
-          if (Math.abs(min) == Infinity || Math.abs(max) == Infinity) continue;
-          section.incrementTick(section._Ticks.logicDirty);
-        }
-      }
-    }
-  }
-  markPropagationDirty() {
-    if (
-      this.propagationMax.x == -Infinity ||
-      this.propagationMax.y == -Infinity ||
-      this.propagationMax.z == -Infinity
-    )
-      return false;
-    if (
-      this.propagationMin.x == Infinity ||
-      this.propagationMin.y == Infinity ||
-      this.propagationMin.z == Infinity
-    )
-      return false;
-    const minSectionPos = WorldSpaces.section.getPosition(
-      this.propagationMin.x - 1,
-      this.propagationMin.y - 1,
-      this.propagationMin.z - 1,
-      tempPosition
-    );
-    const minX = minSectionPos.x;
-    const minY = minSectionPos.y;
-    const minZ = minSectionPos.z;
-    const maxSectionPos = WorldSpaces.section.getPosition(
-      this.propagationMax.x + 1,
-      this.propagationMax.y + 1,
-      this.propagationMax.z + 1,
-      tempPosition
-    );
-    const maxX = maxSectionPos.x;
-    const maxY = maxSectionPos.y;
-    const maxZ = maxSectionPos.z;
-
-    for (let x = minX; x <= maxX; x += WorldSpaces.section.bounds.x) {
-      for (let z = minZ; z <= maxZ; z += WorldSpaces.section.bounds.z) {
-        for (let y = minY; y <= maxY; y += WorldSpaces.section.bounds.y) {
-          if (!WorldSpaces.world.inBounds(x, y, z)) continue;
-          const sector = WorldRegister.sectors.get(this.dimension, x, y, z);
-          if (!sector) continue;
-          const section = sector.getSection(x, y, z);
-          section.incrementTick(section._Ticks.propagationDirty);
         }
       }
     }

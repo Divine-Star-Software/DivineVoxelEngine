@@ -1,4 +1,7 @@
-import { SharedShaders } from "./SharedShaders";
+import { FogShaders } from "./Shared/FogShader";
+import { NoiseShaders } from "./Shared/NoiseShader";
+import { SceneUBO } from "../../Scene/SceneUBO";
+import { SkyShaders } from "./Shared/SkyShader";
 
 export class VoxelBaseShader {
   static GetVertex(props: { doAO: boolean }) {
@@ -8,7 +11,7 @@ precision highp int;
 precision highp usampler2D; 
 precision highp sampler2DArray;
 
-         
+${SceneUBO.Define}        
 const uint lightMask = uint(0xf);
 const uint aoMask = uint(${0b11});
 const uint animMask = uint(${0b11});
@@ -24,12 +27,13 @@ const uint ao4Index = 22u;
 const uint animIndex = 16u;
 const uint vertexIndex = 16u;
 const uint textureIndexMask = uint(0xffff);
-const uint mainTexutreIndex =uint(0);
+const uint mainTexutreIndex = uint(0);
 const uint secondaryTextureIndex = uint(0xf + 0x1);
 
-
+const float lightGradient[16] = float[16](
+0.0, 0.08, 0.16, 0.21, 0.27, 0.34, 0.42, 0.5, 0.59, 0.68, 0.77, 0.85, 0.91, 0.96, 0.99, 1.
+);
 const float aoArray[5] = float[5](1., pow( 1. - .2 , 2.2), pow( 1. - .2 * 2., 2.2), pow( 1. - .2 * 3. , 2.2), pow( 1. - .2 * 4. , 2.2)); 
-
 const vec2 quadUVArray[4] = vec2[4](vec2(1.,1.),vec2(0.,1.),vec2(0.,0.),vec2(1.,0.));     
 
 
@@ -39,36 +43,21 @@ uniform usampler2D dve_voxel_animation;
 uniform int dve_voxel_animation_size;
 
 //uniforms
-uniform float time;
-uniform vec4 fogOptions;
-uniform vec3 vFogColor;
-uniform float sunLightLevel;
-uniform float baseLevel;
-uniform float doAO;
-uniform float doSun;
-uniform float doRGB;
-uniform float doColor;
-uniform float doEffects;
-uniform float mipMapBias;
-
 uniform mat4 world;
 uniform mat4 viewProjection;
 uniform vec3 worldOrigin;
 uniform vec3 cameraPosition;
-uniform float lightGradient[16];
-  
+
 
 //attributes
 in vec3 position;
 in vec3 normal;
-in float indices;
 in vec3 textureIndex;
 in vec2 uv;
 in vec3 colors;
 in vec4 voxelData;
 
 //varying
-out mat4 VOXEL;
 out vec3 worldPOS;
 out float vDistance;
 out vec3 worldPOSNoOrigin;
@@ -99,18 +88,18 @@ vec3 getLightValue(uint value) {
     max(
 ((
     //rgb light
-    vec3(lightGradient[(value >> rVLIndex) & lightMask], lightGradient[(value >> gVLIndex) & lightMask], lightGradient[(value >> bVLIndex) & lightMask]) * doRGB) 
+    vec3(lightGradient[(value >> rVLIndex) & lightMask], lightGradient[(value >> gVLIndex) & lightMask], lightGradient[(value >> bVLIndex) & lightMask]) * scene_shadeOptions.y ) 
     //sun light
-    + (lightGradient[(value >> sVLIndex) & lightMask] * doSun * sunLightLevel)), 
+    + (lightGradient[(value >> sVLIndex) & lightMask] * scene_shadeOptions.x  * scene_levels.y)), 
     //base light min
-    baseLevel
+    scene_levels.x
 )
 );
 }
 
 
 
-${SharedShaders.FBMNoiseFunctions}
+${NoiseShaders.FBMNoiseFunctions}
   #ifdef INSTANCES
   //matricies
   in vec4 world0;
@@ -122,8 +111,6 @@ ${SharedShaders.FBMNoiseFunctions}
 
 
   void main(void) {
-
-mat4 vData;
 
 vLight1 = getLightValue(uint(voxelData.x));
 vLight2 = getLightValue(uint(voxelData.y));
@@ -145,19 +132,11 @@ if(animVL == 2.) {
     vFlow = 1.;
 }
 
-
-
-
 iUV = quadUVArray[( uint(voxelData.z) >> vertexIndex) & vertexMask];
-
-
-vec4 worldPOSTemp = world * vec4(position, 1.0);
-worldPOS = vec3(worldPOSTemp.x, worldPOSTemp.y, worldPOSTemp.z);
-vDistance = distance(cameraPosition, worldPOS);
 
 vNormal = normal;
 
-if(doColor == 1.0) {
+if(scene_shadeOptions.w == 1.0) {
     vColors = vec4(1.0, 1.0, 1.0, 1.0);
 } else {
     vColors = vec4(1.0, 1.0, 1.0, 1.0);
@@ -173,15 +152,19 @@ vOverlayTextureIndex.w = getTextureIndex(int(uint(textureIndex.z) & textureIndex
 
 #ifdef INSTANCES
 mat4 finalWorld = mat4(world0, world1, world2, world3);
-
-vDistance = distance(cameraPosition, finalWorld[3].xyz);
-
 finalWorld[3].xyz += worldOrigin.xyz;
-gl_Position = viewProjection * finalWorld * vec4(position, 1.0);  
+vec4 worldPosition = finalWorld * vec4(position, 1.0);
+worldPOS = vec3(worldPosition.xyz);
+vDistance = distance(cameraPosition, worldPOS);
+
+gl_Position = viewProjection * worldPosition;
 #endif      
 #ifndef INSTANCES
 vec4 worldPosition = world * vec4(position, 1.0);
-gl_Position = viewProjection * world * vec4(position, 1.0); 
+worldPOS = vec3(worldPosition.xyz);
+vDistance = distance(cameraPosition, worldPOS);
+
+gl_Position = viewProjection * worldPosition;
 
 #endif
 
@@ -190,8 +173,8 @@ gl_Position = viewProjection * world * vec4(position, 1.0);
   }
   static DefaultLiquidFragmentMain = (doAO: boolean) => /* glsl */ `
   
-vec4 rgb = texture(dve_voxel,vec3(vec2(vUV.x,vUV.y + time * .01 * -1. * vFlow),vUV.z));
-    
+  vec4 rgb = texture(dve_voxel,vec3(vec2(vUV.x,vUV.y + scene_time * .01 * -1. * vFlow),vUV.z));
+
   if(vOverlayTextureIndex.x > 0.){
     vec4 oRGB =  texture(dve_voxel, vec3(vUV.xy, vOverlayTextureIndex.x));
     if(oRGB.a > 0.5) {
@@ -217,23 +200,33 @@ vec4 rgb = texture(dve_voxel,vec3(vec2(vUV.x,vUV.y + time * .01 * -1. * vFlow),v
       rgb = oRGB;
     }
   }
+
+  if (rgb.a < 0.1) { 
+    discard;
+    return;
+  }
+
+
+
   //mix color
   rgb *= vColors;
-  //mix light
+
   rgb.rgb *=  getLight();
+  vec3 fog = getFogColor();
+  vec3 sky = getSkyColor(fog);
+  vec4 skyBlendColor = blendSkyColor(sky,rgb);
+  vec4 fogColor = blendFog(fog,skyBlendColor);
+  FragColor = fogColor;
 
-  vec3 finalColor = doFog(rgb);
-
-  FragColor = vec4(finalColor.rgb, rgb.a);
-
-  if (FragColor.a < 0.5) { 
-    discard;
-  }
 
   `;
 
   static DefaultFragmentMain = (doAO: boolean) => /* glsl */ `
-  
+    if(vDistance > scene_skyShadeOptions.y) {
+        discard;
+      return;
+    }
+
       vec4 rgb = texture(dve_voxel,vec3(vUV.xy,vUV.z));
     
 /*     
@@ -258,32 +251,31 @@ vec4 rgb = texture(dve_voxel,vec3(vec2(vUV.x,vUV.y + time * .01 * -1. * vFlow),v
 ${
   doAO
     ? /*glsl */ `
-    float top    = mix( vAO.y,    vAO.x,    iUV.x);
-    float bottom = mix( vAO.z,  vAO.w, iUV.x);
-    float ao = mix(bottom, top, iUV.y);
-    rgb.rgb *= ao;
+    if(scene_shadeOptions.z == 1.) {
+      float top    = mix( vAO.y,    vAO.x,    iUV.x);
+      float bottom = mix( vAO.z,  vAO.w, iUV.x);
+      float ao = mix(bottom, top, iUV.y);
+      rgb.rgb *= ao;
+    }
 `
     : ``
 }
+
+  if (rgb.a < 0.1) { 
+    discard;
+    return;
+  }
 
   //mix color
   rgb *= vColors;
   //mix light
   rgb.rgb *=  getLight();
+  vec3 fog = getFogColor();
+  vec3 sky = getSkyColor(fog);
+  vec4 skyBlendColor = blendSkyColor(sky, rgb);
+  vec4 fogColor = blendFog(fog, skyBlendColor);
+  FragColor = fogColor;
 
-
-// Then interpolate vertically (v = vUV.y)
-
-  vec3 finalColor = doFog(rgb);
- //FragColor = vec4(vec3(1.) *  getLight(),1.);
-//FragColor = vec4(vec3(1.) *vAO.y,1.);
- //FragColor = vec4(vec3(1.) * ao,1.);
- FragColor = vec4(finalColor.rgb, rgb.a);
-// FragColor = vec4(vUV.xy,0., 1.);
-//FragColor = vec4(1. );
-  if (FragColor.a < 0.5) { 
-    discard;
-  }  
 
   `;
 
@@ -294,21 +286,9 @@ precision highp int;
 precision highp usampler2D; 
 precision highp sampler2DArray;
 
-
+${SceneUBO.Define}
 //uniforms
-uniform float time;
-uniform vec4 fogOptions;
-uniform vec3 vFogColor;
-uniform float sunLightLevel;
-uniform float baseLevel;
-uniform float doAO;
-uniform float doSun;
-uniform float doRGB;
-uniform float doColor;
-uniform float doEffects;
-uniform float mipMapBias;
 uniform vec3 cameraPosition;
-uniform vec3 cameraDirection;
 uniform sampler2DArray dve_voxel;
 uniform usampler2D dve_voxel_animation; 
 uniform int dve_voxel_animation_size;   
@@ -330,9 +310,9 @@ in vec3 vLight3;
 in vec3 vLight4;
 //functions
 
-${SharedShaders.FBMNoiseFunctions}
-
-${SharedShaders.FogFragmentFunctions}
+${NoiseShaders.FBMNoiseFunctions}
+${FogShaders.Functions}
+${SkyShaders.Functions}
 
 ${top}
 

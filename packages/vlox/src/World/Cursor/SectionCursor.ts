@@ -8,7 +8,8 @@ import { WorldSectionCursorInterface } from "./WorldSectionCursor.interface";
 import type { Section } from "../Section/index";
 
 export class SectionCursor
-  implements DataCursorInterface, WorldSectionCursorInterface
+   
+  implements WorldSectionCursorInterface,DataCursorInterface
 {
   _section: Section | null;
   private voxel = new WorldVoxelCursor(this);
@@ -53,7 +54,7 @@ export class SectionCursor
       z! || 0
     );
     if (!sector) return false;
-    this._section = sector.getSection(x||0,y || 0,z||0);
+    this._section = sector.getSection(x || 0, y || 0, z || 0);
     const sectionPos = this._section!.getPosition();
     this._sectionPosition.x = sectionPos[0];
     this._sectionPosition.y = sectionPos[1];

@@ -17,7 +17,7 @@ export function App() {
       if (ran) return;
       if (!canvasRef.current) return;
       ran = true;
-
+      const halfThreads = Math.ceil((navigator.hardwareConcurrency - 3) / 2);
       const worldWorker = new Worker(
         new URL("./Contexts/World/", import.meta.url),
         {
@@ -26,7 +26,7 @@ export function App() {
       );
 
       const mesherWorkers: Worker[] = [];
-      for (let i = 0; i < navigator.hardwareConcurrency - 1; i++) {
+      for (let i = 0; i < halfThreads; i++) {
         mesherWorkers.push(
           new Worker(new URL("./Contexts/Mesher/", import.meta.url), {
             type: "module",
@@ -34,7 +34,7 @@ export function App() {
         );
       }
       const generatorWorkers: Worker[] = [];
-      for (let i = 0; i < navigator.hardwareConcurrency - 1; i++) {
+      for (let i = 0; i < halfThreads; i++) {
         generatorWorkers.push(
           new Worker(new URL("./Contexts/Generator", import.meta.url), {
             type: "module",

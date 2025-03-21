@@ -6,7 +6,6 @@ import {
   Vector3,
   HemisphericLight,
 } from "@babylonjs/core";
-
 import { MeshVoxel } from "@divinevoxel/vlox/Mesher/Functions/MeshVoxel";
 import { VoxelCursor } from "@divinevoxel/vlox//Voxels/Cursor/VoxelCursor";
 import {
@@ -15,11 +14,8 @@ import {
   PaintVoxelData,
 } from "@divinevoxel/vlox/Voxels/";
 import { DVEBabylonRenderer } from "../Renderer/DVEBabylonRenderer";
-
 import { SchemaRegister } from "@divinevoxel/vlox/Voxels/State/SchemaRegister";
-
 import { DVEBRClassicMaterial } from "../Matereials/Classic/DVEBRClassicMaterial";
-import { DefaultMaterialManager } from "../Matereials/DefaultMaterialManager";
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
 import { VoxelIndex } from "@divinevoxel/vlox/Voxels/Indexes/VoxelIndex";
 import { VoxelModelIndex } from "@divinevoxel/vlox/Voxels/Indexes/VoxelModelIndex";
@@ -27,6 +23,8 @@ import { VoxelTextureIndex } from "@divinevoxel/vlox/Voxels/Indexes/VoxelTexture
 import { CacheManager } from "@divinevoxel/vlox/Cache/CacheManager";
 import { DVEBRMesh } from "../Meshes/DVEBRMesh";
 import { VoxelPalettesRegister } from "@divinevoxel/vlox/Voxels/Data/VoxelPalettesRegister";
+import { SceneOptions } from "../Scene/SceneOptions";
+
 const dataTool = new VoxelCursor();
 const materialMap = new Map<string, DVEBRClassicMaterial>();
 
@@ -63,6 +61,7 @@ async function loadAndInvertImage(
 
 const buildMesh = (
   scene: Scene,
+  sceneOptions: SceneOptions,
   voxelData: RawVoxelData,
   voxelId: string,
   stateID: string
@@ -71,7 +70,7 @@ const buildMesh = (
   if (!meshedVoxel) return false;
 
   if (meshedVoxel[0][0] == 1) throw new Error(`Not in right mode`);
-  dataTool.copyRaw(voxelData).process();
+  dataTool.setRaw(voxelData).process();
   const renderedMaterial = dataTool.getRenderedMaterial()!;
 
   const material = DVEBabylonRenderer.instance.materials.get(renderedMaterial);
@@ -79,20 +78,15 @@ const buildMesh = (
 
   const mesh = new Mesh(crypto.randomUUID(), scene);
   if (!materialMap.has(renderedMaterial)) {
-    const newMat = (material as any).clone(scene);
+    const newMat = (material as DVEBRClassicMaterial).clone(
+      scene,
+      sceneOptions
+    );
 
     if (!newMat) throw new Error("Error creating mat.");
 
     materialMap.set(renderedMaterial, newMat);
 
-    newMat.setNumberArray(
-      "lightGradient",
-      DefaultMaterialManager.uniforms.lightGradient
-    );
-    newMat.setNumber("doSun", 0);
-    newMat.setNumber("baseLevel", 1);
-    newMat.setNumber("sunLevel", 1);
-    //    newMat.wireframe = true;
     mesh.material = newMat._material;
   } else {
     mesh.material = materialMap.get(renderedMaterial)!._material;
@@ -114,6 +108,7 @@ const buildMesh = (
 
   return mesh;
 };
+
 export default async function CreateDisplayIndex(data: VoxelData[]) {
   const voxelIndex = new VoxelIndex(data);
   if (
@@ -188,6 +183,8 @@ export default async function CreateDisplayIndex(data: VoxelData[]) {
     displayScene.render();
   });
 
+  const sceneOptions =
+    DVEBabylonRenderer.instance.voxelScene.options.clone(displayScene);
   const addVoxelData = PaintVoxelData.Create({});
   for (const [voxelId, states] of voxelIndex.states) {
     addVoxelData.id = voxelId;
@@ -207,8 +204,13 @@ export default async function CreateDisplayIndex(data: VoxelData[]) {
         const vid = VoxelPalettesRegister.voxelIds.getNumberId(addVoxelData.id);
 
         const rawData = VoxelCursor.VoxelDataToRaw(addVoxelData);
-        const mesh = buildMesh(displayScene, rawData, voxelId, state.data.id);
-
+        const mesh = buildMesh(
+          displayScene,
+          sceneOptions,
+          rawData,
+          voxelId,
+          state.data.id
+        );
         if (!mesh) continue;
         mesh.setEnabled(false);
         meshes.set(mesh, { id: voxelId, stateId: state.data.id });
@@ -227,7 +229,10 @@ export default async function CreateDisplayIndex(data: VoxelData[]) {
       }
     }
   }
-
+  sceneOptions.levels.sunLevel = 1;
+  sceneOptions.levels.baseLevel = 1;
+  sceneOptions.shade.doAO = false;
+  sceneOptions.ubo.update();
   for (const [mesh, data] of meshes) {
     mesh.setEnabled(true);
     displayScene.render();

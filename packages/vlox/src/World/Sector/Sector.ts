@@ -1,5 +1,5 @@
 import { Section, SectionData } from "../Section/Section.js";
-import { Vec3Array } from "@amodx/math";
+import { Vec2Array, Vec3Array } from "@amodx/math";
 import { WorldSpaces } from "../WorldSpaces";
 import {
   getBitArrayIndex,
@@ -8,7 +8,10 @@ import {
   setBitAtomicArrayIndex,
 } from "../../Util/Binary/BinaryArrays.js";
 import { SectorState, SectorStateDefaultBitFlags } from "./SectorState.js";
-import { forceMultipleOf2,forceMultipleOf4 } from "../../Util/Binary/BinaryFunctions.js";
+import {
+  forceMultipleOf2,
+  forceMultipleOf4,
+} from "../../Util/Binary/BinaryFunctions.js";
 import { WorldRegister } from "../WorldRegister.js";
 
 export interface SectorData {
@@ -21,6 +24,7 @@ export interface SectorData {
 }
 export interface Sector extends SectorData {}
 
+const temp: Vec2Array = [0, 0];
 export class Sector {
   static FlagIds = SectorState.Flags;
   static TimeStampIds = SectorState.TimeStamps;
@@ -126,13 +130,7 @@ export class Sector {
       yield section;
     }
   }
-  *getLogicDirtySections(): Generator<Section> {
-    for (const section of this.sections) {
-      const [min, max] = section.getLogicMinMax();
-      if (min == Infinity || max == -Infinity) continue;
-      yield section;
-    }
-  }
+
 
   storeFlags() {
     const stored: Record<string, boolean> = {};
@@ -169,5 +167,26 @@ export class Sector {
       }
       this.setTimeStamp(storedIndex, stored[timeStamp]);
     }
+  }
+
+  getMinMax() {
+    temp[0] = Infinity;
+    temp[1] = -Infinity;
+
+    const [x, y, z] = this.position;
+
+    for (let i = 0; i < this.sections.length; i++) {
+      const [min, max] = this.sections[i].getMinMax();
+      if (Math.abs(min) == Infinity || Math.abs(max) == Infinity) {
+        continue;
+      }
+      if (min + y < temp[0]) {
+        temp[0] = min + y;
+      }
+      if (max + y > temp[1]) {
+        temp[1] = max + y;
+      }
+    }
+    return temp;
   }
 }

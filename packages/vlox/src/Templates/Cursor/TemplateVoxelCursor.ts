@@ -1,26 +1,21 @@
 import { VoxelCursorInterface } from "../../Voxels/Cursor/VoxelCursor.interface";
 import { TemplateCursor } from "./TemplateCursor";
-import { FullVoxelTemplate } from "../../Templates/FullVoxelTemplate";
+import { TemplateProxy } from "./TemplateProxy";
+
 export class TemplateVoxelCursor extends VoxelCursorInterface {
-  private _template: FullVoxelTemplate;
+  private _proxy: TemplateProxy;
 
   get ids() {
-    return this._template.ids;
+    return this._proxy.ids;
   }
   get level() {
-    return this._template.level;
+    return this._proxy.levels;
   }
   get light() {
-    return this._template.light;
-  }
-  get state() {
-    return this._template.state;
+    return this._proxy.light;
   }
   get secondary() {
-    return this._template.secondary;
-  }
-  get mod() {
-    return this._template.mod;
+    return this._proxy.secondary;
   }
 
   constructor(public dataCursor: TemplateCursor) {
@@ -28,9 +23,10 @@ export class TemplateVoxelCursor extends VoxelCursorInterface {
   }
 
   loadIn() {
-    if (!this.dataCursor._template) return;
-    this._template = this.dataCursor._template;
+    if (!this.dataCursor._proxy) return;
+    this._proxy = this.dataCursor._proxy;
     this._index = this.dataCursor._voxelIndex;
+
     this.process();
   }
 

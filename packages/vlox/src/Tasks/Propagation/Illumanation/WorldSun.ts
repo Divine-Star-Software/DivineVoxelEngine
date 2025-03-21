@@ -23,7 +23,7 @@ const lightData = new VoxelLightData();
 export function RunWorldSun(tasks: VoxelUpdateTask) {
   const [, cx, cy, cz] = tasks.origin;
   const RmaxY = SectorHeightMap.getRelative(tasks.origin);
-  const AmaxY = SectorHeightMap.getAbsolute(tasks.origin);
+  const AmaxY = SectorHeightMap.getAbsolute(...tasks.origin);
   const maxX = cx + WorldSpaces.sector.bounds.x;
   const maxY = cy + WorldSpaces.sector.bounds.y;
   const maxZ = cz + WorldSpaces.sector.bounds.z;
@@ -40,7 +40,6 @@ export function RunWorldSun(tasks: VoxelUpdateTask) {
     );
     return;
   }
-
 
   const minY = AmaxY - 1 < 0 ? 0 : AmaxY;
 
@@ -69,8 +68,8 @@ export function RunWorldSun(tasks: VoxelUpdateTask) {
       section.light[i] = lightData.setS(0xf, section.light[i]);
     }
   }
-  
- //accumulate
+
+  //accumulate
   const maxAcculamteY = AmaxY == RmaxY ? RmaxY + 1 : RmaxY;
   let index = queue.length;
   for (let iy = minY; iy <= maxAcculamteY; iy++) {
@@ -113,9 +112,9 @@ export function RunWorldSun(tasks: VoxelUpdateTask) {
       const nVoxel = tasks.nDataCursor.getVoxel(nx, ny, nz);
       if (nVoxel) {
         const nl = nVoxel.getLight();
-        if (nl > -1 && isLessThanForSunAdd(nl, sl)) {
+        if (nl > -1 && isLessThanForSunAdd(nl, sl, VoxelLightData.SunFallOffValue)) {
           queue.push(nx, ny, nz);
-          nVoxel.setLight(getMinusOneForSun(sl, nl));
+          nVoxel.setLight(getMinusOneForSun(sl, nl, VoxelLightData.SunFallOffValue));
         }
       }
     }
@@ -123,14 +122,14 @@ export function RunWorldSun(tasks: VoxelUpdateTask) {
     const nVoxel = tasks.nDataCursor.getVoxel(x, y - 1, z);
     if (nVoxel) {
       const nl = nVoxel.getLight();
-      if (nl > -1 && isLessThanForSunAddDown(nl, sl)) {
+      if (nl > -1 && isLessThanForSunAddDown(nl, sl, VoxelLightData.SunFallOffValue)) {
         if (nVoxel.isAir()) {
           queue.push(x, y - 1, z);
-          nVoxel.setLight(getSunLightForUnderVoxel(sl, nl));
+          nVoxel.setLight(getSunLightForUnderVoxel(sl, nl, VoxelLightData.SunFallOffValue));
         } else {
           if (!nVoxel.isOpaque()) {
             queue.push(x, y - 1, z);
-            nVoxel.setLight(getMinusOneForSun(sl, nl));
+            nVoxel.setLight(getMinusOneForSun(sl, nl, VoxelLightData.SunFallOffValue));
           }
         }
       }

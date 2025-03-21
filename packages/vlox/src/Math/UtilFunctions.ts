@@ -1,22 +1,42 @@
-import { Vec3Array } from "@amodx/math";
+import { Vec3Array, Vector3Like } from "@amodx/math";
 import { VoxelFaces } from "./VoxelFaces";
-// Round each component independently to -1, 0, or 1
-const roundToUnit = (n: number) => (Math.abs(n) < 0.5 ? 0 : Math.sign(n));
+const unitNormals: Vec3Array[] = [
+  [0, 1, 0],
+  [0, -1, 0],
+  [0, 0, 1],
+  [0, 0, -1],
+  [1, 0, 0],
+  [-1, 0, 0],
+];
+const tempPosition: Vec3Array = [0, 0, 0];
+const tempNormal: Vec3Array = [0, 0, 0];
 
-export function closestUnitNormal(v: Vec3Array): Vec3Array {
-  const [x, y, z] = v;
+export function closestUnitNormal(v: Vec3Array | Vector3Like): Vec3Array {
+  const [x, y, z] = Vector3Like.Deconstruct(v);
+  tempPosition[0] = x;
+  tempPosition[1] = y;
+  tempPosition[2] = z;
 
-  const bestS: Vec3Array = [roundToUnit(x), roundToUnit(y), roundToUnit(z)];
+  let closestIndex = -1;
+  let closestDistance = Infinity;
+  for (let i = 0; i < unitNormals.length; i++) {
+    Vector3Like.SubtractArrayToRef(tempPosition, unitNormals[i], tempNormal);
+    const distance = Vector3Like.LengthArray(tempNormal);
+    if (distance < closestDistance) {
+      closestDistance = distance;
+      closestIndex = i;
+    }
+  }
+  if (closestIndex == -1) return [0, 0, 0];
 
-  // Ensure it's a unit vector by normalizing
-  const magnitude = Math.sqrt(bestS[0] ** 2 + bestS[1] ** 2 + bestS[2] ** 2);
-
-  return magnitude > 0
-    ? [bestS[0] / magnitude, bestS[1] / magnitude, bestS[2] / magnitude]
-    : [0, 0, 0];
+  return [
+    unitNormals[closestIndex][0],
+    unitNormals[closestIndex][1],
+    unitNormals[closestIndex][2],
+  ];
 }
 
-export function closestVoxelFace(v: Vec3Array): VoxelFaces {
+export function closestVoxelFace(v: Vec3Array | Vector3Like): VoxelFaces {
   const unitNormal = closestUnitNormal(v);
   let closestFace = VoxelFaces.Up;
   if (unitNormal[0] == 1) closestFace = VoxelFaces.East;

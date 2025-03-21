@@ -1,6 +1,6 @@
 import { DVEBRPBRMaterial } from "../../Matereials/PBR/DVEBRPBRMaterial";
 import { DVEBRDefaultMaterialBaseData } from "../../Matereials/Types/DVEBRDefaultMaterial.types"
-import { CreateDefaultRenderer } from "../../Renderer/CreateDefaultRenderer";
+import { CreateDefaultRenderer } from "../Default/CreateDefaultRenderer";
 import {
   CreateBox,
   DirectionalLight,
@@ -72,9 +72,9 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
   // ssrPipeline.environmentTextureIsProbe = true;
 
   const renderer = CreateDefaultRenderer({
-    createMaterial: (scene, matData) => {
-      const newMat = new DVEBRPBRMaterial(matData.id, {
-        scene: scene,
+    createMaterial: (renderer,scene, matData) => {
+      const newMat = new DVEBRPBRMaterial(renderer.voxelScene.options, matData.id, {
+        scene,
         data: {
           effectId: matData.shaderId,
           textureTypeId: matData.textureTypeId || "",

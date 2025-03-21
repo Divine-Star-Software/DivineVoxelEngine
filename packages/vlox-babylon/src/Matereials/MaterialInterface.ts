@@ -1,4 +1,5 @@
 import { Material, Matrix, Scene, Texture } from "@babylonjs/core";
+import { SceneOptions } from "../Scene/SceneOptions";
 export interface MaterialData<Data extends object = any> {
   scene: Scene;
   uniforms?: string[];
@@ -29,7 +30,7 @@ export interface MaterialInterface<
   textures: Map<string, Texture>;
 
   setTexture(samplerId: string, sampler: Texture): void;
-  clone(scene: Scene): MaterialInterface;
+  clone(scene: Scene, options: SceneOptions): MaterialInterface;
   setNumber(uniform: string, value: number): void;
   setNumberArray(uniform: string, value: ArrayLike<number>): void;
   setVector2(uniform: string, x: number, y: number): void;

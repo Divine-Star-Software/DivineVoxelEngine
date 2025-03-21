@@ -17,6 +17,17 @@ export class BinarySchema {
 
   private _value = 0;
 
+  toStateString() {
+    if (!this.nodes.length) return "*";
+    let stateString: string[] = [];
+    for (let i = 0; i < this.nodes.length; i++) {
+      stateString.push(
+        `${this.nodes[i].id}=${String(this.get(this.nodes[i].id))}`
+      );
+    }
+    return stateString.join(",");
+  }
+
   readString(stateString: string) {
     if (stateString == "*") return 0;
     const split = stateString.split(",");

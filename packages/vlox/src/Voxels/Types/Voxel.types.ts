@@ -3,6 +3,7 @@ import { VoxelModelConstructorData } from "../Models/VoxelModel.types";
 import { VoxelTags } from "../Data/VoxelTag.types";
 import { VoxelLogicData } from "../Logic/VoxelLogic.types";
 import { VoxelFaceNames } from "../../Math";
+import { VoxelPlacingStrategyData } from "Voxels/Interaction/Placing/VoxelPlacingStrategy.types";
 export interface VoxelDataArrays {
   /**The runtime numeric voxel ids */
   ids: Uint16Array;
@@ -37,30 +38,7 @@ export type VoxelNamedStateData = {
       };
 };
 
-export class PaintVoxelData {
-  static Create(data: Partial<PaintVoxelData>) {
-    return new PaintVoxelData(
-      data.id,
-      data.name,
-      data.mod,
-      data.state,
-      data.level,
-      data.levelState,
-      data.secondaryVoxelId,
-      data.secondaryVoxeName
-    );
-  }
-  private constructor(
-    public id: string = "dve_air",
-    public name: string = "",
-    public mod: number = 0,
-    public state: number = 0,
-    public level: number = 0,
-    public levelState: number = 0,
-    public secondaryVoxelId: string = "dve_air",
-    public secondaryVoxeName: string = ""
-  ) {}
-}
+
 
 /**
  * An array representing the raw data of a voxel.
@@ -80,6 +58,12 @@ export interface VoxelBaseProperties extends Partial<VoxelTags> {
   [key: string]: any;
   /**Logic data for a the voxel */
   dve_logic_data?: VoxelLogicData[];
+
+  /**map mod states of the voxel to particle textures */
+  dve_particle_data?: Record<string, TextureId>;
+
+  /**Define a strategy for placing the model. */
+  dve_placing_strategy?: VoxelPlacingStrategyData[] | string;
 }
 
 export interface VoxelProperties extends VoxelBaseProperties {

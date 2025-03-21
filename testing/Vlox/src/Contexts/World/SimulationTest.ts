@@ -42,22 +42,15 @@ export function SimulationTest(DVEW: DivineVoxelEngineWorld) {
     const brush = dimension.getBrush();
 
     console.warn("got dimension", dimension, dimension.simulation);
-    setTimeout(async () => {
+  /*   setTimeout(async () => {
       await brush
         .setId("dve_liquid_dream_ether")
         .setLevel(7)
-        .setXYZ(8, 1, 8)
+        .setXYZ(8, 15, 8)
         .paintAsync();
-        await brush
-        .setXYZ(9, 1, 8)
-        .paintAsync();
-      brush.clear();
 
-      setTimeout(async () => {
-        console.warn("erease async");
-        await brush.setXYZ(8, 1, 8).eraseAsync();
-      }, 5_000);
-    }, 1_000);
+      brush.clear();
+    }, 1_000); */
   });
 
   Threads.registerTask("world-ready", () => {});

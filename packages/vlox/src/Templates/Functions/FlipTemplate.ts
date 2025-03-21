@@ -1,5 +1,5 @@
 import { Flat3DIndex, Vec3Array } from "@amodx/math";
-import { VoxelTemplate } from "../VoxelTemplate";
+import { ArchivedVoxelTemplate } from "../Archive/ArchivedVoxelTemplate";
 export type TemplateFlipDirections = "x" | "z" | "y";
 
 const flipArray = (
@@ -37,10 +37,10 @@ const flipArray = (
 };
 
 export default function FlipTemplate(
-  template: VoxelTemplate,
+  template: ArchivedVoxelTemplate,
   direction: TemplateFlipDirections
 ) {
-  const [sizeX, sizeY, sizeZ] = template.size;
+  const [sizeX, sizeY, sizeZ] = template.bounds;
   const index = Flat3DIndex.GetXZYOrder();
   index.setBounds(sizeX, sizeY, sizeZ);
 

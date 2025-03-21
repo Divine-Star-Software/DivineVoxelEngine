@@ -165,6 +165,8 @@ export function BuildRules(geoPalette: StringPalette) {
   const otherQuadFace = new OcclusionQuadFace();
   const otherTriangleFace = new OcclusionTriangleFace();
 
+  console.warn("build rules", faces.length); 
+
   for (let faceIndex = 0; faceIndex < faces.length; faceIndex++) {
     const faceData = OcclusionFaceRegister.faceIndex[faceIndex];
     let currentFace: IOcclusionFace;
@@ -173,7 +175,7 @@ export function BuildRules(geoPalette: StringPalette) {
       currentFace = currentQuadFace;
     } else {
       otherTriangleFace.setPoints(faceData[1]);
-      currentFace = otherTriangleFace;
+      currentFace = otherTriangleFace;  
     }
     faceCullMap[faceIndex] = [];
     vertexHitMap[faceIndex] = [];
@@ -237,6 +239,8 @@ export function BuildRules(geoPalette: StringPalette) {
             }
           }
         }
+
+        
       }
     }
   }

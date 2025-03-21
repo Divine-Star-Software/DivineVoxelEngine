@@ -1,16 +1,12 @@
 import { DVEBRShaderStore } from "../../Shaders/DVEBRShaderStore";
 import { VoxelBaseShader } from "../../Shaders/Code/VoxelBaseShader";
-import { SkyboxShader } from "../../Shaders/Code/SkyboxShader";
-import { NodeShader } from "../../Shaders/Code/NodeShader";
+import { VoxelParticleShader } from "../../Shaders/Code/VoxelParticleShader";
 import { DVEBRClassicMaterial } from "../../Matereials/Classic/DVEBRClassicMaterial";
 import { DVEBRDefaultMaterialBaseData } from "../../Matereials/Types/DVEBRDefaultMaterial.types";
 import {
   CreateDefaultRenderer,
   CreateTextures,
-} from "../../Renderer/CreateDefaultRenderer";
-import { HemisphericLight, ShaderMaterial, Vector3 } from "@babylonjs/core";
-
-import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
+} from "../Default/CreateDefaultRenderer";
 
 export type DVEBRClassicData = DVEBRDefaultMaterialBaseData & {
   doSun?: boolean;
@@ -20,6 +16,7 @@ export type DVEBRClassicData = DVEBRDefaultMaterialBaseData & {
 const defaultMaterials = [
   "dve_glow",
   "dve_flora",
+  "dve_flora_transparent",
   "dve_solid",
   "dve_transparent",
   "dve_liquid",
@@ -28,98 +25,43 @@ const defaultMaterials = [
 export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
   await CreateTextures(initData.scene, initData.textureData);
 
-  DVEBRShaderStore.storeShader(
-    "dve_skybox",
-    "vertex",
-    SkyboxShader.GetVertex()
+  DVEBRShaderStore.setShaderData(
+    "dve_voxel_particle",
+    [
+      "world",
+      "viewProjection",
+      "dve_voxel",
+      "dve_voxel_animation",
+      "dve_voxel_animation_size",
+    ],
+    ["position", "normal", "uv", "color"]
   );
 
   DVEBRShaderStore.storeShader(
-    "dve_skybox",
+    "dve_voxel_particle",
+    "vertex",
+    VoxelParticleShader.GetVertex()
+  );
+
+  DVEBRShaderStore.storeShader(
+    "dve_voxel_particle",
     "frag",
-    SkyboxShader.GetFragment()
+    VoxelParticleShader.GetFragment()
   );
 
-  DVEBRShaderStore.setShaderData(
-    "dve_skybox",
-    [
-      "time",
-      "fogOptions",
-      "vFogColor",
-      "sunLightLevel",
-      "baseLevel",
-      "doEffects",
-      "world",
-      "viewProjection",
-      "worldOrigin",
-      "cameraPosition",
-      "cameraDirection",
-    ],
-    ["position", "normal", "indices"]
-  );
-
-  /*   DVEBRShaderStore.storeShader(
-    "dve_node",
-    "vertex",
-    NodeShader.GetVertex({
-      textureLength: 0,
-    })
-  );
-
-  DVEBRShaderStore.storeShader("dve_node", "frag", NodeShader.GetFragment());
-
-  DVEBRShaderStore.setShaderData(
-    "dve_node",
-    [
-      "time",
-      "fogOptions",
-      "vFogColor",
-      "sunLightLevel",
-      "baseLevel",
-      "doEffects",
-      "world",
-      "viewProjection",
-      "worldOrigin",
-      "cameraPosition",
-      "cameraDirection",
-    ],
-    ["position", "normal", "indices"]
-  ); */
-  const voxelTexture = TextureManager.getTexture("dve_voxel");
-  const voxelTextureLength = voxelTexture.animations.length;
   for (const material of defaultMaterials) {
     DVEBRShaderStore.setShaderData(
       material,
       [
-        "time",
-        "fogOptions",
-        "vFogColor",
-        "sunLightLevel",
-        "baseLevel",
-        "doAO",
-        "doSun",
-        "doRGB",
-        "doColor",
-        "doEffects",
-        "mipMapBias",
         "world",
         "viewProjection",
         "worldOrigin",
         "cameraPosition",
-        "lightGradient",
         "dve_voxel",
         "dve_voxel_animation",
         "dve_voxel_animation_size",
       ],
-      [
-        "position",
-        "normal",
-        "indices",
-        "voxelData",
-        "textureIndex",
-        "uv",
-        "colors",
-      ]
+      ["position", "normal", "voxelData", "textureIndex", "uv", "colors"]
     );
     DVEBRShaderStore.storeShader(
       material,
@@ -139,56 +81,45 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
     );
   }
 
-  let time = 0;
-  const materials: ShaderMaterial[] = [];
-  initData.scene.registerBeforeRender(() => {
-    for (let i = 0; i < materials.length; i++) {
-      materials[i].setFloat("time", time);
-    }
-    time++;
-  });
-
-  const r = await CreateDefaultRenderer({
-    afterCreate: async (scene) => {
-      if (initData.doSun === undefined || initData.doSun === true) {
-        scene.options.doSun(true);
-        scene.levels.setSun(0.0);
-        scene.levels.setBase(0.01);
-      }
-      if (initData.doRGB === undefined || initData.doRGB === true)
-        scene.options.doRGB(true);
-      if (initData.doAO === undefined || initData.doAO === true)
-        scene.options.doAO(true);
-
-      scene.options.doEffects(true);
-      const hemLight = new HemisphericLight(
-        "",
-        new Vector3(0, -1, 0),
-        initData.scene
+  const renderer = await CreateDefaultRenderer({
+    afterCreate: async (scene) => {},
+    createMaterial: (renderer, scene, matData) => {
+      const newMat = new DVEBRClassicMaterial(
+        renderer.voxelScene.options,
+        matData.id,
+        {
+          scene,
+          data: {
+            effectId: matData.shaderId,
+            textureTypeId: matData.textureTypeId || "",
+          },
+          ...matData,
+        }
       );
-      hemLight.specular.set(0, 0, 0);
-      hemLight.intensity = 0.1;
-    },
-
-    //@ts-ignore
-    createMaterial: (scene, matData) => {
-      const newMat = new DVEBRClassicMaterial(matData.id, {
-        scene: scene,
-        data: {
-          effectId: matData.shaderId,
-          textureTypeId: matData.textureTypeId || "",
-        },
-        ...matData,
-      });
       newMat.createMaterial(scene);
-      materials.push(newMat._material);
       return newMat;
     },
-
     scene: initData.scene,
     textureData: initData.textureData,
     textureTypes: initData.textureTypes,
     substances: initData.substances,
   });
-  return r;
+
+  renderer.voxelScene.options.shade.doSun = true;
+  renderer.voxelScene.options.shade.doRGB = true;
+  renderer.voxelScene.options.shade.doAO = true;
+  renderer.voxelScene.options.shade.doColor = true;
+  renderer.voxelScene.options.levels.baseLevel = 0.1;
+  renderer.voxelScene.options.levels.sunLevel = 1;
+  renderer.voxelScene.options.fog.setColor(255, 255, 255);
+  renderer.voxelScene.options.fog.heightFactor = 0.25;
+  renderer.voxelScene.options.sky.setColor(130, 174, 255);
+  renderer.voxelScene.options.sky.horizonStart = 0;
+  renderer.voxelScene.options.sky.horizon = 64;
+  renderer.voxelScene.options.sky.horizonEnd = 120;
+  renderer.voxelScene.options.sky.startBlend = 100;
+  renderer.voxelScene.options.sky.endBlend = 150;
+
+  renderer.voxelScene.options.ubo.buffer.update();
+  return renderer;
 }

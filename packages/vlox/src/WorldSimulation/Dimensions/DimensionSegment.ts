@@ -14,14 +14,13 @@ class ActiveSectors {
   _map = new Map<string, SimulationSector>();
   constructor(public dimension: DimensionSegment) {}
   add(x: number, y: number, z: number) {
-    const key = WorldSpaces.hash.hashVec3(
-      WorldSpaces.sector.getPosition(x, y, z, tempPosition)
-    );
+    WorldSpaces.sector.getPosition(x, y, z, tempPosition);
+    const key = WorldSpaces.hash.hashVec3(tempPosition);
     if (this._map.has(key)) return false;
     const newSector = new SimulationSector(this.dimension);
-    newSector.position[0] = x;
-    newSector.position[1] = y;
-    newSector.position[2] = z;
+    newSector.position[0] = tempPosition.x;
+    newSector.position[1] = tempPosition.y;
+    newSector.position[2] = tempPosition.z;
     this._sectors.push(newSector);
     this._map.set(key, newSector);
   }

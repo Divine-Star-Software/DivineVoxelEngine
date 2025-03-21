@@ -1,4 +1,5 @@
-import { SharedShaders } from "./SharedShaders";
+import { FogShaders } from "./Shared/FogShader";
+import { NoiseShaders } from "./Shared/NoiseShader";
 
 export class NodeShader {
   static GetVertex(props: {textureLength: number}) {
@@ -163,8 +164,8 @@ in float vDistance;
 in float vBrightness;
 
 
-${SharedShaders.FBMNoiseFunctions}
-${SharedShaders.FogFragmentFunctions}
+${NoiseShaders.FBMNoiseFunctions}
+${FogShaders.Functions}
 
 
   
@@ -194,7 +195,7 @@ ${SharedShaders.FogFragmentFunctions}
   vec3 finalColor = doFog(rgb);
   FragColor = vec4(finalColor.rgb * vBrightness,rgb.a);
   
-  
+
 }
         `;
   }

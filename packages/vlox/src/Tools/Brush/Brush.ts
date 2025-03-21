@@ -1,25 +1,15 @@
-import type {
-  PaintVoxelData,
-  RawVoxelData,
-} from "../../Voxels/Types/Voxel.types.js";
+import type { RawVoxelData } from "../../Voxels/Types/Voxel.types.js";
 import { WorldCursor } from "../../World/Cursor/WorldCursor.js";
 import { VoxelCursor } from "../../Voxels/Cursor/VoxelCursor.js";
 import { WorldRegister } from "../../World/WorldRegister.js";
 import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister.js";
-const airId = "dve_air";
+import { Vector3Like } from "@amodx/math";
+import { IVoxelTemplate } from "../../Templates/VoxelTemplates.types.js";
+import { PaintVoxelData } from "../../Voxels/Types/PaintVoxelData.js";
 const air: RawVoxelData = [0, 0, 0, 0];
-
+const temp: RawVoxelData = [0, 0, 0, 0];
 export class BrushTool {
-  data: PaintVoxelData = {
-    id: airId,
-    name: "",
-    state: 0,
-    secondaryVoxelId: "",
-    secondaryVoxeName: "",
-    level: 0,
-    levelState: 0,
-    mod: 0,
-  };
+  data = PaintVoxelData.Create();
 
   dimension = 0;
   x = 0;
@@ -46,8 +36,8 @@ export class BrushTool {
     } else {
       if (data.id) this.setId(data.id);
     }
-    if (data.secondaryVoxeName) {
-      this.setSecondaryName(data.secondaryVoxeName);
+    if (data.secondaryName) {
+      this.setSecondaryName(data.secondaryName);
     } else {
       if (data.secondaryVoxelId) this.setSecondaryId(data.secondaryVoxelId);
     }
@@ -62,7 +52,7 @@ export class BrushTool {
     return this.data;
   }
   setRaw(data: RawVoxelData) {
-    this.voxelCursor.copyRaw(data).process();
+    this.voxelCursor.setRaw(data).process();
     this.data.id = this.voxelCursor.getStringId();
     this.data.state = this.voxelCursor.getState();
     this.data.levelState = this.voxelCursor.getLevelState();
@@ -95,10 +85,9 @@ export class BrushTool {
   setSecondaryId(id: string) {
     this.data.secondaryVoxelId = id;
     if (id) {
-      this.data.secondaryVoxeName =
-        VoxelPalettesRegister.voxelIdToNameMap.get(id)!;
+      this.data.secondaryName = VoxelPalettesRegister.voxelIdToNameMap.get(id)!;
     } else {
-      this.data.secondaryVoxeName = "";
+      this.data.secondaryName = "";
     }
 
     return this;
@@ -111,7 +100,7 @@ export class BrushTool {
       this.data.secondaryVoxelId = "";
     }
 
-    this.data.secondaryVoxeName = name;
+    this.data.secondaryName = name;
     return this;
   }
   setShapeState(state: number) {
@@ -173,7 +162,7 @@ export class BrushTool {
   _erase() {
     const voxel = this.dataCursor.getVoxel(this.x, this.y, this.z);
     if (!voxel) return;
-    voxel.copyRaw(air).updateVoxel(1);
+    voxel.setRaw(air).updateVoxel(1);
   }
 
   paint() {
@@ -181,9 +170,72 @@ export class BrushTool {
     return this;
   }
 
+  paintArea(start: Vector3Like, end: Vector3Like) {
+    const { x: sx, y: sy, z: sz } = start;
+    const { x: ex, y: ey, z: ez } = end;
+    for (let x = sx; x < ex; x++) {
+      for (let y = sy; y < ey; y++) {
+        for (let z = sz; z < ez; z++) {
+          if (!this.dataCursor.inBounds(x, y, z)) continue;
+          this.setXYZ(x, y, z).paint();
+        }
+      }
+    }
+  }
+
+  paintTemplate(voxelTemplate: IVoxelTemplate) {
+    const { x: ox, y: oy, z: oz } = this;
+    const [sx, sy, sz] = voxelTemplate.bounds;
+    for (let x = 0; x < sx; x++) {
+      for (let y = 0; y < sy; y++) {
+        for (let z = 0; z < sz; z++) {
+          const tx = ox + x;
+          const ty = oy + y;
+          const tz = oz + z;
+          if (!this.dataCursor.inBounds(tx, ty, tz)) continue;
+          if (voxelTemplate.isAir(voxelTemplate.getIndex(x, y, z))) continue;
+          voxelTemplate.getRaw(voxelTemplate.getIndex(x, y, z), temp);
+          this.setRaw(temp);
+          this.setXYZ(tx, ty, tz).paint();
+        }
+      }
+    }
+  }
+
   erase() {
     this._erase();
     return this;
+  }
+
+  eraseArea(start: Vector3Like, end: Vector3Like) {
+    const { x: sx, y: sy, z: sz } = start;
+    const { x: ex, y: ey, z: ez } = end;
+    for (let x = sx; x < ex; x++) {
+      for (let y = sy; y < ey; y++) {
+        for (let z = sz; z < ez; z++) {
+          if (!this.dataCursor.inBounds(x, y, z)) continue;
+
+          this.setXYZ(x, y, z).erase();
+        }
+      }
+    }
+  }
+
+  eraseTemplate(voxelTemplate: IVoxelTemplate) {
+    const { x: ox, y: oy, z: oz } = this;
+    const [sx, sy, sz] = voxelTemplate.bounds;
+    for (let x = 0; x < sx; x++) {
+      for (let y = 0; y < sy; y++) {
+        for (let z = 0; z < sz; z++) {
+          const tx = ox + x;
+          const ty = oy + y;
+          const tz = oz + z;
+          if (!this.dataCursor.inBounds(tx, ty, tz)) continue;
+          if (voxelTemplate.isAir(voxelTemplate.getIndex(x, y, z))) continue;
+          this.setXYZ(x, y, z).erase();
+        }
+      }
+    }
   }
 
   start(dimension: number, x: number, y: number, z: number) {

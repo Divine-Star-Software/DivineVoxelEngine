@@ -1,24 +1,36 @@
 import { EntityTool } from "./EntityTool.js";
 import { Matrix, Vector3 } from "@babylonjs/core";
-
-const temp = new Vector3();
-
+const identity = Matrix.Identity();
+const tempMatrix = new Matrix();
 export class EntityInstance {
   constructor(
     public readonly index: number,
-    public readonly matrix: Matrix,
     public readonly _tool: EntityTool
   ) {}
 
+  updateMatrix(matrix: Matrix) {
+    const trueIndex = this.index * 16;
+    for (let i = 0; i < 16; i++) {
+      this._tool._matrixArray[trueIndex + i] = matrix.m[i];
+    }
+  }
+
   setPosition(x: number, y: number, z: number) {
-    temp.set(x, y, z);
-    this.matrix.setTranslation(temp);
-    this._tool.mesh.thinInstanceSetMatrixAt(this.index, this.matrix);
+    const positionIndex = this.index * 3;
+    this._tool._positionArray[positionIndex] = x;
+    this._tool._positionArray[positionIndex + 1] = y;
+    this._tool._positionArray[positionIndex + 2] = z;
+    tempMatrix.copyFrom(identity);
+    tempMatrix.setTranslationFromFloats(x, y, z);
+    this.updateMatrix(tempMatrix);
   }
 
   destroy() {
-    this.matrix.setAll(0);
-    this._tool.mesh.thinInstanceSetMatrixAt(this.index, this.matrix);
-    this._tool.returnInstance(this);
+    const trueIndex = this.index * 16;
+    for (let i = trueIndex; i < trueIndex + 16; i++) {
+      this._tool._matrixArray[i] = 0;
+    }
+    this._tool._instances.push(this);
+    this._tool._usedInstances.delete(this);
   }
 }

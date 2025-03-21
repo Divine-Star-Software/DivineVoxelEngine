@@ -59,4 +59,19 @@ export const MooreNeighborhood2D: Readonly<[number, number][]> = [
     [0, 0, -1],
     [0, 0, 1],
   ];
-  
+    /**
+   * A read-only array of 2D coordinates (x, y) representing
+   * the six cardinal (orthogonal) directions in a 2D grid. These
+   * do not include the center cell. Typically used for direct
+   * neighbors up/down, left/right
+   *
+   * Each tuple `[dx, dy]` is an offset from the center cell.
+   */
+    export const CardinalNeighbors2D: Readonly<[number, number][]> = [
+      [0, 1],
+      [0, -1],
+      [1, 0],
+      [-1, 0],
+ 
+    ];
+    

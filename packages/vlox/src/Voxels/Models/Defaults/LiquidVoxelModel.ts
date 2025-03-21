@@ -38,7 +38,9 @@ export const liquidModel: VoxelModelData = {
     },
   },
   conditonalNodes: {},
-  placingStrategy: "*",
+  properties: {
+    dve_placing_strategy: "*",
+  },
   stateNodes: {
     "*": [
       {

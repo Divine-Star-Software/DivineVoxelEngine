@@ -2,8 +2,7 @@ import InitDataSync from "../Contexts/Base/Remote/InitDataSync";
 import { Threads } from "@amodx/threads";
 import { Environment } from "../Util/Environment";
 import { WorldRegister } from "../World/WorldRegister";
-import InitLogicTasks from "../Tasks/Logic/InitTasks";
-import InitUpdateTasks from "../Tasks/Update/InitTasks";
+import InitUpdateTasks from "../Tasks/Paint/InitTasks";
 import InitPropagationTasks from "../Tasks/Propagation/InitTasks";
 import InitWorldGenerationTasks from "../Tasks/WorldGeneration/InitTasks";
 import InitWorldDataSync from "../Contexts/Base/Remote/InitWorldDataSync";
@@ -45,17 +44,7 @@ export async function StartGenerator(data: {} = {}) {
   InitArchiveTasks({ worldThread: DVEG.threads.world });
   InitWorldDataSync();
   InitPropagationTasks();
-  InitLogicTasks();
-  InitUpdateTasks({
-    onDone(tasks, origin) {
-
-      /* 
-      origin.runTask("build-queue", [
-        tasks.origin[0],
-        tasks.bounds.getSections(),
-      ]); */
-    },
-  });
+  InitUpdateTasks();
   InitWorldGenerationTasks({ worldThread: DVEG.threads.world });
   return DVEG;
 }

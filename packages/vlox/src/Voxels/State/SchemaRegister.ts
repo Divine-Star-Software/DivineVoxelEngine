@@ -7,11 +7,15 @@ export class SchemaRegister {
     string,
     VoxelModelStateSchemaData[]
   >();
-  static stateSchemaData = new Map<string, BinarySchemaNodeData[]>();
-  static modSchemaData = new Map<string, BinarySchemaNodeData[]>();
+  static stateSchemaData = new Map<string, BinarySchemaNodeData[]>([
+    ["dve_air", []],
+  ]);
+  static modSchemaData = new Map<string, BinarySchemaNodeData[]>([
+    ["dve_air", []],
+  ]);
   static modelStaeSchemas = new Map<string, BinarySchema>();
   static voxelModSchemas = new Map<string, BinarySchema>();
-  static voxelModelMap = new Map<string, string>();
+  static voxelModelMap = new Map<string, string>([["dve_air", "dve_air"]]);
 
   static voxelSchemas = new Map<string, VoxelSchema>();
 
@@ -35,7 +39,7 @@ export class SchemaRegister {
 
     return stateSchema;
   }
-  
+
   static getVoxelModSchema(voxelId: string) {
     let modSchema = this.voxelModSchemas.get(voxelId);
     if (!modSchema) {

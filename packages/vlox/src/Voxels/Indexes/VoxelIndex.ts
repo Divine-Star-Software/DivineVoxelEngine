@@ -1,4 +1,4 @@
-import { PaintVoxelData } from "../Types/Voxel.types";
+import { PaintVoxelData } from "../Types/PaintVoxelData"
 import {
   VoxelData,
   RawVoxelData,

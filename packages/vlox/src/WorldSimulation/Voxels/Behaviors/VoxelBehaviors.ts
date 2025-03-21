@@ -1,9 +1,16 @@
-import { VoxelFaceNames } from "Math";
 import { DimensionSimulation } from "../../Dimensions/DimensionSimulation";
-import { VoxelCursorInterface } from "Voxels/Cursor/VoxelCursor.interface";
+import { VoxelCursorInterface } from "../../../Voxels/Cursor/VoxelCursor.interface";
 
 export interface VoxelBehaviorsData {
   type: string;
+  inherits?: string;
+  onInteract?(
+    simulation: DimensionSimulation,
+    voxel: VoxelCursorInterface,
+    x: number,
+    y: number,
+    z: number
+  ): void;
 
   onPaint?(
     simulation: DimensionSimulation,
@@ -30,14 +37,13 @@ export interface VoxelBehaviorsData {
   ): void;
 }
 
-export interface Voxel<Data = null> {
-  type: string;
-  direction: VoxelFaceNames;
-  source: VoxelCursorInterface;
-}
-
 export class VoxelBehavior {
   constructor(public data: VoxelBehaviorsData) {}
+  onInteract(simulation: DimensionSimulation, x: number, y: number, z: number) {
+    if (!this.data.onInteract) return;
+    const voxel = simulation.getVoxelForUpdate(x, y, z);
+    this.data.onInteract(simulation, voxel, x, y, z);
+  }
   onPaint(simulation: DimensionSimulation, x: number, y: number, z: number) {
     if (!this.data.onPaint) return;
     const voxel = simulation.getVoxelForUpdate(x, y, z);

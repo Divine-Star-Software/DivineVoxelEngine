@@ -5,6 +5,8 @@ type AllLight = [s: number, r: number, g: number, b: number];
  * Used to decode light color info.
  */
 export class VoxelLightData {
+  /**The rate at which sun light falls off. RGB light falls off at a default of 1 and sun has a default of 2. */
+  static SunFallOffValue = 2;
   _lightValues: AllLight = [0, 0, 0, 0];
 
   sumRGB(value: number) {

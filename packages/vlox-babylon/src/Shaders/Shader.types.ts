@@ -9,7 +9,9 @@ export type RenderFogOptions = {
     heightFactor: number;
   };
 };
-
+export type RenderSkyOptions = {
+  color: Vec3Array;
+};
 export type DVERenderEffectsOptions = {
   floraEffects: boolean;
   liquidEffects: boolean;

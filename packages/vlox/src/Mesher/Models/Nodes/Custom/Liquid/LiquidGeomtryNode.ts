@@ -52,7 +52,10 @@ const { quads: Quads } = Box.Create([
   [0, 0, 0],
   [1, waterHeight, 1],
 ]);
-
+const { quads: Quads2 } = Box.Create([
+  [0, 0, 0],
+  [1, waterHeight, 1],
+]);
 Quads[VoxelFaces.Up].setUVs(uvs);
 Quads[VoxelFaces.Down].setUVs(uvs);
 
@@ -63,16 +66,20 @@ export class LiquidGeometryNode extends GeoemtryNode<
   init(): void {}
 
   isExposed(face: VoxelFaces) {
+/*     if (this.builder.voxel.getLevel() <= 0 || this.builder.voxel.getLevelState() && face !== VoxelFaces.Up) {
+      return true;
+    } */
+
     const nv = this.builder.nVoxel.getVoxel(
       VoxelFaceDirections[face][0] + this.builder.position.x,
       VoxelFaceDirections[face][1] + this.builder.position.y,
       VoxelFaceDirections[face][2] + this.builder.position.z
     );
-    if (!nv || (face == VoxelFaces.Up && !this.builder.voxel.isSameVoxel(nv)))
+    if (!nv || (face == VoxelFaces.Up && nv.isAir()))
       return true;
     if (this.builder.voxel.isSameVoxel(nv)) return false;
 
-    if (nv.isAir() || nv._tags["dve_is_transparent"]) return true;
+    if (nv.isAir() || nv.tags["dve_is_transparent"]) return true;
     return false;
   }
 
@@ -90,6 +97,19 @@ export class LiquidGeometryNode extends GeoemtryNode<
     vertexLevel.setAll(15);
     vertexValue.setAll(0);
     const builder = this.builder;
+
+    let flowTexture = args.flowTexture;
+    let stillTexture = args.stillTexture;
+    let reverseHeight = false;
+    let currentHeight = 0;
+    if (builder.voxel.getLevelState() == 1 && builder.voxel.getLevel() < 7) {
+      reverseHeight = true;
+      currentHeight = 1 - builder.voxel.getLevel() / 7;
+    }
+/*     if (builder.voxel.getLevelState() == 1 || builder.voxel.getLevel() == 0) {
+      flowTexture = 0;
+      stillTexture = 0;
+    } */
 
     let added = false;
     let upFaceExposed = false;
@@ -134,20 +154,35 @@ export class LiquidGeometryNode extends GeoemtryNode<
         vertexLevel.vertices[2] != 7 ||
         vertexLevel.vertices[3] != 7
       ) {
-        GetTexture(builder, args.flowTexture, VoxelFaces.Up, quad);
+        GetTexture(builder, flowTexture, VoxelFaces.Up, quad);
       } else {
-        GetTexture(builder, args.stillTexture, VoxelFaces.Up, quad);
+        GetTexture(builder, stillTexture, VoxelFaces.Up, quad);
       }
 
       addVoxelQuad(builder, quad);
       builder.updateBounds(quad.bounds);
     }
+
+
+
     if (this.isExposed(VoxelFaces.Down)) {
       added = true;
 
       const quad = Quads[VoxelFaces.Down];
+      if (reverseHeight) {
+        quad.positions.vertices[QuadVerticies.TopRight].y = currentHeight;
+        quad.positions.vertices[QuadVerticies.TopLeft].y = currentHeight;
+        quad.positions.vertices[QuadVerticies.BottomRight].y = currentHeight;
+        quad.positions.vertices[QuadVerticies.BottomLeft].y = currentHeight;
+      } else {
+        quad.positions.vertices[QuadVerticies.TopRight].y = 0;
+        quad.positions.vertices[QuadVerticies.TopLeft].y = 0;
+        quad.positions.vertices[QuadVerticies.BottomLeft].y = 0;
+        quad.positions.vertices[QuadVerticies.BottomRight].y = 0;
+      }
+      quad.setUVs(uvs);
       this.determineShading(VoxelFaces.Down);
-      GetTexture(builder, args.stillTexture, VoxelFaces.Up, quad);
+      GetTexture(builder, stillTexture, VoxelFaces.Up, quad);
 
       addVoxelQuad(builder, quad);
       builder.updateBounds(quad.bounds);
@@ -165,18 +200,29 @@ export class LiquidGeometryNode extends GeoemtryNode<
           vertexValue.vertices[FlowVerticies.NorthWest] * waterHeight;
         quad.positions.vertices[QuadVerticies.TopLeft].y =
           vertexValue.vertices[FlowVerticies.NorthEast] * waterHeight;
-
+        quad.positions.vertices[QuadVerticies.BottomLeft].y = 0;
+        quad.positions.vertices[QuadVerticies.BottomRight].y = 0;
         quad.uvs.vertices[QuadVerticies.TopRight].y =
           vertexValue.vertices[FlowVerticies.NorthWest];
         quad.uvs.vertices[QuadVerticies.TopLeft].y =
           vertexValue.vertices[FlowVerticies.NorthEast];
+      } else if (reverseHeight) {
+        quad.positions.vertices[QuadVerticies.TopRight].y = 1;
+        quad.positions.vertices[QuadVerticies.TopLeft].y = 1;
+        quad.positions.vertices[QuadVerticies.BottomRight].y = currentHeight;
+        quad.positions.vertices[QuadVerticies.BottomLeft].y = currentHeight;
+
+        quad.uvs.vertices[QuadVerticies.BottomRight].y = currentHeight;
+        quad.uvs.vertices[QuadVerticies.BottomLeft].y = currentHeight;
       } else {
         quad.positions.vertices[QuadVerticies.TopRight].y = 1;
         quad.positions.vertices[QuadVerticies.TopLeft].y = 1;
+        quad.positions.vertices[QuadVerticies.BottomLeft].y = 0;
+        quad.positions.vertices[QuadVerticies.BottomRight].y = 0;
         quad.setUVs(uvs);
       }
 
-      GetTexture(builder, args.flowTexture, VoxelFaces.North, quad);
+      GetTexture(builder, flowTexture, VoxelFaces.North, quad);
       addVoxelQuad(builder, quad);
       builder.updateBounds(quad.bounds);
     }
@@ -193,18 +239,29 @@ export class LiquidGeometryNode extends GeoemtryNode<
           vertexValue.vertices[FlowVerticies.SouthEsat] * waterHeight;
         quad.positions.vertices[QuadVerticies.TopLeft].y =
           vertexValue.vertices[FlowVerticies.SouthWest] * waterHeight;
-
+        quad.positions.vertices[QuadVerticies.BottomLeft].y = 0;
+        quad.positions.vertices[QuadVerticies.BottomRight].y = 0;
         quad.uvs.vertices[QuadVerticies.TopRight].y =
           vertexValue.vertices[FlowVerticies.SouthEsat];
         quad.uvs.vertices[QuadVerticies.TopLeft].y =
           vertexValue.vertices[FlowVerticies.SouthWest];
+      } else if (reverseHeight) {
+        quad.positions.vertices[QuadVerticies.TopRight].y = 1;
+        quad.positions.vertices[QuadVerticies.TopLeft].y = 1;
+        quad.positions.vertices[QuadVerticies.BottomRight].y = currentHeight;
+        quad.positions.vertices[QuadVerticies.BottomLeft].y = currentHeight;
+
+        quad.uvs.vertices[QuadVerticies.BottomRight].y = currentHeight;
+        quad.uvs.vertices[QuadVerticies.BottomLeft].y = currentHeight;
       } else {
         quad.positions.vertices[QuadVerticies.TopLeft].y = 1;
         quad.positions.vertices[QuadVerticies.TopRight].y = 1;
+        quad.positions.vertices[QuadVerticies.BottomLeft].y = 0;
+        quad.positions.vertices[QuadVerticies.BottomRight].y = 0;
         quad.setUVs(uvs);
       }
 
-      GetTexture(builder, args.flowTexture, VoxelFaces.Up, quad);
+      GetTexture(builder, flowTexture, VoxelFaces.Up, quad);
       addVoxelQuad(builder, quad);
       builder.updateBounds(quad.bounds);
     }
@@ -222,18 +279,29 @@ export class LiquidGeometryNode extends GeoemtryNode<
           vertexValue.vertices[FlowVerticies.NorthEast] * waterHeight;
         quad.positions.vertices[QuadVerticies.TopLeft].y =
           vertexValue.vertices[FlowVerticies.SouthEsat] * waterHeight;
-
+        quad.positions.vertices[QuadVerticies.BottomLeft].y = 0;
+        quad.positions.vertices[QuadVerticies.BottomRight].y = 0;
         quad.uvs.vertices[QuadVerticies.TopRight].y =
           vertexValue.vertices[FlowVerticies.SouthEsat];
         quad.uvs.vertices[QuadVerticies.TopLeft].y =
           vertexValue.vertices[FlowVerticies.NorthEast];
+      } else if (reverseHeight) {
+        quad.positions.vertices[QuadVerticies.TopRight].y = 1;
+        quad.positions.vertices[QuadVerticies.TopLeft].y = 1;
+        quad.positions.vertices[QuadVerticies.BottomRight].y = currentHeight;
+        quad.positions.vertices[QuadVerticies.BottomLeft].y = currentHeight;
+
+        quad.uvs.vertices[QuadVerticies.BottomRight].y = currentHeight;
+        quad.uvs.vertices[QuadVerticies.BottomLeft].y = currentHeight;
       } else {
         quad.positions.vertices[QuadVerticies.TopLeft].y = 1;
         quad.positions.vertices[QuadVerticies.TopRight].y = 1;
+        quad.positions.vertices[QuadVerticies.BottomLeft].y = 0;
+        quad.positions.vertices[QuadVerticies.BottomRight].y = 0;
         quad.setUVs(uvs);
       }
 
-      GetTexture(builder, args.flowTexture, VoxelFaces.Up, quad);
+      GetTexture(builder, flowTexture, VoxelFaces.Up, quad);
       addVoxelQuad(builder, quad);
       builder.updateBounds(quad.bounds);
     }
@@ -250,17 +318,28 @@ export class LiquidGeometryNode extends GeoemtryNode<
           vertexValue.vertices[FlowVerticies.SouthWest] * waterHeight;
         quad.positions.vertices[QuadVerticies.TopLeft].y =
           vertexValue.vertices[FlowVerticies.NorthWest] * waterHeight;
+        quad.positions.vertices[QuadVerticies.BottomLeft].y = 0;
+        quad.positions.vertices[QuadVerticies.BottomRight].y = 0;
         quad.uvs.vertices[QuadVerticies.TopRight].y =
           vertexValue.vertices[FlowVerticies.SouthWest];
         quad.uvs.vertices[QuadVerticies.TopLeft].y =
           vertexValue.vertices[FlowVerticies.NorthWest];
+      } else if (reverseHeight) {
+        quad.positions.vertices[QuadVerticies.TopRight].y = 1;
+        quad.positions.vertices[QuadVerticies.TopLeft].y = 1;
+        quad.positions.vertices[QuadVerticies.BottomRight].y = currentHeight;
+        quad.positions.vertices[QuadVerticies.BottomLeft].y = currentHeight;
+        quad.uvs.vertices[QuadVerticies.BottomRight].y = currentHeight;
+        quad.uvs.vertices[QuadVerticies.BottomLeft].y = currentHeight;
       } else {
         quad.positions.vertices[QuadVerticies.TopLeft].y = 1;
         quad.positions.vertices[QuadVerticies.TopRight].y = 1;
+        quad.positions.vertices[QuadVerticies.BottomLeft].y = 0;
+        quad.positions.vertices[QuadVerticies.BottomRight].y = 0;
         quad.setUVs(uvs);
       }
 
-      GetTexture(builder, args.flowTexture, VoxelFaces.Up, quad);
+      GetTexture(builder, flowTexture, VoxelFaces.Up, quad);
       addVoxelQuad(builder, quad);
       builder.updateBounds(quad.bounds);
     }

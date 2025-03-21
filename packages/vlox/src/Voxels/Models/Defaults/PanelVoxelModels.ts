@@ -23,7 +23,9 @@ export const simpleThinPannel: VoxelModelData = {
       type: "texture",
     },
   },
-  placingStrategy: "*",
+  properties: {
+    dve_placing_strategy: "*",
+  },
   conditonalNodes: {},
   stateNodes: {
     "placement=down,direction=south": [
@@ -434,7 +436,9 @@ export const simpleCrossedPannel: VoxelModelData = {
   id: "dve_simple_crossed_panels",
   relationsSchema: [],
   stateSchema: [],
-  placingStrategy: "*",
+  properties: {
+    dve_placing_strategy: "*",
+  },
   arguments: {
     texture: {
       type: "texture",
@@ -469,7 +473,9 @@ export const simpleCrossedPannel: VoxelModelData = {
 export const orientedCrossedPannel: VoxelModelData = {
   id: "dve_oriented_crossed_panels",
   relationsSchema: [],
-  placingStrategy: "*",
+  properties: {
+    dve_placing_strategy: "*",
+  },
   stateSchema: [
     {
       name: "placement",

@@ -1,4 +1,5 @@
 import { VoxelGeometryData, VoxelModelData } from "../VoxelModel.types";
+
 export const chainGeometry: VoxelGeometryData = {
   id: "dve_chain",
   divisor: [16, 16, 16],
@@ -43,7 +44,9 @@ export const chainModel: VoxelModelData = {
     },
   },
   relationsSchema: [],
-  placingStrategy: "axis=y",
+  properties: {
+    dve_placing_strategy: "axis=y",
+  },
   stateSchema: [
     {
       name: "axis",
@@ -140,7 +143,9 @@ export const carpetModel: VoxelModelData = {
       type: "texture",
     },
   },
-  placingStrategy: "*",
+  properties: {
+    dve_placing_strategy: "*",
+  },
   relationsSchema: [],
   stateSchema: [],
   conditonalNodes: {},
@@ -521,7 +526,10 @@ export const fence: VoxelModelData = {
       },
     ],
   },
-  placingStrategy: "*",
+
+  properties: {
+    dve_placing_strategy: "*",
+  },
   stateNodes: {
     "*": [
       {
@@ -826,7 +834,9 @@ export const candlesModel: VoxelModelData = {
       type: "texture",
     },
   },
-  tags: {
+
+  relationsSchema: [],
+  properties: {
     dve_logic_data: [
       {
         type: "state",
@@ -849,9 +859,8 @@ export const candlesModel: VoxelModelData = {
         ],
       },
     ],
+    dve_placing_strategy: "*",
   },
-  relationsSchema: [],
-  placingStrategy: "*",
   stateSchema: [
     {
       name: "num_candles",
@@ -1152,7 +1161,9 @@ export const leverModel: VoxelModelData = {
       type: "texture",
     },
   },
-  placingStrategy: "*",
+  properties: {
+    dve_placing_strategy: "*",
+  },
   relationsSchema: [],
   stateSchema: [
     {

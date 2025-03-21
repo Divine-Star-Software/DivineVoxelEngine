@@ -33,6 +33,55 @@ export const Textures: TextureData[] = [
     },
   },
   {
+    id: "dve_dirt",
+  },
+  {
+    id: "dve_farmland",
+  },
+  {
+    id: "dve_farmland_moist",
+  },
+  {
+    id: "dve_wheat",
+    atlas: {
+      tiles: [4, 2],
+      namedTiles: [
+        {
+          id: "1",
+          index: [0, 0],
+        },
+        {
+          id: "2",
+          index: [1, 0],
+        },
+        {
+          id: "3",
+          index: [2, 0],
+        },
+        {
+          id: "4",
+          index: [3, 0],
+        },
+        {
+          id: "5",
+          index: [0, 1],
+        },
+        {
+          id: "6",
+          index: [1, 1],
+        },
+        {
+          id: "7",
+          index: [2, 1],
+        },
+        {
+          id: "8",
+          index: [3, 1],
+        },
+      ],
+    },
+  },
+  {
     id: "dve_candle",
     atlas: {
       tiles: [2, 2],

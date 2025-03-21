@@ -27,46 +27,21 @@ export class WorldVoxelCursor extends VoxelCursorInterface {
     this.process();
   }
 
-  updateVoxel(mode: 0 | 1 | 2 | 3) {
+  updateVoxel(mode: 0 | 1 | 2) {
     const voxelPos = this.dataCursor._voxelPosition;
-
+    this.dataCursor._section?.setBuried(this.dataCursor._voxelIndex, false);
     if (mode == 0) {
       this.dataCursor._section?.sector.setStored(false);
-      this.dataCursor._section?.setBuried(this.dataCursor._voxelIndex, false);
-      if (this.doesVoxelAffectLogic()) {
-        this.dataCursor._section?.setLogicSliceDirty(voxelPos.y, true);
-        this.dataCursor._section?.setVoxelLogicDirty(
-          this.dataCursor._voxelIndex,
-          true
-        );
-      }
+
       this.dataCursor._section?.setHasVoxel(voxelPos.y, true);
       return true;
     }
     if (mode == 1) {
       this.dataCursor._section?.sector.setStored(false);
-      this.dataCursor._section?.setBuried(this.dataCursor._voxelIndex, false);
-      if (this.doesVoxelAffectLogic()) {
-        this.dataCursor._section?.setLogicSliceDirty(voxelPos.y, true);
-        this.dataCursor._section?.setVoxelLogicDirty(
-          this.dataCursor._voxelIndex,
-          true
-        );
-      }
+
       this.dataCursor._section?.setHasVoxelDirty(voxelPos.y, true);
       this.dataCursor._section?.setHasVoxel(voxelPos.y, false);
       return true;
-    }
-    if (mode == 2) {
-      this.dataCursor._section?.sector.setStored(false);
-      this.dataCursor._section?.setBuried(this.dataCursor._voxelIndex, false);
-      if (this.doesVoxelAffectLogic()) {
-        this.dataCursor._section?.setLogicSliceDirty(voxelPos.y, true);
-        this.dataCursor._section?.setVoxelLogicDirty(
-          this.dataCursor._voxelIndex,
-          true
-        );
-      }
     }
     return false;
   }

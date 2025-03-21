@@ -1,25 +1,10 @@
-import {
-  Engine,
-  Material,
-  PBRBaseMaterial,
-  Scene,
-  Texture,
-} from "@babylonjs/core";
-
+import { Material, PBRBaseMaterial, Scene, Texture } from "@babylonjs/core";
 import { PBRMaterial } from "@babylonjs/core/Materials/PBR/pbrMaterial";
 import { Vector3, Vector4 } from "@babylonjs/core/Maths/";
-
-
 import { DVEPBRMaterialPlugin } from "./DVEPBRMaterialPlugin";
 import { IMatrixLike } from "@babylonjs/core/Maths/math.like";
-import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
-import { DefaultMaterialManager } from "../DefaultMaterialManager.js";
-
-
-import {
-  MaterialData,
-  MaterialInterface,
-} from "Matereials/MaterialInterface.js";
+import { MaterialData, MaterialInterface } from "../MaterialInterface.js";
+import { SceneOptions } from "../../Scene/SceneOptions";
 
 export type DVEBRPBRMaterialData = MaterialData<{
   textureTypeId: string;
@@ -39,11 +24,12 @@ export class DVEBRPBRMaterial implements MaterialInterface {
 
   afterCreate: ((material: PBRMaterial) => void)[] = [];
   constructor(
+    public options: SceneOptions,
     public id: string,
     public data: DVEBRPBRMaterialData
   ) {}
 
-  createMaterial(scene: Scene)   {
+  createMaterial(scene: Scene) {
     this.scene = scene;
     this._create(this.data);
     return this;
@@ -67,10 +53,6 @@ export class DVEBRPBRMaterial implements MaterialInterface {
         
       }
  */
-      if (!synced) {
-        DefaultMaterialManager.sync();
-        synced = true;
-      }
     };
     const pluginId = `${this.id.replace("#", "")}`;
 
@@ -173,7 +155,7 @@ export class DVEBRPBRMaterial implements MaterialInterface {
       this.plugin.uniformBuffer.setTexture(textId, texture!);
     }
 
-    const mat = new DVEBRPBRMaterial(this.id, {
+    const mat = new DVEBRPBRMaterial(this.options, this.id, {
       ...this.data,
       data: {
         ...this.data.data,

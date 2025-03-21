@@ -9,6 +9,54 @@ let context: CanvasRenderingContext2D;
 let atlasCanvas: HTMLCanvasElement;
 let atlasContext: CanvasRenderingContext2D;
 const finalSize: [width: number, height: number] = [256, 256];
+function getNearestColor(
+  x: number,
+  y: number,
+  data: Uint8ClampedArray
+): [number, number, number] {
+  const searchRadius = 5; // Radius to search for a valid pixel
+  for (let r = 1; r <= searchRadius; r++) {
+    for (let dx = -r; dx <= r; dx++) {
+      for (let dy = -r; dy <= r; dy++) {
+        const nx = x + dx;
+        const ny = y + dy;
+        if (nx >= 0 && nx < canvas.width && ny >= 0 && ny < canvas.height) {
+          const index = (ny * canvas.width + nx) * 4;
+          if (data[index + 3] > 0) {
+            // If pixel is not fully transparent
+            return [data[index], data[index + 1], data[index + 2]];
+          }
+        }
+      }
+    }
+  }
+  return [0, 0, 0]; // Default to black if no nearby pixel is found
+}
+function applyAlphaBleeding(image: HTMLImageElement): HTMLCanvasElement {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  if (!ctx) throw new Error("Could not get 2D context");
+  canvas.width = image.width;
+  canvas.height = image.height;
+  ctx.drawImage(image, 0, 0);
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imageData.data;
+
+  for (let y = 0; y < canvas.height; y++) {
+    for (let x = 0; x < canvas.width; x++) {
+      const index = (y * canvas.width + x) * 4;
+      const alpha = data[index + 3];
+      if (alpha === 0) {
+        const [r, g, b] = getNearestColor(x, y, data);
+        data[index] = r;
+        data[index + 1] = g;
+        data[index + 2] = b;
+      }
+    }
+  }
+  ctx.putImageData(imageData, 0, 0);
+  return canvas;
+}
 
 async function getImageBase64(url: string) {
   const response = await fetch(url);
@@ -37,8 +85,12 @@ async function sliceImageIntoTiles(
   tilesY: number
 ): Promise<string[]> {
   const image = await loadImage(src);
-  const tileWidth = image.width / tilesX;
-  const tileHeight = image.height / tilesY;
+
+  // Apply alpha bleeding before slicing into tiles
+  const processedCanvas = applyAlphaBleeding(image);
+
+  const tileWidth = processedCanvas.width / tilesX;
+  const tileHeight = processedCanvas.height / tilesY;
 
   atlasCanvas.width = tileWidth;
   atlasCanvas.height = tileHeight;
@@ -49,7 +101,7 @@ async function sliceImageIntoTiles(
     for (let y = 0; y < tilesY; y++) {
       atlasContext.clearRect(0, 0, tileWidth, tileHeight);
       atlasContext.drawImage(
-        image,
+        processedCanvas,
         x * tileWidth,
         y * tileHeight,
         tileWidth,
@@ -70,30 +122,34 @@ async function sliceImageIntoTiles(
 async function loadImageForShader(
   imgSrcData: string | HTMLImageElement
 ): Promise<HTMLImageElement> {
-  if (!context) throw new Error("");
+  if (!context) throw new Error("Canvas context is not available");
   canvas.width = finalSize[0];
   canvas.height = finalSize[1];
-  const prom: Promise<HTMLImageElement> = new Promise((resolve, reject) => {
-    const image = typeof imgSrcData == "string" ? new Image() : imgSrcData;
-    image.onerror = (error) => reject(error);
-    if (typeof imgSrcData == "string") image.src = imgSrcData;
+
+  return new Promise((resolve, reject) => {
+    const image = typeof imgSrcData === "string" ? new Image() : imgSrcData;
+    image.onerror = reject;
+
+    if (typeof imgSrcData === "string") image.src = imgSrcData;
+
     image.onload = () => {
+      // Apply alpha bleeding before drawing
+     const processedCanvas = applyAlphaBleeding(image);
+
       context.clearRect(0, 0, canvas.width, canvas.height);
       context.imageSmoothingEnabled = false;
       context.save();
       context.translate(0, canvas.height);
       context.scale(1, -1);
-      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      context.drawImage(processedCanvas, 0, 0, canvas.width, canvas.height);
       context.restore();
+
       const dataUrl = canvas.toDataURL("image/png");
       const returnImage = new Image(canvas.width, canvas.height);
       returnImage.src = dataUrl;
-      returnImage.onload = () => {
-        resolve(returnImage);
-      };
+      returnImage.onload = () => resolve(returnImage);
     };
   });
-  return prom;
 }
 
 function getImagePath(data: TextureData, parentId: string | null = null) {
@@ -179,7 +235,6 @@ async function process(
         ? CompiledTexture.GetAtlasIndex(...named.index, data.atlas.tiles[0])
         : named.index;
       compiled.textureMap[`${textureId}:${named.id}`] = textureIndex + tIndex;
-      
     }
   }
 
@@ -210,10 +265,14 @@ export async function BuildTextureData({
     canvas = document.createElement("canvas");
     canvas.width = finalSize[0];
     canvas.height = finalSize[1];
-    context = canvas.getContext("2d", { willReadFrequently: true })!;
+    context = canvas.getContext("2d", {
+      willReadFrequently: true,
+    })!;
     context.imageSmoothingEnabled = false;
     atlasCanvas = document.createElement("canvas");
-    atlasContext = atlasCanvas.getContext("2d", { willReadFrequently: true })!;
+    atlasContext = atlasCanvas.getContext("2d", {
+      willReadFrequently: true,
+    })!;
     // atlasContext.imageSmoothingEnabled = false;
     if (!context)
       throw new Error(`Error could not create CanvasRenderingContext2D`);

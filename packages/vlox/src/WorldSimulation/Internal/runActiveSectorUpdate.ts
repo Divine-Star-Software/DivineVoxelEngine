@@ -1,6 +1,6 @@
 import { WorldSpaces } from "../../World/WorldSpaces";
-import { SimulationSector } from "../Dimensions/SimulationSector"
-import { WorldSimulationDimensions } from "./WorldSimulationDimensions"
+import { SimulationSector } from "../Dimensions/SimulationSector";
+import { WorldSimulationDimensions } from "./WorldSimulationDimensions";
 import { Circle, Square, Vector3Like } from "@amodx/math";
 import { MooreNeighborhood2D } from "../../Math/CardinalNeighbors";
 import { WorldSimulationTasks } from "./WorldSimulationTasks";
@@ -19,6 +19,7 @@ export function runActiveSectorUpdate() {
       const sector = dimension.activeSectors._sectors[i];
       sector.generating = false;
       sector.renderering = false;
+      sector.ticking = false;
 
       const [cx, cy, cz] = sector.position;
       sectorSquare.center.x = cx + WorldSpaces.sector.bounds.x / 2;
@@ -36,7 +37,9 @@ export function runActiveSectorUpdate() {
           )
         ) {
           removedSectors.push(sector);
-          dimension.activeSectors._map.delete(WorldSpaces.hash.hashXYZ(cx, cy, cz));
+          dimension.activeSectors._map.delete(
+            WorldSpaces.hash.hashXYZ(cx, cy, cz)
+          );
           dimension.activeSectors._sectors.splice(i, 1);
         }
       }
@@ -91,8 +94,7 @@ export function runActiveSectorUpdate() {
           Circle.IsSquareInsideOrTouchingCircle(
             sectorSquare,
             generator._genCircle
-          ) &&
-          !sector.generating
+          )
         ) {
           sector.generating = true;
         }
@@ -106,7 +108,6 @@ export function runActiveSectorUpdate() {
           render.add(sector);
           unrender.delete(sector);
           sector.renderering = true;
-          sector.ticking = false;
         } else {
           if (!render.has(sector) && sector._rendered) {
             unrender.add(sector);
@@ -120,8 +121,6 @@ export function runActiveSectorUpdate() {
           )
         ) {
           sector.ticking = true;
-        } else {
-          sector.ticking = false;
         }
 
         for (let i = 0; i < MooreNeighborhood2D.length; i++) {

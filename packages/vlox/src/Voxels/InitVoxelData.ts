@@ -69,8 +69,9 @@ import { VoxelLogicRegister } from "./Logic/VoxelLogicRegister";
 import { BuildPaletteData } from "./Functions/BuildPaletteData";
 import { BuildRules } from "./Models/Rules/Functions/BuildRules";
 import { FinalCompiledVoxelModelData } from "./Models/CompiledVoxelModel.types";
-import { VoxelModelPlacingStrategyRegister } from "./Models/Placing/VoxelModelPlacingStrategyRegister";
+import { VoxelPlacingStrategyRegister } from "./Interaction/Placing/VoxelPlacingStrategyRegister";
 import { VoxelTagsRegister } from "./Data/VoxelTagsRegister";
+import { farmGeomtry, farmModels } from "./Models/Defaults/FarmVoxelModels";
 
 export type InitVoxelDataProps = {
   geometry?: VoxelGeometryData[];
@@ -112,6 +113,8 @@ function RegisterModels(data: InitVoxelDataProps) {
 
     ...leverGeometry,
 
+    ...farmGeomtry,
+
     ...(data.geometry || [])
   );
 
@@ -136,6 +139,8 @@ function RegisterModels(data: InitVoxelDataProps) {
 
     liquidModel,
 
+    ...farmModels,
+
     ...(data.models || [])
   );
 }
@@ -153,7 +158,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
       const voxel = syncData.voxels[i];
       SchemaRegister.registerVoxel(voxel.id, voxel.modelId, voxel.modSchema);
     }
-  
+
     return syncData;
   }
 
@@ -188,10 +193,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
       model,
       VoxelModelRuleBuilderRegister.geometryPalette
     );
-    VoxelModelPlacingStrategyRegister.register(
-      model.data.id,
-      model.data.placingStrategy
-    );
+
     model.stateData = stateData;
     SchemaRegister.registerModel(mainKey, stateData.schema);
     syncData.models.push({
@@ -241,7 +243,7 @@ function GetModelData(data: InitVoxelDataProps): FinalCompiledVoxelModelData {
       });
     }
   }
- 
+
   if (CacheManager.cacheStoreEnabled) {
     CacheManager.cachedModelData = syncData;
   }
@@ -255,6 +257,7 @@ export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
   const materials: VoxelMaterialData[] = [
     { id: "dve_solid", properties: {} },
     { id: "dve_flora", properties: {} },
+    { id: "dve_flora_transparent", properties: {} },
     {
       id: "dve_transparent",
       properties: {

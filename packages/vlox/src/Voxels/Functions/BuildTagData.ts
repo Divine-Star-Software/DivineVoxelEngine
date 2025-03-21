@@ -11,6 +11,8 @@ import { VoxelPalettesRegister } from "../Data/VoxelPalettesRegister";
 import { CompiledVoxelTagAndPaletteData } from "../Types/VoxelModelCompiledData.types";
 import { VoxelLogicData } from "../Logic/VoxelLogic.types";
 import { VoxelModelRuleBuilderRegister } from "../Models/Rules/VoxelModelRuleBuilderRegister";
+import { VoxelPropertiesRegister } from "../Data/VoxelPropertiesRegister";
+import { VoxelPlacingStrategyRegister } from "../../Voxels/Interaction/Placing/VoxelPlacingStrategyRegister";
 
 export type BuildTagDataProps = {
   voxels: VoxelData[];
@@ -31,17 +33,24 @@ export function BuildTagAndPaletteData(
       throw new Error(`Voxel with id [${voxel.id}] is already registered.`);
     }
     const voxelId = VoxelPalettesRegister.voxelIds.register(voxel.id);
-
+    VoxelPropertiesRegister.VoxelProperties[voxelId] = voxel.properties;
     if (voxel.properties["dve_model_data"]) {
       tags["dve_model_id"] = voxel.properties["dve_model_data"].id;
       const model = VoxelModelRuleBuilderRegister.models.get(
         voxel.properties["dve_model_data"].id
       );
-      if (model?.data.tags) {
-        for (const tagId in model.data.tags) {
-          voxel.properties[tagId] = (model.data.tags as any)[tagId];
+      if (model?.data.properties) {
+        for (const tagId in model.data.properties) {
+          voxel.properties[tagId] = (model.data.properties as any)[tagId];
         }
       }
+    }
+
+    if (voxel.properties["dve_placing_strategy"]) {
+      VoxelPlacingStrategyRegister.register(
+        voxel.id,
+        voxel.properties["dve_placing_strategy"]
+      );
     }
 
     VoxelPalettesRegister.voxelIdToNameMap.set(voxel.id, voxel.name || "");

@@ -59,7 +59,6 @@ export class GenMap {
     this._colorBuffer = colorBuffer;
   }
 
-  _removed = new Set<GenMapTile>();
   updateTiles(location: LocationData) {
     if (!this._previousLocation) {
       this._previousLocation = [...location];
@@ -82,7 +81,7 @@ export class GenMap {
     this._lastPosition.y = worldColumnPOSY;
     this._lastPosition.z = worldColumnPOSZ;
 
-    for (let i = 0; i < GenMapTile.Tiles.length; i++) {
+    for (let i = GenMapTile.Tiles.length - 1; i > -1; i--) {
       GenMapTile.Tiles[i].update();
       if (needActiveUpdate) {
         const distance = Distance3D(
@@ -92,7 +91,9 @@ export class GenMap {
           ...GenMapTile.Tiles[i].position
         );
         if (distance > 300) {
-          this._removed.add(GenMapTile.Tiles[i]);
+          const tile = GenMapTile.Tiles[i];
+          this.tilesRegister.sectors.remove(tile.dimensonId, ...tile.position);
+          GenMapTile.Tiles.splice(i, 1);
         }
       }
     }
@@ -107,11 +108,6 @@ export class GenMap {
       const cx = this._searchQueue.shift()!;
       const cy = this._searchQueue.shift()!;
       const cz = this._searchQueue.shift()!;
-
-      const sectorKey = WorldSpaces.hash.hashXYZ(cx, cy, cz);
-      if (this._visitedMap.has(sectorKey)) continue;
-      this._visitedMap.set(sectorKey, true);
-
       const distance = Distance3D(
         worldColumnPOSX,
         worldColumnPOSY,
@@ -122,11 +118,16 @@ export class GenMap {
       );
       if (distance > 300) continue;
 
+      const sectorKey = WorldSpaces.hash.hashXYZ(cx, cy, cz);
+      if (this._visitedMap.has(sectorKey)) continue;
+      this._visitedMap.set(sectorKey, true);
+
       if (!this.tilesRegister.sectors.get(location[0], cx, cy, cz)) {
         this.tilesRegister.sectors.add(location[0], cx, cy, cz);
       }
 
-      for (const n of MooreNeighborhood2D) {
+      for (let i = 0; i < MooreNeighborhood2D.length; i++) {
+        const n = MooreNeighborhood2D[i];
         const nx = cx + n[0] * WorldSpaces.sector.bounds.x;
         const nz = cz + n[1] * WorldSpaces.sector.bounds.z;
         const columnPOS = WorldSpaces.sector.getPosition(
@@ -141,17 +142,6 @@ export class GenMap {
 
     this._visitedMap.clear();
 
-    if (GenMapTile.Tiles.length && this._removed.size) {
-      for (let i = GenMapTile.Tiles.length - 1; i > -1; i--) {
-        const tile = GenMapTile.Tiles[i];
-        if (this._removed.has(tile)) {
-          this.tilesRegister.sectors.remove(tile.dimensonId, ...tile.position);
-          GenMapTile.Tiles.splice(i, 1);
-        }
-      }
-    }
-
-    this._removed.clear();
     this._instanceTool.mesh.thinInstanceBufferUpdated("tileColor");
     this._instanceTool.mesh.thinInstanceBufferUpdated("matrix");
   }

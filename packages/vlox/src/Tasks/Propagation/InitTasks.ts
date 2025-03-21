@@ -11,15 +11,9 @@ import { WorldRGB } from "./Illumanation/WorldRGB";
 import { WorldRegister } from "../../World/WorldRegister";
 import { Sector } from "../../World";
 import { getLocationData } from "../../Util/LocationData";
-import { PropagationUpdate } from "./PropagationUpdate";
 
 export default function InitTasks() {
   const task = new VoxelUpdateTask();
-
-  Threads.registerBinaryTask(TasksIds.PropagationUpdate, (view) => {
-    const location = getLocationData(view);
-    PropagationUpdate(location);
-  });
 
   Threads.registerBinaryTask(TasksIds.WorldPropagation, (view) => {
     const location = getLocationData(view);

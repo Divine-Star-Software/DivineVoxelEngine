@@ -9,33 +9,34 @@ import {
 import { VoxelTagsRegister } from "../../Voxels/Data/VoxelTagsRegister";
 import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister";
 import { VoxelLogicRegister } from "../../Voxels/Logic/VoxelLogicRegister";
-interface WritableArrayLike<T> {
-  length: number;
-  [index: number]: T;
-}
+import { VoxelSchema } from "../../Voxels/State/Schema/VoxelSchema";
+import { SchemaRegister } from "../../Voxels/State/SchemaRegister";
+import { NumberArray } from "../../Util/Util.types";
+
 export abstract class VoxelCursorInterface {
   _voxelId = 0;
   id = 0;
 
   secondaryId = 0;
 
-  _tags: VoxelTags = {} as any;
-  _substanceTags: VoxelSubstanceTags = {} as any;
-  __secondary = false;
+  schema: VoxelSchema;
+  tags: VoxelTags = {} as any;
+  substanceTags: VoxelSubstanceTags = {} as any;
+  __readingSecondaryVoxel = false;
 
   // private _section: Section;
   _index = 0;
 
-  abstract ids: WritableArrayLike<number>;
-  abstract light: WritableArrayLike<number>;
-  abstract level: WritableArrayLike<number>;
-  abstract secondary: WritableArrayLike<number>;
+  abstract ids: NumberArray;
+  abstract light: NumberArray;
+  abstract level: NumberArray;
+  abstract secondary: NumberArray;
 
   /**
    *
    * @param mode 0 for add 1 for remove 2 for the voxel needs a buried and logic check only, 3 for propagatin check only
    */
-  abstract updateVoxel(mode: 0 | 1 | 2 | 3): void;
+  abstract updateVoxel(mode: 0 | 1 | 2): void;
   _lightData = new VoxelLightData();
 
   process() {
@@ -43,46 +44,46 @@ export abstract class VoxelCursorInterface {
     this.secondaryId = this.secondary[this._index];
 
     this._voxelId = this.getVoxelId();
-    this._tags = VoxelTagsRegister.VoxelTags[this._voxelId];
+    this.tags = VoxelTagsRegister.VoxelTags[this._voxelId];
 
-    this._substanceTags =
+    this.substanceTags =
       VoxelTagsRegister.SubstanceStags[
-        VoxelPalettesRegister.substance.getNumberId(
-          this._tags["dve_substance"]!
-        )
+        VoxelPalettesRegister.substance.getNumberId(this.tags["dve_substance"]!)
       ];
+
+    this.schema = SchemaRegister.getVoxelSchemas(this.getStringId());
   }
 
   abstract loadIn(): void;
 
   setSecondary(enable: boolean) {
-    this.__secondary = enable;
+    this.__readingSecondaryVoxel = enable;
 
     return this;
   }
   getRenderedMaterial() {
-    return this._tags[VoxelTagIds.renderedMaterial];
+    return this.tags[VoxelTagIds.renderedMaterial];
   }
 
   getMaterial() {
-    return this._tags[VoxelTagIds.voxelMaterial];
+    return this.tags[VoxelTagIds.voxelMaterial];
   }
 
   checkCollisions() {
-    return this._tags[VoxelTagIds.checkCollisions];
+    return this.tags[VoxelTagIds.checkCollisions];
   }
   getCollider() {
-    return this._tags[VoxelTagIds.colliderID];
+    return this.tags[VoxelTagIds.colliderID];
   }
 
   getSubstance() {
-    return this._tags[VoxelTagIds.substance];
+    return this.tags[VoxelTagIds.substance];
   }
   getSubstanceData() {
-    return this._substanceTags;
+    return this.substanceTags;
   }
   isOpaque() {
-    return !this._tags[VoxelTagIds.isTransparent];
+    return !this.tags[VoxelTagIds.isTransparent];
   }
 
   getLevel() {
@@ -110,7 +111,7 @@ export abstract class VoxelCursorInterface {
     return this.secondaryId > 1;
   }
   canHaveSecondaryVoxel() {
-    return this._tags[VoxelTagIds.canHaveSecondary];
+    return this.tags[VoxelTagIds.canHaveSecondary];
   }
   hasRGBLight() {
     const light = this.getLight();
@@ -127,14 +128,14 @@ export abstract class VoxelCursorInterface {
     if (this._voxelId == 0) return this.light[this._index];
     if (this.isOpaque()) {
       if (this.isLightSource()) {
-        return this._tags[VoxelTagIds.lightValue] as number;
+        return this.tags[VoxelTagIds.lightValue] as number;
       }
       return -1;
     }
     if (this.isLightSource()) {
       return this._lightData.mixLight(
         this.light[this._index],
-        this._tags[VoxelTagIds.lightValue] as number
+        this.tags[VoxelTagIds.lightValue] as number
       );
     }
     return this.light[this._index];
@@ -157,15 +158,15 @@ export abstract class VoxelCursorInterface {
         this
       );
     }
-    return this._tags[VoxelTagIds.isLightSource];
+    return this.tags[VoxelTagIds.isLightSource];
   }
 
   doesVoxelAffectLogic() {
     if (
-      this._tags["dve_can_be_powered"] ||
-      this._tags["dve_can_hold_power"] ||
-      this._tags["dve_can_carry_power"] ||
-      this._tags["dve_is_power_source"]
+      this.tags["dve_can_be_powered"] ||
+      this.tags["dve_can_hold_power"] ||
+      this.tags["dve_can_carry_power"] ||
+      this.tags["dve_is_power_source"]
     )
       return true;
 
@@ -174,25 +175,25 @@ export abstract class VoxelCursorInterface {
 
   getLightSourceValue() {
     if (this._voxelId <= 0) return 0;
-    return this._tags[VoxelTagIds.lightValue] as number;
+    return this.tags[VoxelTagIds.lightValue] as number;
   }
 
   getPower() {
     if (this._voxelId == 0) return -1;
-    if (this._substanceTags["dve_is_liquid"]) return -1;
+    if (this.substanceTags["dve_is_liquid"]) return -1;
     if (
-      !this._tags["dve_can_carry_power"] &&
-      !this._tags["dve_can_hold_power"] &&
-      !this._tags["dve_can_be_powered"] &&
-      !this._tags["dve_is_power_source"]
+      !this.tags["dve_can_carry_power"] &&
+      !this.tags["dve_can_hold_power"] &&
+      !this.tags["dve_can_be_powered"] &&
+      !this.tags["dve_is_power_source"]
     )
       return -1;
     const level = VoxelLevelReader.getLevel(this.level[this._index]);
     if (
-      this._tags["dve_is_power_source"] &&
-      this._tags["dve_power_value"] > level
+      this.tags["dve_is_power_source"] &&
+      this.tags["dve_power_value"] > level
     )
-      return this._tags["dve_power_value"];
+      return this.tags["dve_power_value"];
     return level;
   }
 
@@ -216,17 +217,17 @@ export abstract class VoxelCursorInterface {
         this
       );
     }
-    return this._tags[VoxelTagIds.isPowerSource];
+    return this.tags[VoxelTagIds.isPowerSource];
   }
 
   getPowerSourceValue() {
     if (this._voxelId <= 0) return 0;
-    return this._tags[VoxelTagIds.powerValue] as number;
+    return this.tags[VoxelTagIds.powerValue] as number;
   }
 
   noAO() {
     if (this._voxelId <= 0) return false;
-    return this._tags[VoxelTagIds.noAO];
+    return this.tags[VoxelTagIds.noAO];
   }
   isRenderable() {
     if (this.id > 0) return true;
@@ -243,13 +244,13 @@ export abstract class VoxelCursorInterface {
   }
 
   getId() {
-    if (this.__secondary) {
+    if (this.__readingSecondaryVoxel) {
       return this.secondaryId;
     }
     return this.id;
   }
   setId(id: number) {
-    if (this.__secondary) {
+    if (this.__readingSecondaryVoxel) {
       this.secondary[this._index] = id;
       return this;
     }
@@ -288,7 +289,7 @@ export abstract class VoxelCursorInterface {
     return VoxelPalettesRegister.voxelIdToNameMap.get(this.getStringId())!;
   }
   getIndexData() {
-    if (this.__secondary) {
+    if (this.__readingSecondaryVoxel) {
       return VoxelPalettesRegister.voxels[this.secondary[this._index]];
     }
     return VoxelPalettesRegister.voxels[this.ids[this._index]];
@@ -322,7 +323,7 @@ export abstract class VoxelCursorInterface {
     return this;
   }
 
-  copyRaw(raw: RawVoxelData) {
+  setRaw(raw: RawVoxelData) {
     this.ids[this._index] = raw[0];
     this.light[this._index] = raw[1];
     this.level[this._index] = raw[2];

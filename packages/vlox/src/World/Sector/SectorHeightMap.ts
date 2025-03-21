@@ -14,24 +14,19 @@ export class SectorHeightMap {
     for (const check of MooreNeighborhood2D) {
       location[1] = check[0] * sectionWidth + x;
       location[3] = check[1] * sectionDepth + z;
-      const height = this.getAbsolute(location);
+      const height = this.getAbsolute(...location);
       if (height > maxHeight) {
         maxHeight = height;
       }
     }
     return maxHeight;
   }
-  static getAbsolute(location: LocationData) {
-    const sector = WorldRegister.sectors.get(
-      location[0],
-      location[1],
-      location[2],  
-      location[3]
-    );
+  static getAbsolute(dimension: number, x: number, sy: number, z: number) {
+    const sector = WorldRegister.sectors.get(dimension, x, sy, z);
     if (!sector) return WorldSpaces.world.bounds.MinY;
     if (sector.sections.length == 0) return WorldSpaces.world.bounds.MinY;
     let maxHeight = WorldSpaces.world.bounds.MinY;
-    const positon: Vec3Array = [location[1], location[2], location[3]];
+    const positon: Vec3Array = [x, sy, z];
     let y = positon[1];
     for (let i = 0; i < sector.sections.length; i++) {
       const section = sector.sections[i];

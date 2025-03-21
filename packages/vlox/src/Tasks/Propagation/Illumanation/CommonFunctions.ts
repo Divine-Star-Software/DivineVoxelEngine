@@ -1,4 +1,3 @@
-let SRS = 2;
 function getS(value: number) {
   return value & 0xf;
 }
@@ -146,7 +145,7 @@ export function getFullSunLight(sl: number) {
  * @param n1
  * @param n2
  */
-export function isLessThanForSunAdd(n1: number, n2: number) {
+export function isLessThanForSunAdd(n1: number, n2: number, SRS: number) {
   let sl1 = getS(n1);
   let sl2 = getS(n2);
 
@@ -159,7 +158,7 @@ export function isLessThanForSunAdd(n1: number, n2: number) {
  * @param n1
  * @param n2
  */
-export function isLessThanForSunAddDown(n1: number, n2: number) {
+export function isLessThanForSunAddDown(n1: number, n2: number, SRS: number) {
   let sl1 = getS(n1);
   let sl2 = getS(n2);
   if (sl2 == 0xf) {
@@ -168,7 +167,7 @@ export function isLessThanForSunAddDown(n1: number, n2: number) {
   return sl1 + SRS < sl2;
 }
 
-export function isLessThanForSunAddUp(n1: number, n2: number) {
+export function isLessThanForSunAddUp(n1: number, n2: number, SRS: number) {
   let sl1 = getS(n1);
   let sl2 = getS(n2);
   if (sl1 == sl2) return false;
@@ -181,7 +180,7 @@ export function isLessThanForSunAddUp(n1: number, n2: number) {
  * down neighbor.
  * @param currentVoxel
  */
-export function getSunLightForUnderVoxel(sl: number, nl: number) {
+export function getSunLightForUnderVoxel(sl: number, nl: number, SRS: number) {
   let s = getS(sl);
   let sn = getS(nl);
   if (s == 15) {
@@ -206,7 +205,7 @@ export function getSunLightForUnderVoxel(sl: number, nl: number) {
  * Used for sun light addition on all neighbors expect the down one.
  * @param sl - source light value
  */
-export function getMinusOneForSun(sl: number, nl: number) {
+export function getMinusOneForSun(sl: number, nl: number, SRS: number) {
   let s = getS(sl) - SRS;
   if (s < 0) s = 0;
   let sn = getS(nl);
@@ -269,7 +268,7 @@ export function removeSunLight(sl: number) {
   return setS(0, sl);
 }
 
-export function minusOneForAll(sl: number) {
+export function minusOneForAll(sl: number, SRS: number) {
   let s = getS(sl) - SRS;
   let r = getR(sl) - 1;
   let g = getG(sl) - 1;

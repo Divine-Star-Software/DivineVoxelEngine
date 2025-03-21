@@ -24,16 +24,8 @@ export interface SectionData extends VoxelDataArrays {
   voxelMap: Uint8Array;
   /**Y slice of the section to tell if the slice is dirty and voxelMap needs to be re-checked. */
   dirtyMap: Uint8Array;
-  /**Y slice of the section to tell if the slice is needs it voxel logic checked.*/
-  logicDirtyMap: Uint8Array;
-  /**Y slice of the section to tell if the slice is needs it voxel propagation checked.*/
-  propagationDirtyMap: Uint8Array;
   /**A bit array used to cache if a voxel is exposed or not. */
   buried: Uint8Array;
-  /**A bit array used to cache if a voxel needs its logic evaled or not*/
-  logicDirty: Uint8Array;
-  /**A bit array used to cache if a voxel needs its propagation updated or not*/
-  propagationDirty: Uint8Array;
 }
 export interface Section extends SectionData {}
 const temp: Vec2Array = [0, 0];
@@ -51,15 +43,7 @@ export class Section {
         height / 8 +
         //dirtyMap
         height / 8 +
-        //logicDirtyMap
-        height / 8 +
-        //propagationDirtyMap
-        height / 8 +
         //bureid
-        voxelSize / 8 +
-        //logic dirty
-        voxelSize / 8 +
-        //propagation dirty
         voxelSize / 8 +
         //---- voxel data arrays
         //ids
@@ -112,19 +96,7 @@ export class Section {
     this.dirtyMap = new Uint8Array(buffer, bufferStart, height / 8);
     bufferStart += height / 8;
 
-    this.logicDirtyMap = new Uint8Array(buffer, bufferStart, height / 8);
-    bufferStart += height / 8;
-
-    this.propagationDirtyMap = new Uint8Array(buffer, bufferStart, height / 8);
-    bufferStart += height / 8;
-
     this.buried = new Uint8Array(buffer, bufferStart, voxelSize / 8);
-    bufferStart += voxelSize / 8;
-
-    this.logicDirty = new Uint8Array(buffer, bufferStart, voxelSize / 8);
-    bufferStart += voxelSize / 8;
-
-    this.propagationDirty = new Uint8Array(buffer, bufferStart, voxelSize / 8);
     bufferStart += voxelSize / 8;
 
     this.ids = new Uint16Array(buffer, bufferStart, voxelSize);
@@ -144,7 +116,7 @@ export class Section {
     this.voxelMap = null as any;
     this.dirtyMap = null as any;
     this.buried = null as any;
-    this.logicDirty = null as any;
+
     this.ids = null as any;
     this.light = null as any;
     this.secondary = null as any;
@@ -160,34 +132,6 @@ export class Section {
   }
   getBitFlag(index: number) {
     return getBitAtomicArrayIndex(this.flagArray, index) == 1;
-  }
-
-  isLogicSliceDirty(y: number) {
-    return getBitArrayIndex(this.logicDirtyMap, y) == 1;
-  }
-  setLogicSliceDirty(y: number, dirty: boolean) {
-    setBitArrayIndex(this.logicDirtyMap, y, dirty ? 1 : 0);
-  }
-
-  getVoxelLogicDirty(index: number) {
-    return getBitArrayIndex(this.logicDirty, index) == 1;
-  }
-  setVoxelLogicDirty(index: number, value: boolean) {
-    return setBitArrayIndex(this.logicDirty, index, value ? 1 : 0);
-  }
-
-  isPropagationSliceDirty(y: number) {
-    return getBitArrayIndex(this.propagationDirtyMap, y) == 1;
-  }
-  setPropagationSliceDirty(y: number, dirty: boolean) {
-    setBitArrayIndex(this.propagationDirtyMap, y, dirty ? 1 : 0);
-  }
-
-  getVoxelPropagationDirty(index: number) {
-    return getBitArrayIndex(this.propagationDirty, index) == 1;
-  }
-  setVoxelPropagationDirty(index: number, value: boolean) {
-    return setBitArrayIndex(this.propagationDirty, index, value ? 1 : 0);
   }
 
   isInProgress() {
@@ -249,34 +193,7 @@ export class Section {
     temp[1] = max;
     return temp;
   }
-  getLogicMinMax() {
-    let min = Infinity;
-    let max = -Infinity;
-    let i = WorldSpaces.section.bounds.y;
-    while (i--) {
-      if (this.isLogicSliceDirty(i)) {
-        if (i < min) min = i;
-        if (i > max) max = i;
-      }
-    }
-    temp[0] = min;
-    temp[1] = max;
-    return temp;
-  }
-  getPropagationMinMax() {
-    let min = Infinity;
-    let max = -Infinity;
-    let i = WorldSpaces.section.bounds.y;
-    while (i--) {
-      if (this.isPropagationSliceDirty(i)) {
-        if (i < min) min = i;
-        if (i > max) max = i;
-      }
-    }
-    temp[0] = min;
-    temp[1] = max;
-    return temp;
-  }
+
   storeFlags() {
     const stored: Record<string, boolean> = {};
     for (const key in SectionState.StoredFlags) {

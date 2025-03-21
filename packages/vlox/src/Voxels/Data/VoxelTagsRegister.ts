@@ -24,7 +24,7 @@ export class VoxelTagsRegister {
     VoxelTagIds.canHoldPower,
     VoxelTagIds.powerValue,
     VoxelTagIds.fullBlock,
-    VoxelTagIds.simulationBehavior
+    VoxelTagIds.simulationBehavior,
   ];
   static IncludedSubstnacesTags: string[] = [
     VoxelSubstanceTagIds.parent,
@@ -38,6 +38,7 @@ export class VoxelTagsRegister {
     [VoxelTagIds.renderedMaterial]: "dve_solid",
     [VoxelTagIds.substance]: "dve_solid",
     [VoxelTagIds.colliderID]: "dve_cube",
+    [VoxelTagIds.simulationBehavior]: "dve_default",
   };
   static VoxelTags: VoxelTags[] = [];
 

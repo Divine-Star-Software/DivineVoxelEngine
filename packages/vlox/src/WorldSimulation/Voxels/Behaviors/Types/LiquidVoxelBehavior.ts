@@ -2,9 +2,9 @@ import { CardinalNeighbors3D } from "../../../../Math/CardinalNeighbors";
 import { VoxelBehaviorsRegister } from "../VoxelBehaviorsRegister";
 
 VoxelBehaviorsRegister.register({
-  type: "liquid",
+  type: "dve_liquid",
   onPaint(simulation, voxel, x, y, z) {
-    simulation.scheduleUpdate("liquid", x, y, z, 0);
+    simulation.scheduleUpdate("dve_liquid", x, y, z, 0);
   },
   onErase(simulation, voxel, x, y, z) {
     voxel.setLevelState(2);
@@ -13,9 +13,9 @@ VoxelBehaviorsRegister.register({
       const ny = CardinalNeighbors3D[i][1] + y;
       const nz = CardinalNeighbors3D[i][2] + z;
       const nVoxel = simulation.sDataCursor.getVoxel(nx, ny, nz);
-      if (!nVoxel || !nVoxel._substanceTags["dve_is_liquid"]) continue;
-      simulation.scheduleUpdate("liquid", nx, ny, nz, 0);
+      if (!nVoxel || !nVoxel.substanceTags["dve_is_liquid"]) continue;
+      simulation.scheduleUpdate("dve_liquid", nx, ny, nz, 0);
     }
-    simulation.scheduleUpdate("liquid", x, y, z, 10);
+    simulation.scheduleUpdate("dve_liquid", x, y, z, 10);
   },
 });

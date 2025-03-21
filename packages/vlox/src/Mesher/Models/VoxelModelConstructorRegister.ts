@@ -61,6 +61,8 @@ export class VoxelModelConstructorRegister {
     ] = voxel;
     this.constructors.set(voxel.id, voxel);
   }
+
+  
   static registerGeometry(geometries: CompiledVoxelGeometrySyncData[]) {
     for (const geometry of geometries) {
       const paletteId = this.geometryPalette.getNumberId(geometry.id);

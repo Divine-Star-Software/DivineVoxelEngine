@@ -1,7 +1,7 @@
 import { Vec3Array } from "@amodx/math";
 import { Quad } from "../../../../Mesher/Geomtry/Primitives/Quad";
 import { StringPalette } from "../../../../Util/StringPalette";
-import { Triangle } from "Mesher/Geomtry/Primitives/Triangle";
+import { Triangle } from "../../../../Mesher/Geomtry/Primitives/Triangle";
 
 export class OcclusionFaceRegister {
   static faces = new StringPalette();
@@ -50,3 +50,4 @@ export class OcclusionFaceRegister {
     return id;
   }
 }
+

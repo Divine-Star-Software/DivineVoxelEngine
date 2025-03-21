@@ -10,7 +10,7 @@ import {
   CompactedMeshData,
 } from "@divinevoxel/vlox/Mesher/Geomtry/CompactedSectionVoxelMesh";
 import { LocationData } from "@divinevoxel/vlox/Math";
-import { SubBufferMesh } from "./VoxelScene/Classes/SubBufferMesh";
+import { SubBufferMesh } from "./VoxelScene/SubBufferMesh";
 const meshData = new CompactedMeshData();
 const location: LocationData = [0, 0, 0, 0];
 const found = new Set<string>();

@@ -1,6 +1,77 @@
 import { VoxelData } from "@divinevoxel/vlox/Voxels";
 export const DVEVoxelData: VoxelData[] = [
   {
+    id: "dve_farmland",
+    properties: {
+      dve_substance: "dve_solid",
+      dve_rendered_material: "dve_solid",
+      dve_is_transparent: true,
+      dve_voxel_material: "dirt",
+      dve_collider_id: "dve_cube",
+      dve_check_collisions: true,
+      dve_simulation_behavior: "dve_farmland",
+      dve_model_data: {
+        id: "dve_farmland",
+        inputs: {
+          "*": {
+            topTexture: "dve_farmland",
+            moistTexture: "dve_farmland_moist",
+            sideTexture: "dve_dirt",
+          },
+        },
+      },
+    },
+  },
+  {
+    id: "dve_wheat",
+    properties: {
+      dve_substance: "dve_flora",
+      dve_rendered_material: "dve_flora",
+      dve_is_transparent: true,
+      dve_voxel_material: "plant",
+      dve_collider_id: "dve_cube",
+      dve_check_collisions: true,
+     // dve_simulation_behavior: "dve_crop",
+      dve_model_data: {
+        id: "dve_crop",
+        inputs: {
+          "*": {
+            doubleSided: true,
+            level1: "dve_wheat:1",
+            level2: "dve_wheat:2",
+            level3: "dve_wheat:3",
+            level4: "dve_wheat:4",
+            level5: "dve_wheat:5",
+            level6: "dve_wheat:6",
+            level7: "dve_wheat:7",
+            level8: "dve_wheat:8",
+          },
+        },
+      },
+    },
+  },
+  {
+    id: "dve_dirt",
+    properties: {
+      dve_substance: "dve_solid",
+      dve_rendered_material: "dve_solid",
+      dve_is_transparent: true,
+      dve_voxel_material: "dirt",
+      dve_collider_id: "dve_cube",
+      dve_check_collisions: true,
+      dve_model_data: {
+        id: "dve_simple_cube",
+        modSchema: [],
+        modRelationSchema: [],
+        inputs: {
+          "*": {
+            texture: "dve_dirt",
+          },
+        },
+      },
+    },
+  },
+  {
     id: "dve_dream_leaves",
     properties: {
       dve_substance: "dve_flora",
@@ -166,7 +237,7 @@ export const DVEVoxelData: VoxelData[] = [
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
       dve_voxel_material: "water",
-      dve_simulation_behavior: "liquid",
+      dve_simulation_behavior: "dve_liquid",
       dve_model_data: {
         id: "dve_liquid",
         inputs: {

@@ -95,7 +95,6 @@ export function MeshSection(
         continue;
       }
     }
-    if (!section.ids[i]) continue;
     if (!section.ids[i] || section.getBuried(i)) continue;
     const voxel = sectionCursor.getVoxelAtIndex(i);
     const x = cx + sectionCursor._voxelPosition.x;

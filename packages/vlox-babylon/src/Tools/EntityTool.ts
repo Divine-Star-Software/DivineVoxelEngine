@@ -1,11 +1,13 @@
 import { Matrix, Mesh, Vector3 } from "@babylonjs/core";
-import { MatrixArray } from "./MatrixArray";
 import { EntityInstance } from "./EntityInstance.js";
 import "@babylonjs/core/Meshes/thinInstanceMesh";
 const identity = Matrix.Identity();
 export class EntityTool {
   _instanceAmount = 0;
-  _matrixArray: MatrixArray;
+  _positionArray: Float32Array;
+  _rotationArray: Float32Array;
+  _scaleArray: Float32Array;
+  _matrixArray: Float32Array;
   _instances: EntityInstance[] = [];
   _usedInstances = new Set<EntityInstance>();
   _bufferIds: string[] = [];
@@ -17,14 +19,15 @@ export class EntityTool {
   }
 
   setInstanceAmount(amount: number) {
-    this._matrixArray = new MatrixArray(amount);
-    this.addBuffer("matrix", this._matrixArray.matricies, 16);
-    const matrix = this.mesh.thinInstanceGetWorldMatrices();
+    this._matrixArray = new Float32Array(amount * 16);
+    this._positionArray = new Float32Array(amount * 3);
+    this._rotationArray = new Float32Array(amount * 3);
+    this._scaleArray = new Float32Array(amount * 3);
+    this.addBuffer("matrix", this._matrixArray, 16);
     this._instanceAmount = amount;
     let i = this._instanceAmount;
     while (i--) {
-      const newInstance = new EntityInstance(i, matrix[i], this);
-      matrix[i].setAll(0);
+      const newInstance = new EntityInstance(i, this);
       this._instances.push(newInstance);
     }
     this.update();
@@ -33,24 +36,23 @@ export class EntityTool {
   getInstance() {
     const instance = this._instances.shift();
     if (!instance) return false;
-    instance.matrix.copyFrom(identity);
+    instance.updateMatrix(identity);
+
     this._usedInstances.add(instance);
     return instance;
   }
 
-  returnInstance(instance: EntityInstance) {
-    this._instances.push(instance);
-    this._usedInstances.delete(instance);
-  }
-
   returnAll() {
     for (const instance of this._usedInstances) {
-      this.returnInstance(instance);
+      this._instances.push(instance);
+      this._usedInstances.delete(instance);
     }
     this._usedInstances.clear();
   }
 
   update() {
-    this._bufferIds.forEach((_) => this.mesh.thinInstanceBufferUpdated(_));
+    for (let i = 0; i < this._bufferIds.length; i++) {
+      this.mesh.thinInstanceBufferUpdated(this._bufferIds[i]);
+    }
   }
 }

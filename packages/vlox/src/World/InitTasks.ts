@@ -124,12 +124,7 @@ export default function ({
       return [true];
     }
   );
-  /* 
-  Threads.registerTask<RunBuildQueue>("build-queue", async ([dim, sections]) => {
-    for (const position of sections) {
-      mesher.setLocation([dim, ...position]).buildSection();
-    }
-  }); */
+
   Threads.registerTask("clear-all", () => {
     WorldRegister.clearAll();
   });

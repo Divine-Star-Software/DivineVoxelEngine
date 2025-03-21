@@ -6,19 +6,8 @@ import {
   VoxelStateNumberSchemaData,
 } from "../../Voxels/State/State.types";
 import { VoxelEffectData } from "../../Voxels/Effects/VoxelEffects.types";
-import { VoxelBaseProperties } from "../Types/Voxel.types";
-
-/**The model data assoicated with the actual voxel. */
-export interface VoxelModelConstructorData {
-  id: string;
-  modRelationSchema?: VoxelModelRelationsSchemaData[];
-  modSchema?: VoxelStateStringSchemaData[];
-  inputs: Record<string, Record<string, any>>;
-  tagOverrides?: {
-    isLightSource?: Record<string, boolean>;
-    lightValue?: Record<string, Vec3Array>;
-  };
-}
+import { VoxelBaseProperties, VoxelProperties } from "../Types/Voxel.types";
+import { TextureId } from "Textures";
 
 /**Define a custom geomtry node */
 export interface VoxelCustomGeomtryNode {
@@ -171,20 +160,6 @@ export interface VoxelGeometryLinkData {
   flip?: [flipX: 0 | 1, flipY: 0 | 1, flipZ: 0 | 1];
 }
 
-/** Defines the state the model should be placed in given the parameters. */
-export interface VoxelModelPlacingStrategyData {
-  /** The closest voxel face of the intersected voxel model. */
-  face: VoxelFaceNames;
-  /** The direction of the ray that intersected the voxel that is being placed upon.  */
-  direction: Vec3Array;
-  /** The delta of the virtual voxel cube face intersected. If it was intersected halfway, it would be 0.5. */
-  delta?: [min: number, max: number];
-  /** Defines an alternative ID to override the same parameters. */
-  alt?: number;
-  /** The resulting state string of the model. */
-  state: string;
-}
-
 export interface VoxelModelData {
   id: string;
   /**Divisor used all transforms of geometry nodes. */
@@ -198,13 +173,19 @@ export interface VoxelModelData {
     | VoxelGeometryBooleanArgument
     | VoxelGeometryFloatArgument
   >;
-  /**Define the placing strategy for the model. */
-  placingStrategy: VoxelModelPlacingStrategyData[] | string;
   stateSchema: (VoxelStateStringSchemaData | VoxelStateNumberSchemaData)[];
-  /**Define default tags for the voxel. */
-  tags?: Partial<VoxelBaseProperties>;
+  /**Define default properties for the voxel. */
+  properties?: Partial<VoxelBaseProperties>;
   effects?: VoxelEffectData[];
   relationsSchema: VoxelModelRelationsSchemaData[];
   stateNodes: Record<string, VoxelGeometryLinkData[]>;
   conditonalNodes: Record<string, VoxelGeometryLinkData[]>;
+}
+
+/**The model data assoicated with the actual voxel. */
+export interface VoxelModelConstructorData {
+  id: string;
+  modRelationSchema?: VoxelModelRelationsSchemaData[];
+  modSchema?: VoxelStateStringSchemaData[];
+  inputs: Record<string, Record<string, any>>;
 }

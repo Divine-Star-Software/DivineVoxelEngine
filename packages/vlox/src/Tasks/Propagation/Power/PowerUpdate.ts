@@ -24,7 +24,7 @@ export function PowerUpdate(tasks: VoxelUpdateTask) {
       const nl = voxel.getPower();
 
       if (nl > -1 && nl < sl) {
-        if (voxel._tags["dve_can_carry_power"]) {
+        if (voxel.tags["dve_can_carry_power"]) {
           queue.push(nx, ny, nz);
         }
 

@@ -1,0 +1,307 @@
+import {
+  Color3,
+  CreateBox,
+  Mesh,
+  Ray,
+  Scene,
+  Vector3,
+  Effect,
+  ShaderMaterial,
+  TransformNode,
+  VertexBuffer,
+} from "@babylonjs/core";
+import { VoxelSelectionHighlight } from "./VoxelSelectionHighlight";
+import { Vector3Like } from "@amodx/math";
+import { TypedEventTarget } from "@divinevoxel/vlox/Util/TypedEventTarget";
+Effect.ShadersStore["voxelSelectionHighlightControlsVertexShader"] =
+  /*glsl */ `#version 300 es
+precision highp float;
+in vec3 position;
+in float axes;
+uniform mat4 world;
+uniform mat4 viewProjection;
+uniform vec3 colors[3];
+uniform vec4 states[3];
+out vec3 vColor;
+void main(void) {
+  vec4 p = vec4( position, 1.0 );
+  vec4 state = states[uint(axes)];
+  vec3 color = colors[uint(axes)];
+  if(state.x == 1. && state.y != 1.) {
+    color *= .5;
+  }
+  if(state.y == 1.) {
+    color *= 1.5;
+    color += .5;
+  }
+  vColor = color;
+  gl_Position = viewProjection * world * p;
+}
+`;
+Effect.ShadersStore["voxelSelectionHighlightControlsFragmentShader"] =
+  /*glsl */ `#version 300 es
+precision highp float;
+in vec3 vColor;
+out vec4 FragColor;  
+void main(void) {
+  FragColor = vec4(vColor,1.);
+}
+`;
+enum Axes {
+  X,
+  Y,
+  Z,
+}
+type AxesNames = "x" | "y" | "z";
+const AxesRecord: Record<Axes, AxesNames> = {
+  [Axes.X]: "x",
+  [Axes.Y]: "y",
+  [Axes.Z]: "z",
+};
+const min = new Vector3();
+const max = new Vector3();
+class PositionAxes {
+  mesh: Mesh;
+  _dirty = false;
+
+  get hover() {
+    return this._states[this.axex * 4] == 1;
+  }
+  set hover(hovver: boolean) {
+    this._states[this.axex * 4] = hovver ? 1 : 0;
+    this._dirty = true;
+  }
+
+  get active() {
+    return this._states[this.axex * 4 + 1] == 1;
+  }
+  set active(active: boolean) {
+    this._states[this.axex * 4 + 1] = active ? 1 : 0;
+    this._dirty = true;
+  }
+
+  min: Vector3;
+  max: Vector3;
+  constructor(
+    public controls: VoxelSelectionHighlightControls,
+    public normal: Vector3,
+    public axex: Axes,
+    public _states: Float32Array
+  ) {
+    const tempMesh = CreateBox(
+      "",
+      {
+        width: normal.x || 0.1,
+        height: normal.y || 0.1,
+        depth: normal.z || 0.1,
+      },
+      this.controls.scene
+    );
+
+    const mesh = new Mesh(`${axex}`, this.controls.scene);
+    this.mesh = mesh;
+    const positons = tempMesh.getVerticesData(VertexBuffer.PositionKind)!;
+    mesh.setVerticesData(VertexBuffer.PositionKind, positons);
+    const colors: number[] = [];
+    let j = 0;
+    for (let i = 0; i < positons.length; i += 3) {
+      colors[j] = axex;
+      j++;
+    }
+    mesh.setVerticesBuffer(
+      new VertexBuffer(
+        this.controls.scene.getEngine(),
+        colors,
+        "axes",
+        false,
+        undefined,
+        1
+      )
+    );
+    mesh.setIndices(tempMesh.getIndices()!);
+    this.mesh.refreshBoundingInfo();
+    tempMesh.dispose();
+
+    const bounds = this.mesh.getBoundingInfo().boundingBox!;
+    this.min = bounds.minimum.clone();
+    this.max = bounds.maximum.clone();
+
+    this.mesh.position.set(
+      normal.x > 0 ? normal.x / 2 : 0,
+      normal.y > 0 ? normal.y / 2 : 0,
+      normal.z > 0 ? normal.z / 2 : 0
+    );
+    this.mesh.renderingGroupId = 2;
+    this.mesh.parent = this.controls.parent;
+    this.mesh.material = this.controls.material;
+  }
+
+  deltaPoint = new Vector3();
+  deltas = new Vector3();
+
+  update(ray: Ray, mouseDown: boolean) {
+    min.set(
+      this.min.x + this.mesh.position.x + this.controls.parent.position.x,
+      this.min.y + this.mesh.position.y + this.controls.parent.position.y,
+      this.min.z + this.mesh.position.z + this.controls.parent.position.z
+    );
+    max.set(
+      this.max.x + this.mesh.position.x + this.controls.parent.position.x,
+      this.max.y + this.mesh.position.y + this.controls.parent.position.y,
+      this.max.z + this.mesh.position.z + this.controls.parent.position.z
+    );
+    if (this.active && !mouseDown) {
+      this.active = false;
+      this.controls._controlActive = false;
+      this.controls.dispatch("inactive", AxesRecord[this.axex]);
+    }
+
+    if (this.active) {
+      const distance =
+        Vector3.Dot(this.deltaPoint.subtract(ray.origin), this.normal) /
+        Vector3.Dot(ray.direction, this.normal);
+
+      const intersectionPoint = ray.origin
+        .add(ray.direction.scale(distance))
+        .floor();
+      intersectionPoint.x *= this.normal.x;
+      intersectionPoint.y *= this.normal.y;
+      intersectionPoint.z *= this.normal.z;
+      const dx = Math.floor(intersectionPoint.x) - this.deltaPoint.x;
+      const dy = Math.floor(intersectionPoint.y) - this.deltaPoint.y;
+      const dz = Math.floor(intersectionPoint.z) - this.deltaPoint.z;
+      let needUpdate = false;
+      if (this.deltas.x != dx) needUpdate = true;
+      if (this.deltas.y != dy) needUpdate = true;
+      if (this.deltas.z != dz) needUpdate = true;
+      this.deltas.set(dx, dy, dz);
+      if (needUpdate) {
+        this.controls.dispatch("position", { x: dx, y: dy, z: dz });
+      }
+    }
+
+    if (ray.intersectsBoxMinMax(min, max)) {
+      if (mouseDown && !this.active && !this.controls._controlActive) {
+        this.active = true;
+        this.deltas.set(0, 0, 0);
+        this.deltaPoint.set(
+          this.controls.parent.position.x,
+          this.controls.parent.position.y,
+          this.controls.parent.position.z
+        );
+        this.controls._controlActive = true;
+        this.controls.dispatch("active", AxesRecord[this.axex]);
+      }
+      if (!this.hover) this.hover = true;
+    } else {
+      if (this.hover) this.hover = false;
+    }
+  }
+}
+
+export interface VoxelSelectionHighlightControlsEvents {
+  position: Vector3Like;
+  active: AxesNames;
+  inactive: AxesNames;
+}
+
+const tempRay = new Ray(new Vector3(0, 0, 0), new Vector3(1, 1, 1), 10000);
+export class VoxelSelectionHighlightControls extends TypedEventTarget<VoxelSelectionHighlightControlsEvents> {
+  xAxes: PositionAxes;
+  yAxes: PositionAxes;
+  zAxes: PositionAxes;
+  colors: Record<Axes, Color3>;
+  parent: TransformNode;
+  material: ShaderMaterial;
+  _states: Float32Array;
+  _controlActive = false;
+  constructor(public scene: Scene) {
+    super();
+    const material = new ShaderMaterial(
+      "",
+      scene,
+      "voxelSelectionHighlightControls",
+      {
+        uniforms: ["colors", "states", "world", "viewProjection"],
+        attributes: ["position", "axes"],
+        needAlphaBlending: true,
+      }
+    );
+    this.material = material;
+    material.backFaceCulling = false;
+    material.forceDepthWrite = true;
+
+    this.parent = new TransformNode("", scene);
+    this._states = new Float32Array(4 * 3);
+    this.xAxes = new PositionAxes(
+      this,
+      new Vector3(1, 0, 0),
+      Axes.X,
+      this._states
+    );
+
+    this.yAxes = new PositionAxes(
+      this,
+      new Vector3(0, 1, 0),
+      Axes.Y,
+      this._states
+    );
+
+    this.zAxes = new PositionAxes(
+      this,
+      new Vector3(0, 0, 1),
+      Axes.Z,
+      this._states
+    );
+
+    this.updateColors(
+      new Color3(1, 0, 0),
+      new Color3(0, 1, 0),
+      new Color3(0, 0, 1)
+    );
+    this.material.setArray4("states", this._states as any);
+  }
+
+  updateColors(x: Color3, y: Color3, z: Color3) {
+    if (!this.colors) this.colors = {} as any;
+    this.colors[Axes.X] = x;
+    this.colors[Axes.Y] = y;
+    this.colors[Axes.Z] = z;
+    this.material.setColor3Array("colors", [
+      this.colors[Axes.X],
+      this.colors[Axes.Y],
+      this.colors[Axes.Z],
+    ]);
+  }
+  highlight: VoxelSelectionHighlight;
+  update(
+    mouseDown: boolean,
+    rayOrigin: Vector3Like,
+    rayDirection: Vector3Like,
+    length: number
+  ) {
+    this.parent.position.x =
+      this.highlight.selection.origin.x + this.highlight.selection.size.x / 2;
+    this.parent.position.y =
+      this.highlight.selection.origin.y + this.highlight.selection.size.y / 2;
+    this.parent.position.z =
+      this.highlight.selection.origin.z + this.highlight.selection.size.z / 2;
+
+    tempRay.origin.set(rayOrigin.x, rayOrigin.y, rayOrigin.z);
+    tempRay.direction.set(rayDirection.x, rayDirection.y, rayDirection.z);
+    tempRay.length = length;
+    this.xAxes.update(tempRay, mouseDown);
+    this.yAxes.update(tempRay, mouseDown);
+    this.zAxes.update(tempRay, mouseDown);
+    if (this.xAxes._dirty || this.yAxes._dirty || this.zAxes._dirty) {
+      this.material.setArray4("states", this._states as any);
+      this.xAxes._dirty = false;
+      this.yAxes._dirty = false;
+      this.zAxes._dirty = false;
+    }
+  }
+
+  setHighlight(highlight: VoxelSelectionHighlight) {
+    this.highlight = highlight;
+  }
+}

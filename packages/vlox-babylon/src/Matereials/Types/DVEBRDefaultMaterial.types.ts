@@ -1,6 +1,7 @@
 import { Scene } from "@babylonjs/core/scene";
 import { Vec3Array } from "@amodx/math";
 import { TextureData } from "@divinevoxel/vlox/Textures/Texture.types";
+import { DVEBabylonRenderer } from "Renderer/DVEBabylonRenderer";
 
 export type DVEBRDefaultMaterialBaseData = {
   textureData: TextureData[];

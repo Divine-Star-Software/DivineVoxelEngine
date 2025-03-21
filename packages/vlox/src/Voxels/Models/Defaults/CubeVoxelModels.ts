@@ -9,10 +9,11 @@ export const simpleCube: VoxelModelData = {
       type: "texture",
     },
   },
-  placingStrategy: "*",
+
   conditonalNodes: {},
-  tags: {
-    dve_full_block: true,
+  properties: {
+    dve_placing_strategy: "*",
+    dve_full_block: true
   },
   stateNodes: {
     "*": [
@@ -44,11 +45,12 @@ export const simpleTransparentCube: VoxelModelData = {
       default: false,
     },
   },
-  tags: {
-    dve_full_block: true,
-  },
+
   conditonalNodes: {},
-  placingStrategy: "*",
+  properties: {
+    dve_full_block: true,
+    dve_placing_strategy: "*",
+  },
   stateNodes: {
     "*": [
       {
@@ -78,11 +80,12 @@ export const simpleNoCulledCube: VoxelModelData = {
       type: "texture",
     },
   },
-  tags: {
-    dve_full_block: true,
-  },
+
   conditonalNodes: {},
-  placingStrategy: "*",
+  properties: {
+    dve_full_block: true,
+    dve_placing_strategy: "*",
+  },
   stateNodes: {
     "*": [
       {
@@ -138,77 +141,83 @@ export const orientedCube: VoxelModelData = {
       type: "texture",
     },
   },
-
-  placingStrategy: [
-    //down normal
-    {
-      face: "up",
-      direction: [0, 0, -1],
-      state: "placement=down,rotation=0",
-    },
-    {
-      face: "up",
-      direction: [0, 0, 1],
-      state: "placement=down,rotation=90",
-    },
-    {
-      face: "up",
-      direction: [-1, 0, 0],
-      state: "placement=down,direction=esat",
-    },
-    {
-      face: "up",
-      direction: [1, 0, 0],
-      state: "placement=down,rotation=270",
-    },
-    //down alt
-    {
-      face: "up",
-      direction: [0, 0, -1],
-      state: "placement=north,rotation=0",
-      alt: 0,
-    },
-    {
-      face: "up",
-      direction: [0, 0, 1],
-      state: "placement=south,rotation=90",
-      alt: 0,
-    },
-    {
-      face: "up",
-      direction: [-1, 0, 0],
-      state: "placement=east,direction=esat",
-    },
-    {
-      face: "up",
-      direction: [1, 0, 0],
-      state: "placement=west,rotation=270",
-    },
-    //north normal
-    {
-      face: "north",
-      direction: [0, 0, -1],
-      state: "placement=north,rotation=0",
-    },
-    //south normal
-    {
-      face: "south",
-      direction: [0, 0, 1],
-      state: "placement=south,rotation=0",
-    },
-    //east normal
-    {
-      face: "east",
-      direction: [-1, 0, 0],
-      state: "placement=east,rotation=0",
-    },
-    //west normal
-    {
-      face: "west",
-      direction: [1, 0, 0],
-      state: "placement=west,rotation=0",
-    },
-  ],
+  properties: {
+    dve_placing_strategy: [
+      //down normal
+      {
+        face: "up",
+        direction: [0, -1, 0],
+        state: "placement=down,rotation=0",
+      },
+      {
+        face: "up",
+        direction: [0, 0, -1],
+        state: "placement=down,rotation=0",
+      },
+      {
+        face: "up",
+        direction: [0, 0, 1],
+        state: "placement=down,rotation=90",
+      },
+      {
+        face: "up",
+        direction: [-1, 0, 0],
+        state: "placement=down,direction=esat",
+      },
+      {
+        face: "up",
+        direction: [1, 0, 0],
+        state: "placement=down,rotation=270",
+      },
+      //down alt
+      {
+        face: "up",
+        direction: [0, 0, -1],
+        state: "placement=north,rotation=0",
+        alt: 0,
+      },
+      {
+        face: "up",
+        direction: [0, 0, 1],
+        state: "placement=south,rotation=90",
+        alt: 0,
+      },
+      {
+        face: "up",
+        direction: [-1, 0, 0],
+        state: "placement=east,direction=esat",
+      },
+      {
+        face: "up",
+        direction: [1, 0, 0],
+        state: "placement=west,rotation=270",
+      },
+      //north normal
+      {
+        face: "north",
+        direction: [0, 0, -1],
+        state: "placement=north,rotation=0",
+      },
+      //south normal
+      {
+        face: "south",
+        direction: [0, 0, 1],
+        state: "placement=south,rotation=0",
+      },
+      //east normal
+      {
+        face: "east",
+        direction: [-1, 0, 0],
+        state: "placement=east,rotation=0",
+      },
+      //west normal
+      {
+        face: "west",
+        direction: [1, 0, 0],
+        state: "placement=west,rotation=0",
+      },
+    ],
+  },
 
   conditonalNodes: {},
   stateNodes: {
@@ -687,7 +696,9 @@ export const simpleHalfCube: VoxelModelData = {
     },
   },
   conditonalNodes: {},
-  placingStrategy: "*",
+  properties: {
+    dve_placing_strategy: "*",
+  },
   stateNodes: {
     "placement=down": [
       {
@@ -860,7 +871,9 @@ export const pillarCube: VoxelModelData = {
     },
   },
   conditonalNodes: {},
-  placingStrategy: "*",
+  properties: {
+    dve_placing_strategy: "*",
+  },
   stateNodes: {
     "direction=down-up,same-down=false,same-up=false": [
       {
@@ -904,7 +917,7 @@ export const pillarCube: VoxelModelData = {
     "direction=down-up,same-down=true,same-up=true": [
       {
         geometryId: "dve_cube",
-        inputs: { 
+        inputs: {
           upTex: "@upTex",
           downTex: "@downTex",
           northTex: "@sideConnectedTex",

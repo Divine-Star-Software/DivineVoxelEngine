@@ -3,7 +3,9 @@ import { VoxelModelData } from "../VoxelModel.types";
 export const stair: VoxelModelData = {
   id: "dve_simple_stair",
   relationsSchema: [],
-  placingStrategy: "*",
+  properties: {
+    dve_placing_strategy: "*",
+  },
   stateSchema: [
     {
       name: "placement",

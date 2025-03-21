@@ -1,5 +1,6 @@
 import {
   AssetContainer,
+  Engine,
   RawTexture,
   Scene,
   Texture,
@@ -11,8 +12,7 @@ import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager.js";
 import { DVEBRShaderStore } from "../../Shaders/DVEBRShaderStore.js";
 import { ImageArrayTexture } from "../../Textures/ImageArrayTexture.js";
 import { MaterialData, MaterialInterface } from "../MaterialInterface.js";
-
-const conatiner = new AssetContainer();
+import { SceneOptions } from "../../Scene/SceneOptions.js";
 
 type MatData = MaterialData<{
   textureTypeId: string;
@@ -26,11 +26,10 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
   _material: ShaderMaterial;
 
   constructor(
+    public options: SceneOptions,
     public id: string,
     public data: MatData
   ) {}
-
-  afterCreate: ((material: ShaderMaterial) => void)[] = [];
 
   createMaterial(scene: Scene) {
     this.scene = scene;
@@ -74,80 +73,34 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
         ...shaderData,
         needAlphaBlending: data.alphaBlending,
         needAlphaTesting: data.alphaTesting,
+        uniformBuffers: ["SceneOptions"],
       },
       false
     );
+    shaderMaterial.setUniformBuffer("SceneOptions", this.options.ubo.buffer);
 
-    conatiner.materials.push(shaderMaterial);
     if (data.backFaceCulling !== undefined) {
       shaderMaterial.backFaceCulling = data.backFaceCulling;
     }
-    //   shaderMaterial.needDepthPrePass = true;
+
     let liquid = false;
 
     if (this.id.includes("transparent")) {
-      //   shaderMaterial.forceDepthWrite = true;
-      //  shaderMaterial.separateCullingPass = true;
-      //    shaderMaterial.backFaceCulling = false;
       shaderMaterial.forceDepthWrite = true;
+      shaderMaterial.backFaceCulling = true;
     }
     if (this.id.includes("flora")) {
-      //   shaderMaterial.forceDepthWrite = true;
-      //  shaderMaterial.separateCullingPass = true;
+      shaderMaterial.alphaMode = Engine.ALPHA_COMBINE;
       shaderMaterial.backFaceCulling = true;
     }
     if (this.id.includes("liquid")) {
       liquid = true;
 
-      //  shaderMaterial.alpha = 0.5;
-      //     shaderMaterial.disableDepthWrite = true;
-      //   shaderMaterial.needDepthPrePass = true;
-      //   shaderMaterial.separateCullingPass = false;
-      // shaderMaterial.disableDepthWrite = true;
       shaderMaterial.forceDepthWrite = true;
       shaderMaterial.backFaceCulling = false;
-      // shaderMaterial.transparencyMode = 0;
-      // shaderMaterial.alphaMode = 0;
-      //  shaderMaterial.alphaMode = 2;
-      //   shaderMaterial.stencil.enabled = true;
-      //   shaderMaterial.stencil.func = Engine.NOTEQUAL;
-      //shaderMaterial.stencil.opStencilDepthPass = Engine.KEEP;
-      //  shaderMaterial.stencil.mask = 0x00;
       this.scene.setRenderingAutoClearDepthStencil(0, false, false, false);
     }
     this._material = shaderMaterial;
-
-    this._material.fogEnabled = true;
-
-    // shaderMaterial.wireframe = true;
-
-    /*     if (data.stencil) {
-      shaderMaterial.stencil.enabled = true;
-      shaderMaterial.stencil.func = Engine.NOTEQUAL;
-      this.scene.setRenderingAutoClearDepthStencil(0, false, false, false);
-    } */
-
-    shaderMaterial.setVector3("worldOrigin", Vector3.Zero());
-    if (data.mipMapBias) {
-      shaderMaterial.setFloat("mipMapBias", data.mipMapBias);
-    }
-    this._material.blockDirtyMechanism = true;
-    //  this._material.markDirty()
-    this._material.onBind = (mesh) => {
-      if (!this._material) return;
-      const effect = this._material.getEffect();
-      const scene = mesh.getScene();
-      if (!effect) return;
-
-      effect.setFloat4(
-        "vFogInfos",
-        scene.fogMode,
-        scene.fogStart,
-        scene.fogEnd,
-        scene.fogDensity
-      );
-      effect.setColor3("vFogColor", scene.fogColor);
-    };
 
     if (texture) {
       this.setTexture(texture.id, texture.shaderTexture);
@@ -163,7 +116,6 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
       );
     }
 
-    this.afterCreate.forEach((_) => _(this._material));
     return this._material;
   }
   setTextureArray(samplerId: string, sampler: Texture[]): void {
@@ -177,7 +129,7 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
     this.textures.set(samplerId, sampler);
   }
 
-  clone(scene: Scene) {
+  clone(scene: Scene, sceneOptions: SceneOptions) {
     const textures = new Map<string, ImageArrayTexture | Texture>();
     for (const [textId, texture] of this.textures) {
       this._material.removeTexture(textId);
@@ -209,7 +161,7 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
       }
     }
 
-    const mat = new DVEBRClassicMaterial(this.id, {
+    const mat = new DVEBRClassicMaterial(sceneOptions, this.id, {
       ...this.data,
       data: {
         ...this.data.data,
@@ -217,6 +169,7 @@ export class DVEBRClassicMaterial implements MaterialInterface<MatData> {
         textures,
       },
     });
+    newMat.setUniformBuffer("SceneOptions", sceneOptions.ubo.buffer);
     mat._material = newMat;
     mat.textures = textures;
     return mat;

@@ -1,5 +1,13 @@
 import { BinaryTaskType, Thread, ThreadPool, Threads } from "@amodx/threads/";
-import { ExplosionTasks, VoxelUpdateTasks } from "../../Tasks/Tasks.types";
+import {
+  ExplosionTasks,
+  EraseVoxelAreaTask,
+  PaintVoxelAreaTask,
+  PaintVoxelTemplateTask,
+  PaintVoxelTask,
+  EraseVoxelTask,
+  EraseVoxelTemplateTask,
+} from "../../Tasks/Tasks.types";
 import { LocationData } from "../../Math";
 import { TasksIds } from "../../Tasks/TasksIds.js";
 import { setLocationData } from "../../Util/LocationData";
@@ -114,16 +122,28 @@ export class TaskToolTask<Data extends any = any, ReturnData extends any = void>
 }
 
 class VoxelTasks {
-  update: TaskToolTask<VoxelUpdateTasks>;
-  paint: TaskToolTask<VoxelUpdateTasks>;
-  erase: TaskToolTask<LocationData>;
+  paint: TaskToolTask<PaintVoxelTask>;
+  paintArea: TaskToolTask<PaintVoxelAreaTask>;
+  paintTemplate: TaskToolTask<PaintVoxelTemplateTask>;
+  erase: TaskToolTask<EraseVoxelTask>;
+  eraseArea: TaskToolTask<EraseVoxelAreaTask>;
+  eraseTemplate: TaskToolTask<EraseVoxelTemplateTask>;
   explosion: TaskToolTask<ExplosionTasks>;
 
   constructor(public tool: TaskTool) {
     this.explosion = new TaskToolTask(TasksIds.Explosion, tool.generators);
-    this.update = new TaskToolTask(TasksIds.VoxelUpdate, tool.generators);
-    this.paint = new TaskToolTask(TasksIds.VoxelPaint, tool.generators);
-    this.erase = new TaskToolTask(TasksIds.VoxelErase, tool.generators);
+    this.paint = new TaskToolTask(TasksIds.PaintVoxel, tool.generators);
+    this.paintArea = new TaskToolTask(TasksIds.PaintVoxelArea, tool.generators);
+    this.paintTemplate = new TaskToolTask(
+      TasksIds.PaintVoxelTemplate,
+      tool.generators
+    );
+    this.erase = new TaskToolTask(TasksIds.EraseVoxel, tool.generators);
+    this.eraseArea = new TaskToolTask(TasksIds.EraseVoxelArea, tool.generators);
+    this.eraseTemplate = new TaskToolTask(
+      TasksIds.EraseVoxelTemplate,
+      tool.generators
+    );
   }
 }
 
@@ -142,16 +162,7 @@ class BuildTask {
 class SimulationTasks {
   logic: LocationTaskToolTask;
   propagation: LocationTaskToolTask;
-  constructor(public tool: TaskTool) {
-    this.logic = new LocationTaskToolTask(
-      TasksIds.LogicUpdate,
-      tool.generators
-    );
-    this.propagation = new LocationTaskToolTask(
-      TasksIds.PropagationUpdate,
-      tool.generators
-    );
-  }
+  constructor(public tool: TaskTool) {}
 }
 
 class GenerationTasks {
