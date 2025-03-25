@@ -13,7 +13,7 @@ import { TextureId } from "@divinevoxel/vlox/Textures/Texture.types";
 import { SolidParticleSystem } from "@babylonjs/core";
 import { DataCursorInterface } from "@divinevoxel/vlox/Voxels/Cursor/DataCursor.interface";
 import { GetXYZOrderArrayIndex } from "@divinevoxel/vlox/Math/Indexing";
-import { IVoxelSelection } from "@divinevoxel/vlox/Voxels/Interaction/Selection/VoxelSelecton";
+import { IVoxelSelection } from "@divinevoxel/vlox/Templates/Selection/VoxelSelecton";
 import { VoxelPropertiesRegister } from "@divinevoxel/vlox/Voxels/Data/VoxelPropertiesRegister";
 import { SchemaRegister } from "@divinevoxel/vlox/Voxels/State/SchemaRegister";
 export class VoxelExplodeSelectionParticles {

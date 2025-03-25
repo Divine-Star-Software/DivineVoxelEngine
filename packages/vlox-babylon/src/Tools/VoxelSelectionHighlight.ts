@@ -1,7 +1,7 @@
 import { Vec3Array } from "@amodx/math";
 import { Scene } from "@babylonjs/core";
 import { VoxelFaceDirections, VoxelFaces } from "@divinevoxel/vlox/Math";
-import { IVoxelSelection } from "@divinevoxel/vlox/Voxels/Interaction/Selection/VoxelSelecton";
+import { IVoxelSelection } from "@divinevoxel/vlox/Templates/Selection/VoxelSelecton";
 import { VoxelLineMesh } from "./VoxelLineMesh";
 
 const lineChecks: Record<VoxelFaces, Vec3Array[]> = {
@@ -133,12 +133,15 @@ const addVoxelFace = (
 
 export class VoxelSelectionHighlight {
   mesh: VoxelLineMesh;
-  selection :IVoxelSelection;
+  selection: IVoxelSelection;
   constructor(public scene: Scene) {
     this.mesh = new VoxelLineMesh(scene);
-    
   }
   outlineAll = false;
+
+  dispose() {
+    this.mesh.dispose();
+  }
 
   update(selection: IVoxelSelection) {
     this.selection = selection;

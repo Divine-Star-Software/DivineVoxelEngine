@@ -1,6 +1,6 @@
 import { BrushTool } from "./Brush.js";
 import { TaskRunModes, TaskTool } from "../Tasks/TasksTool.js";
-import { LocationData } from "Math/index.js";
+import { LocationData } from "../../Math/index.js";
 
 export class AdvancedBrush extends BrushTool {
   _location: LocationData = [0, 0, 0, 0];
@@ -35,28 +35,18 @@ export class AdvancedBrush extends BrushTool {
   }
   paintAndUpdate(onDone?: Function) {
     this._mapLocation();
-    this.tasks.voxel.paint.run([this._location, this.getRaw(),{}], null, () => {
-      if (onDone) onDone();
-    });
+    this.tasks.voxel.paint.run(
+      [this._location, this.getRaw(), {}],
+      null,
+      () => {
+        if (onDone) onDone();
+      }
+    );
   }
   eraseAndUpdate(onDone?: Function) {
     this._mapLocation();
-    this.tasks.voxel.erase.run([this._location,{}], null, () => {
+    this.tasks.voxel.erase.run([this._location, {}], null, () => {
       if (onDone) onDone();
-    });
-  }
-
-  explode(radius = 6, onDone?: Function) {
-    this._mapLocation();
-    this.tasks.voxel.explosion.run([this._location, radius], null, () => {
-      if (onDone) onDone();
-    });
-  }
-  explodeAwaitUpdate(radius = 6) {
-    return new Promise((resolve) => {
-      this.explode(radius, () => {
-        resolve(true);
-      });
     });
   }
 }

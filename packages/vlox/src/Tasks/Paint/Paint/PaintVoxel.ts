@@ -8,10 +8,10 @@ const tasks = new VoxelUpdateTask();
 
 export function PaintVoxel([location, raw, updateData]: PaintVoxelTask) {
   const [dimension, x, y, z] = location;
-  if (!canUpdate(x, y, z, updateData)) return false;
+  if (!canUpdate(x, y, z, updateData)) return;
   tasks.setOriginAt(location);
   let voxel = tasks.sDataCursor.getVoxel(x, y, z);
-  if (!voxel) return false;
+  if (!voxel) return;
 
   raw[1] = 0;
   voxel = tasks.sDataCursor.getVoxel(x, y, z)!;
@@ -33,5 +33,5 @@ export function PaintVoxel([location, raw, updateData]: PaintVoxelTask) {
     }
   }
 
-  return tasks;
+
 }

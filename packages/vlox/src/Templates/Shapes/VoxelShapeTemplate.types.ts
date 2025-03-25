@@ -13,7 +13,7 @@ export type VoxelShapeTemplateShapeDirections =
   | "-y"
   | "+z"
   | "-z";
-  
+
 export interface IVoxelShapeTemplate<
   Type extends string,
   Data extends IVoxelShapeTemplateData<Type>,
@@ -33,11 +33,14 @@ export interface IVoxelShapeTemplate<
   ): void;
 }
 
-export interface IVoxelShapeTemplateData<Type extends string>
-  extends IVoxelTemplateData<Type> {
+export interface IVoxelshapeTemplateBaseData {
   fillVoxel: PaintVoxelData;
   faceVoxel: PaintVoxelData;
   edgeVoxel: PaintVoxelData;
   pointVoxel: PaintVoxelData;
   fillMode: VoxelShapeTemplateFillModes;
 }
+
+export interface IVoxelShapeTemplateData<Type extends string>
+  extends IVoxelTemplateData<Type>,
+    IVoxelshapeTemplateBaseData {}

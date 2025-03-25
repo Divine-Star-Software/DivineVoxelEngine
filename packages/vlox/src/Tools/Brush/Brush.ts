@@ -3,9 +3,9 @@ import { WorldCursor } from "../../World/Cursor/WorldCursor.js";
 import { VoxelCursor } from "../../Voxels/Cursor/VoxelCursor.js";
 import { WorldRegister } from "../../World/WorldRegister.js";
 import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister.js";
-import { Vector3Like } from "@amodx/math";
 import { IVoxelTemplate } from "../../Templates/VoxelTemplates.types.js";
 import { PaintVoxelData } from "../../Voxels/Types/PaintVoxelData.js";
+import { VoxelPathData } from "Templates/Path/VoxelPath.types.js";
 const air: RawVoxelData = [0, 0, 0, 0];
 const temp: RawVoxelData = [0, 0, 0, 0];
 export class BrushTool {
@@ -170,19 +170,6 @@ export class BrushTool {
     return this;
   }
 
-  paintArea(start: Vector3Like, end: Vector3Like) {
-    const { x: sx, y: sy, z: sz } = start;
-    const { x: ex, y: ey, z: ez } = end;
-    for (let x = sx; x < ex; x++) {
-      for (let y = sy; y < ey; y++) {
-        for (let z = sz; z < ez; z++) {
-          if (!this.dataCursor.inBounds(x, y, z)) continue;
-          this.setXYZ(x, y, z).paint();
-        }
-      }
-    }
-  }
-
   paintTemplate(voxelTemplate: IVoxelTemplate) {
     const { x: ox, y: oy, z: oz } = this;
     const [sx, sy, sz] = voxelTemplate.bounds;
@@ -202,23 +189,13 @@ export class BrushTool {
     }
   }
 
+  paintPath(data: VoxelPathData) {
+    throw new Error("Paint path not implemented.");
+  }
+
   erase() {
     this._erase();
     return this;
-  }
-
-  eraseArea(start: Vector3Like, end: Vector3Like) {
-    const { x: sx, y: sy, z: sz } = start;
-    const { x: ex, y: ey, z: ez } = end;
-    for (let x = sx; x < ex; x++) {
-      for (let y = sy; y < ey; y++) {
-        for (let z = sz; z < ez; z++) {
-          if (!this.dataCursor.inBounds(x, y, z)) continue;
-
-          this.setXYZ(x, y, z).erase();
-        }
-      }
-    }
   }
 
   eraseTemplate(voxelTemplate: IVoxelTemplate) {
@@ -236,6 +213,10 @@ export class BrushTool {
         }
       }
     }
+  }
+
+  erasePath(data: VoxelPathData) {
+    throw new Error("Erase path not implemented.");
   }
 
   start(dimension: number, x: number, y: number, z: number) {

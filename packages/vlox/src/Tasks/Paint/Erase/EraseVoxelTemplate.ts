@@ -40,5 +40,5 @@ export default function EraseVoxelTemplate([
 
   updateArea(tasks, ox, oy, oz, ox + sx, oy + sy, oz + sz);
 
-  return tasks;
+
 }

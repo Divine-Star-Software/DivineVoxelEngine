@@ -1,4 +1,4 @@
-import { RawVoxelData } from "../../Voxels";
+import { PaintVoxelData, RawVoxelData } from "../../Voxels";
 import { IVoxelShapeTemplateData } from "./VoxelShapeTemplate.types";
 import { BasicVoxelShapeTemplate } from "./BasicVoxelShapeTemplate";
 
@@ -17,6 +17,11 @@ export class BoxVoxelTemplate extends BasicVoxelShapeTemplate<
     return {
       ...BasicVoxelShapeTemplate.CreateBaseData("box-shape", {
         bounds: [data.width || 1, data.height || 1, data.depth || 1],
+        fillVoxel: data.fillVoxel || PaintVoxelData.Create(),
+        pointVoxel: data.pointVoxel || PaintVoxelData.Create(),
+        faceVoxel: data.faceVoxel || PaintVoxelData.Create(),
+        edgeVoxel: data.edgeVoxel || PaintVoxelData.Create(),
+        fillMode: data.fillMode || "full",
       }),
       width: data.width || 1,
       height: data.height || 1,

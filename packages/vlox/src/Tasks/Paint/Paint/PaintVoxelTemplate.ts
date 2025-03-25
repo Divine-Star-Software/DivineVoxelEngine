@@ -1,12 +1,10 @@
 import { PaintVoxelTemplateTask } from "../../Tasks.types";
 import { VoxelUpdateTask } from "../../VoxelUpdateTask";
-import { canUpdate, checkLightUpdate, updateArea } from "../Common";
-import { RGBRemove, RGBUpdate, SunRemove, SunUpdate } from "../../Propagation";
+import { canUpdate, updateArea } from "../Common";
 import { VoxelTemplateRegister } from "../../../Templates/VoxelTempateRegister";
 import { RawVoxelData } from "../../../Voxels";
 
 const tasks = new VoxelUpdateTask();
-
 const raw: RawVoxelData = [0, 0, 0, 0];
 export default function PaintVoxelTemplate([
   dimension,
@@ -40,5 +38,5 @@ export default function PaintVoxelTemplate([
   }
 
   updateArea(tasks, ox, oy, oz, ox + sx, oy + sy, oz + sz);
-  return tasks;
+
 }

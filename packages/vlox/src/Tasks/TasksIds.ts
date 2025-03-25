@@ -5,12 +5,12 @@ export enum TasksIds {
   Decorate = "Decorate",
   WorldSun = "WorldSun",
   WorldPropagation = "Propagation",
-  Explosion = "Explosion",
 
   PaintVoxel = "PaintVoxel",
-  PaintVoxelArea = "PaintVoxelArea",
   PaintVoxelTemplate = "PaintVoxelTemplate",
+  PaintVoxelPath = "PaintVoxelPath",
   EraseVoxel = "EraseVoxel",
-  EraseVoxelArea = "EraseVoxelArea",
   EraseVoxelTemplate = "EraseVoxelTemplate",
+  EraseVoxelPath = "EraseVoxelPath",
 }
+

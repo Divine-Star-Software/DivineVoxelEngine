@@ -1,5 +1,8 @@
 import { Vec3Array, Vector3Like } from "@amodx/math";
 import { IVoxelSelection } from "./VoxelSelecton";
+import { BoxVoxelTemplate } from "../Shapes/BoxVoxelTemplate";
+import { IVoxelshapeTemplateBaseData } from "../Shapes/VoxelShapeTemplate.types";
+import { DataCursorInterface } from "../../Voxels/Cursor/DataCursor.interface";
 const getMinMax = (...points: Vec3Array[]): [Vec3Array, Vec3Array] => {
   if (points.length === 0) {
     throw new Error("At least one point is required to calculate min/max.");
@@ -110,4 +113,16 @@ export class VoxelBoxSelection implements IVoxelSelection {
       this.size.z = finalSize[2];
     }
   }
+
+  toTemplate(data?: Partial<IVoxelshapeTemplateBaseData>) {
+    const boxTemplate = BoxVoxelTemplate.CreateNew({
+      width: this.size.x,
+      height: this.size.y,
+      depth: this.size.z,
+      ...(data ? data : {}),
+    });
+    return new BoxVoxelTemplate(boxTemplate);
+  }
+
+  toExtrudedTemplate(cursor: DataCursorInterface, normal: Vector3Like) {}
 }

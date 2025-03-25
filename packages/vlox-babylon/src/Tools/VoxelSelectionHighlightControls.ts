@@ -9,14 +9,16 @@ import {
   ShaderMaterial,
   TransformNode,
   VertexBuffer,
+  Plane,
 } from "@babylonjs/core";
 import { VoxelSelectionHighlight } from "./VoxelSelectionHighlight";
 import { Vector3Like } from "@amodx/math";
 import { TypedEventTarget } from "@divinevoxel/vlox/Util/TypedEventTarget";
+
 Effect.ShadersStore["voxelSelectionHighlightControlsVertexShader"] =
   /*glsl */ `#version 300 es
 precision highp float;
-in vec3 position;
+in vec3 position; 
 in float axes;
 uniform mat4 world;
 uniform mat4 viewProjection;
@@ -38,13 +40,14 @@ void main(void) {
   gl_Position = viewProjection * world * p;
 }
 `;
+
 Effect.ShadersStore["voxelSelectionHighlightControlsFragmentShader"] =
   /*glsl */ `#version 300 es
 precision highp float;
 in vec3 vColor;
 out vec4 FragColor;  
 void main(void) {
-  FragColor = vec4(vColor,1.);
+  FragColor = vec4(vColor, 1.);
 }
 `;
 enum Axes {
@@ -60,6 +63,7 @@ const AxesRecord: Record<Axes, AxesNames> = {
 };
 const min = new Vector3();
 const max = new Vector3();
+
 class PositionAxes {
   mesh: Mesh;
   _dirty = false;
@@ -154,28 +158,46 @@ class PositionAxes {
       this.active = false;
       this.controls._controlActive = false;
       this.controls.dispatch("inactive", AxesRecord[this.axex]);
+      return;
     }
 
     if (this.active) {
-      const distance =
-        Vector3.Dot(this.deltaPoint.subtract(ray.origin), this.normal) /
-        Vector3.Dot(ray.direction, this.normal);
+      const axis = this.normal; // this is (1,0,0) for X
 
-      const intersectionPoint = ray.origin
-        .add(ray.direction.scale(distance))
-        .floor();
-      intersectionPoint.x *= this.normal.x;
-      intersectionPoint.y *= this.normal.y;
-      intersectionPoint.z *= this.normal.z;
-      const dx = Math.floor(intersectionPoint.x) - this.deltaPoint.x;
-      const dy = Math.floor(intersectionPoint.y) - this.deltaPoint.y;
-      const dz = Math.floor(intersectionPoint.z) - this.deltaPoint.z;
-      let needUpdate = false;
-      if (this.deltas.x != dx) needUpdate = true;
-      if (this.deltas.y != dy) needUpdate = true;
-      if (this.deltas.z != dz) needUpdate = true;
-      this.deltas.set(dx, dy, dz);
+      // Get a plane normal that's perpendicular to the camera but allows movement along the axis
+      const planeNormal = Vector3.Cross(
+        Vector3.Cross(axis, ray.direction),
+        axis
+      ).normalize();
+
+      // Define a new drag plane every frame (or store it if performance becomes an issue)
+      const dragPlane = Plane.FromPositionAndNormal(
+        this.deltaPoint,
+        planeNormal
+      );
+
+      const distance = ray.intersectsPlane(dragPlane);
+      if (!distance) return;
+      const intersectionPoint = new Vector3(
+        ray.origin.x + ray.direction.x * distance,
+        ray.origin.y + ray.direction.y * distance,
+        ray.origin.z + ray.direction.z * distance
+      );
+
+      // Only allow movement along the axis
+      const movementVector = intersectionPoint.subtract(this.deltaPoint);
+      const projected = axis.scale(Vector3.Dot(movementVector, axis));
+
+      const dx = Math.floor(projected.x);
+      const dy = Math.floor(projected.y);
+      const dz = Math.floor(projected.z);
+
+      const needUpdate =
+        dx !== this.deltas.x || dy !== this.deltas.y || dz !== this.deltas.z;
+
+      console.log(dx, dy, dz, this.deltas.x, this.deltas.y, this.deltas.z);
       if (needUpdate) {
+        this.deltas.set(dx, dy, dz);
         this.controls.dispatch("position", { x: dx, y: dy, z: dz });
       }
     }
@@ -197,6 +219,10 @@ class PositionAxes {
       if (this.hover) this.hover = false;
     }
   }
+
+  dispose() {
+    this.mesh.dispose();
+  }
 }
 
 export interface VoxelSelectionHighlightControlsEvents {
@@ -206,7 +232,9 @@ export interface VoxelSelectionHighlightControlsEvents {
 }
 
 const tempRay = new Ray(new Vector3(0, 0, 0), new Vector3(1, 1, 1), 10000);
+
 export class VoxelSelectionHighlightControls extends TypedEventTarget<VoxelSelectionHighlightControlsEvents> {
+  static Materials = new Map<Scene, ShaderMaterial>();
   xAxes: PositionAxes;
   yAxes: PositionAxes;
   zAxes: PositionAxes;
@@ -217,16 +245,22 @@ export class VoxelSelectionHighlightControls extends TypedEventTarget<VoxelSelec
   _controlActive = false;
   constructor(public scene: Scene) {
     super();
-    const material = new ShaderMaterial(
-      "",
-      scene,
-      "voxelSelectionHighlightControls",
-      {
-        uniforms: ["colors", "states", "world", "viewProjection"],
-        attributes: ["position", "axes"],
-        needAlphaBlending: true,
-      }
-    );
+    if (!VoxelSelectionHighlightControls.Materials.has(scene)) {
+      const material = new ShaderMaterial(
+        "",
+        scene,
+        "voxelSelectionHighlightControls",
+        {
+          uniforms: ["colors", "states", "world", "viewProjection"],
+          attributes: ["position", "axes"],
+          needAlphaBlending: true,
+        }
+      );
+      VoxelSelectionHighlightControls.Materials.set(scene, material);
+    }
+
+    const material =
+      VoxelSelectionHighlightControls.Materials.get(scene)!.clone("");
     this.material = material;
     material.backFaceCulling = false;
     material.forceDepthWrite = true;
@@ -274,19 +308,22 @@ export class VoxelSelectionHighlightControls extends TypedEventTarget<VoxelSelec
     ]);
   }
   highlight: VoxelSelectionHighlight;
-  update(
-    mouseDown: boolean,
-    rayOrigin: Vector3Like,
-    rayDirection: Vector3Like,
-    length: number
-  ) {
+
+  updatePosition() {
     this.parent.position.x =
       this.highlight.selection.origin.x + this.highlight.selection.size.x / 2;
     this.parent.position.y =
       this.highlight.selection.origin.y + this.highlight.selection.size.y / 2;
     this.parent.position.z =
       this.highlight.selection.origin.z + this.highlight.selection.size.z / 2;
-
+  }
+  update(
+    mouseDown: boolean,
+    rayOrigin: Vector3Like,
+    rayDirection: Vector3Like,
+    length: number
+  ) {
+    this.updatePosition();
     tempRay.origin.set(rayOrigin.x, rayOrigin.y, rayOrigin.z);
     tempRay.direction.set(rayDirection.x, rayDirection.y, rayDirection.z);
     tempRay.length = length;
@@ -299,6 +336,13 @@ export class VoxelSelectionHighlightControls extends TypedEventTarget<VoxelSelec
       this.yAxes._dirty = false;
       this.zAxes._dirty = false;
     }
+  }
+
+  dispose() {
+    this.xAxes.dispose();
+    this.yAxes.dispose();
+    this.zAxes.dispose();
+    this.material.dispose();
   }
 
   setHighlight(highlight: VoxelSelectionHighlight) {

@@ -5,7 +5,6 @@ import { VoxelUpdateTask } from "../VoxelUpdateTask";
 
 import { WorldSpaces } from "../../World/WorldSpaces";
 import { RunWorldSun } from "./Illumanation/WorldSun";
-import { ExplosionManager } from "./Explosion/ExplosionManager";
 import { WorldRGB } from "./Illumanation/WorldRGB";
 
 import { WorldRegister } from "../../World/WorldRegister";
@@ -22,23 +21,6 @@ export default function InitTasks() {
     WorldRegister.sectors
       .get(...location)!
       .setBitFlag(Sector.FlagIds.isWorldPropagationDone, true);
-  });
-
-  Threads.registerTask<ExplosionTasks>(TasksIds.Explosion, async (data) => {
-    const location = data[0];
-    const sectorPosition = WorldSpaces.sector.getPosition(
-      location[1],
-      location[2],
-      location[3]
-    );
-
-    task.setOriginAt([
-      location[0],
-      sectorPosition.x,
-      sectorPosition.y,
-      sectorPosition.z,
-    ]);
-    ExplosionManager.runExplosion(task, data[1]);
   });
 
   Threads.registerBinaryTask(TasksIds.WorldSun, (view) => {

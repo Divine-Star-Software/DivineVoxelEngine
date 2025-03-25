@@ -1,7 +1,7 @@
 import { Vector3Like } from "@amodx/math";
 
 import { IVoxelSelection } from "./VoxelSelecton";
-import { IVoxelTemplate } from "../../../Templates/VoxelTemplates.types";
+import { IVoxelTemplate } from "../VoxelTemplates.types";
 
 export class VoxelTemplateSelection implements IVoxelSelection {
   origin = Vector3Like.Create();

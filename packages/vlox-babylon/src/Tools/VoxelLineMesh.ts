@@ -10,6 +10,7 @@ import {
   BoundingInfo,
   Vector3,
 } from "@babylonjs/core";
+
 const perpendicular: Vec3Array = [0, 0, 0];
 Effect.ShadersStore["voxelMeshVertexShader"] = /*glsl */ `#version 300 es
 precision highp float;

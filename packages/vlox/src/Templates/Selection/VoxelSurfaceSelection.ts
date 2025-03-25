@@ -1,14 +1,14 @@
 import { Flat3DIndex, Vector3Like } from "@amodx/math";
 import { IVoxelSelection } from "./VoxelSelecton";
-import { CardinalNeighbors2D } from "../../../Math/CardinalNeighbors";
-import { DataCursorInterface } from "../../../Voxels/Cursor/DataCursor.interface";
+import { CardinalNeighbors2D } from "../../Math/CardinalNeighbors";
+import { DataCursorInterface } from "../../Voxels/Cursor/DataCursor.interface";
 import {
   getBitArrayIndex,
   getBitAtomicArrayIndex,
   setBitArrayIndex,
-} from "../../../Util/Binary/BinaryArrays";
-import { PaintVoxelData } from "../../../Voxels/Types/PaintVoxelData";
-import { FullVoxelTemplate } from "../../../Templates/Full/FullVoxelTemplate";
+} from "../../Util/Binary/BinaryArrays";
+import { PaintVoxelData } from "../../Voxels/Types/PaintVoxelData";
+import { FullVoxelTemplate } from "../Full/FullVoxelTemplate";
 
 export class VoxelSurfaceSelection implements IVoxelSelection {
   origin = Vector3Like.Create();

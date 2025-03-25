@@ -11,17 +11,17 @@ const tasks = new VoxelUpdateTask();
 
 export function EraseVoxel([location, updateData]: EraseVoxelTask) {
   const [dimension, x, y, z] = location;
-  if (!canUpdate(x, y, z, updateData)) return false;
+  if (!canUpdate(x, y, z, updateData)) return;
   tasks.setOriginAt(location);
   let voxel = tasks.sDataCursor.getVoxel(x, y, z);
-  if (!voxel) return false;
+  if (!voxel) return;
   const foundPower = voxel.getPower();
   voxel.ids[voxel._index] = 0;
   voxel.level[voxel._index] = 0;
   voxel.secondary[voxel._index] = 0;
   voxel.light[voxel._index] = 0;
   voxel.updateVoxel(1);
-  updateArea(tasks, x , y , z , x , y , z );
+  updateArea(tasks, x, y, z, x, y, z);
 
   voxel = tasks.sDataCursor.getVoxel(x, y, z)!;
 
@@ -35,5 +35,5 @@ export function EraseVoxel([location, updateData]: EraseVoxelTask) {
   }
 
   tasks.bounds.markDisplayDirty();
-  return tasks;
+
 }
