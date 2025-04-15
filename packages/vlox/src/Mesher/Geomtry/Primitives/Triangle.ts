@@ -1,8 +1,11 @@
 import {
   Mat3Array,
+  Matrix2x2Like,
   Matrix3x3Like,
   Vec2Array,
+  Vec2ArrayLike,
   Vec3Array,
+  Vec3ArrayLike,
   Vector2Like,
   Vector3Like,
 } from "@amodx/math";
@@ -46,13 +49,13 @@ export class Triangle {
     uvs: [Vec2Array, Vec2Array, Vec2Array],
     rotation: number
   ): [Vec2Array, Vec2Array, Vec2Array] {
-    const rotationMatrix: Mat3Array = Matrix3x3Like.RotationZ(rotation);
+    const rotationMatrix = Matrix2x2Like.Rotation(rotation);
     const pivot: Vec2Array = [0.5, 0.5];
 
     return [
-      Vector2Like.RotateAroundPivotArray(rotationMatrix, uvs[0], pivot),
-      Vector2Like.RotateAroundPivotArray(rotationMatrix, uvs[1], pivot),
-      Vector2Like.RotateAroundPivotArray(rotationMatrix, uvs[2], pivot),
+      Vec2ArrayLike.RotateAroundPivot(rotationMatrix, uvs[0], pivot),
+      Vec2ArrayLike.RotateAroundPivot(rotationMatrix, uvs[1], pivot),
+      Vec2ArrayLike.RotateAroundPivot(rotationMatrix, uvs[2], pivot),
     ];
   }
 
@@ -78,9 +81,9 @@ export class Triangle {
     p2: Vec3Array,
     p3: Vec3Array
   ): [Vec3Array, Vec3Array, Vec3Array] {
-    const v1 = Vector3Like.SubtractArray(p2, p1);
-    const v2 = Vector3Like.SubtractArray(p3, p1);
-    const normal = Vector3Like.NormalizeArray(Vector3Like.CrossArray(v1, v2));
+    const v1 = Vec3ArrayLike.Subtract(p2, p1);
+    const v2 = Vec3ArrayLike.Subtract(p3, p1);
+    const normal = Vec3ArrayLike.Normalize(Vec3ArrayLike.Cross(v1, v2));
     // By default, each vertex gets the same face-normal (flat shading).
     return [normal, normal, normal];
   }
@@ -94,11 +97,11 @@ export class Triangle {
     p2: Vec3Array,
     p3: Vec3Array
   ): [Vec3Array, Vec3Array, Vec3Array] {
-    const v1 = Vector3Like.SubtractArray(p2, p1);
-    const v2 = Vector3Like.SubtractArray(p3, p1);
+    const v1 = Vec3ArrayLike.Subtract(p2, p1);
+    const v2 = Vec3ArrayLike.Subtract(p3, p1);
     // Multiply by -1 for a left-handed version
-    const normal = Vector3Like.MultiplyScalarArray(
-      Vector3Like.NormalizeArray(Vector3Like.CrossArray(v1, v2)),
+    const normal = Vec3ArrayLike.MultiplyScalar(
+      Vec3ArrayLike.Normalize(Vec3ArrayLike.Cross(v1, v2)),
       -1
     );
     return [normal, normal, normal];
@@ -114,7 +117,10 @@ export class Triangle {
   normals /*: TriVector3VertexData*/;
   uvs /*: TriVector2VertexData*/;
   doubleSided = false;
-  bounds: [min: Vec3Array,max:Vec3Array] = [[0,0,0],[0,0,0]]
+  bounds: [min: Vec3Array, max: Vec3Array] = [
+    [0, 0, 0],
+    [0, 0, 0],
+  ];
   constructor(data: {
     positions?: [Vec3Array, Vec3Array, Vec3Array];
     uvs?: [Vec2Array, Vec2Array, Vec2Array];
@@ -137,7 +143,7 @@ export class Triangle {
     this.uvs.vertices[0].y = uv1[1];
     this.uvs.vertices[0].x = uv1[0];
     this.uvs.vertices[0].y = uv1[1];
-    
+
     // e.g. this.uvs.set(Vector2Like.FromArray(uv1), Vector2Like.FromArray(uv2), Vector2Like.FromArray(uv3));
     // Adapt to however your TriVector2VertexData sets 3 corners.
     return this;
@@ -183,7 +189,7 @@ export class Triangle {
       Vector3Like.FromArray(n3)
     );
 
-    this.bounds = GetBounds(...this.positions)
+    this.bounds = GetBounds(...this.positions);
 
     return this;
   }

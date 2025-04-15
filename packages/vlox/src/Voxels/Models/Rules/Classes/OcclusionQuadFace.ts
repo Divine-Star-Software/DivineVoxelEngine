@@ -1,4 +1,4 @@
-import { Vec3Array, Vector3Like } from "@amodx/math";
+import { Vec3Array, Vector3Like, Vec3ArrayLike } from "@amodx/math";
 import { Quad } from "../../../../Mesher/Geomtry/Primitives/Quad";
 import { IOcclusionFace } from "./OcclusionFace";
 
@@ -76,11 +76,11 @@ export class OcclusionQuadFace extends IOcclusionFace {
     const v2: Vec3Array = [p[0] - a[0], p[1] - a[1], p[2] - a[2]];
 
     // Compute dot products
-    const dot00 = Vector3Like.DotArray(v0, v0);
-    const dot01 = Vector3Like.DotArray(v0, v1);
-    const dot02 = Vector3Like.DotArray(v0, v2);
-    const dot11 = Vector3Like.DotArray(v1, v1);
-    const dot12 = Vector3Like.DotArray(v1, v2);
+    const dot00 = Vec3ArrayLike.Dot(v0, v0);
+    const dot01 = Vec3ArrayLike.Dot(v0, v1);
+    const dot02 = Vec3ArrayLike.Dot(v0, v2);
+    const dot11 = Vec3ArrayLike.Dot(v1, v1);
+    const dot12 = Vec3ArrayLike.Dot(v1, v2);
 
     // Compute barycentric coordinates
     const denom = dot00 * dot11 - dot01 * dot01;
@@ -115,7 +115,7 @@ export class OcclusionQuadFace extends IOcclusionFace {
     // First, check if point is on the plane
     const p0 = this.points[0];
     const v: Vec3Array = [x - p0[0], y - p0[1], z - p0[2]];
-    const d = Vector3Like.DotArray(this.normal, v);
+    const d = Vec3ArrayLike.Dot(this.normal, v);
     const epsilon = 1e-6;
     if (Math.abs(d) > epsilon) {
       return false;
@@ -126,19 +126,13 @@ export class OcclusionQuadFace extends IOcclusionFace {
   }
 
   doesCoverFace(face: IOcclusionFace): boolean {
-    const epsilon = 1e-6;
-
     // Normalize normals
-    const n1 = this.normal;
-    const n2 = face.normal;
-    const n1Mag = Math.sqrt(n1[0] * n1[0] + n1[1] * n1[1] + n1[2] * n1[2]);
-    const n2Mag = Math.sqrt(n2[0] * n2[0] + n2[1] * n2[1] + n2[2] * n2[2]);
-    const n1Norm: Vec3Array = [n1[0] / n1Mag, n1[1] / n1Mag, n1[2] / n1Mag];
-    const n2Norm: Vec3Array = [n2[0] / n2Mag, n2[1] / n2Mag, n2[2] / n2Mag];
+    const n1Norm = this.normal;
+    const n2Norm = face.normal;
 
     // Compute dot product of normals
-    const dotNormals = Vector3Like.DotArray(n1Norm, n2Norm);
-    if (Math.abs(Math.abs(dotNormals) - 1) > epsilon) {
+    const dotNormals = Vec3ArrayLike.Dot(n1Norm, n2Norm);
+    if (Math.abs(Math.abs(dotNormals) - 1) > Number.EPSILON) {
       // Normals are not parallel
       return false;
     }
@@ -150,8 +144,8 @@ export class OcclusionQuadFace extends IOcclusionFace {
       face.points[0][1] - p0[1],
       face.points[0][2] - p0[2],
     ];
-    const d = Vector3Like.DotArray(this.normal, v);
-    if (Math.abs(d) > epsilon) {
+    const d = Vec3ArrayLike.Dot(this.normal, v);
+    if (Math.abs(d) > Number.EPSILON) {
       // Faces are not coplanar
       return false;
     }

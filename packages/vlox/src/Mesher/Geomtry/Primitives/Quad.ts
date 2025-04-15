@@ -1,8 +1,11 @@
 import {
   Mat3Array,
+  Matrix2x2Like,
   Matrix3x3Like,
   Vec2Array,
+  Vec2ArrayLike,
   Vec3Array,
+  Vec3ArrayLike,
   Vector2Like,
   Vector3Like,
 } from "@amodx/math";
@@ -25,13 +28,13 @@ export class Quad {
     uvs: QuadUVData | Readonly<QuadUVData>,
     rotation: number
   ): QuadUVData {
-    const rotationMatrix: Mat3Array = Matrix3x3Like.RotationZ(rotation);
+    const rotationMatrix = Matrix2x2Like.Rotation(rotation);
     const pivot: Vec2Array = [0.5, 0.5];
     const rotatedUVs: [Vec2Array, Vec2Array, Vec2Array, Vec2Array] = [
-      Vector2Like.RotateAroundPivotArray(rotationMatrix, uvs[0], pivot),
-      Vector2Like.RotateAroundPivotArray(rotationMatrix, uvs[1], pivot),
-      Vector2Like.RotateAroundPivotArray(rotationMatrix, uvs[2], pivot),
-      Vector2Like.RotateAroundPivotArray(rotationMatrix, uvs[3], pivot),
+      Vec2ArrayLike.RotateAroundPivot(rotationMatrix, uvs[0], pivot),
+      Vec2ArrayLike.RotateAroundPivot(rotationMatrix, uvs[1], pivot),
+      Vec2ArrayLike.RotateAroundPivot(rotationMatrix, uvs[2], pivot),
+      Vec2ArrayLike.RotateAroundPivot(rotationMatrix, uvs[3], pivot),
     ];
     return rotatedUVs;
   }
@@ -62,21 +65,21 @@ export class Quad {
   ): [n1: Vec3Array, n2: Vec3Array, n3: Vec3Array, n4: Vec3Array] {
     const vectorA1: Vec3Array = [p2[0] - p1[0], p2[1] - p1[1], p2[2] - p1[2]];
     const vectorA2: Vec3Array = [p3[0] - p1[0], p3[1] - p1[1], p3[2] - p1[2]];
-    const normalA = Vector3Like.NormalizeArray(
-      Vector3Like.CrossArray(vectorA1, vectorA2)
+    const normalA = Vec3ArrayLike.Normalize(
+      Vec3ArrayLike.Cross(vectorA1, vectorA2)
     );
     const vectorB1: Vec3Array = [p3[0] - p1[0], p3[1] - p1[1], p3[2] - p1[2]];
     const vectorB2: Vec3Array = [p4[0] - p1[0], p4[1] - p1[1], p4[2] - p1[2]];
-    const normalB = Vector3Like.NormalizeArray(
-      Vector3Like.CrossArray(vectorB1, vectorB2)
+    const normalB = Vec3ArrayLike.Normalize(
+      Vec3ArrayLike.Cross(vectorB1, vectorB2)
     );
-    const n1 = Vector3Like.NormalizeArray([
+    const n1 = Vec3ArrayLike.Normalize([
       (normalA[0] + normalB[0]) / 2,
       (normalA[1] + normalB[1]) / 2,
       (normalA[2] + normalB[2]) / 2,
     ]);
     const n2 = normalA;
-    const n3 = Vector3Like.NormalizeArray([
+    const n3 = Vec3ArrayLike.Normalize([
       (normalA[0] + normalB[0]) / 2,
       (normalA[1] + normalB[1]) / 2,
       (normalA[2] + normalB[2]) / 2,
@@ -101,26 +104,26 @@ export class Quad {
     const vectorA1: Vec3Array = [p2[0] - p1[0], p2[1] - p1[1], p2[2] - p1[2]];
     const vectorA2: Vec3Array = [p3[0] - p1[0], p3[1] - p1[1], p3[2] - p1[2]];
     // Reverse the cross product direction for left-handed system
-    const normalA = Vector3Like.MultiplyScalarArray(
-      Vector3Like.NormalizeArray(Vector3Like.CrossArray(vectorA1, vectorA2)),
+    const normalA = Vec3ArrayLike.MultiplyScalar(
+      Vec3ArrayLike.Normalize(Vec3ArrayLike.Cross(vectorA1, vectorA2)),
       -1
     );
 
     const vectorB1: Vec3Array = [p3[0] - p1[0], p3[1] - p1[1], p3[2] - p1[2]];
     const vectorB2: Vec3Array = [p4[0] - p1[0], p4[1] - p1[1], p4[2] - p1[2]];
     // Reverse the cross product direction for left-handed system
-    const normalB = Vector3Like.MultiplyScalarArray(
-      Vector3Like.NormalizeArray(Vector3Like.CrossArray(vectorB1, vectorB2)),
+    const normalB = Vec3ArrayLike.MultiplyScalar(
+      Vec3ArrayLike.Normalize(Vec3ArrayLike.Cross(vectorB1, vectorB2)),
       -1
     );
 
-    const n1 = Vector3Like.NormalizeArray([
+    const n1 = Vec3ArrayLike.Normalize([
       (normalA[0] + normalB[0]) / 2,
       (normalA[1] + normalB[1]) / 2,
       (normalA[2] + normalB[2]) / 2,
     ]);
     const n2 = normalA;
-    const n3 = Vector3Like.NormalizeArray([
+    const n3 = Vec3ArrayLike.Normalize([
       (normalA[0] + normalB[0]) / 2,
       (normalA[1] + normalB[1]) / 2,
       (normalA[2] + normalB[2]) / 2,
@@ -194,7 +197,10 @@ export class Quad {
   normals = new QuadVector3VertexData();
   uvs = new QuadVector2VertexData();
 
-  bounds: [min: Vec3Array,max:Vec3Array] = [[0,0,0],[0,0,0]]
+  bounds: [min: Vec3Array, max: Vec3Array] = [
+    [0, 0, 0],
+    [0, 0, 0],
+  ];
   doubleSided = false;
 
   constructor(data: {

@@ -1,6 +1,7 @@
 import { Threads } from "@amodx/threads";
 import { TasksIds } from "../TasksIds";
 import {
+  EraseVoxelPathTask,
   EraseVoxelTask,
   EraseVoxelTemplateTask,
   PaintVoxelPathTask,
@@ -31,7 +32,7 @@ export default function () {
     TasksIds.EraseVoxelTemplate,
     (data) => EraseVoxelTemplate(data)
   );
-  Threads.registerTask<PaintVoxelPathTask>(TasksIds.EraseVoxelPath, (data) =>
+  Threads.registerTask<EraseVoxelPathTask>(TasksIds.EraseVoxelPath, (data) =>
     EraseVoxelPath(data)
   );
 }

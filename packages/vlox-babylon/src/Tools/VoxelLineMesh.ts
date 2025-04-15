@@ -17,9 +17,26 @@ precision highp float;
 in vec3 position;
 uniform mat4 world;
 uniform mat4 viewProjection;
+#ifdef INSTANCES
+  //matricies
+  in vec4 world0;
+  in vec4 world1;
+  in vec4 world2;
+  in vec4 world3;
+  //custom attributes
+#endif
+
 void main(void) {
+  #ifdef INSTANCES
+  mat4 finalWorld = mat4(world0, world1, world2, world3);
+  vec4 p = vec4( position, 1.0 );
+  gl_Position = viewProjection * finalWorld * p;
+  #endif
+  #ifndef INSTANCES
   vec4 p = vec4( position, 1.0 );
   gl_Position = viewProjection * world * p;
+  #endif
+
 }
 `;
 Effect.ShadersStore["voxelMeshFragmentShader"] = /*glsl */ `#version 300 es

@@ -11,12 +11,10 @@ import {
   VertexBuffer,
   Plane,
 } from "@babylonjs/core";
-import { VoxelSelectionHighlight } from "./VoxelSelectionHighlight";
 import { Vector3Like } from "@amodx/math";
 import { TypedEventTarget } from "@divinevoxel/vlox/Util/TypedEventTarget";
 
-Effect.ShadersStore["voxelSelectionHighlightControlsVertexShader"] =
-  /*glsl */ `#version 300 es
+Effect.ShadersStore["voxelControlsVertexShader"] = /*glsl */ `#version 300 es
 precision highp float;
 in vec3 position; 
 in float axes;
@@ -41,8 +39,7 @@ void main(void) {
 }
 `;
 
-Effect.ShadersStore["voxelSelectionHighlightControlsFragmentShader"] =
-  /*glsl */ `#version 300 es
+Effect.ShadersStore["voxelControlsFragmentShader"] = /*glsl */ `#version 300 es
 precision highp float;
 in vec3 vColor;
 out vec4 FragColor;  
@@ -87,7 +84,7 @@ class PositionAxes {
   min: Vector3;
   max: Vector3;
   constructor(
-    public controls: VoxelSelectionHighlightControls,
+    public controls: VoxelControls,
     public normal: Vector3,
     public axex: Axes,
     public _states: Float32Array
@@ -195,7 +192,6 @@ class PositionAxes {
       const needUpdate =
         dx !== this.deltas.x || dy !== this.deltas.y || dz !== this.deltas.z;
 
-      console.log(dx, dy, dz, this.deltas.x, this.deltas.y, this.deltas.z);
       if (needUpdate) {
         this.deltas.set(dx, dy, dz);
         this.controls.dispatch("position", { x: dx, y: dy, z: dz });
@@ -225,7 +221,7 @@ class PositionAxes {
   }
 }
 
-export interface VoxelSelectionHighlightControlsEvents {
+export interface VoxelControlsEvents {
   position: Vector3Like;
   active: AxesNames;
   inactive: AxesNames;
@@ -233,7 +229,7 @@ export interface VoxelSelectionHighlightControlsEvents {
 
 const tempRay = new Ray(new Vector3(0, 0, 0), new Vector3(1, 1, 1), 10000);
 
-export class VoxelSelectionHighlightControls extends TypedEventTarget<VoxelSelectionHighlightControlsEvents> {
+export class VoxelControls extends TypedEventTarget<VoxelControlsEvents> {
   static Materials = new Map<Scene, ShaderMaterial>();
   xAxes: PositionAxes;
   yAxes: PositionAxes;
@@ -243,24 +239,22 @@ export class VoxelSelectionHighlightControls extends TypedEventTarget<VoxelSelec
   material: ShaderMaterial;
   _states: Float32Array;
   _controlActive = false;
+
+  origin = Vector3Like.Create();
+  size = Vector3Like.Create(1, 1, 1);
+
   constructor(public scene: Scene) {
     super();
-    if (!VoxelSelectionHighlightControls.Materials.has(scene)) {
-      const material = new ShaderMaterial(
-        "",
-        scene,
-        "voxelSelectionHighlightControls",
-        {
-          uniforms: ["colors", "states", "world", "viewProjection"],
-          attributes: ["position", "axes"],
-          needAlphaBlending: true,
-        }
-      );
-      VoxelSelectionHighlightControls.Materials.set(scene, material);
+    if (!VoxelControls.Materials.has(scene)) {
+      const material = new ShaderMaterial("", scene, "voxelControls", {
+        uniforms: ["colors", "states", "world", "viewProjection"],
+        attributes: ["position", "axes"],
+        needAlphaBlending: true,
+      });
+      VoxelControls.Materials.set(scene, material);
     }
 
-    const material =
-      VoxelSelectionHighlightControls.Materials.get(scene)!.clone("");
+    const material = VoxelControls.Materials.get(scene)!.clone("");
     this.material = material;
     material.backFaceCulling = false;
     material.forceDepthWrite = true;
@@ -307,15 +301,16 @@ export class VoxelSelectionHighlightControls extends TypedEventTarget<VoxelSelec
       this.colors[Axes.Z],
     ]);
   }
-  highlight: VoxelSelectionHighlight;
+
+  setOriginAndSize(origin: Vector3Like, size: Vector3Like) {
+    this.origin = origin;
+    this.size = size;
+  }
 
   updatePosition() {
-    this.parent.position.x =
-      this.highlight.selection.origin.x + this.highlight.selection.size.x / 2;
-    this.parent.position.y =
-      this.highlight.selection.origin.y + this.highlight.selection.size.y / 2;
-    this.parent.position.z =
-      this.highlight.selection.origin.z + this.highlight.selection.size.z / 2;
+    this.parent.position.x = this.origin.x + this.size.x / 2;
+    this.parent.position.y = this.origin.y + this.size.y / 2;
+    this.parent.position.z = this.origin.z + this.size.z / 2;
   }
   update(
     mouseDown: boolean,
@@ -338,14 +333,16 @@ export class VoxelSelectionHighlightControls extends TypedEventTarget<VoxelSelec
     }
   }
 
+  setEnabled(enabled: boolean) {
+    this.xAxes.mesh.setEnabled(enabled);
+    this.yAxes.mesh.setEnabled(enabled);
+    this.zAxes.mesh.setEnabled(enabled);
+  }
+
   dispose() {
     this.xAxes.dispose();
     this.yAxes.dispose();
     this.zAxes.dispose();
     this.material.dispose();
-  }
-
-  setHighlight(highlight: VoxelSelectionHighlight) {
-    this.highlight = highlight;
   }
 }

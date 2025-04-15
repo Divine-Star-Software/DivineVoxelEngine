@@ -36,6 +36,8 @@ export class PerspectiveCamera {
     this._updateViewProjection();
     this._updateVectors();
   }
+
+  
   _updateVectors() {
     Vector3Like.Copy(this.struct.position, this.position);
     Vector3Like.SubtractToRef(this.target, this.position, this.struct.forward);
@@ -55,6 +57,8 @@ export class PerspectiveCamera {
     );
     Vector3Like.NormalizeInPlace(this.struct.up);
   }
+
+
   _updateUniform() {
     this.scene.engine.device.queue.writeBuffer(
       this!._cameraDataUniformBuffer,

@@ -26,6 +26,17 @@ export class BinaryBuffer {
   static HalfNibbleArrayMax = 4;
   static BitArrayMax = 2;
 
+  static GetBuffer(buffers: number | BinaryBufferData | undefined) {
+    return !buffers
+      ? new BinaryBuffer({ buffer: 0, type: BinaryBufferTypes.Value })
+      : typeof buffers == "number"
+        ? new BinaryBuffer({
+            buffer: buffers,
+            type: BinaryBufferTypes.Value,
+          })
+        : new BinaryBuffer(buffers);
+  }
+
   static DetermineSubByteArray = (
     paletteSize: number
   ): BinaryBufferTypes | null => {

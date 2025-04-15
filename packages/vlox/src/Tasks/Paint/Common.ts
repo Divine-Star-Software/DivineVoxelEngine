@@ -111,6 +111,8 @@ export const checkLightUpdate = (
   const greenValue = lightData.getG(lightValue);
   const blueValue = lightData.getB(lightValue);
 
+  const hasSunLight = sunValue > 0;
+  const hasRGBLight = voxel.hasRGBLight();
   let foundHigherSun = false;
   let foundHigherRed = false;
   let foundHigherGreen = false;
@@ -129,77 +131,85 @@ export const checkLightUpdate = (
     const nLight = nVoxel.getLight();
     if (nLight === -1) continue;
 
-    const nSunValue = lightData.getS(nLight);
-    if (nSunValue < lowestSunValue) {
-      lowestSunValue = nSunValue;
-    }
-    if (nSunValue > sunValue) {
-      foundHigherSun = true;
-    }
-
-    const nRedValue = lightData.getR(nLight);
-    if (nRedValue > lowestRedValue) {
-      lowestRedValue = nRedValue;
-    }
-    if (nRedValue > redValue) {
-      foundHigherRed = true;
+    if (hasSunLight) {
+      const nSunValue = lightData.getS(nLight);
+      if (nSunValue < lowestSunValue) {
+        lowestSunValue = nSunValue;
+      }
+      if (nSunValue > sunValue) {
+        foundHigherSun = true;
+      }
     }
 
-    const nGreenValue = lightData.getG(nLight);
-    if (nGreenValue < lowestGreenValue) {
-      lowestGreenValue = nGreenValue;
+    if (hasRGBLight) {
+      const nRedValue = lightData.getR(nLight);
+      if (nRedValue > lowestRedValue) {
+        lowestRedValue = nRedValue;
+      }
+      if (nRedValue > redValue) {
+        foundHigherRed = true;
+      }
+
+      const nGreenValue = lightData.getG(nLight);
+      if (nGreenValue < lowestGreenValue) {
+        lowestGreenValue = nGreenValue;
+      }
+      if (nGreenValue > greenValue) {
+        foundHigherGreen = true;
+      }
+
+      const nBlueValue = lightData.getB(nLight);
+      if (nBlueValue > lowestBlueValue) {
+        lowestBlueValue = nBlueValue;
+      }
+      if (nBlueValue < blueValue) {
+        foundHigherBlue = true;
+      }
     }
-    if (nGreenValue > greenValue) {
-      foundHigherGreen = true;
+  }
+  if (hasSunLight) {
+    //sun
+    if (sunValue != 15 && sunValue != 0 && !foundHigherSun) {
+      needSunRemove = true;
+    }
+    if (
+      (foundHigherSun || sunValue == 15) &&
+      lowestSunValue < sunValue - VoxelLightData.SunFallOffValue
+    ) {
+      needSunUpdate = true;
+    }
+  }
+  if (hasRGBLight) {
+    //red
+    if (redValue != 15 && !foundHigherRed) {
+      needRGBRemove = true;
+    }
+    if ((foundHigherRed || redValue == 15) && lowestRedValue < redValue - 1) {
+      needRGBUpdate = true;
     }
 
-    const nBlueValue = lightData.getB(nLight);
-    if (nBlueValue > lowestBlueValue) {
-      lowestBlueValue = nBlueValue;
+    //green
+    if (greenValue != 15 && !foundHigherGreen) {
+      needRGBRemove = true;
     }
-    if (nBlueValue < blueValue) {
-      foundHigherBlue = true;
+    if (
+      (foundHigherGreen || greenValue == 15) &&
+      lowestGreenValue < greenValue - 1
+    ) {
+      needRGBUpdate = true;
+    }
+
+    //blue
+    if (blueValue != 15 && !foundHigherBlue) {
+      needRGBRemove = true;
+    }
+    if (
+      (foundHigherBlue || blueValue == 15) &&
+      lowestBlueValue < blueValue - 1
+    ) {
+      needRGBUpdate = true;
     }
   }
-
-  //sun
-  if (sunValue != 15 && !foundHigherSun) {
-    needSunRemove = true;
-  }
-  if (
-    (foundHigherSun || sunValue == 15) &&
-    lowestSunValue < sunValue - VoxelLightData.SunFallOffValue
-  ) {
-    needSunUpdate = true;
-  }
-
-  //red
-  if (redValue != 15 && !foundHigherRed) {
-    needRGBRemove = true;
-  }
-  if ((foundHigherRed || redValue == 15) && lowestRedValue < redValue - 1) {
-    needRGBUpdate = true;
-  }
-
-  //green
-  if (greenValue != 15 && !foundHigherGreen) {
-    needRGBRemove = true;
-  }
-  if (
-    (foundHigherGreen || greenValue == 15) &&
-    lowestGreenValue < greenValue - 1
-  ) {
-    needRGBUpdate = true;
-  }
-
-  //blue
-  if (blueValue != 15 && !foundHigherBlue) {
-    needRGBRemove = true;
-  }
-  if ((foundHigherBlue || blueValue == 15) && lowestBlueValue < blueValue - 1) {
-    needRGBUpdate = true;
-  }
-
   if (needSunRemove) {
     tasks.sun.remove.push(x, y, z);
   }
@@ -226,6 +236,8 @@ export const updateArea = (
   ey: number,
   ez: number
 ) => {
+  const t = performance.now();
+  console.log("update area", [sx, sy, sz], [ex, ey, ez]);
   for (let x = sx - 1; x < ex + 1; x++) {
     for (let y = sy - 1; y < ey + 1; y++) {
       for (let z = sz - 1; z < ez + 1; z++) {
@@ -238,10 +250,16 @@ export const updateArea = (
     }
   }
 
+  console.log("task totals", {
+    rgb: [tasks.rgb.update.length, tasks.rgb.remove.length],
+    sun: [tasks.sun.update.length, tasks.sun.remove.length],
+  });
   SunRemove(tasks);
   RGBRemove(tasks);
   SunUpdate(tasks);
   RGBUpdate(tasks);
 
   tasks.bounds.markDisplayDirty();
+
+  console.log("updated", performance.now() - t);
 };

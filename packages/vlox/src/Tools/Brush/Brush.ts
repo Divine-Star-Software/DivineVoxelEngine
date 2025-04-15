@@ -5,7 +5,7 @@ import { WorldRegister } from "../../World/WorldRegister.js";
 import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister.js";
 import { IVoxelTemplate } from "../../Templates/VoxelTemplates.types.js";
 import { PaintVoxelData } from "../../Voxels/Types/PaintVoxelData.js";
-import { VoxelPathData } from "Templates/Path/VoxelPath.types.js";
+import { VoxelPathData } from "../../Templates/Path/VoxelPath.types.js";
 const air: RawVoxelData = [0, 0, 0, 0];
 const temp: RawVoxelData = [0, 0, 0, 0];
 export class BrushTool {
@@ -159,6 +159,8 @@ export class BrushTool {
 
     voxel.updateVoxel(0);
   }
+
+  
   _erase() {
     const voxel = this.dataCursor.getVoxel(this.x, this.y, this.z);
     if (!voxel) return;
@@ -173,6 +175,7 @@ export class BrushTool {
   paintTemplate(voxelTemplate: IVoxelTemplate) {
     const { x: ox, y: oy, z: oz } = this;
     const [sx, sy, sz] = voxelTemplate.bounds;
+
     for (let x = 0; x < sx; x++) {
       for (let y = 0; y < sy; y++) {
         for (let z = 0; z < sz; z++) {
@@ -187,6 +190,7 @@ export class BrushTool {
         }
       }
     }
+
   }
 
   paintPath(data: VoxelPathData) {
@@ -201,6 +205,8 @@ export class BrushTool {
   eraseTemplate(voxelTemplate: IVoxelTemplate) {
     const { x: ox, y: oy, z: oz } = this;
     const [sx, sy, sz] = voxelTemplate.bounds;
+
+
     for (let x = 0; x < sx; x++) {
       for (let y = 0; y < sy; y++) {
         for (let z = 0; z < sz; z++) {

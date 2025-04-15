@@ -1,0 +1,16 @@
+import { BinarySchemaNodeData } from "Voxels/State/State.types";
+
+export type VoxelArchivePaletteData = {
+  /**Palette of voxel string ids */
+  id: string[];
+  /**A palette of voxels and their states and mods in sets 5 of numbers.
+   * 1 -> voxel palette id
+   * 2 -> state schema palette id
+   * 3 -> state value
+   * 4 -> mod schema palette id
+   * 5 -> mod value
+   */
+  voxelPalette: Uint16Array;
+  stateSchemaPalette: BinarySchemaNodeData[][];
+  modSchemaPaette: BinarySchemaNodeData[][];
+};

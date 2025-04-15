@@ -1,4 +1,3 @@
-import { RawVoxelData } from "../../Voxels";
 import { IVoxelShapeTemplateData } from "./VoxelShapeTemplate.types";
 import { BasicVoxelShapeTemplate } from "./BasicVoxelShapeTemplate";
 

@@ -1,8 +1,7 @@
 import { Vec3Array } from "@amodx/math";
 import { BinaryBufferData } from "../../Util/Binary/BinaryBuffer";
-import {
-  BinarySchemaNodeData,
-} from "../../Voxels/State/State.types";
+import { BinarySchemaNodeData } from "../../Voxels/State/State.types";
+import { VoxelArchivePaletteData } from "Voxels/Archive/VoxelArchive.types";
 
 export type ArchivedLightSegments = "sun" | "red" | "green" | "blue";
 /**
@@ -29,6 +28,7 @@ export interface ArchivedSectorData {
   /** Array of archived section data within the sector. */
   sections: (ArchivedSectionData | string)[];
 }
+
 export interface ArchivedSectorDuplicteData {
   sections?: Record<string, ArchivedSectionData>;
 }
@@ -36,19 +36,7 @@ export interface ArchivedSectorDuplicteData {
 /**
  * Interface for the palettes of an archived sector.
  */
-export interface ArchivedSectorPaletteData {
-  /**Palette of voxel string ids */
-  id: string[];
-  /**A palette of voxels and their states and mods in sets 5 of numbers.
-   * 1 -> voxel palette id
-   * 2 -> state schema palette id
-   * 3 -> state value
-   * 4 -> mod schema palette id
-   * 5 -> mod value
-   */
-  voxelPalette: Uint16Array;
-  stateSchemaPalette: BinarySchemaNodeData[][];
-  modSchemaPaette: BinarySchemaNodeData[][];
+export interface ArchivedSectorPaletteData extends VoxelArchivePaletteData {
   level?: Uint8Array;
   light: Partial<Record<ArchivedLightSegments, Uint8Array>>;
 }
@@ -92,8 +80,6 @@ export interface ArchivedSectionBuffers {
   id?: BinaryBufferData | number;
   light?: Partial<Record<ArchivedLightSegments, BinaryBufferData | number>>;
   level?: BinaryBufferData | number;
-  state?: BinaryBufferData | number;
-  mod?: BinaryBufferData | number;
   secondary?: BinaryBufferData | number;
 }
 

@@ -1,6 +1,6 @@
 export class Vector3 {
   _isDirty = false;
-  _vector = new Float32Array(3);
+  _vector = new Float32Array<any>(3);
 
   get x() {
     return this._vector[0];

@@ -213,7 +213,6 @@ export class VoxelPathMesh {
     const segmentAdded = this.path.createEventListener(
       "segmentAdded",
       ({ detail: segment }) => {
-        console.warn("add segment", segment.start, segment.end);
         this.segments.push(new VoxelPathSegmentMesh(this, path, segment));
       }
     );
@@ -221,7 +220,7 @@ export class VoxelPathMesh {
     const segmentRemoved = this.path.createEventListener(
       "segmentRemoved",
       ({ detail: segment }) => {
-        for (let i = 0; i < path.segments.length; i++) {
+        for (let i = 0; i < this.segments.length; i++) {
           if (this.segments[i].segment == segment) {
             this.segments[i].dispose();
             this.segments.splice(i, 1);

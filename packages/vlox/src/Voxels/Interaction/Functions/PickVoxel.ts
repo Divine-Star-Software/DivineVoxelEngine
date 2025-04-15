@@ -1,4 +1,4 @@
-import { Vec3Array, Vector3Like } from "@amodx/math";
+import { Vec3Array, Vec3ArrayLike, Vector3Like } from "@amodx/math";
 import { DataCursorInterface } from "../../Cursor/DataCursor.interface";
 import { VoxelPickResult } from "../VoxelPickResult";
 
@@ -99,7 +99,7 @@ export default function PickVoxel(
         Vector3Like.Create(...pos),
         Vector3Like.Create(...normal),
         tMax[axis],
-        Vector3Like.Create(...Vector3Like.AddArray(pos, normal))
+        Vector3Like.Create(...Vec3ArrayLike.Add(pos, normal))
       );
     }
   }

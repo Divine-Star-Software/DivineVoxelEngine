@@ -20,6 +20,7 @@ class TaskQueue<Data extends any = any, ReturnData extends any = void> {
   private _queue: Data[] = [];
 
   constructor(private _task: ITask<Data>) {}
+
   add(data: Data) {
     this._queue.push(data);
   }

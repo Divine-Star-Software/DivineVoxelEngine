@@ -10,17 +10,6 @@ import { VoxelPalettesRegister } from "../../../Voxels/Data/VoxelPalettesRegiste
 import { lightSegments, lightSemgnetSet } from "../Functions/Shared";
 import { VoxelTagsRegister } from "../../../Voxels/Data/VoxelTagsRegister";
 
-function getBuffer(buffers: number | BinaryBufferData | undefined) {
-  return !buffers
-    ? new BinaryBuffer({ buffer: 0, type: BinaryBufferTypes.Value })
-    : typeof buffers == "number"
-      ? new BinaryBuffer({
-          buffer: buffers,
-          type: BinaryBufferTypes.Value,
-        })
-      : new BinaryBuffer(buffers);
-}
-
 class ImportedSectionBuffers {
   ids: BinaryBuffer;
   level: BinaryBuffer;
@@ -28,15 +17,15 @@ class ImportedSectionBuffers {
   secondary: BinaryBuffer;
 
   constructor(section: ArchivedSectionData) {
-    this.ids = getBuffer(section.buffers.id);
-    this.level = getBuffer(section.buffers.level);
+    this.ids = BinaryBuffer.GetBuffer(section.buffers.id);
+    this.level = BinaryBuffer.GetBuffer(section.buffers.level);
     this.light = {
-      sun: getBuffer(section.buffers.light?.sun),
-      red: getBuffer(section.buffers.light?.red),
-      green: getBuffer(section.buffers.light?.green),
-      blue: getBuffer(section.buffers.light?.blue),
+      sun: BinaryBuffer.GetBuffer(section.buffers.light?.sun),
+      red: BinaryBuffer.GetBuffer(section.buffers.light?.red),
+      green: BinaryBuffer.GetBuffer(section.buffers.light?.green),
+      blue: BinaryBuffer.GetBuffer(section.buffers.light?.blue),
     };
-    this.secondary = getBuffer(section.buffers.secondary);
+    this.secondary = BinaryBuffer.GetBuffer(section.buffers.secondary);
   }
 }
 class ImportedSectionPalettes {

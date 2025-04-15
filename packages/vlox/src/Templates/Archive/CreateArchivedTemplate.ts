@@ -2,8 +2,15 @@ import { Flat3DIndex, Traverse, Vec3Array } from "@amodx/math";
 import { StringPalette } from "../../Util/StringPalette";
 import { ArchivedVoxelTemplate } from "./ArchivedVoxelTemplate";
 import { NumberPalette } from "../../Util/NumberPalette";
-import { convertToPaletteBuffer } from "../../Util/Binary/Palettes";
 import { WorldCursor } from "../../World";
+import { ArchivedVoxelTemplateData } from "./ArchivedVoxelTemplate.types";
+import {
+  BinaryBuffer,
+  BinaryBufferTypes,
+} from "../../Util/Binary/BinaryBuffer";
+import { VoxelArchivePalette } from "../../Voxels/Archive/VoxelPaletteArechive";
+import { VoxelTagsRegister } from "../../Voxels/Data/VoxelTagsRegister";
+import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister";
 
 export default function CreateArchivedTemplate(
   dimension: number,
@@ -23,17 +30,15 @@ export default function CreateArchivedTemplate(
   const idPalette = new StringPalette();
   const levelPalette = new NumberPalette();
 
-  const secondaryIdPalette = new StringPalette();
-  const secondaryStatePalette = new NumberPalette();
+  const voxelPalette = new VoxelArchivePalette();
+  const secondaryPalette = new NumberPalette();
 
   const ids = new Uint16Array(index.size);
   const levels = new Uint8Array(index.size);
-
-  const secondarys = new Uint16Array(index.size);
+  const secondary = new Uint16Array(index.size);
 
   let idsAllTheSame = true;
   let levelAllTheSame = true;
-
   let secondaryAllTheSame = true;
 
   let firstId = -1;
@@ -62,65 +67,108 @@ export default function CreateArchivedTemplate(
       ? levelPalette.register(level)
       : levelPalette.getId(level);
 
-    let secondaryData = 0;
-
-    if (voxel.canHaveSecondaryVoxel()) {
-      voxel.setSecondary(true);
-      let secondaryId = voxel.hasSecondaryVoxel()
-        ? voxel.getStringId()
-        : "dve_air";
-      voxel.setSecondary(false);
-      secondaryData = !secondaryIdPalette.isRegistered(secondaryId)
-        ? secondaryIdPalette.register(secondaryId)
-        : secondaryIdPalette.getNumberId(secondaryId);
-    } else {
-      secondaryData = !secondaryStatePalette.isRegistered(seoncdary)
-        ? secondaryStatePalette.register(seoncdary)
-        : secondaryStatePalette.getId(seoncdary);
+    let voxelSecondary = 0;
+    if (
+      VoxelTagsRegister.VoxelTags[VoxelPalettesRegister.voxels[rawData[0]][0]][
+        "dve_can_have_secondary"
+      ]
+    ) {
+      voxelSecondary = voxelPalette.register(rawData[3]);
+      if (!secondaryPalette.isRegistered(voxelSecondary))
+        secondaryPalette.register(voxelSecondary);
     }
+
     if (firstId == -1) firstId = voxelId;
     if (firstLevel == -1) firstLevel = levelId;
 
-    if (firstSecondary == -1) firstSecondary = secondaryData;
+    if (firstSecondary == -1) firstSecondary = voxelSecondary;
 
     ids[vindex] = voxelId;
-    levels[vindex] = voxelId;
-
-    secondarys[vindex] = secondaryData;
+    levels[vindex] = levelId;
+    secondary[vindex] = voxelSecondary;
 
     if (firstId != voxelId) idsAllTheSame = false;
     if (firstLevel != levelId) levelAllTheSame = false;
 
-    if (firstSecondary != secondaryData) secondaryAllTheSame = false;
+    if (firstSecondary != voxelSecondary) secondaryAllTheSame = false;
+  }
+
+  const buffers: ArchivedVoxelTemplateData["buffers"] = <any>{};
+
+  const idsPaletted = voxelPalette._voxelCount < 0xffff;
+  const levelPaletted = levelPalette.size < 0xff;
+  const secondaryPaletted = secondaryPalette.size < 0xffff;
+
+  //id
+  if (idsAllTheSame) {
+    if (firstId !== 0) {
+      buffers.ids = firstId;
+    }
+  } else if (idsPaletted) {
+    const type = BinaryBuffer.DetermineSubByteArray(voxelPalette.size)!;
+    buffers.ids = BinaryBuffer.Create({
+      buffer: BinaryBuffer.Convert(ids, BinaryBufferTypes.ShortArray, type)
+        .buffer,
+      type,
+    });
+  } else {
+    buffers.ids = BinaryBuffer.Create({
+      buffer: ids.buffer,
+      type: BinaryBufferTypes.ShortArray,
+    });
+  }
+
+  //levelPaletted
+  if (levelAllTheSame) {
+    if (firstId !== 0) {
+      buffers.level = firstLevel;
+    }
+  } else if (levelPaletted) {
+    const type = BinaryBuffer.DetermineSubByteArray(levelPalette.size)!;
+    buffers.level = BinaryBuffer.Create({
+      buffer: BinaryBuffer.Convert(levels, BinaryBufferTypes.ByteArray, type)
+        .buffer,
+      type,
+    });
+  } else {
+    buffers.level = BinaryBuffer.Create({
+      buffer: levels.buffer,
+      type: BinaryBufferTypes.ByteArray,
+    });
+  }
+
+  //secondary
+  if (secondaryAllTheSame) {
+    if (firstId !== 0) {
+      buffers.secondary = firstSecondary;
+    }
+  } else if (secondaryPaletted) {
+    const type = BinaryBuffer.DetermineSubByteArray(voxelPalette.size)!;
+    buffers.secondary = BinaryBuffer.Create({
+      buffer: BinaryBuffer.Convert(
+        secondary,
+        BinaryBufferTypes.ShortArray,
+        type
+      ).buffer,
+      type,
+    });
+  } else {
+    buffers.secondary = BinaryBuffer.Create({
+      buffer: secondary.buffer,
+      type: BinaryBufferTypes.ShortArray,
+    });
   }
 
   return new ArchivedVoxelTemplate({
     type: "archived",
-    templatorVersion: 0,
-    version: 0,
+    vloxVersion: "",
+    version: "",
     bounds: [sx, sy, sz],
     palettes: {
-      id: idPalette._palette,
       level: Uint8Array.from(levelPalette._palette),
-
-      secondaryId: secondaryIdPalette._palette,
-      secondaryState: Uint16Array.from(secondaryStatePalette._palette),
+      secondary: Uint16Array.from(secondaryPalette._palette),
+      ...voxelPalette.toJSON(),
     },
-    buffers: {
-      ids: !idsAllTheSame
-        ? convertToPaletteBuffer(idPalette.size, Uint16Array.from(ids), true)
-        : ids[0],
-      level: !levelAllTheSame
-        ? (convertToPaletteBuffer(levelPalette.size, levels, true) as any)
-        : levels[0],
-
-      secondary: !secondaryAllTheSame
-        ? convertToPaletteBuffer(
-            Math.max(secondaryIdPalette.size, secondaryStatePalette.size),
-            Uint16Array.from(secondarys),
-            true
-          )
-        : secondarys[0],
-    },
+    buffers,
   });
 }

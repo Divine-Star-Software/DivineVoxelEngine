@@ -21,44 +21,18 @@ export class VoxelPathSegment
   start: Vec3Array;
   end: Vec3Array;
   voxel: PaintVoxelData;
-  constructor(data: VoxelPathSegmentData) {
+  constructor(
+    public path: VoxelPath,
+    public index: number,
+    data: VoxelPathSegmentData
+  ) {
     super();
     this.start = data.start;
     this.end = data.end;
     this.voxel = data.voxel;
   }
 
-  setPoints(
-    sx: number,
-    sy: number,
-    sz: number,
-    ex: number,
-    ey: number,
-    ez: number
-  ): void;
-  setPoints(start: Vec3Array, end: Vec3Array): void;
-  setPoints(
-    sxOrStart: number | Vec3Array,
-    syOrEnd: number | Vec3Array,
-    sz: number = 0,
-    ex: number = 0,
-    ey: number = 0,
-    ez: number = 0
-  ) {
-    let sx = 0;
-    let sy = 0;
-    if (Array.isArray(sxOrStart)) {
-      const [x, y, z] = sxOrStart;
-      sx = x;
-      sy = y;
-      sz = z;
-    }
-    if (Array.isArray(syOrEnd)) {
-      const [x, y, z] = syOrEnd;
-      ex = x;
-      ey = y;
-      ez = z;
-    }
+  setPoints([sx, sy, sz]: Vec3Array, [ex, ey, ez]: Vec3Array): void {
     let updated = false;
     if (this.start[0] != sx || this.start[1] != sy || this.start[2] != sz) {
       updated = true;
@@ -76,6 +50,22 @@ export class VoxelPathSegment
     if (updated) {
       this.dispatch("updated", {});
     }
+  }
+
+  getPoint(point: 0 | 1) {
+    if (point == 0) return this.start;
+    if (point == 1) return this.end;
+    throw new Error(`Point must be 0 or 1 get ${point}`);
+  }
+
+  setPoint(point: 0 | 1, vec: Vec3Array) {
+    if (point == 0) {
+      return this.setPoints(vec, this.end);
+    }
+    if (point == 1) {
+      return this.setPoints(this.start, vec);
+    }
+    throw new Error(`Point must be 0 or 1 get ${point}`);
   }
 
   toJSON(): VoxelPathSegmentData {
@@ -103,26 +93,47 @@ export class VoxelPath extends TypedEventTarget<VoxelPathEvents> {
   constructor(public data: VoxelPathData) {
     super();
     for (let i = 0; i < data.segments.length; i++) {
-      this.segments.push(new VoxelPathSegment(data.segments[i]));
+      this.segments.push(new VoxelPathSegment(this, i, data.segments[i]));
     }
   }
 
   addSegment(data: VoxelPathSegmentData) {
-    const segment = new VoxelPathSegment(data);
+    const segment = new VoxelPathSegment(this, this.segments.length, data);
     this.segments.push(segment);
     this.dispatch("segmentAdded", segment);
     return true;
   }
 
   removeSegment(segment: VoxelPathSegment) {
-    for (let i = 0; i < this.segments.length; i++) {
+    for (let i = this.segments.length - 1; i > -1; i--) {
+      this.segments[i].index--;
       if (this.segments[i] == segment) {
         this.segments.splice(i, 1);
-        this.dispatch("segmentRemoved", segment);
-        return true;
+        break;
       }
     }
+    this.dispatch("segmentRemoved", segment);
     return false;
+  }
+
+  removePoint(segmentIndex: number, pointIndex: 0 | 1) {
+    if (!this.segments.length) return false;
+    if (!this.segments[segmentIndex]) return false;
+    if (segmentIndex > 0) {
+      const segment = this.segments[segmentIndex];
+      const previousSegment = this.segments.at(segmentIndex - 1)!;
+
+      if (pointIndex == 0) {
+        previousSegment.setPoints(previousSegment.start, segment.end);
+      }
+      if (pointIndex == 1) {
+        previousSegment.setPoints(previousSegment.start, segment.start);
+      }
+
+      this.removeSegment(segment);
+    } else {
+      this.removeSegment(this.segments[0]);
+    }
   }
 
   toJSON(): VoxelPathData {

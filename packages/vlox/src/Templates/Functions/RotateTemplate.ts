@@ -1,5 +1,4 @@
 import { Flat3DIndex, Vec3Array } from "@amodx/math";
-import { ArchivedVoxelTemplate } from "../Archive/ArchivedVoxelTemplate";
 import { FullVoxelTemplate } from "../Full/FullVoxelTemplate";
 export type TemplateRotationAxes = "x" | "y" | "z";
 export type TemplateRotationAngles = 90 | 180 | 270 | -90 | -180 | -270;
@@ -95,7 +94,7 @@ const rotateArray = (
 };
 
 export default function RotateTemplate(
-  template: ArchivedVoxelTemplate|FullVoxelTemplate,
+  template: FullVoxelTemplate,
   angle: TemplateRotationAngles,
   axes: TemplateRotationAxes = "y"
 ) {

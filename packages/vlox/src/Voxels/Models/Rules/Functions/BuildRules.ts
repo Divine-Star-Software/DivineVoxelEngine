@@ -1,6 +1,6 @@
 import { IOcclusionFace } from "../Classes/OcclusionFace";
 import { VoxelRelativeCubeIndex } from "../../Indexing/VoxelRelativeCubeIndex";
-import { Vec3Array, Vector3Like } from "@amodx/math";
+import { Vec3Array, Vec3ArrayLike, Vector3Like } from "@amodx/math";
 import { StringPalette } from "../../../../Util/StringPalette";
 import { VoxelModelRuleBuilderRegister } from "../VoxelModelRuleBuilderRegister";
 import { OcclusionFaceRegister } from "../Classes/OcclusionFaceRegister";
@@ -165,7 +165,7 @@ export function BuildRules(geoPalette: StringPalette) {
   const otherQuadFace = new OcclusionQuadFace();
   const otherTriangleFace = new OcclusionTriangleFace();
 
-  console.warn("build rules", faces.length); 
+  console.warn("build rules", faces.length);
 
   for (let faceIndex = 0; faceIndex < faces.length; faceIndex++) {
     const faceData = OcclusionFaceRegister.faceIndex[faceIndex];
@@ -175,7 +175,7 @@ export function BuildRules(geoPalette: StringPalette) {
       currentFace = currentQuadFace;
     } else {
       otherTriangleFace.setPoints(faceData[1]);
-      currentFace = otherTriangleFace;  
+      currentFace = otherTriangleFace;
     }
     faceCullMap[faceIndex] = [];
     vertexHitMap[faceIndex] = [];
@@ -221,8 +221,7 @@ export function BuildRules(geoPalette: StringPalette) {
                 }
               }
 
-              if (Vector3Like.EqualsArray(otherFace.normal, faceNormal))
-                continue;
+              if (Vec3ArrayLike.Equals(otherFace.normal, faceNormal)) continue;
 
               for (let v = 0; v < facePoints.length; v++) {
                 updateOcculsionBox(facePoints[v], faceNormal);
@@ -239,8 +238,6 @@ export function BuildRules(geoPalette: StringPalette) {
             }
           }
         }
-
-        
       }
     }
   }

@@ -1,4 +1,4 @@
-import { Vec3Array, Vector3Like } from "@amodx/math";
+import { Vec3Array, Vec3ArrayLike, Vector3Like } from "@amodx/math";
 import { IVoxelSelection } from "./VoxelSelecton";
 import { BoxVoxelTemplate } from "../Shapes/BoxVoxelTemplate";
 import { IVoxelshapeTemplateBaseData } from "../Shapes/VoxelShapeTemplate.types";
@@ -56,7 +56,7 @@ export class VoxelBoxSelection implements IVoxelSelection {
       startPosition.z,
     ];
 
-    const point2 = Vector3Like.AddArray(point1, [
+    const point2 = Vec3ArrayLike.Add(point1, [
       size.x || 1,
       size.y || 1,
       size.z || 1,
@@ -76,9 +76,9 @@ export class VoxelBoxSelection implements IVoxelSelection {
     if (size.y < 0) maxPoint[1] += 1;
     if (size.z < 0) maxPoint[2] += 1;
 
-    const normalOffset = Vector3Like.AddArray(
+    const normalOffset = Vec3ArrayLike.Add(
       [startPosition.x, startPosition.y, startPosition.z],
-      Vector3Like.MultiplyScalarArray(
+      Vec3ArrayLike.MultiplyScalar(
         [startNormal.x, startNormal.y, startNormal.z],
         offset
       )

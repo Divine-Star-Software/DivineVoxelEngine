@@ -267,11 +267,8 @@ export default function ArchiveSector(
   }
 
   const palettes: ArchivedSectorData["palettes"] = {
-    id: sectorPalettes.voxels.ids._palette,
     light: {},
-    voxelPalette: new Uint16Array(sectorPalettes.voxels.voxelPalette),
-    stateSchemaPalette: sectorPalettes.voxels.statePalette,
-    modSchemaPaette: sectorPalettes.voxels.modPalette,
+    ...sectorPalettes.voxels.toJSON(),
   };
 
   const sections: ArchivedSectionData[] = [];
@@ -289,6 +286,7 @@ export default function ArchiveSector(
   if (neededPalettes.level) {
     palettes.level = new Uint8Array(sectorPalettes.level._palette);
   }
+
   for (const segment of lightSegments) {
     if (neededPalettes.light[segment]) {
       palettes.light[segment] = new Uint8Array(

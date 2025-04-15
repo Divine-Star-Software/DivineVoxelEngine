@@ -1,11 +1,4 @@
-import {
-  ArcRotateCamera,
-  Engine,
-  Mesh,
-  Scene,
-  Vector3,
-  HemisphericLight,
-} from "@babylonjs/core";
+import { Mesh, Scene } from "@babylonjs/core";
 import { MeshVoxel } from "@divinevoxel/vlox/Mesher/Functions/MeshVoxel";
 import { VoxelCursor } from "@divinevoxel/vlox//Voxels/Cursor/VoxelCursor";
 import {
@@ -15,18 +8,15 @@ import {
 } from "@divinevoxel/vlox/Voxels/";
 import { DVEBabylonRenderer } from "../Renderer/DVEBabylonRenderer";
 import { SchemaRegister } from "@divinevoxel/vlox/Voxels/State/SchemaRegister";
-import { DVEBRClassicMaterial } from "../Matereials/Classic/DVEBRClassicMaterial";
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
 import { VoxelIndex } from "@divinevoxel/vlox/Voxels/Indexes/VoxelIndex";
 import { VoxelModelIndex } from "@divinevoxel/vlox/Voxels/Indexes/VoxelModelIndex";
 import { VoxelTextureIndex } from "@divinevoxel/vlox/Voxels/Indexes/VoxelTextureIndex";
 import { CacheManager } from "@divinevoxel/vlox/Cache/CacheManager";
 import { DVEBRMesh } from "../Meshes/DVEBRMesh";
-import { VoxelPalettesRegister } from "@divinevoxel/vlox/Voxels/Data/VoxelPalettesRegister";
-import { SceneOptions } from "../Scene/SceneOptions";
+import { VoxelImager } from "../Voxels/VoxelImager";
 
 const dataTool = new VoxelCursor();
-const materialMap = new Map<string, DVEBRClassicMaterial>();
 
 let canvas = document.createElement("canvas");
 let context: CanvasRenderingContext2D = canvas.getContext("2d")!;
@@ -61,14 +51,12 @@ async function loadAndInvertImage(
 
 const buildMesh = (
   scene: Scene,
-  sceneOptions: SceneOptions,
   voxelData: RawVoxelData,
   voxelId: string,
   stateID: string
 ) => {
   const meshedVoxel = MeshVoxel(voxelData);
   if (!meshedVoxel) return false;
-
   if (meshedVoxel[0][0] == 1) throw new Error(`Not in right mode`);
   dataTool.setRaw(voxelData).process();
   const renderedMaterial = dataTool.getRenderedMaterial()!;
@@ -77,20 +65,7 @@ const buildMesh = (
   if (!material) throw new Error(`Could not load material ${renderedMaterial}`);
 
   const mesh = new Mesh(crypto.randomUUID(), scene);
-  if (!materialMap.has(renderedMaterial)) {
-    const newMat = (material as DVEBRClassicMaterial).clone(
-      scene,
-      sceneOptions
-    );
-
-    if (!newMat) throw new Error("Error creating mat.");
-
-    materialMap.set(renderedMaterial, newMat);
-
-    mesh.material = newMat._material;
-  } else {
-    mesh.material = materialMap.get(renderedMaterial)!._material;
-  }
+  mesh.material = material._material;
 
   VoxelModelIndex.registerModel(
     voxelId,
@@ -132,44 +107,9 @@ export default async function CreateDisplayIndex(data: VoxelData[]) {
 
     return;
   }
-
-  const render3dCanvas = document.createElement("canvas");
-  render3dCanvas.width = 256;
-  render3dCanvas.height = 256;
-  const engine = new Engine(render3dCanvas, undefined, {
-    preserveDrawingBuffer: true,
-  });
-  const displayScene = new Scene(engine);
-
-  const camera = new ArcRotateCamera(
-    "camera",
-    -Math.PI / 4,
-    Math.PI / 2.5,
-    2,
-    new Vector3(0, 0, 0),
-    displayScene,
-    false
-  );
-
-  camera.minZ = 0.0001;
-  camera.mode = ArcRotateCamera.ORTHOGRAPHIC_CAMERA;
-
-  const zoom = 0.8;
-  const ratio = engine.getAspectRatio(camera);
-  camera.orthoLeft = -zoom;
-  camera.orthoRight = zoom;
-  camera.orthoBottom = -zoom / ratio;
-  camera.orthoTop = zoom / ratio;
-
-  displayScene.activeCamera = camera;
-
-  displayScene.clearColor.set(0, 0, 0, 0);
-
-  //CreateBox("",{size:1},displayScene);
-  const light = new HemisphericLight("", new Vector3(0, 1, 0), displayScene);
-
-  await displayScene.whenReadyAsync();
-
+  await DVEBabylonRenderer.instance.scene.whenReadyAsync();
+  const voxelImager = new VoxelImager(DVEBabylonRenderer.instance.scene);
+  await voxelImager.scene.whenReadyAsync();
   const meshes = new Map<
     Mesh,
     {
@@ -177,14 +117,7 @@ export default async function CreateDisplayIndex(data: VoxelData[]) {
       stateId: string;
     }
   >();
-  displayScene.autoClear = false;
 
-  engine.runRenderLoop(() => {
-    displayScene.render();
-  });
-
-  const sceneOptions =
-    DVEBabylonRenderer.instance.voxelScene.options.clone(displayScene);
   const addVoxelData = PaintVoxelData.Create({});
   for (const [voxelId, states] of voxelIndex.states) {
     addVoxelData.id = voxelId;
@@ -201,16 +134,15 @@ export default async function CreateDisplayIndex(data: VoxelData[]) {
         if (state.data.display.mod) {
           addVoxelData.mod = voxelSchema.mod.readString(state.data.display.mod);
         }
-        const vid = VoxelPalettesRegister.voxelIds.getNumberId(addVoxelData.id);
 
         const rawData = VoxelCursor.VoxelDataToRaw(addVoxelData);
         const mesh = buildMesh(
-          displayScene,
-          sceneOptions,
+          voxelImager.scene,
           rawData,
           voxelId,
           state.data.id
         );
+        if (!mesh) console.error(`Could not make mesh for ${voxelId}`, rawData);
         if (!mesh) continue;
         mesh.setEnabled(false);
         meshes.set(mesh, { id: voxelId, stateId: state.data.id });
@@ -229,27 +161,14 @@ export default async function CreateDisplayIndex(data: VoxelData[]) {
       }
     }
   }
-  sceneOptions.levels.sunLevel = 1;
-  sceneOptions.levels.baseLevel = 1;
-  sceneOptions.shade.doAO = false;
-  sceneOptions.ubo.update();
+
   for (const [mesh, data] of meshes) {
     mesh.setEnabled(true);
-    displayScene.render();
-    await displayScene.whenReadyAsync();
-
-    VoxelTextureIndex.registerImage(
-      data.id,
-      data.stateId,
-      render3dCanvas.toDataURL("image/png")
-    );
-
+    const dataUrl = await voxelImager.createImageFromMesh(mesh);
+    VoxelTextureIndex.registerImage(data.id, data.stateId, dataUrl);
     mesh.setEnabled(false);
-    engine.clear(displayScene.clearColor, true, true);
+    mesh.dispose();
   }
-
-  engine.dispose();
-  materialMap.clear();
 
   if (CacheManager.cacheStoreEnabled) {
     CacheManager.cachedDisplayData = {

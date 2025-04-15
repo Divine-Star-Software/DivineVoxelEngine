@@ -1,61 +1,39 @@
-import { Flat3DIndex, Traverse, Vec3Array } from "@amodx/math";
+import { Flat3DIndex, Vec3Array } from "@amodx/math";
 import { ArchivedVoxelTemplateData } from "./ArchivedVoxelTemplate.types";
 import type { RawVoxelData } from "../../Voxels/Types/Voxel.types";
-import { StringPalette } from "../../Util/StringPalette";
 import { NumberPalette } from "../../Util/NumberPalette";
-
-import { getPaletteArray } from "../../Util/Binary/Palettes";
 import { NibbleArray } from "@amodx/binary/Arrays/NibbleArray";
 import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister";
 import { VoxelTagsRegister } from "../../Voxels/Data/VoxelTagsRegister";
 import { IVoxelTemplate } from "../../Templates/VoxelTemplates.types";
+import { BinaryBuffer } from "../../Util/Binary/BinaryBuffer";
+import { VoxelPaletteArchiveReader } from "../../Voxels/Archive/VoxelPaletteArchiveReader";
 
 type TemplateCursor = { position: Vec3Array; raw: RawVoxelData };
 
 export class ArchivedVoxelTemplate implements IVoxelTemplate {
   index = Flat3DIndex.GetXZYOrder();
   bounds: Vec3Array;
-  ids: Uint8Array | Uint16Array | number;
-  level: Uint8Array | number;
-  secondary: Uint8Array | Uint16Array | number;
-  idPalette: StringPalette;
+  ids: BinaryBuffer;
+  level: BinaryBuffer;
+  secondary: BinaryBuffer;
+
+  voxelPalette: VoxelPaletteArchiveReader;
+
   levelPalette: NumberPalette;
-  secondaryIdPalette: StringPalette;
-  secondaryStatePalette: NumberPalette;
-  constructor(data: ArchivedVoxelTemplateData) {
-    this.bounds = [...data.bounds];
-    this.index.setBounds(...data.bounds);
+  secondaryPalette: NumberPalette;
 
-    this.idPalette = new StringPalette(data.palettes.id);
-    this.levelPalette = new NumberPalette(data.palettes.level);
-    this.secondaryIdPalette = new StringPalette(data.palettes.secondaryId);
-    this.secondaryStatePalette = new NumberPalette(
-      data.palettes.secondaryState
-    );
+  constructor(private _data: ArchivedVoxelTemplateData) {
+    this.bounds = [..._data.bounds];
+    this.index.setBounds(..._data.bounds);
 
-    typeof data.buffers.ids == "object"
-      ? (this.ids = getPaletteArray(
-          data.palettes.id.length,
-          data.buffers.ids as any
-        ) as any)
-      : (this.ids = data.buffers.ids);
+    this.voxelPalette = new VoxelPaletteArchiveReader(_data.palettes);
+    this.levelPalette = new NumberPalette(_data.palettes.level);
+    this.secondaryPalette = new NumberPalette(_data.palettes.secondary);
 
-    typeof data.buffers.level == "object"
-      ? (this.level = getPaletteArray(
-          data.palettes.level.length,
-          data.buffers.level as any
-        ) as any)
-      : (this.level = data.buffers.level);
-
-    typeof data.buffers.secondary == "object"
-      ? (this.secondary = getPaletteArray(
-          Math.max(
-            data.palettes.secondaryState.length,
-            data.palettes.secondaryId.length
-          ),
-          data.buffers.secondary as any
-        ) as any)
-      : (this.secondary = data.buffers.secondary);
+    this.ids = BinaryBuffer.GetBuffer(_data.buffers.ids);
+    this.level = BinaryBuffer.GetBuffer(_data.buffers.level);
+    this.secondary = BinaryBuffer.GetBuffer(_data.buffers.secondary);
   }
 
   isAir(index: number) {
@@ -67,19 +45,15 @@ export class ArchivedVoxelTemplate implements IVoxelTemplate {
   getIndex(x: number, y: number, z: number) {
     return this.index.getIndexXYZ(x, y, z);
   }
-  
+
   getId(index: number) {
-    const ids = this.ids;
-    return VoxelPalettesRegister.voxelIds.getNumberId(
-      this.idPalette.getStringId(typeof ids == "number" ? ids : ids[index])
-    )!;
+    return VoxelPalettesRegister.getVoxelIdFromString(
+      ...this.voxelPalette.getVoxelData(this.ids.getValue(index))
+    );
   }
 
   getLevel(index: number) {
-    const level = this.level;
-    return this.levelPalette.getValue(
-      typeof level == "number" ? level : level[index]
-    );
+    return this.levelPalette.getValue(this.level.getValue(index));
   }
 
   getLight(index: number): number {
@@ -87,20 +61,17 @@ export class ArchivedVoxelTemplate implements IVoxelTemplate {
   }
 
   getSecondary(index: number) {
-    const secondary = this.secondary;
     const id = this.getId(index);
-
-    if (VoxelTagsRegister.VoxelTags[id]["dve_can_have_secondary"]) {
-      return VoxelPalettesRegister.voxelIds.getNumberId(
-        this.secondaryIdPalette.getStringId(
-          typeof secondary == "number" ? secondary : secondary[index]
+    const trueId = VoxelPalettesRegister.voxels[id][0];
+    if (VoxelTagsRegister.VoxelTags[trueId]["dve_can_have_secondary"]) {
+      return VoxelPalettesRegister.getVoxelIdFromString(
+        ...this.voxelPalette.getVoxelData(
+          this.secondaryPalette.getValue(this.secondary.getValue(index))
         )
-      )!;
+      );
     }
 
-    return this.secondaryStatePalette.getValue(
-      typeof secondary == "number" ? secondary : secondary[index]
-    );
+    return 0;
   }
 
   *traverse(
@@ -136,35 +107,6 @@ export class ArchivedVoxelTemplate implements IVoxelTemplate {
   }
 
   toJSON(): ArchivedVoxelTemplateData {
-    return {
-      type: "archived",
-      templatorVersion: 0,
-      version: 0,
-      bounds: this.bounds,
-      palettes: {
-        id: this.idPalette._palette,
-        level: Uint8Array.from(this.levelPalette._palette),
-        secondaryId: this.secondaryIdPalette._palette,
-        secondaryState: Uint16Array.from(this.secondaryStatePalette._palette),
-      },
-      buffers: {
-        ids:
-          this.ids instanceof Uint16Array ||
-          this.ids instanceof Uint8Array ||
-          typeof this.ids == "number"
-            ? this.ids
-            : new Uint8Array((this.ids as NibbleArray).buffer),
-        level:
-          this.level instanceof Uint8Array || typeof this.level == "number"
-            ? this.level
-            : new Uint8Array((this.level as NibbleArray).buffer),
-        secondary:
-          this.secondary instanceof Uint16Array ||
-          this.secondary instanceof Uint8Array ||
-          typeof this.secondary == "number"
-            ? this.secondary
-            : new Uint8Array((this.secondary as NibbleArray).buffer),
-      },
-    };
+    return this._data;
   }
 }

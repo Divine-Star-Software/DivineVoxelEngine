@@ -28,7 +28,7 @@ export default function EraseVoxelTemplate([
         if (!canUpdate(tx, ty, tz, updateData)) continue;
         if (!tasks.sDataCursor.inBounds(tx, ty, tz)) continue;
         const voxel = tasks.sDataCursor.getVoxel(tx, ty, tz);
-        if (!voxel) continue;
+        if (!voxel || voxel.isAir()) continue;
         voxel.ids[voxel._index] = 0;
         voxel.level[voxel._index] = 0;
         voxel.secondary[voxel._index] = 0;
@@ -39,6 +39,4 @@ export default function EraseVoxelTemplate([
   }
 
   updateArea(tasks, ox, oy, oz, ox + sx, oy + sy, oz + sz);
-
-
 }

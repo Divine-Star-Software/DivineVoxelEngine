@@ -33,14 +33,6 @@ function runArchiveSector(
     if (typeof section == "string") continue;
     if (ArrayBuffer.isView((section.buffers.id as BinaryBufferData)?.buffer))
       transfers.push((section.buffers.id as any).buffer);
-    if (ArrayBuffer.isView((section.buffers.state as BinaryBufferData)?.buffer))
-      transfers.push((section.buffers.state as any).buffer);
-
-    if (ArrayBuffer.isView((section.buffers.mod as BinaryBufferData)?.buffer))
-      transfers.push((section.buffers.mod as any).buffer);
-
-    if (ArrayBuffer.isView((section.buffers.state as BinaryBufferData)?.buffer))
-      transfers.push((section.buffers.state as any).buffer);
 
     if (
       ArrayBuffer.isView(

@@ -7,11 +7,10 @@ import {
 } from "../../../../../../Mesher/Geomtry/Geometry.types";
 import {
   Matrix2x2Like,
-  Mat2Array,
-  Vec3Array,
+  Vec2ArrayLike,
   Vec4Array,
   AMath,
-  Vec2Array,
+  Mat2Array,
 } from "@amodx/math";
 function getInterpolationWeights(
   x: number,
@@ -85,8 +84,6 @@ export const getQuadWeights = (
   return returnArray;
 };
 
-
-
 const rotationMatrix = new Map<number, Mat2Array>();
 
 export const mapQuadUvs = (
@@ -103,10 +100,10 @@ export const mapQuadUvs = (
     }
 
     return [
-      Matrix2x2Like.ApplyMatrixArray(rotM, [uvs[2], uvs[3]]),
-      Matrix2x2Like.ApplyMatrixArray(rotM, [uvs[0], uvs[3]]),
-      Matrix2x2Like.ApplyMatrixArray(rotM, [uvs[0], uvs[1]]),
-      Matrix2x2Like.ApplyMatrixArray(rotM, [uvs[2], uvs[1]]),
+      Vec2ArrayLike.ApplyMatrix(rotM, [uvs[2], uvs[3]]),
+      Vec2ArrayLike.ApplyMatrix(rotM, [uvs[0], uvs[3]]),
+      Vec2ArrayLike.ApplyMatrix(rotM, [uvs[0], uvs[1]]),
+      Vec2ArrayLike.ApplyMatrix(rotM, [uvs[2], uvs[1]]),
     ];
   }
 
@@ -143,7 +140,7 @@ export const mapQuadUvs = (
     quadUVs = quadUVs.map(([u, v]) => {
       let x = u - centerU;
       let y = v - centerV;
-      [x, y] = Matrix2x2Like.ApplyMatrixArray(rotM, [x, y]);
+      [x, y] = Vec2ArrayLike.ApplyMatrix(rotM, [x, y]);
       x += centerU;
       y += centerV;
       return [x, y];

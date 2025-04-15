@@ -25,7 +25,6 @@ export default function PaintVoxelPath([
   updateData,
 ]: PaintVoxelPathTask) {
   tasks.setOriginAt([dimension, ox, oy, oz]);
-console.warn("paith voxel path");
   const path = new VoxelPath(voxelPathData);
 
   for (let i = 0; i < path.segments.length; i++) {
