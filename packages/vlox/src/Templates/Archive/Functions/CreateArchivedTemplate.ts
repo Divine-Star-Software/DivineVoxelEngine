@@ -1,24 +1,30 @@
 import { Flat3DIndex, Traverse, Vec3Array } from "@amodx/math";
-import { StringPalette } from "../../Util/StringPalette";
-import { ArchivedVoxelTemplate } from "./ArchivedVoxelTemplate";
-import { NumberPalette } from "../../Util/NumberPalette";
-import { WorldCursor } from "../../World";
-import { ArchivedVoxelTemplateData } from "./ArchivedVoxelTemplate.types";
+import { StringPalette } from "../../../Util/StringPalette";
+import { ArchivedVoxelTemplate } from "../ArchivedVoxelTemplate";
+import { NumberPalette } from "../../../Util/NumberPalette";
+import { ArchivedVoxelTemplateData } from "../ArchivedVoxelTemplate.types";
 import {
   BinaryBuffer,
   BinaryBufferTypes,
-} from "../../Util/Binary/BinaryBuffer";
-import { VoxelArchivePalette } from "../../Voxels/Archive/VoxelPaletteArechive";
-import { VoxelTagsRegister } from "../../Voxels/Data/VoxelTagsRegister";
-import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister";
+} from "../../../Util/Binary/BinaryBuffer";
+import { VoxelArchivePalette } from "../../../Voxels/Archive/VoxelPaletteArechive";
+import { VoxelTagsRegister } from "../../../Voxels/Data/VoxelTagsRegister";
+import { VoxelPalettesRegister } from "../../../Voxels/Data/VoxelPalettesRegister";
+import { DataCursorInterface } from "../../../Voxels/Cursor/DataCursor.interface";
 
+/**
+ * Creates an archived template using the passed in the data cursor.
+ * @param dimension
+ * @param start
+ * @param end
+ * @returns
+ */
 export default function CreateArchivedTemplate(
-  dimension: number,
+  dataCursor: DataCursorInterface,
   start: Vec3Array,
   end: Vec3Array
 ) {
-  const dataTool = new WorldCursor();
-  dataTool.setFocalPoint(dimension, start[0], start[1], start[2]);
+  console.warn("CREATE ARCHIVED TEMPLATE", start, end);
   const index = Flat3DIndex.GetXZYOrder();
   const [sx, sy, sz] = [
     end[0] - start[0],
@@ -27,7 +33,6 @@ export default function CreateArchivedTemplate(
   ];
   index.setBounds(sx, sy, sz);
 
-  const idPalette = new StringPalette();
   const levelPalette = new NumberPalette();
 
   const voxelPalette = new VoxelArchivePalette();
@@ -51,18 +56,15 @@ export default function CreateArchivedTemplate(
     [end[0] - 1, end[1] - 1, end[2] - 1],
     1
   )) {
-    const voxel = dataTool.getVoxel(x, y, x);
+    const voxel = dataCursor.getVoxel(x, y, z);
     if (!voxel) continue;
 
     const vindex = index.getIndexXYZ(x - start[0], y - start[1], z - start[2]);
     const rawData = voxel.getRaw();
     const level = rawData[2];
-    const seoncdary = rawData[3];
 
-    const stringId = voxel.getStringId();
-    const voxelId = !idPalette.isRegistered(stringId)
-      ? idPalette.register(stringId)
-      : idPalette.getNumberId(stringId);
+    const voxelId = voxelPalette.register(rawData[0]);
+
     const levelId = !levelPalette.isRegistered(level)
       ? levelPalette.register(level)
       : levelPalette.getId(level);
@@ -89,7 +91,6 @@ export default function CreateArchivedTemplate(
 
     if (firstId != voxelId) idsAllTheSame = false;
     if (firstLevel != levelId) levelAllTheSame = false;
-
     if (firstSecondary != voxelSecondary) secondaryAllTheSame = false;
   }
 
@@ -102,7 +103,11 @@ export default function CreateArchivedTemplate(
   //id
   if (idsAllTheSame) {
     if (firstId !== 0) {
-      buffers.ids = firstId;
+      buffers.ids = BinaryBuffer.Create({
+        type: 16,
+        length: ids.length,
+        buffer: ids[0],
+      });
     }
   } else if (idsPaletted) {
     const type = BinaryBuffer.DetermineSubByteArray(voxelPalette.size)!;
@@ -110,18 +115,24 @@ export default function CreateArchivedTemplate(
       buffer: BinaryBuffer.Convert(ids, BinaryBufferTypes.ShortArray, type)
         .buffer,
       type,
+      length: ids.length,
     });
   } else {
     buffers.ids = BinaryBuffer.Create({
       buffer: ids.buffer,
       type: BinaryBufferTypes.ShortArray,
+      length: ids.length,
     });
   }
 
   //levelPaletted
   if (levelAllTheSame) {
     if (firstId !== 0) {
-      buffers.level = firstLevel;
+      buffers.level = BinaryBuffer.Create({
+        type: 8,
+        length: levels.length,
+        buffer: levels[0],
+      });
     }
   } else if (levelPaletted) {
     const type = BinaryBuffer.DetermineSubByteArray(levelPalette.size)!;
@@ -140,7 +151,11 @@ export default function CreateArchivedTemplate(
   //secondary
   if (secondaryAllTheSame) {
     if (firstId !== 0) {
-      buffers.secondary = firstSecondary;
+      buffers.secondary = BinaryBuffer.Create({
+        type: 16,
+        length: secondary.length,
+        buffer: secondary[0],
+      });
     }
   } else if (secondaryPaletted) {
     const type = BinaryBuffer.DetermineSubByteArray(voxelPalette.size)!;
@@ -159,16 +174,29 @@ export default function CreateArchivedTemplate(
     });
   }
 
-  return new ArchivedVoxelTemplate({
+  const data: ArchivedVoxelTemplateData = {
     type: "archived",
     vloxVersion: "",
     version: "",
     bounds: [sx, sy, sz],
     palettes: {
-      level: Uint8Array.from(levelPalette._palette),
-      secondary: Uint16Array.from(secondaryPalette._palette),
+      level: BinaryBuffer.Create({
+        type: 8,
+        length: levelPalette._palette.length,
+        buffer: Uint8Array.from(levelPalette._palette).buffer,
+      }),
+      secondary: BinaryBuffer.Create({
+        type: 16,
+        length: secondaryPalette._palette.length,
+        buffer: Uint16Array.from(secondaryPalette._palette).buffer,
+      }),
       ...voxelPalette.toJSON(),
     },
     buffers,
-  });
+  };
+
+  console.log(data);
+  const archived = new ArchivedVoxelTemplate(data);
+
+  return archived;
 }

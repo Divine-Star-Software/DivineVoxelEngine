@@ -1,17 +1,23 @@
-import { VoxelArchivePaletteData } from "../../Voxels/Archive/VoxelArchive.types";
-import { BinaryBufferData } from "../../Util/Binary/BinaryBuffer";
+import {
+  VoxelArchivePaletteData,
+  VoxelArchiPaveletteExportedJSONData,
+} from "../../Voxels/Archive/VoxelArchive.types";
+import {
+  BinaryBufferData,
+  JSONBinaryBufferData,
+} from "../../Util/Binary/BinaryBuffer";
 import { IVoxelTemplateData } from "../VoxelTemplates.types";
 
 export interface ArchivedVoxelTemplateBuffers {
-  ids?: BinaryBufferData | number;
-  level?: BinaryBufferData | number;
-  secondary?: BinaryBufferData | number;
+  ids?: BinaryBufferData;
+  level?: BinaryBufferData;
+  secondary?: BinaryBufferData ;
 }
 
 export interface ArchivedVoxelTemplatePaletteData
   extends VoxelArchivePaletteData {
-  level: Uint8Array;
-  secondary: Uint16Array | Uint8Array;
+  level: BinaryBufferData;
+  secondary: BinaryBufferData;
 }
 
 export interface ArchivedVoxelTemplateData
@@ -22,4 +28,27 @@ export interface ArchivedVoxelTemplateData
   vloxVersion: string;
   palettes: ArchivedVoxelTemplatePaletteData;
   buffers: ArchivedVoxelTemplateBuffers;
+}
+
+
+export interface ArchivedVoxelTemplatePaletteDataExportedJSONData
+  extends VoxelArchiPaveletteExportedJSONData {
+  level: JSONBinaryBufferData;
+  secondary: JSONBinaryBufferData;
+}
+
+export interface ArchivedVoxelTemplateBuffersExportdJSONData {
+  ids?: JSONBinaryBufferData;
+  level?: JSONBinaryBufferData;
+  secondary?: JSONBinaryBufferData;
+}
+
+export interface ArchivedVoxelTemplateExportedJSONData
+  extends IVoxelTemplateData<"archived"> {
+  /** A user provided version of the data. */
+  version: string;
+  /** The version of vlox the data was stored in. */
+  vloxVersion: string;
+  palettes: ArchivedVoxelTemplatePaletteDataExportedJSONData;
+  buffers: ArchivedVoxelTemplateBuffersExportdJSONData;
 }

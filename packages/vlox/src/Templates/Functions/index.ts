@@ -1,3 +1,3 @@
-export * from "../Archive/CreateArchivedTemplate"
+export * from "../Archive/Functions/CreateArchivedTemplate"
 export * from "./RotateTemplate"
 export * from "./FlipTemplate"

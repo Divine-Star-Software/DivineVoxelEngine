@@ -37,8 +37,8 @@ export interface ArchivedSectorDuplicteData {
  * Interface for the palettes of an archived sector.
  */
 export interface ArchivedSectorPaletteData extends VoxelArchivePaletteData {
-  level?: Uint8Array;
-  light: Partial<Record<ArchivedLightSegments, Uint8Array>>;
+  level?: BinaryBufferData;
+  light: Partial<Record<ArchivedLightSegments, BinaryBufferData>>;
 }
 
 /**
@@ -62,25 +62,21 @@ export interface ArchivedSectionData {
  * Interface representing the palette data for a single section in the voxel engine.
  */
 export interface ArchivedSectionPaletteData {
-  id?: Uint16Array;
-  light?: Partial<Record<ArchivedLightSegments, Uint8Array>>;
-  level?: Uint8Array;
-  secondaryVoxels?: Uint16Array;
+  id?: BinaryBufferData;
+  light?: Partial<Record<ArchivedLightSegments, BinaryBufferData>>;
+  level?: BinaryBufferData;
+  secondaryVoxels?: BinaryBufferData;
 }
 
 /**
  * Interface representing the buffer data for a section.
  */
 export interface ArchivedSectionBuffers {
-  //state
-  buried?: Uint8Array | number;
-  voxelMap?: Uint8Array | number;
-  dirtyMap?: Uint8Array | number;
   //voxel buffers
-  id?: BinaryBufferData | number;
-  light?: Partial<Record<ArchivedLightSegments, BinaryBufferData | number>>;
-  level?: BinaryBufferData | number;
-  secondary?: BinaryBufferData | number;
+  id?: BinaryBufferData ;
+  light?: Partial<Record<ArchivedLightSegments, BinaryBufferData >>;
+  level?: BinaryBufferData ;
+  secondary?: BinaryBufferData ;
 }
 
 /**
@@ -99,21 +95,9 @@ export interface ArchivedAreaData {
 /**
  * Interface representing the palette data for a sector.
  */
-export interface ArchivedAreaSectorPaletteData {
-  /**Palette of voxel string ids */
-  id: string[];
-  /**A palette of voxels and their states and mods in sets 5 of numbers.
-   * 1 -> voxel palette id
-   * 2 -> state schema palette id
-   * 3 -> state value
-   * 4 -> mod schema palette id
-   * 5 -> mod value
-   */
-  voxelPalette: Uint16Array;
-  stateSchemaPalette: BinarySchemaNodeData[][];
-  modSchemaPaette: BinarySchemaNodeData[][];
-  level?: Uint8Array;
-  light: Partial<Record<ArchivedLightSegments, Uint8Array>>;
+export interface ArchivedAreaSectorPaletteData extends VoxelArchivePaletteData {
+  level?: BinaryBufferData;
+  light: Partial<Record<ArchivedLightSegments, BinaryBufferData>>;
 }
 
 /**

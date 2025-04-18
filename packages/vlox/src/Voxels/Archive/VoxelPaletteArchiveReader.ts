@@ -3,6 +3,7 @@ import { StringPalette } from "../../Util/StringPalette";
 import { BinarySchema } from "../State/Schema/BinarySchema";
 import { BinarySchemaNodeData } from "../../Voxels/State/State.types";
 import { VoxelArchivePaletteData } from "./VoxelArchive.types";
+import { BinaryBuffer } from "../../Util/Binary/BinaryBuffer";
 
 const temp: [id: string, state: number, mod: number] = ["", 0, 0];
 export class VoxelPaletteArchiveReader {
@@ -15,13 +16,15 @@ export class VoxelPaletteArchiveReader {
   modSchema = new Map<number, BinarySchema>();
   constructor(palettes: VoxelArchivePaletteData) {
     this.id = new StringPalette(palettes.id);
-    this.voxelPalette = palettes.voxelPalette;
+    this.voxelPalette = BinaryBuffer.ToTypedArray(
+      palettes.voxelPalette
+    ) as Uint16Array;
     this.statePalette = palettes.stateSchemaPalette;
     this.modPalette = palettes.modSchemaPaette;
   }
 
   getVoxelData(id: number) {
-    const index = id * 5; 
+    const index = id * 5;
     temp[0] = this.id.getStringId(this.voxelPalette[index]);
     if (temp[0] == "dve_air") {
       temp[1] = 0;

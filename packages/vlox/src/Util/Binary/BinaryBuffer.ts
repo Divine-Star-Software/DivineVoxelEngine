@@ -15,10 +15,20 @@ export enum BinaryBufferTypes {
   ByteArray = 8,
   ShortArray = 16,
 }
+
 export interface BinaryBufferData {
   type: BinaryBufferTypes;
-  buffer: number | ArrayBufferLike;
+  length: number;
+  buffer: number | ArrayBuffer | SharedArrayBuffer;
 }
+
+export interface JSONBinaryBufferData {
+  type: BinaryBufferTypes;
+  buffer: string;
+  length: number;
+  compressed?: boolean;
+}
+
 export interface BinaryBuffer extends BinaryBufferData {}
 export class BinaryBuffer {
   static ByteArrayMax = 256;
@@ -26,15 +36,113 @@ export class BinaryBuffer {
   static HalfNibbleArrayMax = 4;
   static BitArrayMax = 2;
 
-  static GetBuffer(buffers: number | BinaryBufferData | undefined) {
-    return !buffers
-      ? new BinaryBuffer({ buffer: 0, type: BinaryBufferTypes.Value })
-      : typeof buffers == "number"
-        ? new BinaryBuffer({
-            buffer: buffers,
-            type: BinaryBufferTypes.Value,
-          })
-        : new BinaryBuffer(buffers);
+  static async ToJSON(
+    data: BinaryBufferData,
+    compressed?: boolean
+  ): Promise<JSONBinaryBufferData> {
+    if (typeof data.buffer === "number") {
+      return {
+        type: data.type,
+        length: data.length,
+        buffer: data.buffer.toString(),
+      };
+    }
+
+    const input = new Uint8Array(data.buffer);
+
+    let bufferToEncode = input;
+
+    if (compressed) {
+      const cs = new CompressionStream("gzip");
+      const writer = cs.writable.getWriter();
+      writer.write(input);
+      writer.close();
+      const compressedBuffer = await new Response(cs.readable).arrayBuffer();
+      bufferToEncode = new Uint8Array(compressedBuffer);
+    }
+
+    // Convert to base64
+    const binary = String.fromCharCode(...bufferToEncode);
+    const base64 = btoa(binary);
+    bufferToEncode;
+
+    return {
+      type: data.type,
+      length: data.length,
+      buffer: base64,
+      compressed,
+    };
+  }
+
+  static async FromJSON(data: JSONBinaryBufferData): Promise<BinaryBufferData> {
+    let binary = atob(data.buffer);
+    let raw = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      raw[i] = binary.charCodeAt(i);
+    }
+
+    if (data.compressed) {
+      const ds = new DecompressionStream("gzip");
+      const writer = ds.writable.getWriter();
+      writer.write(raw);
+      writer.close();
+      const decompressed = await new Response(ds.readable).arrayBuffer();
+      raw = new Uint8Array(decompressed);
+    }
+
+    return {
+      type: data.type,
+      length: data.length,
+      buffer: raw.buffer,
+    };
+  }
+
+  static ToTypedArray(buffer: BinaryBufferData) {
+    if (buffer.type == BinaryBufferTypes.ShortArray) {
+      if (typeof buffer.buffer == "number") {
+        const array = new Uint16Array(buffer.length);
+        array.fill(buffer.buffer);
+        return array;
+      }
+      return new Uint16Array(buffer.buffer);
+    }
+    
+    if (buffer.type == BinaryBufferTypes.ByteArray) {
+      if (typeof buffer.buffer == "number") {
+        const array = new Uint8Array(buffer.length);
+        array.fill(buffer.buffer);
+        return array;
+      }
+      return new Uint8Array(buffer.buffer);
+    }
+
+    if (buffer.type == BinaryBufferTypes.NibbleArray) {
+      if (typeof buffer.buffer == "number") {
+        const array = new Uint8Array(buffer.length / 2);
+        array.fill(buffer.buffer);
+        return array;
+      }
+      return new Uint8Array(buffer.buffer);
+    }
+
+    if (buffer.type == BinaryBufferTypes.HalfNibbleArray) {
+      if (typeof buffer.buffer == "number") {
+        const array = new Uint8Array(buffer.length / 4);
+        array.fill(buffer.buffer);
+        return array;
+      }
+      return new Uint8Array(buffer.buffer);
+    }
+
+
+    if (buffer.type == BinaryBufferTypes.BitArray) {
+      if (typeof buffer.buffer == "number") {
+        const array = new Uint8Array(buffer.length / 8);
+        array.fill(buffer.buffer);
+        return array;
+      }
+      return new Uint8Array(buffer.buffer);
+    }
   }
 
   static DetermineSubByteArray = (
@@ -170,6 +278,7 @@ export class BinaryBuffer {
   static Create(data: Partial<BinaryBufferData>): BinaryBufferData {
     return {
       buffer: 0,
+      length: 0,
       type: BinaryBufferTypes.Value,
       ...data,
     };
@@ -194,6 +303,7 @@ export class BinaryBuffer {
   toJSON() {
     return {
       buffer: this.buffer,
+      length: this.length,
       type: this.type,
     };
   }

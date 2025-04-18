@@ -11,41 +11,59 @@ export function CreateArchivedSection(
   sectorPalettes: SectorPalette
 ): ArchivedSectionData {
   const palettes: ArchivedSectionData["palettes"] = {};
-  if (archiveSection.voxels.remapped)
-    palettes.id = Uint16Array.from(archiveSection.palettes.voxels._palette);
+  if (archiveSection.voxels.remapped) {
+    palettes.id = BinaryBuffer.Create({
+      type: 16,
+      buffer: Uint16Array.from(archiveSection.palettes.voxels._palette).buffer,
+    });
+  }
 
-  if (archiveSection.level.remapped)
-    palettes.level = Uint8Array.from(archiveSection.palettes.level._palette);
+  if (archiveSection.level.remapped) {
+    palettes.level = BinaryBuffer.Create({
+      type: 8,
+      buffer: Uint8Array.from(archiveSection.palettes.level._palette).buffer,
+    });
+  }
 
   if (archiveSection.light.sun.remapped) {
     palettes.light ??= {};
-    palettes.light.sun = Uint8Array.from(
-      archiveSection.palettes.light.sun._palette
-    );
+    palettes.light.sun = BinaryBuffer.Create({
+      type: 8,
+      buffer: Uint8Array.from(archiveSection.palettes.light.sun._palette)
+        .buffer,
+    });
   }
   if (archiveSection.light.red.remapped) {
     palettes.light ??= {};
-    palettes.light.red = Uint8Array.from(
-      archiveSection.palettes.light.red._palette
-    );
+    palettes.light.red = BinaryBuffer.Create({
+      type: 8,
+      buffer: Uint8Array.from(archiveSection.palettes.light.red._palette)
+        .buffer,
+    });
   }
   if (archiveSection.light.green.remapped) {
     palettes.light ??= {};
-    palettes.light.green = Uint8Array.from(
-      archiveSection.palettes.light.green._palette
-    );
+    palettes.light.green = BinaryBuffer.Create({
+      type: 8,
+      buffer: Uint8Array.from(archiveSection.palettes.light.green._palette)
+        .buffer,
+    });
   }
   if (archiveSection.light.blue.remapped) {
     palettes.light ??= {};
-    palettes.light.blue = Uint8Array.from(
-      archiveSection.palettes.light.blue._palette
-    );
+    palettes.light.blue = BinaryBuffer.Create({
+      type: 8,
+      buffer: Uint8Array.from(archiveSection.palettes.light.blue._palette)
+        .buffer,
+    });
   }
 
   if (archiveSection.secondaryVoxels.remapped) {
-    palettes.secondaryVoxels = Uint16Array.from(
-      archiveSection.palettes.secondaryVoxels._palette
-    );
+    palettes.secondaryVoxels = BinaryBuffer.Create({
+      type: 16,
+      buffer: Uint16Array.from(archiveSection.palettes.secondaryVoxels._palette)
+        .buffer,
+    });
   }
 
   const buffers: ArchivedSectionData["buffers"] = <any>{};
@@ -53,7 +71,11 @@ export function CreateArchivedSection(
   //id
   if (archiveSection.voxels.allTheSame) {
     if (archiveSection.voxels.buffer[0] !== 0) {
-      buffers.id = archiveSection.voxels.buffer[0];
+      buffers.id = BinaryBuffer.Create({
+        type: 16,
+        length: archiveSection.original.ids.length,
+        buffer: archiveSection.voxels.buffer[0],
+      });
     }
   } else if (archiveSection.voxels.isPaletted) {
     const type = BinaryBuffer.DetermineSubByteArray(
@@ -79,7 +101,11 @@ export function CreateArchivedSection(
   //level
   if (archiveSection.level.allTheSame) {
     if (archiveSection.level.buffer[0] !== 0) {
-      buffers.level = archiveSection.level.buffer[0];
+      buffers.level = BinaryBuffer.Create({
+        type: 8,
+        length: archiveSection.original.level.length,
+        buffer: archiveSection.voxels.buffer[0],
+      });
     }
   } else if (archiveSection.level.isPaletted) {
     const type = BinaryBuffer.DetermineSubByteArray(
@@ -106,7 +132,10 @@ export function CreateArchivedSection(
     if (archiveSection.light[semgnet].allTheSame) {
       if (archiveSection.light[semgnet].value !== 0) {
         buffers.light ??= {};
-        buffers.light[semgnet] = archiveSection.light[semgnet].value;
+        buffers.light[semgnet] = BinaryBuffer.Create({
+          buffer: archiveSection.light[semgnet].value,
+          length: archiveSection.original.light.length,
+        });
       }
     } else if (archiveSection.light[semgnet].isPaletted) {
       const type = BinaryBuffer.DetermineSubByteArray(
@@ -121,6 +150,7 @@ export function CreateArchivedSection(
           BinaryBufferTypes.ByteArray,
           type
         ).buffer,
+        length: archiveSection.original.light.length,
         type,
       });
     } else {
@@ -128,13 +158,18 @@ export function CreateArchivedSection(
       buffers.light[semgnet] = BinaryBuffer.Create({
         buffer: getLightBuffer(semgnet, archiveSection.original.light).buffer,
         type: BinaryBufferTypes.NibbleArray,
+        length: archiveSection.original.light.length,
       });
     }
   }
 
   if (archiveSection.secondaryVoxels.allTheSame) {
     if (archiveSection.secondaryVoxels.buffer[0] !== 0) {
-      buffers.secondary = archiveSection.secondaryVoxels.buffer[0];
+      buffers.secondary = BinaryBuffer.Create({
+        type: 16,
+        length: archiveSection.original.level.length,
+        buffer: archiveSection.secondaryVoxels.buffer[0],
+      });
     }
   } else if (archiveSection.secondaryVoxels.isPaletted) {
     const type = BinaryBuffer.DetermineSubByteArray(
@@ -149,36 +184,14 @@ export function CreateArchivedSection(
         type
       ).buffer,
       type,
+      length: archiveSection.original.secondary.length,
     });
   } else {
     buffers.secondary = BinaryBuffer.Create({
       buffer: archiveSection.secondaryVoxels.buffer.buffer,
       type: BinaryBufferTypes.ShortArray,
+      length: archiveSection.original.secondary.length,
     });
-  }
-
-  if (archiveSection.isBuriedAllTheSame) {
-    if (archiveSection.buriedValue !== 0) {
-      buffers.buried = archiveSection.buriedValue;
-    }
-  } else {
-    buffers.buried = archiveSection.original.buried.slice();
-  }
-
-  if (archiveSection.isVoxelMapAllTheSame) {
-    if (archiveSection.voxelMapValue !== 0) {
-      buffers.voxelMap = archiveSection.voxelMapValue;
-    }
-  } else {
-    buffers.voxelMap = archiveSection.original.voxelMap.slice();
-  }
-
-  if (archiveSection.isDirtyMapAllTheSame) {
-    if (archiveSection.dirtyMapValue !== 0) {
-      buffers.dirtyMap = archiveSection.dirtyMapValue;
-    }
-  } else {
-    buffers.dirtyMap = archiveSection.original.dirtyMap.slice();
   }
 
   const flags = archiveSection.original.storeFlags();

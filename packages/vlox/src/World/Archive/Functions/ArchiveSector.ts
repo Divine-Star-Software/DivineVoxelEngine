@@ -284,14 +284,18 @@ export default function ArchiveSector(
   }
 
   if (neededPalettes.level) {
-    palettes.level = new Uint8Array(sectorPalettes.level._palette);
+    palettes.level = BinaryBuffer.Create({
+      type: 8,
+      buffer: new Uint8Array(sectorPalettes.level._palette).buffer,
+    });
   }
 
   for (const segment of lightSegments) {
     if (neededPalettes.light[segment]) {
-      palettes.light[segment] = new Uint8Array(
-        sectorPalettes.light[segment]._palette
-      );
+      palettes.light[segment] = BinaryBuffer.Create({
+        type: 8,
+        buffer: new Uint8Array(sectorPalettes.light[segment]._palette).buffer,
+      });
     }
   }
 

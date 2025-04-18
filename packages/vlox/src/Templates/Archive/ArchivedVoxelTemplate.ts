@@ -2,7 +2,6 @@ import { Flat3DIndex, Vec3Array } from "@amodx/math";
 import { ArchivedVoxelTemplateData } from "./ArchivedVoxelTemplate.types";
 import type { RawVoxelData } from "../../Voxels/Types/Voxel.types";
 import { NumberPalette } from "../../Util/NumberPalette";
-import { NibbleArray } from "@amodx/binary/Arrays/NibbleArray";
 import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister";
 import { VoxelTagsRegister } from "../../Voxels/Data/VoxelTagsRegister";
 import { IVoxelTemplate } from "../../Templates/VoxelTemplates.types";
@@ -28,12 +27,41 @@ export class ArchivedVoxelTemplate implements IVoxelTemplate {
     this.index.setBounds(..._data.bounds);
 
     this.voxelPalette = new VoxelPaletteArchiveReader(_data.palettes);
-    this.levelPalette = new NumberPalette(_data.palettes.level);
-    this.secondaryPalette = new NumberPalette(_data.palettes.secondary);
+    this.levelPalette = new NumberPalette(
+      BinaryBuffer.ToTypedArray(_data.palettes.level)
+    );
+    this.secondaryPalette = new NumberPalette(
+      BinaryBuffer.ToTypedArray(_data.palettes.secondary)
+    );
 
-    this.ids = BinaryBuffer.GetBuffer(_data.buffers.ids);
-    this.level = BinaryBuffer.GetBuffer(_data.buffers.level);
-    this.secondary = BinaryBuffer.GetBuffer(_data.buffers.secondary);
+    const volume = this.index.size;
+    this.ids = _data.buffers.ids
+      ? new BinaryBuffer(_data.buffers.ids)
+      : new BinaryBuffer(
+          BinaryBuffer.Create({
+            type: 16,
+            length: volume,
+            buffer: 0,
+          })
+        );
+    this.level = _data.buffers.level
+      ? new BinaryBuffer(_data.buffers.level)
+      : new BinaryBuffer(
+          BinaryBuffer.Create({
+            type: 8,
+            length: volume,
+            buffer: 0,
+          })
+        );
+    this.secondary = _data.buffers.secondary
+      ? new BinaryBuffer(_data.buffers.secondary)
+      : new BinaryBuffer(
+          BinaryBuffer.Create({
+            type: 16,
+            length: volume,
+            buffer: 0,
+          })
+        );
   }
 
   isAir(index: number) {

@@ -5,6 +5,7 @@ import { ImportedSection } from "./ImportedSection";
 import { BinarySchemaNodeData } from "../../../Voxels/State/State.types";
 import { BinarySchema } from "../../../Voxels/State/Schema/BinarySchema";
 import { SchemaRegister } from "../../../Voxels/State/SchemaRegister";
+import { BinaryBuffer } from "../../../Util/Binary/BinaryBuffer";
 
 class ImportedSectorPalettes {
   id: StringPalette;
@@ -20,25 +21,27 @@ class ImportedSectorPalettes {
 
   constructor(sector: ArchivedSectorData) {
     this.id = new StringPalette(sector.palettes.id);
-    this.voxelPalette = sector.palettes.voxelPalette;
+    this.voxelPalette = BinaryBuffer.ToTypedArray(
+      sector.palettes.voxelPalette
+    )! as Uint16Array;
     this.statePalette = sector.palettes.stateSchemaPalette;
     this.modPalette = sector.palettes.modSchemaPaette;
 
     this.level = sector.palettes.level
-      ? new NumberPalette(sector.palettes.level)
+      ? new NumberPalette(BinaryBuffer.ToTypedArray(sector.palettes.level))
       : undefined;
     this.light = {
       sun: sector.palettes.light.sun
-        ? new NumberPalette(sector.palettes.light.sun)
+        ? new NumberPalette(BinaryBuffer.ToTypedArray( sector.palettes.light.sun))
         : null,
       red: sector.palettes.light.red
-        ? new NumberPalette(sector.palettes.light.red)
+        ? new NumberPalette(BinaryBuffer.ToTypedArray(sector.palettes.light.red))
         : null,
       green: sector.palettes.light.green
-        ? new NumberPalette(sector.palettes.light.green)
+        ? new NumberPalette(BinaryBuffer.ToTypedArray(sector.palettes.light.green))
         : null,
       blue: sector.palettes.light.blue
-        ? new NumberPalette(sector.palettes.light.blue)
+        ? new NumberPalette(BinaryBuffer.ToTypedArray(sector.palettes.light.blue))
         : null,
     };
   }

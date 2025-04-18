@@ -9,6 +9,7 @@ import { ImportedSector } from "./ImportedSector";
 import { VoxelPalettesRegister } from "../../../Voxels/Data/VoxelPalettesRegister";
 import { lightSegments, lightSemgnetSet } from "../Functions/Shared";
 import { VoxelTagsRegister } from "../../../Voxels/Data/VoxelTagsRegister";
+import { WorldSpaces } from "../../WorldSpaces";
 
 class ImportedSectionBuffers {
   ids: BinaryBuffer;
@@ -17,15 +18,71 @@ class ImportedSectionBuffers {
   secondary: BinaryBuffer;
 
   constructor(section: ArchivedSectionData) {
-    this.ids = BinaryBuffer.GetBuffer(section.buffers.id);
-    this.level = BinaryBuffer.GetBuffer(section.buffers.level);
+    this.ids = section.buffers.id
+      ? new BinaryBuffer(section.buffers.id)
+      : new BinaryBuffer(
+          BinaryBuffer.Create({
+            length: WorldSpaces.section.volumne,
+            buffer: 0,
+            type: 16,
+          })
+        );
+    this.secondary = section.buffers.secondary
+      ? new BinaryBuffer(section.buffers.secondary)
+      : new BinaryBuffer(
+          BinaryBuffer.Create({
+            length: WorldSpaces.section.volumne,
+            buffer: 0,
+            type: 16,
+          })
+        );
+    this.level = section.buffers.level
+      ? new BinaryBuffer(section.buffers.level)
+      : new BinaryBuffer(
+          BinaryBuffer.Create({
+            length: WorldSpaces.section.volumne,
+            buffer: 0,
+            type: 8,
+          })
+        );
     this.light = {
-      sun: BinaryBuffer.GetBuffer(section.buffers.light?.sun),
-      red: BinaryBuffer.GetBuffer(section.buffers.light?.red),
-      green: BinaryBuffer.GetBuffer(section.buffers.light?.green),
-      blue: BinaryBuffer.GetBuffer(section.buffers.light?.blue),
+      sun: section.buffers.light?.sun
+        ? new BinaryBuffer(section.buffers.light.sun)
+        : new BinaryBuffer(
+            BinaryBuffer.Create({
+              length: WorldSpaces.section.volumne,
+              buffer: 0,
+              type: 4,
+            })
+          ),
+      red: section.buffers.light?.red
+        ? new BinaryBuffer(section.buffers.light.red)
+        : new BinaryBuffer(
+            BinaryBuffer.Create({
+              length: WorldSpaces.section.volumne,
+              buffer: 0,
+              type: 4,
+            })
+          ),
+      green: section.buffers.light?.green
+        ? new BinaryBuffer(section.buffers.light.green)
+        : new BinaryBuffer(
+            BinaryBuffer.Create({
+              length: WorldSpaces.section.volumne,
+              buffer: 0,
+              type: 4,
+            })
+          ),
+      blue: section.buffers.light?.blue
+        ? new BinaryBuffer(section.buffers.light.blue)
+        : new BinaryBuffer(
+            BinaryBuffer.Create({
+              length: WorldSpaces.section.volumne,
+              buffer: 0,
+              type: 4,
+            })
+          ),
     };
-    this.secondary = BinaryBuffer.GetBuffer(section.buffers.secondary);
   }
 }
 class ImportedSectionPalettes {
@@ -35,29 +92,39 @@ class ImportedSectionPalettes {
   secondaryVoxels?: NumberPalette;
   constructor(section: ArchivedSectionData) {
     this.voxels = section.palettes?.id
-      ? new NumberPalette(section.palettes?.id)
+      ? new NumberPalette(BinaryBuffer.ToTypedArray(section.palettes?.id))
       : undefined;
     this.light = {
       sun: section.palettes?.light?.sun
-        ? new NumberPalette(section.palettes?.light?.sun)
+        ? new NumberPalette(
+            BinaryBuffer.ToTypedArray(section.palettes?.light?.sun)
+          )
         : null,
       red: section.palettes?.light?.red
-        ? new NumberPalette(section.palettes?.light?.red)
+        ? new NumberPalette(
+            BinaryBuffer.ToTypedArray(section.palettes?.light?.red)
+          )
         : null,
       green: section.palettes?.light?.green
-        ? new NumberPalette(section.palettes?.light?.green)
+        ? new NumberPalette(
+            BinaryBuffer.ToTypedArray(section.palettes?.light?.green)
+          )
         : null,
       blue: section.palettes?.light?.blue
-        ? new NumberPalette(section.palettes?.light?.blue)
+        ? new NumberPalette(
+            BinaryBuffer.ToTypedArray(section.palettes?.light?.blue)
+          )
         : null,
     };
 
     this.level = section.palettes?.level
-      ? new NumberPalette(section.palettes?.level)
+      ? new NumberPalette(BinaryBuffer.ToTypedArray(section.palettes?.level))
       : undefined;
 
     this.secondaryVoxels = section.palettes?.secondaryVoxels
-      ? new NumberPalette(section.palettes?.secondaryVoxels)
+      ? new NumberPalette(
+          BinaryBuffer.ToTypedArray(section.palettes?.secondaryVoxels)
+        )
       : undefined;
   }
 }

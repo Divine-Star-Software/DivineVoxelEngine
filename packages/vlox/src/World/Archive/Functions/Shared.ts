@@ -1,6 +1,6 @@
 import { setNibbleArrayIndex } from "../../../Util/Binary/BinaryArrays";
 import { VoxelLightData } from "../../../Voxels/Cursor/VoxelLightData";
-import { ArchivedLightSegments, ArchivedSectionData } from "../Archive.types";
+import { ArchivedLightSegments } from "../Archive.types";
 const lightData = new VoxelLightData();
 export const lightSegments: ArchivedLightSegments[] = [
   "sun",
