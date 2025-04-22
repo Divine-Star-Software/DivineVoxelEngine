@@ -44,6 +44,7 @@ class TaskQueue<Data extends any = any, ReturnData extends any = void> {
     });
   }
 }
+
 export class LocationTaskToolTask implements ITask<LocationData> {
   private _count = 0;
   _threads: Thread[];
@@ -61,10 +62,9 @@ export class LocationTaskToolTask implements ITask<LocationData> {
   run(
     location: LocationData,
     transfer?: any[] | null,
-    onDone?: (data: any) => void
+    onDone?: (data: any) => void,
+    thread = this._threads[this._count]
   ) {
-    const thread = this._threads[this._count];
-
     const view = Threads.createBinaryTask(16);
 
     setLocationData(view, location);
@@ -84,6 +84,7 @@ export class LocationTaskToolTask implements ITask<LocationData> {
     return new TaskQueue<LocationData>(this);
   }
 }
+
 export class TaskToolTask<Data extends any = any, ReturnData extends any = void>
   implements ITask<Data>
 {
@@ -175,14 +176,17 @@ class GenerationTasks {
       TasksIds.WorldPropagation,
       tool.generators
     );
+
     this.generate = new LocationTaskToolTask(
       TasksIds.Generate,
       tool.generators
     );
+
     this.decorate = new LocationTaskToolTask(
       TasksIds.Decorate,
       tool.generators
     );
+
     this.worldSun = new LocationTaskToolTask(
       TasksIds.WorldSun,
       tool.generators
@@ -204,5 +208,14 @@ export class TaskTool {
     this.build = new BuildTask(this);
     this.generation = new GenerationTasks(this);
     this.simulation = new SimulationTasks(this);
+  }
+
+  getMesher() {
+    if (this.meshers instanceof Thread) return this.meshers;
+    return this.meshers.nextThread();
+  }
+  getGenerator() {
+    if (this.generators instanceof Thread) return this.generators;
+    return this.generators.nextThread();
   }
 }

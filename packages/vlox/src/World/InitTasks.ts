@@ -8,6 +8,7 @@ import { WorldLock } from "./Lock/WorldLock.js";
 import { WorldDataSyncIds } from "./Types/WorldDataSyncIds.js";
 import { WorldStorageInterface } from "./Types/WorldStorage.interface.js";
 import { setLocationData } from "../Util/LocationData.js";
+import { EngineSettings } from "../Settings/EngineSettings.js";
 
 export default function ({
   threads,
@@ -18,33 +19,53 @@ export default function ({
 }) {
   WorldRegister.sectors.setSecotrBufferPool(true);
   const loadInMap = new Map<string, boolean>();
-  /*
+
+  //normal array buffers only
+  if (!EngineSettings.settings.memoryAndCPU.useSharedMemory) {
+    console.error("INIT NORMAL ARRAY BUFFER TASKS");
+    Threads.registerTask<[LocationData, ArrayBufferLike]>(
+      WorldDataSyncIds.CheckInSector,
+      async (data) => {
+        const sector = WorldRegister.sectors.get(...data[0]);
+
+        if (!sector) {
+          console.warn(
+            "Tried checking in sector that is not loaded in world",
+            data
+          );
+          return;
+        }
+        sector.setBuffer(data[1]);
+        sector.setCheckedOut(false);
+      }
+    );
+  }
+  //shared memeory only
+  if (EngineSettings.settings.memoryAndCPU.useSharedMemory) {
+    /*
 [sectors]
 */
-  WorldRegister._hooks.sectors.onNew = (location, sector) => {
-    for (const thread of threads) {
-      thread.runTask(WorldDataSyncIds.SyncSector, [location, sector.buffer]);
-    }
-  };
-  WorldRegister._hooks.sectors.onRemove = (location) => {
-    for (const thread of threads) {
-      const view = Threads.createBinaryTask(16);
 
-      thread.runBinaryTask(
-        WorldDataSyncIds.UnSyncSector,
-        setLocationData(view, location)
-      );
-    }
-  };
+    WorldRegister._hooks.sectors.onNew = (location, sector) => {
+      for (const thread of threads) {
+        thread.runTask(WorldDataSyncIds.SyncSector, [location, sector.buffer]);
+      }
+    };
+    WorldRegister._hooks.sectors.onRemove = (location) => {
+      for (const thread of threads) {
+        thread.runTask(WorldDataSyncIds.UnSyncSector, location);
+      }
+    };
 
-  /*
+    /*
 [dimensions]
 */
-  WorldRegister._hooks.dimension.onNew = (data) => {
-    for (const thread of threads) {
-      thread.runTask(WorldDataSyncIds.SyncDimension, data);
-    }
-  };
+    WorldRegister._hooks.dimension.onNew = (data) => {
+      for (const thread of threads) {
+        thread.runTask(WorldDataSyncIds.SyncDimension, data);
+      }
+    };
+  }
 
   Threads.registerTask("add-sector", async (location: LocationData) => {
     const sector = WorldRegister.sectors.get(
@@ -55,8 +76,10 @@ export default function ({
     );
 
     if (sector) {
-      for (const thread of threads) {
-        thread.runTask(WorldDataSyncIds.SyncSector, [location, sector]);
+      if (EngineSettings.settings.memoryAndCPU.useSharedMemory) {
+        for (const thread of threads) {
+          thread.runTask(WorldDataSyncIds.SyncSector, [location, sector]);
+        }
       }
       return;
     }
@@ -118,8 +141,10 @@ export default function ({
         location[3],
         sector
       );
-      for (const thread of threads) {
-        thread.runTask(WorldDataSyncIds.SyncSector, [location, sector]);
+      if (EngineSettings.settings.memoryAndCPU.useSharedMemory) {
+        for (const thread of threads) {
+          thread.runTask(WorldDataSyncIds.SyncSector, [location, sector]);
+        }
       }
       return [true];
     }

@@ -11,7 +11,7 @@ export interface RenderSettingsData {}
 export class RenderSettingsData {
   /**Set the mode to change how mesh data is generated based on the underlying rendering API. */
   mode: "webgl" | "webgpu" = "webgl";
-  /**If set to try the engine will not try to send vertex buffers to woerks for GC. */
+  /**If set to try the engine will not try to send vertex buffers to workers for GC. */
   cpuBound = false;
 }
 export interface UpdatingSettings {}
@@ -45,7 +45,13 @@ export class PropagationSettings {
   powerEnabled = true;
 }
 
+export interface MemoryAndCPUSettings {}
+export class MemoryAndCPUSettings {
+  useSharedMemory = true;
+}
+
 export class EngineSettingsData {
+  memoryAndCPU = new MemoryAndCPUSettings();
   mesher = new MesherSettingsData();
   rendererSettings = new RenderSettingsData();
   updating = new UpdatingSettings();

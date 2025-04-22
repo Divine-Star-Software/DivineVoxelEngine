@@ -4,6 +4,7 @@ import { FullVoxelTemplateData } from "./FullVoxelTemplate.types";
 import { RawVoxelData } from "../../Voxels/Types/Voxel.types";
 import { DataCursorInterface } from "../../Voxels/Cursor/DataCursor.interface";
 import { getBitArrayIndex } from "../../Util/Binary/BinaryArrays";
+import { EngineSettings } from "../../Settings/EngineSettings";
 
 export class FullVoxelTemplate implements IVoxelTemplate {
   static CreateNew(
@@ -11,16 +12,19 @@ export class FullVoxelTemplate implements IVoxelTemplate {
     baseLightValue = 0
   ): FullVoxelTemplateData {
     const voxelSize = bounds[0] * bounds[1] * bounds[2];
-    const sectionBuffer = new SharedArrayBuffer(
-      //ids
+    const bufferSize = //ids
       voxelSize * 2 +
-        //light
-        voxelSize * 2 +
-        //secondary
-        voxelSize * 2 +
-        //level
-        voxelSize
-    );
+      //light
+      voxelSize * 2 +
+      //secondary
+      voxelSize * 2 +
+      //level
+      voxelSize;
+    const sectionBuffer = EngineSettings.settings.memoryAndCPU.useSharedMemory
+      ? new SharedArrayBuffer(bufferSize)
+      : new ArrayBuffer(bufferSize);
+
+      
     let bufferStart = 0;
 
     const ids = new Uint16Array(sectionBuffer, bufferStart, voxelSize);

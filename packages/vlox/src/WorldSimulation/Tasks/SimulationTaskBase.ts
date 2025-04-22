@@ -1,19 +1,22 @@
 import { LocationData } from "../../Math/index.js";
-import { WorldSimulationDimensions } from "../Internal/WorldSimulationDimensions.js"
+import { WorldSimulationDimensions } from "../Internal/WorldSimulationDimensions.js";
 import { DimensionSegment } from "../Dimensions/DimensionSegment.js";
 import { TaskSegment } from "./TaskSegment.js";
+import { SimulationSector } from "WorldSimulation/Dimensions/SimulationSector.js";
 
 export type SimulationTaskBaseData = {
   id: string;
   sort?: boolean;
   generationTask?: boolean;
-
+  checkInRequired?: boolean;
+  log?: boolean;
   checkDone?(location: LocationData): boolean;
   run(
     dimension: DimensionSegment,
     location: LocationData,
     taskId: number,
-    task: TaskSegment
+    task: TaskSegment,
+    sector: SimulationSector
   ): void;
 };
 
@@ -48,14 +51,23 @@ export class SimulationTaskBase {
       }
       let count = 0;
 
+      const addBack: number[] = [];
       for (const location of task.run()) {
-        const [, x, y, z] = location;
+        const [d, x, y, z] = location;
+        const sector = dimension.activeSectors.get(x, y, z);
+        if (!sector || (this.data.checkInRequired && !sector.canCheckOut())) {
+          addBack.push(x, y, z);
+          continue;
+        }
 
         const taskId = task.addTask(x, y, z);
 
-        this.data.run(dimension, location, taskId, task);
+        this.data.run(dimension, location, taskId, task, sector);
         if (count + task.waitingFor > max) break;
         count++;
+      }
+      for (let i = 0; i < addBack.length; i += 3) {
+        task.add(addBack[i], addBack[i + 1], addBack[i + 2]);
       }
     }
   }

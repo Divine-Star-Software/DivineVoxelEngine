@@ -112,9 +112,14 @@ export function RunWorldSun(tasks: VoxelUpdateTask) {
       const nVoxel = tasks.nDataCursor.getVoxel(nx, ny, nz);
       if (nVoxel) {
         const nl = nVoxel.getLight();
-        if (nl > -1 && isLessThanForSunAdd(nl, sl, VoxelLightData.SunFallOffValue)) {
+        if (
+          nl > -1 &&
+          isLessThanForSunAdd(nl, sl, VoxelLightData.SunFallOffValue)
+        ) {
           queue.push(nx, ny, nz);
-          nVoxel.setLight(getMinusOneForSun(sl, nl, VoxelLightData.SunFallOffValue));
+          nVoxel.setLight(
+            getMinusOneForSun(sl, nl, VoxelLightData.SunFallOffValue)
+          );
         }
       }
     }
@@ -122,19 +127,24 @@ export function RunWorldSun(tasks: VoxelUpdateTask) {
     const nVoxel = tasks.nDataCursor.getVoxel(x, y - 1, z);
     if (nVoxel) {
       const nl = nVoxel.getLight();
-      if (nl > -1 && isLessThanForSunAddDown(nl, sl, VoxelLightData.SunFallOffValue)) {
+      if (
+        nl > -1 &&
+        isLessThanForSunAddDown(nl, sl, VoxelLightData.SunFallOffValue)
+      ) {
         if (nVoxel.isAir()) {
           queue.push(x, y - 1, z);
-          nVoxel.setLight(getSunLightForUnderVoxel(sl, nl, VoxelLightData.SunFallOffValue));
+          nVoxel.setLight(
+            getSunLightForUnderVoxel(sl, nl, VoxelLightData.SunFallOffValue)
+          );
         } else {
           if (!nVoxel.isOpaque()) {
             queue.push(x, y - 1, z);
-            nVoxel.setLight(getMinusOneForSun(sl, nl, VoxelLightData.SunFallOffValue));
+            nVoxel.setLight(
+              getMinusOneForSun(sl, nl, VoxelLightData.SunFallOffValue)
+            );
           }
         }
       }
     }
-
-    sectorCursor._current!.setBitFlag(Sector.FlagIds.isWorldSunDone, true);
   }
 }

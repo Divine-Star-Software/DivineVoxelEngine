@@ -1,7 +1,14 @@
 import { GenMapTile } from "./GenMapTile";
 import { GenMapTilesRegister } from "./GenMapTilesRegister";
 import { EntityTool } from "../../../Tools/EntityTool";
-import { Scene, Mesh, VertexBuffer, ShaderMaterial } from "@babylonjs/core";
+
+
+import { ShaderMaterial } from "@babylonjs/core/Materials/shaderMaterial";
+import { Scene } from "@babylonjs/core/scene";
+import { Mesh } from "@babylonjs/core/Meshes/mesh";
+import { VertexBuffer } from "@babylonjs/core/Meshes/buffer";
+
+
 import { LocationData } from "@divinevoxel/vlox/Math";
 import { WorldSpaces } from "@divinevoxel/vlox/World/WorldSpaces";
 import { MooreNeighborhood2D } from "@divinevoxel/vlox/Math/CardinalNeighbors.js";

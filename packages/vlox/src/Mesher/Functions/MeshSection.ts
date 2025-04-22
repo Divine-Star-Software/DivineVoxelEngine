@@ -4,7 +4,6 @@ import type { SetSectionMeshTask } from "../Types/Mesher.types";
 import { WorldSpaces } from "../../World/WorldSpaces.js";
 //tools
 import { VoxelGeometryBuilderCacheSpace } from "../Models/VoxelGeometryBuilderCacheSpace.js";
-import { CompactVoxelMesh } from "./CompactVoxelMesh.js";
 import { WorldCursor } from "../../World/Cursor/WorldCursor.js";
 import { SectionCursor } from "../../World/Cursor/SectionCursor.js";
 import { VoxelModelBuilder } from "../Models/VoxelModelBuilder.js";

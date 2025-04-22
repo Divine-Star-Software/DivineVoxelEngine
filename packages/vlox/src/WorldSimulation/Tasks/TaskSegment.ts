@@ -26,6 +26,7 @@ export class TaskSegment {
     location[3] = z;
     return location;
   }
+
   completeTask(id: number) {
     const locationData = this._task.get(id);
     if (!locationData) return false;
@@ -42,6 +43,7 @@ export class TaskSegment {
 
     return true;
   }
+
   addTask(x: number, y: number, z: number) {
     const id = this._taskCount;
     this._task.set(id, this._getLocationData(this.dimension.id, x, y, z));
@@ -103,7 +105,10 @@ export class TaskSegment {
   *run(): Generator<LocationData> {
     while (this.nodes.length) {
       const vec = this.nodes.shift()!;
+      const key = WorldSpaces.hash.hashXYZ(vec[1], vec[2], vec[3]);
+      this._hash.delete(key);
       yield vec;
+
       pool.push(vec);
     }
   }

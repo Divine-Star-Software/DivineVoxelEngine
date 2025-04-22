@@ -1,4 +1,5 @@
-import { Matrix, Mesh, Vector3 } from "@babylonjs/core";
+import { Matrix } from "@babylonjs/core/Maths/math.vector.js";
+import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import { EntityInstance } from "./EntityInstance.js";
 import "@babylonjs/core/Meshes/thinInstanceMesh";
 const identity = Matrix.Identity();

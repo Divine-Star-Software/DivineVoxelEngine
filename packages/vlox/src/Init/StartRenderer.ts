@@ -6,11 +6,13 @@ import InitRendererTasks from "../Renderer/InitTasks";
 import InitMesher from "../Mesher/InitMesher";
 import { InitVoxelDataProps } from "../Voxels/InitVoxelData";
 import { MeshManager } from "../Renderer/MeshManager";
+import { WorldRegister } from "../World/WorldRegister";
 type StartRendererProps = {} & DVERInitData & InitVoxelDataProps;
 export async function StartRenderer(initData: StartRendererProps) {
   const DVER = new DivineVoxelEngineRender();
   await Threads.init("render", window, "window");
 
+  WorldRegister.proxy = true;
   DivineVoxelEngineRender.initialized = true;
   DVER.renderer = initData.renderer;
   MeshManager.sectorMeshes = initData.renderer.sectorMeshes;
@@ -66,7 +68,7 @@ export async function StartRenderer(initData: StartRendererProps) {
   });
 
   InitRendererTasks();
-  InitWorldDataSync();
+  InitWorldDataSync(DVER.threads.world);
 
   InitMesher(syncData.voxels.materials.palette, syncData.voxels.models);
 

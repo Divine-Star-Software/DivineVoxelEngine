@@ -27,5 +27,8 @@ export default function InitTasks() {
     const location = getLocationData(view);
     task.setOrigin(...location);
     RunWorldSun(task);
+    WorldRegister.sectors
+      .get(...location)!
+      .setBitFlag(Sector.FlagIds.isWorldSunDone, true);
   });
 }

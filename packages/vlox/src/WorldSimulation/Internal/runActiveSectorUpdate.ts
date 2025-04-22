@@ -146,5 +146,9 @@ export function runActiveSectorUpdate() {
     removedSectors.length = 0;
     render.clear();
     unrender.clear();
+
+    for (let i = 0; i < dimension.activeSectors._sectors.length; i++) {
+      dimension.activeSectors._sectors[i].updateNeighbors();
+    }
   }
 }

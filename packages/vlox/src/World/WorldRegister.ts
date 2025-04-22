@@ -5,6 +5,7 @@ import type { LocationData } from "../Math/index.js";
 import { DimensionSyncData } from "./Types/WorldData.types.js";
 import { Vector3Like } from "@amodx/math";
 import { Section } from "./Section/Section.js";
+import { EngineSettings } from "../Settings/EngineSettings.js";
 
 class WorldDataHooks {
   static dimension = {
@@ -18,7 +19,7 @@ class WorldDataHooks {
 }
 
 class WorldRegisterDimensions {
-  static _dimensionMap = new Map<string, number>([[ "main",0]]);
+  static _dimensionMap = new Map<string, number>([["main", 0]]);
   static add(index: number, id: string = "") {
     const dimesnion = Dimension.CreateNew(index, id);
     WorldRegister._dimensions.set(index, dimesnion);
@@ -120,30 +121,51 @@ class WorldRegisterSectors {
     );
     return sector || null;
   }
+
+  
   static getAt(location: LocationData) {
     return this.get(...location);
   }
-  static remove(dimensionId: number, x: number, y: number, z: number) {
+
+
+
+  static remove(
+    dimensionId: number,
+    x: number,
+    y: number,
+    z: number
+  ): ArrayBuffer | null {
     let dimension = WorldRegister.dimensions.get(dimensionId);
-    if (!dimension) return false;
+    if (!dimension) return null;
     const position = WorldSpaces.sector.getPosition(x, y, z, tempPosition);
     const sectorKey = WorldSpaces.hash.hashVec3(position);
     const sector = dimension.sectors.get(sectorKey);
-    if (!sector) return false;
+    if (!sector) return null;
     WorldDataHooks.sectors.onRemove(
       [dimensionId, position.x, position.y, position.z],
       sector
     );
+
+    if (
+      !EngineSettings.settings.memoryAndCPU.useSharedMemory &&
+      WorldRegister.proxy == true
+    ) {
+      dimension.sectors.delete(sectorKey);
+      return sector.buffer as ArrayBuffer;
+    }
     WorldRegisterPools.returnSector(sector);
     dimension.sectors.delete(sectorKey);
-    return true;
+    return null;
   }
+
+
   static removeAt(location: LocationData) {
     return this.remove(...location);
   }
 }
 
 export class WorldRegister {
+  static proxy = false;
   static _pools = WorldRegisterPools;
   static _dimensions = new Map<number, Dimension>([
     [0, new Dimension(Dimension.CreateNew(0, "main"))],

@@ -1,6 +1,5 @@
 import { GenMap } from "./GenMap";
 import { EntityInstance } from "../../../Tools/EntityInstance";
-import { DivineVoxelEngineRender } from "@divinevoxel/vlox/Contexts/Render";
 import { Sector } from "@divinevoxel/vlox/World";
 import { Vec3Array } from "@amodx/math";
 import { WorldRegister } from "@divinevoxel/vlox/World/WorldRegister";
@@ -52,9 +51,16 @@ export class GenMapTile {
       }
       this._sector = sector;
     }
+
     if (this._sector) {
       this.setColor(1.0, 1.0, 1.0, 1.0);
     }
+
+    if (this._sector.isCheckedOut()) {
+      this.setColor(1, 0, 0, 1.0);
+      return;
+    }
+
     const sector = this._sector;
     if (sector.isReleased()) {
       this.setColor(1.0, 1.0, 0.0, 1.0); // Green
@@ -68,11 +74,7 @@ export class GenMapTile {
       sector.getBitFlag(Sector.FlagIds.isWorldGenDone) &&
       sector.getBitFlag(Sector.FlagIds.isWorldDecorDone) &&
       sector.getBitFlag(Sector.FlagIds.isWorldSunDone) &&
-      sector.getBitFlag(Sector.FlagIds.isWorldPropagationDone) &&
-      DivineVoxelEngineRender.instance.meshRegister.sectors.get(
-        this.dimensonId,
-        ...sector.position
-      )
+      sector.getBitFlag(Sector.FlagIds.isWorldPropagationDone)
     ) {
       this.setColor(0.0, 1.0, 0.0, 1.0); // Green
       return;

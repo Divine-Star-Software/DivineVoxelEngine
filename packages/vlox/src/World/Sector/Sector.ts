@@ -2,17 +2,13 @@ import { Section, SectionData } from "../Section/Section.js";
 import { Vec2Array, Vec3Array } from "@amodx/math";
 import { WorldSpaces } from "../WorldSpaces";
 import {
-  getBitArrayIndex,
   getBitAtomicArrayIndex,
-  setBitArrayIndex,
   setBitAtomicArrayIndex,
 } from "../../Util/Binary/BinaryArrays.js";
 import { SectorState, SectorStateDefaultBitFlags } from "./SectorState.js";
-import {
-  forceMultipleOf2,
-  forceMultipleOf4,
-} from "../../Util/Binary/BinaryFunctions.js";
+import { forceMultipleOf4 } from "../../Util/Binary/BinaryFunctions.js";
 import { WorldRegister } from "../WorldRegister.js";
+import { EngineSettings } from "../../Settings/EngineSettings.js";
 
 export interface SectorData {
   buffer: ArrayBufferLike;
@@ -28,6 +24,7 @@ const temp: Vec2Array = [0, 0];
 export class Sector {
   static FlagIds = SectorState.Flags;
   static TimeStampIds = SectorState.TimeStamps;
+
   static GetHeaderSize() {
     return forceMultipleOf4(
       //12 bytes fot flags
@@ -36,6 +33,7 @@ export class Sector {
         12 * 4
     );
   }
+
   static GetBufferSize() {
     const totalSections =
       WorldSpaces.sector.bounds.y / WorldSpaces.section.bounds.y;
@@ -43,7 +41,9 @@ export class Sector {
   }
 
   static CreateNewBuffer() {
-    return new SharedArrayBuffer(this.GetBufferSize());
+    return EngineSettings.settings.memoryAndCPU.useSharedMemory
+      ? new SharedArrayBuffer(this.GetBufferSize())
+      : new ArrayBuffer(this.GetBufferSize());
   }
 
   sections: Section[] = [];
@@ -57,6 +57,14 @@ export class Sector {
   }
   isReleased() {
     return this._released;
+  }
+
+  private _checkedOut = false;
+  setCheckedOut(checkedOut: boolean) {
+    this._checkedOut = checkedOut;
+  }
+  isCheckedOut() {
+    return this._checkedOut || this.buffer.byteLength == 0;
   }
 
   setBuffer(buffer: ArrayBufferLike) {
@@ -130,7 +138,6 @@ export class Sector {
       yield section;
     }
   }
-
 
   storeFlags() {
     const stored: Record<string, boolean> = {};

@@ -1,11 +1,7 @@
-import { StartWorld } from "@divinevoxel/vlox/Init/StartWorld";
 import { WorldSimulation } from "@divinevoxel/vlox/WorldSimulation";
 import { TickInterval } from "@divinevoxel/vlox/Util/TickInterval";
 import { Threads } from "@amodx/threads";
-import RegisterCoreTasksWorld from "@dvegames/vlox/Core/Tasks/World/RegisterTasksWorld";
 import { DivineVoxelEngineWorld } from "@divinevoxel/vlox/Contexts/World/DivineVoxelEngineWorld";
-import { AdvancedBrush } from "@divinevoxel/vlox/Tools/Brush/AdvancedBrushTool";
-import { TaskTool } from "@divinevoxel/vlox/Tools/Tasks/TasksTool";
 export function SimulationTest(DVEW: DivineVoxelEngineWorld) {
   WorldSimulation.init({
     parent: DVEW.threads.parent,
@@ -42,7 +38,7 @@ export function SimulationTest(DVEW: DivineVoxelEngineWorld) {
     const brush = dimension.getBrush();
 
     console.warn("got dimension", dimension, dimension.simulation);
-  /*   setTimeout(async () => {
+    /*   setTimeout(async () => {
       await brush
         .setId("dve_liquid_dream_ether")
         .setLevel(7)

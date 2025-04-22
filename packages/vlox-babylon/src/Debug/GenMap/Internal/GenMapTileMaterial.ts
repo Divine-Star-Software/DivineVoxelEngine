@@ -1,4 +1,7 @@
-import { Effect, ShaderMaterial, Scene } from "@babylonjs/core";
+import { Effect } from "@babylonjs/core/Materials/effect";
+import { ShaderMaterial } from "@babylonjs/core/Materials/shaderMaterial";
+import { Scene } from "@babylonjs/core/scene";
+
 export class GenMapTileMaterial {
   static Code = {
     Vertex: {
@@ -69,10 +72,18 @@ void main() {
 
     const shaderMaterial = new ShaderMaterial(shaderName, scene, shaderName, {
       uniforms: ["viewProjection"],
-      attributes: ["position", "world0", "world1", "world2", "world3", "tileColor","uv"],
+      attributes: [
+        "position",
+        "world0",
+        "world1",
+        "world2",
+        "world3",
+        "tileColor",
+        "uv",
+      ],
     });
 
-  //  shaderMaterial.wireframe = true;
+    //  shaderMaterial.wireframe = true;
     return shaderMaterial;
   }
 }

@@ -9,6 +9,7 @@ import InitWorldDataSync from "../Contexts/Base/Remote/InitWorldDataSync";
 import InitArchiveTasks from "../World/Archive/InitTasks";
 import { DivineVoxelEngineGenerator } from "../Contexts/Generator";
 export async function StartGenerator(data: {} = {}) {
+  WorldRegister.proxy = true;
   const DVEG = new DivineVoxelEngineGenerator();
 
   DivineVoxelEngineGenerator.environment = Environment.isNode()
@@ -42,7 +43,7 @@ export async function StartGenerator(data: {} = {}) {
   });
 
   InitArchiveTasks({ worldThread: DVEG.threads.world });
-  InitWorldDataSync();
+  InitWorldDataSync(DVEG.threads.world);
   InitPropagationTasks();
   InitUpdateTasks();
   InitWorldGenerationTasks({ worldThread: DVEG.threads.world });

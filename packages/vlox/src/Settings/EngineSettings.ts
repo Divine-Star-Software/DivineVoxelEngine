@@ -1,6 +1,7 @@
 import { EngineSettingsData } from "./EngineSettings.types.js";
 import { Environment } from "../Util/Environment";
 import { TypedEventTarget } from "../Util/TypedEventTarget.js";
+import { Thread } from "@amodx/threads";
 type EngineSettingsEvents = {
   synced: { settings: EngineSettingsClass };
 };
@@ -16,6 +17,7 @@ class EngineSettingsClass extends TypedEventTarget<EngineSettingsEvents> {
   get doSunPropagation() {
     return this.settings.propagation.sunLightEnabled == true;
   }
+
   get doRGBPropagation() {
     return this.settings.propagation.rgbLightEnabled == true;
   }
@@ -23,17 +25,21 @@ class EngineSettingsClass extends TypedEventTarget<EngineSettingsEvents> {
   get doLight() {
     return this.doRGBPropagation || this.doSunPropagation;
   }
+
   get doFlow() {
     return this.settings.propagation.flowEnabled;
   }
+
   get doPower() {
     return this.settings.propagation.powerEnabled;
   }
+
   getSettings() {
     return this.settings;
   }
 
   syncSettings(data: EngineSettingsData) {
+    console.warn("SYNC SETTINGS", Thread.name, data.memoryAndCPU);
     //safetly set data without prototype pollution
     for (const settingsKey of Object.keys(data)) {
       if (settingsKey.includes("__")) {

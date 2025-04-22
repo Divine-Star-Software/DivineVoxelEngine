@@ -1,6 +1,6 @@
 import { IOcclusionFace } from "../Classes/OcclusionFace";
 import { VoxelRelativeCubeIndex } from "../../Indexing/VoxelRelativeCubeIndex";
-import { Vec3Array, Vec3ArrayLike, Vector3Like } from "@amodx/math";
+import { Vec3Array, Vec3ArrayLike } from "@amodx/math";
 import { StringPalette } from "../../../../Util/StringPalette";
 import { VoxelModelRuleBuilderRegister } from "../VoxelModelRuleBuilderRegister";
 import { OcclusionFaceRegister } from "../Classes/OcclusionFaceRegister";
@@ -8,6 +8,7 @@ import { AOOcclusionFaceIndex } from "../../Indexing/AOOcclusionFaceIndex";
 import { CulledOcclusionFaceIndex } from "../../Indexing/CulledOcclusionFaceIndex";
 import { OcclusionQuadFace } from "../Classes/OcclusionQuadFace";
 import { OcclusionTriangleFace } from "../Classes/OcclusionTriangleFace";
+import { EngineSettings } from "../../../../Settings/EngineSettings";
 
 class OcculsionBox {
   constructor(
@@ -148,13 +149,20 @@ export function BuildRules(geoPalette: StringPalette) {
   const totalFaces = OcclusionFaceRegister.faces.size;
   const totalAOReusltsSize = totalFaces * 4 * cubeIndexSize * geoPalette.size;
 
+  const aoIndexBufferSize = Math.ceil(totalAOReusltsSize / 8);
   const aoIndex = new AOOcclusionFaceIndex({
-    buffer: new SharedArrayBuffer(Math.ceil(totalAOReusltsSize / 8)),
+    buffer: EngineSettings.settings.memoryAndCPU.useSharedMemory
+      ? new SharedArrayBuffer(aoIndexBufferSize)
+      : new ArrayBuffer(aoIndexBufferSize),
     totalFaces,
   });
+
   const cullIndexResultsSize = totalFaces * cubeIndexSize * geoPalette.size;
+  const cullIndexBufferSize = Math.ceil(cullIndexResultsSize / 8);
   const cullIndex = new CulledOcclusionFaceIndex({
-    buffer: new SharedArrayBuffer(Math.ceil(cullIndexResultsSize / 8)),
+    buffer: EngineSettings.settings.memoryAndCPU.useSharedMemory
+      ? new SharedArrayBuffer(cullIndexBufferSize)
+      : new ArrayBuffer(cullIndexBufferSize),
     totalFaces,
   });
 

@@ -3,8 +3,10 @@ import { DivineVoxelEngineNexus } from "../Contexts/Nexus/DivineVoxelEngineNexus
 import { Environment } from "../Util/Environment";
 import { Threads } from "@amodx/threads";
 import InitWorldDataSync from "../Contexts/Base/Remote/InitWorldDataSync";
+import { WorldRegister } from "../World/WorldRegister";
 
 export async function StartNexus(data: {} = {}) {
+  WorldRegister.proxy = true;
   const DVEN = new DivineVoxelEngineNexus(data || {});
   DivineVoxelEngineNexus.environment = Environment.isNode()
     ? "node"
@@ -22,7 +24,7 @@ export async function StartNexus(data: {} = {}) {
       ready = true;
     },
   });
-  InitWorldDataSync();
+  InitWorldDataSync(DVEN.threads.world);
   await new Promise((resolve) => {
     const readyCheck = () => {
       if (ready) return resolve(true);

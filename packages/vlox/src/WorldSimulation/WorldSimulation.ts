@@ -81,11 +81,11 @@ export class WorldSimulation {
   }
 
   static tick(generationOnly = false) {
-    for (const [, dimenion] of WorldSimulationDimensions._dimensions) {
-      dimenion.incrementTick();
-      for (let i = 0; i < dimenion.activeSectors._sectors.length; i++) {
-        dimenion.activeSectors._sectors[i].tickUpdate();
-        dimenion.activeSectors._sectors[i].generateUpdate();
+    for (const [, dimension] of WorldSimulationDimensions._dimensions) {
+      dimension.incrementTick();
+      for (let i = 0; i < dimension.activeSectors._sectors.length; i++) {
+        dimension.activeSectors._sectors[i].tickUpdate();
+        dimension.activeSectors._sectors[i].generateUpdate();
       }
     }
     let needActiveSectorUpdate = false;

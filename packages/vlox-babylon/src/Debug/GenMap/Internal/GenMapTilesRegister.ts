@@ -3,7 +3,6 @@ import { LocationData } from "@divinevoxel/vlox/Math";
 import { WorldSpaces } from "@divinevoxel/vlox/World/WorldSpaces";
 import { GenMapTile } from "./GenMapTile";
 import { GenMap } from "./GenMap";
-import { Sector } from "@divinevoxel/vlox/World/Sector";
 
 export type WorldMapTilesRegisterColumn = {
   location: LocationData;

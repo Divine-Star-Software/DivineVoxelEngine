@@ -1,5 +1,5 @@
 import { EntityTool } from "./EntityTool.js";
-import { Matrix, Vector3 } from "@babylonjs/core";
+import { Matrix } from "@babylonjs/core/Maths/math.vector.js";
 const identity = Matrix.Identity();
 const tempMatrix = new Matrix();
 export class EntityInstance {

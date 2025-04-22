@@ -8,7 +8,10 @@ import InitWorldDataSync from "../Contexts/Base/Remote/InitWorldDataSync";
 import InitMesher from "../Mesher/InitMesher";
 import { DivineVoxelEngineMesher } from "../Contexts/Mesher";
 export async function StartMesher(data: {} = {}) {
+
+  WorldRegister.proxy = true;
   const DVEM = new DivineVoxelEngineMesher();
+
 
   DivineVoxelEngineMesher.environment = Environment.isNode()
     ? "node"
@@ -41,7 +44,7 @@ export async function StartMesher(data: {} = {}) {
     readyCheck();
   });
 
-  InitWorldDataSync();
+  InitWorldDataSync(DVEM.threads.world);
   InitMesherTasks(DVEM.threads.parent);
   return DVEM;
 }

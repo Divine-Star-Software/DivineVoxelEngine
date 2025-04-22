@@ -112,7 +112,7 @@ export function App() {
       });
       canvasResized.observe(canvas!);
       const scene = new Scene(engine);
-      scene.clearColor.set(1,1,1,0);
+      scene.clearColor.set(1, 1, 1, 0);
       const light = new HemisphericLight("", new Vector3(0, 0, 0), scene);
       light.specular.set(0, 0, 0);
 
@@ -132,6 +132,9 @@ export function App() {
         mesherWorkers,
         generatorWorkers,
         voxels: DVEVoxelData,
+        memoryAndCPU: {
+         useSharedMemory: false,
+        },
       });
 
       await CreateDisplayIndex(DVEVoxelData);
@@ -174,7 +177,7 @@ export function App() {
       nodes.canvas = canvas!;
       nodes.engine = engine;
 
-      const map = new DebugGenMap();
+      const map = new DebugGenMap(DVER);
       map.init(camera.globalPosition, Vector3.Zero(), 0);
 
       Debug(renderer);
