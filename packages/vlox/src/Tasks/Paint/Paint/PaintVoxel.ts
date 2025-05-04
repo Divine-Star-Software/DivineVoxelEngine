@@ -1,12 +1,18 @@
 import { EngineSettings as ES } from "../../../Settings/EngineSettings.js";
-import { PaintVoxelTask } from "../../Tasks.types.js";
+import { PaintVoxelTask, VoxelUpdateData } from "../../Tasks.types.js";
 import { VoxelUpdateTask } from "../../VoxelUpdateTask.js";
 import { canUpdate, updateArea, updatePowerTask } from "../Common.js";
 import { PowerUpdate } from "../../Propagation/Power/PowerUpdate.js";
+import type { LocationData } from "../../../Math/Location";
+import { RawVoxelData } from "../../../Voxels/Types/Voxel.types.js"
 
 const tasks = new VoxelUpdateTask();
 
-export function PaintVoxel([location, raw, updateData]: PaintVoxelTask) {
+export function PaintVoxel(
+  location: LocationData,
+  raw: RawVoxelData,
+  updateData: VoxelUpdateData
+) {
   const [dimension, x, y, z] = location;
   if (!canUpdate(x, y, z, updateData)) return;
   tasks.setOriginAt(location);
@@ -32,6 +38,4 @@ export function PaintVoxel([location, raw, updateData]: PaintVoxelTask) {
       PowerUpdate(tasks);
     }
   }
-
-
 }

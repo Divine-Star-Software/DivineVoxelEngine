@@ -1,6 +1,10 @@
 import { Vec3Array, Vec3ArrayLike, Vector3Like } from "@amodx/math";
 import { DataCursorInterface } from "../../Cursor/DataCursor.interface";
 import { VoxelPickResult } from "../VoxelPickResult";
+import {
+  closestUnitNormal,
+  closestVoxelFace,
+} from "../../../Math/UtilFunctions";
 
 const step = (val: number) => (val > 0 ? 1 : val < 0 ? -1 : 0);
 const calculateNormal = (
@@ -75,6 +79,7 @@ export default function PickVoxel(
 
     pos[axis] += stepDir[axis];
     tMax[axis] += tDelta[axis];
+    if (!cursor.inBounds(...pos)) return null;
     const voxel = cursor.getVoxel(...pos);
     if (voxel && voxel.isRenderable()) {
       const normal = calculateNormal(
@@ -91,15 +96,24 @@ export default function PickVoxel(
         ]
       );
 
+      const rd = Vector3Like.Create(...rayDirection);
+      const urd = Vector3Like.FromArray(closestUnitNormal(rd));
+      const n = Vector3Like.Create(...normal);
+      const un = Vector3Like.FromArray(closestUnitNormal(n));
       return new VoxelPickResult(
         Vector3Like.Create(...rayStart),
-        Vector3Like.Create(...rayDirection),
+        rd,
         rayLength,
-        voxel,
+        voxel.getRaw(),
         Vector3Like.Create(...pos),
-        Vector3Like.Create(...normal),
+        n,
         tMax[axis],
-        Vector3Like.Create(...Vec3ArrayLike.Add(pos, normal))
+        Vector3Like.Create(...Vec3ArrayLike.Add(pos, normal)),
+        Vector3Like.FromArray(closestUnitNormal(rd)),
+        closestVoxelFace(urd),
+        Vector3Like.FromArray(closestUnitNormal(n)),
+        closestVoxelFace(un),
+        0
       );
     }
   }

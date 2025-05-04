@@ -1,9 +1,10 @@
-import { EraseVoxelPathTask } from "../../Tasks.types";
+import { EraseVoxelPathTask, VoxelUpdateData } from "../../Tasks.types";
 import { VoxelUpdateTask } from "../../VoxelUpdateTask";
 import { canUpdate, updateArea } from "../Common";
 
-import { Vector3Like } from "@amodx/math";
+import { Vec3Array, Vector3Like } from "@amodx/math";
 import { VoxelPath } from "../../../Templates/Path/VoxelPath";
+import { VoxelPathData } from "../../../Templates/Path/VoxelPath.types";
 
 const tasks = new VoxelUpdateTask();
 const min = Vector3Like.Create();
@@ -18,12 +19,12 @@ const updateBounds = (x: number, y: number, z: number) => {
   if (y > max.y) max.y = y;
   if (z > max.z) max.z = z;
 };
-export default function EraseVoxelPath([
-  dimension,
-  [ox, oy, oz],
-  voxelPathData,
-  updateData,
-]: EraseVoxelPathTask) {
+export default function EraseVoxelPath(
+  dimension: number,
+  [ox,oy,oz]: Vec3Array,
+  voxelPathData: VoxelPathData,
+  updateData: VoxelUpdateData
+) {
   tasks.setOriginAt([dimension, ox, oy, oz]);
   const path = new VoxelPath(voxelPathData);
 

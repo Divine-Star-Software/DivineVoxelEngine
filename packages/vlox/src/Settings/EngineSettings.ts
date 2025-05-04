@@ -39,7 +39,6 @@ class EngineSettingsClass extends TypedEventTarget<EngineSettingsEvents> {
   }
 
   syncSettings(data: EngineSettingsData) {
-    console.warn("SYNC SETTINGS", Thread.name, data.memoryAndCPU);
     //safetly set data without prototype pollution
     for (const settingsKey of Object.keys(data)) {
       if (settingsKey.includes("__")) {
@@ -73,3 +72,7 @@ class EngineSettingsClass extends TypedEventTarget<EngineSettingsEvents> {
 }
 
 export const EngineSettings = new EngineSettingsClass();
+
+if (typeof SharedArrayBuffer === "undefined") {
+  EngineSettings.settings.memoryAndCPU.useSharedMemory = false;
+}

@@ -1,8 +1,13 @@
 import type { Vec3Array } from "@amodx/math";
 import type { LocationData } from "../Math/index.js";
 import type { RawVoxelData } from "../Voxels/Types/Voxel.types.js";
-import { IVoxelTemplateData } from "../Templates/VoxelTemplates.types.js";
-import { VoxelPathData } from "../Templates/Path/VoxelPath.types.js";
+import type { IVoxelTemplateData } from "../Templates/VoxelTemplates.types.js";
+import type { VoxelPathData } from "../Templates/Path/VoxelPath.types.js";
+import type { EraseVoxel } from "./Paint/Erase/EraseVoxel.js";
+import type EraseVoxelTemplate from "./Paint/Erase/EraseVoxelTemplate.js";
+import type EraseVoxelPath from "./Paint/Erase/EraseVoxelPath.js";
+import { PaintVoxel } from "./Paint/Paint/PaintVoxel.js";
+import PaintVoxelTemplate from "./Paint/Paint/PaintVoxelTemplate.js";
 
 export type VoxelUpdateData = {
   /**An array of allowed areas to update in. If not set will be ignored.*/
@@ -13,17 +18,8 @@ export type VoxelUpdateData = {
   paintMode?: "keep" | "destory";
 };
 
-export type PaintVoxelTask = [
-  location: LocationData,
-  raw: RawVoxelData,
-  datA: VoxelUpdateData,
-];
-export type PaintVoxelTemplateTask = [
-  dimension: number,
-  start: Vec3Array,
-  templateData: IVoxelTemplateData<any>,
-  data: VoxelUpdateData,
-];
+export type PaintVoxelTask = Parameters<typeof PaintVoxel>;
+export type PaintVoxelTemplateTask = Parameters<typeof PaintVoxelTemplate>
 export type PaintVoxelPathTask = [
   dimension: number,
   start: Vec3Array,
@@ -31,19 +27,9 @@ export type PaintVoxelPathTask = [
   data: VoxelUpdateData,
 ];
 
-export type EraseVoxelTask = [location: LocationData, data: VoxelUpdateData];
-export type EraseVoxelTemplateTask = [
-  dimension: number,
-  start: Vec3Array,
-  templateData: IVoxelTemplateData<any>,
-  data: VoxelUpdateData,
-];
-export type EraseVoxelPathTask = [
-  dimension: number,
-  start: Vec3Array,
-  pathData: VoxelPathData,
-  data: VoxelUpdateData,
-];
+export type EraseVoxelTask = Parameters<typeof EraseVoxel>;
+export type EraseVoxelTemplateTask = Parameters<typeof EraseVoxelTemplate>;
+export type EraseVoxelPathTask = Parameters<typeof EraseVoxelPath>;
 
 export type WorldLockTasks = [
   dimension: number,

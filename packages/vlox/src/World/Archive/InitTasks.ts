@@ -8,7 +8,7 @@ import {
   compressBinaryObject,
   expandBinaryObject,
 } from "../../Util/BinaryObject";
-import { BinaryBufferData } from "Util/Binary/BinaryBuffer";
+import { BinaryBufferData } from "../../Util/Binary/BinaryBuffer";
 
 function runArchiveSector(
   location: LocationData
@@ -105,9 +105,9 @@ export default function InitTasks(props: { worldThread: Thread }) {
           ],
           importedSector.buffer,
         ],
-        importedSector.buffer instanceof SharedArrayBuffer
-          ? []
-          : [importedSector.buffer]
+        importedSector.buffer instanceof ArrayBuffer
+          ? [importedSector.buffer]
+          : []
       );
     }
   );
@@ -119,9 +119,9 @@ export default function InitTasks(props: { worldThread: Thread }) {
       props.worldThread.runTask(
         "load-sector",
         [location, importedSector.buffer],
-        importedSector.buffer instanceof SharedArrayBuffer
-          ? []
-          : [importedSector.buffer]
+        importedSector.buffer instanceof ArrayBuffer
+          ? [importedSector.buffer]
+          : []
       );
     }
   );

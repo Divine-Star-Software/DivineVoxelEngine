@@ -1,6 +1,7 @@
 import { FinalCompiledVoxelModelData } from "../Models/CompiledVoxelModel.types";
 import { SchemaRegister } from "../State/SchemaRegister";
 import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister";
+import { EngineStats } from "../../Stats/EngineStats";
 
 type BuildPaletteDataProps = {
   models: FinalCompiledVoxelModelData;
@@ -39,7 +40,7 @@ export function BuildPaletteData(props: BuildPaletteDataProps) {
 
   for (const [, model] of models) {
     const schema = SchemaRegister.getModelSchema(model.id);
-    
+
     const valuePairs: [key: string, values: string[]][] = [];
 
     for (const node of schema.nodes) {
@@ -114,7 +115,8 @@ export function BuildPaletteData(props: BuildPaletteDataProps) {
     }
   }
 
-  console.warn("FINAL PALETTE SIZE",finalPalette.length);
+  EngineStats.palette.paletteSize = finalPalette.length;
+  
   VoxelPalettesRegister.voxels = finalPalette;
   VoxelPalettesRegister.voxelRecord = finalPaletteRecord;
 }

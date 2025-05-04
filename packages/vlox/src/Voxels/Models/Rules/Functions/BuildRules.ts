@@ -9,6 +9,7 @@ import { CulledOcclusionFaceIndex } from "../../Indexing/CulledOcclusionFaceInde
 import { OcclusionQuadFace } from "../Classes/OcclusionQuadFace";
 import { OcclusionTriangleFace } from "../Classes/OcclusionTriangleFace";
 import { EngineSettings } from "../../../../Settings/EngineSettings";
+import { EngineStats } from "../../../../Stats/EngineStats";
 
 class OcculsionBox {
   constructor(
@@ -173,7 +174,8 @@ export function BuildRules(geoPalette: StringPalette) {
   const otherQuadFace = new OcclusionQuadFace();
   const otherTriangleFace = new OcclusionTriangleFace();
 
-  console.warn("build rules", faces.length);
+
+  EngineStats.geomtry.faces = faces.length;
 
   for (let faceIndex = 0; faceIndex < faces.length; faceIndex++) {
     const faceData = OcclusionFaceRegister.faceIndex[faceIndex];

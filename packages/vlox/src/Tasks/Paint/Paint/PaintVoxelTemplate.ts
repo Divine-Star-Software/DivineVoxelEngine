@@ -1,17 +1,19 @@
-import { PaintVoxelTemplateTask } from "../../Tasks.types";
+import { PaintVoxelTemplateTask, VoxelUpdateData } from "../../Tasks.types";
 import { VoxelUpdateTask } from "../../VoxelUpdateTask";
 import { canUpdate, updateArea } from "../Common";
 import { VoxelTemplateRegister } from "../../../Templates/VoxelTempateRegister";
-import { RawVoxelData } from "../../../Voxels";
+import { RawVoxelData } from "../../../Voxels/Types/Voxel.types";
+import { Vec3Array } from "@amodx/math";
+import { IVoxelTemplateData } from "../../../Templates/VoxelTemplates.types";
 
 const tasks = new VoxelUpdateTask();
 const raw: RawVoxelData = [0, 0, 0, 0];
-export default function PaintVoxelTemplate([
-  dimension,
-  [ox, oy, oz],
-  templateData,
-  updateData,
-]: PaintVoxelTemplateTask) {
+export default function PaintVoxelTemplate(
+  dimension: number,
+  [ox, oy, oz]: Vec3Array,
+  templateData: IVoxelTemplateData<any>,
+  updateData: VoxelUpdateData
+) {
   const voxelTemplate = VoxelTemplateRegister.create(templateData);
   tasks.setOriginAt([dimension, ox, oy, oz]);
 
@@ -38,5 +40,4 @@ export default function PaintVoxelTemplate([
   }
 
   updateArea(tasks, ox, oy, oz, ox + sx, oy + sy, oz + sz);
-
 }

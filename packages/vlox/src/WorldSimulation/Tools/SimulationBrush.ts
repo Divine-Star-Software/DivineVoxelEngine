@@ -8,8 +8,13 @@ import { VoxelTagsRegister } from "../../Voxels/Data/VoxelTagsRegister";
 import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister";
 import { IVoxelTemplate } from "../../Templates/VoxelTemplates.types";
 import { VoxelUpdateData } from "../../Tasks/Tasks.types";
-import { VoxelPathData } from "Templates/Path/VoxelPath.types";
-import { VoxelPath } from "Templates/Path/VoxelPath";
+import { VoxelPath } from "../../Templates/Path/VoxelPath";
+import { PaintVoxel } from "../../Tasks/Paint/Paint/PaintVoxel";
+import PaintVoxelTemplate from "../../Tasks/Paint/Paint/PaintVoxelTemplate";
+import PaintVoxelPath from "../../Tasks/Paint/Paint/PaintVoxelPath";
+import { EraseVoxel } from "../../Tasks/Paint/Erase/EraseVoxel";
+import EraseVoxelTemplate from "../../Tasks/Paint/Erase/EraseVoxelTemplate";
+import EraseVoxelPath from "../../Tasks/Paint/Erase/EraseVoxelPath";
 
 export class SimulationBrush extends BrushTool {
   private taskTool: TaskTool;
@@ -26,8 +31,21 @@ export class SimulationBrush extends BrushTool {
     this.taskTool = WorldSimulationTools.taskTool;
   }
 
-  paint() {
-    throw new Error(`Must use paint async`);
+  paint(updateData: VoxelUpdateData = {}) {
+    this._mapLocation();
+    const x = this.x;
+    const y = this.y;
+    const z = this.z;
+    const tags =
+      VoxelTagsRegister.VoxelTags[
+        VoxelPalettesRegister.voxelIds.getNumberId(this.data.id)
+      ];
+
+    const behavior = VoxelBehaviorsRegister.get(
+      tags["dve_simulation_behavior"] || "default"
+    );
+    PaintVoxel(this._location, this.getRaw(), updateData);
+    behavior.onPaint(this._dimension.simulation, x, y, z);
     return this;
   }
 
@@ -53,8 +71,41 @@ export class SimulationBrush extends BrushTool {
     behavior.onPaint(this._dimension.simulation, x, y, z);
   }
 
-  paintTemplate(voxelTemplate: IVoxelTemplate) {
-    throw new Error(`Must use paint template  async`);
+  paintTemplate(
+    voxelTemplate: IVoxelTemplate,
+    updateData: VoxelUpdateData = {}
+  ) {
+    PaintVoxelTemplate(
+      this.dimension,
+      [this.x, this.y, this.z],
+      voxelTemplate.toJSON(),
+      updateData
+    );
+
+    const { x: ox, y: oy, z: oz } = this;
+    const [sx, sy, sz] = voxelTemplate.bounds;
+    for (let x = 0; x < sx; x++) {
+      for (let y = 0; y < sy; y++) {
+        for (let z = 0; z < sz; z++) {
+          const tx = ox + x;
+          const ty = oy + y;
+          const tz = oz + z;
+          const voxel = this.dataCursor.getVoxel(tx, ty, tz);
+          if (voxelTemplate.isAir(voxelTemplate.getIndex(x, y, z))) continue;
+          if (!voxel) continue;
+          const tags =
+            VoxelTagsRegister.VoxelTags[
+              VoxelPalettesRegister.voxelIds.getNumberId(this.data.id)
+            ];
+
+          const behavior = VoxelBehaviorsRegister.get(
+            tags["dve_simulation_behavior"] || "default"
+          );
+
+          behavior.onPaint(this._dimension.simulation, tx, ty, tz);
+        }
+      }
+    }
     return this;
   }
 
@@ -94,10 +145,18 @@ export class SimulationBrush extends BrushTool {
     }
     return this;
   }
-  paintPath(voxelTemplate: VoxelPath) {
-    throw new Error(`Must use paint path async`);
+
+  paintPath(voxelPath: VoxelPath, updateData: VoxelUpdateData = {}) {
+    PaintVoxelPath(
+      this.dimension,
+      [this.x, this.y, this.z],
+      voxelPath.toJSON(),
+      updateData
+    );
+
     return this;
   }
+
   async paintPathAsync(voxelPath: VoxelPath, updateData: VoxelUpdateData = {}) {
     await this.taskTool.voxel.paintPath.runAsync([
       this.dimension,
@@ -109,10 +168,21 @@ export class SimulationBrush extends BrushTool {
     return this;
   }
 
-  erase() {
-    throw new Error(`Must use erase async`);
+  erase(updateData: VoxelUpdateData = {}) {
+    this._mapLocation();
+    const x = this.x;
+    const y = this.y;
+    const z = this.z;
+    const voxel = this._dimension.simulation.getVoxelForUpdate(x, y, z);
+    const tags = VoxelTagsRegister.VoxelTags[voxel.getVoxelId()];
+    const behavior = VoxelBehaviorsRegister.get(
+      tags["dve_simulation_behavior"] || "default"
+    );
+    EraseVoxel(this._location, updateData);
+    behavior.onErase(this._dimension.simulation, x, y, z);
     return this;
   }
+
   async eraseAsync(updateData: VoxelUpdateData = {}) {
     this._mapLocation();
     const x = this.x;
@@ -126,6 +196,45 @@ export class SimulationBrush extends BrushTool {
     await this.taskTool.voxel.erase.runAsync([this._location, updateData]);
     behavior.onErase(this._dimension.simulation, x, y, z);
   }
+  eraseTemplate(
+    voxelTemplate: IVoxelTemplate,
+    updateData: VoxelUpdateData = {}
+  ) {
+    const { x: ox, y: oy, z: oz } = this;
+    const [sx, sy, sz] = voxelTemplate.bounds;
+    for (let x = 0; x < sx; x++) {
+      for (let y = 0; y < sy; y++) {
+        for (let z = 0; z < sz; z++) {
+          const tx = ox + x;
+          const ty = oy + y;
+          const tz = oz + z;
+          if (voxelTemplate.isAir(voxelTemplate.getIndex(x, y, z))) continue;
+          const voxel = this.dataCursor.getVoxel(tx, ty, tz);
+          if (!voxel) continue;
+          const tags =
+            VoxelTagsRegister.VoxelTags[
+              VoxelPalettesRegister.voxelIds.getNumberId(this.data.id)
+            ];
+
+          const behavior = VoxelBehaviorsRegister.get(
+            tags["dve_simulation_behavior"] || "default"
+          );
+
+          behavior.onErase(this._dimension.simulation, tx, ty, tz);
+        }
+      }
+    }
+
+    EraseVoxelTemplate(
+      this.dimension,
+      [this.x, this.y, this.z],
+      voxelTemplate.toJSON(),
+      updateData
+    );
+
+    return this;
+  }
+
   async eraseTemplateAsync(
     voxelTemplate: IVoxelTemplate,
     updateData: VoxelUpdateData = {}
@@ -164,10 +273,17 @@ export class SimulationBrush extends BrushTool {
     return this;
   }
 
-  erasePath(voxelTemplate: VoxelPath) {
-    throw new Error(`Must use erase path async`);
+  erasePath(voxelPath: VoxelPath, updateData: VoxelUpdateData = {}) {
+    EraseVoxelPath(
+      this.dimension,
+      [this.x, this.y, this.z],
+      voxelPath.toJSON(),
+      updateData
+    );
+
     return this;
   }
+
   async erasePathAsync(voxelPath: VoxelPath, updateData: VoxelUpdateData = {}) {
     await this.taskTool.voxel.erasePath.runAsync([
       this.dimension,

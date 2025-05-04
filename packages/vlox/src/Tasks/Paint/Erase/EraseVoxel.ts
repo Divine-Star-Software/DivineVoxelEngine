@@ -5,11 +5,14 @@ import {
   PowerRemove,
   PowerUpdate,
 } from "../../Propagation/Power/PowerUpdate.js";
-import { EraseVoxelTask } from "../../../Tasks/Tasks.types.js";
-
+import { VoxelUpdateData } from "../../../Tasks/Tasks.types.js";
+import type { LocationData } from "../../../Math/Location";
 const tasks = new VoxelUpdateTask();
 
-export function EraseVoxel([location, updateData]: EraseVoxelTask) {
+export function EraseVoxel(
+  location: LocationData,
+  updateData: VoxelUpdateData
+) {
   const [dimension, x, y, z] = location;
   if (!canUpdate(x, y, z, updateData)) return;
   tasks.setOriginAt(location);
@@ -35,5 +38,4 @@ export function EraseVoxel([location, updateData]: EraseVoxelTask) {
   }
 
   tasks.bounds.markDisplayDirty();
-
 }

@@ -236,8 +236,7 @@ export const updateArea = (
   ey: number,
   ez: number
 ) => {
-  const t = performance.now();
-  console.log("update area", [sx, sy, sz], [ex, ey, ez]);
+
   for (let x = sx - 1; x < ex + 1; x++) {
     for (let y = sy - 1; y < ey + 1; y++) {
       for (let z = sz - 1; z < ez + 1; z++) {
@@ -250,16 +249,10 @@ export const updateArea = (
     }
   }
 
-  console.log("task totals", {
-    rgb: [tasks.rgb.update.length, tasks.rgb.remove.length],
-    sun: [tasks.sun.update.length, tasks.sun.remove.length],
-  });
   SunRemove(tasks);
   RGBRemove(tasks);
   SunUpdate(tasks);
   RGBUpdate(tasks);
 
   tasks.bounds.markDisplayDirty();
-
-  console.log("updated", performance.now() - t);
 };

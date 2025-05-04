@@ -1,18 +1,20 @@
-import { EraseVoxelTemplateTask } from "../../Tasks.types";
+import { EraseVoxelTemplateTask, VoxelUpdateData } from "../../Tasks.types";
 import { VoxelUpdateTask } from "../../VoxelUpdateTask";
 import { canUpdate, updateArea } from "../Common";
 import { VoxelTemplateRegister } from "../../../Templates/VoxelTempateRegister";
 import { RawVoxelData } from "../../../Voxels";
+import { Vec3Array } from "@amodx/math";
+import { IVoxelTemplateData } from "Templates/VoxelTemplates.types";
 
 const tasks = new VoxelUpdateTask();
 
 const raw: RawVoxelData = [0, 0, 0, 0];
-export default function EraseVoxelTemplate([
-  dimension,
-  [ox, oy, oz],
-  templateData,
-  updateData,
-]: EraseVoxelTemplateTask) {
+export default function EraseVoxelTemplate(
+  dimension: number,
+  [ox,oy,oz]: Vec3Array,
+  templateData: IVoxelTemplateData<any>,
+  updateData: VoxelUpdateData
+) {
   const voxelTemplate = VoxelTemplateRegister.create(templateData);
   tasks.setOriginAt([dimension, ox, oy, oz]);
 

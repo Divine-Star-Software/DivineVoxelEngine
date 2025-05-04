@@ -22,7 +22,6 @@ export default function ({
 
   //normal array buffers only
   if (!EngineSettings.settings.memoryAndCPU.useSharedMemory) {
-    console.error("INIT NORMAL ARRAY BUFFER TASKS");
     Threads.registerTask<[LocationData, ArrayBufferLike]>(
       WorldDataSyncIds.CheckInSector,
       async (data) => {

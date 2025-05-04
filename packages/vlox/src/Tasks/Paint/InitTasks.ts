@@ -16,23 +16,23 @@ import PaintVoxelPath from "./Paint/PaintVoxelPath";
 import EraseVoxelPath from "./Erase/EraseVoxelPath";
 export default function () {
   Threads.registerTask<PaintVoxelTask>(TasksIds.PaintVoxel, (data) =>
-    PaintVoxel(data)
+    PaintVoxel(...data)
   );
   Threads.registerTask<PaintVoxelTemplateTask>(
     TasksIds.PaintVoxelTemplate,
-    (data) => PaintVoxelTemplate(data)
+    (data) => PaintVoxelTemplate(...data)
   );
   Threads.registerTask<PaintVoxelPathTask>(TasksIds.PaintVoxelPath, (data) =>
-    PaintVoxelPath(data)
+    PaintVoxelPath(...data)
   );
   Threads.registerTask<EraseVoxelTask>(TasksIds.EraseVoxel, (data) =>
-    EraseVoxel(data)
+    EraseVoxel(...data)
   );
   Threads.registerTask<EraseVoxelTemplateTask>(
     TasksIds.EraseVoxelTemplate,
-    (data) => EraseVoxelTemplate(data)
+    (data) => EraseVoxelTemplate(...data)
   );
   Threads.registerTask<EraseVoxelPathTask>(TasksIds.EraseVoxelPath, (data) =>
-    EraseVoxelPath(data)
+    EraseVoxelPath(...data)
   );
 }

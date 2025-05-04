@@ -8,7 +8,6 @@ import { WorldGenRegister } from "./WorldGenRegister";
 export default function (props: { worldThread: Thread }) {
   WorldGenRegister._worldThread = props.worldThread;
 
-  console.warn("INIT WORLD GENERATION TASKS")
   Threads.registerBinaryTask(
     TasksIds.Generate,
     (data) =>
