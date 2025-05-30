@@ -1,5 +1,4 @@
-import { Distance3D } from "@amodx/math";
-import { RawVoxelData } from "../../Voxels";
+import { BoundingBox } from "@amodx/math/Geomtry/Bounds/BoundingBox";
 import { IVoxelShapeTemplateData } from "./VoxelShapeTemplate.types";
 import { BasicVoxelShapeTemplate } from "./BasicVoxelShapeTemplate";
 
@@ -19,11 +18,11 @@ export class SphereVoxelTemplate extends BasicVoxelShapeTemplate<
   ): SphereVoxelTemplateData {
     return {
       ...BasicVoxelShapeTemplate.CreateBaseData("sphere-shape", {
-        bounds: [
-          (data.radiusX || 1) * 2 + 1,
-          (data.radiusY || 1) * 2 + 1,
-          (data.radiusZ || 1) * 2 + 1,
-        ],
+        bounds: {
+          x: (data.radiusX || 1) * 2 + 1,
+          y: (data.radiusY || 1) * 2 + 1,
+          z: (data.radiusZ || 1) * 2 + 1,
+        },
       }),
       radiusX: data.radiusX || 1,
       radiusY: data.radiusY || 1,
@@ -39,11 +38,12 @@ export class SphereVoxelTemplate extends BasicVoxelShapeTemplate<
     this._radiusX = radius;
     this._radiusY = radius;
     this._radiusY = radius;
-    this.bounds[0] = radius * 2 + 1;
-    this.bounds[1] = radius * 2 + 1;
-    this.bounds[2] = radius * 2 + 1;
+    this.bounds.size.x = radius * 2 + 1;
+    this.bounds.size.y = radius * 2 + 1;
+    this.bounds.size.z = radius * 2 + 1;
+
     if (oldRadius != radius) {
-      this.index.setBounds(...this.bounds);
+      this._updateBounds();
       this.dispatch("updated", null);
     }
   }
@@ -56,8 +56,8 @@ export class SphereVoxelTemplate extends BasicVoxelShapeTemplate<
 
     this._radiusX = radius;
     if (oldRadius != radius) {
-      this.bounds[0] = radius * 2 + 1;
-      this.index.setBounds(...this.bounds);
+      this.bounds.size.x = radius * 2 + 1;
+      this._updateBounds();
       this.dispatch("updated", null);
     }
   }
@@ -69,8 +69,8 @@ export class SphereVoxelTemplate extends BasicVoxelShapeTemplate<
     const oldRadius = this._radiusY;
     this._radiusY = radius;
     if (oldRadius != radius) {
-      this.bounds[1] = radius * 2 + 1;
-      this.index.setBounds(...this.bounds);
+      this.bounds.size.y = radius * 2 + 1;
+      this._updateBounds();
       this.dispatch("updated", null);
     }
   }
@@ -83,8 +83,8 @@ export class SphereVoxelTemplate extends BasicVoxelShapeTemplate<
     const oldRadius = this._radiusZ;
     this._radiusZ = radius;
     if (oldRadius != radius) {
-      this.bounds[2] = radius * 2 + 1;
-      this.index.setBounds(...this.bounds);
+      this.bounds.size.z = radius * 2 + 1;
+      this._updateBounds();
       this.dispatch("updated", null);
     }
   }
@@ -98,9 +98,9 @@ export class SphereVoxelTemplate extends BasicVoxelShapeTemplate<
 
   isIncluded(index: number) {
     const [x, y, z] = this.index.getXYZ(index);
-    const cx = Math.floor(this.bounds[0] / 2);
-    const cy = Math.floor(this.bounds[1] / 2);
-    const cz = Math.floor(this.bounds[2] / 2);
+    const cx = Math.floor(this.bounds.size.x / 2);
+    const cy = Math.floor(this.bounds.size.y / 2);
+    const cz = Math.floor(this.bounds.size.z / 2);
 
     const normX = (x - cx) / this.radiusX;
     const normY = (y - cy) / this.radiusY;

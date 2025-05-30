@@ -8,8 +8,7 @@ import { WorldSectionCursorInterface } from "./WorldSectionCursor.interface";
 import type { Section } from "../Section/index";
 
 export class SectionCursor
-   
-  implements WorldSectionCursorInterface,DataCursorInterface
+  implements WorldSectionCursorInterface, DataCursorInterface
 {
   _section: Section | null;
   private voxel = new WorldVoxelCursor(this);
@@ -30,31 +29,18 @@ export class SectionCursor
     return true;
   }
 
-  setSection(section: Section): boolean;
-  setSection(dimension: number, x: number, y: number, z: number): boolean;
-  setSection(
-    sectionOrDimension: number | Section,
-    x?: number,
-    y?: number,
-    z?: number
-  ) {
-    if (typeof sectionOrDimension == "object") {
-      this._section = sectionOrDimension;
-      const sectionPos = this._section.getPosition();
-      this._sectionPosition.x = sectionPos[0];
-      this._sectionPosition.y = sectionPos[1];
-      this._sectionPosition.z = sectionPos[2];
-      return;
-    }
+  setSection(section: Section) {
+    this._section = section;
+    const sectionPos = this._section.getPosition();
+    this._sectionPosition.x = sectionPos[0];
+    this._sectionPosition.y = sectionPos[1];
+    this._sectionPosition.z = sectionPos[2];
+  }
 
-    const sector = WorldRegister.sectors.get(
-      sectionOrDimension,
-      x! || 0,
-      y! || 0,
-      z! || 0
-    );
+  loadSection(dimension: number, x: number, y: number, z: number) {
+    const sector = WorldRegister.sectors.get(dimension, x, y, z);
     if (!sector) return false;
-    this._section = sector.getSection(x || 0, y || 0, z || 0);
+    this._section = sector.getSection(x, y, z);
     const sectionPos = this._section!.getPosition();
     this._sectionPosition.x = sectionPos[0];
     this._sectionPosition.y = sectionPos[1];

@@ -1,4 +1,4 @@
-import { Flat3DIndex, Traverse, Vec3Array } from "@amodx/math";
+import { Flat3DIndex, Traverse, Vec3Array, Vector3Like } from "@amodx/math";
 import { StringPalette } from "../../../Util/StringPalette";
 import { ArchivedVoxelTemplate } from "../ArchivedVoxelTemplate";
 import { NumberPalette } from "../../../Util/NumberPalette";
@@ -11,6 +11,7 @@ import { VoxelArchivePalette } from "../../../Voxels/Archive/VoxelPaletteArechiv
 import { VoxelTagsRegister } from "../../../Voxels/Data/VoxelTagsRegister";
 import { VoxelPalettesRegister } from "../../../Voxels/Data/VoxelPalettesRegister";
 import { DataCursorInterface } from "../../../Voxels/Cursor/DataCursor.interface";
+import { BoundsMinMaxData } from "@amodx/math/Geomtry/Bounds/BoundsInterface";
 
 /**
  * Creates an archived template using the passed in the data cursor.
@@ -21,17 +22,15 @@ import { DataCursorInterface } from "../../../Voxels/Cursor/DataCursor.interface
  */
 export default function CreateArchivedTemplate(
   dataCursor: DataCursorInterface,
-  start: Vec3Array,
-  end: Vec3Array
+  bounds: BoundsMinMaxData
 ) {
-  console.warn("CREATE ARCHIVED TEMPLATE", start, end);
   const index = Flat3DIndex.GetXZYOrder();
-  const [sx, sy, sz] = [
-    end[0] - start[0],
-    end[1] - start[1],
-    end[2] - start[2],
-  ];
-  index.setBounds(sx, sy, sz);
+
+  index.setBounds(
+    bounds.max.x - bounds.min.x,
+    bounds.max.y - bounds.min.y,
+    bounds.max.z - bounds.min.z
+  );
 
   const levelPalette = new NumberPalette();
 
@@ -51,49 +50,51 @@ export default function CreateArchivedTemplate(
 
   let firstSecondary = -1;
 
-  for (const { x, y, z } of Traverse.FromToVec3(
-    start,
-    [end[0] - 1, end[1] - 1, end[2] - 1],
-    1
-  )) {
-    const voxel = dataCursor.getVoxel(x, y, z);
-    if (!voxel) continue;
+  const { x: sx, y: sy, z: sz } = bounds.min;
+  const { x: ex, y: ey, z: ez } = bounds.max;
 
-    const vindex = index.getIndexXYZ(x - start[0], y - start[1], z - start[2]);
-    const rawData = voxel.getRaw();
-    const level = rawData[2];
+  for (let x = sx; x < ex; x++) {
+    for (let y = sy; y < ey; y++) {
+      for (let z = sz; z < ez; z++) {
+        const voxel = dataCursor.getVoxel(x, y, z);
+        if (!voxel) continue;
 
-    const voxelId = voxelPalette.register(rawData[0]);
+        const vindex = index.getIndexXYZ(x - sx, y - sy, z - sz);
+        const rawData = voxel.getRaw();
+        const level = rawData[2];
 
-    const levelId = !levelPalette.isRegistered(level)
-      ? levelPalette.register(level)
-      : levelPalette.getId(level);
+        const voxelId = voxelPalette.register(rawData[0]);
 
-    let voxelSecondary = 0;
-    if (
-      VoxelTagsRegister.VoxelTags[VoxelPalettesRegister.voxels[rawData[0]][0]][
-        "dve_can_have_secondary"
-      ]
-    ) {
-      voxelSecondary = voxelPalette.register(rawData[3]);
-      if (!secondaryPalette.isRegistered(voxelSecondary))
-        secondaryPalette.register(voxelSecondary);
+        const levelId = !levelPalette.isRegistered(level)
+          ? levelPalette.register(level)
+          : levelPalette.getId(level);
+
+        let voxelSecondary = 0;
+        if (
+          VoxelTagsRegister.VoxelTags[
+            VoxelPalettesRegister.voxels[rawData[0]][0]
+          ]["dve_can_have_secondary"]
+        ) {
+          voxelSecondary = voxelPalette.register(rawData[3]);
+          if (!secondaryPalette.isRegistered(voxelSecondary))
+            secondaryPalette.register(voxelSecondary);
+        }
+
+        if (firstId == -1) firstId = voxelId;
+        if (firstLevel == -1) firstLevel = levelId;
+
+        if (firstSecondary == -1) firstSecondary = voxelSecondary;
+
+        ids[vindex] = voxelId;
+        levels[vindex] = levelId;
+        secondary[vindex] = voxelSecondary;
+
+        if (firstId != voxelId) idsAllTheSame = false;
+        if (firstLevel != levelId) levelAllTheSame = false;
+        if (firstSecondary != voxelSecondary) secondaryAllTheSame = false;
+      }
     }
-
-    if (firstId == -1) firstId = voxelId;
-    if (firstLevel == -1) firstLevel = levelId;
-
-    if (firstSecondary == -1) firstSecondary = voxelSecondary;
-
-    ids[vindex] = voxelId;
-    levels[vindex] = levelId;
-    secondary[vindex] = voxelSecondary;
-
-    if (firstId != voxelId) idsAllTheSame = false;
-    if (firstLevel != levelId) levelAllTheSame = false;
-    if (firstSecondary != voxelSecondary) secondaryAllTheSame = false;
   }
-
   const buffers: ArchivedVoxelTemplateData["buffers"] = <any>{};
 
   const idsPaletted = voxelPalette._voxelCount < 0xffff;
@@ -178,7 +179,8 @@ export default function CreateArchivedTemplate(
     type: "archived",
     vloxVersion: "",
     version: "",
-    bounds: [sx, sy, sz],
+    position: Vector3Like.Create(),
+    bounds: Vector3Like.Create(...index.getBounds()),
     palettes: {
       level: BinaryBuffer.Create({
         type: 8,

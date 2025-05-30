@@ -2,12 +2,12 @@ import { WorldRegister } from "../../World/WorldRegister";
 import { Sector } from "../../World/index";
 import { WorldSimulationTools } from "./WorldSimulationTools";
 import { TaskRegister } from "../Tasks/TaskRegister";
-import { Circle, Square } from "@amodx/math";
-import { BinaryTaskType, Threads } from "@amodx/threads";
+import { Threads } from "@amodx/threads";
 import { setLocationData } from "../../Util/LocationData";
-import { WorldSpaces } from "../../World/WorldSpaces";
-import { TasksIds } from "../../Tasks/TasksIds";
-const sectorSquare = new Square();
+import { EngineSettings } from "../../Settings/EngineSettings";
+import { SnapShots } from "../../World/SnapShot/SnapShots";
+import LockSectors from "../../World/Lock/Function/LockSectors";
+import UnLockSectors from "../../World/Lock/Function/UnLockSectors";
 
 export class WorldSimulationTasks {
   /**# Load Sectors
@@ -182,22 +182,27 @@ export class WorldSimulationTasks {
   static readonly buildTasks = TaskRegister.addTasks({
     id: "build_tasks",
     sort: true,
-    checkInRequired: true,
+    checkInRequired: false,
     run(dimension, location, taskId, task, simSector) {
       simSector
         .sector!?.getSection(location[1], location[2], location[3])
         ?.setInProgress(true);
-      task.completeTask(taskId);
-      const mesher = WorldSimulationTools.taskTool.getMesher();
-      simSector.checkOut(mesher);
-      WorldSimulationTools.taskTool.build.section.run(
-        location,
-        null,
-        () => {
-          simSector.checkIn(mesher);
-        },
-        mesher
-      );
+      if (EngineSettings.settings.memoryAndCPU.useSharedMemory) {
+        task.completeTask(taskId);
+        WorldSimulationTools.taskTool.build.section.run(location);
+        return;
+      }
+      const [dim, x, y, z] = location;
+
+      LockSectors(dim, SnapShots.getSnapShotBounds(x, y, z)).then(() => {
+        task.completeTask(taskId);
+        const snapShot = SnapShots.createSnapShot(location);
+        WorldSimulationTools.taskTool.build.sectionSnapShot.run(
+          ...snapShot.transfer()
+        );
+        SnapShots.transferSnapShot(snapShot);
+        UnLockSectors(dim, SnapShots.getSnapShotBounds(x, y, z));
+      });
     },
   });
   static readonly unbuildTasks = TaskRegister.addTasks({

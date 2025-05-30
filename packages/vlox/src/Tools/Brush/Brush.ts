@@ -160,7 +160,6 @@ export class BrushTool {
     voxel.updateVoxel(0);
   }
 
-  
   _erase() {
     const voxel = this.dataCursor.getVoxel(this.x, this.y, this.z);
     if (!voxel) return;
@@ -174,7 +173,7 @@ export class BrushTool {
 
   paintTemplate(voxelTemplate: IVoxelTemplate) {
     const { x: ox, y: oy, z: oz } = this;
-    const [sx, sy, sz] = voxelTemplate.bounds;
+    const { x: sx, y: sy, z: sz } = voxelTemplate.bounds.size;
 
     for (let x = 0; x < sx; x++) {
       for (let y = 0; y < sy; y++) {
@@ -190,7 +189,6 @@ export class BrushTool {
         }
       }
     }
-
   }
 
   paintPath(data: VoxelPathData) {
@@ -204,8 +202,7 @@ export class BrushTool {
 
   eraseTemplate(voxelTemplate: IVoxelTemplate) {
     const { x: ox, y: oy, z: oz } = this;
-    const [sx, sy, sz] = voxelTemplate.bounds;
-
+    const { x: sx, y: sy, z: sz } = voxelTemplate.bounds.size;
 
     for (let x = 0; x < sx; x++) {
       for (let y = 0; y < sy; y++) {

@@ -69,10 +69,12 @@ export class SimulationSector {
   canCheckOut() {
     if (EngineSettings.settings.memoryAndCPU.useSharedMemory) return true;
     if (!this.fullNeighbors) return false;
-    if (!this.sector || this.sector.isCheckedOut()) return false;
+    if (!this.sector || this.sector.isCheckedOut() || this.sector.isLocked())
+      return false;
     for (const simSector of this.neighbors) {
       if (!simSector.sector) return false;
-      if (simSector.sector.isCheckedOut()) return false;
+      if (simSector.sector.isCheckedOut() || simSector.sector.isLocked())
+        return false;
     }
     return true;
   }
@@ -142,7 +144,7 @@ export class SimulationSector {
       this._rendered = true;
     }
 
-  /*   if (this.ticking) {
+    /*   if (this.ticking) {
       this.dimension.simulation.setOrigin(...this.position);
       this.dimension.simulation.bounds.start();
       this.tickQueue.run();
@@ -257,7 +259,6 @@ export class SimulationSector {
       state.nPropagtionAllDone &&
       !sector.getBitFlag(Sector.FlagIds.isWorldSunDone)
     ) {
-
       WorldSimulationTasks.worldSunTasks.add(
         this.dimension.id,
         ...this.position

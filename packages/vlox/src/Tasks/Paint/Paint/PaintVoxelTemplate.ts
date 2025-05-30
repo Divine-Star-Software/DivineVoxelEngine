@@ -17,7 +17,8 @@ export default function PaintVoxelTemplate(
   const voxelTemplate = VoxelTemplateRegister.create(templateData);
   tasks.setOriginAt([dimension, ox, oy, oz]);
 
-  const [sx, sy, sz] = voxelTemplate.bounds;
+  const { x: sx, y: sy, z: sz } = voxelTemplate.bounds.size;
+
   for (let x = 0; x < sx; x++) {
     for (let y = 0; y < sy; y++) {
       for (let z = 0; z < sz; z++) {

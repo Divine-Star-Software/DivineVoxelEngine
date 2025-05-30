@@ -37,4 +37,4 @@ export type WorldLockTasks = [
   end: Vec3Array,
 ];
 
-export type ExplosionTasks = [location: LocationData, radius: number];
+

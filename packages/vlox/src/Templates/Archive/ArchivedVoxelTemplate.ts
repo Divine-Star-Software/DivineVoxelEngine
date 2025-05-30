@@ -1,4 +1,4 @@
-import { Flat3DIndex, Vec3Array } from "@amodx/math";
+import { Flat3DIndex, Vec3Array, Vector3Like } from "@amodx/math";
 import { ArchivedVoxelTemplateData } from "./ArchivedVoxelTemplate.types";
 import type { RawVoxelData } from "../../Voxels/Types/Voxel.types";
 import { NumberPalette } from "../../Util/NumberPalette";
@@ -7,12 +7,14 @@ import { VoxelTagsRegister } from "../../Voxels/Data/VoxelTagsRegister";
 import { IVoxelTemplate } from "../../Templates/VoxelTemplates.types";
 import { BinaryBuffer } from "../../Util/Binary/BinaryBuffer";
 import { VoxelPaletteArchiveReader } from "../../Voxels/Archive/VoxelPaletteArchiveReader";
+import { BoundingBox } from "@amodx/math/Geomtry/Bounds/BoundingBox";
 
 type TemplateCursor = { position: Vec3Array; raw: RawVoxelData };
 
 export class ArchivedVoxelTemplate implements IVoxelTemplate {
   index = Flat3DIndex.GetXZYOrder();
-  bounds: Vec3Array;
+  position: Vector3Like;
+  bounds: BoundingBox;
   ids: BinaryBuffer;
   level: BinaryBuffer;
   secondary: BinaryBuffer;
@@ -23,8 +25,10 @@ export class ArchivedVoxelTemplate implements IVoxelTemplate {
   secondaryPalette: NumberPalette;
 
   constructor(private _data: ArchivedVoxelTemplateData) {
-    this.bounds = [..._data.bounds];
-    this.index.setBounds(..._data.bounds);
+    this.bounds = new BoundingBox();
+    this.position = { ..._data.position };
+    this.bounds.setMinPositionAndSize(_data.position, _data.bounds);
+    this.index.setBounds(_data.bounds.x, _data.bounds.y, _data.bounds.z);
 
     this.voxelPalette = new VoxelPaletteArchiveReader(_data.palettes);
     this.levelPalette = new NumberPalette(
@@ -64,12 +68,20 @@ export class ArchivedVoxelTemplate implements IVoxelTemplate {
         );
   }
 
+  setPosition(x: number, y: number, z: number): void {
+    this.position.x = x;
+    this.position.y = y;
+    this.position.z = z;
+  }
+
   isAir(index: number) {
     return this.getId(index) === 0;
   }
+
   isIncluded(index: number) {
     return true;
   }
+
   getIndex(x: number, y: number, z: number) {
     return this.index.getIndexXYZ(x, y, z);
   }
@@ -108,9 +120,9 @@ export class ArchivedVoxelTemplate implements IVoxelTemplate {
       raw: [0, 0, 0, 0],
     }
   ): Generator<TemplateCursor> {
-    for (let x = 0; x < this.bounds[0]; x++) {
-      for (let y = 0; y < this.bounds[1]; y++) {
-        for (let z = 0; z < this.bounds[2]; z++) {
+    for (let x = 0; x < this.bounds.size.x; x++) {
+      for (let y = 0; y < this.bounds.size.y; y++) {
+        for (let z = 0; z < this.bounds.size.z; z++) {
           curosr.position[0] = x;
           curosr.position[1] = y;
           curosr.position[2] = z;

@@ -1,12 +1,8 @@
 import { Threads } from "@amodx/threads";
-import { ExplosionTasks } from "../Tasks.types";
 import { TasksIds } from "../TasksIds";
 import { VoxelUpdateTask } from "../VoxelUpdateTask";
-
-import { WorldSpaces } from "../../World/WorldSpaces";
 import { RunWorldSun } from "./Illumanation/WorldSun";
 import { WorldRGB } from "./Illumanation/WorldRGB";
-
 import { WorldRegister } from "../../World/WorldRegister";
 import { Sector } from "../../World";
 import { getLocationData } from "../../Util/LocationData";

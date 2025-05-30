@@ -83,7 +83,8 @@ export class SimulationBrush extends BrushTool {
     );
 
     const { x: ox, y: oy, z: oz } = this;
-    const [sx, sy, sz] = voxelTemplate.bounds;
+    const { x: sx, y: sy, z: sz } = voxelTemplate.bounds.size;
+
     for (let x = 0; x < sx; x++) {
       for (let y = 0; y < sy; y++) {
         for (let z = 0; z < sz; z++) {
@@ -120,7 +121,8 @@ export class SimulationBrush extends BrushTool {
       updateData,
     ]);
     const { x: ox, y: oy, z: oz } = this;
-    const [sx, sy, sz] = voxelTemplate.bounds;
+    const { x: sx, y: sy, z: sz } = voxelTemplate.bounds.size;
+
     for (let x = 0; x < sx; x++) {
       for (let y = 0; y < sy; y++) {
         for (let z = 0; z < sz; z++) {
@@ -201,7 +203,8 @@ export class SimulationBrush extends BrushTool {
     updateData: VoxelUpdateData = {}
   ) {
     const { x: ox, y: oy, z: oz } = this;
-    const [sx, sy, sz] = voxelTemplate.bounds;
+    const { x: sx, y: sy, z: sz } = voxelTemplate.bounds.size;
+
     for (let x = 0; x < sx; x++) {
       for (let y = 0; y < sy; y++) {
         for (let z = 0; z < sz; z++) {
@@ -240,7 +243,7 @@ export class SimulationBrush extends BrushTool {
     updateData: VoxelUpdateData = {}
   ) {
     const { x: ox, y: oy, z: oz } = this;
-    const [sx, sy, sz] = voxelTemplate.bounds;
+    const { x: sx, y: sy, z: sz } = voxelTemplate.bounds.size;
     for (let x = 0; x < sx; x++) {
       for (let y = 0; y < sy; y++) {
         for (let z = 0; z < sz; z++) {

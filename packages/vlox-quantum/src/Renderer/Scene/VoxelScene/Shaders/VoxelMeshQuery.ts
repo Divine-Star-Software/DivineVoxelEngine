@@ -189,7 +189,7 @@ fn voxelMeshQuery(
   );
   let invDir = vec3<f32>(
     1.0 / (sign(rayDirection.x) * max(abs(rayDirection.x), 1e-8)),
-    1.0 /( sign(rayDirection.y) * max(abs(rayDirection.y), 1e-8)),
+    1.0 / ( sign(rayDirection.y) * max(abs(rayDirection.y), 1e-8)),
     1.0 / (sign(rayDirection.z) * max(abs(rayDirection.z), 1e-8))
   );
   
@@ -209,10 +209,7 @@ fn voxelMeshQuery(
 
   while(true) {
 
-
-
-
-      // Define the corners of the oriented bounding cube
+   // Define the corners of the oriented bounding cube
    let cubeMinCorner = rayPosition 
       - rayDirection * halfSize 
       - rayRight * halfSize 

@@ -1,5 +1,5 @@
 import { VoxelCursorInterface } from "./VoxelCursor.interface";
-import {  RawVoxelData } from "../Types/Voxel.types";
+import { RawVoxelData } from "../Types/Voxel.types";
 import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister";
 import { VoxelLevelReader } from "./VoxelLevelReader";
 import { PaintVoxelData } from "../Types/PaintVoxelData";
@@ -45,13 +45,14 @@ export class VoxelCursor extends VoxelCursorInterface {
     return [id, light, levleData, secondaryId];
   }
 
-  ids = new Uint16Array(1);
-  light = new Uint16Array(1);
-  level = new Uint8Array(1);
-  state = new Uint16Array(1);
-  mod = new Uint16Array(1);
-  secondary = new Uint16Array(1);
+  ids: number[] = [];
+  light: number[] = [];
+  level: number[] = [];
+  secondary: number[] = [];
 
-  loadIn() {}
+  loadIn() {
+    this.process();
+  }
+
   updateVoxel(mode: 0 | 1) {}
 }

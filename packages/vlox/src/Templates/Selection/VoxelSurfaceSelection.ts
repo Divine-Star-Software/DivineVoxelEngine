@@ -1,4 +1,4 @@
-import { Flat3DIndex, Vector3Like } from "@amodx/math";
+import { Flat3DIndex, Vec3Array, Vector3Like } from "@amodx/math";
 import { IVoxelSelection } from "./VoxelSelecton";
 import { CardinalNeighbors2D } from "../../Math/CardinalNeighbors";
 import { DataCursorInterface } from "../../Voxels/Cursor/DataCursor.interface";
@@ -10,7 +10,17 @@ import {
 import { PaintVoxelData } from "../../Voxels/Types/PaintVoxelData";
 import { FullVoxelTemplate } from "../Full/FullVoxelTemplate";
 
-export class VoxelSurfaceSelection implements IVoxelSelection {
+export interface VoxelSurfaceSelectionData {
+  origin: Vector3Like;
+  size: Vector3Like;
+  normal: Vector3Like;
+  bitIndex: Uint8Array;
+  extrusion: number;
+}
+
+export class VoxelSurfaceSelection
+  implements IVoxelSelection, VoxelSurfaceSelectionData
+{
   origin = Vector3Like.Create();
   size = Vector3Like.Create();
   normal = Vector3Like.Create();
@@ -240,5 +250,35 @@ export class VoxelSurfaceSelection implements IVoxelSelection {
     }
 
     return template;
+  }
+
+  toJSON(): VoxelSurfaceSelectionData {
+    return {
+      origin: { ...this.origin },
+      normal: { ...this.normal },
+      extrusion: this.extrusion,
+      bitIndex: this.bitIndex.slice(),
+      size: this.size,
+    };
+  }
+
+  fromJSON(data: VoxelSurfaceSelectionData) {
+    this.origin.x = data.origin.x;
+    this.origin.y = data.origin.y;
+    this.origin.z = data.origin.z;
+
+    this.normal.x = data.normal.x;
+    this.normal.y = data.normal.y;
+    this.normal.z = data.normal.z;
+
+    this.extrusion = data.extrusion;
+
+    this.bitIndex = data.bitIndex;
+
+    this.size.x = data.size.x;
+    this.size.y = data.size.y;
+    this.size.z = data.size.z;
+
+    this.index.setBounds(this.size.x, this.size.y, this.size.z);
   }
 }

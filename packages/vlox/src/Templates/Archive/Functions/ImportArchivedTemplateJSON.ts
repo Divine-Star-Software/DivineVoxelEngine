@@ -31,7 +31,8 @@ export default async function ImportArchivedTemplateJSON(
     version: jsonData.version,
     vloxVersion: jsonData.vloxVersion,
     type: jsonData.type,
-    bounds: [...jsonData.bounds],
+    position: jsonData.position,
+    bounds: jsonData.bounds,
     buffers,
     palettes,
   };

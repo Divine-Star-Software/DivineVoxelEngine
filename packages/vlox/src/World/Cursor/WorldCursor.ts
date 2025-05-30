@@ -51,7 +51,7 @@ export class WorldCursor implements DataCursorInterface {
       cursor = cursorCache.length ? cursorCache.shift()! : new SectorCursor();
 
       if (
-        !cursor.setSector(this.dimension, sectorPos.x, sectorPos.y, sectorPos.z)
+        !cursor.loadSector(this.dimension, sectorPos.x, sectorPos.y, sectorPos.z)
       ) {
         cursorCache.push(cursor);
         return null;

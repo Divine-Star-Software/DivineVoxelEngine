@@ -7,8 +7,9 @@ import { WorldSpaces } from "./WorldSpaces.js";
 import { WorldLock } from "./Lock/WorldLock.js";
 import { WorldDataSyncIds } from "./Types/WorldDataSyncIds.js";
 import { WorldStorageInterface } from "./Types/WorldStorage.interface.js";
-import { setLocationData } from "../Util/LocationData.js";
 import { EngineSettings } from "../Settings/EngineSettings.js";
+import { SnapShots } from "./SnapShot/SnapShots.js";
+import { SectionSnapShotTransferData } from "./SnapShot/SectionSnapShot.js";
 
 export default function ({
   threads,
@@ -19,6 +20,15 @@ export default function ({
 }) {
   WorldRegister.sectors.setSecotrBufferPool(true);
   const loadInMap = new Map<string, boolean>();
+
+  Threads.registerTask<SectionSnapShotTransferData>(
+    "cache-snap-shot",
+    (data) => {
+      const snapShot = SnapShots._pendingCache.shift()!;
+      snapShot.restore(data);
+      SnapShots._readyCache.push(snapShot);
+    }
+  );
 
   //normal array buffers only
   if (!EngineSettings.settings.memoryAndCPU.useSharedMemory) {

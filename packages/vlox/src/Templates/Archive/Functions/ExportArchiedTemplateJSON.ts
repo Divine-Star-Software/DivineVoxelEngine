@@ -48,6 +48,7 @@ export default async function ExportArchiedTemplateJSON(
   return {
     vloxVersion: templateData.vloxVersion,
     version: templateData.version,
+    position: templateData.position,
     bounds: templateData.bounds,
     type: templateData.type,
     buffers,

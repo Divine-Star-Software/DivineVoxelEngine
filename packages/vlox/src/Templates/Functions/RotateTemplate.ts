@@ -98,7 +98,7 @@ export default function RotateTemplate(
   angle: TemplateRotationAngles,
   axes: TemplateRotationAxes = "y"
 ) {
-  const [sizeX, sizeY, sizeZ] = template.bounds;
+  const { x: sizeX, y: sizeY, z: sizeZ } = template.bounds.size;
   const index = Flat3DIndex.GetXZYOrder();
   index.setBounds(sizeX, sizeY, sizeZ);
 
@@ -137,5 +137,5 @@ export default function RotateTemplate(
   }
 
   template.index = newIndex;
-  template.bounds = [newSizeX, newSizeY, newSizeZ];
+  template.bounds.setSize({ x: newSizeX, y: newSizeY, z: newSizeZ });
 }

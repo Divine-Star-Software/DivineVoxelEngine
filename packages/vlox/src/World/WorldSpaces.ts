@@ -4,8 +4,6 @@ import { Vec3Array, Vector3Like } from "@amodx/math";
 import {
   CubeHashVec3,
   CubeHashVec3Array,
-  GetXYZOrderArrayIndex,
-  GetXZYOrderArrayIndex,
   GetYXZOrderArrayIndex,
   GetYXZOrderArrayPositionVec3,
   GetYXZOrderArrayPositionVec3Array,
@@ -95,6 +93,18 @@ class SectorSpace {
     );
     return refPosition;
   }
+  static transformPosition(position = Vector3Like.Create()): Vector3Like {
+    CubeHashVec3(
+      position.x,
+      position.y,
+      position.z,
+      SectorSpace.power2Axes.x,
+      SectorSpace.power2Axes.y,
+      SectorSpace.power2Axes.z,
+      position
+    );
+    return position;
+  }
   static getPositionVec3Array(
     x: number,
     y: number,
@@ -134,6 +144,18 @@ class SectionSpace {
       refPosition
     );
     return refPosition;
+  }
+  static transformPosition(position = Vector3Like.Create()): Vector3Like {
+    CubeHashVec3(
+      position.x,
+      position.y,
+      position.z,
+      SectionSpace.power2Axes.x,
+      SectionSpace.power2Axes.y,
+      SectionSpace.power2Axes.z,
+      position
+    );
+    return position;
   }
   static getPositionVec3Array(
     x: number,

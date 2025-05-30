@@ -14,8 +14,6 @@ import {
   VoxelModelRelationsSchemaData,
 } from "../State/State.types";
 import { VoxelEffectSyncData } from "../Effects/VoxelEffects.types";
-import { VoxelPalettesRegister } from "../Data/VoxelPalettesRegister";
-import { StateSchema } from "../State/Schema/StateSchema";
 import { bitsNeeded } from "../../Util/Binary/BinaryFunctions";
 
 class StateTreeNode<Value> {
@@ -170,56 +168,53 @@ function buildSchemas(
 
   const schemaIdPalette = new StringPalette();
   const schemaValuePalette = new Map<string, StringPalette>();
-  {
-    let bitIndex = 0;
-    for (const schemaNode of binaryNodes) {
-      schemaIdPalette.register(schemaNode.name);
 
-      const maxBits = bitsNeeded(
-        schemaNode.type == "string"
-          ? Object.keys(schemaNode.values)
-              .map((_) => Number(_))
-              .sort((a, b) => a - b)
-              .pop()!
-          : schemaNode.maxValue
-      );
-      const nodeData: BinarySchemaNodeData = {
-        id: schemaNode.name,
-        type: "binary",
-        index: bitIndex,
-        mask: (1 << maxBits) - 1,
-      };
+  let bitIndex = 0;
+  for (const schemaNode of binaryNodes) {
+    schemaIdPalette.register(schemaNode.name);
 
-      bitIndex += maxBits;
+    const maxBits = bitsNeeded(
+      schemaNode.type == "string"
+        ? Object.keys(schemaNode.values)
+            .map((_) => Number(_))
+            .sort((a, b) => a - b)
+            .pop()!
+        : schemaNode.maxValue
+    );
+    const nodeData: BinarySchemaNodeData = {
+      id: schemaNode.name,
+      type: "binary",
+      index: bitIndex,
+      mask: (1 << maxBits) - 1,
+    };
 
-      if (schemaNode.type == "string") {
-        const valuePalette = new StringPalette();
-        for (const vIndex in schemaNode.values) {
-          const vValue = schemaNode.values[vIndex];
-          valuePalette.register(vValue);
-        }
-        schemaValuePalette.set(schemaNode.name, valuePalette);
-        nodeData.valuePalette = valuePalette._palette;
+    bitIndex += maxBits;
+
+    if (schemaNode.type == "string") {
+      const valuePalette = new StringPalette();
+      for (const vIndex in schemaNode.values) {
+        const vValue = schemaNode.values[vIndex];
+        valuePalette.register(vValue);
       }
-
-      baseSchema.push(nodeData);
+      schemaValuePalette.set(schemaNode.name, valuePalette);
+      nodeData.valuePalette = valuePalette._palette;
     }
+
+    baseSchema.push(nodeData);
   }
 
-  {
-    for (const schemaNode of relationNodes) {
-      schemaIdPalette.register(schemaNode.name);
+  for (const schemaNode of relationNodes) {
+    schemaIdPalette.register(schemaNode.name);
 
-      baseSchema.push({
-        id: schemaNode.name,
-        type: "relation",
-        conditions: schemaNode.conditions,
-      });
-      const valuePalette = new StringPalette();
-      valuePalette.register("false");
-      valuePalette.register("true");
-      schemaValuePalette.set(schemaNode.name, valuePalette);
-    }
+    baseSchema.push({
+      id: schemaNode.name,
+      type: "relation",
+      conditions: schemaNode.conditions,
+    });
+    const valuePalette = new StringPalette();
+    valuePalette.register("false");
+    valuePalette.register("true");
+    schemaValuePalette.set(schemaNode.name, valuePalette);
   }
 
   return {
@@ -242,8 +237,6 @@ export function BuildStateData(
 
   //maps geo link ids to geomtry ids
   const geometryLinkStateMap: Record<string, Record<number, number>> = {};
-
-  const log = model.data.id == "dve_simple_stair";
 
   //add geomtry from main shape states
   for (const key in data.stateNodes) {
@@ -305,7 +298,6 @@ export function BuildStateData(
       ] = relativeGeoId;
       relativeGeometryByteIndexMap[relativeGeoId] = relativeByteCount;
       relativeGeoId++;
- 
     }
 
     addPathToTree(
@@ -356,7 +348,6 @@ export function BuildStateData(
       ] = relativeGeoId;
       relativeGeometryByteIndexMap[relativeGeoId] = relativeByteCount;
       relativeGeoId++;
-   
     }
     const statement: StateLogicStatement = [];
     const nodes = key.split(" ");
@@ -477,8 +468,6 @@ export function BuildStateData(
       }
     }
   }
-
-  const schema = new StateSchema(baseSchema);
 
   for (const [voxelId, voxelData] of model.voxels) {
     const modeStateTree = new StateTreeNode("root");

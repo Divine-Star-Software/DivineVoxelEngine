@@ -1,6 +1,5 @@
 import { Thread, ThreadPool, Threads } from "@amodx/threads/";
 import {
-  ExplosionTasks,
   PaintVoxelTemplateTask,
   PaintVoxelTask,
   EraseVoxelTask,
@@ -11,6 +10,7 @@ import {
 import { LocationData } from "../../Math";
 import { TasksIds } from "../../Tasks/TasksIds.js";
 import { setLocationData } from "../../Util/LocationData";
+import { SectionSnapShotTransferData } from "../../World/SnapShot/SectionSnapShot";
 
 export type TaskRunModes = "async" | "sync";
 interface ITask<Data> {
@@ -149,11 +149,16 @@ class VoxelTasks {
 }
 
 class BuildTask {
+  sectionSnapShot: TaskToolTask<SectionSnapShotTransferData>;
   section: LocationTaskToolTask;
   sector: LocationTaskToolTask;
   constructor(public tool: TaskTool) {
     this.section = new LocationTaskToolTask(
       TasksIds.BuildSection,
+      tool.meshers
+    );
+    this.sectionSnapShot = new TaskToolTask(
+      TasksIds.BuildSectionSnapShot,
       tool.meshers
     );
     this.sector = new LocationTaskToolTask(TasksIds.BuildSector, tool.meshers);

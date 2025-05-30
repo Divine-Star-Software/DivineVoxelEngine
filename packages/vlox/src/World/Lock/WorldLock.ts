@@ -7,9 +7,7 @@ import { WorldStorageInterface } from "../Types/WorldStorage.interface";
 
 export class WorldLock {
   static locks = new Map<string, WorldLockTasks>();
-
   static _loadMap = new Map<string, boolean>();
-
   static worldStorage: WorldStorageInterface | null = null;
 
   static addLock(taskData: WorldLockTasks) {

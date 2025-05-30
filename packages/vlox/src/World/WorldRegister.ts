@@ -122,12 +122,9 @@ class WorldRegisterSectors {
     return sector || null;
   }
 
-  
   static getAt(location: LocationData) {
     return this.get(...location);
   }
-
-
 
   static remove(
     dimensionId: number,
@@ -157,7 +154,6 @@ class WorldRegisterSectors {
     dimension.sectors.delete(sectorKey);
     return null;
   }
-
 
   static removeAt(location: LocationData) {
     return this.remove(...location);

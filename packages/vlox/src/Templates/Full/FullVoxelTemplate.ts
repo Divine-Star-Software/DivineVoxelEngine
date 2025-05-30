@@ -5,6 +5,7 @@ import { RawVoxelData } from "../../Voxels/Types/Voxel.types";
 import { DataCursorInterface } from "../../Voxels/Cursor/DataCursor.interface";
 import { getBitArrayIndex } from "../../Util/Binary/BinaryArrays";
 import { EngineSettings } from "../../Settings/EngineSettings";
+import { BoundingBox } from "@amodx/math/Geomtry/Bounds/BoundingBox";
 
 export class FullVoxelTemplate implements IVoxelTemplate {
   static CreateNew(
@@ -24,7 +25,6 @@ export class FullVoxelTemplate implements IVoxelTemplate {
       ? new SharedArrayBuffer(bufferSize)
       : new ArrayBuffer(bufferSize);
 
-      
     let bufferStart = 0;
 
     const ids = new Uint16Array(sectionBuffer, bufferStart, voxelSize);
@@ -39,7 +39,8 @@ export class FullVoxelTemplate implements IVoxelTemplate {
     bufferStart += voxelSize;
     return {
       type: "full",
-      bounds,
+      position: Vector3Like.Create(),
+      bounds: Vector3Like.Create(...bounds),
       ids,
       light,
       level,
@@ -47,41 +48,9 @@ export class FullVoxelTemplate implements IVoxelTemplate {
     };
   }
 
-  static CreateNewFromArea(
-    dataCursor: DataCursorInterface,
-    start: Vector3Like,
-    end: Vector3Like,
-    storeLight = false
-  ) {
-    const { x: sx, y: sy, z: sz } = start;
-    const { x: ex, y: ey, z: ez } = end;
-    const template = FullVoxelTemplate.CreateNew([ex - sx, ey - sy, ez - sz]);
-    const index = Flat3DIndex.GetXZYOrder();
-    index.setBounds(...template.bounds);
-
-    for (let x = sx; x < ex; x++) {
-      for (let y = sy; y < ey; y++) {
-        for (let z = sz; z < ez; z++) {
-          if (!dataCursor.inBounds(x, y, z)) continue;
-          const voxel = dataCursor.getVoxel(x, y, z);
-
-          if (!voxel) continue;
-          const vIndex = index.getIndexXYZ(x - sx, y - sy, z - sz);
-
-          template.ids[vIndex] = voxel.ids[voxel._index];
-
-          template.level[vIndex] = voxel.level[voxel._index];
-          template.secondary[vIndex] = voxel.secondary[voxel._index];
-          if (storeLight) template.light[vIndex] = voxel.light[voxel._index];
-        }
-      }
-    }
-
-    return template;
-  }
-
   index = Flat3DIndex.GetXZYOrder();
-  bounds: Vec3Array;
+  position = Vector3Like.Create();
+  bounds: BoundingBox;
   ids: Uint16Array;
   level: Uint8Array;
   light: Uint16Array;
@@ -90,17 +59,27 @@ export class FullVoxelTemplate implements IVoxelTemplate {
   mask?: Uint8Array;
 
   constructor(data: FullVoxelTemplateData) {
-    this.bounds = [...data.bounds];
-    this.index.setBounds(...data.bounds);
+    this.position = { ...data.position };
+    this.bounds = new BoundingBox();
+    this.bounds.setMinPositionAndSize(data.position, data.bounds);
+    this.index.setBounds(data.bounds.x, data.bounds.y, data.bounds.z);
     this.ids = data.ids;
     this.level = data.level;
     this.light = data.light;
     this.secondary = data.secondary;
     if (data.mask) this.mask = data.mask;
   }
+
+  setPosition(x: number, y: number, z: number): void {
+    this.position.x = x;
+    this.position.y = y;
+    this.position.z = z;
+  }
+
   isAir(index: number) {
     return this.ids[index] === 0;
   }
+
   isIncluded(index: number) {
     if (this.mask) {
       return getBitArrayIndex(this.mask, index) === 1;
@@ -108,18 +87,23 @@ export class FullVoxelTemplate implements IVoxelTemplate {
 
     return true;
   }
+
   getIndex(x: number, y: number, z: number): number {
     return this.index.getIndexXYZ(x, y, z);
   }
+
   getId(index: number): number {
     return this.ids[index];
   }
+
   getLight(index: number): number {
     return this.light[index];
   }
+
   getLevel(index: number): number {
     return this.level[index];
   }
+
   getSecondary(index: number): number {
     return this.secondary[index];
   }
@@ -135,7 +119,8 @@ export class FullVoxelTemplate implements IVoxelTemplate {
   toJSON(): FullVoxelTemplateData {
     return {
       type: "full",
-      bounds: this.bounds,
+      position: this.position,
+      bounds: this.bounds.size,
       ids: this.ids,
       light: this.light,
       level: this.level,

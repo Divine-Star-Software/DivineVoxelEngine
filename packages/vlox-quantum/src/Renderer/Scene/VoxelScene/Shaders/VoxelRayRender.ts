@@ -288,8 +288,7 @@ if (sunLookUp.found) {
 if (sunLookUp.error) {
   light.r = 1;
   light.g = 0;
-  light.b = 0;
-    
+  light.b = 0; 
 }
 
 //DO AO

@@ -64,7 +64,7 @@ export class BinaryBuffer {
     // Convert to base64
     const binary = String.fromCharCode(...bufferToEncode);
     const base64 = btoa(binary);
-    bufferToEncode;
+
 
     return {
       type: data.type,

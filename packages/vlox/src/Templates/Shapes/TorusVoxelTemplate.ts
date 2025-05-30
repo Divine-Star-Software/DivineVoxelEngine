@@ -17,14 +17,13 @@ export class TorusVoxelTemplate extends BasicVoxelShapeTemplate<
   ): TorusVoxelTemplateData {
     return {
       ...BasicVoxelShapeTemplate.CreateBaseData("torus-shape", {
-        bounds: [data.width || 1, data.height || 1, data.depth || 1],
+        bounds: { x: data.width || 1, y: data.height || 1, z: data.depth || 1 },
       }),
       width: data.width || 1,
       height: data.height || 1,
       depth: data.depth || 1,
     };
   }
-
   private _width = 0;
   get width() {
     return this._width;
@@ -34,8 +33,8 @@ export class TorusVoxelTemplate extends BasicVoxelShapeTemplate<
 
     this._width = width;
     if (oldWidth != width) {
-      this.bounds[0] = width;
-      this.index.setBounds(...this.bounds);
+      this.bounds.size.x = width;
+      this._updateBounds();
       this.dispatch("updated", null);
     }
   }
@@ -49,8 +48,8 @@ export class TorusVoxelTemplate extends BasicVoxelShapeTemplate<
 
     this._height = height;
     if (oldWidth != height) {
-      this.bounds[1] = height;
-      this.index.setBounds(...this.bounds);
+      this.bounds.size.y = height;
+      this._updateBounds();
       this.dispatch("updated", null);
     }
   }
@@ -64,8 +63,8 @@ export class TorusVoxelTemplate extends BasicVoxelShapeTemplate<
 
     this._depth = depth;
     if (oldWidth != depth) {
-      this.bounds[2] = depth;
-      this.index.setBounds(...this.bounds);
+      this.bounds.size.z = depth;
+      this._updateBounds();
       this.dispatch("updated", null);
     }
   }

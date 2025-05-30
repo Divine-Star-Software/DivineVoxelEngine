@@ -1,5 +1,6 @@
 export enum TasksIds {
   BuildSection = "BuildSection",
+  BuildSectionSnapShot = "BuildSectionSnapShot",
   BuildSector = "BuildSector",
   Generate = "Generate",
   Decorate = "Decorate",
@@ -13,4 +14,3 @@ export enum TasksIds {
   EraseVoxelTemplate = "EraseVoxelTemplate",
   EraseVoxelPath = "EraseVoxelPath",
 }
-

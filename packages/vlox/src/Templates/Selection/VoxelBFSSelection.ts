@@ -8,12 +8,19 @@ import {
 } from "../../Util/Binary/BinaryArrays";
 import { FullVoxelTemplate } from "../Full/FullVoxelTemplate";
 
-export class VoxelBFSSelection implements IVoxelSelection {
+export interface VoxelBFSSelectionData {
+  origin: Vector3Like;
+  size: Vector3Like;
+  bitIndex: Uint8Array;
+}
+
+export class VoxelBFSSelection
+  implements IVoxelSelection, VoxelBFSSelectionData
+{
   origin = Vector3Like.Create();
   size = Vector3Like.Create();
   bitIndex: Uint8Array;
   index = Flat3DIndex.GetXZYOrder();
-  extrusion = 0;
 
   isSelected(x: number, y: number, z: number): boolean {
     if (x < this.origin.x || x >= this.origin.x + this.size.x) return false;
@@ -142,5 +149,27 @@ export class VoxelBFSSelection implements IVoxelSelection {
       }
     }
     return template;
+  }
+
+  toJSON(): VoxelBFSSelectionData {
+    return {
+      origin: { ...this.origin },
+      size: { ...this.size },
+      bitIndex: this.bitIndex.slice(),
+    };
+  }
+
+  fromJSON(data: VoxelBFSSelectionData) {
+    this.origin.x = data.origin.x;
+    this.origin.y = data.origin.y;
+    this.origin.z = data.origin.z;
+
+    this.size.x = data.size.x;
+    this.size.y = data.size.y;
+    this.size.z = data.size.z;
+
+    this.bitIndex = data.bitIndex;
+
+    this.index.setBounds(this.size.x, this.size.y, this.size.z);
   }
 }

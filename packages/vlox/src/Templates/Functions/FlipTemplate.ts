@@ -40,7 +40,7 @@ export default function FlipTemplate(
   template: FullVoxelTemplate,
   direction: TemplateFlipDirections
 ) {
-  const [sizeX, sizeY, sizeZ] = template.bounds;
+  const { x: sizeX, y: sizeY, z: sizeZ } = template.bounds.size;
   const index = Flat3DIndex.GetXZYOrder();
   index.setBounds(sizeX, sizeY, sizeZ);
 

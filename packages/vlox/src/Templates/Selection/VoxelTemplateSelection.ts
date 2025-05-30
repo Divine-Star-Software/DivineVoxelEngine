@@ -16,14 +16,15 @@ export class VoxelTemplateSelection implements IVoxelSelection {
     const rx = x - this.origin.x;
     const ry = y - this.origin.y;
     const rz = z - this.origin.z;
-    if (!this.template.isIncluded(this.template.getIndex(rx, ry, rz))) return false;
+    if (!this.template.isIncluded(this.template.getIndex(rx, ry, rz)))
+      return false;
     return true;
   }
 
   setTemplate(template: IVoxelTemplate) {
     this.template = template;
-    this.size.x = template.bounds[0];
-    this.size.y = template.bounds[1];
-    this.size.z = template.bounds[2];
+    this.size.x = template.bounds.size.x;
+    this.size.y = template.bounds.size.y;
+    this.size.z = template.bounds.size.z;
   }
 }

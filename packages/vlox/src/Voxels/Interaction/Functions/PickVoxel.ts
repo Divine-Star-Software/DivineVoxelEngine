@@ -30,6 +30,11 @@ const calculateNormal = (
   return normal;
 };
 
+/**
+ * # PickVoxel
+ * Used to a pick a voxel from any data cursor interface.
+ * The function assumes the data that is loaded into the cursor is available
+ */
 export default function PickVoxel(
   cursor: DataCursorInterface,
   rayStart: Vec3Array,
@@ -79,7 +84,7 @@ export default function PickVoxel(
 
     pos[axis] += stepDir[axis];
     tMax[axis] += tDelta[axis];
-    if (!cursor.inBounds(...pos)) return null;
+    if (!cursor.inBounds(...pos)) continue;
     const voxel = cursor.getVoxel(...pos);
     if (voxel && voxel.isRenderable()) {
       const normal = calculateNormal(

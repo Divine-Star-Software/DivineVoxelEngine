@@ -69,7 +69,6 @@ import { VoxelLogicRegister } from "./Logic/VoxelLogicRegister";
 import { BuildPaletteData } from "./Functions/BuildPaletteData";
 import { BuildRules } from "./Models/Rules/Functions/BuildRules";
 import { FinalCompiledVoxelModelData } from "./Models/CompiledVoxelModel.types";
-import { VoxelPlacingStrategyRegister } from "./Interaction/Placing/VoxelPlacingStrategyRegister";
 import { VoxelTagsRegister } from "./Data/VoxelTagsRegister";
 import { farmGeomtry, farmModels } from "./Models/Defaults/FarmVoxelModels";
 

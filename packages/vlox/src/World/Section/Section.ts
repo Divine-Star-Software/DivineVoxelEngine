@@ -66,9 +66,11 @@ export class Section {
   public index: number;
   public sector: Sector;
 
-  setBuffer(sector: Sector, buffer: ArrayBufferLike, index: number) {
-    this.index = index;
-    this.sector = sector;
+  view: Uint8Array;
+
+  updatePosition() {
+    const sector = this.sector;
+    const index = this.index;
     this.position = WorldSpaces.section.getPositionFromIndexVec3Array(
       index,
       this.position
@@ -79,10 +81,18 @@ export class Section {
       this.position[1] * WorldSpaces.section.bounds.y + sector.position[1];
     this.position[2] =
       this.position[2] * WorldSpaces.section.bounds.z + sector.position[2];
+  }
+
+  setBuffer(sector: Sector, buffer: ArrayBufferLike, index: number) {
+    this.index = index;
+    this.sector = sector;
+    this.updatePosition();
     const voxelSize = WorldSpaces.section.volumne;
     const height = WorldSpaces.section.bounds.y;
 
-    let bufferStart = Section.GetArrayStartIndex(index);
+    const startingIndex = Section.GetArrayStartIndex(index);
+    this.view = new Uint8Array(buffer, startingIndex, Section.GetBufferSize());
+    let bufferStart = startingIndex;
 
     this.tickArray = new Uint32Array(buffer, bufferStart, 4);
     bufferStart += 4 * Uint32Array.BYTES_PER_ELEMENT;

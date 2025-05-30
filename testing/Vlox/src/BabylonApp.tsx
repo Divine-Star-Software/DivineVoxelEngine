@@ -10,6 +10,8 @@ import {
   Vector3,
   FreeCamera,
   AxesViewer,
+  BoundingBox,
+  BoundingInfo
 } from "@babylonjs/core";
 import { Textures } from "Data/TextureData";
 
@@ -31,6 +33,11 @@ export function App() {
     if (!canvasRef.current) return;
     ran = true;
 
+    const box = new BoundingBox(Vector3.Zero(),Vector3.Zero());
+    box.intersectsMinMax;
+    box.intersectsPoint;
+    box.intersectsSphere;
+  
     (async () => {
       //  CacheManager.cacheLoadEnabled = true;
       //   CacheManager.cacheStoreEnabled = true;

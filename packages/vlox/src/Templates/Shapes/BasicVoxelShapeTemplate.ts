@@ -1,4 +1,4 @@
-import { Flat3DIndex, Vec3Array } from "@amodx/math";
+import { Flat3DIndex, Vector3Like } from "@amodx/math";
 import { PaintVoxelData, RawVoxelData } from "../../Voxels";
 import {
   IVoxelShapeTemplate,
@@ -7,6 +7,7 @@ import {
   IVoxelShapeTemplateEvents,
 } from "./VoxelShapeTemplate.types";
 import { TypedEventTarget } from "../../Util/TypedEventTarget";
+import { BoundingBox } from "@amodx/math/Geomtry/Bounds/BoundingBox";
 
 export abstract class BasicVoxelShapeTemplate<
     Type extends string,
@@ -20,10 +21,10 @@ export abstract class BasicVoxelShapeTemplate<
     type: Type,
     data: Partial<IVoxelShapeTemplateData<Type>>
   ): IVoxelShapeTemplateData<Type> {
-    const size = data.bounds || [1, 1, 1];
     return {
       type,
-      bounds: size,
+      bounds: data.bounds || { x: 1, y: 1, z: 1 },
+      position: Vector3Like.Create(),
       fillMode: "full",
       fillVoxel: PaintVoxelData.Create(),
       faceVoxel: PaintVoxelData.Create(),
@@ -32,8 +33,9 @@ export abstract class BasicVoxelShapeTemplate<
       ...data,
     };
   }
+  position = Vector3Like.Create();
   index = Flat3DIndex.GetXZYOrder();
-  bounds: Vec3Array;
+  bounds: BoundingBox;
   type = "";
   fillMode: VoxelShapeTemplateFillModes;
   fillVoxel: PaintVoxelData;
@@ -48,8 +50,9 @@ export abstract class BasicVoxelShapeTemplate<
     super();
     this.type = data.type;
     this.fillMode = data.fillMode;
-    this.bounds = [...data.bounds];
-    this.index.setBounds(...data.bounds);
+    this.bounds = new BoundingBox();
+    this.bounds.setMinPositionAndSize(data.position, data.bounds);
+    this.index.setBounds(data.bounds.x, data.bounds.y, data.bounds.z);
     this.setVoxels(
       data.fillVoxel,
       data.faceVoxel,
@@ -57,6 +60,7 @@ export abstract class BasicVoxelShapeTemplate<
       data.pointVoxel
     );
   }
+
   setVoxels(
     fill: PaintVoxelData,
     face?: PaintVoxelData,
@@ -72,20 +76,31 @@ export abstract class BasicVoxelShapeTemplate<
     this._edgeVoxel = PaintVoxelData.ToRaw(this.edgeVoxel);
     this._pointVoxel = PaintVoxelData.ToRaw(this.pointVoxel);
   }
+
   getIndex(x: number, y: number, z: number): number {
     return this.index.getIndexXYZ(x, y, z);
   }
+
+  setPosition(x: number, y: number, z: number): void {
+    this.position.x = x;
+    this.position.y = y;
+    this.position.z = z;
+  }
+
   abstract isIncluded(index: number): boolean;
+
   isAir(index: number) {
-    if(!this.isIncluded(index)) return true;
+    if (!this.isIncluded(index)) return true;
     return this.getId(index) === 0;
   }
+
   getId(index: number): number {
     if (!this.isIncluded(index)) return 0;
     const id = this._fillVoxel[0];
     if (this.fillMode == "full") return id;
     return id;
   }
+
   getLight(index: number): number {
     if (!this.isIncluded(index)) return 0;
 
@@ -93,16 +108,16 @@ export abstract class BasicVoxelShapeTemplate<
     if (this.fillMode == "full") return light;
     return light;
   }
+
   getLevel(index: number): number {
     if (!this.isIncluded(index)) return 0;
-
     const level = this._fillVoxel[2];
     if (this.fillMode == "full") return level;
     return level;
   }
+
   getSecondary(index: number): number {
     if (!this.isIncluded(index)) return 0;
-
     const secondary = this._fillVoxel[3];
     if (this.fillMode == "full") return secondary;
     return secondary;
@@ -122,12 +137,23 @@ export abstract class BasicVoxelShapeTemplate<
     rawRef[3] = this.getSecondary(index);
     return rawRef;
   }
+
+  protected _updateBounds() {
+    this.bounds.setSize(this.bounds.size);
+    this.index.setBounds(
+      this.bounds.size.x,
+      this.bounds.size.y,
+      this.bounds.size.z
+    );
+  }
+
   abstract toJSON(): Data;
 
-  getBaseJSON(): IVoxelShapeTemplateData<any> {
+  protected getBaseJSON(): IVoxelShapeTemplateData<any> {
     return {
       type: this.type,
-      bounds: this.bounds,
+      position: this.position,
+      bounds: this.bounds.size,
       fillMode: this.fillMode,
       fillVoxel: this.fillVoxel,
       faceVoxel: this.faceVoxel,

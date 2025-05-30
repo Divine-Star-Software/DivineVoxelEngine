@@ -48,7 +48,6 @@ export class Sector {
 
   sections: Section[] = [];
   bufferView: Uint8Array;
-
   position: Vec3Array = [0, 0, 0];
 
   private _released = false;
@@ -60,11 +59,34 @@ export class Sector {
   }
 
   private _checkedOut = false;
+  /**Set if the sector is checked out into another thread.  */
   setCheckedOut(checkedOut: boolean) {
     this._checkedOut = checkedOut;
   }
+  /**Will return true if the sector is checked out into another thread. */
   isCheckedOut() {
     return this._checkedOut || this.buffer.byteLength == 0;
+  }
+  /**Returns a promise that will resolve when the sector is no longer checked out. */
+  waitTillCheckedIn() {
+    if (!this._checkedOut) return true;
+    return new Promise<boolean>((resolve) => {
+      const inte = () => {
+        if (!this._checkedOut) return resolve(true);
+        setTimeout(inte, 10);
+      };
+      inte();
+    });
+  }
+
+  private _locked = false;
+  /**Set if the secotr is locked and can't be checked out.*/
+  setLocked(locked: boolean) {
+    this._locked = locked;
+  }
+  /**Will return true if the sector is locked out and can't be checked out. */
+  isLocked() {
+    return this._locked;
   }
 
   setBuffer(buffer: ArrayBufferLike) {
@@ -86,6 +108,10 @@ export class Sector {
     this.flagArray = null as any;
     this.timeStampArray = null as any;
     this.bufferView = null as any;
+  }
+
+  updateSectionDirectly(index: number, view: Uint8Array) {
+    this.sections[index].view.set(view);
   }
 
   getSection(x: number, y: number, z: number) {
@@ -127,6 +153,7 @@ export class Sector {
   setTimeStamp(index: number, value: number) {
     this.timeStampArray[index] = value;
   }
+
   getTimeStamp(index: number) {
     return this.timeStampArray[index];
   }
@@ -146,6 +173,7 @@ export class Sector {
     }
     return stored;
   }
+
   loadFlags(flags: Record<string, boolean>) {
     for (const flag in flags) {
       const storedIndex = SectorState.StoredFlags[flag];
@@ -156,6 +184,7 @@ export class Sector {
       this.setBitFlag(storedIndex, flags[flag]);
     }
   }
+
   storeTimestamps() {
     const stored: Record<string, number> = {};
     for (const key in SectorState.StoredTimeStamps) {
@@ -163,6 +192,7 @@ export class Sector {
     }
     return stored;
   }
+
   loadTimestamps(stored: Record<string, number>) {
     for (const timeStamp in stored) {
       const storedIndex = SectorState.StoredTimeStamps[timeStamp];
