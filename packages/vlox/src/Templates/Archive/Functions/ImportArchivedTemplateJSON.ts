@@ -1,4 +1,4 @@
-import { BinaryBuffer } from "../../../Util/Binary/BinaryBuffer";
+import { BinaryBuffer } from "../../../Util/BinaryBuffer/BinaryBuffer";
 import type {
   ArchivedVoxelTemplateData,
   ArchivedVoxelTemplateExportedJSONData,

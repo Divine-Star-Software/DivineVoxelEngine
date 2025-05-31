@@ -5,7 +5,7 @@ import {
 import {
   BinaryBufferData,
   JSONBinaryBufferData,
-} from "../../Util/Binary/BinaryBuffer";
+} from "../../Util/BinaryBuffer/BinaryBuffer.types";
 import { IVoxelTemplateData } from "../VoxelTemplates.types";
 
 export interface ArchivedVoxelTemplateBuffers {

@@ -2,9 +2,9 @@ import {
   ArchivedAreaSectorData,
   ArchivedAreaData,
   ArchivedSectorData,
-} from "../Archive.types";
+} from "../Types/index";
 import { WorldRegister } from "../../../World/WorldRegister";
-import { EngineSettings } from "../../../Settings/EngineSettings";
+import { getBaseData } from "./Shared";
 type RunData = {
   dimension: number;
   sectors: ArchivedSectorData[];
@@ -18,7 +18,6 @@ function SectorToArchivedAreaSector(
     position: sector.position,
     flags: sector.flags,
     timestamps: sector.timestamps,
-    buffers: sector.buffers,
     palettes: sector.palettes,
     sections: sector.sections,
     duplicates: sector.duplicates,
@@ -32,12 +31,10 @@ export default function CreateArchiveArea(
   for (const sector of archiveData.sectors) {
     sectors.push(SectorToArchivedAreaSector(sector));
   }
-
   return {
-    dimension:
-      WorldRegister.dimensions.get(archiveData.dimension)?.id || "main",
-    version: "",
-    vloxVersion: EngineSettings.version,
+    ...getBaseData(
+      WorldRegister.dimensions.get(archiveData.dimension)?.id || "main"
+    ),
     sectors,
   };
 }

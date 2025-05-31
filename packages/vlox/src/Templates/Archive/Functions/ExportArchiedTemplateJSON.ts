@@ -1,4 +1,7 @@
-import { BinaryBuffer } from "../../../Util/Binary/BinaryBuffer";
+import {
+  BinaryBuffer,
+  BinaryBufferFormat,
+} from "../../../Util/BinaryBuffer/index";
 import {
   ArchivedVoxelTemplateBuffersExportdJSONData,
   ArchivedVoxelTemplateData,
@@ -27,19 +30,19 @@ export default async function ExportArchiedTemplateJSON(
     stateSchemaPalette: templateData.palettes.stateSchemaPalette,
     secondary: await BinaryBuffer.ToJSON(
       BinaryBuffer.Create({
-        type: 16,
+        format: BinaryBufferFormat.Uint16,
         buffer: templateData.palettes.secondary.buffer,
       })
     ),
     level: await BinaryBuffer.ToJSON(
       BinaryBuffer.Create({
-        type: 8,
+        format: BinaryBufferFormat.Uint8,
         buffer: templateData.palettes.level.buffer,
       })
     ),
     voxelPalette: await BinaryBuffer.ToJSON(
       BinaryBuffer.Create({
-        type: 16,
+        format: BinaryBufferFormat.Uint16,
         buffer: templateData.palettes.voxelPalette.buffer,
       })
     ),

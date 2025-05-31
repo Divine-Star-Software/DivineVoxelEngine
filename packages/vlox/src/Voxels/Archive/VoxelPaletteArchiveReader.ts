@@ -3,7 +3,7 @@ import { StringPalette } from "../../Util/StringPalette";
 import { BinarySchema } from "../State/Schema/BinarySchema";
 import { BinarySchemaNodeData } from "../../Voxels/State/State.types";
 import { VoxelArchivePaletteData } from "./VoxelArchive.types";
-import { BinaryBuffer } from "../../Util/Binary/BinaryBuffer";
+import { BinaryBuffer } from "../../Util/BinaryBuffer/BinaryBuffer";
 
 const temp: [id: string, state: number, mod: number] = ["", 0, 0];
 export class VoxelPaletteArchiveReader {

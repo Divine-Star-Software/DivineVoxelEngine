@@ -1,4 +1,5 @@
-import { BinaryBuffer } from "../../Util/Binary/BinaryBuffer";
+import { BinaryBufferFormat } from "../../Util/BinaryBuffer";
+import { BinaryBuffer } from "../../Util/BinaryBuffer/BinaryBuffer";
 import { StringPalette } from "../../Util/StringPalette";
 import { VoxelPalettesRegister } from "../Data/VoxelPalettesRegister";
 import { SchemaRegister } from "../State/SchemaRegister";
@@ -73,7 +74,7 @@ export class VoxelArchivePalette {
     return {
       id: this.ids._palette,
       voxelPalette: BinaryBuffer.Create({
-        type: 16,
+        format: BinaryBufferFormat.Uint16,
         length: this.voxelPalette.length,
         buffer: new Uint16Array(this.voxelPalette).buffer,
       }),

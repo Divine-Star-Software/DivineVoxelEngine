@@ -2,22 +2,22 @@ import {
   ArchivedAreaSectorData,
   ArchivedAreaData,
   ArchivedSectorData,
-} from "../Archive.types";
+} from "../Types/index";
 
 export function CreateSectorFromArea(
   area: ArchivedAreaData,
   sector: ArchivedAreaSectorData
 ): ArchivedSectorData {
   return {
-    version: area.version,
-    vloxVersion: area.vloxVersion,
     dimension: area.dimension,
+    formatVersion: area.engineVersion,
+    engineVersion: area.engineVersion,
+    dataKey: area.dataKey,
     position: sector.position,
     flags: sector.flags,
     timestamps: sector.timestamps,
     duplicates: sector.duplicates,
     palettes: sector.palettes,
-    buffers: sector.buffers,
     sections: sector.sections,
   };
 }

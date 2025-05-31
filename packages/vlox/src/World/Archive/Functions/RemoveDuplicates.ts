@@ -1,4 +1,4 @@
-import { ArchivedSectionData, ArchivedSectorData } from "../Archive.types";
+import { ArchivedSectionData, ArchivedSectorData } from "../Types/index";
 import { uint16To4CharString } from "./Shared";
 
 function traverseSection(source: any, target: any) {

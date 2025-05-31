@@ -51,13 +51,7 @@ export class SectionSnapShot {
             snapShotSection.fill(0);
             continue;
           }
-          snapShotSection.set(
-            sector.getSection(
-              wx - sector.position[0],
-              wy - sector.position[1],
-              wz - sector.position[2]
-            ).view
-          );
+          snapShotSection.set(sector.getSection(wx, wy, wz).view);
         }
       }
     }

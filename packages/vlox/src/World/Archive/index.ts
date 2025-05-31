@@ -1,2 +1,2 @@
 export * from "./Functions/index";
-export * from "./Archive.types";
+export * from "./Types/Archive.types";

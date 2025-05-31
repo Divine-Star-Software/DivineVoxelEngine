@@ -4,12 +4,16 @@ import {
   ArchivedLightSegments,
   ArchivedSectionData,
   ArchivedSectorData,
-} from "../Archive.types";
+} from "../Types/index";
 import { VoxelTagsRegister } from "../../../Voxels/Data/VoxelTagsRegister";
 import { VoxelLightData } from "../../../Voxels/Cursor/VoxelLightData";
 import { EngineSettings } from "../../../Settings/EngineSettings";
-import { BinaryBuffer } from "../../../Util/Binary/BinaryBuffer";
-import { lightSegments, lightSemgnetGet } from "./Shared";
+import {
+  BinaryBuffer,
+  BinaryBufferConstants,
+  BinaryBufferFormat,
+} from "../../../Util/BinaryBuffer/index";
+import { getBaseData, lightSegments, lightSemgnetGet } from "./Shared";
 import { ProcessedSection, SectorPalette } from "../Classes/ArchiveClasses";
 import { CreateArchivedSection } from "./CreateArchivedSection";
 import { RemoveDuplicates } from "./RemoveDuplicates";
@@ -167,20 +171,24 @@ export default function ArchiveSector(
   for (const archivedSection of processedSections) {
     //ids
     archivedSection.voxels.isPaletted =
-      sectorPalettes.voxels.size <= BinaryBuffer.ByteArrayMax ||
-      archivedSection.palettes.voxels.size <= BinaryBuffer.ByteArrayMax;
+      sectorPalettes.voxels.size <= BinaryBufferConstants.ByteArrayMax ||
+      archivedSection.palettes.voxels.size <=
+        BinaryBufferConstants.ByteArrayMax;
     archivedSection.voxels.remapped =
-      sectorPalettes.voxels.size > BinaryBuffer.ByteArrayMax &&
-      archivedSection.palettes.voxels.size <= BinaryBuffer.ByteArrayMax &&
+      sectorPalettes.voxels.size > BinaryBufferConstants.ByteArrayMax &&
+      archivedSection.palettes.voxels.size <=
+        BinaryBufferConstants.ByteArrayMax &&
       !archivedSection.voxels.allTheSame;
 
     //level
     archivedSection.level.isPaletted =
-      sectorPalettes.level.size <= BinaryBuffer.NibbleArrayMax &&
-      archivedSection.palettes.level.size <= BinaryBuffer.NibbleArrayMax;
+      sectorPalettes.level.size <= BinaryBufferConstants.NibbleArrayMax &&
+      archivedSection.palettes.level.size <=
+        BinaryBufferConstants.NibbleArrayMax;
     archivedSection.level.remapped =
-      sectorPalettes.level.size > BinaryBuffer.NibbleArrayMax &&
-      archivedSection.palettes.level.size <= BinaryBuffer.NibbleArrayMax &&
+      sectorPalettes.level.size > BinaryBufferConstants.NibbleArrayMax &&
+      archivedSection.palettes.level.size <=
+        BinaryBufferConstants.NibbleArrayMax &&
       !archivedSection.level.allTheSame;
     if (archivedSection.level.isPaletted && !archivedSection.level.remapped) {
       neededPalettes.level = true;
@@ -188,13 +196,15 @@ export default function ArchiveSector(
 
     for (const semgnet of lightSegments) {
       archivedSection.light[semgnet].isPaletted =
-        sectorPalettes.light[semgnet].size <= BinaryBuffer.HalfNibbleArrayMax ||
+        sectorPalettes.light[semgnet].size <=
+          BinaryBufferConstants.HalfNibbleArrayMax ||
         archivedSection.palettes.light[semgnet].size <=
-          BinaryBuffer.HalfNibbleArrayMax;
+          BinaryBufferConstants.HalfNibbleArrayMax;
       archivedSection.light[semgnet].remapped =
-        sectorPalettes.light[semgnet].size > BinaryBuffer.HalfNibbleArrayMax &&
+        sectorPalettes.light[semgnet].size >
+          BinaryBufferConstants.HalfNibbleArrayMax &&
         archivedSection.palettes.light[semgnet].size <=
-          BinaryBuffer.HalfNibbleArrayMax &&
+          BinaryBufferConstants.HalfNibbleArrayMax &&
         !archivedSection.light[semgnet].allTheSame;
       if (
         archivedSection.light[semgnet].isPaletted &&
@@ -206,13 +216,13 @@ export default function ArchiveSector(
 
     //secondary
     archivedSection.secondaryVoxels.isPaletted =
-      sectorPalettes.voxels.size <= BinaryBuffer.ByteArrayMax ||
+      sectorPalettes.voxels.size <= BinaryBufferConstants.ByteArrayMax ||
       archivedSection.palettes.secondaryVoxels.size <=
-        BinaryBuffer.ByteArrayMax;
+        BinaryBufferConstants.ByteArrayMax;
     archivedSection.secondaryVoxels.remapped =
-      sectorPalettes.voxels.size > BinaryBuffer.ByteArrayMax &&
+      sectorPalettes.voxels.size > BinaryBufferConstants.ByteArrayMax &&
       archivedSection.palettes.secondaryVoxels.size <=
-        BinaryBuffer.ByteArrayMax &&
+        BinaryBufferConstants.ByteArrayMax &&
       !archivedSection.secondaryVoxels.allTheSame;
 
     if (
@@ -285,7 +295,7 @@ export default function ArchiveSector(
 
   if (neededPalettes.level) {
     palettes.level = BinaryBuffer.Create({
-      type: 8,
+      format: BinaryBufferFormat.Uint8,
       buffer: new Uint8Array(sectorPalettes.level._palette).buffer,
     });
   }
@@ -293,24 +303,23 @@ export default function ArchiveSector(
   for (const segment of lightSegments) {
     if (neededPalettes.light[segment]) {
       palettes.light[segment] = BinaryBuffer.Create({
-        type: 8,
+        format: BinaryBufferFormat.Uint8,
         buffer: new Uint8Array(sectorPalettes.light[segment]._palette).buffer,
       });
     }
   }
 
   const archivedSector: ArchivedSectorData = {
-    version: "",
-    vloxVersion: EngineSettings.version,
-    dimension: WorldRegister.dimensions.get(archiveData.location[0])!.id,
-    position: [
-      archiveData.location[1],
-      archiveData.location[2],
-      archiveData.location[3],
-    ],
+    ...getBaseData(
+      WorldRegister.dimensions.get(archiveData.location[0])!.id || "main"
+    ),
+    position: {
+      x: archiveData.location[1],
+      y: archiveData.location[2],
+      z: archiveData.location[3],
+    },
     flags: sector.storeFlags(),
     timestamps: sector.storeTimestamps(),
-    buffers: {},
     palettes,
     duplicates: {},
     sections,

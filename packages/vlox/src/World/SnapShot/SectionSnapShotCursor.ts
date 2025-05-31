@@ -15,6 +15,7 @@ export class SectionSnapshotCursor implements DataCursorInterface {
   sectors: Sector[] = [];
   cursors: SectorCursor[] = [];
   index = Flat3DIndex.GetXYZOrder();
+  
   constructor() {
     this.index.setBounds(3, 3, 3);
     const { x: sizeX, y: sizeY, z: sizeZ } = WorldSpaces.sector.bounds;
@@ -50,11 +51,7 @@ export class SectionSnapshotCursor implements DataCursorInterface {
     const sector = this.sectors[this.getSectorIndex(x, y, z)];
 
     if (!sector) return null;
-    const section = sector.getSection(
-      x - sector.position[0],
-      y - sector.position[1],
-      z - sector.position[2]
-    );
+    const section = sector.getSection(x, y, z);
 
     if (!section) return null;
     this._centeralCursor.setSection(section);
@@ -113,11 +110,7 @@ export class SectionSnapshotCursor implements DataCursorInterface {
           const sectorIndex = this.getSectorIndex(sectionX, sectionY, sectionZ);
           const sector = this.sectors[sectorIndex];
           if (!sector) continue;
-          const section = sector.getSection(
-            sectionX - sector.position[0],
-            sectionY - sector.position[1],
-            sectionZ - sector.position[2]
-          );
+          const section = sector.getSection(sectionX, sectionY, sectionZ);
           section.updatePosition();
           section.view.set(
             snapShot.sections[snapShot.index.getIndexXYZ(x, y, z)]

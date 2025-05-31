@@ -5,8 +5,8 @@ import { NumberPalette } from "../../../Util/NumberPalette";
 import { ArchivedVoxelTemplateData } from "../ArchivedVoxelTemplate.types";
 import {
   BinaryBuffer,
-  BinaryBufferTypes,
-} from "../../../Util/Binary/BinaryBuffer";
+  BinaryBufferFormat,
+} from "../../../Util/BinaryBuffer/index";
 import { VoxelArchivePalette } from "../../../Voxels/Archive/VoxelPaletteArechive";
 import { VoxelTagsRegister } from "../../../Voxels/Data/VoxelTagsRegister";
 import { VoxelPalettesRegister } from "../../../Voxels/Data/VoxelPalettesRegister";
@@ -105,7 +105,7 @@ export default function CreateArchivedTemplate(
   if (idsAllTheSame) {
     if (firstId !== 0) {
       buffers.ids = BinaryBuffer.Create({
-        type: 16,
+        format: BinaryBufferFormat.Uint16,
         length: ids.length,
         buffer: ids[0],
       });
@@ -113,15 +113,15 @@ export default function CreateArchivedTemplate(
   } else if (idsPaletted) {
     const type = BinaryBuffer.DetermineSubByteArray(voxelPalette.size)!;
     buffers.ids = BinaryBuffer.Create({
-      buffer: BinaryBuffer.Convert(ids, BinaryBufferTypes.ShortArray, type)
+      buffer: BinaryBuffer.Convert(ids, BinaryBufferFormat.Uint16, type)
         .buffer,
-      type,
+      format: type,
       length: ids.length,
     });
   } else {
     buffers.ids = BinaryBuffer.Create({
       buffer: ids.buffer,
-      type: BinaryBufferTypes.ShortArray,
+      format: BinaryBufferFormat.Uint16,
       length: ids.length,
     });
   }
@@ -130,7 +130,7 @@ export default function CreateArchivedTemplate(
   if (levelAllTheSame) {
     if (firstId !== 0) {
       buffers.level = BinaryBuffer.Create({
-        type: 8,
+        format: BinaryBufferFormat.Uint8,
         length: levels.length,
         buffer: levels[0],
       });
@@ -138,14 +138,14 @@ export default function CreateArchivedTemplate(
   } else if (levelPaletted) {
     const type = BinaryBuffer.DetermineSubByteArray(levelPalette.size)!;
     buffers.level = BinaryBuffer.Create({
-      buffer: BinaryBuffer.Convert(levels, BinaryBufferTypes.ByteArray, type)
+      buffer: BinaryBuffer.Convert(levels, BinaryBufferFormat.Uint8, type)
         .buffer,
-      type,
+      format: type,
     });
   } else {
     buffers.level = BinaryBuffer.Create({
       buffer: levels.buffer,
-      type: BinaryBufferTypes.ByteArray,
+      format: BinaryBufferFormat.Uint8,
     });
   }
 
@@ -153,7 +153,7 @@ export default function CreateArchivedTemplate(
   if (secondaryAllTheSame) {
     if (firstId !== 0) {
       buffers.secondary = BinaryBuffer.Create({
-        type: 16,
+        format: BinaryBufferFormat.Uint16,
         length: secondary.length,
         buffer: secondary[0],
       });
@@ -163,15 +163,15 @@ export default function CreateArchivedTemplate(
     buffers.secondary = BinaryBuffer.Create({
       buffer: BinaryBuffer.Convert(
         secondary,
-        BinaryBufferTypes.ShortArray,
+        BinaryBufferFormat.Uint16,
         type
       ).buffer,
-      type,
+      format: type,
     });
   } else {
     buffers.secondary = BinaryBuffer.Create({
       buffer: secondary.buffer,
-      type: BinaryBufferTypes.ShortArray,
+      format: BinaryBufferFormat.Uint16,
     });
   }
 
@@ -183,12 +183,12 @@ export default function CreateArchivedTemplate(
     bounds: Vector3Like.Create(...index.getBounds()),
     palettes: {
       level: BinaryBuffer.Create({
-        type: 8,
+        format: BinaryBufferFormat.Uint8,
         length: levelPalette._palette.length,
         buffer: Uint8Array.from(levelPalette._palette).buffer,
       }),
       secondary: BinaryBuffer.Create({
-        type: 16,
+        format: BinaryBufferFormat.Uint16,
         length: secondaryPalette._palette.length,
         buffer: Uint16Array.from(secondaryPalette._palette).buffer,
       }),

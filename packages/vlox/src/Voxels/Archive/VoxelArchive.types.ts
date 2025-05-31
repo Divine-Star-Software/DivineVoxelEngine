@@ -1,4 +1,7 @@
-import { BinaryBufferData, JSONBinaryBufferData } from "../../Util/Binary/BinaryBuffer";
+import {
+  BinaryBufferData,
+  JSONBinaryBufferData,
+} from "../../Util/BinaryBuffer/BinaryBuffer.types";
 import { BinarySchemaNodeData } from "../../Voxels/State/State.types";
 
 export type VoxelArchivePaletteData = {
@@ -15,7 +18,6 @@ export type VoxelArchivePaletteData = {
   stateSchemaPalette: BinarySchemaNodeData[][];
   modSchemaPaette: BinarySchemaNodeData[][];
 };
-
 
 export type VoxelArchiPaveletteExportedJSONData = {
   /**Palette of voxel string ids */

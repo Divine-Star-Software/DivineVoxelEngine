@@ -1,6 +1,12 @@
+import { WorldSpaces } from "../../WorldSpaces";
 import { setNibbleArrayIndex } from "../../../Util/Binary/BinaryArrays";
 import { VoxelLightData } from "../../../Voxels/Cursor/VoxelLightData";
-import { ArchivedLightSegments } from "../Archive.types";
+import {
+  ArchivedDataKey,
+  ArchivedLightSegments,
+  BaseArchivedDataBase,
+} from "../Types/Archive.types";
+import { EngineSettings } from "../../../Settings/EngineSettings";
 const lightData = new VoxelLightData();
 export const lightSegments: ArchivedLightSegments[] = [
   "sun",
@@ -48,9 +54,10 @@ export function uint16To4CharString(value: number): string {
   return result;
 }
 
-
-
-export function getLightBuffer(light: ArchivedLightSegments, buffer: Uint16Array) {
+export function getLightBuffer(
+  light: ArchivedLightSegments,
+  buffer: Uint16Array
+) {
   const array = new Uint8Array(buffer.length / 2);
   for (let i = 0; i < buffer.length; i++) {
     let l = 0;
@@ -61,4 +68,27 @@ export function getLightBuffer(light: ArchivedLightSegments, buffer: Uint16Array
     setNibbleArrayIndex(array, i, l);
   }
   return array;
+}
+
+export function getCurrentDataKey(): ArchivedDataKey {
+  return {
+    sectorSize: { ...WorldSpaces.sector.bounds },
+    sectionSize: { ...WorldSpaces.section.bounds },
+    sectionIndexOrder: "YXZ",
+    sectionBuffersIndexOrder: {
+      id: "YXZ",
+      light: "YXZ",
+      level: "YXZ",
+      secondary: "YXZ",
+    },
+  };
+}
+
+export function getBaseData(dimension: string): BaseArchivedDataBase {
+  return {
+    dimension,
+    formatVersion: "",
+    engineVersion: EngineSettings.version,
+    dataKey: getCurrentDataKey(),
+  };
 }

@@ -53,13 +53,7 @@ export class SectorCursor
   getSection(x: number, y: number, z: number) {
     if (!this._current) return null;
     const section =
-      this._current.sections[
-        WorldSpaces.section.getIndex(
-          x - this._sectorPosition.x,
-          y - this._sectorPosition.y,
-          z - this._sectorPosition.z
-        )
-      ];
+      this._current.sections[WorldSpaces.section.getIndex(x, y, z)];
     if (!section) {
       if (!section)
         throw new Error(

@@ -5,7 +5,10 @@ import { NumberPalette } from "../../Util/NumberPalette";
 import { VoxelPalettesRegister } from "../../Voxels/Data/VoxelPalettesRegister";
 import { VoxelTagsRegister } from "../../Voxels/Data/VoxelTagsRegister";
 import { IVoxelTemplate } from "../../Templates/VoxelTemplates.types";
-import { BinaryBuffer } from "../../Util/Binary/BinaryBuffer";
+import {
+  BinaryBuffer,
+  BinaryBufferFormat,
+} from "../../Util/BinaryBuffer/index";
 import { VoxelPaletteArchiveReader } from "../../Voxels/Archive/VoxelPaletteArchiveReader";
 import { BoundingBox } from "@amodx/math/Geomtry/Bounds/BoundingBox";
 
@@ -43,7 +46,7 @@ export class ArchivedVoxelTemplate implements IVoxelTemplate {
       ? new BinaryBuffer(_data.buffers.ids)
       : new BinaryBuffer(
           BinaryBuffer.Create({
-            type: 16,
+            format: BinaryBufferFormat.Uint16,
             length: volume,
             buffer: 0,
           })
@@ -52,7 +55,7 @@ export class ArchivedVoxelTemplate implements IVoxelTemplate {
       ? new BinaryBuffer(_data.buffers.level)
       : new BinaryBuffer(
           BinaryBuffer.Create({
-            type: 8,
+            format: BinaryBufferFormat.Uint8,
             length: volume,
             buffer: 0,
           })
@@ -61,7 +64,7 @@ export class ArchivedVoxelTemplate implements IVoxelTemplate {
       ? new BinaryBuffer(_data.buffers.secondary)
       : new BinaryBuffer(
           BinaryBuffer.Create({
-            type: 16,
+            format: BinaryBufferFormat.Uint16,
             length: volume,
             buffer: 0,
           })

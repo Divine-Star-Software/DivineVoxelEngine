@@ -1,11 +1,11 @@
 import { StringPalette } from "../../../Util/StringPalette";
 import { NumberPalette } from "../../../Util/NumberPalette";
-import { ArchivedLightSegments, ArchivedSectorData } from "../Archive.types";
+import { ArchivedLightSegments, ArchivedSectorData } from "../Types/index";
 import { ImportedSection } from "./ImportedSection";
 import { BinarySchemaNodeData } from "../../../Voxels/State/State.types";
 import { BinarySchema } from "../../../Voxels/State/Schema/BinarySchema";
 import { SchemaRegister } from "../../../Voxels/State/SchemaRegister";
-import { BinaryBuffer } from "../../../Util/Binary/BinaryBuffer";
+import { BinaryBuffer } from "../../../Util/BinaryBuffer/BinaryBuffer";
 
 class ImportedSectorPalettes {
   id: StringPalette;

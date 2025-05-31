@@ -1,5 +1,5 @@
 import { Thread, Threads } from "@amodx/threads";
-import { ArchivedSectorData } from "./Archive.types";
+import { ArchivedSectorData } from "./Types/index";
 import ArchiveSector from "./Functions/ArchiveSector";
 import { WorldRegister } from "../WorldRegister";
 import ImportSector from "./Functions/ImportSector";
@@ -8,7 +8,7 @@ import {
   compressBinaryObject,
   expandBinaryObject,
 } from "../../Util/BinaryObject";
-import { BinaryBufferData } from "../../Util/Binary/BinaryBuffer";
+import { BinaryBufferData } from "../../Util/BinaryBuffer/index";
 
 function runArchiveSector(
   location: LocationData
@@ -101,7 +101,9 @@ export default function InitTasks(props: { worldThread: Thread }) {
         [
           [
             WorldRegister.dimensions._dimensionMap.get(archived.dimension) || 0,
-            ...archived.position,
+            archived.position.x,
+            archived.position.y,
+            archived.position.z,
           ],
           importedSector.buffer,
         ],

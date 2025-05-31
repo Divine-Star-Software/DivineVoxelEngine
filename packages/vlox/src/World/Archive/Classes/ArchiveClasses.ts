@@ -1,6 +1,6 @@
 import { NumberPalette } from "../../../Util/NumberPalette";
 import { Section } from "../../../World/Section";
-import { ArchivedLightSegments } from "../Archive.types";
+import { ArchivedLightSegments } from "../Types/Archive.types";
 import { VoxelArchivePalette } from "../../../Voxels/Archive/VoxelPaletteArechive";
 
 

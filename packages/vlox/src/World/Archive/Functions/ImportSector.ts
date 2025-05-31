@@ -1,6 +1,6 @@
 import { WorldSpaces } from "../../../World/WorldSpaces";
 import { Sector, SectorData } from "../../index";
-import { ArchivedSectorData } from "../Archive.types";
+import { ArchivedSectorData } from "../Types/index";
 import { ImportedSector } from "../Classes/ImportedSector";
 import { Vector3Like } from "@amodx/math";
 
@@ -15,9 +15,9 @@ export default function ImportSector(
   const sector = new Sector();
 
   sector.setBuffer(Sector.CreateNewBuffer());
-  sector.position[0] = archivedSector.position[0];
-  sector.position[1] = archivedSector.position[1];
-  sector.position[2] = archivedSector.position[2];
+  sector.position[0] = archivedSector.position.x;
+  sector.position[1] = archivedSector.position.y;
+  sector.position[2] = archivedSector.position.z;
 
   sector.loadFlags(archivedSector.flags);
   sector.loadTimestamps(archivedSector.timestamps);

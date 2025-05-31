@@ -1,10 +1,10 @@
 import { NumberPalette } from "../../../Util/NumberPalette";
-import { ArchivedLightSegments, ArchivedSectionData } from "../Archive.types";
+import { ArchivedLightSegments, ArchivedSectionData } from "../Types/index";
 import {
   BinaryBuffer,
   BinaryBufferData,
-  BinaryBufferTypes,
-} from "../../../Util/Binary/BinaryBuffer";
+  BinaryBufferFormat,
+} from "../../../Util/BinaryBuffer/index";
 import { ImportedSector } from "./ImportedSector";
 import { VoxelPalettesRegister } from "../../../Voxels/Data/VoxelPalettesRegister";
 import { lightSegments, lightSemgnetSet } from "../Functions/Shared";
@@ -24,7 +24,7 @@ class ImportedSectionBuffers {
           BinaryBuffer.Create({
             length: WorldSpaces.section.volumne,
             buffer: 0,
-            type: 16,
+            format: BinaryBufferFormat.Uint16,
           })
         );
     this.secondary = section.buffers.secondary
@@ -33,7 +33,7 @@ class ImportedSectionBuffers {
           BinaryBuffer.Create({
             length: WorldSpaces.section.volumne,
             buffer: 0,
-            type: 16,
+            format: BinaryBufferFormat.Uint16,
           })
         );
     this.level = section.buffers.level
@@ -42,7 +42,7 @@ class ImportedSectionBuffers {
           BinaryBuffer.Create({
             length: WorldSpaces.section.volumne,
             buffer: 0,
-            type: 8,
+            format: BinaryBufferFormat.Uint8,
           })
         );
     this.light = {
@@ -52,7 +52,7 @@ class ImportedSectionBuffers {
             BinaryBuffer.Create({
               length: WorldSpaces.section.volumne,
               buffer: 0,
-              type: 4,
+              format: BinaryBufferFormat.NibbleArray,
             })
           ),
       red: section.buffers.light?.red
@@ -61,7 +61,7 @@ class ImportedSectionBuffers {
             BinaryBuffer.Create({
               length: WorldSpaces.section.volumne,
               buffer: 0,
-              type: 4,
+              format: BinaryBufferFormat.NibbleArray,
             })
           ),
       green: section.buffers.light?.green
@@ -70,7 +70,7 @@ class ImportedSectionBuffers {
             BinaryBuffer.Create({
               length: WorldSpaces.section.volumne,
               buffer: 0,
-              type: 4,
+              format: BinaryBufferFormat.NibbleArray,
             })
           ),
       blue: section.buffers.light?.blue
@@ -79,7 +79,7 @@ class ImportedSectionBuffers {
             BinaryBuffer.Create({
               length: WorldSpaces.section.volumne,
               buffer: 0,
-              type: 4,
+              format: BinaryBufferFormat.NibbleArray,
             })
           ),
     };
@@ -121,9 +121,9 @@ class ImportedSectionPalettes {
       ? new NumberPalette(BinaryBuffer.ToTypedArray(section.palettes?.level))
       : undefined;
 
-    this.secondaryVoxels = section.palettes?.secondaryVoxels
+    this.secondaryVoxels = section.palettes?.secondary
       ? new NumberPalette(
-          BinaryBuffer.ToTypedArray(section.palettes?.secondaryVoxels)
+          BinaryBuffer.ToTypedArray(section.palettes?.secondary)
         )
       : undefined;
   }
@@ -141,7 +141,7 @@ export class ImportedSection {
   }
   getId(index: number): number {
     const value = this.buffers.ids.getValue(index);
-    if (this.buffers.ids.type == BinaryBufferTypes.Value) {
+    if (this.buffers.ids.isValue) {
       return VoxelPalettesRegister.getVoxelIdFromString(
         ...this.sector.getVoxelData(value)
       );
@@ -161,10 +161,12 @@ export class ImportedSection {
     for (let l = 0; l < lightSegments.length; l++) {
       const segment = lightSegments[l];
       let value = 0;
-      if (this.buffers.light[segment].type == BinaryBufferTypes.Value) {
+      if (this.buffers.light[segment].isValue) {
         value = this.buffers.light[segment].getValue(index);
       } else {
-        if (this.buffers.light[segment].type == BinaryBufferTypes.NibbleArray) {
+        if (
+          this.buffers.light[segment].format == BinaryBufferFormat.NibbleArray
+        ) {
           value = this.buffers.light[segment].getValue(index);
         } else {
           if (this.palettes.light[segment]) {
@@ -200,7 +202,7 @@ export class ImportedSection {
     const trueVoxelId = VoxelPalettesRegister.voxels[this.getId(index)][0];
     const value = this.buffers.secondary.getValue(index);
     if (VoxelTagsRegister.VoxelTags[trueVoxelId]["dve_can_have_secondary"]) {
-      if (this.buffers.ids.type == BinaryBufferTypes.Value) {
+      if (this.buffers.ids.isValue) {
         return VoxelPalettesRegister.getVoxelIdFromString(
           ...this.sector.getVoxelData(value)
         );
