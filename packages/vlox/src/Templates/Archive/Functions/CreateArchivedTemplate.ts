@@ -97,7 +97,7 @@ export default function CreateArchivedTemplate(
   }
   const buffers: ArchivedVoxelTemplateData["buffers"] = <any>{};
 
-  const idsPaletted = voxelPalette._voxelCount < 0xffff;
+  const idsPaletted = voxelPalette.size < 0xffff;
   const levelPaletted = levelPalette.size < 0xff;
   const secondaryPaletted = secondaryPalette.size < 0xffff;
 
@@ -106,7 +106,7 @@ export default function CreateArchivedTemplate(
     if (firstId !== 0) {
       buffers.ids = BinaryBuffer.Create({
         format: BinaryBufferFormat.Uint16,
-        length: ids.length,
+        byteLength: ids.length,
         buffer: ids[0],
       });
     }
@@ -116,13 +116,13 @@ export default function CreateArchivedTemplate(
       buffer: BinaryBuffer.Convert(ids, BinaryBufferFormat.Uint16, type)
         .buffer,
       format: type,
-      length: ids.length,
+      byteLength: ids.length,
     });
   } else {
     buffers.ids = BinaryBuffer.Create({
       buffer: ids.buffer,
       format: BinaryBufferFormat.Uint16,
-      length: ids.length,
+      byteLength: ids.length,
     });
   }
 
@@ -131,7 +131,7 @@ export default function CreateArchivedTemplate(
     if (firstId !== 0) {
       buffers.level = BinaryBuffer.Create({
         format: BinaryBufferFormat.Uint8,
-        length: levels.length,
+        byteLength: levels.length,
         buffer: levels[0],
       });
     }
@@ -154,7 +154,7 @@ export default function CreateArchivedTemplate(
     if (firstId !== 0) {
       buffers.secondary = BinaryBuffer.Create({
         format: BinaryBufferFormat.Uint16,
-        length: secondary.length,
+        byteLength: secondary.length,
         buffer: secondary[0],
       });
     }
@@ -184,12 +184,12 @@ export default function CreateArchivedTemplate(
     palettes: {
       level: BinaryBuffer.Create({
         format: BinaryBufferFormat.Uint8,
-        length: levelPalette._palette.length,
+        byteLength: levelPalette._palette.length,
         buffer: Uint8Array.from(levelPalette._palette).buffer,
       }),
       secondary: BinaryBuffer.Create({
         format: BinaryBufferFormat.Uint16,
-        length: secondaryPalette._palette.length,
+        byteLength: secondaryPalette._palette.length,
         buffer: Uint16Array.from(secondaryPalette._palette).buffer,
       }),
       ...voxelPalette.toJSON(),

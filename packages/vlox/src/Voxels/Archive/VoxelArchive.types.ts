@@ -3,33 +3,32 @@ import {
   JSONBinaryBufferData,
 } from "../../Util/BinaryBuffer/BinaryBuffer.types";
 import { BinarySchemaNodeData } from "../../Voxels/State/State.types";
+export interface ArchivedVoxelDataForPalette {
+  id: string;
+  stateSchemaId?: string;
+  modSchema?: BinarySchemaNodeData[];
+}
 
 export type VoxelArchivePaletteData = {
   /**Palette of voxel string ids */
-  id: string[];
+  voxels: ArchivedVoxelDataForPalette[];
   /**A palette of voxels and their states and mods in sets 5 of numbers.
    * 1 -> voxel palette id
-   * 2 -> state schema palette id
-   * 3 -> state value
-   * 4 -> mod schema palette id
-   * 5 -> mod value
+   * 2 -> state value
+   * 3 -> mod value
    */
   voxelPalette: BinaryBufferData;
-  stateSchemaPalette: BinarySchemaNodeData[][];
-  modSchemaPaette: BinarySchemaNodeData[][];
+  stateSchemas: Record<string, BinarySchemaNodeData[]>;
 };
 
 export type VoxelArchiPaveletteExportedJSONData = {
   /**Palette of voxel string ids */
-  id: string[];
+  voxels: ArchivedVoxelDataForPalette[];
   /**A palette of voxels and their states and mods in sets 5 of numbers.
    * 1 -> voxel palette id
-   * 2 -> state schema palette id
-   * 3 -> state value
-   * 4 -> mod schema palette id
-   * 5 -> mod value
+   * 2 -> state value
+   * 3 -> mod value
    */
   voxelPalette: JSONBinaryBufferData;
-  stateSchemaPalette: BinarySchemaNodeData[][];
-  modSchemaPaette: BinarySchemaNodeData[][];
+  stateSchemas: Record<string, BinarySchemaNodeData[]>;
 };

@@ -28,7 +28,7 @@ export enum BinaryBufferConstants {
 
 export interface BinaryBufferData {
   format: BinaryBufferFormat;
-  length: number;
+  byteLength: number;
   buffer: number | ArrayBuffer | SharedArrayBuffer;
 }
 
@@ -36,6 +36,6 @@ export interface JSONBinaryBufferData {
   format: BinaryBufferFormat;
   base64?: string;
   value?: number | null;
-  length: number;
-  compressed?: BinaryBufferCompresedTypes;
+  byteLength: number;
+  compression?: BinaryBufferCompresedTypes;
 }

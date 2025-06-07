@@ -1,9 +1,5 @@
 import { JSONBinaryBufferData } from "../../../Util/BinaryBuffer/BinaryBuffer.types";
 import {
-  VoxelArchivePaletteData,
-  VoxelArchiPaveletteExportedJSONData,
-} from "../../../Voxels/Archive/VoxelArchive.types";
-import {
   ArchivedLightSegments,
   BaseArchivedDataBase,
   BaseArchivedSectionBuffers,
@@ -11,6 +7,7 @@ import {
   BaseArchivedSectionPaletteData,
   BaseArchivedSectorData,
 } from "./Archive.types";
+import { ArchiveAreaPalettesData } from "./ArchiveArea.types";
 
 export interface ArchivedSectorDuplicteJSONData {
   sections?: Record<string, ArchivedSectionJSONData>;
@@ -42,6 +39,7 @@ export interface ArchivedSectionBuffersJSONData
  * Interface for an archived area.
  */
 export interface ArchivedAreaJSONData extends BaseArchivedDataBase {
+  palettes: ArchiveAreaPalettesData;
   /** Array of archived sector data within the area. */
   sectors: ArchivedAreaSectorJSONData[];
 }
@@ -49,10 +47,11 @@ export interface ArchivedAreaJSONData extends BaseArchivedDataBase {
 /**
  * Interface representing the palette data for a sector.
  */
-export interface ArchivedAreaSectorPaletteJSONData
-  extends VoxelArchiPaveletteExportedJSONData {
+export interface ArchivedAreaSectorPaletteJSONData {
+  id: string[];
+  voxelPalette: JSONBinaryBufferData;
   level?: JSONBinaryBufferData;
-  light: Partial<Record<ArchivedLightSegments, JSONBinaryBufferData>>;
+  light?: Partial<Record<ArchivedLightSegments, JSONBinaryBufferData>>;
 }
 
 /**

@@ -13,8 +13,15 @@ import { Axis } from "@babylonjs/core/Maths/math.axis";
 
 import { GenMap } from "./Internal/GenMap";
 import { TickInterval } from "@divinevoxel/vlox/Util/TickInterval";
-import { Vector3Like } from "@amodx/math";
+import { Vector3Like, Vec3Array } from "@amodx/math";
+import { DivineVoxelEngineWorld } from "@divinevoxel/vlox/Contexts/World/DivineVoxelEngineWorld";
+
 export default function (followPosition = Vector3Like.Create()) {
+  Threads.registerTask<Vec3Array>("update-debug-map-position", ([x, y, z]) => {
+    followPosition.x = x;
+    followPosition.y = y;
+    followPosition.z = z;
+  });
   Threads.registerTask<OffscreenCanvas>("set-debug-map-canvas", (canvas) => {
     // Babylon.js setup
     const engine = new Engine(canvas);
@@ -46,6 +53,7 @@ export default function (followPosition = Vector3Like.Create()) {
     console.warn("OFFSCREEN CANVAS", canvas, canvas.width, canvas.height);
     let lastWidth = 0,
       lastHeight = 0;
+    const world = DivineVoxelEngineWorld.instance;
 
     engine.runRenderLoop(() => {
       const width = canvas.width;

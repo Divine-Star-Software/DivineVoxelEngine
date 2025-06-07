@@ -1,10 +1,10 @@
-import { ArchivedSectionData } from "../Types/index";
+import { ArchivedSectionData } from "../../Types/index";
 import {
   BinaryBuffer,
   BinaryBufferFormat,
-} from "../../../Util/BinaryBuffer/index";
-import { getLightBuffer, lightSegments } from "./Shared";
-import { ProcessedSection, SectorPalette } from "../Classes/ArchiveClasses";
+} from "../../../../Util/BinaryBuffer/index";
+import { getLightBuffer, lightSegments } from "../Shared/LightSegments";
+import { ProcessedSection, SectorPalette } from "../../Classes/ArchiveClasses";
 
 export function CreateArchivedSection(
   archiveSection: ProcessedSection,
@@ -25,37 +25,15 @@ export function CreateArchivedSection(
     });
   }
 
-  if (archiveSection.light.sun.remapped) {
-    palettes.light ??= {};
-    palettes.light.sun = BinaryBuffer.Create({
-      format: BinaryBufferFormat.Uint8,
-      buffer: Uint8Array.from(archiveSection.palettes.light.sun._palette)
-        .buffer,
-    });
-  }
-  if (archiveSection.light.red.remapped) {
-    palettes.light ??= {};
-    palettes.light.red = BinaryBuffer.Create({
-      format: BinaryBufferFormat.Uint8,
-      buffer: Uint8Array.from(archiveSection.palettes.light.red._palette)
-        .buffer,
-    });
-  }
-  if (archiveSection.light.green.remapped) {
-    palettes.light ??= {};
-    palettes.light.green = BinaryBuffer.Create({
-      format: BinaryBufferFormat.Uint8,
-      buffer: Uint8Array.from(archiveSection.palettes.light.green._palette)
-        .buffer,
-    });
-  }
-  if (archiveSection.light.blue.remapped) {
-    palettes.light ??= {};
-    palettes.light.blue = BinaryBuffer.Create({
-      format: BinaryBufferFormat.Uint8,
-      buffer: Uint8Array.from(archiveSection.palettes.light.blue._palette)
-        .buffer,
-    });
+  for (const segment of lightSegments) {
+    if (archiveSection.light[segment].remapped) {
+      palettes.light ??= {};
+      palettes.light[segment] = BinaryBuffer.Create({
+        format: BinaryBufferFormat.Uint8,
+        buffer: Uint8Array.from(archiveSection.palettes.light[segment]._palette)
+          .buffer,
+      });
+    }
   }
 
   if (archiveSection.secondaryVoxels.remapped) {
@@ -73,7 +51,7 @@ export function CreateArchivedSection(
     if (archiveSection.voxels.buffer[0] !== 0) {
       buffers.id = BinaryBuffer.Create({
         format: BinaryBufferFormat.Uint16,
-        length: archiveSection.original.ids.length,
+        byteLength: archiveSection.original.ids.length,
         buffer: archiveSection.voxels.buffer[0],
       });
     }
@@ -103,7 +81,7 @@ export function CreateArchivedSection(
     if (archiveSection.level.buffer[0] !== 0) {
       buffers.level = BinaryBuffer.Create({
         format: BinaryBufferFormat.Uint8,
-        length: archiveSection.original.level.length,
+        byteLength: archiveSection.original.level.length,
         buffer: archiveSection.voxels.buffer[0],
       });
     }
@@ -124,6 +102,7 @@ export function CreateArchivedSection(
   } else {
     buffers.level = BinaryBuffer.Create({
       buffer: archiveSection.original.level.slice().buffer,
+      byteLength: archiveSection.original.level.length,
       format: BinaryBufferFormat.Uint8,
     });
   }
@@ -133,8 +112,9 @@ export function CreateArchivedSection(
       if (archiveSection.light[semgnet].value !== 0) {
         buffers.light ??= {};
         buffers.light[semgnet] = BinaryBuffer.Create({
+          format: BinaryBufferFormat.NibbleArray,
           buffer: archiveSection.light[semgnet].value,
-          length: archiveSection.original.light.length,
+          byteLength: archiveSection.original.light.length,
         });
       }
     } else if (archiveSection.light[semgnet].isPaletted) {
@@ -150,7 +130,6 @@ export function CreateArchivedSection(
           BinaryBufferFormat.Uint8,
           type
         ).buffer,
-        length: archiveSection.original.light.length,
         format: type,
       });
     } else {
@@ -158,7 +137,7 @@ export function CreateArchivedSection(
       buffers.light[semgnet] = BinaryBuffer.Create({
         buffer: getLightBuffer(semgnet, archiveSection.original.light).buffer,
         format: BinaryBufferFormat.NibbleArray,
-        length: archiveSection.original.light.length,
+        byteLength: archiveSection.original.light.length,
       });
     }
   }
@@ -167,7 +146,7 @@ export function CreateArchivedSection(
     if (archiveSection.secondaryVoxels.buffer[0] !== 0) {
       buffers.secondary = BinaryBuffer.Create({
         format: BinaryBufferFormat.Uint16,
-        length: archiveSection.original.level.length,
+        byteLength: archiveSection.original.level.length,
         buffer: archiveSection.secondaryVoxels.buffer[0],
       });
     }
@@ -184,13 +163,12 @@ export function CreateArchivedSection(
         type
       ).buffer,
       format: type,
-      length: archiveSection.original.secondary.length,
     });
   } else {
     buffers.secondary = BinaryBuffer.Create({
       buffer: archiveSection.secondaryVoxels.buffer.buffer,
       format: BinaryBufferFormat.Uint16,
-      length: archiveSection.original.secondary.length,
+      byteLength: archiveSection.original.secondary.length,
     });
   }
 

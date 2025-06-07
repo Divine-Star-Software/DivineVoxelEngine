@@ -1,8 +1,8 @@
 import { Thread, Threads } from "@amodx/threads";
 import { ArchivedSectorData } from "./Types/index";
-import ArchiveSector from "./Functions/ArchiveSector";
+import ArchiveSector from "./Functions/Sector/ArchiveSector";
 import { WorldRegister } from "../WorldRegister";
-import ImportSector from "./Functions/ImportSector";
+import ImportSector from "./Functions/Sector/ImportSector";
 import { LocationData } from "../../Math";
 import {
   compressBinaryObject,

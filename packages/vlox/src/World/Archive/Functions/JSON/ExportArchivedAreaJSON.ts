@@ -12,7 +12,7 @@ import {
   ArchivedSectionJSONData,
   ArchivedSectionPaletteJSONData,
 } from "../../Types/index";
-import { lightSegments } from "../Shared";
+import { lightSegments } from "../Shared/LightSegments";
 
 async function ConvertSection(
   section: ArchivedSectionData,
@@ -41,6 +41,8 @@ async function ConvertSection(
         );
       }
     }
+
+    jsonSection.palettes = palettes;
   }
 
   if (section.buffers.id) {
@@ -84,8 +86,6 @@ async function ConvertSector(
 ) {
   const palettes: ArchivedAreaSectorPaletteJSONData = {
     id: sector.palettes.id,
-    modSchemaPaette: sector.palettes.modSchemaPaette,
-    stateSchemaPalette: sector.palettes.stateSchemaPalette,
     voxelPalette: await BinaryBuffer.ToJSON(sector.palettes.voxelPalette),
     light: {},
   };
@@ -93,11 +93,14 @@ async function ConvertSector(
     palettes.level = await BinaryBuffer.ToJSON(sector.palettes.level);
   }
 
-  for (const segment of lightSegments) {
-    if (sector.palettes.light[segment]) {
-      palettes.light[segment] = await BinaryBuffer.ToJSON(
-        sector.palettes.light[segment]
-      );
+  if (sector.palettes.light) {
+    palettes.light = {};
+    for (const segment of lightSegments) {
+      if (sector.palettes.light[segment]) {
+        palettes.light[segment] = await BinaryBuffer.ToJSON(
+          sector.palettes.light[segment]
+        );
+      }
     }
   }
 
@@ -139,6 +142,7 @@ export default async function ExportArchivedAreaJSON(
     engineVersion: data.engineVersion,
     formatVersion: data.formatVersion,
     dataKey: data.dataKey,
+    palettes: data.palettes,
     sectors: [],
   };
 

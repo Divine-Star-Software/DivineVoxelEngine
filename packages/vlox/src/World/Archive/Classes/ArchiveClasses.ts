@@ -3,7 +3,6 @@ import { Section } from "../../../World/Section";
 import { ArchivedLightSegments } from "../Types/Archive.types";
 import { VoxelArchivePalette } from "../../../Voxels/Archive/VoxelPaletteArechive";
 
-
 class ProcessedData<Buffer = any> {
   constructor(public buffer: Buffer) {}
   allTheSame = true;
@@ -21,12 +20,6 @@ class SectionPalette {
 
 export class ProcessedSection {
   palettes = new SectionPalette();
-  isBuriedAllTheSame = false;
-  buriedValue = 0;
-  isVoxelMapAllTheSame = false;
-  voxelMapValue = 0;
-  isDirtyMapAllTheSame = false;
-  dirtyMapValue = 0;
 
   light: Record<ArchivedLightSegments, ProcessedData<Uint8Array>>;
   level: ProcessedData<Uint8Array>;

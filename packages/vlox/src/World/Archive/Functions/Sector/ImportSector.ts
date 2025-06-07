@@ -1,7 +1,7 @@
-import { WorldSpaces } from "../../../World/WorldSpaces";
-import { Sector, SectorData } from "../../index";
-import { ArchivedSectorData } from "../Types/index";
-import { ImportedSector } from "../Classes/ImportedSector";
+import { WorldSpaces } from "../../../WorldSpaces";
+import { Sector, SectorData } from "../../../index";
+import { ArchivedSectorData } from "../../Types/index";
+import { ImportedSector } from "../../Classes/ImportedSector";
 import { Vector3Like } from "@amodx/math";
 
 type RunData = {

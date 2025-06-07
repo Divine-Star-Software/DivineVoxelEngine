@@ -14,8 +14,8 @@ export async function BinaryBufferFromJSON(
     for (let i = 0; i < binary.length; i++) {
       raw[i] = binary.charCodeAt(i);
     }
-    if (data.compressed) {
-      const ds = new DecompressionStream(data.compressed);
+    if (data.compression) {
+      const ds = new DecompressionStream(data.compression);
       const writer = ds.writable.getWriter();
       writer.write(raw);
       writer.close();
@@ -30,19 +30,19 @@ export async function BinaryBufferFromJSON(
 
   return {
     format: data.format,
-    length: data.length,
+    byteLength: data.byteLength,
     buffer: typeof raw === "number" ? raw : raw.buffer,
   };
 }
 
 export async function BinaryBufferToJSON(
   data: BinaryBufferData,
-  compressed?: boolean | BinaryBufferCompresedTypes
+  compression?: boolean | BinaryBufferCompresedTypes
 ): Promise<JSONBinaryBufferData> {
   if (typeof data.buffer === "number") {
     return {
       format: data.format,
-      length: data.length,
+      byteLength: data.byteLength,
       value: data.buffer,
     };
   }
@@ -51,12 +51,12 @@ export async function BinaryBufferToJSON(
 
   let bufferToEncode = input;
 
-  if (compressed) {
-    compressed =
-      typeof compressed == "boolean"
+  if (compression) {
+    compression =
+      typeof compression == "boolean"
         ? BinaryBufferCompresedTypes.Gzip
-        : compressed;
-    const cs = new CompressionStream(compressed);
+        : compression;
+    const cs = new CompressionStream(compression);
     const writer = cs.writable.getWriter();
     writer.write(input);
     writer.close();
@@ -72,8 +72,8 @@ export async function BinaryBufferToJSON(
 
   return {
     format: data.format,
-    length: data.length,
+    byteLength: data.byteLength,
     base64: base64,
-    ...(compressed ? { compressed } : {}),
+    ...(compression ? { compression } : {}),
   };
 }

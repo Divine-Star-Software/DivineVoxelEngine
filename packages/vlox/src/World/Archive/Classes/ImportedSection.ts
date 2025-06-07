@@ -7,7 +7,10 @@ import {
 } from "../../../Util/BinaryBuffer/index";
 import { ImportedSector } from "./ImportedSector";
 import { VoxelPalettesRegister } from "../../../Voxels/Data/VoxelPalettesRegister";
-import { lightSegments, lightSemgnetSet } from "../Functions/Shared";
+import {
+  lightSegments,
+  lightSemgnetSet,
+} from "../Functions/Shared/LightSegments";
 import { VoxelTagsRegister } from "../../../Voxels/Data/VoxelTagsRegister";
 import { WorldSpaces } from "../../WorldSpaces";
 
@@ -22,7 +25,7 @@ class ImportedSectionBuffers {
       ? new BinaryBuffer(section.buffers.id)
       : new BinaryBuffer(
           BinaryBuffer.Create({
-            length: WorldSpaces.section.volumne,
+            byteLength: WorldSpaces.section.volumne,
             buffer: 0,
             format: BinaryBufferFormat.Uint16,
           })
@@ -31,7 +34,7 @@ class ImportedSectionBuffers {
       ? new BinaryBuffer(section.buffers.secondary)
       : new BinaryBuffer(
           BinaryBuffer.Create({
-            length: WorldSpaces.section.volumne,
+            byteLength: WorldSpaces.section.volumne,
             buffer: 0,
             format: BinaryBufferFormat.Uint16,
           })
@@ -40,7 +43,7 @@ class ImportedSectionBuffers {
       ? new BinaryBuffer(section.buffers.level)
       : new BinaryBuffer(
           BinaryBuffer.Create({
-            length: WorldSpaces.section.volumne,
+            byteLength: WorldSpaces.section.volumne,
             buffer: 0,
             format: BinaryBufferFormat.Uint8,
           })
@@ -50,7 +53,7 @@ class ImportedSectionBuffers {
         ? new BinaryBuffer(section.buffers.light.sun)
         : new BinaryBuffer(
             BinaryBuffer.Create({
-              length: WorldSpaces.section.volumne,
+              byteLength: WorldSpaces.section.volumne,
               buffer: 0,
               format: BinaryBufferFormat.NibbleArray,
             })
@@ -59,7 +62,7 @@ class ImportedSectionBuffers {
         ? new BinaryBuffer(section.buffers.light.red)
         : new BinaryBuffer(
             BinaryBuffer.Create({
-              length: WorldSpaces.section.volumne,
+              byteLength: WorldSpaces.section.volumne,
               buffer: 0,
               format: BinaryBufferFormat.NibbleArray,
             })
@@ -68,7 +71,7 @@ class ImportedSectionBuffers {
         ? new BinaryBuffer(section.buffers.light.green)
         : new BinaryBuffer(
             BinaryBuffer.Create({
-              length: WorldSpaces.section.volumne,
+              byteLength: WorldSpaces.section.volumne,
               buffer: 0,
               format: BinaryBufferFormat.NibbleArray,
             })
@@ -77,7 +80,7 @@ class ImportedSectionBuffers {
         ? new BinaryBuffer(section.buffers.light.blue)
         : new BinaryBuffer(
             BinaryBuffer.Create({
-              length: WorldSpaces.section.volumne,
+              byteLength: WorldSpaces.section.volumne,
               buffer: 0,
               format: BinaryBufferFormat.NibbleArray,
             })
@@ -143,16 +146,16 @@ export class ImportedSection {
     const value = this.buffers.ids.getValue(index);
     if (this.buffers.ids.isValue) {
       return VoxelPalettesRegister.getVoxelIdFromString(
-        ...this.sector.getVoxelData(value)
+        ...this.sector.voxels.getVoxelData(value)
       );
     }
     if (this.palettes.voxels) {
       return VoxelPalettesRegister.getVoxelIdFromString(
-        ...this.sector.getVoxelData(this.palettes.voxels.getValue(value))
+        ...this.sector.voxels.getVoxelData(this.palettes.voxels.getValue(value))
       );
     }
     return VoxelPalettesRegister.getVoxelIdFromString(
-      ...this.sector.getVoxelData(value)
+      ...this.sector.voxels.getVoxelData(value)
     );
   }
 
@@ -204,18 +207,18 @@ export class ImportedSection {
     if (VoxelTagsRegister.VoxelTags[trueVoxelId]["dve_can_have_secondary"]) {
       if (this.buffers.ids.isValue) {
         return VoxelPalettesRegister.getVoxelIdFromString(
-          ...this.sector.getVoxelData(value)
+          ...this.sector.voxels.getVoxelData(value)
         );
       }
       if (this.palettes.secondaryVoxels) {
         return VoxelPalettesRegister.getVoxelIdFromString(
-          ...this.sector.getVoxelData(
+          ...this.sector.voxels.getVoxelData(
             this.palettes.secondaryVoxels.getValue(value)
           )
         );
       }
       return VoxelPalettesRegister.getVoxelIdFromString(
-        ...this.sector.getVoxelData(value)
+        ...this.sector.voxels.getVoxelData(value)
       );
     }
     return value;

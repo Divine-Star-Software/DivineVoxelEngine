@@ -23,6 +23,22 @@ export interface BinaryBuffer extends BinaryBufferData {}
 export class BinaryBuffer {
   static Constants = BinaryBufferConstants;
 
+  static Compare(buffer1: BinaryBufferData, buffer2: BinaryBufferData) {
+    if (buffer1.format != buffer2.format) return false;
+    if (buffer1.byteLength != buffer2.byteLength) return false;
+    if (typeof buffer1.buffer == "number" && buffer1.buffer == buffer2.buffer)
+      return true;
+    if (typeof buffer1.buffer == "number" || typeof buffer2.buffer == "number")
+      return false;
+    if (buffer1.buffer.byteLength != buffer2.buffer.byteLength) return false;
+    const view1 = new Uint8Array(buffer1.buffer);
+    const view2 = new Uint8Array(buffer2.buffer);
+    let i = view1.length;
+    while (i--) {
+      if (view1[i] != view2[i]) return false;
+    }
+    return true;
+  }
   static ToJSON = BinaryBufferToJSON;
   static FromJSON = BinaryBufferFromJSON;
   static ToTypedArray = BinaryBufferToTypedArray;
@@ -36,12 +52,16 @@ export class BinaryBuffer {
   static Convert = ConvertBinaryBuffer;
 
   static Create(data: Partial<BinaryBufferData>): BinaryBufferData {
-    return {
+    const bufferData: BinaryBufferData = {
       buffer: 0,
-      length: 0,
+      byteLength: 0,
       format: BinaryBufferFormat.Uint8,
       ...data,
     };
+    if (!bufferData.byteLength && typeof bufferData.buffer !== "number") {
+      bufferData.byteLength = bufferData.buffer.byteLength;
+    }
+    return bufferData;
   }
   bufferView: Uint8Array | Uint16Array;
   constructor(data: BinaryBufferData) {
@@ -68,7 +88,7 @@ export class BinaryBuffer {
   toJSON() {
     return {
       buffer: this.buffer,
-      length: this.length,
+      length: this.byteLength,
       type: this.format,
     };
   }

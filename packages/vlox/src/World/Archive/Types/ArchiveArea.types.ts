@@ -1,5 +1,5 @@
+import { BinarySchemaNodeData } from "../../../Voxels/State/State.types";
 import { BinaryBufferData } from "../../../Util/BinaryBuffer/BinaryBuffer.types";
-import { VoxelArchivePaletteData } from "../../../Voxels/Archive/VoxelArchive.types";
 import {
   ArchivedLightSegments,
   BaseArchivedDataBase,
@@ -9,10 +9,23 @@ import {
   ArchivedSectionData,
   ArchivedSectorDuplicteData,
 } from "./ArchivedSector.types";
+
+export interface ArchiveAreaPalettesData {
+  voxelStateSchemas: Record<string, BinarySchemaNodeData[]>;
+  voxelSchemas: Record<
+    string,
+    {
+      stateSchemaId?: string;
+      modSchema?: BinarySchemaNodeData[];
+    } | null
+  >;
+}
+
 /**
  * Interface for an archived area.
  */
 export interface ArchivedAreaData extends BaseArchivedDataBase {
+  palettes: ArchiveAreaPalettesData;
   /** Array of archived sector data within the area. */
   sectors: ArchivedAreaSectorData[];
 }
@@ -20,9 +33,11 @@ export interface ArchivedAreaData extends BaseArchivedDataBase {
 /**
  * Interface representing the palette data for a sector.
  */
-export interface ArchivedAreaSectorPaletteData extends VoxelArchivePaletteData {
+export interface ArchivedAreaSectorPaletteData {
+  id: string[];
+  voxelPalette: BinaryBufferData;
   level?: BinaryBufferData;
-  light: Partial<Record<ArchivedLightSegments, BinaryBufferData>>;
+  light?: Partial<Record<ArchivedLightSegments, BinaryBufferData>>;
 }
 
 /**

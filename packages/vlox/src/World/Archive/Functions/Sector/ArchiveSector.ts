@@ -1,23 +1,22 @@
-import { LocationData } from "../../../Math";
-import { WorldRegister } from "../../../World/WorldRegister";
+import { LocationData } from "../../../../Math";
+import { WorldRegister } from "../../../../World/WorldRegister";
 import {
   ArchivedLightSegments,
   ArchivedSectionData,
   ArchivedSectorData,
-} from "../Types/index";
-import { VoxelTagsRegister } from "../../../Voxels/Data/VoxelTagsRegister";
-import { VoxelLightData } from "../../../Voxels/Cursor/VoxelLightData";
-import { EngineSettings } from "../../../Settings/EngineSettings";
+} from "../../Types/index";
+import { VoxelTagsRegister } from "../../../../Voxels/Data/VoxelTagsRegister";
+import { VoxelLightData } from "../../../../Voxels/Cursor/VoxelLightData";
 import {
   BinaryBuffer,
   BinaryBufferConstants,
   BinaryBufferFormat,
-} from "../../../Util/BinaryBuffer/index";
-import { getBaseData, lightSegments, lightSemgnetGet } from "./Shared";
-import { ProcessedSection, SectorPalette } from "../Classes/ArchiveClasses";
+} from "../../../../Util/BinaryBuffer/index";
+import { getBaseData, lightSegments, lightSemgnetGet } from "../Shared/index";
+import { ProcessedSection, SectorPalette } from "../../Classes/ArchiveClasses";
 import { CreateArchivedSection } from "./CreateArchivedSection";
-import { RemoveDuplicates } from "./RemoveDuplicates";
-import { VoxelPalettesRegister } from "../../../Voxels/Data/VoxelPalettesRegister";
+import { RemoveDuplicateSections } from "./RemoveDuplicateSections";
+import { VoxelPalettesRegister } from "../../../../Voxels/Data/VoxelPalettesRegister";
 
 type ArchiveSectorProps = {
   location: LocationData;
@@ -49,42 +48,6 @@ export default function ArchiveSector(
   ) {
     const section = sector.sections[sectionIndex];
     const processedSection = new ProcessedSection(section);
-
-    {
-      let value = section.buried[0];
-      processedSection.isBuriedAllTheSame = true;
-      for (let i = 0; i < section.buried.length; i++) {
-        if (value != section.buried[i]) {
-          processedSection.isBuriedAllTheSame = false;
-          break;
-        }
-      }
-      processedSection.buriedValue = value;
-    }
-
-    {
-      let value = section.voxelMap[0];
-      processedSection.isVoxelMapAllTheSame = true;
-      for (let i = 0; i < section.voxelMap.length; i++) {
-        if (value != section.voxelMap[i]) {
-          processedSection.isVoxelMapAllTheSame = false;
-          break;
-        }
-      }
-      processedSection.voxelMapValue = value;
-    }
-
-    {
-      let value = section.dirtyMap[0];
-      processedSection.isDirtyMapAllTheSame = true;
-      for (let i = 0; i < section.dirtyMap.length; i++) {
-        if (value != section.dirtyMap[i]) {
-          processedSection.isDirtyMapAllTheSame = false;
-          break;
-        }
-      }
-      processedSection.dirtyMapValue = value;
-    }
 
     const firstId = section.ids[0];
     const firstLight = section.light[0];
@@ -277,7 +240,6 @@ export default function ArchiveSector(
   }
 
   const palettes: ArchivedSectorData["palettes"] = {
-    light: {},
     ...sectorPalettes.voxels.toJSON(),
   };
 
@@ -293,7 +255,10 @@ export default function ArchiveSector(
     );
   }
 
-  if (neededPalettes.level) {
+  if (
+    neededPalettes.level &&
+    !(sectorPalettes.level.size == 1 && sectorPalettes.level._palette[0] == 0)
+  ) {
     palettes.level = BinaryBuffer.Create({
       format: BinaryBufferFormat.Uint8,
       buffer: new Uint8Array(sectorPalettes.level._palette).buffer,
@@ -302,6 +267,12 @@ export default function ArchiveSector(
 
   for (const segment of lightSegments) {
     if (neededPalettes.light[segment]) {
+      if (
+        sectorPalettes.light[segment].size == 1 &&
+        sectorPalettes.light[segment]._palette[0] == 0
+      )
+        continue;
+      palettes.light ??= {};
       palettes.light[segment] = BinaryBuffer.Create({
         format: BinaryBufferFormat.Uint8,
         buffer: new Uint8Array(sectorPalettes.light[segment]._palette).buffer,
@@ -325,7 +296,7 @@ export default function ArchiveSector(
     sections,
   };
 
-  RemoveDuplicates(archivedSector);
+  RemoveDuplicateSections(archivedSector);
 
   return archivedSector;
 }

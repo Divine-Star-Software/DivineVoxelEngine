@@ -25,9 +25,8 @@ export default async function ExportArchiedTemplateJSON(
   };
 
   const palettes: ArchivedVoxelTemplatePaletteDataExportedJSONData = {
-    id: templateData.palettes.id,
-    modSchemaPaette: templateData.palettes.modSchemaPaette,
-    stateSchemaPalette: templateData.palettes.stateSchemaPalette,
+    voxels: templateData.palettes.voxels,
+    stateSchemas: templateData.palettes.stateSchemas,
     secondary: await BinaryBuffer.ToJSON(
       BinaryBuffer.Create({
         format: BinaryBufferFormat.Uint16,

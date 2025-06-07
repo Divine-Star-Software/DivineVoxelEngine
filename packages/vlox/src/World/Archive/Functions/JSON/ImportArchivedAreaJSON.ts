@@ -7,9 +7,10 @@ import {
   ArchivedAreaSectorPaletteData,
   ArchivedSectionData,
   ArchivedSectionJSONData,
+  ArchivedSectionPaletteData,
   ArchivedSectionPaletteJSONData,
 } from "../../Types/index";
-import { lightSegments } from "../Shared";
+import { lightSegments } from "../Shared/LightSegments";
 
 async function ConvertSection(
   jsonSection: ArchivedSectionJSONData,
@@ -22,7 +23,7 @@ async function ConvertSection(
   if (jsonSection.flags) section.flags = jsonSection.flags;
 
   if (jsonSection.palettes) {
-    const palettes: ArchivedSectionPaletteJSONData = {};
+    const palettes: ArchivedSectionPaletteData = {};
 
     if (jsonSection.palettes.id)
       palettes.id = await BinaryBuffer.FromJSON(jsonSection.palettes.id);
@@ -42,6 +43,7 @@ async function ConvertSection(
         );
       }
     }
+    section.palettes = palettes;
   }
 
   if (jsonSection.buffers.id) {
@@ -79,8 +81,6 @@ async function ConvertSector(
 ) {
   const palettes: ArchivedAreaSectorPaletteData = {
     id: jsonSector.palettes.id,
-    modSchemaPaette: jsonSector.palettes.modSchemaPaette,
-    stateSchemaPalette: jsonSector.palettes.stateSchemaPalette,
     voxelPalette: await BinaryBuffer.FromJSON(jsonSector.palettes.voxelPalette),
     light: {},
   };
@@ -88,11 +88,14 @@ async function ConvertSector(
     palettes.level = await BinaryBuffer.FromJSON(jsonSector.palettes.level);
   }
 
-  for (const segment of lightSegments) {
-    if (jsonSector.palettes.light[segment]) {
-      palettes.light[segment] = await BinaryBuffer.FromJSON(
-        jsonSector.palettes.light[segment]
-      );
+  if (jsonSector.palettes.light) {
+    palettes.light = {};
+    for (const segment of lightSegments) {
+      if (jsonSector.palettes.light[segment]) {
+        palettes.light[segment] = await BinaryBuffer.FromJSON(
+          jsonSector.palettes.light[segment]
+        );
+      }
     }
   }
 
@@ -134,6 +137,7 @@ export default async function ImportArchivedAreaJSON(
     engineVersion: data.engineVersion,
     formatVersion: data.formatVersion,
     dataKey: data.dataKey,
+    palettes: data.palettes,
     sectors: [],
   };
 

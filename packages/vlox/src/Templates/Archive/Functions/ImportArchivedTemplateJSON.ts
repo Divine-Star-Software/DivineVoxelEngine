@@ -19,9 +19,8 @@ export default async function ImportArchivedTemplateJSON(
       : undefined,
   };
   const palettes: ArchivedVoxelTemplateData["palettes"] = {
-    id: jsonData.palettes.id,
-    modSchemaPaette: jsonData.palettes.modSchemaPaette,
-    stateSchemaPalette: jsonData.palettes.stateSchemaPalette,
+    voxels: jsonData.palettes.voxels,
+    stateSchemas: jsonData.palettes.stateSchemas,
     secondary: await BinaryBuffer.FromJSON(jsonData.palettes.secondary),
     level: await BinaryBuffer.FromJSON(jsonData.palettes.level),
     voxelPalette: await BinaryBuffer.FromJSON(jsonData.palettes.voxelPalette),

@@ -93,7 +93,7 @@ class SectorSpace {
     );
     return refPosition;
   }
-  static transformPosition(position = Vector3Like.Create()): Vector3Like {
+  static transformPosition(position: Vector3Like): Vector3Like {
     CubeHashVec3(
       position.x,
       position.y,
@@ -145,7 +145,7 @@ class SectionSpace {
     );
     return refPosition;
   }
-  static transformPosition(position = Vector3Like.Create()): Vector3Like {
+  static transformPosition(position: Vector3Like): Vector3Like {
     CubeHashVec3(
       position.x,
       position.y,
@@ -255,6 +255,22 @@ class VoxelSpace {
     refPosition[1] = y - refPosition[1];
     refPosition[2] = z - refPosition[2];
     return refPosition;
+  }
+  static transformPosition(position: Vector3Like): Vector3Like {
+    const { x, y, z } = position;
+    CubeHashVec3(
+      x,
+      y,
+      z,
+      SectionSpace.power2Axes.x,
+      SectionSpace.power2Axes.y,
+      SectionSpace.power2Axes.z,
+      position
+    );
+    position.x = x - position.x;
+    position.y = y - position.y;
+    position.z = z - position.z;
+    return position;
   }
   static getPositionFromIndex(
     index: number,

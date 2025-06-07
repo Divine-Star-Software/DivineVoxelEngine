@@ -32,7 +32,7 @@ export interface ArchivedSectorDuplicteData {
  */
 export interface ArchivedSectorPaletteData extends VoxelArchivePaletteData {
   level?: BinaryBufferData;
-  light: Partial<Record<ArchivedLightSegments, BinaryBufferData>>;
+  light?: Partial<Record<ArchivedLightSegments, BinaryBufferData>>;
 }
 
 

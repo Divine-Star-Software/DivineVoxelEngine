@@ -47,7 +47,7 @@ export class ArchivedVoxelTemplate implements IVoxelTemplate {
       : new BinaryBuffer(
           BinaryBuffer.Create({
             format: BinaryBufferFormat.Uint16,
-            length: volume,
+            byteLength: volume,
             buffer: 0,
           })
         );
@@ -56,7 +56,7 @@ export class ArchivedVoxelTemplate implements IVoxelTemplate {
       : new BinaryBuffer(
           BinaryBuffer.Create({
             format: BinaryBufferFormat.Uint8,
-            length: volume,
+            byteLength: volume,
             buffer: 0,
           })
         );
@@ -65,7 +65,7 @@ export class ArchivedVoxelTemplate implements IVoxelTemplate {
       : new BinaryBuffer(
           BinaryBuffer.Create({
             format: BinaryBufferFormat.Uint16,
-            length: volume,
+            byteLength: volume,
             buffer: 0,
           })
         );
