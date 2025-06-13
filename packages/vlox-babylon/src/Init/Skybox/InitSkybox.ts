@@ -1,4 +1,5 @@
-import { ShaderMaterial, CreateSphere } from "@babylonjs/core";
+import { ShaderMaterial } from "@babylonjs/core/Materials/shaderMaterial";
+import { CreateSphere } from "@babylonjs/core/Meshes/Builders/sphereBuilder";
 import { SkyboxShader } from "../../Shaders/Code/SkyboxShader";
 import { DVEBRShaderStore } from "../../Shaders/DVEBRShaderStore";
 import { DVEBabylonRenderer } from "Renderer/DVEBabylonRenderer";

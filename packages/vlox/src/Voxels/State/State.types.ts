@@ -1,15 +1,18 @@
 import { Vec3Array } from "@amodx/math";
-export interface VoxelStateStringSchemaData {
-  name: string;
-  type: "string";
-  values: string[];
-}
-export interface VoxelStateNumberSchemaData {
-  name: string;
-  type: "number";
-  maxValue: number;
-}
 
+/**
+ * Binary State
+ */
+export type VoxelBinaryStateSchemaNode = {
+  name: string;
+  bitIndex: number;
+  bitSize: number;
+  values?: string[];
+};
+
+/**
+ * Relational
+ */
 export interface SameVoxelRelationsConditionData {
   type: "same-voxel";
   direction: Vec3Array;
@@ -24,26 +27,10 @@ export type VoxelStateRelationsConditionData =
   | SameVoxelRelationsConditionData
   | AnyVoxelRelationsConditionData;
 
-export interface VoxelModelRelationsSchemaData {
+export interface VoxelModelRelationsSchemaNodes {
   name: string;
   conditions: VoxelStateRelationsConditionData[];
 }
-export type BinarySchemaNodeData = {
-  id: string;
-  type: "binary";
-  valuePalette?: string[];
-  index: number;
-  mask: number;
-};
-export type VoxelRelationsScehmaNodeData = {
-  id: string;
-  type: "relation";
-  conditions: VoxelStateRelationsConditionData[];
-};
-
-export type VoxelModelStateSchemaData =
-  | BinarySchemaNodeData
-  | VoxelRelationsScehmaNodeData;
 
 export enum StateCompareOperations {
   Equals,
@@ -76,3 +63,12 @@ export type StateLogicNode = [
   value: number,
 ];
 export type StateLogicStatement = (StateLogicNode | StateLogiceOperations)[];
+
+/**
+ * Voxel State
+ */
+
+export type VoxelStateSchemaData = {
+  binary: VoxelBinaryStateSchemaNode[];
+  relational: VoxelModelRelationsSchemaNodes[];
+};

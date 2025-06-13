@@ -1,4 +1,5 @@
-import { Mesh, Scene } from "@babylonjs/core";
+import { Mesh } from "@babylonjs/core/Meshes/mesh";
+import { Scene } from "@babylonjs/core/scene";
 import { MeshVoxel } from "@divinevoxel/vlox/Mesher/Functions/MeshVoxel";
 import { VoxelCursor } from "@divinevoxel/vlox//Voxels/Cursor/VoxelCursor";
 import {
@@ -15,6 +16,7 @@ import { VoxelTextureIndex } from "@divinevoxel/vlox/Voxels/Indexes/VoxelTexture
 import { CacheManager } from "@divinevoxel/vlox/Cache/CacheManager";
 import { DVEBRMesh } from "../Meshes/DVEBRMesh";
 import { VoxelImager } from "../Voxels/VoxelImager";
+import { WorkItemProgress } from "@divinevoxel/vlox/Util/WorkItemProgress";
 
 const dataTool = new VoxelCursor();
 
@@ -84,7 +86,14 @@ const buildMesh = (
   return mesh;
 };
 
-export default async function CreateDisplayIndex(data: VoxelData[]) {
+export default async function CreateDisplayIndex(
+  data: VoxelData[],
+  getProgress?: (progress: WorkItemProgress) => void
+) {
+  const progress = new WorkItemProgress();
+  if (getProgress) getProgress(progress);
+  progress.startTask("Create Display Index");
+  progress.setStatus("Building Display Index");
   const voxelIndex = new VoxelIndex(data);
   if (
     !CacheManager.cacheStoreEnabled &&
@@ -119,9 +128,11 @@ export default async function CreateDisplayIndex(data: VoxelData[]) {
   >();
 
   const addVoxelData = PaintVoxelData.Create({});
+  progress.setWorkLoad(voxelIndex.states.size);
   for (const [voxelId, states] of voxelIndex.states) {
     addVoxelData.id = voxelId;
     for (const [stateId, state] of states.states) {
+      progress.setStatus(`making model: ${voxelId} ${stateId}`);
       addVoxelData.state = 0;
       addVoxelData.mod = 0;
       if (state.data.display.type == "model") {
@@ -160,13 +171,16 @@ export default async function CreateDisplayIndex(data: VoxelData[]) {
         continue;
       }
     }
+    progress.completeWorkItems(1);
   }
-
+  progress.setWorkLoad(meshes.size);
   for (const [mesh, data] of meshes) {
     mesh.setEnabled(true);
+    progress.setStatus(`making image: ${data.id} - ${data.stateId}`);
     const dataUrl = await voxelImager.createImageFromMesh(mesh);
     VoxelTextureIndex.registerImage(data.id, data.stateId, dataUrl);
     mesh.setEnabled(false);
+    progress.completeWorkItems(1);
     mesh.dispose();
   }
 
@@ -176,4 +190,5 @@ export default async function CreateDisplayIndex(data: VoxelData[]) {
       meshes: VoxelModelIndex.cacheData(),
     };
   }
+  progress.endTask();
 }

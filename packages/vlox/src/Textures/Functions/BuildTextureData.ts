@@ -1,6 +1,7 @@
 import { CompiledTexture } from "../Classes/CompiledTexture";
 import { TextureData } from "../../Textures/Texture.types";
 import { CompiledTextureAnimation } from "../../Textures/Classes/CompiledTextureAnimation";
+import { WorkItemProgress } from "../../Util/WorkItemProgress";
 
 let baseURL = "assets/textures";
 let canvas: HTMLCanvasElement;
@@ -134,7 +135,7 @@ async function loadImageForShader(
 
     image.onload = () => {
       // Apply alpha bleeding before drawing
-     const processedCanvas = applyAlphaBleeding(image);
+      const processedCanvas = applyAlphaBleeding(image);
 
       context.clearRect(0, 0, canvas.width, canvas.height);
       context.imageSmoothingEnabled = false;
@@ -249,13 +250,16 @@ export type BuildTextureDataProps = {
   finalSize?: [width: number, height: number];
 };
 
-export async function BuildTextureData({
-  type,
-  baseURL: currentBaseURL,
-  textures,
-  finalSize: currentFinalSize,
-  createCache,
-}: BuildTextureDataProps): Promise<CompiledTexture> {
+export async function BuildTextureData(
+  {
+    type,
+    baseURL: currentBaseURL,
+    textures,
+    finalSize: currentFinalSize,
+    createCache,
+  }: BuildTextureDataProps,
+  progress: WorkItemProgress
+): Promise<CompiledTexture> {
   const defaultBaseURL = currentBaseURL || "assets/textures";
 
   finalSize[0] = currentFinalSize ? currentFinalSize[0] : 256;
@@ -282,6 +286,8 @@ export async function BuildTextureData({
 
   let count = 0;
   for (const texture of textures) {
+    progress.completeWorkItems(1);
+    progress.setStatus(`Building Texture ${type} | ${texture.id}`);
     if (texture.basePath) {
       baseURL = texture.basePath;
     } else {
@@ -294,6 +300,7 @@ export async function BuildTextureData({
       } catch (error) {
         console.warn(`Could not load texture ${texture.id}`);
         console.error(error);
+
         continue;
       }
     }

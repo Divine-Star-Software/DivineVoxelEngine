@@ -27,18 +27,6 @@ export default async function ExportArchiedTemplateJSON(
   const palettes: ArchivedVoxelTemplatePaletteDataExportedJSONData = {
     voxels: templateData.palettes.voxels,
     stateSchemas: templateData.palettes.stateSchemas,
-    secondary: await BinaryBuffer.ToJSON(
-      BinaryBuffer.Create({
-        format: BinaryBufferFormat.Uint16,
-        buffer: templateData.palettes.secondary.buffer,
-      })
-    ),
-    level: await BinaryBuffer.ToJSON(
-      BinaryBuffer.Create({
-        format: BinaryBufferFormat.Uint8,
-        buffer: templateData.palettes.level.buffer,
-      })
-    ),
     voxelPalette: await BinaryBuffer.ToJSON(
       BinaryBuffer.Create({
         format: BinaryBufferFormat.Uint16,
@@ -47,9 +35,27 @@ export default async function ExportArchiedTemplateJSON(
     ),
   };
 
+  if (templateData.palettes.secondary) {
+    palettes.secondary = await BinaryBuffer.ToJSON(
+      BinaryBuffer.Create({
+        format: BinaryBufferFormat.Uint16,
+        buffer: templateData.palettes.secondary.buffer,
+      })
+    );
+  }
+
+  if (templateData.palettes.level) {
+    palettes.level = await BinaryBuffer.ToJSON(
+      BinaryBuffer.Create({
+        format: BinaryBufferFormat.Uint8,
+        buffer: templateData.palettes.level.buffer,
+      })
+    );
+  }
   return {
-    vloxVersion: templateData.vloxVersion,
-    version: templateData.version,
+    engineVersion: templateData.engineVersion,
+    formatVersion: templateData.formatVersion,
+    dataKey: templateData.dataKey,
     position: templateData.position,
     bounds: templateData.bounds,
     type: templateData.type,

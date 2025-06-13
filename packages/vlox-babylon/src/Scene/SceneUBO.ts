@@ -1,6 +1,7 @@
-import { Vector4, Vector3, Color3 } from "@babylonjs/core/Maths/";
-import { Scene, UniformBuffer } from "@babylonjs/core";
-
+import { Scene } from "@babylonjs/core/scene";
+import { UniformBuffer } from "@babylonjs/core/Materials/uniformBuffer";
+import { Vector4 } from "@babylonjs/core/Maths/math.vector";
+import { Color3 } from "@babylonjs/core/Maths/math.color";
 const tmepColor = new Color3();
 export class SceneUBO {
   static Define = /* glsl */ `
@@ -126,8 +127,6 @@ export class SceneUBO {
     this._isDirty = true;
     this.buffer.updateVector4("scene_skyShadeOptions", this.skyShadeOptions);
   }
-
-
 
   setFogColor(r: number, g: number, b: number): void;
   setFogColor(color: Color3): void;

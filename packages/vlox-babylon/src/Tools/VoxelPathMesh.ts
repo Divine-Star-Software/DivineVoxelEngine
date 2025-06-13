@@ -1,14 +1,12 @@
-import {
-  Scene,
-  Mesh,
-  Effect,
-  ShaderMaterial,
-  Color4,
-  VertexBuffer,
-  Geometry,
-  BoundingInfo,
-  Vector3,
-} from "@babylonjs/core";
+import { Scene } from "@babylonjs/core/scene";
+import { Mesh } from "@babylonjs/core/Meshes/mesh";
+import { Effect } from "@babylonjs/core/Materials/effect";
+import { ShaderMaterial } from "@babylonjs/core/Materials/shaderMaterial";
+import { Color4 } from "@babylonjs/core/Maths/math.color";
+import { VertexBuffer } from "@babylonjs/core/Buffers/buffer";
+import { Geometry } from "@babylonjs/core/Meshes/geometry";
+import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import {
   VoxelPath,
   VoxelPathSegment,

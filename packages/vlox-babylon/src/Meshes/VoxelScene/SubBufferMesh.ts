@@ -1,4 +1,5 @@
-import {  SubMesh, TransformNode, Vector3 } from "@babylonjs/core";
+import { SubMesh } from "@babylonjs/core/Meshes/subMesh";
+import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { BufferAllocation } from "./BufferMesh";
 export class SubBufferMesh {
   verticesStart = 0;

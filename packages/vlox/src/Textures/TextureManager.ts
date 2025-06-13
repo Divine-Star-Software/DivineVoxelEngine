@@ -1,3 +1,4 @@
+import { WorkItemProgress } from "../Util/WorkItemProgress.js";
 import { CompiledTexture } from "./Classes/CompiledTexture.js";
 import {
   BuildTextureData,
@@ -30,14 +31,20 @@ export class TextureManager {
   }
 
   static async compiledTextures(
-    props: Omit<BuildTextureDataProps, "textures" | "type"> = {}
+    props: Omit<BuildTextureDataProps, "textures" | "type"> = {},
+    progress = new WorkItemProgress()
   ) {
     for (const [type, data] of this._textureTypes) {
-      const compiled = await BuildTextureData({
-        type,
-        textures: data,
-        ...props,
-      });
+      progress.setStatus(`Building Texture Type ${type}`);
+      progress.setWorkLoad(data.length);
+      const compiled = await BuildTextureData(
+        {
+          type,
+          textures: data,
+          ...props,
+        },
+        progress
+      );
       this._compiledTextures.set(type, compiled);
     }
   }

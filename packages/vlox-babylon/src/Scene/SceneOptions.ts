@@ -1,4 +1,5 @@
-import { Color3, Scene, UniformBuffer } from "@babylonjs/core";
+import { Color3 } from "@babylonjs/core/Maths/math.color";
+import { Scene } from "@babylonjs/core/scene";
 import { SceneUBO } from "./SceneUBO";
 const tmepColor = new Color3();
 class UBOColor3 {

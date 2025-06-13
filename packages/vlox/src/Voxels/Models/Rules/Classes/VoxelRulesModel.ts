@@ -3,6 +3,7 @@ import {
   VoxelModelData,
 } from "../../VoxelModel.types";
 import { BuildStateData } from "../../../../Voxels/Functions/BuildStateData";
+import { VoxelStateSchemaData } from "../../../../Voxels/State/State.types";
 
 export class VoxelRulesModoel {
   states = new Map<string, string[]>();
@@ -14,7 +15,7 @@ export class VoxelRulesModoel {
   voxelModData = new Map<
     string,
     {
-      modSchema: any[];
+      modSchema: VoxelStateSchemaData;
       modStateTree: any[];
       modPalette: any[];
       modRecord: Record<string, any>;

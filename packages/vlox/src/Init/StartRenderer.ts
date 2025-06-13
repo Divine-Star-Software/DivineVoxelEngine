@@ -7,9 +7,17 @@ import InitMesher from "../Mesher/InitMesher";
 import { InitVoxelDataProps } from "../Voxels/InitVoxelData";
 import { MeshManager } from "../Renderer/MeshManager";
 import { WorldRegister } from "../World/WorldRegister";
-type StartRendererProps = {} & DVERInitData & InitVoxelDataProps;
+import { WorkItemProgress } from "../Util/WorkItemProgress";
+type StartRendererProps = {
+  getProgress?: (progress: WorkItemProgress) => void;
+} & DVERInitData &
+  InitVoxelDataProps;
 export async function StartRenderer(initData: StartRendererProps) {
   const DVER = new DivineVoxelEngineRender();
+  const progress = new WorkItemProgress();
+  if (initData.getProgress) initData.getProgress(progress);
+  progress.startTask("load");
+
   await Threads.init("render", window, "window");
 
   WorldRegister.proxy = true;
@@ -58,6 +66,26 @@ export async function StartRenderer(initData: StartRendererProps) {
     );
   }
 
+  const proms: Promise<any>[] = [];
+
+  for (const thread of DVER.threads._threads) {
+    if (thread.name == "window" || thread.name == "world") continue;
+    if (thread instanceof ThreadPool) {
+      for (const t of thread.getThreads()) {
+        proms.push(t.waitTillTaskExist("sync-data"));
+        DVER.threads.world.connectToThread(t);
+      }
+    }
+    if (thread instanceof Thread) {
+      proms.push(thread.waitTillTaskExist("sync-data"));
+      DVER.threads.world.connectToThread(thread);
+    }
+  }
+  proms.push(DVER.threads.world.waitTillTaskExist("sync-data"));
+
+  progress.setStatus("Generate Data");
+  await progress.wait(100);
+
   const syncData = InitDataGenerator({
     threads: {
       nexus: initData.nexusWorker ? true : false,
@@ -67,29 +95,46 @@ export async function StartRenderer(initData: StartRendererProps) {
     materials: initData.materials || [],
   });
 
+  progress.setWorkLoad(5);
+  progress.setStatus("Init Threads");
+  await progress.wait(100);
+
   InitRendererTasks();
   InitWorldDataSync(DVER.threads.world);
 
   InitMesher(syncData.voxels.materials.palette, syncData.voxels.models);
 
+  progress.completeWorkItems(1);
+  progress.setStatus("Waiting For Threads");
+
+  await Promise.all(proms);
+  progress.completeWorkItems(1);
+  progress.setStatus("Sending Data");
+  await progress.wait(100);
+  proms.length = 0;
+
   for (const thread of DVER.threads._threads) {
     if (thread.name == "window" || thread.name == "world") continue;
     if (thread instanceof ThreadPool) {
       for (const t of thread.getThreads()) {
-        await t.waitTillTaskExist("sync-data");
-        DVER.threads.world.connectToThread(t);
-        await t.runTaskAsync("sync-data", syncData);
+        proms.push(t.runTaskAsync("sync-data", syncData));
       }
     }
     if (thread instanceof Thread) {
-      await thread.waitTillTaskExist("sync-data");
-      DVER.threads.world.connectToThread(thread);
-      await thread.runTaskAsync("sync-data", syncData);
+      proms.push(thread.runTaskAsync("sync-data", syncData));
     }
   }
-  await DVER.threads.world.waitTillTaskExist("sync-data");
-  await DVER.threads.world.runTaskAsync("sync-data", syncData);
+
+  proms.push(DVER.threads.world.runTaskAsync("sync-data", syncData));
+  await Promise.all(proms);
+  progress.completeWorkItems(1);
+  progress.setStatus("Init Renderer");
+  await progress.wait(100);
   await DVER.renderer.init(DVER);
+  progress.completeWorkItems(1);
+  progress.setStatus("Done");
+  await progress.wait(100);
+  progress.endTask();
 
   return DVER;
 }

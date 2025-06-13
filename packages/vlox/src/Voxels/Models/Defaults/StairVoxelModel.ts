@@ -9,17 +9,20 @@ export const stair: VoxelModelData = {
   stateSchema: [
     {
       name: "placement",
-      type: "string",
+      bitIndex: 0,
+      bitSize: 3,
       values: ["down", "up", "north", "south", "east", "west"],
     },
     {
       name: "rotation",
-      type: "string",
+      bitIndex: 3,
+      bitSize: 2,
       values: ["0", "90", "180", "270"],
     },
     {
       name: "connected",
-      type: "string",
+      bitIndex: 5,
+      bitSize: 1,
       values: ["false", "true"],
     },
   ],

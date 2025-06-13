@@ -1,4 +1,8 @@
 import { Vec3Array, Vector3Like } from "@amodx/math";
+
+
+export type IndexOrderingTypes =  "XYZ" | "XZY" | "YXZ";
+
 export function CubeHashVec3Array(
   positionX: number,
   positionY: number,

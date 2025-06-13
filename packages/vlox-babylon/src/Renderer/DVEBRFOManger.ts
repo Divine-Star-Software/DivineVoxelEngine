@@ -1,11 +1,10 @@
-import type { Scene } from "@babylonjs/core";
+import type { Scene } from "@babylonjs/core/scene";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode.js";
-import { Vector3, Vector4 } from "@babylonjs/core/Maths/math.vector.js";
-export class DVEBRFOManager  {
+import { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
+export class DVEBRFOManager {
   activeCamera: TransformNode | null = null;
   activeNode: TransformNode | null = null;
   onOriginSet: Function[] = [];
-
 
   node: TransformNode;
 

@@ -7,11 +7,13 @@ import {
   CreateDefaultRenderer,
   CreateTextures,
 } from "../Default/CreateDefaultRenderer";
-
+import { WorkItemProgress } from "@divinevoxel/vlox/Util/WorkItemProgress";
 export type DVEBRClassicData = DVEBRDefaultMaterialBaseData & {
   doSun?: boolean;
   doRGB?: boolean;
   doAO?: boolean;
+} & {
+  getProgress?: (progress: WorkItemProgress) => void;
 };
 const defaultMaterials = [
   "dve_glow",
@@ -23,7 +25,10 @@ const defaultMaterials = [
 ];
 
 export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
-  await CreateTextures(initData.scene, initData.textureData);
+  const progress = new WorkItemProgress();
+  if (initData.getProgress) initData.getProgress(progress);
+  progress.startTask("Init Classic Renderer");
+  await CreateTextures(initData.scene, initData.textureData, progress);
 
   DVEBRShaderStore.setShaderData(
     "dve_voxel_particle",
@@ -82,6 +87,7 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
   }
 
   const renderer = await CreateDefaultRenderer({
+    progress,
     afterCreate: async (scene) => {},
     createMaterial: (renderer, scene, matData) => {
       const newMat = new DVEBRClassicMaterial(
@@ -121,5 +127,7 @@ export default async function InitDVEBRClassic(initData: DVEBRClassicData) {
   renderer.voxelScene.options.sky.endBlend = 150;
 
   renderer.voxelScene.options.ubo.buffer.update();
+
+  progress.endTask();
   return renderer;
 }

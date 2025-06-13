@@ -4,7 +4,9 @@ import {
   NodeSubstanceData,
 } from "../../Matereials/Types/DVEBRDefaultMaterial.types.js";
 
-import { Engine, RawTexture, type Material, type Scene } from "@babylonjs/core";
+import type { Scene } from "@babylonjs/core/scene";
+import { Engine } from "@babylonjs/core/Engines/engine";
+import { RawTexture } from "@babylonjs/core/Materials/Textures/rawTexture";
 import { NodeMaterialData } from "@divinevoxel/vlox/Renderer/DVERenderNode.types";
 
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
@@ -14,6 +16,7 @@ import { ImageArrayTexture } from "../../Textures/ImageArrayTexture.js";
 import { CacheManager } from "@divinevoxel/vlox/Cache/CacheManager.js";
 import { MaterialInterface } from "../../Matereials/MaterialInterface.js";
 import { VoxelScene } from "../../Scene/VoxelScene.js";
+import { WorkItemProgress } from "@divinevoxel/vlox/Util/WorkItemProgress.js";
 
 const defaultSubstances = [
   "dve_glow",
@@ -24,7 +27,12 @@ const defaultSubstances = [
   "dve_liquid",
 ];
 
-export async function CreateTextures(scene: Scene, textureData: TextureData[]) {
+export async function CreateTextures(
+  scene: Scene,
+  textureData: TextureData[],
+  progress: WorkItemProgress
+) {
+  progress.setStatus("Creating Textures");
   if (CacheManager.cacheLoadEnabled && CacheManager.cachedData?.textures) {
     TextureManager.registerTexture(CacheManager.cachedData.textures);
   } else {
@@ -33,7 +41,7 @@ export async function CreateTextures(scene: Scene, textureData: TextureData[]) {
 
   await TextureManager.compiledTextures({
     createCache: CacheManager.cacheStoreEnabled,
-  });
+  },progress);
 
   for (const [key, type] of TextureManager._compiledTextures) {
     if (!type.images!.length) continue;
@@ -56,6 +64,8 @@ export async function CreateTextures(scene: Scene, textureData: TextureData[]) {
       buffer: animatedTexture._buffer,
     };
   }
+  progress.setStatus("Done");
+  await progress.wait(100);
 }
 
 export async function CreateDefaultRenderer(
@@ -67,10 +77,12 @@ export async function CreateDefaultRenderer(
       matData: NodeMaterialData
     ) => MaterialInterface;
     afterCreate?: (scene: VoxelScene) => Promise<void>;
+    progress: WorkItemProgress;
   }
 ): Promise<DVEBabylonRenderer> {
-  const { scene } = initData;
-
+  const { scene, progress } = initData;
+  progress.setStatus("Creating Default Renderer");
+  progress.setWorkLoad(4);
   const renderer = DVEBabylonRenderer.instance
     ? DVEBabylonRenderer.instance
     : new DVEBabylonRenderer({
@@ -161,6 +173,8 @@ export async function CreateDefaultRenderer(
 
   InitDefaultEffects();
   initData.afterCreate && (await initData.afterCreate(renderer.voxelScene));
-
+  progress.completeWorkItems(4);
+  progress.setStatus("Done");
+  await progress.wait(100);
   return renderer;
 }

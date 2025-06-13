@@ -1,4 +1,5 @@
-import { Mesh, Scene } from "@babylonjs/core";
+import { Mesh } from "@babylonjs/core/Meshes/mesh";
+import { Scene } from "@babylonjs/core/scene";
 import { MeshVoxel } from "@divinevoxel/vlox/Mesher/Functions/MeshVoxel";
 import { PaintVoxelData } from "@divinevoxel/vlox/Voxels";
 import { DVEBRMesh } from "../Meshes/DVEBRMesh";

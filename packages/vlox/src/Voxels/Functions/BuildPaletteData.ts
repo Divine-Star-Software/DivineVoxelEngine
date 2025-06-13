@@ -45,7 +45,7 @@ export function BuildPaletteData(props: BuildPaletteDataProps) {
 
     for (const node of schema.nodes) {
       valuePairs.push([
-        node.id,
+        node.name,
         node.valuePalette
           ? node.valuePalette._palette
           : new Array(node.bitMask + 1).fill(0).map((_, i) => `${i}`),
@@ -76,7 +76,7 @@ export function BuildPaletteData(props: BuildPaletteDataProps) {
 
     for (const node of schema.nodes) {
       valuePairs.push([
-        node.id,
+        node.name,
         node.valuePalette
           ? node.valuePalette._palette
           : new Array(node.bitMask + 1).fill(0).map((_, i) => `${i}`),

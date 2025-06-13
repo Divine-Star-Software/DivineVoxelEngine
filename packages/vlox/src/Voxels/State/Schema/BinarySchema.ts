@@ -1,17 +1,15 @@
 import { BinarySchemaNode } from "./BinarySchemaNode";
-import { BinarySchemaNodeData } from "../State.types";
+import { VoxelBinaryStateSchemaNode } from "../State.types";
 
 type StateObject = (string | number)[];
 export class BinarySchema {
   nodeMap = new Map<string, BinarySchemaNode>();
   nodes: BinarySchemaNode[] = [];
-  constructor(schema: BinarySchemaNodeData[]) {
+  constructor(schema: VoxelBinaryStateSchemaNode[]) {
     for (const node of schema) {
-      if (node.type == "binary") {
-        const newNode = new BinarySchemaNode(node);
-        this.nodes.push(newNode);
-        this.nodeMap.set(node.id, newNode);
-      }
+      const newNode = new BinarySchemaNode(node);
+      this.nodes.push(newNode);
+      this.nodeMap.set(node.name, newNode);
     }
   }
 
@@ -22,7 +20,7 @@ export class BinarySchema {
     let stateString: string[] = [];
     for (let i = 0; i < this.nodes.length; i++) {
       stateString.push(
-        `${this.nodes[i].id}=${String(this.get(this.nodes[i].id))}`
+        `${this.nodes[i].name}=${String(this.get(this.nodes[i].name))}`
       );
     }
     return stateString.join(",");
@@ -80,12 +78,12 @@ export class BinarySchema {
     for (const node of this.nodes) {
       if (node.valuePalette) {
         stateArray.push(
-          node.id,
+          node.name,
           node.valuePalette.getStringId(node.getValue(stateValue))
         );
         continue;
       }
-      stateArray.push(node.id, node.getValue(stateValue));
+      stateArray.push(node.name, node.getValue(stateValue));
     }
     return stateArray;
   }

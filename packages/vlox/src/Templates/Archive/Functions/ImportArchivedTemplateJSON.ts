@@ -21,14 +21,23 @@ export default async function ImportArchivedTemplateJSON(
   const palettes: ArchivedVoxelTemplateData["palettes"] = {
     voxels: jsonData.palettes.voxels,
     stateSchemas: jsonData.palettes.stateSchemas,
-    secondary: await BinaryBuffer.FromJSON(jsonData.palettes.secondary),
-    level: await BinaryBuffer.FromJSON(jsonData.palettes.level),
     voxelPalette: await BinaryBuffer.FromJSON(jsonData.palettes.voxelPalette),
   };
 
+  if (jsonData.palettes.secondary) {
+    palettes.secondary = await BinaryBuffer.FromJSON(
+      jsonData.palettes.secondary
+    );
+  }
+
+  if (jsonData.palettes.level) {
+    palettes.level = await BinaryBuffer.FromJSON(jsonData.palettes.level);
+  }
+
   const data: ArchivedVoxelTemplateData = {
-    version: jsonData.version,
-    vloxVersion: jsonData.vloxVersion,
+    engineVersion: jsonData.engineVersion,
+    formatVersion: jsonData.formatVersion,
+    dataKey: jsonData.dataKey,
     type: jsonData.type,
     position: jsonData.position,
     bounds: jsonData.bounds,

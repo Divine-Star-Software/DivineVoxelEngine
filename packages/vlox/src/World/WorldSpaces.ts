@@ -7,7 +7,25 @@ import {
   GetYXZOrderArrayIndex,
   GetYXZOrderArrayPositionVec3,
   GetYXZOrderArrayPositionVec3Array,
+  IndexOrderingTypes,
 } from "../Math/Indexing.js";
+
+export type WorldSpaceDataKey = {
+  sector: {
+    size: Vector3Like;
+    sectionArrayOrder: IndexOrderingTypes;
+  };
+  section: {
+    size: Vector3Like;
+    arrayOrders: {
+      id: IndexOrderingTypes;
+      light: IndexOrderingTypes;
+      level: IndexOrderingTypes;
+      secondary: IndexOrderingTypes;
+    };
+  };
+};
+
 const tempPosition = Vector3Like.Create();
 const tempPosition2 = Vector3Like.Create();
 class WorldBounds {
@@ -325,6 +343,23 @@ export class WorldSpaces {
   static sector = SectorSpace;
   static section = SectionSpace;
   static voxel = VoxelSpace;
+  static getDataKey(): WorldSpaceDataKey {
+    return {
+      sector: {
+        size: { ...WorldSpaces.sector.bounds },
+        sectionArrayOrder: "YXZ",
+      },
+      section: {
+        size: { ...WorldSpaces.section.bounds },
+        arrayOrders: {
+          id: "YXZ",
+          level: "YXZ",
+          light: "YXZ",
+          secondary: "YXZ",
+        },
+      },
+    };
+  }
 }
 
 EngineSettings.addEventListener("synced", (event) => {

@@ -72,12 +72,14 @@ const farmlandModel: VoxelModelData = {
   stateSchema: [
     {
       name: "moist",
-      type: "string",
+      bitIndex: 0,
+      bitSize: 1,
       values: ["false", "true"],
     },
     {
       name: "rotation",
-      type: "string",
+      bitIndex: 1,
+      bitSize: 1,
       values: ["0", "90"],
     },
   ],
@@ -232,8 +234,8 @@ const cropModel: VoxelModelData = {
   stateSchema: [
     {
       name: "level",
-      type: "number",
-      maxValue: 8,
+      bitIndex: 0,
+      bitSize: 3,
     },
   ],
   arguments: {

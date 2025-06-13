@@ -1,7 +1,5 @@
 import { SchemaRegister } from "../State/SchemaRegister";
-import { StringPalette } from "../../Util/StringPalette";
 import { BinarySchema } from "../State/Schema/BinarySchema";
-import { BinarySchemaNodeData } from "../../Voxels/State/State.types";
 import {
   ArchivedVoxelDataForPalette,
   VoxelArchivePaletteData,
@@ -40,18 +38,11 @@ export class VoxelPaletteArchiveReader {
     this.voxelPalette = BinaryBuffer.ToTypedArray(
       palettes.voxelPalette
     ) as Uint16Array;
-
-    console.warn("INIT VOXEL PALETTE ARCHIVE READER", palettes, this);
-    console.log(this._voxels, this._stateSchemas, this.voxelPalette);
   }
 
   getVoxelData(id: number) {
     const index = id * 3;
     const voxelId = this._voxels[this.voxelPalette[index]]?.id;
-    if (!voxelId) {
-      console.error("COULD NOT FIND ID", id, this._voxels, this.voxelPalette,this.voxelPalette[index]);
-      throw new Error();
-    }
     temp[0] = voxelId;
     if (temp[0] == "dve_air") {
       temp[1] = 0;
@@ -67,9 +58,15 @@ export class VoxelPaletteArchiveReader {
       stateSchema.startEncoding(stateValue);
       for (const node of stateSchema.nodes) {
         if (node.valuePalette) {
-          voxelSchema.state.setValue(node.id, stateSchema.getValue(node.id));
+          voxelSchema.state.setValue(
+            node.name,
+            stateSchema.getValue(node.name)
+          );
         } else {
-          voxelSchema.state.setNumber(node.id, stateSchema.getNumber(node.id));
+          voxelSchema.state.setNumber(
+            node.name,
+            stateSchema.getNumber(node.name)
+          );
         }
       }
       finalStateValue = stateSchema.getEncoded();
@@ -82,9 +79,9 @@ export class VoxelPaletteArchiveReader {
       modSchema.startEncoding(modValue);
       for (const node of modSchema.nodes) {
         if (node.valuePalette) {
-          voxelSchema.mod.setValue(node.id, modSchema.getValue(node.id));
+          voxelSchema.mod.setValue(node.name, modSchema.getValue(node.name));
         } else {
-          voxelSchema.mod.setNumber(node.id, modSchema.getNumber(node.id));
+          voxelSchema.mod.setNumber(node.name, modSchema.getNumber(node.name));
         }
       }
       finalModValue = modSchema.getEncoded();

@@ -1,4 +1,7 @@
-import { Material, Matrix, Scene, Texture } from "@babylonjs/core";
+import { Material } from "@babylonjs/core/Materials/material";
+import { Matrix } from "@babylonjs/core/Maths/math.vector";
+import { Scene } from "@babylonjs/core/scene";
+import { Texture } from "@babylonjs/core/Materials/Textures/texture";
 import { SceneOptions } from "../Scene/SceneOptions";
 export interface MaterialData<Data extends object = any> {
   scene: Scene;

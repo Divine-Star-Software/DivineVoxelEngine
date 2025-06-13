@@ -1,5 +1,4 @@
 import { Vector3Like } from "@amodx/math";
-import { Threads } from "@amodx/threads";
 import { DivineVoxelEngineRender } from "@divinevoxel/vlox/Contexts/Render";
 import { TickInterval } from "@divinevoxel/vlox/Util/TickInterval";
 import { WorldSpaces } from "@divinevoxel/vlox/World/WorldSpaces";

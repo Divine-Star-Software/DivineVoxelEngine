@@ -1,21 +1,15 @@
-import {
-  Mesh,
-  Scene,
-  Color4,
-  Vector3,
-  CreatePlane,
-  Observer,
-  Effect,
-  Material,
-} from "@babylonjs/core";
+import { Mesh } from "@babylonjs/core/Meshes/mesh";
+import { Scene } from "@babylonjs/core/scene";
+import { Color4 } from "@babylonjs/core/Maths/math.color";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
+import { Observer } from "@babylonjs/core/Misc/observable";
+import { SolidParticleSystem } from "@babylonjs/core/Particles/solidParticleSystem";
 import { DVEBabylonRenderer } from "../Renderer/DVEBabylonRenderer";
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
 import { TextureId } from "@divinevoxel/vlox/Textures/Texture.types";
-import { SolidParticleSystem } from "@babylonjs/core";
-import { DataCursorInterface } from "@divinevoxel/vlox/Voxels/Cursor/DataCursor.interface";
-import { WorldCursor } from "@divinevoxel/vlox/World";
-import { Vector3Like } from "@amodx/math";
 
+import { DataCursorInterface } from "@divinevoxel/vlox/Voxels/Cursor/DataCursor.interface";
 export class VoxelExplodeParticles {
   static Quads = new Map<Scene, Mesh>();
   private _textureId = 0;

@@ -12,6 +12,8 @@ import { VoxelTagsRegister } from "../../../Voxels/Data/VoxelTagsRegister";
 import { VoxelPalettesRegister } from "../../../Voxels/Data/VoxelPalettesRegister";
 import { DataCursorInterface } from "../../../Voxels/Cursor/DataCursor.interface";
 import { BoundsMinMaxData } from "@amodx/math/Geomtry/Bounds/BoundsInterface";
+import { EngineSettings } from "../../../Settings/EngineSettings";
+import { VoxelPaletteArchiveReader } from "../../../Voxels/Archive/VoxelPaletteArchiveReader";
 
 /**
  * Creates an archived template using the passed in the data cursor.
@@ -113,8 +115,7 @@ export default function CreateArchivedTemplate(
   } else if (idsPaletted) {
     const type = BinaryBuffer.DetermineSubByteArray(voxelPalette.size)!;
     buffers.ids = BinaryBuffer.Create({
-      buffer: BinaryBuffer.Convert(ids, BinaryBufferFormat.Uint16, type)
-        .buffer,
+      buffer: BinaryBuffer.Convert(ids, BinaryBufferFormat.Uint16, type).buffer,
       format: type,
       byteLength: ids.length,
     });
@@ -161,11 +162,8 @@ export default function CreateArchivedTemplate(
   } else if (secondaryPaletted) {
     const type = BinaryBuffer.DetermineSubByteArray(voxelPalette.size)!;
     buffers.secondary = BinaryBuffer.Create({
-      buffer: BinaryBuffer.Convert(
-        secondary,
-        BinaryBufferFormat.Uint16,
-        type
-      ).buffer,
+      buffer: BinaryBuffer.Convert(secondary, BinaryBufferFormat.Uint16, type)
+        .buffer,
       format: type,
     });
   } else {
@@ -175,25 +173,38 @@ export default function CreateArchivedTemplate(
     });
   }
 
+  const palettes: ArchivedVoxelTemplateData["palettes"] = {
+    ...voxelPalette.toJSON(),
+  };
+  if (!(levelPalette.size == 1 && levelPalette._palette[0] === 0)) {
+    palettes.level = BinaryBuffer.Create({
+      format: BinaryBufferFormat.Uint8,
+      byteLength: levelPalette._palette.length,
+      buffer: Uint8Array.from(levelPalette._palette).buffer,
+    });
+  }
+  if (!(secondaryPalette.size == 1 && secondaryPalette._palette[0] === 0)) {
+    palettes.secondary = BinaryBuffer.Create({
+      format: BinaryBufferFormat.Uint16,
+      byteLength: secondaryPalette._palette.length,
+      buffer: Uint16Array.from(secondaryPalette._palette).buffer,
+    });
+  }
   const data: ArchivedVoxelTemplateData = {
     type: "archived",
-    vloxVersion: "",
-    version: "",
+    engineVersion: EngineSettings.version,
+    formatVersion: "",
+    dataKey: {
+      voxelPalette: VoxelArchivePalette.GetVoxelPaletteDataKey(),
+      arrayOrders: {
+        id: "YXZ",
+        level: "YXZ",
+        secondary: "YXZ",
+      },
+    },
     position: Vector3Like.Create(),
     bounds: Vector3Like.Create(...index.getBounds()),
-    palettes: {
-      level: BinaryBuffer.Create({
-        format: BinaryBufferFormat.Uint8,
-        byteLength: levelPalette._palette.length,
-        buffer: Uint8Array.from(levelPalette._palette).buffer,
-      }),
-      secondary: BinaryBuffer.Create({
-        format: BinaryBufferFormat.Uint16,
-        byteLength: secondaryPalette._palette.length,
-        buffer: Uint16Array.from(secondaryPalette._palette).buffer,
-      }),
-      ...voxelPalette.toJSON(),
-    },
+    palettes,
     buffers,
   };
 

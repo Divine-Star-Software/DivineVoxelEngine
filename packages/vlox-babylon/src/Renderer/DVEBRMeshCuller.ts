@@ -1,4 +1,7 @@
-import { BoundingBox, Mesh, Scene, Vector3 } from "@babylonjs/core";
+import { BoundingBox } from "@babylonjs/core/Culling/boundingBox";
+import { Mesh } from "@babylonjs/core/Meshes/mesh";
+import { Scene } from "@babylonjs/core/scene";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { MeshRegister } from "@divinevoxel/vlox/Renderer/MeshRegister";
 import { WorldSpaces } from "@divinevoxel/vlox/World//WorldSpaces";
 const min = new Vector3();

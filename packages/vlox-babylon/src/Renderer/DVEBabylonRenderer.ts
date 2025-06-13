@@ -5,8 +5,7 @@ import { DVEBRFOManager } from "./DVEBRFOManger";
 import { DivineVoxelEngineRender } from "@divinevoxel/vlox/Contexts/Render/DivineVoxelEngineRender.js";
 import { Observable } from "@amodx/core/Observers/Observable.js";
 import { DVEBRMesh } from "../Meshes/DVEBRMesh.js";
-import { TimerState, type Engine } from "@babylonjs/core";
-
+import type { Engine } from "@babylonjs/core/Engines/engine";
 import { DVEBRSectionMeshes } from "../Meshes/DVEBRSectionMeshesN";
 import { DVEBRMaterialRegister } from "../Matereials/DVEBRNodeMaterialsManager";
 import { VoxelScene } from "../Scene/VoxelScene";

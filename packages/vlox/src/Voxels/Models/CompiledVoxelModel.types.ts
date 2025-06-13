@@ -1,7 +1,7 @@
 import { AOOcclusionFaceIndexData } from "../Models/Indexing/AOOcclusionFaceIndex";
 import { CulledOcclusionFaceIndexData } from "../Models/Indexing/CulledOcclusionFaceIndex";
 import {
-  VoxelModelStateSchemaData,
+  VoxelStateSchemaData,
   StateLogicStatement,
 } from "../State/State.types";
 import { CullingProcedureData } from "../Models/VoxelModel.types";
@@ -16,7 +16,7 @@ export type CompiledVoxelGeometrySyncData = {
 
 export interface CompiledVoxelModelData {
   id: string;
-  schema: VoxelModelStateSchemaData[];
+  schema: VoxelStateSchemaData;
   effects: VoxelEffectSyncData[];
   stateTree: any[];
   stateMap: number[][];
@@ -41,8 +41,7 @@ export interface CompiledVoxelModelInputData {
   materialId: string;
   modelId: string;
 
-
-  modSchema: VoxelModelStateSchemaData[];
+  modSchema: VoxelStateSchemaData;
   modStateTree: any[];
   baseGeometryInputMap: any[][];
   condiotnalGeometryInputMap: any[][];

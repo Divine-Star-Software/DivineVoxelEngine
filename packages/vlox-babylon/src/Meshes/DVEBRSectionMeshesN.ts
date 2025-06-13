@@ -1,4 +1,5 @@
-import { type Scene, type Engine } from "@babylonjs/core";
+import type { Scene } from "@babylonjs/core/scene";
+import type { Engine } from "@babylonjs/core/Engines/engine";
 import { Vector3 } from "@babylonjs/core/Maths/";
 import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo.js";

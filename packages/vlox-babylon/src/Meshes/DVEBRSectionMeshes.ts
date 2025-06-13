@@ -1,11 +1,7 @@
-import {
-  type Scene,
-  type Engine,
-  VertexBuffer,
-  Geometry,
-  Buffer,
-  SubMesh,
-} from "@babylonjs/core";
+import type { Scene } from "@babylonjs/core/scene";
+import type { Engine } from "@babylonjs/core/Engines/engine";
+import { Geometry } from "@babylonjs/core/Meshes/geometry";
+import { Buffer } from "@babylonjs/core/Meshes/buffer";
 import { Vector3 } from "@babylonjs/core/Maths/";
 import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo.js";
@@ -117,19 +113,17 @@ export class DVEBRSectionMeshes extends DVESectionMeshes {
         }
       }
 
-
       mesh.unfreezeWorldMatrix();
       mesh.position.set(location[1], location[2], location[3]);
       mesh.computeWorldMatrix();
       if (mesh.metadata.buffer && mesh.metadata.buffer instanceof Buffer) {
         const buffer = mesh.metadata.buffer as Buffer;
-        
+
         for (const bufferKind in mesh.getVerticesDataKinds()) {
           mesh.geometry!.removeVerticesData(bufferKind);
         }
         mesh.geometry!.releaseForMesh(mesh);
         mesh.metadata.buffer.dispose();
- 
       }
       mesh.metadata.buffer = DVEBRMesh.UpdateVertexDataBuffers(
         mesh,

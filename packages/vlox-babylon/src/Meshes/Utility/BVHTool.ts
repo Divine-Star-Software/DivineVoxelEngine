@@ -1,10 +1,7 @@
-import {
-  type Scene,
-  type Engine,
-  type InstancedMesh,
-  CreateBox,
-  StandardMaterial,
-} from "@babylonjs/core";
+import type { Scene } from "@babylonjs/core/scene";
+import type { InstancedMesh } from "@babylonjs/core/Meshes/instancedMesh";
+import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
+import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { VoxelMeshBVHStructCursor } from "@divinevoxel/vlox/Mesher/Geomtry/VoxelMeshBVHStructCursor";
 import { VoxelMeshBVHBuilder } from "@divinevoxel/vlox/Mesher/Geomtry/VoxelMeshBVHBuilder";
 import { Vector2, Vector3, Vector4 } from "@babylonjs/core/Maths/";

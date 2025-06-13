@@ -34,12 +34,21 @@ export class ArchivedVoxelTemplate implements IVoxelTemplate {
     this.index.setBounds(_data.bounds.x, _data.bounds.y, _data.bounds.z);
 
     this.voxelPalette = new VoxelPaletteArchiveReader(_data.palettes);
-    this.levelPalette = new NumberPalette(
-      BinaryBuffer.ToTypedArray(_data.palettes.level)
-    );
-    this.secondaryPalette = new NumberPalette(
-      BinaryBuffer.ToTypedArray(_data.palettes.secondary)
-    );
+    if (_data.palettes.level) {
+      this.levelPalette = new NumberPalette(
+        BinaryBuffer.ToTypedArray(_data.palettes.level)
+      );
+    } else {
+      this.levelPalette = new NumberPalette([0]);
+    }
+
+    if (_data.palettes.secondary) {
+      this.secondaryPalette = new NumberPalette(
+        BinaryBuffer.ToTypedArray(_data.palettes.secondary)
+      );
+    } else {
+      this.secondaryPalette = new NumberPalette([0]);
+    }
 
     const volume = this.index.size;
     this.ids = _data.buffers.ids

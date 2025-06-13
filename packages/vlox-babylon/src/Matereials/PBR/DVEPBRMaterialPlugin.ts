@@ -1,14 +1,10 @@
-import type {
-  BaseTexture,
-  Engine,
-  PBRMaterial,
-  Scene,
-  UniformBuffer,
-} from "@babylonjs/core";
+import type { BaseTexture } from "@babylonjs/core/Materials/Textures/baseTexture";
+import type { Engine } from "@babylonjs/core/Engines/engine";
+import type { PBRMaterial } from "@babylonjs/core/Materials/PBR/pbrMaterial";
+import type { Scene } from "@babylonjs/core/scene";
+import type { UniformBuffer } from "@babylonjs/core/Materials/uniformBuffer";
 import { MaterialPluginBase } from "@babylonjs/core/Materials/materialPluginBase";
 import { DVEBRPBRMaterial } from "./DVEBRPBRMaterial";
-
-
 
 export class DVEPBRMaterialPlugin extends MaterialPluginBase {
   uniformBuffer: UniformBuffer;
@@ -20,8 +16,8 @@ export class DVEPBRMaterialPlugin extends MaterialPluginBase {
     public dveMaterial: DVEBRPBRMaterial,
     public onUBSet: (uniformBuffer: UniformBuffer) => void
   ) {
-  //  shaders.set(material.id, dveMaterial.shader);
-  //  textures.set(material.id, dveMaterial.texture);
+    //  shaders.set(material.id, dveMaterial.shader);
+    //  textures.set(material.id, dveMaterial.texture);
 
     super(material, name, 20, {
       [`DVE_${name}`]: false,
@@ -31,9 +27,9 @@ export class DVEPBRMaterialPlugin extends MaterialPluginBase {
   }
 
   hasTexture(texture: BaseTexture): boolean {
-      return true;
+    return true;
   }
-/*   getActiveTextures(activeTextures: BaseTexture[]) {
+  /*   getActiveTextures(activeTextures: BaseTexture[]) {
     const texture = textures.get(this._material.id);
     if (!texture) return [];
 
@@ -51,7 +47,7 @@ export class DVEPBRMaterialPlugin extends MaterialPluginBase {
   getClassName() {
     return "DVEPBRMaterialPlugin";
   }
-/* 
+  /* 
   getSamplers(samplers: string[]) {
     const shader = this.dveMaterial?.shader || shaders.get(this._material.id)!;
   
@@ -66,7 +62,7 @@ export class DVEPBRMaterialPlugin extends MaterialPluginBase {
     attributes.push(...shader.data.mesh.getAttributeList());
   } */
 
-/*   getUniforms() {
+  /*   getUniforms() {
     const shader = this.dveMaterial?.shader || shaders.get(this._material.id)!;
     const ubo: {
       name: string;
@@ -123,12 +119,10 @@ export class DVEPBRMaterialPlugin extends MaterialPluginBase {
   _textureBound = false;
   bindForSubMesh(uniformBuffer: UniformBuffer, scene: Scene, engine: Engine) {
     if (!this.uniformBuffer) this.uniformBuffer = uniformBuffer;
-  
   }
 
   //@ts-ignore
   getCustomCode(shaderType: any) {
-
     const textures = "";
     const varying = "";
 
@@ -146,7 +140,7 @@ ${varying}
 ${functions}
 #endif
 `,
-CUSTOM_VERTEX_UPDATE_NORMAL: /*glsl*/ `
+        CUSTOM_VERTEX_UPDATE_NORMAL: /*glsl*/ `
 #ifdef  DVE_${this.name}
 #ifdef  DVE_dve_liquid
 vec3 noisePOS = vec3(worldPOSNoOrigin.x/10., worldPOSNoOrigin.y, worldPOSNoOrigin.z/10.);
@@ -218,9 +212,9 @@ alpha = .9;
 
 #endif
 `,
-/* "!finalIrradiance\\*\\=surfaceAlbedo.rgb;":
+        /* "!finalIrradiance\\*\\=surfaceAlbedo.rgb;":
 `finalIrradiance*=surfaceAlbedo.rgb;\nfinalIrradiance = vec3(VOXEL[2].rgb ) ;`, */
-CUSTOM_FRAGMENT_BEFORE_FINALCOLORCOMPOSITION: /*glsl*/  `
+        CUSTOM_FRAGMENT_BEFORE_FINALCOLORCOMPOSITION: /*glsl*/ `
 #ifdef  DVE_${this.name}
 
 if(finalDiffuse.r * VOXEL[2].r > finalDiffuse.r) {
@@ -236,13 +230,13 @@ if(finalDiffuse.b * VOXEL[2].b > finalDiffuse.b) {
 finalDiffuse.rgb += .01;
 #endif
 `,
-CUSTOM_FRAGMENT_MAIN_END :/*glsl*/  `
+        CUSTOM_FRAGMENT_MAIN_END: /*glsl*/ `
 #ifdef  DVE_${this.name}
 if (glFragColor.a < 0.05) {
   discard;
 }
 #endif
-`
+`,
       };
     }
     return null;

@@ -1,4 +1,4 @@
-import { BinarySchemaNodeData } from "../../../Voxels/State/State.types";
+import { VoxelBinaryStateSchemaNode } from "../../../Voxels/State/State.types";
 import { BinaryBufferData } from "../../../Util/BinaryBuffer/BinaryBuffer.types";
 import {
   ArchivedLightSegments,
@@ -11,12 +11,12 @@ import {
 } from "./ArchivedSector.types";
 
 export interface ArchiveAreaPalettesData {
-  voxelStateSchemas: Record<string, BinarySchemaNodeData[]>;
+  voxelStateSchemas: Record<string, VoxelBinaryStateSchemaNode[]>;
   voxelSchemas: Record<
     string,
     {
       stateSchemaId?: string;
-      modSchema?: BinarySchemaNodeData[];
+      modSchema?: VoxelBinaryStateSchemaNode[];
     } | null
   >;
 }

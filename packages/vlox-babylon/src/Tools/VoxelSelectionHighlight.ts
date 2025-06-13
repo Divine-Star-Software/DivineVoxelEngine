@@ -1,5 +1,5 @@
 import { Vec3Array } from "@amodx/math";
-import { Scene } from "@babylonjs/core";
+import { Scene } from "@babylonjs/core/scene";
 import { VoxelFaceDirections, VoxelFaces } from "@divinevoxel/vlox/Math";
 import { IVoxelSelection } from "@divinevoxel/vlox/Templates/Selection/VoxelSelecton";
 import { VoxelLineMesh } from "./VoxelLineMesh";

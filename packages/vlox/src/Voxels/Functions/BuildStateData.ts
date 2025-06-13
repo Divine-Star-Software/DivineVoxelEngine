@@ -1,18 +1,15 @@
 import {
-  BinarySchemaNodeData,
-  VoxelRelationsScehmaNodeData,
   StateLogicStatement,
   StateCompareOperationsMap,
   StateLogicOperationsMap,
+  VoxelModelRelationsSchemaNodes,
+  VoxelBinaryStateSchemaNode,
+  VoxelStateSchemaData,
 } from "../State/State.types";
 import { VoxelRulesModoel } from "../Models/Rules/Classes/VoxelRulesModel";
 import { StringPalette } from "../../Util/StringPalette";
 import { VoxelModelRuleBuilderRegister } from "../Models/Rules/VoxelModelRuleBuilderRegister";
-import {
-  VoxelStateStringSchemaData,
-  VoxelStateNumberSchemaData,
-  VoxelModelRelationsSchemaData,
-} from "../State/State.types";
+
 import { VoxelEffectSyncData } from "../Effects/VoxelEffects.types";
 import { bitsNeeded } from "../../Util/Binary/BinaryFunctions";
 
@@ -160,61 +157,39 @@ function reMapTree(
 }
 
 function buildSchemas(
-  binaryNodes: (VoxelStateStringSchemaData | VoxelStateNumberSchemaData)[],
-  relationNodes: VoxelModelRelationsSchemaData[]
+  binaryNodes: VoxelBinaryStateSchemaNode[],
+  relationNodes: VoxelModelRelationsSchemaNodes[]
 ) {
-  const baseSchema: (BinarySchemaNodeData | VoxelRelationsScehmaNodeData)[] =
-    [];
+  const baseSchema: VoxelStateSchemaData = {
+    binary: [],
+    relational: [],
+  };
 
   const schemaIdPalette = new StringPalette();
   const schemaValuePalette = new Map<string, StringPalette>();
 
-  let bitIndex = 0;
   for (const schemaNode of binaryNodes) {
     schemaIdPalette.register(schemaNode.name);
 
-    const maxBits = bitsNeeded(
-      schemaNode.type == "string"
-        ? Object.keys(schemaNode.values)
-            .map((_) => Number(_))
-            .sort((a, b) => a - b)
-            .pop()!
-        : schemaNode.maxValue
-    );
-    const nodeData: BinarySchemaNodeData = {
-      id: schemaNode.name,
-      type: "binary",
-      index: bitIndex,
-      mask: (1 << maxBits) - 1,
-    };
-
-    bitIndex += maxBits;
-
-    if (schemaNode.type == "string") {
-      const valuePalette = new StringPalette();
-      for (const vIndex in schemaNode.values) {
-        const vValue = schemaNode.values[vIndex];
-        valuePalette.register(vValue);
-      }
-      schemaValuePalette.set(schemaNode.name, valuePalette);
-      nodeData.valuePalette = valuePalette._palette;
+    if (schemaNode.values) {
+      schemaValuePalette.set(
+        schemaNode.name,
+        new StringPalette(schemaNode.values)
+      );
     }
 
-    baseSchema.push(nodeData);
+    baseSchema.binary.push(schemaNode);
   }
 
   for (const schemaNode of relationNodes) {
     schemaIdPalette.register(schemaNode.name);
 
-    baseSchema.push({
-      id: schemaNode.name,
-      type: "relation",
-      conditions: schemaNode.conditions,
-    });
-    const valuePalette = new StringPalette();
-    valuePalette.register("false");
-    valuePalette.register("true");
-    schemaValuePalette.set(schemaNode.name, valuePalette);
+    baseSchema.relational.push(schemaNode);
+
+    schemaValuePalette.set(
+      schemaNode.name,
+      new StringPalette(["false", "true"])
+    );
   }
 
   return {

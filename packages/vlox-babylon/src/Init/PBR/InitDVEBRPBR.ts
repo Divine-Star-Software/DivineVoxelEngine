@@ -1,29 +1,29 @@
 import { DVEBRPBRMaterial } from "../../Matereials/PBR/DVEBRPBRMaterial";
-import { DVEBRDefaultMaterialBaseData } from "../../Matereials/Types/DVEBRDefaultMaterial.types"
+import { DVEBRDefaultMaterialBaseData } from "../../Matereials/Types/DVEBRDefaultMaterial.types";
 import { CreateDefaultRenderer } from "../Default/CreateDefaultRenderer";
-import {
-  CreateBox,
-  DirectionalLight,
-  ReflectionProbe,
-  ShadowGenerator,
-  Vector3,
-  SSRRenderingPipeline,
-  Constants,
-  ImageProcessingConfiguration,
-  CubeTexture,
-  DefaultRenderingPipeline,
-  StandardMaterial,
-  Texture,
-  HDRCubeTexture,
-  HemisphericLight,
-  GlowLayer,
-  PBRMaterial,
-  Color4,
-} from "@babylonjs/core";
-import { LevelParticles } from "./LevelParticles";
-export type DVEBRClassicData = DVEBRDefaultMaterialBaseData;
+import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
+import { DirectionalLight } from "@babylonjs/core/Lights/directionalLight";
+import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
+import { ReflectionProbe } from "@babylonjs/core/Probes/reflectionProbe";
+import { ShadowGenerator } from "@babylonjs/core/Lights/Shadows/shadowGenerator";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { SSRRenderingPipeline } from "@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssrRenderingPipeline";
+import { ImageProcessingConfiguration } from "@babylonjs/core/Materials/imageProcessingConfiguration";
+import { DefaultRenderingPipeline } from "@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline";
+import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
+import { Texture } from "@babylonjs/core/Materials/Textures/texture";
+import { HDRCubeTexture } from "@babylonjs/core/Materials/Textures/hdrCubeTexture";
 
-export default function InitDVEPBR(initData: DVEBRClassicData) {
+import { LevelParticles } from "./LevelParticles";
+import { WorkItemProgress } from "@divinevoxel/vlox/Util/WorkItemProgress";
+export type DVEBRPBRData = DVEBRDefaultMaterialBaseData & {
+  getProgress?: (progress: WorkItemProgress) => void;
+};
+
+export default function InitDVEPBR(initData: DVEBRPBRData) {
+  const progress = new WorkItemProgress();
+  if (initData.getProgress) initData.getProgress(progress);
+  progress.startTask("Init PBR Renderer");
   const scene = initData.scene;
   scene.getEngine()!.createRenderTargetCubeTexture;
   const probe = new ReflectionProbe("", 512, initData.scene);
@@ -72,15 +72,20 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
   // ssrPipeline.environmentTextureIsProbe = true;
 
   const renderer = CreateDefaultRenderer({
-    createMaterial: (renderer,scene, matData) => {
-      const newMat = new DVEBRPBRMaterial(renderer.voxelScene.options, matData.id, {
-        scene,
-        data: {
-          effectId: matData.shaderId,
-          textureTypeId: matData.textureTypeId || "",
-        },
-        ...matData,
-      });
+    progress,
+    createMaterial: (renderer, scene, matData) => {
+      const newMat = new DVEBRPBRMaterial(
+        renderer.voxelScene.options,
+        matData.id,
+        {
+          scene,
+          data: {
+            effectId: matData.shaderId,
+            textureTypeId: matData.textureTypeId || "",
+          },
+          ...matData,
+        }
+      );
       newMat.createMaterial(scene);
       return newMat;
     },
@@ -95,7 +100,7 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
         hemLight.specular.set(0, 0, 0);
         hemLight.intensity = 0.2;
         hemLight.diffuse.set(0.5, 0.5, 0.5);
-        hemLight.groundColor.set(1,1,1);
+        hemLight.groundColor.set(1, 1, 1);
       }
 
       /*     */
@@ -122,7 +127,7 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
       // this.shadows.usePoissonSampling = true;
       shadows.usePercentageCloserFiltering = true;
 
-    //  shadows.forceBackFacesOnly = true;
+      //  shadows.forceBackFacesOnly = true;
       shadows.useContactHardeningShadow = true;
       //   shadows.contactHardeningLightSizeUVRatio = 0.05;
       shadows.setDarkness(0.1);
@@ -135,7 +140,7 @@ export default function InitDVEPBR(initData: DVEBRClassicData) {
         if (!camera) return;
         probe.position.copyFrom(camera.position);
       });
-        /*  
+      /*  
       renderer.observers.meshCreated.subscribe(InitDVEPBR, (mesh) => {
         if (!probe.renderList) probe.renderList = [];
   if (mesh._mesh.id.includes("glow")) {

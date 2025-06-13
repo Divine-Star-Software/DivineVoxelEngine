@@ -1,10 +1,10 @@
+import { Engine } from "@babylonjs/core/Engines/engine";
 import {
-  Engine,
   InternalTexture,
   InternalTextureSource,
-  Scene,
-  Texture,
-} from "@babylonjs/core";
+} from "@babylonjs/core/Materials/Textures/internalTexture";
+import { Scene } from "@babylonjs/core/scene";
+import { Texture } from "@babylonjs/core/Materials/Textures/texture";
 export class ImageArrayTexture extends Texture {
   width: number;
   height: number;
@@ -102,7 +102,6 @@ export class ImageArrayTexture extends Texture {
       this.updateSamplingMode(Texture.NEAREST_NEAREST_MIPLINEAR);
     }
   }
-
 
   copy(scene: Scene) {
     return new ImageArrayTexture(this.imgs, scene);

@@ -1,12 +1,10 @@
-import {
-  BoundingBox,
-  BoundingInfo,
-  MultiMaterial,
-  Scene,
-  SubMesh,
-  TransformNode,
-  Vector3,
-} from "@babylonjs/core";
+import { BoundingBox } from "@babylonjs/core/Culling/boundingBox";
+import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo";
+import { MultiMaterial } from "@babylonjs/core/Materials/multiMaterial";
+import { Scene } from "@babylonjs/core/scene";
+import { SubMesh } from "@babylonjs/core/Meshes/subMesh";
+import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { CompactedMeshData } from "@divinevoxel/vlox/Mesher/Geomtry/CompactedSectionVoxelMesh";
 import { VoxelPalettesRegister } from "@divinevoxel/vlox/Voxels/Data/VoxelPalettesRegister";
 import { DVEBabylonRenderer } from "../Renderer/DVEBabylonRenderer";

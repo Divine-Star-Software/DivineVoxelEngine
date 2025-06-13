@@ -1,17 +1,17 @@
-import { VoxelRelationsScehmaNodeData } from "../State.types";
+import { VoxelModelRelationsSchemaNodes } from "../State.types";
 import { SameVoxelCondition } from "./Conditions/SameVoxelConditions";
 import { ShapeStateSchemaRelationsCondition } from "./Conditions/ShapeStateSchemaRelationsCondition";
 import { StateSchema } from "./StateSchema";
 
 export class ShapeStateRelationsNode {
-  id: string;
+  name: string;
 
   conditions: ShapeStateSchemaRelationsCondition[] = [];
   constructor(
     public schema: StateSchema,
-    data: VoxelRelationsScehmaNodeData
+    data: VoxelModelRelationsSchemaNodes
   ) {
-    this.id = data.id;
+    this.name = data.name;
     for (const cond of data.conditions) {
       if (cond.type == "same-voxel") {
         this.conditions.push(new SameVoxelCondition(schema, cond));

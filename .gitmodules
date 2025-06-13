@@ -1,0 +1,6 @@
+[submodule "packages/packages/vlox"]
+	path = packages/packages/vlox
+	url = https://github.com/Divine-Star-Software/divinevoxel-vlox.git
+[submodule "packages/packages/vlox-babylon"]
+	path = packages/packages/vlox-babylon
+	url = https://github.com/Divine-Star-Software/divinevoxel-vlox-babylon.git

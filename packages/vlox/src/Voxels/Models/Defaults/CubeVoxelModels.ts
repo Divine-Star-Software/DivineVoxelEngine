@@ -13,7 +13,7 @@ export const simpleCube: VoxelModelData = {
   conditonalNodes: {},
   properties: {
     dve_placing_strategy: "*",
-    dve_full_block: true
+    dve_full_block: true,
   },
   stateNodes: {
     "*": [
@@ -112,12 +112,14 @@ export const orientedCube: VoxelModelData = {
   stateSchema: [
     {
       name: "placement",
-      type: "string",
+      bitIndex: 0,
+      bitSize: 3,
       values: ["down", "up", "north", "south", "east", "west"],
     },
     {
       name: "rotation",
-      type: "string",
+      bitIndex: 3,
+      bitSize: 2,
       values: ["0", "90", "180", "270"],
     },
   ],
@@ -683,7 +685,8 @@ export const simpleHalfCube: VoxelModelData = {
   stateSchema: [
     {
       name: "placement",
-      type: "string",
+      bitIndex: 0,
+      bitSize: 3,
       values: ["down", "up", "north", "south", "east", "west"],
     },
   ],
@@ -846,7 +849,8 @@ export const pillarCube: VoxelModelData = {
   stateSchema: [
     {
       name: "direction",
-      type: "string",
+      bitIndex: 0,
+      bitSize: 2,
       values: ["down-up", "south-north", "west-east"],
     },
   ],

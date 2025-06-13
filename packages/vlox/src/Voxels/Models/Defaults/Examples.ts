@@ -50,7 +50,8 @@ export const chainModel: VoxelModelData = {
   stateSchema: [
     {
       name: "axis",
-      type: "string",
+      bitIndex: 0,
+      bitSize: 2,
       values: ["y", "x", "z"],
     },
   ],
@@ -864,12 +865,13 @@ export const candlesModel: VoxelModelData = {
   stateSchema: [
     {
       name: "num_candles",
-      type: "number",
-      maxValue: 3,
+      bitIndex: 0,
+      bitSize: 3,
     },
     {
       name: "lit",
-      type: "string",
+      bitIndex: 3,
+      bitSize: 1,
       values: ["false", "true"],
     },
   ],
@@ -1168,17 +1170,20 @@ export const leverModel: VoxelModelData = {
   stateSchema: [
     {
       name: "placement",
-      type: "string",
+      bitIndex: 0,
+      bitSize: 3,
       values: ["down", "up", "north", "south", "east", "west"],
     },
     {
       name: "direction",
-      type: "string",
+      bitIndex: 3,
+      bitSize: 2,
       values: ["north", "south", "east", "west"],
     },
     {
       name: "state",
-      type: "string",
+      bitIndex: 5,
+      bitSize: 1,
       values: ["off", "on"],
     },
   ],

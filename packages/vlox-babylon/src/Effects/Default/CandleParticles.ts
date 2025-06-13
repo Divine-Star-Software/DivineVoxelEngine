@@ -1,5 +1,6 @@
-import { ParticleSystem, Texture, Vector3 } from "@babylonjs/core";
-import { DivineVoxelEngineRender } from "@divinevoxel/vlox/Contexts/Render/DivineVoxelEngineRender";
+import { ParticleSystem } from "@babylonjs/core/Particles/particleSystem";
+import { Texture } from "@babylonjs/core/Materials/Textures/texture";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { VoxelEffect } from "@divinevoxel/vlox/Voxels/Effects/VoxelEffect";
 import { DVEBabylonRenderer } from "../../Renderer/DVEBabylonRenderer";
 

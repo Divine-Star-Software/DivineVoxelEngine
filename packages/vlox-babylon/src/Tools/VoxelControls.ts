@@ -1,16 +1,14 @@
-import {
-  Color3,
-  CreateBox,
-  Mesh,
-  Ray,
-  Scene,
-  Vector3,
-  Effect,
-  ShaderMaterial,
-  TransformNode,
-  VertexBuffer,
-  Plane,
-} from "@babylonjs/core";
+import { Color3 } from "@babylonjs/core/Maths/math.color";
+import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
+import { Mesh } from "@babylonjs/core/Meshes/mesh";
+import { Ray } from "@babylonjs/core/Culling/ray";
+import { Scene } from "@babylonjs/core/scene";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { Effect } from "@babylonjs/core/Materials/effect";
+import { ShaderMaterial } from "@babylonjs/core/Materials/shaderMaterial";
+import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
+import { VertexBuffer } from "@babylonjs/core/Buffers/buffer";
+import { Plane } from "@babylonjs/core/Maths/math.plane";
 import { Vector3Like } from "@amodx/math";
 import { TypedEventTarget } from "@divinevoxel/vlox/Util/TypedEventTarget";
 

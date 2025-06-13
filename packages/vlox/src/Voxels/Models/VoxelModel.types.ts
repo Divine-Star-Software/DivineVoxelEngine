@@ -1,9 +1,9 @@
 import { Vec2Array, Vec3Array } from "@amodx/math";
 import { VoxelFaceNames } from "../../Math";
 import {
-  VoxelStateStringSchemaData,
-  VoxelModelRelationsSchemaData,
-  VoxelStateNumberSchemaData,
+  
+  VoxelModelRelationsSchemaNodes,
+  VoxelBinaryStateSchemaNode,
 } from "../../Voxels/State/State.types";
 import { VoxelEffectData } from "../../Voxels/Effects/VoxelEffects.types";
 import { VoxelBaseProperties, VoxelProperties } from "../Types/Voxel.types";
@@ -173,11 +173,11 @@ export interface VoxelModelData {
     | VoxelGeometryBooleanArgument
     | VoxelGeometryFloatArgument
   >;
-  stateSchema: (VoxelStateStringSchemaData | VoxelStateNumberSchemaData)[];
+  stateSchema:  VoxelBinaryStateSchemaNode[];
   /**Define default properties for the voxel. */
   properties?: Partial<VoxelBaseProperties>;
   effects?: VoxelEffectData[];
-  relationsSchema: VoxelModelRelationsSchemaData[];
+  relationsSchema: VoxelModelRelationsSchemaNodes[];
   stateNodes: Record<string, VoxelGeometryLinkData[]>;
   conditonalNodes: Record<string, VoxelGeometryLinkData[]>;
 }
@@ -185,7 +185,7 @@ export interface VoxelModelData {
 /**The model data assoicated with the actual voxel. */
 export interface VoxelModelConstructorData {
   id: string;
-  modRelationSchema?: VoxelModelRelationsSchemaData[];
-  modSchema?: VoxelStateStringSchemaData[];
+  modRelationSchema?: VoxelModelRelationsSchemaNodes[];
+  modSchema?: VoxelBinaryStateSchemaNode[];
   inputs: Record<string, Record<string, any>>;
 }

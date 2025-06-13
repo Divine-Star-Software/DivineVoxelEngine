@@ -1,17 +1,16 @@
 import { StringPalette } from "../../../Util/StringPalette";
-import { BinarySchemaNodeData } from "../State.types";
+import { VoxelBinaryStateSchemaNode } from "../State.types";
 
 export class BinarySchemaNode {
-  id: string;
+  name: string;
   valuePalette?: StringPalette;
   bitIndex = 0;
   bitMask = 0;
-  constructor(data: BinarySchemaNodeData) {
-    this.id = data.id;
-    this.bitIndex = data.index;
-    this.bitMask = data.mask;
-    if (data.valuePalette)
-      this.valuePalette = new StringPalette(data.valuePalette);
+  constructor(data: VoxelBinaryStateSchemaNode) {
+    this.name = data.name;
+    this.bitIndex = data.bitIndex;
+    this.bitMask = (1 << data.bitSize) - 1;
+    if (data.values) this.valuePalette = new StringPalette(data.values);
   }
 
   getValue(data: number) {

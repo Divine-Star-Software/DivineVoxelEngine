@@ -1,4 +1,7 @@
-import { Material, PBRBaseMaterial, Scene, Texture } from "@babylonjs/core";
+import { Material } from "@babylonjs/core/Materials/material";
+import { PBRBaseMaterial } from "@babylonjs/core/Materials/PBR/pbrBaseMaterial";
+import { Scene } from "@babylonjs/core/scene";
+import { Texture } from "@babylonjs/core/Materials/Textures/texture";
 import { PBRMaterial } from "@babylonjs/core/Materials/PBR/pbrMaterial";
 import { Vector3, Vector4 } from "@babylonjs/core/Maths/";
 import { DVEPBRMaterialPlugin } from "./DVEPBRMaterialPlugin";

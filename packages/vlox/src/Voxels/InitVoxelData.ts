@@ -388,6 +388,7 @@ export function InitVoxelData(data: InitVoxelDataProps): CompiledVoxelData {
   let models = GetModelData(data);
 
   BuildPaletteData({ models });
+
   voxelData.data.palette = VoxelPalettesRegister.voxels;
   voxelData.data.record = VoxelPalettesRegister.voxelRecord;
 

@@ -1,11 +1,8 @@
-import {
-  AssetContainer,
-  Engine,
-  RawTexture,
-  Scene,
-  Texture,
-  Vector4,
-} from "@babylonjs/core";
+import { Engine } from "@babylonjs/core/Engines/engine";
+import { RawTexture } from "@babylonjs/core/Materials/Textures/rawTexture";
+import { Scene } from "@babylonjs/core/scene";
+import { Texture } from "@babylonjs/core/Materials/Textures/texture";
+import { Vector4 } from "@babylonjs/core/Maths/math.vector";
 import { ShaderMaterial } from "@babylonjs/core/Materials/shaderMaterial.js";
 import { Matrix, Vector2, Vector3 } from "@babylonjs/core/Maths/";
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager.js";

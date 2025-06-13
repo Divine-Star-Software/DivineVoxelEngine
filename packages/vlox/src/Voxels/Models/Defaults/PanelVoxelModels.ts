@@ -6,12 +6,14 @@ export const simpleThinPannel: VoxelModelData = {
   stateSchema: [
     {
       name: "placement",
-      type: "string",
+      bitIndex: 0,
+      bitSize: 3,
       values: ["down", "up", "north", "south", "east", "west"],
     },
     {
       name: "direction",
-      type: "string",
+      bitIndex: 3,
+      bitSize: 2,
       values: ["north", "south", "east", "west"],
     },
   ],
@@ -479,12 +481,14 @@ export const orientedCrossedPannel: VoxelModelData = {
   stateSchema: [
     {
       name: "placement",
-      type: "string",
+      bitIndex: 0,
+      bitSize: 3,
       values: ["down", "up", "north", "south", "east", "west"],
     },
     {
       name: "direction",
-      type: "string",
+      bitIndex: 3,
+      bitSize: 2,
       values: ["north", "south", "east", "west"],
     },
   ],

@@ -1,16 +1,13 @@
-import {
-  AbstractMesh,
-  BoundingInfo,
-  Buffer,
-  DataBuffer,
-  Engine,
-  Geometry,
-  Mesh,
-  Nullable,
-  SubMesh,
-  Vector3,
-  VertexBuffer,
-} from "@babylonjs/core";
+import { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
+import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo";
+import { Buffer } from "@babylonjs/core/Meshes/buffer";
+import { DataBuffer } from "@babylonjs/core/Buffers/dataBuffer";
+import { Engine } from "@babylonjs/core/Engines/engine";
+import { Geometry } from "@babylonjs/core/Meshes/geometry";
+import { Mesh } from "@babylonjs/core/Meshes/mesh";
+import { SubMesh } from "@babylonjs/core/Meshes/subMesh";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { VertexBuffer } from "@babylonjs/core/Buffers/buffer";
 //https://playground.babylonjs.com/#SF6VE4
 import { VoxelMeshVertexStructCursor } from "@divinevoxel/vlox/Mesher/Geomtry/VoxelMeshVertexStructCursor";
 import { VoxelScene } from "../../Scene/VoxelScene";

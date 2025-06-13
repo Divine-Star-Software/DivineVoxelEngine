@@ -1,19 +1,12 @@
 import { Vector3Like } from "@amodx/math";
+import { IndexOrderingTypes } from "Math/Indexing";
+import { ArchivedVoxelPaletteDataKey } from "Voxels/Archive/VoxelArchive.types";
+import { WorldSpaceDataKey } from "World/WorldSpaces";
 
 export type ArchivedLightSegments = "sun" | "red" | "green" | "blue";
 
-export type ArchivedIndexOrderingType = "XYZ" | "XZY" | "YXZ";
-
-export interface ArchivedDataKey {
-  sectorSize: Vector3Like;
-  sectionSize: Vector3Like;
-  sectionIndexOrder: ArchivedIndexOrderingType;
-  sectionBuffersIndexOrder: {
-    id: ArchivedIndexOrderingType;
-    light: ArchivedIndexOrderingType;
-    level: ArchivedIndexOrderingType;
-    secondary: ArchivedIndexOrderingType;
-  };
+export interface ArchivedDataKey extends WorldSpaceDataKey {
+  voxelPalette: ArchivedVoxelPaletteDataKey;
 }
 
 export interface BaseArchivedDataBase {

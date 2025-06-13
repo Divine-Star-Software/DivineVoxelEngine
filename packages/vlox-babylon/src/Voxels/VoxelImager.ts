@@ -1,12 +1,10 @@
-import {
-  ArcRotateCamera,
-  Engine,
-  Mesh,
-  Scene,
-  Vector3,
-  RenderTargetTexture,
-  Color4,
-} from "@babylonjs/core";
+import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
+import { Engine } from "@babylonjs/core/Engines/engine";
+import { Mesh } from "@babylonjs/core/Meshes/mesh";
+import { Scene } from "@babylonjs/core/scene";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { RenderTargetTexture } from "@babylonjs/core/Materials/Textures/renderTargetTexture";
+import { Color4 } from "@babylonjs/core/Maths/math.color";
 import { PaintVoxelData } from "@divinevoxel/vlox/Voxels/";
 import { VoxelMesher } from "./VoxelMesher";
 
@@ -18,17 +16,19 @@ export class VoxelImager {
 
   _mesher: VoxelMesher;
   _camera: ArcRotateCamera;
+
+  _imageSize = 64;
   constructor(public scene: Scene) {
     this._mesher = new VoxelMesher(scene);
-    this._2dCanvas.width = 256;
-    this._2dCanvas.height = 256;
+    this._2dCanvas.width = this._imageSize;
+    this._2dCanvas.height = this._imageSize;
     this._2dContext = this._2dCanvas.getContext("2d")!;
 
     const rtt = new RenderTargetTexture(
       "Voxel Imager RTT",
       {
-        width: 256,
-        height: 256,
+        width: this._imageSize,
+        height: this._imageSize,
       },
       scene,
       false,
@@ -97,15 +97,15 @@ export class VoxelImager {
 
     const imageData = new ImageData(
       new Uint8ClampedArray(rawPixels.buffer),
-      256,
-      256
+      this._imageSize,
+      this._imageSize
     );
 
     const bitmap = await createImageBitmap(imageData);
     ctx.save();
-    ctx.clearRect(0, 0, 256, 256);
+    ctx.clearRect(0, 0, this._imageSize, this._imageSize);
     ctx.scale(1, -1);
-    ctx.drawImage(bitmap, 0, -256); // draw flipped
+    ctx.drawImage(bitmap, 0, -this._imageSize); // draw flipped
     ctx.restore();
 
     return this._2dCanvas.toDataURL("image/png");
