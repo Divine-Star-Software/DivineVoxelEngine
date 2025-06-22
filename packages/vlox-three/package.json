@@ -1,5 +1,5 @@
 {
- "name": "@divinevoxel/three-renderer",
+ "name": "@divinevoxel/vlox-three",
  "version": "0.0.17",
  "description": "ThreeJS Renderer for DVE.",
  "main": "index.js",
@@ -7,7 +7,7 @@
  "type": "module",
  "devDependencies": {},
  "scripts": {
-  "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ../../LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
+  "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ./LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
   "compile": "cd src && npx tsc --watch"
  },
  "keywords": [],

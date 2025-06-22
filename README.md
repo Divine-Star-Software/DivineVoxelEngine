@@ -8,53 +8,72 @@
 
 ---
 
-**NOTICE:**
-This is not finalized. Things will keep changing as development goes forward. 
-This code is public but it is used by Divine Star to make games.
-Either fork or use at your own risks.
-
 # What is this?
 
 A multi-threaded, renderer independent, fully customizable TypeScript voxel engine. 
 
-Need help or want to share your creations? Join the [discord](https://discord.gg/98xEVU7TKn).
-
 ![DVE 1](assets/Screenshots/Foundation/PBR/2.PNG)
 
+Join the Divine Star community here to get updates: [discord](https://discord.gg/98xEVU7TKn).
 
-## Packages 
-- **@divinevoxel/vlox**
-  - The original set up for DVE.
-  - Different voxel types and shapes.
-  - Chunk-based rendering and meshing.
-  - In parallel mesh building, light updates, and other world updates.
-  - Multi-threaded data access.
-  - Ambient occlusion and smooth lighting.
-  - Animated and connected textures.
-  - Custom shaders and shader effects.
-  - Vertical and horizontal chunks.
-  - Voxel Lighting system.
-    - Easy to update and remove.
-    - Support for different colored lights.
-    - Sunlight global illumination.
-  - World Data API - Easy tools to build worlds.
-  - Easy to use auto-update world on voxel add/remove
-    - Will auto update light sources for you.
-- **@divinevoxel/vlox-babylon**
-  - Renderer for DVE Vlox using babylon.js including Classic and PBR shaders.
-- **@divinevoxel/vlox-three**
-  - Renderer for DVE Vlox using three.js including Classic and PBR shaders.
-- **@divinevoxel/magic**
-  -  Magic voxel parser and integration.
-- **@divinevoxel/quantum-renderer**
-  - Custom experimental renderer using Web GPU.
-  - @divinevoxel/magic has suppourt for rendering a scene with ray marching.
+See videos of development here:
+[Divine Star Software YouTube Channel](https://www.youtube.com/channel/UC6n2h7qiuEHI6oLLvod5wdg)
 
-More packages are on the way.
+
+## To Init This Project
+
+This project is a monorepo that holds all the Divine Voxel Engine packages and required libraries from Amodx. To initialize the project, just run the following commands:
+
+```console
+git pull
+git lfs pull
+git submodule update --init --recursive
+npm run init:all
+npm install
+
+After that, to test and make sure everything is working, run:
+
+```console
+npm run test-vlox
+```
+
+## Core Packages
+
+- **@divinevoxel/vlox**  
+  - Minecraft-like voxel data handling and meshing.  
+  - Lighting, flow, power, and secondary state/voxelsystems.
+  - **Vlox Model System**  
+    - Similar to Blockbench models  
+    - AO, lighting, and advanced texture handling  
+    - Particle emitters and other custom effects  
+    - Easily extensible to create custom meshed voxels  
+  - World simulation engine for generation and update handling  
+  - Archiving API for exporting worlds and templates as JSON  
+  - **Multi-threaded**  
+    - All meshing and world updates run in parallel  
+    - Shared memory is optional—engine can run anywhere  
+
+- **@divinevoxel/vlox-babylon**  
+  - Renderer for DVE Vlox using Babylon.js, including Classic and PBR shaders
+
+- **@divinevoxel/vlox-three**  
+  - Renderer for DVE Vlox using Three.js, including Classic and PBR shaders
+
+- **@divinevoxel/vlox-quantum**  
+  - Custom renderer for DVE Vlox using WebGPU
+
+## Packages for Game Development
+
+- **@dvegames/vlox**  
+  - A library of components for building games with Babylon.js and `@divinevoxel/vlox`
+
+- **@dvegames/vlox-tools**  
+  - A library for creating tool panels for any `@divinevoxel/vlox` project
+
 
 # Screenshots 
 
-## Vlox
+## Vlox Babylon
 
 ### PBR
 
@@ -70,19 +89,7 @@ More packages are on the way.
 ![DVE 1](assets/Screenshots/Foundation/Classic/DVE-RM4.PNG)
 ![DVE 1](assets/Screenshots/Foundation/Classic/DVE-RM5.PNG)
 
-## Magic
-
-### Quantum
-
-![DVE 1](assets/Screenshots/Magic/Quantum/1.PNG)
-![DVE 1](assets/Screenshots/Magic/Quantum/2.PNG)
-![DVE 1](assets/Screenshots/Magic/Quantum/3.PNG)
 
 
-
-
-
-See videos of development here:
-[Divine Star Software YouTube Channel](https://www.youtube.com/channel/UC6n2h7qiuEHI6oLLvod5wdg)
 
 

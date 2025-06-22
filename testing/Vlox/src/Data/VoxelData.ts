@@ -31,7 +31,7 @@ export const DVEVoxelData: VoxelData[] = [
       dve_voxel_material: "plant",
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
-     // dve_simulation_behavior: "dve_crop",
+      // dve_simulation_behavior: "dve_crop",
       dve_model_data: {
         id: "dve_crop",
         inputs: {
@@ -146,7 +146,8 @@ export const DVEVoxelData: VoxelData[] = [
         modSchema: [
           {
             name: "grassy",
-            type: "string",
+            bitIndex: 0,
+            bitSize: 1,
             values: ["false", "true"],
           },
         ],
@@ -371,7 +372,8 @@ export const DVEVoxelData: VoxelData[] = [
         modSchema: [
           {
             name: "grassy",
-            type: "string",
+            bitIndex: 0,
+            bitSize: 1,
             values: ["false", "true"],
           },
         ],
@@ -523,7 +525,8 @@ export const DVEVoxelData: VoxelData[] = [
         modSchema: [
           {
             name: "grassy",
-            type: "string",
+            bitIndex: 0,
+            bitSize: 1,
             values: ["false", "true"],
           },
         ],

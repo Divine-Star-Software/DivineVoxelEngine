@@ -1,5 +1,5 @@
 <h1 align="center">
-@divinevoxel/three-renderer
+@divinevoxel/vlox-three
 </h1>
 
 

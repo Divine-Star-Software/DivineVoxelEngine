@@ -11,7 +11,7 @@
   "babylon.js"
  ],
  "scripts": {
-  "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ../../LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
+  "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ./LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
   "compile": "cd ./src && npx tsc --watch",
   "publish": "npm run build && cd ./dist && npm publish",
   "copy-js": "cd src && for file in $(find ./ -name '*.js')  \n do \n cp ${file} ../dist/${file} \n done",

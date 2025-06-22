@@ -1,0 +1,16 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "compile": "cd ./src && npx tsc --watch",
+    "update:versions": "cd ./dist && ls && node index.js -update:versions",
+    "upgrade:versions:publish:all": "cd ./dist && ls && node index.js -upgrade:versions:publish:all",
+    "publish:all": "cd ./dist && ls && node index.js -publish:all",
+    "link:all": "cd ./dist && ls && node index.js -link"
+  },
+  "author": "",
+  "license": "ISC"
+}

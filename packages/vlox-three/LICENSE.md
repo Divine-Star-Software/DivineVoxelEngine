@@ -1,4 +1,4 @@
-@divinevoxel/three-renderer
+@divinevoxel/vlox-three
 The MIT License (MIT)
 Copyright © 2024 Divine Star LLC
 

@@ -4,3 +4,33 @@
 [submodule "packages/vlox-babylon"]
 	path = packages/vlox-babylon
 	url = https://github.com/Divine-Star-Software/divinevoxel-vlox-babylon.git
+[submodule "libs/amodx/math"]
+	path = libs/amodx/math
+	url = https://github.com/Amodx/math.git
+[submodule "libs/amodx/threads"]
+	path = libs/amodx/threads
+	url = https://github.com/Amodx/threads.git
+[submodule "libs/amodx/elm"]
+	path = libs/amodx/elm
+	url = https://github.com/Amodx/elm.git
+[submodule "libs/amodx/ncs"]
+	path = libs/amodx/ncs
+	url = https://github.com/Amodx/ncs.git
+[submodule "libs/amodx/schemas"]
+	path = libs/amodx/schemas
+	url = https://github.com/Amodx/schemas.git
+[submodule "libs/amodx/controls"]
+	path = libs/amodx/controls
+	url = https://github.com/Amodx/controls.git
+[submodule "libs/amodx/audio"]
+	path = libs/amodx/audio
+	url = https://github.com/Amodx/audio.git
+[submodule "libs/amodx/core"]
+	path = libs/amodx/core
+	url = https://github.com/Amodx/core.git
+[submodule "libs/amodx/binary"]
+	path = libs/amodx/binary
+	url = https://github.com/Amodx/binary.git
+[submodule "libs/amodx/rng"]
+	path = libs/amodx/rng
+	url = https://github.com/Amodx/rng.git
