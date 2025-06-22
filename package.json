@@ -19,12 +19,12 @@
     "init:divinevoxel:vlox-three": "node ./scripts/init-lib.js ./packages/vlox-three \"@divinevoxel\"",
     "init:divinevoxel:vlox-quantum": "node ./scripts/init-lib.js ./packages/vlox-quantum \"@divinevoxel\"",
     "init:divinevoxel:magic": "node ./scripts/init-lib.js ./packages/magic \"@divinevoxel\"",
-    "init:divinevoxel:all": "npm run init:divinevoxel:vlox ; npm run init:divinevoxel:vlox-babylon ; npm run init:divinevoxel:vlox-three ; npm run init:divinevoxel:vlox-qauntum ; npm run init:divinevoxel:magic",
+    "init:divinevoxel:all": "npm run init:divinevoxel:vlox ; npm run init:divinevoxel:vlox-babylon ; npm run init:divinevoxel:vlox-three ; npm run init:divinevoxel:vlox-quantum ; npm run init:divinevoxel:magic",
     "init:dvegames:vlox": "node ./scripts/init-lib.js ./games/vlox \"@dvegames\"",
     "init:dvegames:vlox-tools": "node ./scripts/init-lib.js ./games/vlox-tools \"@dvegames\"",
     "init:dvegames:all": "npm run init:dvegames:vlox ; npm run init:dvegames:vlox-tools",
     "init:all": "npm run init:amodx:all ; npm run init:divinevoxel:all ; npm run init:dvegames:all",
-    "test-vlox":"cd ./testing/Vlox ; npm run start"
+    "test-vlox": "cd ./testing/Vlox ; npm run start"
   },
   "author": "Divine Star Software",
   "license": "MIT",
@@ -43,7 +43,8 @@
     "libs/amodx/audio/dist",
     "games/vlox-tools/dist",
     "packages/vlox-quantum/dist",
-    "libs/amodx/rng/dist"
+    "libs/amodx/rng/dist",
+    "packages/magic/dist"
   ],
   "dependencies": {
     "@babylonjs/core": "^7.34.2",

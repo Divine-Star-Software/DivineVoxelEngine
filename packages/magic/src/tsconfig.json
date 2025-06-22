@@ -1,11 +1,19 @@
 {
-  "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
+    "target": "esNext",
+    "module": "esNext",
+    "declaration": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strictPropertyInitialization": false,
+    "strict": true,
+    "skipLibCheck": true,
     "outDir": "../dist",
     "baseUrl": "./",
     "types": [],
     "allowJs": true,
     "checkJs": false,
-
+    "resolveJsonModule": true
   }
 }
