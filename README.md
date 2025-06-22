@@ -30,6 +30,7 @@ git lfs pull
 git submodule update --init --recursive
 npm run init:all
 npm install
+```
 
 After that, to test and make sure everything is working, run:
 
