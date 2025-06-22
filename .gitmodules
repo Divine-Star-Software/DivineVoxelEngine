@@ -1,9 +1,16 @@
+
 [submodule "packages/vlox"]
 	path = packages/vlox
 	url = https://github.com/Divine-Star-Software/divinevoxel-vlox.git
 [submodule "packages/vlox-babylon"]
 	path = packages/vlox-babylon
 	url = https://github.com/Divine-Star-Software/divinevoxel-vlox-babylon.git
+[submodule "games/vlox"]
+	path = games/vlox
+	url = https://github.com/Divine-Star-Software/dvegames-vlox.git
+[submodule "games/vlox-tools"]
+	path = games/vlox-tools
+	url = https://github.com/Divine-Star-Software/dvegames-vlox-tools.git
 [submodule "libs/amodx/math"]
 	path = libs/amodx/math
 	url = https://github.com/Amodx/math.git
