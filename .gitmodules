@@ -41,3 +41,6 @@
 [submodule "libs/amodx/rng"]
 	path = libs/amodx/rng
 	url = https://github.com/Amodx/rng.git
+[submodule "libs/amodx/flow"]
+	path = libs/amodx/flow
+	url = https://github.com/Amodx/flow.git
