@@ -112,7 +112,7 @@ export const Textures: TextureData[] = [
         },
         {
           id: "grassy-top",
-          index: [1, 0],
+          index: [0, 1],
         },
       ],
     },
@@ -135,7 +135,7 @@ export const Textures: TextureData[] = [
         },
         {
           id: "grassy-top",
-          index: [1, 0],
+          index: [0, 1],
         },
       ],
     },
@@ -245,6 +245,7 @@ export const Textures: TextureData[] = [
   },
   {
     id: "dve_liquid_dread_ether",
+  
     variations: [
       {
         id: "still",

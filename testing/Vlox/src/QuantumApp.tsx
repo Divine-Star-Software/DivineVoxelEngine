@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import InitDVErenderer from "@divinevoxel/vlox-quantum/Init/InitDVEQuantum";
-import { Textures } from "Data/TextureData";
+import { DVEVoxelData } from "@dvetesting/vlox/Data/VoxelData";
+import { Textures } from "@dvetesting/vlox/Data/TextureData";
 import { SceneTool } from "@divinevoxel/vlox-quantum/Tools/SceneTool";
-import { DVEVoxelData } from "Data/VoxelData";
+
 import { StartRenderer } from "@divinevoxel/vlox/Init/StartRenderer";
 import { Engine } from "@divinevoxel/vlox-quantum/Renderer/Engine/Engine";
 import { Scene } from "@divinevoxel/vlox-quantum/Renderer/Scene/Scene";

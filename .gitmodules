@@ -44,3 +44,6 @@
 [submodule "libs/amodx-elms/flow"]
 	path = libs/amodx-elms/flow
 	url = https://github.com/Amodx/flow-elements.git
+[submodule "libs/amodx/flow"]
+	path = libs/amodx/flow
+	url = https://github.com/Amodx/flow.git

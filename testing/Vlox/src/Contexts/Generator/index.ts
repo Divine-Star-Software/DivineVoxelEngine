@@ -1,5 +1,6 @@
 import { StartGenerator } from "@divinevoxel/vlox/Init/StartGenerator";
-import { WorldGen } from "./WorldGen";
-const gen = new WorldGen();
+import { GraphWorldGen } from "./GraphWorldGen";
+const gen = new GraphWorldGen();
 gen.init();
+await gen.initGraph();
 await StartGenerator({});

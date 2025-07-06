@@ -11,12 +11,12 @@ import {
   FreeCamera,
   AxesViewer,
   BoundingBox,
-  BoundingInfo
+  BoundingInfo,
 } from "@babylonjs/core";
-import { Textures } from "Data/TextureData";
 
 import { RenderNodes } from "Classes";
-import { DVEVoxelData } from "Data/VoxelData";
+import { DVEVoxelData } from "@dvetesting/vlox/Data/VoxelData";
+import { Textures } from "@dvetesting/vlox/Data/TextureData";
 import { StartRenderer } from "@divinevoxel/vlox/Init/StartRenderer";
 import { CacheManager } from "@divinevoxel/vlox/Cache/CacheManager";
 import { DebugGenMap } from "@divinevoxel/vlox-babylon/Debug/GenMap/DebugGenMap";
@@ -33,11 +33,11 @@ export function App() {
     if (!canvasRef.current) return;
     ran = true;
 
-    const box = new BoundingBox(Vector3.Zero(),Vector3.Zero());
+    const box = new BoundingBox(Vector3.Zero(), Vector3.Zero());
     box.intersectsMinMax;
     box.intersectsPoint;
     box.intersectsSphere;
-  
+
     (async () => {
       //  CacheManager.cacheLoadEnabled = true;
       //   CacheManager.cacheStoreEnabled = true;
@@ -140,7 +140,7 @@ export function App() {
         generatorWorkers,
         voxels: DVEVoxelData,
         memoryAndCPU: {
-         useSharedMemory: false,
+        //  useSharedMemory: false,
         },
       });
 

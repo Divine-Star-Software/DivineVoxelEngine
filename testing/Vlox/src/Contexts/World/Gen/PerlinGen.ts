@@ -7,7 +7,7 @@ const worldCursor = new WorldCursor();
 const voxelCursor = new VoxelCursor();
 const brush = new BrushTool();
 perlin.noiseSeed(13129301280);
-const [xOffSet, yOffset, zOffSet] = [1000, 100, 10000];
+const [xOffSet, yOffSet, zOffSet] = [1000, 100, 10000];
 export const PerlinGen = {
   chunkDepth: 16,
   chunkWidth: 16,
@@ -24,7 +24,7 @@ export const PerlinGen = {
 
     // Additional detail layer
     let detail =
-      p1.get((x - xOffSet) / 15, (y + yOffset) / 15, (z - zOffSet) / 15) * 0.5;
+      p1.get((x - xOffSet) / 15, (y + yOffSet) / 15, (z - zOffSet) / 15) * 0.5;
 
     // Combine basic height and detail for final noise value
     let r = height + detail;

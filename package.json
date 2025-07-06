@@ -13,7 +13,9 @@
     "init:amodx:binary": "node ./scripts/init-lib.js ./libs/amodx/binary \"@amodx\"",
     "init:amodx:elm": "node ./scripts/init-lib.js ./libs/amodx/elm \"@amodx\"",
     "init:amodx:rng": "node ./scripts/init-lib.js ./libs/amodx/rng \"@amodx\"",
-    "init:amodx:all": "npm run init:amodx:threads ; npm run init:amodx:core ; npm run init:amodx:audio ; npm run init:amodx:rng ; npm run init:amodx:schemas ; npm run init:amodx:ncs ; npm run init:amodx:math ; npm run init:amodx:controls ; npm run init:amodx:binary ; npm run init:amodx:elm  ",
+    "init:amodx:flow": "node ./scripts/init-lib.js ./libs/amodx/flow \"@amodx\"",
+    "init:amodx:flow-elements": "node ./scripts/init-lib.js ./libs/amodx-elms/flow \"@amodx-elms\"",
+    "init:amodx:all": "npm run init:amodx:threads ; npm run init:amodx:core ; npm run init:amodx:audio ; npm run init:amodx:rng ; npm run init:amodx:schemas ; npm run init:amodx:ncs ; npm run init:amodx:math ; npm run init:amodx:controls ; npm run init:amodx:binary ; npm run init:amodx:elm ; npm run init:amodx:flow ; npm run init:amodx:elements ",
     "init:divinevoxel:vlox": "node ./scripts/init-lib.js ./packages/vlox \"@divinevoxel\"",
     "init:divinevoxel:vlox-babylon": "node ./scripts/init-lib.js ./packages/vlox-babylon \"@divinevoxel\"",
     "init:divinevoxel:vlox-three": "node ./scripts/init-lib.js ./packages/vlox-three \"@divinevoxel\"",
@@ -22,6 +24,7 @@
     "init:divinevoxel:all": "npm run init:divinevoxel:vlox ; npm run init:divinevoxel:vlox-babylon ; npm run init:divinevoxel:vlox-three ; npm run init:divinevoxel:vlox-quantum ; npm run init:divinevoxel:magic",
     "init:dvegames:vlox": "node ./scripts/init-lib.js ./games/vlox \"@dvegames\"",
     "init:dvegames:vlox-tools": "node ./scripts/init-lib.js ./games/vlox-tools \"@dvegames\"",
+    "init:dvetesting:vlox": "node ./scripts/init-lib.js ./testing/VloxShared \"@dvetesting\"",
     "init:dvegames:all": "npm run init:dvegames:vlox ; npm run init:dvegames:vlox-tools",
     "init:all": "npm run init:amodx:all ; npm run init:divinevoxel:all ; npm run init:dvegames:all",
     "test-vlox": "cd ./testing/Vlox ; npm run start"
@@ -44,7 +47,10 @@
     "games/vlox-tools/dist",
     "packages/vlox-quantum/dist",
     "libs/amodx/rng/dist",
-    "packages/magic/dist"
+    "packages/magic/dist",
+    "libs/amodx/flow/dist",
+    "libs/amodx-elms/flow/dist",
+    "testing/VloxShared/dist"
   ],
   "dependencies": {
     "@babylonjs/core": "^7.34.2",

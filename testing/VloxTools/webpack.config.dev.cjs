@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 module.exports = {
-  entry: "./src/index.tsx",
+  entry: "./src/index.ts",
   mode: "development",
   output: {
     filename: "bundle.js",
@@ -23,10 +23,10 @@ module.exports = {
     plugins: [
       new TsconfigPathsPlugin({
         configFile: "./src/tsconfig.json",
-        extensions: [".ts", ".tsx", ".js", ".css"],
+        extensions: [".ts", ".js", ".css"],
       }),
     ],
-    extensions: [".tsx", ".ts", ".js", ".css"],
+    extensions: [".ts", ".js", ".css"],
   },
   experiments: {
     asyncWebAssembly: true, // Enable WebAssembly as an async module
@@ -47,7 +47,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(ts|tsx)$/,
+        test: /\.(ts)$/,
         use: [
           {
             loader: "ts-loader",
@@ -62,7 +62,7 @@ module.exports = {
         use: "html-loader",
       },
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(js)$/,
         
         resolve: {
           fullySpecified: false,
@@ -77,8 +77,7 @@ module.exports = {
   devtool: "source-map",
   devServer: {
     historyApiFallback: true,
-    port: 9002,
-
+    port: 9001,
    // https: true,
     static: {
       directory: path.join(__dirname, "../../static"),

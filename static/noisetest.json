@@ -1,0 +1,1138 @@
+{
+  "editorData": {
+    "x": -5368.216693947394,
+    "y": -4401.4745548569035,
+    "zoom": 0.6999999999999997,
+    "locations": [
+      {
+        "id": 0,
+        "x": -444.9594969980999,
+        "y": -631.0670963023945
+      },
+      {
+        "id": 1,
+        "x": -273.0983455882353,
+        "y": 350.9705882352942
+      },
+      {
+        "id": 2,
+        "x": 1729.280145202022,
+        "y": 61.31818181818216
+      },
+      {
+        "id": 3,
+        "x": 2018.8084893048142,
+        "y": 271.1764705882356
+      },
+      {
+        "id": 4,
+        "x": 595.6325280112043,
+        "y": 53.12044817927217
+      },
+      {
+        "id": 5,
+        "x": -9.458261245674723,
+        "y": -132.14532871972293
+      },
+      {
+        "id": 6,
+        "x": -359.41377286208615,
+        "y": -116.76717745921863
+      },
+      {
+        "id": 7,
+        "x": -23.491874691052246,
+        "y": 52.98566485417625
+      },
+      {
+        "id": 8,
+        "x": 357.6005622837373,
+        "y": -67.8546712802779
+      },
+      {
+        "id": 9,
+        "x": 191.372111344538,
+        "y": 486.1764705882341
+      },
+      {
+        "id": 10,
+        "x": -349.1040791316521,
+        "y": 126.17647058823452
+      },
+      {
+        "id": 11,
+        "x": 357.0863970588239,
+        "y": 260.46218487394884
+      },
+      {
+        "id": 12,
+        "x": 667.2904786914771,
+        "y": 351.27851140456045
+      },
+      {
+        "id": 13,
+        "x": 855.861907262906,
+        "y": 81.27851140456005
+      },
+      {
+        "id": 14,
+        "x": 215.3309552987864,
+        "y": 787.761437908495
+      },
+      {
+        "id": 15,
+        "x": -28.55793359010113,
+        "y": 1003.3169934640509
+      },
+      {
+        "id": 16,
+        "x": 1331.1709594995027,
+        "y": 251.14470912331626
+      },
+      {
+        "id": 17,
+        "x": 1261.3527776813207,
+        "y": 615.0234970021042
+      },
+      {
+        "id": 18,
+        "x": 1664.3279842928926,
+        "y": 278.82514989466614
+      },
+      {
+        "id": 19,
+        "x": 553.9766272670681,
+        "y": 1279.2430844391602
+      },
+      {
+        "id": 20,
+        "x": 350.08773837817944,
+        "y": 1066.4653066613823
+      },
+      {
+        "id": 21,
+        "x": 706.9639519317834,
+        "y": 655.7749059219623
+      },
+      {
+        "id": 22,
+        "x": 840.2972852651167,
+        "y": 1035.7749059219623
+      },
+      {
+        "id": 23,
+        "x": 666.5166934780908,
+        "y": -658.4480486833469
+      },
+      {
+        "id": 24,
+        "x": 50.13574109713834,
+        "y": -1104.686143921442
+      },
+      {
+        "id": 25,
+        "x": 38.10355450455173,
+        "y": -856.487835227335
+      },
+      {
+        "id": 26,
+        "x": 323.6591100601075,
+        "y": -899.9005336400336
+      },
+      {
+        "id": 27,
+        "x": 41.92951822337311,
+        "y": -558.852914592416
+      },
+      {
+        "id": 28,
+        "x": -455.42252259295356,
+        "y": -355.13862887813053
+      },
+      {
+        "id": 29,
+        "x": 314.09654149326707,
+        "y": -638.0903485997144
+      },
+      {
+        "id": 30,
+        "x": 36.48743770526981,
+        "y": -341.7487577781752
+      },
+      {
+        "id": 31,
+        "x": 308.15410437193646,
+        "y": -353.4154244448415
+      },
+      {
+        "id": 32,
+        "x": 889.2567867181854,
+        "y": -526.3409335762335
+      },
+      {
+        "id": 33,
+        "x": 651.6963471577459,
+        "y": -311.7255489608489
+      },
+      {
+        "id": 34,
+        "x": 1090.991896321467,
+        "y": -174.32515663608567
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": 0,
+      "type": "ArgumentsNode",
+      "name": "position",
+      "meta": {},
+      "properties": {
+        "argumentName": "position",
+        "defaultValue": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "x",
+          "valueType": "float",
+          "value": 0
+        },
+        {
+          "name": "y",
+          "valueType": "float",
+          "value": 0
+        },
+        {
+          "name": "z",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "ArgumentsNode",
+      "name": "position",
+      "meta": {},
+      "properties": {
+        "argumentName": "position",
+        "defaultValue": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "x",
+          "valueType": "float",
+          "value": 0
+        },
+        {
+          "name": "y",
+          "valueType": "float",
+          "value": 0
+        },
+        {
+          "name": "z",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "FunctionNode",
+      "name": "Function",
+      "meta": {},
+      "properties": {},
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "flow",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "OutputNode",
+      "name": "Output",
+      "meta": {},
+      "properties": {
+        "type": "Output"
+      },
+      "inputs": [
+        {
+          "name": "output",
+          "valueType": "numeric",
+          "value": 0,
+          "targetNodeId": 18,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "id": 4,
+      "type": "PerlinNoise3DNode",
+      "name": "Perlin Noise 3D",
+      "meta": {},
+      "properties": {
+        "noiseSegment": "Default"
+      },
+      "inputs": [
+        {
+          "name": "x",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 8,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "y",
+          "valueType": "float",
+          "value": 0
+        },
+        {
+          "name": "z",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 11,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "InputNode",
+      "name": "Scale",
+      "meta": {},
+      "properties": {
+        "type": "Float"
+      },
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 30
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "InputNode",
+      "name": "XOffset",
+      "meta": {},
+      "properties": {
+        "type": "Float"
+      },
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 1000
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "MathNode",
+      "name": "Add",
+      "meta": {},
+      "properties": {
+        "mode": "Add"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 6,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 1,
+          "targetOutputName": "x"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "MathNode",
+      "name": "Divide",
+      "meta": {},
+      "properties": {
+        "mode": "Divide"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 7,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 5,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "MathNode",
+      "name": "Add",
+      "meta": {},
+      "properties": {
+        "mode": "Add"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 10,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 1,
+          "targetOutputName": "z"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "InputNode",
+      "name": "ZOffset",
+      "meta": {},
+      "properties": {
+        "type": "Float"
+      },
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 10000
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "MathNode",
+      "name": "Divide",
+      "meta": {},
+      "properties": {
+        "mode": "Divide"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 9,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 5,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "InputNode",
+      "name": "NoiseScale",
+      "meta": {},
+      "properties": {
+        "type": "Float"
+      },
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "MathNode",
+      "name": "height",
+      "meta": {},
+      "properties": {
+        "mode": "Multiply"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 4,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 12,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "MathNode",
+      "name": "elevation",
+      "meta": {},
+      "properties": {
+        "mode": "Divide"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 1,
+          "targetOutputName": "y"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 15,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "InputNode",
+      "name": "ElevationScale",
+      "meta": {},
+      "properties": {
+        "type": "Float"
+      },
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 150
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "CompareNode",
+      "name": "GreaterThan",
+      "meta": {},
+      "properties": {
+        "mode": "GreaterThan"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 34,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 21,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "boolean",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "CompareNode",
+      "name": "LessThan",
+      "meta": {},
+      "properties": {
+        "mode": "LessThan"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 34,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 22,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "boolean",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "CompareNode",
+      "name": "And",
+      "meta": {},
+      "properties": {
+        "mode": "And"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "numeric",
+          "value": 0,
+          "targetNodeId": 16,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "right",
+          "valueType": "numeric",
+          "value": 0,
+          "targetNodeId": 17,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "boolean",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "InputNode",
+      "name": "Float",
+      "meta": {},
+      "properties": {
+        "type": "Float"
+      },
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0.4
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "InputNode",
+      "name": "Float",
+      "meta": {},
+      "properties": {
+        "type": "Float"
+      },
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0.3
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "MathNode",
+      "name": "Add",
+      "meta": {},
+      "properties": {
+        "mode": "Add"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 14,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 20,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "MathNode",
+      "name": "Add",
+      "meta": {},
+      "properties": {
+        "mode": "Add"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 14,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 19,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "PerlinNoise3DNode",
+      "name": "Perlin Noise 3D",
+      "meta": {},
+      "properties": {
+        "noiseSegment": "Default"
+      },
+      "inputs": [
+        {
+          "name": "x",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 26,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "y",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 29,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "z",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 31,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "InputNode",
+      "name": "DetailScale",
+      "meta": {},
+      "properties": {
+        "type": "Float"
+      },
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 15
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "MathNode",
+      "name": "Subtract",
+      "meta": {},
+      "properties": {
+        "mode": "Subtract"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 0,
+          "targetOutputName": "x"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 6,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "MathNode",
+      "name": "Divide",
+      "meta": {},
+      "properties": {
+        "mode": "Divide"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 25,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 24,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "MathNode",
+      "name": "Subtract",
+      "meta": {},
+      "properties": {
+        "mode": "Subtract"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 0,
+          "targetOutputName": "y"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 28,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "InputNode",
+      "name": "YOffset",
+      "meta": {},
+      "properties": {
+        "type": "Float"
+      },
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 100
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "MathNode",
+      "name": "Divide",
+      "meta": {},
+      "properties": {
+        "mode": "Divide"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 27,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 24,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "MathNode",
+      "name": "Subtract",
+      "meta": {},
+      "properties": {
+        "mode": "Subtract"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 0,
+          "targetOutputName": "z"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 10,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "MathNode",
+      "name": "Divide",
+      "meta": {},
+      "properties": {
+        "mode": "Divide"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 30,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 24,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "MathNode",
+      "name": "detail",
+      "meta": {},
+      "properties": {
+        "mode": "Multiply"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 23,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 33,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "type": "InputNode",
+      "name": "DetailScale",
+      "meta": {},
+      "properties": {
+        "type": "Float"
+      },
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "type": "MathNode",
+      "name": "r",
+      "meta": {},
+      "properties": {
+        "mode": "Add"
+      },
+      "inputs": [
+        {
+          "name": "left",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 32,
+          "targetOutputName": "output"
+        },
+        {
+          "name": "right",
+          "valueType": "float",
+          "value": 0,
+          "targetNodeId": 13,
+          "targetOutputName": "output"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "valueType": "float",
+          "value": 0
+        }
+      ]
+    }
+  ]
+}

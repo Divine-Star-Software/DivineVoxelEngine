@@ -1,0 +1,21 @@
+{
+  "name": "@dvetesting/vlox",
+  "version": "0.0.25",
+  "description": "",
+  "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "scripts": {
+    "build": "rm -rf dist/* && cp package.json dist/package.json && cd ./src && npx tsc ",
+    "compile": "cd ./src && npx tsc --watch"
+  },
+  "author": "Divine Star Software",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@dvegames/vlox": "latest",
+    "@amodx/elm": "latest",
+    "@amodx/schemas": "latest"
+  }
+}

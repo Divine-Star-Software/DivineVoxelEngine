@@ -15,6 +15,8 @@ export class WorldGen implements WorldGenInterface {
     WorldGeneration.setWorldGen(this);
   }
 
+
+
   async generate(
     dimension: number,
     cx: number,
