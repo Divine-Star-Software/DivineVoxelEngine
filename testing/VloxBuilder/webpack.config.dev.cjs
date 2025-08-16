@@ -17,7 +17,7 @@ module.exports = {
   ],
   externals: {
     // Exclude 'your_module' from bundling
-    'your_module': 'commonjs your_module',
+    your_module: "commonjs your_module",
   },
   resolve: {
     plugins: [
@@ -63,7 +63,7 @@ module.exports = {
       },
       {
         test: /\.(js)$/,
-        
+
         resolve: {
           fullySpecified: false,
         },
@@ -78,7 +78,7 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     port: 9001,
-   // https: true,
+  server: "https",
     static: {
       directory: path.join(__dirname, "../../static"),
       publicPath: "/",

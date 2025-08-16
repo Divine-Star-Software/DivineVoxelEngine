@@ -5,7 +5,7 @@
     "rootDir": "./",
     "rootDirs": [],
     "composite": true,
-    "types": ["react","@webgpu/types"],
+    "types": ["@webgpu/types"],
     "outDir": "../dist/",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -14,7 +14,6 @@
     "strict": true,
     "strictPropertyInitialization": false,
     "skipLibCheck": true,
-    "moduleResolution": "node",
-    "jsx": "react-jsx"
+    "moduleResolution": "node"
   }
 }

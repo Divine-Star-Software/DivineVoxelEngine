@@ -2,48 +2,64 @@
 [submodule "packages/vlox"]
 	path = packages/vlox
 	url = https://github.com/Divine-Star-Software/divinevoxel-vlox.git
+	branch = main
 [submodule "packages/vlox-babylon"]
 	path = packages/vlox-babylon
 	url = https://github.com/Divine-Star-Software/divinevoxel-vlox-babylon.git
+	branch = main
 [submodule "games/vlox"]
 	path = games/vlox
 	url = https://github.com/Divine-Star-Software/dvegames-vlox.git
+	branch = main
 [submodule "games/vlox-tools"]
 	path = games/vlox-tools
 	url = https://github.com/Divine-Star-Software/dvegames-vlox-tools.git
+	branch = main
 [submodule "libs/amodx/math"]
 	path = libs/amodx/math
 	url = https://github.com/Amodx/math.git
+	branch = main
 [submodule "libs/amodx/threads"]
 	path = libs/amodx/threads
 	url = https://github.com/Amodx/threads.git
+	branch = main
 [submodule "libs/amodx/elm"]
 	path = libs/amodx/elm
 	url = https://github.com/Amodx/elm.git
+	branch = main
 [submodule "libs/amodx/ncs"]
 	path = libs/amodx/ncs
 	url = https://github.com/Amodx/ncs.git
+	branch = main
 [submodule "libs/amodx/schemas"]
 	path = libs/amodx/schemas
 	url = https://github.com/Amodx/schemas.git
+	branch = main
 [submodule "libs/amodx/controls"]
 	path = libs/amodx/controls
 	url = https://github.com/Amodx/controls.git
+	branch = main
 [submodule "libs/amodx/audio"]
 	path = libs/amodx/audio
 	url = https://github.com/Amodx/audio.git
+	branch = main
 [submodule "libs/amodx/core"]
 	path = libs/amodx/core
 	url = https://github.com/Amodx/core.git
+	branch = main
 [submodule "libs/amodx/binary"]
 	path = libs/amodx/binary
 	url = https://github.com/Amodx/binary.git
+	branch = main
 [submodule "libs/amodx/rng"]
 	path = libs/amodx/rng
 	url = https://github.com/Amodx/rng.git
+	branch = main
 [submodule "libs/amodx-elms/flow"]
 	path = libs/amodx-elms/flow
 	url = https://github.com/Amodx/flow-elements.git
+	branch = main
 [submodule "libs/amodx/flow"]
 	path = libs/amodx/flow
 	url = https://github.com/Amodx/flow.git
+	branch = main

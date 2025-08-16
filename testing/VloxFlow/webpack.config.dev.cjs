@@ -17,16 +17,16 @@ module.exports = {
   ],
   externals: {
     // Exclude 'your_module' from bundling
-    'your_module': 'commonjs your_module',
+    your_module: "commonjs your_module",
   },
   resolve: {
     plugins: [
       new TsconfigPathsPlugin({
         configFile: "./src/tsconfig.json",
-        extensions: [".ts", ".tsx", ".js", ".css"],
+        extensions: [".ts", ".js", ".css"],
       }),
     ],
-    extensions: [".tsx", ".ts", ".js", ".css"],
+    extensions: [".ts", ".js", ".css"],
   },
   experiments: {
     asyncWebAssembly: true, // Enable WebAssembly as an async module
@@ -47,7 +47,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(ts|tsx)$/,
+        test: /\.(ts)$/,
         use: [
           {
             loader: "ts-loader",
@@ -62,8 +62,8 @@ module.exports = {
         use: "html-loader",
       },
       {
-        test: /\.(js|jsx)$/,
-        
+        test: /\.(js)$/,
+
         resolve: {
           fullySpecified: false,
         },
@@ -77,8 +77,7 @@ module.exports = {
   devtool: "source-map",
   devServer: {
     historyApiFallback: true,
-    port: 9002,
-
+    port: 9001,
   server: "https",
     static: {
       directory: path.join(__dirname, "../../static"),
