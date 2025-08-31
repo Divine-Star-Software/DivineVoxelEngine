@@ -16,7 +16,7 @@ import { GUI } from "dat.gui";
 //tools
 import InitPlayerTool from "@dvegames/vlox-tools/Tools/Player";
 import InitControlsTool from "@dvegames/vlox-tools/Tools/Controls";
-import InitBuilderTool from "@dvegames/vlox-tools/Tools/BuilderN";
+import InitBuilderTool from "@dvegames/vlox-tools/Tools/Builder";
 import InitTemplatesTool from "@dvegames/vlox-tools/Tools/Templates";
 import InitArchiverTool from "@dvegames/vlox-tools/Tools/Archive";
 import InitGuidesTool from "@dvegames/vlox-tools/Tools/Guides";
@@ -30,6 +30,7 @@ import "./index.css";
 
 import "@babylonjs/core/Meshes/thinInstanceMesh";
 import { Tools } from "@babylonjs/core/Misc/tools";
+import type { FreeCameraMouseInput } from "@babylonjs/core";
 async function InitBuilder() {
   const canvas = document.getElementById("render-canvas")! as HTMLCanvasElement;
   const worldWorker = new Worker(
@@ -108,6 +109,9 @@ async function InitBuilder() {
 
   const camera = new FreeCamera("", new Vector3(0, 4, 0), scene);
 
+  const mouse = camera.inputs.attached.mouse as FreeCameraMouseInput;
+  mouse.buttons = [2];
+
   camera.position.y = 4;
   camera.speed = 10;
   camera.minZ = 0.1;
@@ -118,7 +122,8 @@ async function InitBuilder() {
 
   scene.activeCamera = camera;
   scene.collisionsEnabled = false;
-  camera.inertia = 0.2;
+  camera.inertia = 0;
+  camera.angularSensibility = 1000;
 
   engine.runRenderLoop(() => {
     scene.render();

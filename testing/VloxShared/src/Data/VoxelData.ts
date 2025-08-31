@@ -118,7 +118,7 @@ export const DVEVoxelData: VoxelData[] = [
         {
           id: "dve_dread_stone",
           name: "Dread Stone",
-          mod: "*",
+          mod: "grassy=false",
           state: "*",
           properties: [],
           display: {
@@ -130,7 +130,7 @@ export const DVEVoxelData: VoxelData[] = [
         {
           id: "dve_grassy_dread_stone",
           name: "Grassy Dread Stone",
-          mod: "*",
+          mod: "grassy=true",
           state: "*",
           properties: [],
           display: {
@@ -346,7 +346,7 @@ export const DVEVoxelData: VoxelData[] = [
         {
           id: "dve_dream_stone",
           name: "Dream Stone",
-          mod: "*",
+          mod: "grassy=false",
           state: "*",
           properties: [],
           display: {
@@ -358,7 +358,7 @@ export const DVEVoxelData: VoxelData[] = [
         {
           id: "dve_grassy_dream_stone",
           name: "Grassy Dream Stone",
-          mod: "*",
+          mod: "grassy=true",
           state: "*",
           properties: [],
           display: {
@@ -499,7 +499,7 @@ export const DVEVoxelData: VoxelData[] = [
         {
           id: "dve_dread_stone_slab",
           name: "Dread Stone Slab",
-          mod: "*",
+          mod: "grassy=false",
           state: "*",
           properties: [],
           display: {
@@ -511,7 +511,7 @@ export const DVEVoxelData: VoxelData[] = [
         {
           id: "dve_grassy_dread_stone_slab",
           name: "Grassy Dread Stone Slab",
-          mod: "*",
+          mod: "grassy=true",
           state: "*",
           properties: [],
           display: {

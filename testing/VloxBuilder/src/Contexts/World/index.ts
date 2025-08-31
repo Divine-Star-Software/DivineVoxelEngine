@@ -2,11 +2,11 @@ import { WorldSimulation } from "@divinevoxel/vlox/WorldSimulation";
 import { TickInterval } from "@divinevoxel/vlox/Util/TickInterval";
 import { Threads } from "@amodx/threads";
 import { StartWorld } from "@divinevoxel/vlox/Init/StartWorld";
-
+import { VoxelBuildSpaceWorld } from "@divinevoxel/vlox/Builder/World/VoxelBuildSpaceWorld";
 import InitDebugMapWorld from "@divinevoxel/vlox-babylon/Debug/GenMap/InitDebugMapWorld";
 InitDebugMapWorld();
 const DVEW = await StartWorld();
-
+const buildSpace = new VoxelBuildSpaceWorld();
 WorldSimulation.init({
   parent: DVEW.threads.parent,
   meshers: DVEW.threads.meshers,
@@ -35,7 +35,6 @@ Threads.registerTask("start-world", async () => {
 
   WorldSimulation.addGenerator(generator);
   tickInterval.start();
-
 });
 
 Threads.registerTask("world-ready", () => {});
