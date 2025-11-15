@@ -6,26 +6,3 @@ html {
   padding: 0;
 }
 
-#render-canvas-container {
-  display: block;
-  border: none;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  z-index: 0;
-  pointer-events: auto;
-}
-
-#render-canvas {
-  touch-action: none;
-  outline: none;
-  display: inline;
-  border: none;
-  user-select: none;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-

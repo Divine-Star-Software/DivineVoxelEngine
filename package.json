@@ -15,7 +15,7 @@
     "init:amodx:rng": "node ./scripts/init-lib.js ./libs/amodx/rng \"@amodx\"",
     "init:amodx:flow": "node ./scripts/init-lib.js ./libs/amodx/flow \"@amodx\"",
     "init:amodx:flow-elements": "node ./scripts/init-lib.js ./libs/amodx-elms/flow \"@amodx-elms\"",
-    "init:amodx:all": "npm run init:amodx:threads ; npm run init:amodx:core ; npm run init:ele:audio ; npm run init:amodx:rng ; npm run init:amodx:schemas ; npm run init:amodx:ncs ; npm run init:amodx:math ; npm run init:amodx:controls ; npm run init:amodx:binary ; npm run init:amodx:elm ; npm run init:amodx:flow ; npm run init:amodx:flow-elements ",
+    "init:amodx:all": "npm run init:amodx:threads ; npm run init:amodx:core ; npm run init:amodx:audio ; npm run init:amodx:rng ; npm run init:amodx:schemas ; npm run init:amodx:ncs ; npm run init:amodx:math ; npm run init:amodx:controls ; npm run init:amodx:binary ; npm run init:amodx:elm ; npm run init:amodx:flow ; npm run init:amodx:flow-elements ",
     "init:divinevoxel:vlox": "node ./scripts/init-lib.js ./packages/vlox \"@divinevoxel\"",
     "init:divinevoxel:vlox-babylon": "node ./scripts/init-lib.js ./packages/vlox-babylon \"@divinevoxel\"",
     "init:divinevoxel:vlox-three": "node ./scripts/init-lib.js ./packages/vlox-three \"@divinevoxel\"",

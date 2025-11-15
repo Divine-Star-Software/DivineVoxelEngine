@@ -14,13 +14,9 @@ import CreateDisplayIndex from "@divinevoxel/vlox-babylon/Init/CreateDisplayInde
 import { InitSkybox } from "@divinevoxel/vlox-babylon/Init/Skybox/InitSkybox";
 import { GUI } from "dat.gui";
 //tools
-import InitPlayerTool from "@dvegames/vlox-tools/Tools/Player";
 import InitControlsTool from "@dvegames/vlox-tools/Tools/Controls";
+import InitWorldTools from "@dvegames/vlox-tools/Tools/World";
 import InitBuilderTool from "@dvegames/vlox-tools/Tools/Builder";
-import InitTemplatesTool from "@dvegames/vlox-tools/Tools/Templates";
-import InitArchiverTool from "@dvegames/vlox-tools/Tools/Archive";
-import InitGuidesTool from "@dvegames/vlox-tools/Tools/Guides";
-import InitWorldGenTool from "@dvegames/vlox-tools/Tools/WorldGen";
 import InitSceneTool from "@dvegames/vlox-tools/Tools/Scene";
 import { DebugGenMap } from "@divinevoxel/vlox-babylon/Debug/GenMap/DebugGenMap";
 
@@ -138,14 +134,10 @@ async function InitBuilder() {
     engine: scene.getEngine() as any,
     utilLayer: null as any,
   });
+  InitWorldTools(graph);
   InitControlsTool(graph);
   InitBuilderTool(graph);
-  InitTemplatesTool(graph);
   // InitMapTool(graph);
-  InitPlayerTool(graph);
-  InitArchiverTool(graph);
-  InitGuidesTool(graph);
-  InitWorldGenTool(graph);
   InitSceneTool(graph);
 
   graph.addNode(Node({}, [ToolPanelComponent()]));

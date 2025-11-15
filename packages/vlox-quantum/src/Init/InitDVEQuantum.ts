@@ -80,9 +80,9 @@ export default async function CreateDefaultRenderer(
 
     materials.push(
       {
-        id: "dve_node",
-        shaderId: "dve_node",
-        textureTypeId: "dve_node",
+        id: "dve_item",
+        shaderId: "dve_item",
+        textureTypeId: "dve_item",
         alphaBlending: false,
         alphaTesting: true,
       },

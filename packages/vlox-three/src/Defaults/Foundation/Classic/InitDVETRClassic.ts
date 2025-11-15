@@ -77,14 +77,14 @@ export default function InitDVEBRClassic(initData: DVEBRClassicData) {
 
   renderer.init = async (dver:DivineVoxelEngineRender) => {
     const substances = [...DefaultSubstances, ...initData.substances];
-    TextureManager.getOrAddTextureType("dve_node");
+    TextureManager.getOrAddTextureType("dve_item");
     for (const data of substances) {
       TextureManager.getOrAddTextureType(data.textureType);
     }
     DefaultMaterialManager.shaders.register.create([
       DefaultMaterialManager.shaders.createSkyBoxShader("dve_skybox"),
       DefaultMaterialManager.shaders.createBasicTextureShader(
-        "dve_node"
+        "dve_item"
       ),
     ]);
 
@@ -117,11 +117,11 @@ export default function InitDVEBRClassic(initData: DVEBRClassicData) {
       );
     }
     materials.push(
-      new DVEBRClassicMaterial("dve_node", {
+      new DVEBRClassicMaterial("dve_item", {
         scene: renderer.scene,
         data: {
-          shaderId: "dve_node",
-          textureTypeId: "dve_node",
+          shaderId: "dve_item",
+          textureTypeId: "dve_item",
         },
       }),
       new DVEBRClassicMaterial("dve_skybox", {
@@ -134,8 +134,8 @@ export default function InitDVEBRClassic(initData: DVEBRClassicData) {
     );
     meshes.push(
       new DVETRNodeMesh({
-        id: "dve_node",
-        materialId: "dve_node",
+        id: "dve_item",
+        materialId: "dve_item",
         boundingBoxMaxSize: [1, 1, 1],
       })
     );

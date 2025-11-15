@@ -77,8 +77,8 @@ module.exports = {
   devtool: "source-map",
   devServer: {
     historyApiFallback: true,
-    port: 9001,
-  server: "https",
+    port: 9002,
+    server: "https",
     static: {
       directory: path.join(__dirname, "../../static"),
       publicPath: "/",
