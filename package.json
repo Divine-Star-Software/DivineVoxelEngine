@@ -21,7 +21,7 @@
     "init:divinevoxel:vlox-three": "node ./scripts/init-lib.js ./packages/vlox-three \"@divinevoxel\"",
     "init:divinevoxel:vlox-quantum": "node ./scripts/init-lib.js ./packages/vlox-quantum \"@divinevoxel\"",
     "init:divinevoxel:magic": "node ./scripts/init-lib.js ./packages/magic \"@divinevoxel\"",
-    "init:divinevoxel:all": "npm run init:divinevoxel:vlox ; npm run init:divinevoxel:vlox-babylon  ",
+    "init:divinevoxel:all": "npm run init:divinevoxel:vlox ; npm run init:divinevoxel:vlox-babylon ; npm run init:dvetesting:vlox",
     "init:dvegames:vlox": "node ./scripts/init-lib.js ./games/vlox \"@dvegames\"",
     "init:dvegames:vlox-tools": "node ./scripts/init-lib.js ./games/vlox-tools \"@dvegames\"",
     "init:dvetesting:vlox": "node ./scripts/init-lib.js ./testing/VloxShared \"@dvetesting\"",

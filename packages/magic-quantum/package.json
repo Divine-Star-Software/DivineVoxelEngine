@@ -1,37 +1,40 @@
 {
- "name": "@divinevoxel/magic-quantum",
- "version": "0.0.52",
- "module": "index.js",
- "types": "index.d.ts",
- "type": "module",
- "description": "TypeScript Voxel Engine - Uses Babylon.js",
- "keywords": [
-  "voxel",
-  "voxel engine",
-  "babylon.js"
- ],
- "scripts": {
-  "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ./LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
-  "compile": "cd ./src && npx tsc --watch"
- },
- "repository": {
-  "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
- },
- "bugs": {
-  "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
- },
- "homepage": "https://github.com/Divine-Star-Software/DivineVoxelEngine",
- "author": "Divine Star Software",
- "license": "MIT",
- "devDependencies": {},
- "peerDependencies": {},
- "dependencies": {
-  "@divinevoxel/core": "^0.0.55",
-  "@divinevoxel/foundation": "^0.0.52",
-  "@divinevoxel/magic": "^0.0.52"
- },
- "main": "index.js",
- "publishConfig": {
-  "access": "public"
- }
+  "name": "@divinevoxel/magic-quantum",
+  "version": "0.0.52",
+  "module": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "description": "TypeScript Voxel Engine - Uses Babylon.js",
+  "keywords": [
+    "voxel",
+    "voxel engine",
+    "babylon.js"
+  ],
+  "scripts": {
+    "clean:dist-ts": "test -d dist && find dist -type f \\( -name \"*.js\" -o -name \"*.d.ts\" \\) -delete || true",
+    "build": "mkdir -p dist && npm run clean:dist-ts && cp package.json dist/package.json && cd ./src && npx tsc",
+    "publish": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ./LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
+    "compile": "cd src && npx tsc --watch",
+    "compile:fresh": "npm run clean:dist-ts && cd src && npx tsc --watch"
+  },
+  "repository": {
+    "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
+  },
+  "homepage": "https://github.com/Divine-Star-Software/DivineVoxelEngine",
+  "author": "Divine Star Software",
+  "license": "MIT",
+  "devDependencies": {},
+  "peerDependencies": {},
+  "dependencies": {
+    "@divinevoxel/core": "^0.0.55",
+    "@divinevoxel/foundation": "^0.0.52",
+    "@divinevoxel/magic": "^0.0.52"
+  },
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  }
 }

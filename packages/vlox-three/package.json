@@ -1,32 +1,35 @@
 {
- "name": "@divinevoxel/vlox-three",
- "version": "0.0.17",
- "description": "ThreeJS Renderer for DVE.",
- "main": "index.js",
- "types": "index.d.ts",
- "type": "module",
- "devDependencies": {},
- "scripts": {
-  "build": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ./LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
-  "compile": "cd src && npx tsc --watch"
- },
- "keywords": [],
- "author": "Divine Star Software",
- "license": "MIT",
- "repository": {
-  "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
- },
- "bugs": {
-  "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
- },
- "dependencies": {
-  "@amodx/uri": "^0.0.0",
-  "three": "^0.163.0",
-  "@divinevoxel/core": "^0.0.55",
-  "@divinevoxel/foundation": "^0.0.52",
-  "@divinevoxel/magic": "^0.0.52"
- },
- "publishConfig": {
-  "access": "public"
- }
+  "name": "@divinevoxel/vlox-three",
+  "version": "0.0.17",
+  "description": "ThreeJS Renderer for DVE.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "devDependencies": {},
+  "scripts": {
+    "clean:dist-ts": "test -d dist && find dist -type f \\( -name \"*.js\" -o -name \"*.d.ts\" \\) -delete || true",
+    "build": "mkdir -p dist && npm run clean:dist-ts && cp package.json dist/package.json && cd ./src && npx tsc",
+    "publish": "mkdir -p dist && rm -rf dist/* && cp package.json dist/package.json && cp README.md ./dist/README.md && cp ./LICENSE.md ./dist/LICENSE.md && cd ./src && npx tsc",
+    "compile": "cd src && npx tsc --watch",
+    "compile:fresh": "npm run clean:dist-ts && cd src && npx tsc --watch"
+  },
+  "keywords": [],
+  "author": "Divine Star Software",
+  "license": "MIT",
+  "repository": {
+    "url": "git+https://github.com/Divine-Star-Software/DivineVoxelEngine.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine/issues"
+  },
+  "dependencies": {
+    "@amodx/uri": "^0.0.0",
+    "three": "^0.163.0",
+    "@divinevoxel/core": "^0.0.55",
+    "@divinevoxel/foundation": "^0.0.52",
+    "@divinevoxel/magic": "^0.0.52"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

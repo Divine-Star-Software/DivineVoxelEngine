@@ -1,4 +1,4 @@
-import InitDVErenderer from "@divinevoxel/vlox-quantum/Init/InitDVEQuantum";
+/* import InitDVErenderer from "@divinevoxel/vlox-quantum/Init/InitDVEQuantum";
 import { DVEVoxelData } from "@dvetesting/vlox/Data/VoxelData";
 import { Textures } from "@dvetesting/vlox/Data/TextureData";
 import { SceneTool } from "@divinevoxel/vlox-quantum/Tools/SceneTool";
@@ -99,3 +99,4 @@ export async function App() {
 
   return appContainer;
 }
+ */
