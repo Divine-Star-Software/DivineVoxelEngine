@@ -25,18 +25,19 @@ See videos of development here:
 This project is a monorepo that holds all the Divine Voxel Engine packages and required libraries from Amodx. To initialize the project, just run the following commands:
 
 ```console
+git clone https://github.com/Divine-Star-Software/DivineVoxelEngine.git
+cd ./DivineVoxelEngine
 git pull
 git lfs pull
 git submodule update --init --recursive
+git submodule foreach git checkout main
+git submodule foreach git pull
 npm run init:all
 npm install
+cd ./testing/Vlox
+npm run start
 ```
 
-After that, to test and make sure everything is working, run:
-
-```console
-npm run test-vlox
-```
 
 ## Core Packages
 
