@@ -25,12 +25,13 @@ import { BinaryObject } from "@amodx/binary";
 import { Compressor } from "@amodx/core/Compression/Compression";
 import { InitSkybox } from "@divinevoxel/vlox-babylon/Init/Skybox/InitSkybox";
 import { Debug } from "./Debug/Debug";
+
+
 export async function App() {
   const appContainer = document.createElement("div");
-  appContainer.className = "render-canvas-container";
+  appContainer.id = "render-canvas-container";
   const canvas = document.createElement("canvas");
   canvas.id = "render-canvas";
-  
 
   appContainer.append(canvas);
 
@@ -192,6 +193,7 @@ export async function App() {
 
   //  await InitRenderPlayer(DVER, nodes);
   DVER.threads.world.runTask("start-world", []);
+
 
   /* 
 

@@ -2,8 +2,8 @@ import { DVEBabylonRenderer } from "@divinevoxel/vlox-babylon/Renderer/DVEBabylo
 import { GUI } from "dat.gui";
 
 export function SceneDebug(gui: GUI, renderer: DVEBabylonRenderer) {
-  const sceneUBO = renderer.voxelScene.options.ubo;
-  const sceneOptions = renderer.voxelScene.options;
+  const sceneUBO = renderer.sceneOptions.ubo;
+  const sceneOptions = renderer.sceneOptions;
 
   const folder = gui.addFolder("Scene Options");
 
