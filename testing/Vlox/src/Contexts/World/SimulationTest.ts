@@ -15,7 +15,7 @@ export function SimulationTest(DVEW: DivineVoxelEngineWorld) {
     const position = { x: 0, y: 0, z: 0 };
     console.warn("SIMULATION START");
     await WorldSimulation.Procedures.InitalLoad({
-      logTasks: true,
+    //  logTasks: true,
       genData: {
         position,
         renderRadius: 150,

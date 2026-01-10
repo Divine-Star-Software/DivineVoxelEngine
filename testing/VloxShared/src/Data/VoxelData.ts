@@ -278,7 +278,20 @@ export const DVEVoxelData: VoxelData[] = [
       dve_collider_id: "dve_cube",
       dve_check_collisions: true,
       dve_voxel_material: "wood",
-
+      dve_named_states: [
+        {
+          id: "dve_dream_fence",
+          name: "Dream Frence",
+          mod: "*",
+          state: "*",
+          properties: [],
+          display: {
+            type: "model",
+            mod: "*",
+            state: "*",
+          },
+        },
+      ],
       dve_model_data: {
         id: "dve_fence",
         inputs: {
@@ -409,7 +422,7 @@ export const DVEVoxelData: VoxelData[] = [
           display: {
             type: "model",
             mod: "*",
-            state: "placement=north,direction=north,state=on",
+            state: "placement=down,direction=north,state=off",
           },
         },
       ],
@@ -453,7 +466,6 @@ export const DVEVoxelData: VoxelData[] = [
       dve_voxel_material: "grass",
       dve_collider_id: "dve_climable_box",
       dve_check_collisions: true,
-
       dve_model_data: {
         id: "dve_simple_crossed_panels",
         inputs: {
@@ -637,16 +649,16 @@ export const DVEVoxelData: VoxelData[] = [
         },
       ],
       dve_model_data: {
-        id: "dve_oriented_cube",
+        id: "dve_pillar_cube",
         modRelationSchema: [],
         inputs: {
           "*": {
-            upTex: "dve_dream_stone_pillar:default",
-            downTex: "dve_dream_stone_pillar:default",
-            northTex: "dve_dream_stone_pillar:default",
-            southTex: "dve_dream_stone_pillar:default",
-            eastTex: "dve_dream_stone_pillar:default",
-            westTex: "dve_dream_stone_pillar:default",
+            sideConnectedTex: "dve_dream_stone_pillar:side-connected",
+            sideDisconnectedTex: "dve_dream_stone_pillar:top",
+            sideUpTex: "dve_dream_stone_pillar:side-up",
+            sideDownTex: "dve_dream_stone_pillar:side-down",
+            upTex: "dve_dream_stone_pillar:top",
+            downTex: "dve_dream_stone_pillar:top",
           },
         },
       },

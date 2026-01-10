@@ -110,7 +110,7 @@ export class GraphWorldGen implements WorldGenInterface {
     y: number,
     cz: number
   ): Promise<any> {
-    const brush = this.brush;
+   const brush = this.brush;
     brush.start(dimension, cx, y, cz);
     brush.setRaw(
       PaintVoxelData.ToRaw(
@@ -139,6 +139,6 @@ export class GraphWorldGen implements WorldGenInterface {
           }
         }
       }
-    }
+    } 
   }
 }

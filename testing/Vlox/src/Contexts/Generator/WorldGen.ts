@@ -15,8 +15,6 @@ export class WorldGen implements WorldGenInterface {
     WorldGeneration.setWorldGen(this);
   }
 
-
-
   async generate(
     dimension: number,
     cx: number,
@@ -35,6 +33,17 @@ export class WorldGen implements WorldGenInterface {
       for (let x = cx; x < chunkWidth + cx; x++) {
         for (let z = cz; z < chunkDepth + cz; z++) {
           brush.setId("dve_dread_stone").setXYZ(x, startY, z)!.paint();
+          if (x - cx == 7 && z - cz == 7) {
+            brush
+              .setId("dve_dream_fence")
+              .setXYZ(x, startY + 1, z)
+              .paint();
+            brush.setXYZ(x + 1, startY + 1, z).paint();
+            brush.setXYZ(x - 1, startY + 1, z).paint();
+            brush.setXYZ(x, startY + 1, z + 1).paint();
+            brush.setXYZ(x, startY + 1, z - 1).paint();
+          }
+          /* 
 
           if (x - cx == 7 && z - cz == 7) {
             brush
@@ -54,7 +63,7 @@ export class WorldGen implements WorldGenInterface {
                 .setXYZ(x, startY + 2, z)
                 .paint();
             }
-          }
+          } */
         }
       }
     } else {

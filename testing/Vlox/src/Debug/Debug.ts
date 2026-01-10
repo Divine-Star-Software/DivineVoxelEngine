@@ -10,7 +10,6 @@ export function Debug(renderer: DVEBabylonRenderer) {
   const Debug = {};
   const actions = {
     async downloadCache() {
-      CacheManager.cachedModelData;
       const data = BinaryObject.objectToBuffer(CacheManager.getCachedData());
       const compressed = await Compressor.core.compressArrayBuffer(data);
       const blob = new Blob([compressed], {});

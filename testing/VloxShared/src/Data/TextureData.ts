@@ -169,15 +169,15 @@ export const Textures: TextureData[] = [
           index: [0, 0],
         },
         {
-          id: "default",
+          id: "side-connected",
           index: [1, 0],
         },
         {
-          id: "side-top",
+          id: "side-up",
           index: [0, 1],
         },
         {
-          id: "side-bottom",
+          id: "side-down",
           index: [1, 1],
         },
       ],
@@ -245,7 +245,7 @@ export const Textures: TextureData[] = [
   },
   {
     id: "dve_liquid_dread_ether",
-  
+
     variations: [
       {
         id: "still",

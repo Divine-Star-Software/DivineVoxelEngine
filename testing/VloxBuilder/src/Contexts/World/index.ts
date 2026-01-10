@@ -18,7 +18,7 @@ const tickInterval = new TickInterval(() => WorldSimulation.tick(), 50);
 Threads.registerTask("start-world", async () => {
   const position = { x: 0, y: 0, z: 0 };
   await WorldSimulation.Procedures.InitalLoad({
-    logTasks: true,
+  //  logTasks: true,
     genData: {
       position,
       renderRadius: 150,

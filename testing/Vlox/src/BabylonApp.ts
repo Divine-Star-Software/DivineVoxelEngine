@@ -164,7 +164,7 @@ export async function App() {
 
   camera.setTarget(new Vector3(8, 0, 8));
 
-  camera.speed = 10;
+  camera.speed = 1;
   camera.maxZ = 500;
   camera.minZ = 0.01;
   camera.fov = 1.8;

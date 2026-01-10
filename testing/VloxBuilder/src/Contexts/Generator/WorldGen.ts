@@ -21,11 +21,16 @@ export class WorldGen implements WorldGenInterface {
   ): Promise<any> {
     const brush = this.brush;
     brush.start(dimension, cx, y, cz);
-    brush.setId("dve_dream_stone");
 
     for (let x = cx; x < 16 + cx; x++) {
       for (let z = cz; z < 16 + cz; z++) {
-        brush.setXYZ(x, y, z).paint();
+        brush.setId("dve_dream_stone").setXYZ(x, y, z).paint();
+  /*       brush
+          .setId("dve_liquid_dream_ether")
+          .setLevel(15)
+          .setXYZ(x, y + 1, z)
+          .paint()
+          .clear(); */
       }
     }
 
