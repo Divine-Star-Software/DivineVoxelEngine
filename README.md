@@ -88,7 +88,7 @@ To see examples of how to make geometry and models for the vlox model system che
 
 The Vlox model system lets you create voxel models purely through JSON. To make a model you first need geometry. To use a model you must attach it to the voxel properties of a voxel via the `dve_model_data` property. 
 
-geometry and models accept arguments and the voxel supplies the inputs. 
+Geometry and models accept arguments and the voxel supplies the inputs. 
 
 Example geometry: 
 ```json
@@ -299,7 +299,7 @@ See the related types to get a better sense of what all you can do:
 
 [Model Types](https://github.com/Divine-Star-Software/divinevoxel-vlox/blob/main/src/Voxels/Models/VoxelModel.types.ts)
 
-The state schemas of the models give voxels their states. While the mod schemas of the dve_model_data allow varied inputs. 
+The state schemas of the models give voxels their states. While the mod schemas of the `dve_model_data` allow varied inputs. 
 
 Example of a mod schema:
 ```json
