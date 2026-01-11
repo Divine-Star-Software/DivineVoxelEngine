@@ -1,0 +1,60 @@
+name: Deploy Vlox Demo to Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:  # allows manual trigger
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+          submodules: recursive
+      
+      - name: Checkout submodules to main
+        run: git submodule foreach git checkout main
+      
+      - name: Pull latest submodules
+        run: git submodule foreach git pull
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Initialize all packages
+        run: npm run init:all
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Build demo
+        run: |
+          cd ./demos/Vlox
+          npm run build
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './demos/Vlox/out'
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
