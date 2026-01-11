@@ -73,7 +73,40 @@ These packages have not been worked on in a while and may be worked on in future
 
 
 </details>
+<details>
+  <summary>Getting Started</summary>
 
+To see how to setup a simple project you check out the [VloxTest](https://github.com/Divine-Star-Software/DivineVoxelEngine/tree/main/testing/Vlox).
+
+
+
+
+
+</details>
+<details>
+  <summary>Shared Memory</summary>
+Originally the engine was built to use SharedArrayBuffers but that caused some issues. 
+You can now turn off shared memory ussage like this:
+
+```ts
+import { StartRenderer } from "@divinevoxel/vlox/Init/StartRenderer";
+//...
+  const DVER = await StartRenderer({
+    renderer,
+    worldWorker,
+    mesherWorkers,
+    generatorWorkers,
+    voxels: DVEVoxelData,
+    memoryAndCPU: {
+      useSharedMemory: false,
+    },
+  });
+
+```
+
+With `useSharedMemory` set to `false` you will only have access to world data in the World thread. 
+
+</details>
 <details>
   <summary>Voxel Model System</summary>
 To see examples of how to make geometry and models for the vlox model system check out the built in models here:
