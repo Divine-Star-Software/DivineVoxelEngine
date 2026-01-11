@@ -47,6 +47,9 @@ jobs:
           cd ./demos/Vlox
           npm run build
       
+      - name: Add .nojekyll file
+        run: touch ./demos/Vlox/out/.nojekyll
+      
       - name: Setup Pages
         uses: actions/configure-pages@v4
       
