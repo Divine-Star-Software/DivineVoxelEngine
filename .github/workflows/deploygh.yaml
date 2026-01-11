@@ -32,11 +32,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
       
       - name: Initialize all packages
         run: npm run init:all
       
-      - name: Install dependencies
+      - name:  Relink workspaces
         run: npm install
       
       - name: Build demo
