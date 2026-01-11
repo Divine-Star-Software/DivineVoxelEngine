@@ -355,6 +355,23 @@ export class Classic implements GenType {
   }
 
   async decorate(sx: number, sy: number, sz: number, brush: WorldGenBrush) {
- 
+     const sectorWidth = WorldSpaces.sector.bounds.x;
+    const sectorDepth = WorldSpaces.sector.bounds.z;
+    const sectorHeight = WorldSpaces.sector.bounds.y;
+
+    const cursor = brush.dataCursor;
+    for (let x = sx; x < sx + sectorWidth; x++) {
+      for (let z = sz; z < sz + sectorDepth; z++) {
+        for (let y = sy; y < sy + sectorHeight; y++) {
+          const voxel = cursor.getVoxel(x, y, z);
+          if (voxel && voxel.getStringId() == this.voxels.stone) {
+            const nVoxel = cursor.getVoxel(x, y + 1, z);
+            if (nVoxel?.isAir() || nVoxel?.getStringId() == this.voxels.grass) {
+              cursor.getVoxel(x, y, z)!.setId(this.grassDreamStone);
+            }
+          }
+        }
+      }
+    }
   }
 }
