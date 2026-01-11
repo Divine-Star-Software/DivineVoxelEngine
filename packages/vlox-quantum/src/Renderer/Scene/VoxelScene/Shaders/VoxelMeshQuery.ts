@@ -410,13 +410,13 @@ fn VoxelMeshIntersect(ro: vec3f, rd: vec3f, voxelMeshIndex: u32, MAX_DISTANCE: f
       let currentNode = voxel_bvh[currentNodeIndex + offset];
       if (currentNode.max.w == 2.0) {
           // Found a leaf node check against actual triangles 
-           let geomtryResult = VoxelGeometryIntersect(
+           let geometryResult = VoxelGeometryIntersect(
             ro, rd, currentNodeIndex - VOXEL_NODE_INDEX, voxelMeshIndex
           );
-          if(geomtryResult.hit) {
+          if(geometryResult.hit) {
             intersectResult.found = true;
             intersectResult.t = currentNodeT;
-            intersectResult.triangle = geomtryResult;
+            intersectResult.triangle = geometryResult;
             break;
           } else {
             // If stack is empty, break

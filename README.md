@@ -289,7 +289,7 @@ These examples are very basic. You can create geometry with quads and triangles.
 
 See the related types to get a better sense of what all you can do:
 
-[geometry Types](https://github.com/Divine-Star-Software/divinevoxel-vlox/blob/main/src/Voxels/geometry/Voxelgeometry.types.ts)
+[Geometry Types](https://github.com/Divine-Star-Software/divinevoxel-vlox/blob/main/src/Voxels/Geometry/VoxelGeometry.types.ts)
 
 [Model Types](https://github.com/Divine-Star-Software/divinevoxel-vlox/blob/main/src/Voxels/Models/VoxelModel.types.ts)
 
