@@ -2,10 +2,12 @@ import { WorldGeneration } from "@divinevoxel/vlox/Tasks/WorldGeneration/WorldGe
 import { WorldGenInterface } from "@divinevoxel/vlox/Tasks/WorldGeneration/WorldGen.types";
 import { WorldGenBrush } from "@divinevoxel/vlox/Tasks/WorldGeneration/WorldGenBrush";
 import { WorldSpaces } from "@divinevoxel/vlox/World/WorldSpaces";
+import { GenType } from "./Types/GenType.interface";
 
 export class WorldGen implements WorldGenInterface {
   static instance: WorldGen;
   brush: WorldGenBrush;
+  genType: GenType | null = null;
   constructor() {
     if (WorldGen.instance) return WorldGen.instance;
     WorldGen.instance = this;
@@ -13,6 +15,10 @@ export class WorldGen implements WorldGenInterface {
   init() {
     this.brush = WorldGeneration.getBrush();
     WorldGeneration.setWorldGen(this);
+  }
+
+  setGenType(genType: GenType) {
+    this.genType = genType;
   }
 
   async generate(
@@ -23,6 +29,10 @@ export class WorldGen implements WorldGenInterface {
   ): Promise<any> {
     const brush = this.brush;
     brush.start(dimension, cx, y, cz);
+    if (this.genType) {
+      await this.genType.generate(cx, y, cz, brush);
+      return;
+    }
 
     const chunkWidth = WorldSpaces.section.bounds.x;
     const chunkDepth = WorldSpaces.section.bounds.z;
@@ -44,5 +54,12 @@ export class WorldGen implements WorldGenInterface {
     cx: number,
     y: number,
     cz: number
-  ): Promise<any> {}
+  ): Promise<any> {
+    const brush = this.brush;
+    brush.start(dimension, cx, y, cz);
+    if (this.genType) {
+      await this.genType.decorate(cx, y, cz, brush);
+      return;
+    }
+  }
 }

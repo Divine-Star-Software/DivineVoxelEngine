@@ -28,10 +28,9 @@ git submodule foreach git checkout main
 git submodule foreach git pull
 npm run init:all
 npm install
-cd ./testing/Vlox
+cd ./demos/Vlox
 npm run start
 ```
-
 
 ## Core Packages
 
@@ -60,6 +59,9 @@ npm run start
 - **@dvegames/vlox-tools**  
   - A library for creating tool panels for any `@divinevoxel/vlox` project
 
+## [Vlox Demos](https://divine-star-software.github.io/DivineVoxelEngine/)
+
+To checkout the demos for vlox visit the github pages site for this repo here: [Link To Vlox Demos](https://divine-star-software.github.io/DivineVoxelEngine/)
 
 <details>
   <summary>In Dev Packages</summary>
@@ -70,16 +72,6 @@ These packages have not been worked on in a while and may be worked on in future
 
 - **@divinevoxel/vlox-quantum**  
   - Custom renderer for DVE Vlox using WebGPU
-
-
-</details>
-<details>
-  <summary>Getting Started</summary>
-
-To see how to setup a simple project you check out the [VloxTest](https://github.com/Divine-Star-Software/DivineVoxelEngine/tree/main/testing/Vlox).
-
-
-
 
 
 </details>

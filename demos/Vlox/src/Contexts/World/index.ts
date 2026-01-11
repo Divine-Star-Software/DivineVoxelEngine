@@ -3,7 +3,7 @@ import InitDebugMapWorld from "@divinevoxel/vlox-babylon/Debug/GenMap/InitDebugM
 import { WorldSimulation } from "@divinevoxel/vlox/WorldSimulation";
 import { TickInterval } from "@divinevoxel/vlox/Util/TickInterval";
 import { Threads } from "@amodx/threads";
-InitDebugMapWorld();
+
 const DVEW = await StartWorld();
 
 WorldSimulation.init({
@@ -13,8 +13,12 @@ WorldSimulation.init({
 });
 
 const tickInterval = new TickInterval(() => WorldSimulation.tick(), 50);
+Threads.registerTask("enable-debug-map", async () => {
+  InitDebugMapWorld();
+});
 Threads.registerTask("start-world", async () => {
   const position = { x: 0, y: 0, z: 0 };
+  WorldSimulation.doTickUpdates = false;
   await WorldSimulation.Procedures.InitalLoad({
     //  logTasks: true,
     genData: {

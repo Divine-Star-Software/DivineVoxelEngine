@@ -13,8 +13,8 @@ import { StartRenderer } from "@divinevoxel/vlox/Init/StartRenderer";
 import { DebugGenMap } from "@divinevoxel/vlox-babylon/Debug/GenMap/DebugGenMap";
 
 import { InitSkybox } from "@divinevoxel/vlox-babylon/Init/Skybox/InitSkybox";
-
-export async function App() {
+import { Tools } from "@babylonjs/core/Misc/tools";
+export async function Demo() {
   const appContainer = document.createElement("div");
   appContainer.id = "render-canvas-container";
   const canvas = document.createElement("canvas");
@@ -79,6 +79,8 @@ export async function App() {
     textureData: Textures,
   });
 
+  renderer.sceneOptions.levels.sunLevel = 1;
+
   const DVER = await StartRenderer({
     renderer,
     worldWorker,
@@ -100,22 +102,31 @@ export async function App() {
 
   camera.setTarget(new Vector3(8, 0, 8));
 
-  camera.speed = 1;
+  camera.speed = 2;
   camera.maxZ = 500;
   camera.minZ = 0.01;
-  camera.fov = 1.8;
+  camera.fov = Tools.ToRadians(70);
   camera.attachControl(canvas, true);
 
   scene.activeCamera = camera;
   scene.collisionsEnabled = false;
   camera.inertia = 0.2;
 
-  const map = new DebugGenMap(DVER);
-  map.init(camera.globalPosition, Vector3.Zero(), 0);
+  const params = new URLSearchParams(
+    new URL(window.location.href).searchParams
+  );
+  const demo = params.get("demo")!;
+  if (params.get("debug-map")) {
+    DVER.threads.world.runTask("enable-debug-map", []);
+    const map = new DebugGenMap(DVER);
+    map.init(camera.globalPosition, Vector3.Zero(), 0);
+  }
 
   engine.runRenderLoop(() => {
     scene.render();
   });
+
+  DVER.threads.generators.runTaskForAll("set-gen-type", demo);
 
   DVER.threads.world.runTask("start-world", []);
 
