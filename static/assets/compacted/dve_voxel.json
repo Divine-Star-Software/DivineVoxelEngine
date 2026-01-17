@@ -1,0 +1,59 @@
+{
+  "type": "dve_voxel",
+  "size": [144, 144],
+  "textureSize": [16, 16],
+  "nodes": [
+    { "id": "dve_missing", "index": 0 },
+    { "id": "dve_debug_box", "index": [1, 2, 3, 4, 5, 6], "atlas": [2, 3] },
+    { "id": "dve_dirt", "index": 7 },
+    { "id": "dve_farmland", "index": 8 },
+    { "id": "dve_farmland_moist", "index": 9 },
+    {
+      "id": "dve_wheat",
+      "index": [10, 11, 12, 13, 14, 15, 16, 17],
+      "atlas": [4, 2]
+    },
+    { "id": "dve_candle", "index": [18, 19, 20, 21], "atlas": [2, 2] },
+    { "id": "dve_dream_stone", "index": [22, 23, 24, 25], "atlas": [2, 2] },
+    { "id": "dve_lever", "index": 26 },
+    { "id": "dve_dread_stone", "index": [27, 28, 29, 30], "atlas": [2, 2] },
+    { "id": "dve_data_holder", "index": [31, 32, 33, 34], "atlas": [2, 2] },
+    { "id": "dve_dream_grass_block", "index": 35 },
+    {
+      "id": "dve_dream_stone_pillar",
+      "index": [36, 37, 38, 39],
+      "atlas": [2, 2]
+    },
+    {
+      "id": "dve_dread_stone_pillar",
+      "index": [40, 41, 42, 43],
+      "atlas": [2, 2]
+    },
+    { "id": "dve_dream_lamp", "index": 44 },
+    { "id": "dve_dread_lamp", "index": 45 },
+    { "id": "dve_dream_log", "index": 46 },
+    { "id": "dve_dream_grass", "index": 47 },
+    { "id": "dve_dread_grass", "index": 48 },
+    { "id": "dve_dream_vine", "index": 49 },
+    { "id": "dve_dream_leaves", "index": 50 },
+    {
+      "id": "dve_liquid_dream_ether",
+      "index": 0,
+      "variations": [
+        { "id": "still", "index": [51, 52, 53, 54, 55, 56], "atlas": [1, 6] }
+      ]
+    },
+    {
+      "id": "dve_liquid_dread_ether",
+      "index": 0,
+      "variations": [
+        { "id": "still", "index": [57, 58, 59, 60, 61, 62], "atlas": [1, 6] }
+      ]
+    },
+    {
+      "id": "dve_foam",
+      "index": [63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74],
+      "atlas": [4, 3]
+    }
+  ]
+}

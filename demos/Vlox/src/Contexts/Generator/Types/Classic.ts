@@ -1,20 +1,29 @@
 import { WorldGenBrush } from "@divinevoxel/vlox/Tasks/WorldGeneration/WorldGenBrush";
 import { GenType } from "./GenType.interface";
 import { WorldSpaceRandom } from "./RNG/WorldSpaceRandom";
-import { PaintVoxelData } from "@divinevoxel/vlox/Voxels";
+import { PaintVoxelData, RawVoxelData } from "@divinevoxel/vlox/Voxels";
 import { WorldSpaces } from "@divinevoxel/vlox/World/WorldSpaces";
 
 export class Classic implements GenType {
   indexed = new WorldSpaceRandom(123213);
-  voxels = {
-    stone: "dve_dream_stone",
-    lamp: "dve_dream_lamp",
-    ether: "dve_liquid_dream_ether",
-    pillar: "dve_dream_stone_pillar",
-    grass: "dve_dream_grass",
+  paintVoxels: Record<string, PaintVoxelData> = {
+    stone: PaintVoxelData.Create({ id: "dve_dream_stone" }),
+    lamp: PaintVoxelData.Create({ id: "dve_dream_lamp" }),
+    ether: PaintVoxelData.Create({ id: "dve_liquid_dream_ether" }),
+    etherFull: PaintVoxelData.Create({
+      id: "dve_liquid_dream_ether",
+      level: 7,
+    }),
+    pillar: PaintVoxelData.Create({ id: "dve_dream_stone_pillar" }),
+    grass: PaintVoxelData.Create({ id: "dve_dream_grass" }),
   };
+  voxels: Record<string, RawVoxelData> = {};
   grassDreamStone: number;
   init() {
+    for (const key in this.paintVoxels) {
+      this.voxels[key] = PaintVoxelData.ToRaw(this.paintVoxels[key]);
+    }
+
     this.grassDreamStone = PaintVoxelData.ToRaw(
       PaintVoxelData.Populate({
         id: "dve_dream_stone",
@@ -33,11 +42,9 @@ export class Classic implements GenType {
       for (let z = chunkZ; z < sectorDepth + chunkZ; z++) {
         for (let y = 0; y < sectorHeight; y++) {
           if (y < Math.floor(Math.random() * this.minY)) {
-            brush.setId(this.voxels.stone);
-            brush.setXYZ(x, y, z).paint();
+            brush.setXYZ(x, y, z).paintRaw(this.voxels.stone);
             if (Math.random() > 0.8) {
-              brush.setId(this.voxels.grass);
-              brush.setXYZ(x, y + 1, z).paint();
+              brush.setXYZ(x, y + 1, z).paintRaw(this.voxels.grass);
             }
           }
         }
@@ -47,9 +54,7 @@ export class Classic implements GenType {
   generateSpikeChunk(chunkX: number, chunkZ: number, brush: WorldGenBrush) {
     const sectorWidth = WorldSpaces.sector.bounds.x;
     const sectorDepth = WorldSpaces.sector.bounds.z;
-    const sectorHeight = WorldSpaces.sector.bounds.y;
 
-    brush.setId(this.voxels.pillar);
     let rx = 0;
     for (let x = chunkX; x < sectorWidth + chunkX; x++) {
       let rz = 0;
@@ -64,10 +69,9 @@ export class Classic implements GenType {
               y == this.minY + 56 ||
               y == this.minY + 86
             ) {
-              brush.setId(this.voxels.pillar).paint();
+              brush.paintRaw(this.voxels.pillar);
             }
           }
-          brush.setId(this.voxels.pillar);
           if (rx == 0 || rz == 0 || rx == 15 || rz == 15) {
             if (
               y == this.minY + 1 ||
@@ -78,7 +82,7 @@ export class Classic implements GenType {
               y == this.minY + 84 ||
               y == this.minY + 88
             ) {
-              brush.paint();
+              brush.paintRaw(this.voxels.pillar);
             }
           }
           if (rx == 1 || rz == 1 || rx == 14 || rz == 14) {
@@ -92,7 +96,7 @@ export class Classic implements GenType {
               y == this.minY + 86 ||
               y == this.minY + 90
             ) {
-              brush.paint();
+              brush.paintRaw(this.voxels.pillar);
             }
           }
           if (rx == 2 || rz == 2 || rx == 13 || rz == 13) {
@@ -106,7 +110,7 @@ export class Classic implements GenType {
               y == this.minY + 88 ||
               y == this.minY + 92
             ) {
-              brush.paint();
+              brush.paintRaw(this.voxels.pillar);
             }
           }
           if (rx == 3 || rz == 3 || rx == 12 || rz == 12) {
@@ -120,7 +124,7 @@ export class Classic implements GenType {
               y == this.minY + 90 ||
               y == this.minY + 94
             ) {
-              brush.paint();
+              brush.paintRaw(this.voxels.pillar);
             }
           }
           if (rx == 4 || rz == 4 || rx == 11 || rz == 11) {
@@ -133,7 +137,7 @@ export class Classic implements GenType {
               y == this.minY + 74 ||
               y == this.minY + 96
             ) {
-              brush.paint();
+              brush.paintRaw(this.voxels.pillar);
             }
           }
           if (rx == 5 || rz == 5 || rx == 10 || rz == 10) {
@@ -146,7 +150,7 @@ export class Classic implements GenType {
               y == this.minY + 72 ||
               y == this.minY + 98
             ) {
-              brush.paint();
+              brush.paintRaw(this.voxels.pillar);
             }
           }
           if (rx == 6 || rz == 6 || rx == 9 || rz == 9) {
@@ -157,11 +161,11 @@ export class Classic implements GenType {
               y == this.minY + 70 ||
               this.minY + 100
             ) {
-              brush.paint();
+              brush.paintRaw(this.voxels.pillar);
             }
           }
           if (y < this.minY) {
-            brush.paint();
+            brush.paintRaw(this.voxels.pillar);
           }
         }
         rz++;
@@ -177,15 +181,13 @@ export class Classic implements GenType {
     for (let x = chunkX; x < sectorWidth + chunkX; x++) {
       for (let z = chunkZ; z < sectorDepth + chunkZ; z++) {
         for (let y = 0; y < sectorHeight; y++) {
-          brush.setId(this.voxels.stone).setXYZ(x, y, z);
+          brush.setXYZ(x, y, z);
           if (y < this.minY - 6) {
-            brush.paint();
+            brush.paintRaw(this.voxels.stone);
           }
-          brush.setId(this.voxels.ether).setLevel(7);
           if (y >= this.minY - 6 && y <= this.minY) {
-            brush.paint();
+            brush.paintRaw(this.voxels.etherFull);
           }
-          brush.setLevel(0);
           if (y == this.minY + 1) break;
         }
       }
@@ -205,88 +207,64 @@ export class Classic implements GenType {
           if (rx == 0 || rz == 0 || rx == 15 || rz == 15) {
             if (y > this.minY) break;
             if (y == this.minY) {
-              brush.setId(this.voxels.stone).setXYZ(x, y, z).paint();
+              brush.setXYZ(x, y, z).paintRaw(this.voxels.stone);
               if (Math.random() > 0.8) {
-                brush
-                  .setId(this.voxels.grass)
-                  .setXYZ(x, y + 1, z)
-                  .paint();
+                brush.setXYZ(x, y + 1, z).paintRaw(this.voxels.grass);
               }
             }
           }
           if (rx == 1 || rz == 1 || rx == 14 || rz == 14) {
             if (y == this.minY - 1) {
-              brush.setId(this.voxels.stone).setXYZ(x, y, z).paint();
+              brush.setXYZ(x, y, z).paintRaw(this.voxels.stone);
               if (Math.random() > 0.8) {
-                brush
-                  .setId(this.voxels.grass)
-                  .setXYZ(x, y + 1, z)
-                  .paint();
+                brush.setXYZ(x, y + 1, z).paintRaw(this.voxels.grass);
               }
             }
           }
           if (rx == 2 || rz == 2 || rx == 13 || rz == 13) {
             if (y == this.minY - 2) {
-              brush.setId(this.voxels.stone).setXYZ(x, y, z).paint();
+              brush.setXYZ(x, y, z).paintRaw(this.voxels.stone);
               if (Math.random() > 0.8) {
-                brush
-                  .setId(this.voxels.grass)
-                  .setXYZ(x, y + 1, z)
-                  .paint();
+                brush.setXYZ(x, y + 1, z).paintRaw(this.voxels.grass);
               }
             }
           }
           if (rx == 3 || rz == 3 || rx == 12 || rz == 12) {
             if (y == this.minY - 3) {
-              brush.setId(this.voxels.stone).setXYZ(x, y, z).paint();
+              brush.setXYZ(x, y, z).paintRaw(this.voxels.stone);
               if (Math.random() > 0.8) {
-                brush
-                  .setId(this.voxels.grass)
-                  .setXYZ(x, y + 1, z)
-                  .paint();
+                brush.setXYZ(x, y + 1, z).paintRaw(this.voxels.grass);
               }
             }
           }
           if (rx == 4 || rz == 4 || rx == 11 || rz == 11) {
             if (y == this.minY - 4) {
-              brush.setId(this.voxels.stone).setXYZ(x, y, z).paint();
+              brush.setXYZ(x, y, z).paintRaw(this.voxels.stone);
               if (Math.random() > 0.8) {
-                brush
-                  .setId(this.voxels.grass)
-                  .setXYZ(x, y + 1, z)
-                  .paint();
+                brush.setXYZ(x, y + 1, z).paintRaw(this.voxels.grass);
               }
             }
           }
           if (rx == 5 || rz == 5 || rx == 10 || rz == 10) {
             if (y == this.minY - 5) {
-              brush.setId(this.voxels.stone).setXYZ(x, y, z).paint();
+              brush.setXYZ(x, y, z).paintRaw(this.voxels.stone);
               if (Math.random() > 0.8) {
-                brush
-                  .setId(this.voxels.grass)
-                  .setXYZ(x, y + 1, z)
-                  .paint();
+                brush.setXYZ(x, y + 1, z).paintRaw(this.voxels.grass);
               }
             }
           }
           if (rx == 6 || rz == 6 || rx == 9 || rz == 9) {
             if (y == this.minY - 6) {
-              brush.setId(this.voxels.stone).setXYZ(x, y, z).paint();
+              brush.setXYZ(x, y, z).paintRaw(this.voxels.stone);
               if (Math.random() > 0.8) {
-                brush
-                  .setId(this.voxels.grass)
-                  .setXYZ(x, y + 1, z)
-                  .paint();
+                brush.setXYZ(x, y + 1, z).paintRaw(this.voxels.grass);
               }
             }
           }
           if (y < this.minY - 7) {
-            brush.setId(this.voxels.stone).setXYZ(x, y, z).paint();
+            brush.setXYZ(x, y, z).paintRaw(this.voxels.stone);
             if (Math.random() > 0.8) {
-              brush
-                .setId(this.voxels.grass)
-                .setXYZ(x, y + 1, z)
-                .paint();
+              brush.setXYZ(x, y + 1, z).paintRaw(this.voxels.grass);
             }
           }
         }
@@ -305,11 +283,11 @@ export class Classic implements GenType {
         for (let y = 0; y < sectorHeight; y++) {
           if (y > this.minY + 1) break;
           if (y <= this.minY) {
-            brush.setId(this.voxels.stone).setXYZ(x, y, z).paint();
+            brush.setXYZ(x, y, z).paintRaw(this.voxels.stone);
           }
           if (y == this.minY + 1) {
             if (Math.random() > 0.8) {
-              brush.setId(this.voxels.grass).setXYZ(x, y, z).paint();
+              brush.setXYZ(x, y, z).paintRaw(this.voxels.grass);
             }
           }
         }
@@ -355,7 +333,7 @@ export class Classic implements GenType {
   }
 
   async decorate(sx: number, sy: number, sz: number, brush: WorldGenBrush) {
-     const sectorWidth = WorldSpaces.sector.bounds.x;
+    const sectorWidth = WorldSpaces.sector.bounds.x;
     const sectorDepth = WorldSpaces.sector.bounds.z;
     const sectorHeight = WorldSpaces.sector.bounds.y;
 
@@ -364,9 +342,9 @@ export class Classic implements GenType {
       for (let z = sz; z < sz + sectorDepth; z++) {
         for (let y = sy; y < sy + sectorHeight; y++) {
           const voxel = cursor.getVoxel(x, y, z);
-          if (voxel && voxel.getStringId() == this.voxels.stone) {
+          if (voxel && voxel.getStringId() == "dve_dream_stone") {
             const nVoxel = cursor.getVoxel(x, y + 1, z);
-            if (nVoxel?.isAir() || nVoxel?.getStringId() == this.voxels.grass) {
+            if (nVoxel?.isAir() || nVoxel?.getStringId() == "dve_dream_grass") {
               cursor.getVoxel(x, y, z)!.setId(this.grassDreamStone);
             }
           }

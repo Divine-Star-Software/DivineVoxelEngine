@@ -2,15 +2,11 @@ import InitDVErenderer from "@divinevoxel/vlox-babylon/Init/Classic/InitDVEBRCla
 import CreateDisplayIndex from "@divinevoxel/vlox-babylon/Init/CreateDisplayIndex";
 
 import {
-  CreateSphere,
   Engine,
   HemisphericLight,
   Scene,
   Vector3,
   FreeCamera,
-  AxesViewer,
-  BoundingBox,
-  BoundingInfo,
 } from "@babylonjs/core";
 
 import { RenderNodes } from "Classes";
@@ -25,8 +21,41 @@ import { BinaryObject } from "@amodx/binary";
 import { Compressor } from "@amodx/core/Compression/Compression";
 import { InitSkybox } from "@divinevoxel/vlox-babylon/Init/Skybox/InitSkybox";
 import { Debug } from "./Debug/Debug";
+import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
+const downloadFile = async (
+  name: string,
+  data: ArrayBufferLike | string | HTMLImageElement,
+  mimeType: string = "application/octet-stream"
+): Promise<void> => {
+  let blob: Blob;
 
+  if (data instanceof HTMLImageElement) {
+    const canvas = document.createElement("canvas");
+    canvas.width = data.naturalWidth;
+    canvas.height = data.naturalHeight;
+    const ctx = canvas.getContext("2d")!;
+    ctx.drawImage(data, 0, 0);
 
+    blob = await new Promise<Blob>((resolve, reject) => {
+      canvas.toBlob(
+        (b) => (b ? resolve(b) : reject(new Error("Failed to create blob"))),
+        mimeType,
+        1.0
+      );
+    });
+  } else {
+    blob = new Blob([data as any], { type: mimeType });
+  }
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
 export async function App() {
   const appContainer = document.createElement("div");
   appContainer.id = "render-canvas-container";
@@ -34,9 +63,6 @@ export async function App() {
   canvas.id = "render-canvas";
 
   appContainer.append(canvas);
-
-  //  CacheManager.cacheLoadEnabled = true;
-  //   CacheManager.cacheStoreEnabled = true;
 
   if (CacheManager.cacheLoadEnabled) {
     BinaryObject.setUseSharedMemory(true);
@@ -84,22 +110,6 @@ export async function App() {
   engine.doNotHandleContextLost = true;
   engine.enableOfflineSupport = false;
 
-  const gl = engine._gl;
-
-  if (!gl) {
-    console.error("WebGL 2 not supported!");
-  }
-
-  const multiDraw = gl.getExtension("WEBGL_multi_draw");
-
-  if (!multiDraw) {
-    console.error("WEBGL_multi_draw extension is not available!");
-  } else {
-    console.log("WEBGL_multi_draw is enabled!");
-  }
-
-  console.warn(multiDraw);
-
   const nodes = new RenderNodes();
   engine.setSize(window.innerWidth, window.innerHeight);
   let dirty = false;
@@ -118,12 +128,42 @@ export async function App() {
   const light = new HemisphericLight("", new Vector3(0, 0, 0), scene);
   light.specular.set(0, 0, 0);
 
+  const urlParams = new URLSearchParams(
+    new URL(window.location.href).searchParams
+  );
+  if (urlParams.has("read-compact-textures")) {
+    TextureManager.registerTexture(Textures);
+    const paths: string[] = [
+      "assets/compacted/dve_voxel",
+      "assets/compacted/dve_item",
+    ];
+    for (const path of paths) {
+      const json = await (await fetch(`${path}.json`)).json();
+      await TextureManager.readCompactedTexture( json, `${path}.png`);
+    }
+  }
+
   const renderer = await InitDVErenderer({
     textureTypes: [],
     substances: [],
     scene: scene,
     textureData: Textures,
   });
+
+  if (urlParams.has("compact-textures")) {
+    const compactedImages = await TextureManager.createCompactedTextures(
+      "assets/textures",
+      [16, 16]
+    );
+    for (const image of compactedImages) {
+      await downloadFile(`${image.data.type}.png`, image.image, "image/png");
+      await downloadFile(
+        `${image.data.type}.json`,
+        JSON.stringify(image.data),
+        "application/json"
+      );
+    }
+  }
 
   const DVER = await StartRenderer({
     renderer,
@@ -138,25 +178,10 @@ export async function App() {
 
   await CreateDisplayIndex(DVEVoxelData);
 
-  /* 
-      const sceneTool = new SceneTool();
-      sceneTool.fog.setDensity(0.00001);
-      sceneTool.fog.setColor(1, 1, 1);
-      sceneTool.options.doSun(true);
-      sceneTool.options.doAO(true);
-      sceneTool.options.doRGB(true);
-      sceneTool.levels.setSun(0.8);
-      sceneTool.levels.setBase(0.01); */
-
   const skybox = InitSkybox({
     renderer,
   });
 
-  /*     const viwer = new AxesViewer(scene);
-      viwer.xAxis.position.z -= 2;
-      viwer.yAxis.position.z -= 2;
-      viwer.zAxis.position.z -= 2;
- */
   const camera = new FreeCamera("", new Vector3(-1, 64, -1), scene);
 
   camera.setTarget(new Vector3(8, 0, 8));
@@ -184,22 +209,7 @@ export async function App() {
     scene.render();
   });
 
-  /*      setTimeout(() => {
-        Inspector.Show(scene, {});
-      }, 1_000); */
-
-  //  await InitRenderPlayer(DVER, nodes);
   DVER.threads.world.runTask("start-world", []);
-
-
-  /* 
-
-      const cursor = new WorldCursor();
-      cursor.setFocalPoint(0, 0, 0, 0);
-      setInterval(() => {
-        const particles = new VoxelExplodeParticles(scene, cursor);
-        particles.explodeAt(0, 10, 0, "dve_dream_stone");
-      }, 2_000); */
 
   return appContainer;
 }
