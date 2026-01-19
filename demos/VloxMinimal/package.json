@@ -1,0 +1,14 @@
+{
+  "name": "vlox-demo",
+  "version": "0.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx webpack  serve --mode development --env development  --config webpack.config.dev.cjs  ",
+    "build": "npx webpack --mode production --env production --config webpack.config.prod.cjs && mkdir -p ./out/assets/textures && cp -r ../../static/assets/textures/* ./out/assets/textures/"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "keywords": [],
+  "description": ""
+}
