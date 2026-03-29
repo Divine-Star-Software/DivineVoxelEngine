@@ -99,6 +99,10 @@ async function InitBuilder() {
     voxels: DVEVoxelData,
   });
 
+  console.warn("DVER",DVER,DivineVoxelEngineRender.instance
+    
+  )
+
   await CreateDisplayIndex(DVEVoxelData);
 
   const skybox = InitSkybox({ renderer });

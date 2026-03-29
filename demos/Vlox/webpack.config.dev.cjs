@@ -69,7 +69,7 @@ module.exports = {
   devtool: "source-map",
   devServer: {
     historyApiFallback: true,
-    port: 9002,
+    port: 9003,
 
     server: "https",
     static: {

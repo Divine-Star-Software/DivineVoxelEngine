@@ -7,6 +7,7 @@ import { GenType } from "./GenType.interface";
 import { WorldSpaceRandom } from "./RNG/WorldSpaceRandom";
 import { PaintVoxelData } from "@divinevoxel/vlox/Voxels";
 import { WorldSpaces } from "@divinevoxel/vlox/World/WorldSpaces";
+import { Vec3Array } from "@amodx/math";
 
 export class DreamEther implements GenType {
   indexed = new WorldSpaceRandom(123213);
@@ -23,7 +24,7 @@ export class DreamEther implements GenType {
       PaintVoxelData.Populate({
         id: "dve_dream_stone",
         modString: "grassy=true",
-      })
+      }),
     )[0];
   }
   async generate(sx: number, sy: number, sz: number, brush: WorldGenBrush) {
@@ -40,7 +41,7 @@ export class DreamEther implements GenType {
         sx,
         sy,
         sz,
-        2
+        2,
       );
     }
     return GenerateCappedSpikePond(
@@ -52,7 +53,7 @@ export class DreamEther implements GenType {
       voxels.grass,
       sx,
       sy,
-      sz
+      sz,
     );
   }
 

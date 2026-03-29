@@ -7,6 +7,7 @@ import { GenType } from "./GenType.interface";
 import { WorldSpaceRandom } from "./RNG/WorldSpaceRandom";
 import { PaintVoxelData } from "@divinevoxel/vlox/Voxels";
 import { WorldSpaces } from "@divinevoxel/vlox/World/WorldSpaces";
+import { Vec3Array } from "@amodx/math";
 
 export class DreadEther implements GenType {
   indexed = new WorldSpaceRandom(123213);
@@ -23,8 +24,9 @@ export class DreadEther implements GenType {
       PaintVoxelData.Populate({
         id: "dve_dread_stone",
         modString: "grassy=true",
-      })
+      }),
     )[0];
+
   }
   async generate(sx: number, sy: number, sz: number, brush: WorldGenBrush) {
     const voxels = this.voxels;
@@ -40,7 +42,7 @@ export class DreadEther implements GenType {
         sx,
         sy,
         sz,
-        2
+        2,
       );
     }
     return GenerateCappedSpikePond(
@@ -52,7 +54,7 @@ export class DreadEther implements GenType {
       voxels.grass,
       sx,
       sy,
-      sz
+      sz,
     );
   }
 

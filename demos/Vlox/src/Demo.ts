@@ -2,6 +2,7 @@ import InitDVErenderer from "@divinevoxel/vlox-babylon/Init/Classic/InitDVEBRCla
 import CreateDisplayIndex from "@divinevoxel/vlox-babylon/Init/CreateDisplayIndex";
 
 import { Engine } from "@babylonjs/core/Engines/engine";
+import { WebGPUEngine } from "@babylonjs/core/Engines/webgpuEngine";
 import { Scene } from "@babylonjs/core/scene";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera";
@@ -27,7 +28,7 @@ export async function Demo() {
     new URL("./Contexts/World/", import.meta.url),
     {
       type: "module",
-    }
+    },
   );
 
   const mesherWorkers: Worker[] = [];
@@ -35,7 +36,7 @@ export async function Demo() {
     mesherWorkers.push(
       new Worker(new URL("./Contexts/Mesher/", import.meta.url), {
         type: "module",
-      })
+      }),
     );
   }
   const generatorWorkers: Worker[] = [];
@@ -43,15 +44,33 @@ export async function Demo() {
     generatorWorkers.push(
       new Worker(new URL("./Contexts/Generator", import.meta.url), {
         type: "module",
-      })
+      }),
     );
   }
 
   let antialias = false;
-  const engine = new Engine(canvas, antialias, {
-    alpha: true,
-    premultipliedAlpha: false,
-  });
+  let engine: Engine | WebGPUEngine;
+  // const isWebGPUSuppourted = await WebGPUEngine.IsSupportedAsync;
+  const isWebGPUSuppourted = false;
+  if (isWebGPUSuppourted) {
+    engine = new WebGPUEngine(canvas);
+    const glslangOptions = {
+      jsPath: "libs/glslang/glslang.js",
+      wasmPath: "libs/glslang/glslang.wasm",
+    };
+
+    const twgslOptions = {
+      jsPath: "libs/twgsl/twgsl.js",
+      wasmPath: "libs/twgsl/twgsl.wasm",
+    };
+
+    await engine.initAsync(glslangOptions, twgslOptions);
+  } else {
+    engine = new Engine(canvas, antialias, {
+      powerPreference: "high-performance",
+    });
+  }
+
   engine.doNotHandleContextLost = true;
   engine.enableOfflineSupport = false;
 
@@ -113,7 +132,7 @@ export async function Demo() {
   camera.inertia = 0.2;
 
   const params = new URLSearchParams(
-    new URL(window.location.href).searchParams
+    new URL(window.location.href).searchParams,
   );
   const demo = params.get("demo")!;
   if (params.get("debug-map")) {
