@@ -8,3 +8,4 @@ emsdk
 /local
 localscripts
 /demos/Vlox/out
+.npmrc
