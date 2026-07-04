@@ -1,26 +1,34 @@
-import InitDVErenderer from "@divinevoxel/vlox-babylon/Init/Classic/InitDVEBRClassic";
-import CreateDisplayIndex from "@divinevoxel/vlox-babylon/Init/CreateDisplayIndex";
-
+import { LoadingScreen } from "./Loader/LoadingScreen";
+LoadingScreen.Init();
 import { Engine } from "@babylonjs/core/Engines/engine";
 import { WebGPUEngine } from "@babylonjs/core/Engines/webgpuEngine";
 import { Scene } from "@babylonjs/core/scene";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera";
-import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
 
 import { DVEVoxelData } from "@dvetesting/vlox/Data/VoxelData";
 import { Textures } from "@dvetesting/vlox/Data/TextureData";
 import { StartRenderer } from "@divinevoxel/vlox/Init/StartRenderer";
 import { DebugGenMap } from "@divinevoxel/vlox-babylon/Debug/GenMap/DebugGenMap";
 
-import { InitSkybox } from "@divinevoxel/vlox-babylon/Init/Skybox/InitSkybox";
 import { Tools } from "@babylonjs/core/Misc/tools";
+import { DVEBabylonRenderer } from "@divinevoxel/vlox-babylon/Renderer/DVEBabylonRenderer";
+import InitPBR from "Init/InitPBR";
+import InitClassic from "Init/InitClassic";
 export async function Demo() {
+  await LoadingScreen.Show();
+
+  LoadingScreen.progress.text("Init");
+  LoadingScreen.progress.value = 0;
+
+  const params = new URLSearchParams(
+    new URL(window.location.href).searchParams,
+  );
   const appContainer = document.createElement("div");
   appContainer.id = "render-canvas-container";
   const canvas = document.createElement("canvas");
   canvas.id = "render-canvas";
-
+  document.body.append(appContainer);
   appContainer.append(canvas);
 
   const halfThreads = Math.ceil((navigator.hardwareConcurrency - 3) / 2);
@@ -50,8 +58,8 @@ export async function Demo() {
 
   let antialias = false;
   let engine: Engine | WebGPUEngine;
-  // const isWebGPUSuppourted = await WebGPUEngine.IsSupportedAsync;
-  const isWebGPUSuppourted = false;
+  const isWebGPUSuppourted =
+    params.get("webgpu") && (await WebGPUEngine.IsSupportedAsync);
   if (isWebGPUSuppourted) {
     engine = new WebGPUEngine(canvas);
     const glslangOptions = {
@@ -88,34 +96,8 @@ export async function Demo() {
   canvasResized.observe(canvas!);
   const scene = new Scene(engine);
   scene.clearColor.set(1, 1, 1, 0);
-  const light = new HemisphericLight("", new Vector3(0, 0, 0), scene);
-  light.specular.set(0, 0, 0);
-
-  const renderer = await InitDVErenderer({
-    textureTypes: [],
-    substances: [],
-    scene: scene,
-    textureData: Textures,
-  });
-
-  renderer.sceneOptions.levels.sunLevel = 1;
-
-  const DVER = await StartRenderer({
-    renderer,
-    worldWorker,
-    mesherWorkers,
-    generatorWorkers,
-    voxels: DVEVoxelData,
-    memoryAndCPU: {
-      useSharedMemory: false,
-    },
-  });
-
-  await CreateDisplayIndex(DVEVoxelData);
-
-  InitSkybox({
-    renderer,
-  });
+  /*   const light = new HemisphericLight("", new Vector3(0, 0, 0), scene);
+  light.specular.set(0, 0, 0); */
 
   const camera = new FreeCamera("", new Vector3(-1, 64, -1), scene);
 
@@ -131,9 +113,59 @@ export async function Demo() {
   scene.collisionsEnabled = false;
   camera.inertia = 0.2;
 
-  const params = new URLSearchParams(
-    new URL(window.location.href).searchParams,
-  );
+  await LoadingScreen.progress.updateProgressPercent(100);
+
+  LoadingScreen.progress.text("Init Babylon DVE Renderer");
+  LoadingScreen.progress.value = 0;
+
+  let renderer: DVEBabylonRenderer;
+  if (params.has("pbr")) {
+    renderer = await InitPBR({
+      scene: scene,
+      textureData: Textures,
+      voxelData: DVEVoxelData,
+      camera,
+    });
+  } else {
+    renderer = await InitClassic({
+      scene: scene,
+      textureData: Textures,
+      voxelData: DVEVoxelData,
+      camera,
+    });
+  }
+
+  await LoadingScreen.progress.updateProgressPercent(100);
+
+  LoadingScreen.progress.text("Init Divine Voxel Engine");
+  LoadingScreen.progress.value = 0;
+
+  renderer.sceneOptions.levels.sunLevel = 1;
+
+  const DVER = await StartRenderer({
+    rendererSettings: {
+      cpuBound: true,
+    },
+    renderer,
+    worldWorker,
+    mesherWorkers,
+    generatorWorkers,
+    voxels: DVEVoxelData,
+    memoryAndCPU: {
+      useSharedMemory: false,
+    },
+  });
+
+  await LoadingScreen.progress.updateProgressPercent(100);
+
+  if (params.get("tools")) {
+    LoadingScreen.progress.text("Init DVE Tools");
+    LoadingScreen.progress.value = 0;
+    const initTools = (await import("./Init/InitTools")).default;
+    await initTools({ voxelData: DVEVoxelData, scene, renderer });
+    await LoadingScreen.progress.updateProgressPercent(100);
+  }
+
   const demo = params.get("demo")!;
   if (params.get("debug-map")) {
     DVER.threads.world.runTask("enable-debug-map", []);
@@ -145,9 +177,19 @@ export async function Demo() {
     scene.render();
   });
 
+  LoadingScreen.progress.text("Create World");
+  LoadingScreen.progress.value = 0;
+
   DVER.threads.generators.runTaskForAll("set-gen-type", demo);
+  
+  await LoadingScreen.levelLoaderProgress.init();
+  LoadingScreen.levelLoaderProgress.start();
 
-  DVER.threads.world.runTask("start-world", []);
+  await DVER.threads.world.runTaskAsync("start-world", []);
 
-  return appContainer;
+  await LoadingScreen.progress.updateProgressPercent(100);
+  LoadingScreen.progress.text("Done");
+  LoadingScreen.levelLoaderProgress.stop();
+
+  await LoadingScreen.Hide();
 }

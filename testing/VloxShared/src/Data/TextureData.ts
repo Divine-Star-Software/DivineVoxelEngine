@@ -33,6 +33,9 @@ export const Textures: TextureData[] = [
     },
   },
   {
+    id: "dve_water",
+  },
+  {
     id: "dve_dirt",
   },
   {

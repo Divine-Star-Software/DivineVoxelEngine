@@ -34,13 +34,13 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --workspaces=false
       
       - name: Initialize all packages
         run: npm run init:all
       
       - name:  Relink workspaces
-        run: npm install
+        run: npm install --workspaces=false
       
       - name: Build demo
         run: |

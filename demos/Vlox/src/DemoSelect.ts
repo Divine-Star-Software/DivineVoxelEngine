@@ -38,26 +38,32 @@ function DemoOption(data: DemoData, params: URLSearchParams) {
   return div;
 }
 
-function DebugMapCheckbox(params: URLSearchParams) {
+function CheckBox({
+  id,
+  name,
+  isChecked,
+  onChecked,
+}: {
+  id: string;
+  name: string;
+  isChecked: boolean;
+  onChecked: (isChecked: boolean) => void;
+}) {
   const container = document.createElement("div");
   container.className = "debug-checkbox-container";
 
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
-  checkbox.id = "debug-map";
-  checkbox.checked = params.has("debug-map");
+  checkbox.id = id;
+  checkbox.checked = isChecked;
 
   checkbox.addEventListener("change", () => {
-    if (checkbox.checked) {
-      params.set("debug-map", "true");
-    } else {
-      params.delete("debug-map");
-    }
+    onChecked(checkbox.checked);
   });
 
   const label = document.createElement("label");
-  label.htmlFor = "debug-map";
-  label.innerText = "Debug Map";
+  label.htmlFor = id;
+  label.innerText = name;
 
   container.append(checkbox, label);
   return container;
@@ -72,14 +78,64 @@ export function DemoSelect() {
 
   const params = new URLSearchParams(window.location.search);
 
-
-
+  const optionsContainer = document.createElement("div");
+  optionsContainer.className = "options";
+  optionsContainer.append(
+    CheckBox({
+      id: "debug-map",
+      name: "Debug Map",
+      isChecked: params.has("debug-map"),
+      onChecked(isChecked) {
+        if (isChecked) {
+          params.set("debug-map", "true");
+        } else {
+          params.delete("debug-map");
+        }
+      },
+    }),
+    CheckBox({
+      id: "pbr",
+      name: "PBR",
+      isChecked: params.has("pbr"),
+      onChecked(isChecked) {
+        if (isChecked) {
+          params.set("pbr", "true");
+        } else {
+          params.delete("pbr");
+        }
+      },
+    }),
+/*     CheckBox({
+      id: "webgpu",
+      name: "WebGPU",
+      isChecked: params.has("webgpu"),
+      onChecked(isChecked) {
+        if (isChecked) {
+          params.set("webgpu", "true");
+        } else {
+          params.delete("webgpu");
+        }
+      },
+    }), */
+    CheckBox({
+      id: "tools",
+      name: "Tools",
+      isChecked: params.has("tools"),
+      onChecked(isChecked) {
+        if (isChecked) {
+          params.set("tools", "true");
+        } else {
+          params.delete("tools");
+        }
+      },
+    }),
+  );
   const demoConatiner = document.createElement("div");
   demoConatiner.className = "demos";
-    demoConatiner.append(DebugMapCheckbox(params));
+
   for (const demo of demos) {
     demoConatiner.append(DemoOption(demo, params));
   }
-  appContainer.append(demoConatiner);
-  return appContainer;
+  appContainer.append(optionsContainer, demoConatiner);
+  document.body.append(appContainer);
 }

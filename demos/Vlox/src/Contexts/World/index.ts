@@ -1,11 +1,14 @@
+import "./LevelLoaderProgress";
 import { StartWorld } from "@divinevoxel/vlox/Init/StartWorld";
 import InitDebugMapWorld from "@divinevoxel/vlox-babylon/Debug/GenMap/InitDebugMapWorld";
 import { WorldSimulation } from "@divinevoxel/vlox/WorldSimulation";
 import { TickInterval } from "@divinevoxel/vlox/Util/TickInterval";
 import { Threads } from "@amodx/threads";
+import { VoxelBuildSpaceWorld } from "@divinevoxel/vlox/Builder/World/VoxelBuildSpaceWorld";
 
 const DVEW = await StartWorld();
 
+const buildSpace = new VoxelBuildSpaceWorld();
 WorldSimulation.init({
   parent: DVEW.threads.parent,
   meshers: DVEW.threads.meshers,

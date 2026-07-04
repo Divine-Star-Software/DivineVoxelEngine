@@ -1,0 +1,173 @@
+.ds-loading-screen-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  z-index: 1000000;
+}
+
+/* Scaled 1920×1080 content area — same pattern as #ui */
+.ds-loading-screen {
+  width: 1920px;
+  height: 1080px;
+  container-type: inline-size;
+
+  position: absolute;
+  top: calc(50% - 540px);
+  left: calc(50% - 960px);
+  transform-origin: center center;
+  transform: scale(var(--ui-scale, 1));
+
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ds-loading-screen .ds-loading-spinner {
+  text-align: center;
+  display: block;
+  width: 600px;
+  height: auto;
+  margin: auto;
+
+  /* Reflection: fades out beneath the spinner */
+  -webkit-box-reflect: below 0px
+    linear-gradient(to bottom, transparent 10%, rgba(0, 0, 0, 0.45) 50%);
+}
+
+.ds-loading-screen .ds-loading-spinner svg {
+  fill: var(--secondary);
+  animation:
+    spin 8s linear infinite,
+    glow-pulse 5s ease-in-out infinite;
+  display: block;
+  margin: auto;
+  width: 80%;
+  height: 80%;
+
+  /* Base ambient glow */
+  filter: drop-shadow(0 0 8px var(--secondary))
+    drop-shadow(0 0 20px var(--primary))
+    drop-shadow(0 0 45px var(--primary-dark));
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 6px var(--secondary))
+      drop-shadow(0 0 18px var(--secondary-dark))
+      drop-shadow(0 0 40px var(--primary));
+  }
+  50% {
+    filter: drop-shadow(0 0 14px var(--secondary))
+      drop-shadow(0 0 35px var(--secondary-dark))
+      drop-shadow(0 0 70px var(--primary));
+  }
+}
+
+.ds-loading-progress {
+  bottom: 0;
+  width: 800px;
+  color: var(--secondary);
+  text-align: center;
+  position: relative;
+  .ds-loading-progress-bar {
+    width: 100%;
+  }
+}
+
+.level-loader-progress {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+  width: 200px;
+  height: 200px;
+  border: 2px solid var(--secondary);
+
+  background-color: black;
+  .level-loader-progress-canvas {
+    padding: 0;
+    margin: auto;
+    background-color: black;
+  }
+}
+.progress-bar {
+  border: 2px solid var(--secondary);
+
+  height: 30px;
+  margin: 0 10px;
+  background: var(--background);
+}
+.progress-bar-fill {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    140deg,
+    var(--primary-dark) 0%,
+    var(--secondary) 53%,
+    var(--secondary-bright) 100%
+  );
+
+  /* Glowing top edge */
+  box-shadow:
+    0 0 10px 2px var(--secondary-dark),
+    0 0 24px 4px var(--primary-dark);
+  animation: fill-glow-pulse 3s ease-in-out infinite;
+}
+
+/* Animated shimmer sweep */
+.progress-bar-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    var(--primary-dark) 50%,
+    transparent 65%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-sweep 2.2s linear infinite;
+}
+.ds-loading-text {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+@keyframes shimmer-sweep {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes fill-glow-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 8px 2px var(--secondary-dark),
+      0 0 20px 3px var(--primary-dark);
+  }
+  50% {
+    box-shadow:
+      0 0 14px 4px var(--secondary),
+      0 0 36px 6px var(--primary);
+  }
+}
+@keyframes spin {
+  0% {
+    transform: rotate3d(0, -1, 0, 0deg);
+  }
+  100% {
+    transform: rotate3d(0, -1, 0, 360deg);
+  }
+}

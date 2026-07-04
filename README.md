@@ -27,7 +27,7 @@ git submodule update --init --recursive
 git submodule foreach git checkout main
 git submodule foreach git pull
 npm run init:all
-npm install
+npm install --workspaces=false
 cd ./demos/Vlox
 npm run start
 ```
