@@ -34,6 +34,12 @@ export default async function InitPBR({
         flowTexture: "dve_water",
       };
     }
+    if (voxel.id == "dve_liquid_dread_ether") {
+      voxel.properties.dve_model_data!.inputs["*"] = {
+        stillTexture: "dve_dread_water",
+        flowTexture: "dve_dread_water",
+      };
+    }
   }
 
   const probe = new ReflectionProbe("", 512, scene);
