@@ -28,16 +28,7 @@
   ],
   "dependencies": {
     "@amodx-elms/flow": "0.0.13",
-    "@amodx/audio": "0.0.15",
-    "@amodx/binary": "0.0.20",
-    "@amodx/controls": "0.0.39",
-    "@amodx/core": "0.0.25",
-    "@amodx/elm": "0.0.26",
-    "@amodx/math": "0.0.18",
-    "@amodx/ncs": "0.0.27",
-    "@amodx/rng": "0.0.43",
-    "@amodx/schemas": "0.0.25",
-    "@amodx/threads": "0.0.35",
+    "@amodx/suite": "^0.0.1",
     "@babylonjs/core": "^9.15.0",
     "@babylonjs/inspector": "^9.15.0"
   },
