@@ -12,13 +12,12 @@
 
 ![DVE 1](assets/main.png)
 
-## [Stackblitz Demo](https://stackblitz.com/edit/dve-demos?file=README.md)
-## [Vlox Demos](https://divine-star-software.github.io/DivineVoxelEngine/)
+**[▶ Try the live demo](https://stackblitz.com/edit/dve-demos)** · **[Browse the Vlox demos](https://divine-star-software.github.io/DivineVoxelEngine/)**
 
 ## Core Packages
 
 - **@divinevoxel/vlox**  
-  - Minecraft-like voxel data handling and meshing.  
+  - Block-like voxel data handling and meshing.  
   - Lighting, flow, power, and secondary state/voxelsystems.
   - **Vlox Model System**  
     - Similar to Blockbench models  
@@ -42,8 +41,6 @@
 - **@dvegames/vlox-tools**  
   - A library for creating tool panels for any `@divinevoxel/vlox` project
 
-
-To checkout the demos for vlox visit the github pages site for this repo here: [Link To Vlox Demos](https://divine-star-software.github.io/DivineVoxelEngine/)
 
 <details>
   <summary>In Dev Packages</summary>
