@@ -8,29 +8,12 @@
 
 ---
 
-# What is this?
-
-A multi-threaded, renderer independent, fully customizable TypeScript voxel engine. 
+## Build block-style voxel games right in the browser. A multi-threaded, renderer-independent voxel engine in TypeScript.
 
 ![DVE 1](assets/main.png)
 
-## To Init This Project
-
-This project is a monorepo that holds all the Divine Voxel Engine packages and required libraries from Amodx. To initialize the project, just run the following commands:
-
-```console
-git clone https://github.com/Divine-Star-Software/DivineVoxelEngine.git
-cd ./DivineVoxelEngine
-git pull
-git lfs pull
-git submodule update --init --recursive
-git submodule foreach git checkout main
-git submodule foreach git pull
-npm run init:all
-npm install --workspaces=false
-cd ./demos/Vlox
-npm run start
-```
+## [Stackblitz Demo](https://stackblitz.com/edit/dve-demos?file=README.md)
+## [Vlox Demos](https://divine-star-software.github.io/DivineVoxelEngine/)
 
 ## Core Packages
 
@@ -59,8 +42,6 @@ npm run start
 - **@dvegames/vlox-tools**  
   - A library for creating tool panels for any `@divinevoxel/vlox` project
 
-## [Stackblitz Demo](https://stackblitz.com/edit/stackblitz-starters-hyuhuanp)
-## [Vlox Demos](https://divine-star-software.github.io/DivineVoxelEngine/)
 
 To checkout the demos for vlox visit the github pages site for this repo here: [Link To Vlox Demos](https://divine-star-software.github.io/DivineVoxelEngine/)
 
@@ -411,16 +392,36 @@ Example of a mod schema:
 
 ## Classic
 
-![DVE 1](assets/Screenshots/Foundation/Classic/DVE-RM3.JPG)
-![DVE 1](assets/Screenshots/Foundation/Classic/DVE-RM1.PNG)
-![DVE 1](assets/Screenshots/Foundation/Classic/DVE-RM2.PNG)
-![DVE 1](assets/Screenshots/Foundation/Classic/DVE-RM4.PNG)
-![DVE 1](assets/Screenshots/Foundation/Classic/DVE-RM5.PNG)
+![DVE Classic 1](assets/Classic/DVE-RM3.JPG)
+![DVE Classic 2](assets/Classic/DVE-RM1.PNG)
+![DVE Classic 3](assets/Classic/DVE-RM2.PNG)
+![DVE Classic 4](assets/Classic/DVE-RM4.PNG)
+![DVE Classic 5](assets/Classic/DVE-RM5.PNG)
 
 <a href="https://github.com/lucasdamianjohnson">
   <img src="https://github.com/lucasdamianjohnson.png" width="30" height="30" style="border-radius:50%">
   <img src="https://img.shields.io/badge/Author-lucasdamianjohnson-8A2BE2?style=flat&logo=github">
 </a>
+
+
+## To Init This Project
+
+This project is a monorepo that holds all the Divine Voxel Engine packages and required libraries from Amodx. To initialize the project, just run the following commands:
+
+```console
+git clone https://github.com/Divine-Star-Software/DivineVoxelEngine.git
+cd ./DivineVoxelEngine
+git pull
+git lfs pull
+git submodule update --init --recursive
+git submodule foreach git checkout main
+git submodule foreach git pull
+npm run init:all
+npm install --workspaces=false
+cd ./demos/Vlox
+npm run start
+```
+
 
 Join the Divine Star community here to get updates: [discord](https://discord.gg/98xEVU7TKn).
 
