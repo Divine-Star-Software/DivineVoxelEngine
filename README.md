@@ -398,10 +398,6 @@ Example of a mod schema:
 ![DVE Classic 4](assets/Classic/DVE-RM4.PNG)
 ![DVE Classic 5](assets/Classic/DVE-RM5.PNG)
 
-<a href="https://github.com/lucasdamianjohnson">
-  <img src="https://github.com/lucasdamianjohnson.png" width="30" height="30" style="border-radius:50%">
-  <img src="https://img.shields.io/badge/Author-lucasdamianjohnson-8A2BE2?style=flat&logo=github">
-</a>
 
 
 ## To Init This Project
@@ -422,8 +418,12 @@ cd ./demos/Vlox
 npm run start
 ```
 
-
 Join the Divine Star community here to get updates: [discord](https://discord.gg/98xEVU7TKn).
 
 See videos of development here:
 [Divine Star Software YouTube Channel](https://www.youtube.com/channel/UC6n2h7qiuEHI6oLLvod5wdg)
+
+<a href="https://github.com/lucasdamianjohnson">
+  <img src="https://github.com/lucasdamianjohnson.png" width="30" height="30" style="border-radius:50%">
+  <img src="https://img.shields.io/badge/Author-lucasdamianjohnson-8A2BE2?style=flat&logo=github">
+</a>
