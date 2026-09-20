@@ -12,7 +12,6 @@ export class WorldGen implements WorldGenInterface {
   }
   init() {
     this.brush = WorldGeneration.getBrush();
-    WorldGeneration.setWorldGen(this);
   }
 
   async generate(

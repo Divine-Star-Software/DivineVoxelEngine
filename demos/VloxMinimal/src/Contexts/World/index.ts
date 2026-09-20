@@ -16,7 +16,6 @@ Threads.registerTask("start-world", async () => {
   const position = { x: 0, y: 0, z: 0 };
   WorldSimulation.doTickUpdates = false;
   await WorldSimulation.Procedures.InitalLoad({
-    //  logTasks: true,
     genData: {
       position,
       renderRadius: 150,
@@ -33,10 +32,6 @@ Threads.registerTask("start-world", async () => {
 
   WorldSimulation.addGenerator(generator);
   tickInterval.start();
-
-  const dimension = WorldSimulation.getDimension(0);
-
-  const brush = dimension.getBrush();
 });
 
 Threads.registerTask("world-ready", () => {});

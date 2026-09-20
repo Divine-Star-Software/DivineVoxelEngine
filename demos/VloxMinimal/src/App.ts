@@ -105,9 +105,6 @@ export default async function Demo() {
         },
       },
     ],
-    memoryAndCPU: {
-      useSharedMemory: false,
-    },
   });
 
   InitSkybox({

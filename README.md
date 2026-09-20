@@ -6,80 +6,111 @@
 <img src="assets/logo-small.png">
 </p>
 
----
+<p align="center">
+<b>A multi-threaded, renderer-independent voxel engine in TypeScript.</b><br>
+Build Minecraft-style voxel worlds and games that run in the browser.
+</p>
 
-## Build Minecraft-style voxel games right in the browser. A multi-threaded, renderer-independent voxel engine in TypeScript.
+<p align="center">
+<a href="https://www.npmjs.com/package/@divinevoxel/vlox"><img src="https://img.shields.io/npm/v/@divinevoxel/vlox?color=8A2BE2&label=vlox" alt="npm version"></a>
+<a href="https://github.com/Divine-Star-Software/DivineVoxelEngine/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Divine-Star-Software/DivineVoxelEngine?color=8A2BE2" alt="license"></a>
+<a href="https://github.com/Divine-Star-Software/DivineVoxelEngine/stargazers"><img src="https://img.shields.io/github/stars/Divine-Star-Software/DivineVoxelEngine?style=flat&color=8A2BE2" alt="stars"></a>
+<a href="https://discord.gg/98xEVU7TKn"><img src="https://img.shields.io/badge/Discord-join-8A2BE2?logo=discord&logoColor=white" alt="Discord"></a>
+</p>
+
+---
 
 ![DVE 1](assets/main.png)
 
-[Try the live demo](https://stackblitz.com/edit/dve-demos)
+<p align="center">
+<a href="https://stackblitz.com/edit/dve-demos"><b>Try the live demo</b></a>
+&nbsp;·&nbsp;
+<a href="https://divine-star-software.github.io/DivineVoxelEngine/"><b>Browse the Vlox demos</b></a>
+&nbsp;·&nbsp;
+<a href="./GETTING_STARTED.md"><b>Getting Started guide</b></a>
+</p>
 
-[Browse the Vlox demos](https://divine-star-software.github.io/DivineVoxelEngine/)
+## Quick Start
+
+Install the core, the Babylon renderer, and the Amodx suite:
+
+```console
+npm install @babylonjs/core
+npm install @amodx/suite @divinevoxel/vlox @divinevoxel/vlox-babylon
+```
+
+Then follow **[GETTING_STARTED.md](./GETTING_STARTED.md)** to go from an empty
+project to a generating, rendering world — a flat plane of voxels loading in
+around you in the browser.
+
+> The guide assumes you can already render a Babylon.js scene and are using a
+> bundler that supports module workers (Vite, webpack 5). It attaches the engine
+> to a scene you provide.
+
+## Features
+
+- **Renderer-independent core.** The voxel engine lives in `@divinevoxel/vlox`
+  and knows nothing about a specific renderer. Official renderers exist for
+  Babylon.js (Classic and PBR shaders), with Three.js and WebGPU renderers in
+  development.
+- **Multi-threaded by design.** Meshing, world generation, and world updates all
+  run in parallel across web workers. Shared memory (SharedArrayBuffer) is on by
+  default and can be turned off.
+- **Fast meshing via precomputed rules.** Voxel models are exploded into faces,
+  and every culling and ambient-occlusion relationship is computed **once at
+  registration** into flat lookup tables. At mesh time the hot loop is cheap
+  array lookups against those tables, not per-face geometry math — so many
+  sections mesh in parallel cheaply.
+- **JSON-driven model & geometry system.** Describe voxel shapes as reusable
+  geometry (boxes, quads, triangles) and wire them into models with JSON. AO,
+  lighting, and culling are handled automatically. Reuse one model across many
+  voxels, and expose many looks through the **state** (geometry) and **mod**
+  (inputs) layers.
+- **Rich voxel behavior.** Sunlight and light propagation, liquid flow, level
+  states , light-emitting voxels, transparency, and secondary
+  voxels in a single cell (water-logged blocks and the like).
+- **Effectively infinite worlds.** A world simulation keeps sectors loaded around
+  one or more moving generators, running each new sector through a fixed
+  pipeline (generation → decoration → sunlight → propagation → build). Supports
+  multiple generators and multiple dimensions.
+- **Two-pass world generation.** A simple brush API paints terrain in a
+  `generate` pass and features (grass, trees, ores) in a `decorate` pass that can
+  read back what was already placed.
+- **Saving & archiving.** Pluggable world storage (with an IndexedDB example)
+  streams sectors in and out as the player moves, and an archiving API exports
+  whole regions and templates to compact **binary** or human-readable **JSON**.
+- **Runtime building.** `VoxelBuildSpace` places and erases voxels in a live
+  world, with raycast picking, oriented placement, bounded edit regions, and
+  update hooks. Work with many voxels at once through **templates** and **selections**.
+- **Flexible textures.** Atlases with named tiles, per-id variations, animated
+  textures, and an option to pre-compact everything into a single atlas + JSON.
 
 ## Core Packages
 
-- **@divinevoxel/vlox**  
-  - Minecraft-like voxel data handling and meshing  
+- **@divinevoxel/vlox**
+  - Minecraft-like voxel data handling and meshing
   - Lighting, flow, level states, and secondary voxels
-  - **Vlox Model System**  
+  - **Vlox Model System**
     - Describe voxel models through JSON
     - AO, lighting, and culling automatically handled
     - Create many states easily and re-use models across different voxels
-  - World simulation engine for generation and update handling  
-  - Archiving API for exporting worlds and templates as binary data and JSON  
-  - **Multi-threaded**  
-    - All meshing and world updates run in parallel  
+  - World simulation engine for generation and update handling
+  - Archiving API for exporting worlds and templates as binary data and JSON
+  - **Multi-threaded**
+    - All meshing and world updates run in parallel
     - Shared memory is on by default, but can be turned off
 
-- **@divinevoxel/vlox-babylon**  
+- **@divinevoxel/vlox-babylon**
   - Renderer for DVE Vlox using Babylon.js, including Classic and PBR shaders
 
 ## Packages for Game Development
 
-- **@dvegames/vlox**  
+- **@dvegames/vlox**
   - A library of components for building games with Babylon.js and `@divinevoxel/vlox`
 
-- **@dvegames/vlox-tools**  
+- **@dvegames/vlox-tools**
   - A library for creating tool panels for any `@divinevoxel/vlox` project
 
-<details>
-  <summary>Compacting Textures</summary>
-You can compact the textures beforehand and tell the engine to use them.
-
-The engine will produce a single atlas texture and json data file that can be used instead of loading the textures one by one.
-### Create Compact Textures
-```ts
-import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
-//Do this after initing the babylon renderer
-const compactedImages = await TextureManager.createCompactedTextures(
-  "assets/textures",
-  [16, 16]
-);
-for (const image of compactedImages) {
-  await downloadFile(`${image.data.type}.png`, image.image, "image/png");
-  await downloadFile(
-    `${image.data.type}.json`,
-    JSON.stringify(image.data),
-    "application/json"
-  );
-}
-```
-
-### Use Compact Textures
-```ts
-import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
-//register textures beforehand
-TextureManager.registerTexture(Textures);
-const paths: string[] = [
-  "assets/compacted/dve_voxel",
-  "assets/compacted/dve_item",
-];
-for (const path of paths) {
-  const json = await (await fetch(`${path}.json`)).json();
-  await TextureManager.readCompactedTexture( json, `${path}.png`);
-}
-```
-</details>
 <details>
   <summary>Shared Memory</summary>
 Originally the engine was built to use SharedArrayBuffers but that caused some issues. 
@@ -102,297 +133,6 @@ import { StartRenderer } from "@divinevoxel/vlox/Init/StartRenderer";
 ```
 
 With `useSharedMemory` set to `false` you will only have access to world data in the World thread. 
-
-</details>
-<details>
-  <summary>Voxel Model System</summary>
-To see examples of how to make geometry and models for the vlox model system check out the built in models here:
-
-[divinevoxel-vlox/tree/Voxels/Models/Defaults](https://github.com/Divine-Star-Software/divinevoxel-vlox/tree/main/src/Voxels/Models/Defaults)
-
-The Vlox model system lets you create voxel models purely through JSON. To make a model you first need geometry. To use a model you must attach it to the voxel properties of a voxel via the `dve_model_data` property. 
-
-Geometry and models accept arguments and the voxel supplies the inputs. 
-
-Example geometry: 
-```json
-{
-  "id": "dve_cube",
-  "arguments": {
-    "allTexs": {
-      "type": "arg-list",
-      "arguments": [
-        "upTex",
-        "downTex",
-        "northTex",
-        "southTex",
-        "eastTex",
-        "westTex"
-      ]
-    },
-    "upTex": {
-      "type": "texture"
-    },
-    "upUvs": {
-      "type": "box-uv",
-      "default": [0, 0, 1, 1]
-    },
-    "upTexRotation": {
-      "type": "int",
-      "default": 0
-    },
-    "downTex": {
-      "type": "texture"
-    },
-    "downUvs": {
-      "type": "box-uv",
-      "default": [0, 0, 1, 1]
-    },
-    "downTexRotation": {
-      "type": "int",
-      "default": 0
-    },
-    "northTex": {
-      "type": "texture"
-    },
-    "northUvs": {
-      "type": "box-uv",
-      "default": [0, 0, 1, 1]
-    },
-    "northTexRotation": {
-      "type": "int",
-      "default": 0
-    },
-    "southTex": {
-      "type": "texture"
-    },
-    "southUvs": {
-      "type": "box-uv",
-      "default": [0, 0, 1, 1]
-    },
-    "southTexRotation": {
-      "type": "int",
-      "default": 0
-    },
-    "eastTex": {
-      "type": "texture"
-    },
-    "eastUvs": {
-      "type": "box-uv",
-      "default": [0, 0, 1, 1]
-    },
-    "eastTexRotation": {
-      "type": "int",
-      "default": 0
-    },
-    "westTex": {
-      "type": "texture"
-    },
-    "westUvs": {
-      "type": "box-uv",
-      "default": [0, 0, 1, 1]
-    },
-    "westTexRotation": {
-      "type": "int",
-      "default": 0
-    }
-  },
-  "nodes": [
-    {
-      "type": "box",
-      "points": [
-        [0, 0, 0],
-        [1, 1, 1]
-      ],
-      "faces": {
-        "up": {
-          "texture": "@upTex",
-          "uv": "@upUvs",
-          "rotation": "@upTexRotation"
-        },
-        "down": {
-          "texture": "@downTex",
-          "uv": "@downUvs",
-          "rotation": "@downTexRotation"
-        },
-        "north": {
-          "texture": "@northTex",
-          "uv": "@northUvs",
-          "rotation": "@northTexRotation"
-        },
-        "south": {
-          "texture": "@southTex",
-          "uv": "@southUvs",
-          "rotation": "@southTexRotation"
-        },
-        "east": {
-          "texture": "@eastTex",
-          "uv": "@eastUvs",
-          "rotation": "@eastTexRotation"
-        },
-        "west": {
-          "texture": "@westTex",
-          "uv": "@westUvs",
-          "rotation": "@westTexRotation"
-        }
-      }
-    }
-  ]
-}
-
-```
-
-Example model:
-```json
-{
-  "id": "dve_simple_cube",
-  "relationsSchema": [],
-  "stateSchema": [],
-  "arguments": {
-    "texture": {
-      "type": "texture"
-    }
-  },
-
-  "conditonalNodes": {},
-  "properties": {
-    "dve_placing_strategy": "*",
-    "dve_full_block": true
-  },
-  "stateNodes": {
-    "*": [
-      {
-        "geometryId": "dve_cube",
-        "inputs": {
-          "upTex": "@texture",
-          "downTex": "@texture",
-          "northTex": "@texture",
-          "southTex": "@texture",
-          "eastTex": "@texture",
-          "westTex": "@texture"
-        }
-      }
-    ]
-  }
-}
-```
-
-Example voxel that uses the model:
-```json
-{
-  "id": "dve_dream_lamp",
-  "properties": {
-    "dve_substance": "dve_glow",
-    "dve_collider_id": "dve_cube",
-    "dve_check_collisions": true,
-    "dve_voxel_material": "stone",
-    "dve_is_light_source": true,
-    "dve_light_value": [15, 0, 15],
-
-    "dve_named_states": [
-      {
-        "id": "dve_dream_lamp",
-        "name": "Dream Lamp",
-        "mod": "*",
-        "state": "*",
-        "properties": [],
-        "display": {
-          "type": "model",
-          "mod": "*",
-          "state": "*"
-        }
-      }
-    ],
-
-    "dve_model_data": {
-      "id": "dve_simple_cube",
-      "inputs": {
-        "*": { "texture": "dve_dream_lamp" }
-      }
-    }
-  }
-}
-
-```
-
-These examples are very basic. You can create geometry with quads and triangles. And when linking them in the models you can transform the geometry. 
-
-See the related types to get a better sense of what all you can do:
-
-[Geometry Types](https://github.com/Divine-Star-Software/divinevoxel-vlox/blob/main/src/Voxels/Geometry/VoxelGeometry.types.ts)
-
-[Model Types](https://github.com/Divine-Star-Software/divinevoxel-vlox/blob/main/src/Voxels/Models/VoxelModel.types.ts)
-
-The state schemas of the models give voxels their states. While the mod schemas of the `dve_model_data` allow varied inputs. 
-
-Example of a mod schema:
-```json
-{
-  "id": "dve_dread_stone",
-  "properties": {
-    "dve_substance": "dve_solid",
-    "dve_rendered_material": "dve_solid",
-    "dve_collider_id": "dve_cube",
-    "dve_check_collisions": true,
-    "dve_voxel_material": "grassy-stone",
-
-    "dve_named_states": [
-      {
-        "id": "dve_dread_stone",
-        "name": "Dread Stone",
-        "mod": "grassy=false",
-        "state": "*",
-        "properties": [],
-        "display": {
-          "type": "model",
-          "mod": "grassy=false",
-          "state": "*"
-        }
-      },
-      {
-        "id": "dve_grassy_dread_stone",
-        "name": "Grassy Dread Stone",
-        "mod": "grassy=true",
-        "state": "*",
-        "properties": [],
-        "display": {
-          "type": "model",
-          "mod": "grassy=true",
-          "state": "*"
-        }
-      }
-    ],
-
-    "dve_model_data": {
-      "id": "dve_simple_cube",
-      "modSchema": [
-        {
-          "name": "grassy",
-          "bitIndex": 0,
-          "bitSize": 1,
-          "values": ["false", "true"]
-        }
-      ],
-      "modRelationSchema": [],
-      "inputs": {
-        "grassy=false": {
-          "texture": {
-            "type": "consistent-rotation",
-            "texture": "dve_dread_stone:default",
-            "rotations": [0, 90, 270]
-          }
-        },
-        "grassy=true": {
-          "texture": "dve_dread_stone:grassy-top"
-        }
-      }
-    }
-  }
-}
-
-```
-
-
 
 </details>
 <details>
@@ -461,7 +201,10 @@ Demo game showing off biome based infinite world generation.
 
 
 
-## To Init This Project
+## Developing DVE (Monorepo Setup)
+
+You only need the Quick Start above to **build with** DVE. The steps below are for
+working **on** the engine itself.
 
 This project is a monorepo that holds all the Divine Voxel Engine packages and required libraries from Amodx. To initialize the project, just run the following commands:
 
@@ -478,6 +221,8 @@ npm install --workspaces=false
 cd ./demos/Vlox
 npm run start
 ```
+
+## Community
 
 Join the Divine Star community here to get updates: [discord](https://discord.gg/98xEVU7TKn).
 
