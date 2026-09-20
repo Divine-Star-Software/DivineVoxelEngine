@@ -8,7 +8,7 @@
 
 ---
 
-## Build block-style voxel games right in the browser. A multi-threaded, renderer-independent voxel engine in TypeScript.
+## Build Minecraft-style voxel games right in the browser. A multi-threaded, renderer-independent voxel engine in TypeScript.
 
 ![DVE 1](assets/main.png)
 
@@ -19,7 +19,7 @@
 ## Core Packages
 
 - **@divinevoxel/vlox**  
-  - Block-like voxel data handling and meshing  
+  - Minecraft-like voxel data handling and meshing  
   - Lighting, flow, level states, and secondary voxels
   - **Vlox Model System**  
     - Describe voxel models through JSON
@@ -42,23 +42,48 @@
 - **@dvegames/vlox-tools**  
   - A library for creating tool panels for any `@divinevoxel/vlox` project
 
-
 <details>
-  <summary>In Dev Packages</summary>
-These packages have not been worked on in a while and may be worked on in future if there is demand for them.
+  <summary>Compacting Textures</summary>
+You can compact the textures beforehand and tell the engine to use them.
 
-- **@divinevoxel/vlox-three**  
-  - Renderer for DVE Vlox using Three.js, including Classic and PBR shaders
+The engine will produce a single atlas texture and json data file that can be used instead of loading the textures one by one.
+### Create Compact Textures
+```ts
+import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
+//Do this after initing the babylon renderer
+const compactedImages = await TextureManager.createCompactedTextures(
+  "assets/textures",
+  [16, 16]
+);
+for (const image of compactedImages) {
+  await downloadFile(`${image.data.type}.png`, image.image, "image/png");
+  await downloadFile(
+    `${image.data.type}.json`,
+    JSON.stringify(image.data),
+    "application/json"
+  );
+}
+```
 
-- **@divinevoxel/vlox-quantum**  
-  - Custom renderer for DVE Vlox using WebGPU
-
-
+### Use Compact Textures
+```ts
+import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
+//register textures beforehand
+TextureManager.registerTexture(Textures);
+const paths: string[] = [
+  "assets/compacted/dve_voxel",
+  "assets/compacted/dve_item",
+];
+for (const path of paths) {
+  const json = await (await fetch(`${path}.json`)).json();
+  await TextureManager.readCompactedTexture( json, `${path}.png`);
+}
+```
 </details>
 <details>
   <summary>Shared Memory</summary>
 Originally the engine was built to use SharedArrayBuffers but that caused some issues. 
-You can now turn off shared memory ussage like this:
+You can now turn off shared memory usage like this:
 
 ```ts
 import { StartRenderer } from "@divinevoxel/vlox/Init/StartRenderer";
@@ -370,8 +395,19 @@ Example of a mod schema:
 
 
 </details>
+<details>
+  <summary>In Dev Packages</summary>
+These packages have not been worked on in a while and may be worked on in future if there is demand for them.
 
----
+- **@divinevoxel/vlox-three**  
+  - Renderer for DVE Vlox using Three.js, including Classic and PBR shaders
+
+- **@divinevoxel/vlox-quantum**  
+  - Custom renderer for DVE Vlox using WebGPU
+
+</details>
+
+
 # Games & Demos
 
 ## Crystalline Bliss
