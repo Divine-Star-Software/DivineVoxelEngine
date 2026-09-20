@@ -12,23 +12,24 @@
 
 ![DVE 1](assets/main.png)
 
-**[▶ Try the live demo](https://stackblitz.com/edit/dve-demos)** · **[Browse the Vlox demos](https://divine-star-software.github.io/DivineVoxelEngine/)**
+[Try the live demo](https://stackblitz.com/edit/dve-demos)
+
+[Browse the Vlox demos](https://divine-star-software.github.io/DivineVoxelEngine/)
 
 ## Core Packages
 
 - **@divinevoxel/vlox**  
-  - Block-like voxel data handling and meshing.  
-  - Lighting, flow, power, and secondary state/voxelsystems.
+  - Block-like voxel data handling and meshing  
+  - Lighting, flow, level states, and secondary voxels
   - **Vlox Model System**  
-    - Similar to Blockbench models  
-    - AO, lighting, and advanced texture handling  
-    - Particle emitters and other custom effects  
-    - Easily extensible to create custom meshed voxels  
+    - Describe voxel models through JSON
+    - AO, lighting, and culling automatically handled
+    - Create many states easily and re-use models across different voxels
   - World simulation engine for generation and update handling  
-  - Archiving API for exporting worlds and templates as JSON  
+  - Archiving API for exporting worlds and templates as binary data and JSON  
   - **Multi-threaded**  
     - All meshing and world updates run in parallel  
-    - Shared memory is optional—engine can run anywhere  
+    - Shared memory is on by default, but can be turned off
 
 - **@divinevoxel/vlox-babylon**  
   - Renderer for DVE Vlox using Babylon.js, including Classic and PBR shaders
@@ -371,8 +372,35 @@ Example of a mod schema:
 </details>
 
 ---
+# Games & Demos
+
+## Crystalline Bliss
+
+3D Puzzle with environments built with the engine. 
+
+[Play On itch.io](https://divinestarsoftware.itch.io/crystalline-bliss)
+
+[Buy On Steam](https://store.steampowered.com/app/2547740/Crystalline_Bliss/)
+
+![Crystalline Bliss 1](assets/CrystallineBliss/1.png)
+![Crystalline Bliss 2](assets/CrystallineBliss/2.png)
+
+## Divine Craft
+
+Demo game showing off biome based infinite world generation.
+
+[Github Repo](https://github.com/Divine-Star-Software/DivineCraft)
+
+[Check Out Now](https://dc.divinevoxelengine.org/)
+
+![Divine Craft 1](assets/DivineCraft/1.png)
+![Divine Craft 2](assets/DivineCraft/2.png)
+
+
+
 
 # Screenshots 
+
 
 ## Vlox Babylon
 
