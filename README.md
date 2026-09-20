@@ -40,12 +40,7 @@ npm install @amodx/suite @divinevoxel/vlox @divinevoxel/vlox-babylon
 ```
 
 Then follow **[GETTING_STARTED.md](./GETTING_STARTED.md)** to go from an empty
-project to a generating, rendering world — a flat plane of voxels loading in
-around you in the browser.
-
-> The guide assumes you can already render a Babylon.js scene and are using a
-> bundler that supports module workers (Vite, webpack 5). It attaches the engine
-> to a scene you provide.
+project to generating and rendering a world .
 
 ## Features
 
@@ -59,8 +54,7 @@ around you in the browser.
 - **Fast meshing via precomputed rules.** Voxel models are exploded into faces,
   and every culling and ambient-occlusion relationship is computed **once at
   registration** into flat lookup tables. At mesh time the hot loop is cheap
-  array lookups against those tables, not per-face geometry math — so many
-  sections mesh in parallel cheaply.
+  array lookups against those tables.
 - **JSON-driven model & geometry system.** Describe voxel shapes as reusable
   geometry (boxes, quads, triangles) and wire them into models with JSON. AO,
   lighting, and culling are handled automatically. Reuse one model across many
