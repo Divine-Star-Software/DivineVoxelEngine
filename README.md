@@ -12,7 +12,10 @@ Build Minecraft-style voxel worlds and games that run in the browser.
 </p>
 
 <p align="center">
-<a href="https://www.npmjs.com/package/@divinevoxel/vlox"><img src="https://img.shields.io/npm/v/@divinevoxel/vlox?color=8A2BE2&label=vlox" alt="npm version"></a>
+<a href="https://www.npmjs.com/package/@divinevoxel/vlox"><img src="https://img.shields.io/npm/v/@divinevoxel/vlox?color=8A2BE2&label=@divinevoxel/vlox" alt="npm version"></a>
+<a href="https://www.npmjs.com/package/@divinevoxel/vlox-babylon"><img src="https://img.shields.io/npm/v/@divinevoxel/vlox-babylon?color=8A2BE2&label=@divinevoxel/vlox-babylon" alt="npm version"></a>
+<a href="https://www.npmjs.com/package/@dvegames/vlox"><img src="https://img.shields.io/npm/v/@dvegames/vlox?color=8A2BE2&label=@dvegames/vlox" alt="npm version"></a>
+<a href="https://www.npmjs.com/package/@dvegames/vlox-tools"><img src="https://img.shields.io/npm/v/@dvegames/vlox-tools?color=8A2BE2&label=@dvegames/vlox-tools" alt="npm version"></a>
 <a href="https://github.com/Divine-Star-Software/DivineVoxelEngine/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Divine-Star-Software/DivineVoxelEngine?color=8A2BE2" alt="license"></a>
 <a href="https://github.com/Divine-Star-Software/DivineVoxelEngine/stargazers"><img src="https://img.shields.io/github/stars/Divine-Star-Software/DivineVoxelEngine?style=flat&color=8A2BE2" alt="stars"></a>
 <a href="https://discord.gg/98xEVU7TKn"><img src="https://img.shields.io/badge/Discord-join-8A2BE2?logo=discord&logoColor=white" alt="Discord"></a>
