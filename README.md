@@ -51,7 +51,7 @@ npm install @amodx/suite @divinevoxel/vlox @divinevoxel/vlox-babylon
 ```
 
 Then follow **[GETTING_STARTED.md](./GETTING_STARTED.md)** to go from an empty
-project to generating and rendering a world .
+project to generating and rendering a world.
 
 ## Features
 
@@ -72,8 +72,8 @@ project to generating and rendering a world .
   voxels, and expose many looks through the **state** (geometry) and **mod**
   (inputs) layers.
 - **Rich voxel behavior.** Sunlight and light propagation, liquid flow, level
-  states , light-emitting voxels, transparency, and secondary
-  voxels in a single cell (water-logged blocks and the like).
+  states, light-emitting voxels, transparency, and secondary voxels in a single
+  cell (water-logged blocks and the like).
 - **Effectively infinite worlds.** A world simulation keeps sectors loaded around
   one or more moving generators, running each new sector through a fixed
   pipeline (generation → decoration → sunlight → propagation → build). Supports
@@ -86,35 +86,27 @@ project to generating and rendering a world .
   whole regions and templates to compact **binary** or human-readable **JSON**.
 - **Runtime building.** `VoxelBuildSpace` places and erases voxels in a live
   world, with raycast picking, oriented placement, bounded edit regions, and
-  update hooks. Work with many voxels at once through **templates** and **selections**.
+  update hooks. Work with many voxels at once through **templates** and
+  **selections**.
 - **Flexible textures.** Atlases with named tiles, per-id variations, animated
   textures, and an option to pre-compact everything into a single atlas + JSON.
 
-## Core Packages
+## Packages
 
-- **@divinevoxel/vlox**
-  - Minecraft-like voxel data handling and meshing
-  - Lighting, flow, level states, and secondary voxels
-  - **Vlox Model System**
-    - Describe voxel models through JSON
-    - AO, lighting, and culling automatically handled
-    - Create many states easily and re-use models across different voxels
-  - World simulation engine for generation and update handling
-  - Archiving API for exporting worlds and templates as binary data and JSON
-  - **Multi-threaded**
-    - All meshing and world updates run in parallel
-    - Shared memory is on by default, but can be turned off
+**Core**
 
-- **@divinevoxel/vlox-babylon**
-  - Renderer for DVE Vlox using Babylon.js, including Classic and PBR shaders
+- **@divinevoxel/vlox** — the renderer-independent voxel engine: data handling,
+  meshing, lighting and flow, the JSON model system, the world simulation, and
+  the archiving API.
+- **@divinevoxel/vlox-babylon** — the Babylon.js renderer for Vlox, with Classic
+  and PBR shaders.
 
-## Packages for Game Development
+**Game development**
 
-- **@dvegames/vlox**
-  - A library of components for building games with Babylon.js and `@divinevoxel/vlox`
-
-- **@dvegames/vlox-tools**
-  - A library for creating tool panels for any `@divinevoxel/vlox` project
+- **@dvegames/vlox** — components for building games with Babylon.js and
+  `@divinevoxel/vlox`.
+- **@dvegames/vlox-tools** — a library for creating tool panels for any
+  `@divinevoxel/vlox` project.
 
 <details>
   <summary>Shared Memory</summary>
@@ -157,35 +149,32 @@ These packages have not been worked on in a while and may be worked on in future
 
 ## Crystalline Bliss
 
-3D Puzzle with environments built with the engine. 
+A 3D puzzle game with environments built using the engine.
 
-[Play On itch.io](https://divinestarsoftware.itch.io/crystalline-bliss)
-
-[Buy On Steam](https://store.steampowered.com/app/2547740/Crystalline_Bliss/)
+[Play on itch.io](https://divinestarsoftware.itch.io/crystalline-bliss)
+&nbsp;·&nbsp;
+[Buy on Steam](https://store.steampowered.com/app/2547740/Crystalline_Bliss/)
 
 ![Crystalline Bliss 1](assets/CrystallineBliss/1.png)
 ![Crystalline Bliss 2](assets/CrystallineBliss/2.png)
 
 ## Divine Craft
 
-Demo game showing off biome based infinite world generation.
+A demo showing off biome-based infinite world generation.
 
-[Github Repo](https://github.com/Divine-Star-Software/DivineCraft)
-
-[Check Out Now](https://dc.divinevoxelengine.org/)
+[Play in browser](https://dc.divinevoxelengine.org/)
+&nbsp;·&nbsp;
+[GitHub repo](https://github.com/Divine-Star-Software/DivineCraft)
 
 ![Divine Craft 1](assets/DivineCraft/1.png)
 ![Divine Craft 2](assets/DivineCraft/2.png)
 
 
-
-
-# Screenshots 
-
+# Screenshots
 
 ## Vlox Babylon
 
-## PBR
+### PBR
 
 ![DVE PBR 1](assets/PBR/1.png)
 ![DVE PBR 2](assets/PBR/2.png)
@@ -194,9 +183,7 @@ Demo game showing off biome based infinite world generation.
 ![DVE PBR 5](assets/PBR/5.png)
 ![DVE PBR 6](assets/PBR/6.png)
 
-
-
-## Classic
+### Classic
 
 ![DVE Classic 1](assets/Classic/DVE-RM3.JPG)
 ![DVE Classic 2](assets/Classic/DVE-RM1.PNG)
@@ -205,18 +192,18 @@ Demo game showing off biome based infinite world generation.
 ![DVE Classic 5](assets/Classic/DVE-RM5.PNG)
 
 
-
 ## Developing DVE (Monorepo Setup)
 
 You only need the Quick Start above to **build with** DVE. The steps below are for
 working **on** the engine itself.
 
-This project is a monorepo that holds all the Divine Voxel Engine packages and required libraries from Amodx. To initialize the project, just run the following commands:
+This project is a monorepo that holds all the Divine Voxel Engine packages and
+required libraries from Amodx. To initialize the project, run the following
+commands:
 
 ```console
 git clone https://github.com/Divine-Star-Software/DivineVoxelEngine.git
 cd ./DivineVoxelEngine
-git pull
 git lfs pull
 git submodule update --init --recursive
 git submodule foreach git checkout main
@@ -229,10 +216,10 @@ npm run start
 
 ## Community
 
-Join the Divine Star community here to get updates: [discord](https://discord.gg/98xEVU7TKn).
+Join the Divine Star community to get updates: [Discord](https://discord.gg/98xEVU7TKn).
 
-See videos of development here:
-[Divine Star Software YouTube Channel](https://www.youtube.com/channel/UC6n2h7qiuEHI6oLLvod5wdg)
+See development videos on the
+[Divine Star Software YouTube channel](https://www.youtube.com/channel/UC6n2h7qiuEHI6oLLvod5wdg).
 
 <a href="https://github.com/lucasdamianjohnson">
   <img src="https://github.com/lucasdamianjohnson.png" width="30" height="30" style="border-radius:50%">
